@@ -15,6 +15,13 @@ const segmentLabels: Record<string, string> = {
   'genesis-10-11': 'Genesis 10–11'
 };
 
+const shortSegmentLabels: Record<string, string> = {
+  'genesis-1-3': 'Gen 1–3',
+  'genesis-4-6': 'Gen 4–6',
+  'genesis-7-9': 'Gen 7–9',
+  'genesis-10-11': 'Gen 10–11'
+};
+
 export default function Dashboard() {
   const [streak, setStreak] = useState(0);
   const [completedToday, setCompletedToday] = useState(false);
@@ -134,32 +141,35 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Daily Quiz */}
-      <section className="space-y-4">
-        <h2 className="text-lg font-bold text-gray-900">Your Journey</h2>
+      {/* Training Progress */}
+      <section className="rounded-xl bg-white p-5 shadow-md">
+        <h2 className="text-lg font-bold text-gray-900">🏃 Training Progress</h2>
+        <p className="mt-1 text-sm text-gray-600">Advance through your training blocks</p>
+
         <div className="overflow-x-auto">
-          <div className="flex min-w-max items-center gap-3 pb-1">
+          <div className="flex min-w-max items-center gap-4 py-4">
             {segments.map((segment, index) => {
               const completed = index < journeyCurrentIndex;
               const current = index === journeyCurrentIndex;
               const locked = index > journeyCurrentIndex;
 
-              const cardClass = completed
-                ? 'bg-green-600 text-white'
+              const circleClass = completed
+                ? 'bg-green-500 text-white'
                 : current
-                  ? 'bg-blue-600 text-white scale-[1.03]'
-                  : 'bg-gray-200 text-gray-500';
+                  ? 'bg-blue-600 text-white scale-110'
+                  : 'bg-gray-300 text-gray-600';
 
               return (
-                <div key={segment} className="flex items-center gap-3">
-                  <div
-                    className={`rounded-xl px-4 py-3 text-sm font-semibold whitespace-nowrap transition ${cardClass}`}
-                  >
-                    {completed && <span className="mr-2">✓</span>}
-                    {locked && <span className="mr-2">🔒</span>}
-                    {segmentLabels[segment]}
+                <div key={segment} className="flex items-center">
+                  <div className="flex flex-col items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${circleClass}`}>
+                      {completed ? '✓' : locked ? '🔒' : `${index + 1}`}
+                    </div>
+                    <div className="mt-2 text-xs text-center text-gray-700">{shortSegmentLabels[segment] || segment}</div>
                   </div>
-                  {index < segments.length - 1 && <span className="text-gray-400">→</span>}
+                  {index < segments.length - 1 && (
+                    <div className={`mx-3 flex-1 h-1 min-w-8 rounded ${completed ? 'bg-green-400' : 'bg-gray-300'}`} />
+                  )}
                 </div>
               );
             })}
