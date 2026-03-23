@@ -5,15 +5,17 @@ import { useEffect, useState } from "react"
 import { setPro } from "../../lib/user"
 
 export default function UpgradePage() {
-  const [proActivated, setProActivated] = useState(false)
+  const [activatedPlan, setActivatedPlan] = useState<'pro' | 'pro_plus' | null>(null)
 
   useEffect(() => {
     const activatePro = async () => {
       const params = new URLSearchParams(window.location.search)
       if (params.get("success") === "true") {
         try {
-          await setPro()
-          setProActivated(true)
+          const planParam = params.get("plan")
+          const plan = planParam === "pro_plus" ? "pro_plus" : "pro"
+          await setPro(plan)
+          setActivatedPlan(plan)
         } catch (error) {
           console.error('Error activating pro:', error)
         }
@@ -27,9 +29,15 @@ export default function UpgradePage() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="max-w-xl w-full bg-white rounded-xl shadow-md p-6 space-y-6">
 
-        {proActivated && (
+        {activatedPlan === 'pro' && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-            🎉 You're now a Pro member!
+            🎉 You&apos;re now a Pro member!
+          </div>
+        )}
+
+        {activatedPlan === 'pro_plus' && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+            🚀 You&apos;re now a Pro+ member!
           </div>
         )}
 

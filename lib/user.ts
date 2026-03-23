@@ -23,13 +23,15 @@ export async function isProPlus() {
   return plan === 'pro_plus'
 }
 
-export async function setPro(plan = 'pro') {
+export async function setPro(plan: 'pro' | 'pro_plus' = 'pro') {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return
 
+  const nextPlan = plan === 'pro_plus' ? 'pro_plus' : 'pro'
+
   await supabase.from('profiles').upsert({
     id: user.id,
-    plan_type: plan,
+    plan_type: nextPlan,
     is_pro: true
   })
 }
