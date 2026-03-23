@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
-import { getUser } from '@/lib/user';
+import { isPro } from '@/lib/user';
 
 type IncorrectItem = {
   question: Question;
@@ -33,7 +33,7 @@ export default function QuizPage() {
   const [completedToday, setCompletedToday] = useState(false);
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [newLevel, setNewLevel] = useState<number | null>(null);
-  const [isPro, setIsPro] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
 
 
   useEffect(() => {
@@ -42,9 +42,6 @@ export default function QuizPage() {
       const params = new URLSearchParams(search);
       const segmentParam = params.get('segment') || 'genesis_1_3';
       setSegment(segmentParam);
-
-      const user = await getUser();
-      setIsPro(user?.isPro || false);
 
       const completed = await hasCompletedToday();
       setCompletedToday(completed);
@@ -58,14 +55,22 @@ export default function QuizPage() {
     initializeQuiz();
   }, []);
 
-  const effectiveDifficulty = isPro ? "mixed" : "easy";
+  useEffect(() => {
+    async function checkPro() {
+      const result = await isPro();
+      setIsProUser(result);
+    }
+    checkPro();
+  }, []);
+
+  const effectiveDifficulty = isProUser ? "mixed" : "easy";
 
   const questions = useMemo(() => {
     if (!paramsInitialized) return [] as Question[];
 
     let fetchedQuestions: Question[];
 
-    if (isPro) {
+    if (isProUser) {
       fetchedQuestions = getQuestions(segment, 'mixed');
     } else {
       fetchedQuestions = getQuestions(segment, effectiveDifficulty).slice(0, 2);
@@ -81,7 +86,7 @@ export default function QuizPage() {
         correctIndex: newCorrectIndex
       };
     });
-  }, [paramsInitialized, segment, effectiveDifficulty, isPro]);
+  }, [paramsInitialized, segment, effectiveDifficulty, isProUser]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -158,7 +163,7 @@ export default function QuizPage() {
     );
   }
 
-  if (!isPro && quizCompleted && !isReviewMode) {
+  if (!isProUser && quizCompleted && !isReviewMode) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -354,7 +359,7 @@ export default function QuizPage() {
               <p className="text-gray-600">Segment being studied</p>
             </div>
             <span className="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-              {isPro ? 'Mixed' : 'Easy'}
+              {isProUser ? 'Mixed' : 'Easy'}
             </span>
           </div>
         </div>

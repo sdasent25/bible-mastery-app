@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
+import { isPro } from '@/lib/user';
 
 export default function Dashboard() {
   const [streak, setStreak] = useState(0);
   const [completedToday, setCompletedToday] = useState(false);
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
+  const [isProUser, setIsProUser] = useState(false);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -24,6 +26,14 @@ export default function Dashboard() {
     };
 
     loadDashboardData();
+  }, []);
+
+  useEffect(() => {
+    async function checkPro() {
+      const result = await isPro();
+      setIsProUser(result);
+    }
+    checkPro();
   }, []);
 
   const level = Math.floor(xp / 100) + 1;
@@ -98,7 +108,7 @@ export default function Dashboard() {
         </a>
 
         {!completedToday ? (
-          <Link href="/quiz?segment=genesis_1_3&difficulty=easy">
+          <Link href={`/quiz?segment=genesis_1_3&difficulty=${isProUser ? 'mixed' : 'easy'}`}>
             <button className="w-full rounded-xl bg-blue-700 p-5 text-white shadow-md transition hover:bg-blue-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               <div className="flex items-center">
                 <span className="text-3xl mr-4">🧠</span>
