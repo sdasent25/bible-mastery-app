@@ -34,6 +34,7 @@ export default function QuizPage() {
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [newLevel, setNewLevel] = useState<number | null>(null);
   const [isProUser, setIsProUser] = useState(false);
+  const [loadingPro, setLoadingPro] = useState(true);
 
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export default function QuizPage() {
     async function checkPro() {
       const result = await isPro();
       setIsProUser(result);
+      setLoadingPro(false);
     }
     checkPro();
   }, []);
@@ -71,7 +73,7 @@ export default function QuizPage() {
     let fetchedQuestions: Question[];
 
     if (isProUser) {
-      fetchedQuestions = getQuestions(segment, 'mixed');
+      fetchedQuestions = getQuestions(segment, 'mixed').slice(0, 15);
     } else {
       fetchedQuestions = getQuestions(segment, effectiveDifficulty).slice(0, 2);
     }
@@ -102,6 +104,10 @@ export default function QuizPage() {
 
     markComplete();
   }, [quizCompleted, isReviewMode, streakSaved]);
+
+  if (loadingPro) {
+    return <div className="p-6 text-black">Loading...</div>;
+  }
 
   if (!paramsInitialized) {
     return (

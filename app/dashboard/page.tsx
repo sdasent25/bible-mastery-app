@@ -12,6 +12,7 @@ export default function Dashboard() {
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
   const [isProUser, setIsProUser] = useState(false);
+  const [loadingPro, setLoadingPro] = useState(true);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -32,6 +33,7 @@ export default function Dashboard() {
     async function checkPro() {
       const result = await isPro();
       setIsProUser(result);
+      setLoadingPro(false);
     }
     checkPro();
   }, []);
@@ -50,6 +52,10 @@ export default function Dashboard() {
       return 'You\'re building a strong habit — keep going!';
     }
   };
+
+  if (loadingPro) {
+    return <div className="p-6 text-black">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
@@ -114,7 +120,7 @@ export default function Dashboard() {
                 <span className="text-3xl mr-4">🧠</span>
                 <div className="text-left">
                   <div className="text-xl font-bold">Start Quiz</div>
-                  <div className="text-sm text-blue-100">5 Questions</div>
+                  <div className="text-sm text-blue-100">{isProUser ? '15 Questions' : '2 Questions'}</div>
                 </div>
               </div>
             </button>
