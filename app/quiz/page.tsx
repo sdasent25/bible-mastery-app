@@ -6,6 +6,7 @@ import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { isPro, isProPlus } from '@/lib/user';
+import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 
 type IncorrectItem = {
   question: Question;
@@ -39,6 +40,9 @@ export default function QuizPage() {
   const [isContinueTrainingMode, setIsContinueTrainingMode] = useState(false);
   const [showContinueLocked, setShowContinueLocked] = useState(false);
   const [quizSeed, setQuizSeed] = useState(0);
+  const [isWeaknessMode, setIsWeaknessMode] = useState(false);
+  const [weakQuestions, setWeakQuestions] = useState<Question[]>([]);
+  const [noWeakAreasMessage, setNoWeakAreasMessage] = useState(false);
 
 
   useEffect(() => {
@@ -101,7 +105,7 @@ export default function QuizPage() {
     });
   }, [paramsInitialized, segment, effectiveDifficulty, isProUser, quizSeed]);
 
-  const activeQuestions = isReviewMode ? reviewQuestions : questions;
+  const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
   const totalQuestions = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
@@ -115,6 +119,53 @@ export default function QuizPage() {
     }
 
     setShowContinueLocked(true);
+  };
+
+  const buildWeakQuestionSet = (ids: string[]) => {
+    const idSet = new Set(ids);
+    const collected = new Map<string, Question>();
+
+    for (let i = 0; i < 8; i++) {
+      const batch = getQuestions(segment, 'mixed');
+      for (const question of batch) {
+        if (idSet.has(question.id)) {
+          collected.set(question.id, question);
+        }
+      }
+
+      if (collected.size >= idSet.size) break;
+    }
+
+    return shuffleArray(Array.from(collected.values()));
+  };
+
+  const handleTrainWeakAreas = () => {
+    const incorrectIds = getIncorrectQuestions();
+
+    if (!incorrectIds.length) {
+      setNoWeakAreasMessage(true);
+      setIsWeaknessMode(false);
+      return;
+    }
+
+    const weakSet = buildWeakQuestionSet(incorrectIds);
+
+    if (!weakSet.length) {
+      setNoWeakAreasMessage(true);
+      setIsWeaknessMode(false);
+      return;
+    }
+
+    setNoWeakAreasMessage(false);
+    setIsContinueTrainingMode(false);
+    setIsWeaknessMode(true);
+    setWeakQuestions(weakSet);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setScore(0);
+    setQuizCompleted(false);
+    setIsReviewMode(false);
+    setShowRetryPrompt(false);
   };
 
   useEffect(() => {
@@ -159,7 +210,7 @@ export default function QuizPage() {
   }
 
   // Check if user already completed today and not in review mode
-  if (completedToday && !isReviewMode && !isContinueTrainingMode) {
+  if (completedToday && !isReviewMode && !isContinueTrainingMode && !isWeaknessMode) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -173,6 +224,15 @@ export default function QuizPage() {
             New questions unlock tomorrow 🔥
           </p>
           <div className="space-y-3">
+            <button
+              onClick={handleTrainWeakAreas}
+              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Train Weak Areas
+            </button>
+            {noWeakAreasMessage && (
+              <p className="text-center text-sm text-gray-700">You&apos;re doing great! No weak areas yet.</p>
+            )}
             {isProPlusUser ? (
               <button
                 onClick={handleContinueTraining}
@@ -278,6 +338,7 @@ export default function QuizPage() {
             setShowLevelUp(true);
           }
         } else {
+          addIncorrectQuestion(currentQuestion.id);
           setIncorrectQuestions(prev =>
             prev.some(q => q.question.id === currentQuestion.id)
               ? prev
@@ -311,6 +372,9 @@ export default function QuizPage() {
     setReviewQuestions([]);
     setStreakSaved(false);
     setShowRetryPrompt(false);
+    setIsWeaknessMode(false);
+    setWeakQuestions([]);
+    setNoWeakAreasMessage(false);
   };
 
   const startReview = () => {
@@ -407,6 +471,19 @@ export default function QuizPage() {
               ? 'Reinforce what you missed'
               : 'Test your knowledge and earn XP as part of your daily mastery routine.'}
           </p>
+          {!isReviewMode && !quizCompleted && (
+            <div className="mt-4 space-y-2">
+              <button
+                onClick={handleTrainWeakAreas}
+                className="bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Train Weak Areas
+              </button>
+              {noWeakAreasMessage && (
+                <p className="text-sm text-gray-700">You&apos;re doing great! No weak areas yet.</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Summary Row */}
@@ -425,7 +502,7 @@ export default function QuizPage() {
               <p className="text-gray-600">Segment being studied</p>
             </div>
             <span className="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-              {isProUser ? 'Mixed' : 'Easy'}
+              {isWeaknessMode ? 'Weak Areas' : isProUser ? 'Mixed' : 'Easy'}
             </span>
           </div>
         </div>

@@ -15,6 +15,13 @@ function shuffleArray<T>(array: T[]): T[] {
 
 let usedQuestionIds: string[] = [];
 
+export const segments = [
+  'genesis-1-3',
+  'genesis-4-6',
+  'genesis-7-9',
+  'genesis-10-11'
+];
+
 const mockQuestions: Question[] = [
   {
     id: '1',

@@ -6,6 +6,14 @@ import { signOut } from '@/lib/auth';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { isPro } from '@/lib/user';
+import { segments } from '@/lib/questions';
+
+const segmentLabels: Record<string, string> = {
+  'genesis-1-3': 'Genesis 1–3',
+  'genesis-4-6': 'Genesis 4–6',
+  'genesis-7-9': 'Genesis 7–9',
+  'genesis-10-11': 'Genesis 10–11'
+};
 
 export default function Dashboard() {
   const [streak, setStreak] = useState(0);
@@ -14,6 +22,7 @@ export default function Dashboard() {
   const [reviewCount] = useState(0);
   const [isProUser, setIsProUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
+  const [currentSegment, setCurrentSegment] = useState('genesis-1-3');
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -31,6 +40,31 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
+    const saved = localStorage.getItem('currentSegment');
+    if (saved) {
+      queueMicrotask(() => setCurrentSegment(saved));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!completedToday) return;
+
+    const today = new Date().toISOString().slice(0, 10);
+    const lastAdvancedDate = localStorage.getItem('journeyAdvancedDate');
+    if (lastAdvancedDate === today) return;
+
+    const currentIndex = segments.indexOf(currentSegment);
+    const next = segments[currentIndex + 1];
+
+    if (next) {
+      localStorage.setItem('currentSegment', next);
+      queueMicrotask(() => setCurrentSegment(next));
+    }
+
+    localStorage.setItem('journeyAdvancedDate', today);
+  }, [completedToday, currentSegment]);
+
+  useEffect(() => {
     async function checkPro() {
       const result = await isPro();
       setIsProUser(result);
@@ -42,6 +76,9 @@ export default function Dashboard() {
   const level = Math.floor(xp / 100) + 1;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
+  const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
+  const currentSegmentForQuiz = currentSegment.replace(/-/g, '_');
+  const journeyCurrentIndex = segments.indexOf(currentSegment);
 
   const handleLogout = async () => {
     await signOut();
@@ -99,10 +136,46 @@ export default function Dashboard() {
 
       {/* Daily Quiz */}
       <section className="space-y-4">
+        <h2 className="text-lg font-bold text-gray-900">Your Journey</h2>
+        <div className="overflow-x-auto">
+          <div className="flex min-w-max items-center gap-3 pb-1">
+            {segments.map((segment, index) => {
+              const completed = index < journeyCurrentIndex;
+              const current = index === journeyCurrentIndex;
+              const locked = index > journeyCurrentIndex;
+
+              const cardClass = completed
+                ? 'bg-green-600 text-white'
+                : current
+                  ? 'bg-blue-600 text-white scale-[1.03]'
+                  : 'bg-gray-200 text-gray-500';
+
+              return (
+                <div key={segment} className="flex items-center gap-3">
+                  <div
+                    className={`rounded-xl px-4 py-3 text-sm font-semibold whitespace-nowrap transition ${cardClass}`}
+                  >
+                    {completed && <span className="mr-2">✓</span>}
+                    {locked && <span className="mr-2">🔒</span>}
+                    {segmentLabels[segment]}
+                  </div>
+                  {index < segments.length - 1 && <span className="text-gray-400">→</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="space-y-4">
         <h2 className="text-lg font-bold text-gray-900">Daily Quiz</h2>
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <p className="text-sm font-semibold text-gray-900">Current Journey: {currentJourneyLabel}</p>
+        </div>
+
         {/* Today's Reading */}
         <a
-          href="https://www.biblegateway.com/passage/?search=Genesis+1-3"
+          href={`https://www.biblegateway.com/passage/?search=${encodeURIComponent(currentJourneyLabel)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="block"
@@ -113,7 +186,7 @@ export default function Dashboard() {
                 <span className="text-3xl mr-4">📖</span>
                 <div className="text-left">
                   <div className="text-lg font-semibold text-gray-900">Today&apos;s Reading</div>
-                  <div className="text-sm text-gray-600">Genesis 1–3</div>
+                  <div className="text-sm text-gray-600">{currentJourneyLabel}</div>
                   <div className="mt-1 text-xs text-gray-500">Read today&apos;s passage before taking your quiz</div>
                 </div>
               </div>
@@ -128,7 +201,7 @@ export default function Dashboard() {
         </a>
 
         {!completedToday ? (
-          <Link href={`/quiz?segment=genesis_1_3&difficulty=${isProUser ? 'mixed' : 'easy'}`}>
+          <Link href={`/quiz?segment=${currentSegmentForQuiz}&difficulty=${isProUser ? 'mixed' : 'easy'}`}>
             <button className="w-full rounded-xl bg-blue-700 p-5 text-white shadow-md transition hover:bg-blue-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
               <div className="flex items-center">
                 <span className="text-3xl mr-4">🧠</span>
