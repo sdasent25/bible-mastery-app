@@ -63,7 +63,14 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <footer className="text-sm text-gray-600 mt-10 pb-6 text-center">
+          <p>
+            © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
+          </p>
+        </footer>
+      </body>
     </html>
   );
 }
