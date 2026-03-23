@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { signOut } from '@/lib/auth';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { isPro } from '@/lib/user';
@@ -42,6 +43,11 @@ export default function Dashboard() {
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
 
+  const handleLogout = async () => {
+    await signOut();
+    window.location.href = '/login';
+  };
+
   // Determine streak message
   const getStreakMessage = () => {
     if (streak === 0) {
@@ -60,6 +66,14 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="mx-auto max-w-3xl space-y-7">
+      <div className="flex justify-end">
+        <button
+          onClick={handleLogout}
+          className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-semibold text-gray-900 shadow-sm transition hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          Log Out
+        </button>
+      </div>
       {/* Streak Banner */}
       <div className="rounded-xl bg-linear-to-r from-orange-500 to-red-600 p-5 text-white shadow-lg">
         <div className="flex items-center justify-center mb-3">
