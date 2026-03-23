@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
-import { isPro } from '@/lib/user';
+import { isPro, isProPlus } from '@/lib/user';
 
 type IncorrectItem = {
   question: Question;
@@ -34,7 +34,11 @@ export default function QuizPage() {
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [newLevel, setNewLevel] = useState<number | null>(null);
   const [isProUser, setIsProUser] = useState(false);
+  const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
+  const [isContinueTrainingMode, setIsContinueTrainingMode] = useState(false);
+  const [showContinueLocked, setShowContinueLocked] = useState(false);
+  const [quizSeed, setQuizSeed] = useState(0);
 
 
   useEffect(() => {
@@ -59,7 +63,9 @@ export default function QuizPage() {
   useEffect(() => {
     async function checkPro() {
       const result = await isPro();
+      const isProPlusUser = await isProPlus();
       setIsProUser(result);
+      setIsProPlusUser(isProPlusUser);
       setLoadingPro(false);
     }
     checkPro();
@@ -78,8 +84,13 @@ export default function QuizPage() {
       fetchedQuestions = getQuestions(segment, effectiveDifficulty).slice(0, 2);
     }
 
+    const startIndex = fetchedQuestions.length > 0 ? quizSeed % fetchedQuestions.length : 0;
+    const seededQuestions = fetchedQuestions.length > 0
+      ? [...fetchedQuestions.slice(startIndex), ...fetchedQuestions.slice(0, startIndex)]
+      : fetchedQuestions;
+
     // Shuffle answers for each question
-    return fetchedQuestions.map(q => {
+    return seededQuestions.map(q => {
       const shuffledOptions = shuffleArray(q.options);
       const newCorrectIndex = shuffledOptions.indexOf(q.options[q.correctIndex]);
       return {
@@ -88,7 +99,7 @@ export default function QuizPage() {
         correctIndex: newCorrectIndex
       };
     });
-  }, [paramsInitialized, segment, effectiveDifficulty, isProUser]);
+  }, [paramsInitialized, segment, effectiveDifficulty, isProUser, quizSeed]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -136,7 +147,7 @@ export default function QuizPage() {
   }
 
   // Check if user already completed today and not in review mode
-  if (completedToday && !isReviewMode) {
+  if (completedToday && !isReviewMode && !isContinueTrainingMode) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -288,6 +299,18 @@ export default function QuizPage() {
     setShowRetryPrompt(false);
   };
 
+  const handleContinueTraining = () => {
+    if (isProPlusUser) {
+      setIsContinueTrainingMode(true);
+      setShowContinueLocked(false);
+      setQuizSeed(prev => prev + 1);
+      resetQuiz();
+      return;
+    }
+
+    setShowContinueLocked(true);
+  };
+
   if (quizCompleted) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -315,6 +338,26 @@ export default function QuizPage() {
             >
               {isReviewMode ? 'Back to Quiz' : 'Retry Quiz'}
             </button>
+            {!isReviewMode && (
+              <>
+                <button
+                  onClick={handleContinueTraining}
+                  className="w-full bg-black text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                >
+                  Continue Training
+                </button>
+                {showContinueLocked && !isProPlusUser && (
+                  <div className="rounded-lg border border-gray-300 bg-gray-50 p-3 text-center">
+                    <p className="text-gray-900 mb-3">🔒 Continue Training is available on Pro+</p>
+                    <Link href="/upgrade" className="inline-block">
+                      <button className="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Upgrade to Pro+
+                      </button>
+                    </Link>
+                  </div>
+                )}
+              </>
+            )}
             {!isReviewMode && incorrectQuestions.length > 0 && (
               <button
                 onClick={startReview}
