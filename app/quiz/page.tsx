@@ -105,6 +105,18 @@ export default function QuizPage() {
   const totalQuestions = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
+  const handleContinueTraining = () => {
+    if (isProPlusUser) {
+      setIsContinueTrainingMode(true);
+      setShowContinueLocked(false);
+      setQuizSeed(prev => prev + 1);
+      resetQuiz();
+      return;
+    }
+
+    setShowContinueLocked(true);
+  };
+
   useEffect(() => {
     const markComplete = async () => {
       if (quizCompleted && !isReviewMode && !streakSaved) {
@@ -161,6 +173,23 @@ export default function QuizPage() {
             New questions unlock tomorrow 🔥
           </p>
           <div className="space-y-3">
+            {isProPlusUser ? (
+              <button
+                onClick={handleContinueTraining}
+                className="w-full bg-black text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Continue Training
+              </button>
+            ) : (
+              <div className="rounded-lg border border-gray-300 bg-gray-50 p-3 text-center">
+                <p className="text-gray-900 mb-3">🔒 Continue Training is available on Pro+</p>
+                <Link href="/upgrade" className="block">
+                  <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Upgrade to Pro+
+                  </button>
+                </Link>
+              </div>
+            )}
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={() => startReview()}
@@ -297,18 +326,6 @@ export default function QuizPage() {
   const handleTryAgain = () => {
     setSelectedAnswer(null);
     setShowRetryPrompt(false);
-  };
-
-  const handleContinueTraining = () => {
-    if (isProPlusUser) {
-      setIsContinueTrainingMode(true);
-      setShowContinueLocked(false);
-      setQuizSeed(prev => prev + 1);
-      resetQuiz();
-      return;
-    }
-
-    setShowContinueLocked(true);
   };
 
   if (quizCompleted) {
