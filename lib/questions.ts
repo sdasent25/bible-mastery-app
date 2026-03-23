@@ -13,6 +13,8 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
+let usedQuestionIds: string[] = [];
+
 const mockQuestions: Question[] = [
   {
     id: '1',
@@ -1518,11 +1520,28 @@ const mockQuestions: Question[] = [
   },
 ];
 
+function getAvailableQuestions(questions: Question[], needed: number): Question[] {
+  let availableQuestions = questions.filter(q => !usedQuestionIds.includes(q.id));
+
+  if (availableQuestions.length < needed) {
+    usedQuestionIds = [];
+    availableQuestions = questions;
+  }
+
+  return availableQuestions;
+}
+
+function recordUsedQuestions(questions: Question[]) {
+  const selectedIds = questions.map(q => q.id);
+  usedQuestionIds = [...new Set([...usedQuestionIds, ...selectedIds])];
+}
+
 function getMixedQuestions(segmentId: string): Question[] {
   const all = mockQuestions.filter(q => q.segmentId === segmentId);
-  const easy = all.filter(q => q.difficulty === 'easy');
-  const medium = all.filter(q => q.difficulty === 'medium');
-  const hard = all.filter(q => q.difficulty === 'hard');
+  const availableQuestions = getAvailableQuestions(all, 15);
+  const easy = availableQuestions.filter(q => q.difficulty === 'easy');
+  const medium = availableQuestions.filter(q => q.difficulty === 'medium');
+  const hard = availableQuestions.filter(q => q.difficulty === 'hard');
 
   const shuffledEasy = shuffleArray(easy).slice(0, 5);
   const shuffledMedium = shuffleArray(medium).slice(0, 5);
@@ -1532,13 +1551,16 @@ function getMixedQuestions(segmentId: string): Question[] {
 
   if (selected.length < 15) {
     const takenIds = new Set(selected.map(q => q.id));
-    const remaining = all.filter(q => !takenIds.has(q.id));
+    const remaining = availableQuestions.filter(q => !takenIds.has(q.id));
     const shuffledRemaining = shuffleArray(remaining);
     const needed = 15 - selected.length;
     selected = selected.concat(shuffledRemaining.slice(0, needed));
   }
 
-  return shuffleArray(selected);
+  const finalSelection = shuffleArray(selected);
+  recordUsedQuestions(finalSelection);
+
+  return finalSelection;
 }
 
 export function getQuestions(segmentId: string, difficulty: string): Question[] {
@@ -1552,10 +1574,13 @@ export function getQuestions(segmentId: string, difficulty: string): Question[] 
     return [];
   }
 
-  const byDifficulty = filtered.filter(q => q.difficulty === difficulty);
+  const availableQuestions = getAvailableQuestions(filtered, 5);
+  const byDifficulty = availableQuestions.filter(q => q.difficulty === difficulty);
 
   if (byDifficulty.length >= 5) {
-    return shuffleArray(byDifficulty).slice(0, 5);
+    const selected = shuffleArray(byDifficulty).slice(0, 5);
+    recordUsedQuestions(selected);
+    return selected;
   }
 
   // Fallback to other difficulties
@@ -1563,11 +1588,14 @@ export function getQuestions(segmentId: string, difficulty: string): Question[] 
   let additional: Question[] = [];
 
   for (const diff of otherDifficulties) {
-    const more = filtered.filter(q => q.difficulty === diff);
+    const more = availableQuestions.filter(q => q.difficulty === diff);
     additional = additional.concat(more);
     if (additional.length >= 5) break;
   }
 
   const combined = byDifficulty.concat(additional);
-  return shuffleArray(combined).slice(0, 5);
+  const selected = shuffleArray(combined).slice(0, 5);
+  recordUsedQuestions(selected);
+
+  return selected;
 }
