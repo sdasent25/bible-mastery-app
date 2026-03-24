@@ -7,11 +7,10 @@ import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
 import {
-  clearActiveProgram,
+  completeProgramSegment,
   getProgramProgress,
+  getResumeSegmentIndex,
   markProgramBonusAwarded,
-  markProgramSegmentComplete,
-  startProgram
 } from '@/lib/programProgress';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
@@ -82,10 +81,14 @@ export default function QuizPage() {
 
       const matchedProgram = getProgramById(programParam);
       if (matchedProgram) {
-        const matchedIndex = matchedProgram.segments.findIndex(
-          (programSegment) => toQuizSegmentId(programSegment.segment) === segmentParam
-        );
-        const safeIndex = matchedIndex >= 0 ? matchedIndex : 0;
+        const progress = await getProgramProgress(matchedProgram.id);
+
+        if (progress.completed) {
+          window.location.assign('/programs');
+          return;
+        }
+
+        const safeIndex = getResumeSegmentIndex(progress, matchedProgram.segments.length);
 
         setActiveProgramId(matchedProgram.id);
         setActiveProgramSegmentIndex(safeIndex);
@@ -172,6 +175,24 @@ export default function QuizPage() {
   const totalQuestions = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
+  const percentageScore = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+  let percentile = 50;
+  let percentileEmoji = '📖';
+
+  if (percentageScore >= 90) {
+    percentile = 90;
+    percentileEmoji = '🔥';
+  } else if (percentageScore >= 75) {
+    percentile = 75;
+    percentileEmoji = '💪';
+  } else if (percentageScore >= 60) {
+    percentile = 60;
+    percentileEmoji = '👍';
+  } else {
+    percentile = 40;
+    percentileEmoji = '📖';
+  }
+
   const handleContinueTraining = () => {
     if (isProPlusUser) {
       setIsTrainingMode(true);
@@ -254,18 +275,14 @@ export default function QuizPage() {
       }
 
       setProgramProgressSaved(true);
-      markProgramSegmentComplete(activeProgram.id, activeProgramSegmentIndex);
+      const nextProgress = await completeProgramSegment(activeProgram.id, activeProgram.segments.length);
 
       if (activeProgramSegmentIndex === activeProgram.segments.length - 1) {
-        const progress = getProgramProgress(activeProgram.id);
-
-        if (!progress.bonusAwarded) {
+        if (!nextProgress.bonusAwarded) {
           const updatedXp = await addXp(PROGRAM_COMPLETION_BONUS_XP);
           setTotalXp(updatedXp);
-          markProgramBonusAwarded(activeProgram.id);
+          await markProgramBonusAwarded(activeProgram.id);
         }
-
-        clearActiveProgram(activeProgram.id);
       }
     };
 
@@ -491,18 +508,20 @@ export default function QuizPage() {
     setShowRetryPrompt(false);
   };
 
-  const handleContinueProgram = () => {
+  const handleContinueProgram = async () => {
     if (!activeProgram || activeProgramSegmentIndex === null) {
       return;
     }
 
-    const nextSegment = activeProgram.segments[activeProgramSegmentIndex + 1];
-    if (!nextSegment) {
+    const progress = await getProgramProgress(activeProgram.id);
+    if (progress.completed) {
       window.location.assign('/programs');
       return;
     }
 
-    startProgram(activeProgram.id);
+    const resumeIndex = getResumeSegmentIndex(progress, activeProgram.segments.length);
+    const nextSegment = activeProgram.segments[resumeIndex];
+
     window.location.assign(`/quiz?program=${activeProgram.id}&segment=${toQuizSegmentId(nextSegment.segment)}`);
   };
 
@@ -530,6 +549,9 @@ export default function QuizPage() {
               <>
                 <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
                 <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
+                <p className="mt-3 text-xl font-semibold text-indigo-700">
+                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                </p>
                 {isFinalProgramSegment ? (
                   <p className="text-sm text-gray-600 mt-2">
                     You finished {activeProgram?.title} and earned {PROGRAM_COMPLETION_BONUS_XP} bonus XP.
@@ -542,12 +564,18 @@ export default function QuizPage() {
               <>
                 <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
                 <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
+                <p className="mt-3 text-xl font-semibold text-indigo-700">
+                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                </p>
                 <p className="text-sm text-gray-600 mt-2">You&apos;re building mastery with every session!</p>
               </>
             ) : (
               <>
                 <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
                 <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
+                <p className="mt-3 text-xl font-semibold text-indigo-700">
+                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                </p>
                 <p className="text-sm text-gray-600 mt-2">Great job! Keep studying to master more verses.</p>
               </>
             )}

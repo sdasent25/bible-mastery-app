@@ -1,121 +1,156 @@
-type ProgramProgress = {
-  completedSegmentIndexes: number[];
+import { supabase } from './supabase'
+
+export type ProgramProgress = {
+  programId: string;
+  currentSegmentIndex: number;
+  completed: boolean;
   bonusAwarded: boolean;
-};
-
-const ACTIVE_PROGRAM_KEY = 'active_program_id';
-
-function isBrowser() {
-  return typeof window !== 'undefined';
 }
 
-function getProgressKey(programId: string) {
-  return `program_progress_${programId}`;
+type ProgramProgressRow = {
+  program_id: string;
+  current_segment_index: number | null;
+  completed: boolean | null;
+  bonus_awarded: boolean | null;
 }
 
-function getDefaultProgress(): ProgramProgress {
+function getDefaultProgress(programId: string): ProgramProgress {
   return {
-    completedSegmentIndexes: [],
+    programId,
+    currentSegmentIndex: 0,
+    completed: false,
     bonusAwarded: false
-  };
-}
-
-export function getProgramProgress(programId: string): ProgramProgress {
-  if (!isBrowser()) {
-    return getDefaultProgress();
-  }
-
-  const stored = localStorage.getItem(getProgressKey(programId));
-  if (!stored) {
-    return getDefaultProgress();
-  }
-
-  try {
-    const parsed = JSON.parse(stored) as Partial<ProgramProgress>;
-    return {
-      completedSegmentIndexes: Array.isArray(parsed.completedSegmentIndexes)
-        ? parsed.completedSegmentIndexes.filter((value): value is number => typeof value === 'number')
-        : [],
-      bonusAwarded: parsed.bonusAwarded === true
-    };
-  } catch {
-    return getDefaultProgress();
   }
 }
 
-function saveProgramProgress(programId: string, progress: ProgramProgress) {
-  if (!isBrowser()) return;
+function mapRowToProgress(programId: string, row?: ProgramProgressRow | null): ProgramProgress {
+  if (!row) {
+    return getDefaultProgress(programId)
+  }
 
-  localStorage.setItem(getProgressKey(programId), JSON.stringify(progress));
-}
-
-export function startProgram(programId: string) {
-  if (!isBrowser()) return;
-
-  localStorage.setItem(ACTIVE_PROGRAM_KEY, programId);
-}
-
-export function getActiveProgramId(): string | null {
-  if (!isBrowser()) return null;
-
-  return localStorage.getItem(ACTIVE_PROGRAM_KEY);
-}
-
-export function clearActiveProgram(programId?: string) {
-  if (!isBrowser()) return;
-
-  const activeProgramId = getActiveProgramId();
-  if (!programId || activeProgramId === programId) {
-    localStorage.removeItem(ACTIVE_PROGRAM_KEY);
+  return {
+    programId,
+    currentSegmentIndex: typeof row.current_segment_index === 'number' ? row.current_segment_index : 0,
+    completed: row.completed === true,
+    bonusAwarded: row.bonus_awarded === true
   }
 }
 
-export function markProgramSegmentComplete(programId: string, segmentIndex: number) {
-  const progress = getProgramProgress(programId);
-  if (progress.completedSegmentIndexes.includes(segmentIndex)) {
-    return progress;
-  }
-
-  const nextProgress = {
-    ...progress,
-    completedSegmentIndexes: [...progress.completedSegmentIndexes, segmentIndex].sort((a, b) => a - b)
-  };
-
-  saveProgramProgress(programId, nextProgress);
-  return nextProgress;
+async function getCurrentUserId() {
+  const { data: { user } } = await supabase.auth.getUser()
+  return user?.id ?? null
 }
 
-export function getNextProgramSegmentIndex(programId: string, totalSegments: number): number | null {
-  const progress = getProgramProgress(programId);
-
-  for (let index = 0; index < totalSegments; index += 1) {
-    if (!progress.completedSegmentIndexes.includes(index)) {
-      return index;
-    }
+export async function getProgramProgress(programId: string): Promise<ProgramProgress> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return getDefaultProgress(programId)
   }
 
-  return null;
+  const { data, error } = await supabase
+    .from('program_progress')
+    .select('program_id, current_segment_index, completed, bonus_awarded')
+    .eq('user_id', userId)
+    .eq('program_id', programId)
+    .maybeSingle<ProgramProgressRow>()
+
+  if (error) {
+    console.error('Error loading program progress:', error)
+    return getDefaultProgress(programId)
+  }
+
+  return mapRowToProgress(programId, data)
 }
 
-export function markProgramBonusAwarded(programId: string) {
-  const progress = getProgramProgress(programId);
-  if (progress.bonusAwarded) {
-    return progress;
+export async function getProgramsProgress(programIds: string[]): Promise<Record<string, ProgramProgress>> {
+  const defaults = Object.fromEntries(programIds.map((programId) => [programId, getDefaultProgress(programId)]))
+  const userId = await getCurrentUserId()
+
+  if (!userId || programIds.length === 0) {
+    return defaults
   }
 
-  const nextProgress = {
-    ...progress,
+  const { data, error } = await supabase
+    .from('program_progress')
+    .select('program_id, current_segment_index, completed, bonus_awarded')
+    .eq('user_id', userId)
+    .in('program_id', programIds)
+
+  if (error) {
+    console.error('Error loading programs progress:', error)
+    return defaults
+  }
+
+  const mapped = { ...defaults }
+
+  for (const row of (data || []) as ProgramProgressRow[]) {
+    mapped[row.program_id] = mapRowToProgress(row.program_id, row)
+  }
+
+  return mapped
+}
+
+async function saveProgramProgress(programId: string, progress: Omit<ProgramProgress, 'programId'>) {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return getDefaultProgress(programId)
+  }
+
+  const payload = {
+    user_id: userId,
+    program_id: programId,
+    current_segment_index: progress.currentSegmentIndex,
+    completed: progress.completed,
+    bonus_awarded: progress.bonusAwarded
+  }
+
+  const { error } = await supabase
+    .from('program_progress')
+    .upsert(payload, { onConflict: 'user_id,program_id' })
+
+  if (error) {
+    console.error('Error saving program progress:', error)
+  }
+
+  return {
+    programId,
+    ...progress
+  }
+}
+
+export function getResumeSegmentIndex(progress: ProgramProgress, totalSegments: number) {
+  if (totalSegments <= 0) return 0
+  if (progress.completed) return totalSegments - 1
+
+  return Math.min(progress.currentSegmentIndex, totalSegments - 1)
+}
+
+export async function completeProgramSegment(programId: string, totalSegments: number) {
+  const existing = await getProgramProgress(programId)
+
+  if (existing.completed) {
+    return existing
+  }
+
+  const nextSegmentIndex = existing.currentSegmentIndex + 1
+  const completed = nextSegmentIndex >= totalSegments
+
+  return saveProgramProgress(programId, {
+    currentSegmentIndex: completed ? totalSegments : nextSegmentIndex,
+    completed,
+    bonusAwarded: existing.bonusAwarded
+  })
+}
+
+export async function markProgramBonusAwarded(programId: string) {
+  const existing = await getProgramProgress(programId)
+  if (existing.bonusAwarded) {
+    return existing
+  }
+
+  return saveProgramProgress(programId, {
+    currentSegmentIndex: existing.currentSegmentIndex,
+    completed: existing.completed,
     bonusAwarded: true
-  };
-
-  saveProgramProgress(programId, nextProgress);
-  return nextProgress;
-}
-
-export function getCompletedLevels(programId: string) {
-  return getProgramProgress(programId).completedSegmentIndexes;
-}
-
-export function completeLevel(programId: string, levelIndex: number) {
-  markProgramSegmentComplete(programId, levelIndex);
+  })
 }
