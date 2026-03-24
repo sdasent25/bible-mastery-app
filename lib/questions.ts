@@ -6,7 +6,7 @@ export type Question = {
   options: string[];
   correctIndex: number;
   explanation: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'easy' | 'medium' | 'hard' | 'scholar';
 };
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -774,6 +774,256 @@ const mockQuestions: Question[] = [
     correctIndex: 0,
     explanation: 'Genesis 2 states that God took one of Adam\'s ribs and made the woman.',
     difficulty: 'hard',
+  },
+  {
+    id: 's1',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:1-5',
+    question: 'In Genesis 1:3, what sequence of command and result is recorded?',
+    options: ['God said "Let there be light" then created stars', 'God said "Let there be light" then light appeared and was separated from darkness', 'God said "Let there be light" then made the sun', 'God said "Let there be light" then made the firmament'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:3-5 records God\'s spoken command, followed by the immediate result (light appeared), and then the separation of light from darkness.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's2',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:11-12',
+    question: 'What specific sequence does Genesis 1:11-12 describe about vegetation?',
+    options: ['Plants created without reproduction', 'Earth brought forth grass, seed-bearing plants, and fruit trees bearing fruit with seed', 'All plants created simultaneously', 'Vegetation grew from the firmament'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:11-12 emphasizes both the type of vegetation and their reproductive capacity (seed, fruit bearing seed), indicating ordered creation with continuity.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's3',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:26-27',
+    question: 'How do Genesis 1:26 and 1:27 distinguish between God\'s pronouncement and execution?',
+    options: ['Only God spoke, did not create', 'Genesis 1:26 records God\'s intent ("Let us make"), then 1:27 records the actual creation ("God created")', 'Both describe the same instant', 'The passages contradict'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:26 records God\'s decision and design, while 1:27 records the actual creation. This pattern shows purpose stated before execution.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's4',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:2-3',
+    question: 'What is the precise sequence of events on the seventh day in Genesis 2:2-3?',
+    options: ['God created more', 'God finished work, rested, then blessed and sanctified the day', 'God sanctified before resting', 'Sequence is unclear'],
+    correctIndex: 1,
+    explanation: 'Genesis 2:2-3 shows: (1) God completed His work, (2) rested, (3) blessed the day, (4) sanctified it. This is a specific temporal sequence.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's5',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:7',
+    question: 'How does Genesis 2:7 detail the creation of man differently than Genesis 1:26-27?',
+    options: ['Genesis 2 contradicts Genesis 1', 'Genesis 1 describes command and result, while Genesis 2:7 describes the method (formed from dust, breathed life)', 'They are identical', 'Genesis 2 is about different creation'],
+    correctIndex: 1,
+    explanation: 'Genesis 1 gives the design and command, while Genesis 2:7 provides material detail: formed from dust and breathed the breath of life.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's6',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:8-9',
+    question: 'What is the chronological relationship between God forming man and planting the garden?',
+    options: ['Garden planted after man', 'God planted garden before forming man, then placed man in it', 'Order undeterminable', 'Same time'],
+    correctIndex: 1,
+    explanation: 'Genesis 2:8 states God planted the garden, then 2:15 says He put man (already formed) in the garden. Garden preparation preceded placement.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's7',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:15',
+    question: 'What two verbs describe Adam\'s purpose in Genesis 2:15?',
+    options: ['Guard and rest', 'Worship and obey', 'Work (abad) and keep/guard (shamar)', 'Build and teach'],
+    correctIndex: 2,
+    explanation: 'Genesis 2:15 uses two Hebrew verbs: abad (work/serve) and shamar (keep/protect), describing active stewardship over the garden.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's8',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:16-17',
+    question: 'What detailed structure is given in God\'s command to Adam in Genesis 2:16-17?',
+    options: ['Simple prohibition', 'Permission to eat freely + specific prohibition + consequence (death)', 'Multiple conflicting commands', 'Command to name animals'],
+    correctIndex: 1,
+    explanation: 'Genesis 2:16-17 presents: (1) Positive permission, (2) Specific exception, (3) Consequence stated. A structured conditional command.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's9',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:21-22',
+    question: 'How does the creation of woman differ procedurally from the creation of man?',
+    options: ['Both formed from dust identically', 'Woman formed from rib taken while man slept, then brought to him', 'Woman created before man', 'No procedural difference'],
+    correctIndex: 1,
+    explanation: 'Man formed from dust (2:7), but woman involves: (1) deep sleep, (2) taking a rib, (3) fashioning from it, (4) bringing to man. Distinct procedure.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's10',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:1',
+    question: 'What is the first recorded action of the serpent in Genesis 3:1?',
+    options: ['Offering fruit directly', 'Questioning God\'s word by asking about prohibition', 'Attacking Adam', 'Complaining'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:1 records the serpent\'s first action as questioning: "Did God really say..." This is a fundamental challenge to God\'s word through doubt.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's11',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:4-5',
+    question: 'What is the precise nature of the serpent\'s deception in Genesis 3:4-5?',
+    options: ['Complete lie with no truth', 'Direct negation ("You will not die") + promise of knowledge/godhood', 'Offering food without mentioning death', 'Fruit would heal'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:4 records direct contradiction, 3:5 offers apparent benefit. This combines negation with attraction—sophisticated deception.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's12',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:6',
+    question: 'What is the sequence of events in Eve\'s response in Genesis 3:6?',
+    options: ['Ate and gave immediately', 'Saw good for food + saw pleasing to eye + saw desirable for wisdom + took + ate + gave to Adam', 'Refused and told Adam', 'Asked God first'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:6 details multiple observations before action: appetite, aesthetics, intellect, then action follows. A psychological progression.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's13',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:8-10',
+    question: 'What sequence of events is recorded in Genesis 3:8-10 after the fall?',
+    options: ['Immediate judgment', 'Heard God walking + hid + God called + Adam responded with confession', 'Confessed immediately', 'Fled garden'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:8-10: (1) hearing God\'s presence, (2) hiding, (3) God\'s call, (4) Adam\'s confession. Awareness precedes judgment.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's14',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:14-15',
+    question: 'What is the sequence and pronouncement in God\'s curse on the serpent?',
+    options: ['Simple death sentence', 'Curse (crawl, eat dust) + enmity declaration + offspring conflict detail', 'Loss of speech only', 'Imprisonment'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:14-15 shows: (1) curse to serpent, (2) enmity established, (3) specific ongoing antagonism between offspring. Multi-layered judgment.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's15',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:16',
+    question: 'What are the two-fold consequences stated for the woman in Genesis 3:16?',
+    options: ['Death only', 'Pain in childbearing + rule/struggle with husband', 'Expulsion only', 'Loss of speech'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:16 specifies: (1) multiplication of pain in childbearing, (2) relationship dynamics with husband. Two relational consequences.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's16',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:17-19',
+    question: 'What is the temporal and causal structure of the curse on Adam?',
+    options: ['Immediate death', 'Because he listened to wife + ground cursed + toil required + return to dust. Shows cause, condition, consequence, and ultimate end', 'Only loss of garden', 'No consequence'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:17-19 shows: (1) causal link to disobedience, (2) ground cursed, (3) ongoing labor, (4) return to dust. A complete arc from sin to judgment.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's17',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:21',
+    question: 'How does Genesis 3:21 differ from Genesis 3:7 regarding coverings?',
+    options: ['They are the same', 'Genesis 3:7 shows human effort (fig leaves), Genesis 3:21 shows God\'s provision (skin garments)', 'Only one is historical', 'The passages contradict'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:7 shows human effort, 3:21 shows God\'s provision. This progression suggests a substitute/covering principle—inadequate human effort replaced by God\'s provision.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's18',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:22-24',
+    question: 'What is the sequence of actions in God\'s response to the fall?',
+    options: ['Immediate execution', 'Recognizes transgression + drives out + places cherubim and sword to guard tree of life', 'Forgiveness without consequence', 'Reconciliation'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:22-24: (1) acknowledges man has knowledge, (2) expulsion from garden, (3) supernatural guardianship placed. Strategic responses to the transgression.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's19',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:27 and 2:18-22',
+    question: 'How is the creation of male and female presented differently in Genesis 1:27 versus Genesis 2:18-22?',
+    options: ['Completely different creations', 'Genesis 1:27 states simultaneous creation in image; Genesis 2 provides procedural detail about isolation, naming, and bone-relation', 'Identical descriptions', 'Genesis 2 contradicts Genesis 1'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:27 presents simultaneous creation in God\'s image. Genesis 2:18-22 reveals process: isolation, naming role, woman\'s creation from man\'s substance. Complementary levels of detail.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's20',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:1 and 3:4-5',
+    question: 'What rhetorical progression is used in the serpent\'s temptation?',
+    options: ['Direct offer', 'Doubt-creating question (3:1) + negation of consequence (3:4) + promise of benefit (3:5)', 'Accusation', 'Threat'],
+    correctIndex: 1,
+    explanation: 'The serpent\'s strategy: (1) sow doubt about God\'s word, (2) contradict threatened consequence, (3) reframe prohibition as withholding benefit. Sophisticated progression.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's21',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:2-3 and Genesis 3:21',
+    question: 'What theological pattern appears when comparing God\'s action on the seventh day with God\'s action after the fall?',
+    options: ['No connection', 'Both show God\'s provision: rest/sanctification initially, then covering after fall', 'Passages unrelated', 'Contradictory theology'],
+    correctIndex: 1,
+    explanation: 'Genesis 2:2-3 shows God providing rest and blessing. Genesis 3:21 shows God providing covering after sin. Both demonstrate God\'s proactive provision despite circumstances.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's22',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:1-5',
+    question: 'What linguistic pattern is established in Genesis 1:1-5 regarding creation and evaluation?',
+    options: ['No pattern', 'Command ("Let there be...") → Result → Evaluation ("was good") → Naming → Timeline', 'Random order', 'Only one formula'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:1-5 establishes a consistent verbal pattern: speech, execution, evaluation, and temporal marking. This pattern repeats throughout creation week.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's23',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 2:4-7',
+    question: 'How does the heading in Genesis 2:4 introduce details about the creation process in 2:5-7?',
+    options: ['Provides no context', 'Genesis 2:4 marks a section, then 2:5-7 explains conditions (no plants until rain) and mechanism (breathing life into dust)', 'Chronological reversal', 'Contradictory accounts'],
+    correctIndex: 1,
+    explanation: 'Genesis 2:4 serves as a transitional heading into a detailed, sequential account. While Genesis 1 shows commands, Genesis 2:5-7 shows conditions and mechanisms.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's24',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 3:6 and 3:12-13',
+    question: 'What shift in responsibility occurs comparing Genesis 3:6 with the responses in 3:12-13?',
+    options: ['No shift', 'Genesis 3:6 shows both choosing, but 3:12-13 shows Adam deflecting to woman and God, woman to serpent', 'They are consistent', 'No pattern observable'],
+    correctIndex: 1,
+    explanation: 'Genesis 3:6 presents shared, volitional action. When confronted, both attempt to shift responsibility—showing human tendency to evade accountability after sin.',
+    difficulty: 'scholar',
+  },
+  {
+    id: 's25',
+    segmentId: 'genesis_1_3',
+    reference: 'Genesis 1:31 and Genesis 3:17-19',
+    question: 'How do the evaluations in Genesis 1:31 and Genesis 3:17-19 contrast in their view of creation?',
+    options: ['No contrast', 'Genesis 1:31 shows "very good" harmony, Genesis 3:17-19 shows cursed ground and toil. Dramatic theological reversal due to sin', 'Describe the same state', 'Genesis 3 is invented'],
+    correctIndex: 1,
+    explanation: 'Genesis 1:31 celebrates complete creation as "very good"—harmony and order. Genesis 3:17-19 shows ground producing thorns through toil. Dramatic reversal due to transgression.',
+    difficulty: 'scholar',
   },
   {
     id: '76',
@@ -1570,9 +1820,38 @@ function getMixedQuestions(segmentId: string): Question[] {
   return finalSelection;
 }
 
-export function getQuestions(segmentId: string, difficulty: string): Question[] {
+function getMixedQuestionsProPlus(segmentId: string): Question[] {
+  const all = mockQuestions.filter(q => q.segmentId === segmentId);
+  const availableQuestions = getAvailableQuestions(all, 15);
+  const easy = availableQuestions.filter(q => q.difficulty === 'easy');
+  const medium = availableQuestions.filter(q => q.difficulty === 'medium');
+  const hard = availableQuestions.filter(q => q.difficulty === 'hard');
+  const scholar = availableQuestions.filter(q => q.difficulty === 'scholar');
+
+  const shuffledEasy = shuffleArray(easy).slice(0, 3);
+  const shuffledMedium = shuffleArray(medium).slice(0, 3);
+  const shuffledHard = shuffleArray(hard).slice(0, 4);
+  const shuffledScholar = shuffleArray(scholar).slice(0, 5);
+
+  let selected = [...shuffledEasy, ...shuffledMedium, ...shuffledHard, ...shuffledScholar];
+
+  if (selected.length < 15) {
+    const takenIds = new Set(selected.map(q => q.id));
+    const remaining = availableQuestions.filter(q => !takenIds.has(q.id));
+    const shuffledRemaining = shuffleArray(remaining);
+    const needed = 15 - selected.length;
+    selected = selected.concat(shuffledRemaining.slice(0, needed));
+  }
+
+  const finalSelection = shuffleArray(selected);
+  recordUsedQuestions(finalSelection);
+
+  return finalSelection;
+}
+
+export function getQuestions(segmentId: string, difficulty: string, isProPlus: boolean = false): Question[] {
   if (difficulty === 'mixed') {
-    return getMixedQuestions(segmentId);
+    return isProPlus ? getMixedQuestionsProPlus(segmentId) : getMixedQuestions(segmentId);
   }
 
   const filtered = mockQuestions.filter(q => q.segmentId === segmentId);

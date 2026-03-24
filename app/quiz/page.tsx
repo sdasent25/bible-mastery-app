@@ -75,17 +75,17 @@ export default function QuizPage() {
     checkPro();
   }, []);
 
-  const effectiveDifficulty = isProUser ? "mixed" : "easy";
-
   const questions = useMemo(() => {
     if (!paramsInitialized) return [] as Question[];
 
     let fetchedQuestions: Question[];
 
-    if (isProUser) {
-      fetchedQuestions = getQuestions(segment, 'mixed').slice(0, 15);
+    if (isProPlusUser) {
+      fetchedQuestions = getQuestions(segment, 'mixed', true).slice(0, 15);
+    } else if (isProUser) {
+      fetchedQuestions = getQuestions(segment, 'mixed', false).slice(0, 15);
     } else {
-      fetchedQuestions = getQuestions(segment, effectiveDifficulty).slice(0, 2);
+      fetchedQuestions = getQuestions(segment, 'easy').slice(0, 2);
     }
 
     const startIndex = fetchedQuestions.length > 0 ? quizSeed % fetchedQuestions.length : 0;
@@ -103,7 +103,7 @@ export default function QuizPage() {
         correctIndex: newCorrectIndex
       };
     });
-  }, [paramsInitialized, segment, effectiveDifficulty, isProUser, quizSeed]);
+  }, [paramsInitialized, segment, isProUser, isProPlusUser, quizSeed]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -501,8 +501,12 @@ export default function QuizPage() {
               </h2>
               <p className="text-gray-600">Segment being studied</p>
             </div>
-            <span className="px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
-              {isWeaknessMode ? 'Weak Areas' : isProUser ? 'Mixed' : 'Easy'}
+            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
+              currentQuestion?.difficulty === 'scholar'
+                ? 'bg-yellow-500 text-gray-900'
+                : isWeaknessMode ? 'bg-indigo-100 text-indigo-800' : isProPlusUser ? 'bg-purple-100 text-purple-800' : isProUser ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+            }`}>
+              {currentQuestion?.difficulty === 'scholar' ? '🏆 Scholar' : isWeaknessMode ? 'Weak Areas' : isProPlusUser ? 'Pro+ Mixed' : isProUser ? 'Mixed' : 'Easy'}
             </span>
           </div>
         </div>
@@ -518,8 +522,21 @@ export default function QuizPage() {
         </div>
 
         {/* Question Card */}
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-          <h3 className="text-xl leading-relaxed font-semibold text-gray-900 mb-6">{currentQuestion.question}</h3>
+        <div className={`rounded-lg shadow-md p-6 mb-6 ${
+          currentQuestion.difficulty === 'scholar'
+            ? 'bg-gray-900 border-2 border-yellow-500'
+            : 'bg-white'
+        }`}>
+          {currentQuestion.difficulty === 'scholar' && (
+            <div className="mb-4 px-3 py-2 rounded-lg bg-yellow-500 bg-opacity-20 border border-yellow-500">
+              <p className="text-yellow-400 font-bold text-center text-sm tracking-wider">🏆 SCHOLAR MODE</p>
+            </div>
+          )}
+          <h3 className={`text-xl leading-relaxed font-semibold mb-6 ${
+            currentQuestion.difficulty === 'scholar'
+              ? 'text-white'
+              : 'text-gray-900'
+          }`}>{currentQuestion.question}</h3>
 
           {isReviewMode && currentIncorrectItem && (
             <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800">
@@ -529,19 +546,41 @@ export default function QuizPage() {
 
           <div className="space-y-4">
             {currentQuestion.options.map((answer, index) => {
-              let buttonClass = 'w-full text-left py-4 px-4 rounded-lg border-2 transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-14 ';
+              let buttonClass = 'w-full text-left py-4 px-4 rounded-lg border-2 transition-all focus:outline-none focus:ring-2 min-h-14 ';
               let label = '';
 
-              if (selectedAnswer === null) {
-                buttonClass += 'bg-white text-gray-900 border-gray-300 hover:bg-gray-100';
-              } else if (index === currentQuestion.correctIndex) {
-                buttonClass += 'bg-green-100 text-green-900 border-green-700';
-                label = 'Correct';
-              } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
-                buttonClass += 'bg-red-100 text-red-900 border-red-700';
-                label = 'Incorrect';
+              if (currentQuestion.difficulty === 'scholar') {
+                // Scholar mode styling
+                if (selectedAnswer === null) {
+                  buttonClass += 'bg-gray-800 text-white border-yellow-500 hover:bg-gray-700';
+                } else if (index === currentQuestion.correctIndex) {
+                  buttonClass += 'bg-green-900 text-green-100 border-green-500';
+                  label = 'Correct';
+                } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
+                  buttonClass += 'bg-red-900 text-red-100 border-red-500';
+                  label = 'Incorrect';
+                } else {
+                  buttonClass += 'bg-gray-800 text-white border-gray-600';
+                }
+                if (selectedAnswer !== null) {
+                  buttonClass += ' focus:ring-yellow-500';
+                }
               } else {
-                buttonClass += 'bg-white text-gray-900 border-gray-300';
+                // Regular mode styling
+                if (selectedAnswer === null) {
+                  buttonClass += 'bg-white text-gray-900 border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500';
+                } else if (index === currentQuestion.correctIndex) {
+                  buttonClass += 'bg-green-100 text-green-900 border-green-700';
+                  label = 'Correct';
+                } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
+                  buttonClass += 'bg-red-100 text-red-900 border-red-700';
+                  label = 'Incorrect';
+                } else {
+                  buttonClass += 'bg-white text-gray-900 border-gray-300';
+                }
+                if (selectedAnswer !== null) {
+                  buttonClass += ' focus:ring-2 focus:ring-blue-500';
+                }
               }
 
               if (selectedAnswer !== null && index === selectedAnswer && index !== currentQuestion.correctIndex) {
@@ -566,14 +605,22 @@ export default function QuizPage() {
           </div>
 
           {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg text-gray-700">
+            <div className={`mt-4 p-3 rounded-lg ${
+              currentQuestion.difficulty === 'scholar'
+                ? 'bg-gray-800 border border-yellow-500 text-yellow-100'
+                : 'bg-gray-50 text-gray-700'
+            }`}>
               <p>{currentQuestion.explanation}</p>
             </div>
           )}
 
           {selectedAnswer !== null && (
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-              <p className="text-gray-700">{currentQuestion.explanation}</p>
+            <div className={`mt-4 p-3 rounded-lg ${
+              currentQuestion.difficulty === 'scholar'
+                ? 'bg-gray-800 border border-yellow-500 text-yellow-100'
+                : 'bg-gray-50 text-gray-700'
+            }`}>
+              <p>{currentQuestion.explanation}</p>
             </div>
           )}
 
