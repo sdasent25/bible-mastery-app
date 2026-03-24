@@ -255,13 +255,31 @@ export default function Dashboard() {
         </Link>
       </section>
 
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Weekly Leaderboard</h2>
+          <p className="mt-1 text-sm text-gray-600">See who is leading this week and where you rank.</p>
+        </div>
+        <Link href="/leaderboard">
+          <button className="w-full rounded-xl bg-emerald-600 p-4 text-white shadow-md transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <div className="flex items-center">
+              <span className="mr-4 text-3xl">🏅</span>
+              <div className="text-left">
+                <div className="text-lg font-bold">View Rankings</div>
+                <div className="text-sm text-emerald-100">Top 50 for the current week</div>
+              </div>
+            </div>
+          </button>
+        </Link>
+      </section>
+
       {/* Scholar Mode - Pro+ Exclusive */}
       {isProPlusUser && (
-        <section className="rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 p-5 shadow-md">
+        <section className="rounded-xl bg-linear-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 p-5 shadow-md">
           <h2 className="text-lg font-bold text-gray-900">🏆 Scholar Mode</h2>
           <p className="mt-1 text-sm text-gray-600">Train anywhere. Master every part of scripture.</p>
           <Link href="/quiz?mode=scholar">
-            <button className="mt-4 w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 p-4 text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <button className="mt-4 w-full rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 p-4 text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
               <div className="flex items-center">
                 <span className="text-3xl mr-4">⭐</span>
                 <div className="text-left">
