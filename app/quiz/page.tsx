@@ -42,6 +42,7 @@ export default function QuizPage() {
   const [isWeaknessMode, setIsWeaknessMode] = useState(false);
   const [weakQuestions, setWeakQuestions] = useState<Question[]>([]);
   const [noWeakAreasMessage, setNoWeakAreasMessage] = useState(false);
+  const [mode, setMode] = useState<'normal' | 'training' | 'scholar'>('normal');
 
 
   useEffect(() => {
@@ -49,6 +50,12 @@ export default function QuizPage() {
       const search = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(search);
       const segmentParam = params.get('segment') || 'genesis_1_3';
+      const modeParam = params.get('mode') as 'scholar' | null;
+      
+      if (modeParam === 'scholar') {
+        setMode('scholar');
+      }
+      
       setSegment(segmentParam);
 
       const completed = await hasCompletedToday();
@@ -69,16 +76,31 @@ export default function QuizPage() {
       setIsProUser(isPro);
       setIsProPlusUser(isProPlus);
       setLoadingPro(false);
+
+      // Block non-Pro+ users from Scholar Mode
+      if (mode === 'scholar' && !isProPlus) {
+        window.location.assign('/upgrade');
+      }
     }
     checkPro();
-  }, []);
+  }, [mode]);
 
   const questions = useMemo(() => {
     if (!paramsInitialized) return [] as Question[];
 
     let fetchedQuestions: Question[];
 
-    if (isProPlusUser) {
+    if (mode === 'scholar') {
+      // Scholar Mode: Load questions from all segments at hard difficulty
+      const allSegments = ['genesis_1_3', 'genesis_4_6', 'genesis_7_9', 'genesis_10_11'];
+      let combinedQuestions: Question[] = [];
+      
+      for (const seg of allSegments) {
+        combinedQuestions = combinedQuestions.concat(getQuestions(seg, 'hard'));
+      }
+      
+      fetchedQuestions = combinedQuestions.slice(0, 15);
+    } else if (isProPlusUser) {
       fetchedQuestions = getQuestions(segment, 'mixed', true).slice(0, 15);
     } else if (isProUser) {
       fetchedQuestions = getQuestions(segment, 'mixed', false).slice(0, 15);
@@ -101,7 +123,7 @@ export default function QuizPage() {
         correctIndex: newCorrectIndex
       };
     });
-  }, [paramsInitialized, segment, isProUser, isProPlusUser, quizSeed]);
+  }, [paramsInitialized, segment, isProUser, isProPlusUser, quizSeed, mode]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -206,8 +228,8 @@ export default function QuizPage() {
     );
   }
 
-  // Check if user already completed today and not in review mode
-  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode) {
+  // Check if user already completed today and not in review or scholar mode
+  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && mode !== 'scholar') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -476,8 +498,13 @@ export default function QuizPage() {
               Training Mode
             </div>
           )}
+          {!isReviewMode && mode === 'scholar' && (
+            <div className="mb-2 inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
+              Scholar Mode
+            </div>
+          )}
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {isReviewMode ? 'Review Mode' : isTrainingMode ? 'Training Session' : 'Bible Quiz'}
+            {isReviewMode ? 'Review Mode' : mode === 'scholar' ? 'Master Training' : isTrainingMode ? 'Training Session' : 'Bible Quiz'}
           </h1>
           <p className="text-gray-600">
             {isReviewMode
@@ -510,16 +537,16 @@ export default function QuizPage() {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-800">
-                {activeQuestions[0]?.reference || 'Unknown Segment'}
+                {mode === 'scholar' ? 'All Segments' : activeQuestions[0]?.reference || 'Unknown Segment'}
               </h2>
-              <p className="text-gray-600">Segment being studied</p>
+              <p className="text-gray-600">{mode === 'scholar' ? 'Scholar training across scripture' : 'Segment being studied'}</p>
             </div>
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-              currentQuestion?.difficulty === 'scholar'
+              mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
                 ? 'bg-yellow-500 text-gray-900'
                 : isWeaknessMode ? 'bg-indigo-100 text-indigo-800' : isProPlusUser ? 'bg-purple-100 text-purple-800' : isProUser ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
             }`}>
-              {currentQuestion?.difficulty === 'scholar' ? '🏆 Scholar' : isWeaknessMode ? 'Weak Areas' : isProPlusUser ? 'Pro+ Mixed' : isProUser ? 'Mixed' : 'Easy'}
+              {mode === 'scholar' || currentQuestion?.difficulty === 'scholar' ? '🏆 Scholar' : isWeaknessMode ? 'Weak Areas' : isProPlusUser ? 'Pro+ Mixed' : isProUser ? 'Mixed' : 'Easy'}
             </span>
           </div>
         </div>

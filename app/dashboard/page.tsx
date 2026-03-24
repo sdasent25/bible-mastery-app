@@ -28,6 +28,7 @@ export default function Dashboard() {
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
   const [isProUser, setIsProUser] = useState(false);
+  const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
   const [currentSegment, setCurrentSegment] = useState('genesis-1-3');
 
@@ -73,8 +74,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function checkPro() {
-      const { isPro } = await getSubscriptionStatus();
+      const { isPro, isProPlus } = await getSubscriptionStatus();
       setIsProUser(isPro);
+      setIsProPlusUser(isProPlus);
       setLoadingPro(false);
     }
     checkPro();
@@ -234,6 +236,25 @@ export default function Dashboard() {
           </button>
         )}
       </section>
+
+      {/* Scholar Mode - Pro+ Exclusive */}
+      {isProPlusUser && (
+        <section className="rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 p-5 shadow-md">
+          <h2 className="text-lg font-bold text-gray-900">🏆 Scholar Mode</h2>
+          <p className="mt-1 text-sm text-gray-600">Train anywhere. Master every part of scripture.</p>
+          <Link href="/quiz?mode=scholar">
+            <button className="mt-4 w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 p-4 text-white shadow-md transition hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <div className="flex items-center">
+                <span className="text-3xl mr-4">⭐</span>
+                <div className="text-left">
+                  <div className="text-lg font-bold">Enter Scholar Mode</div>
+                  <div className="text-sm text-purple-100">Questions from all segments at maximum difficulty</div>
+                </div>
+              </div>
+            </button>
+          </Link>
+        </section>
+      )}
 
       {/* Review */}
       <section className="space-y-4">
