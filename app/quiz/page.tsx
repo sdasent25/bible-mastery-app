@@ -37,7 +37,7 @@ export default function QuizPage() {
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
-  const [isContinueTrainingMode, setIsContinueTrainingMode] = useState(false);
+  const [isTrainingMode, setIsTrainingMode] = useState(false);
   const [quizSeed, setQuizSeed] = useState(0);
   const [isWeaknessMode, setIsWeaknessMode] = useState(false);
   const [weakQuestions, setWeakQuestions] = useState<Question[]>([]);
@@ -109,7 +109,7 @@ export default function QuizPage() {
 
   const handleContinueTraining = () => {
     if (isProPlusUser) {
-      setIsContinueTrainingMode(true);
+      setIsTrainingMode(true);
       setQuizSeed(prev => prev + 1);
       resetQuiz();
       return;
@@ -154,7 +154,7 @@ export default function QuizPage() {
     }
 
     setNoWeakAreasMessage(false);
-    setIsContinueTrainingMode(false);
+    setIsTrainingMode(false);
     setIsWeaknessMode(true);
     setWeakQuestions(weakSet);
     setCurrentQuestionIndex(0);
@@ -167,14 +167,14 @@ export default function QuizPage() {
 
   useEffect(() => {
     const markComplete = async () => {
-      if (quizCompleted && !isReviewMode && !streakSaved) {
+      if (quizCompleted && !isReviewMode && !streakSaved && !isTrainingMode) {
         await completeToday();
         setStreakSaved(true);
       }
     };
 
     markComplete();
-  }, [quizCompleted, isReviewMode, streakSaved]);
+  }, [quizCompleted, isReviewMode, streakSaved, isTrainingMode]);
 
   if (loadingPro) {
     return <div className="p-6 text-black">Loading...</div>;
@@ -207,7 +207,7 @@ export default function QuizPage() {
   }
 
   // Check if user already completed today and not in review mode
-  if (completedToday && !isReviewMode && !isContinueTrainingMode && !isWeaknessMode) {
+  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -372,6 +372,11 @@ export default function QuizPage() {
     setIsWeaknessMode(false);
     setWeakQuestions([]);
     setNoWeakAreasMessage(false);
+
+    // In training mode we loop sessions without touching daily streak flow.
+    if (isTrainingMode) {
+      setStreakSaved(true);
+    }
   };
 
   const startReview = () => {
@@ -455,6 +460,11 @@ export default function QuizPage() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-6">
+          {!isReviewMode && isTrainingMode && (
+            <div className="mb-2 inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-800">
+              Training Mode
+            </div>
+          )}
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             {isReviewMode ? 'Review Mode' : 'Bible Quiz'}
           </h1>
