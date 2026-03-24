@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { signOut } from '@/lib/auth';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
-import { isPro } from '@/lib/user';
+import { getSubscriptionStatus } from '@/lib/user';
 import { segments } from '@/lib/questions';
 
 const segmentLabels: Record<string, string> = {
@@ -73,8 +73,8 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function checkPro() {
-      const result = await isPro();
-      setIsProUser(result);
+      const { isPro } = await getSubscriptionStatus();
+      setIsProUser(isPro);
       setLoadingPro(false);
     }
     checkPro();

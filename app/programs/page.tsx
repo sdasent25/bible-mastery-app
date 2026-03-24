@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { programs } from '@/lib/programs';
-import { isProPlus } from '@/lib/user';
+import { getSubscriptionStatus } from '@/lib/user';
 import { getCompletedLevels, completeLevel } from '@/lib/programProgress';
 
 function formatSegmentLabel(segment: string) {
@@ -22,8 +22,8 @@ export default function ProgramsPage() {
 
   useEffect(() => {
     async function checkAccess() {
-      const result = await isProPlus();
-      setHasAccess(result);
+      const { isProPlus } = await getSubscriptionStatus();
+      setHasAccess(isProPlus);
     }
 
     checkAccess();

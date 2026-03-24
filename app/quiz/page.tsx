@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
-import { isPro, isProPlus } from '@/lib/user';
+import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 
 type IncorrectItem = {
@@ -66,10 +66,9 @@ export default function QuizPage() {
 
   useEffect(() => {
     async function checkPro() {
-      const result = await isPro();
-      const isProPlusUser = await isProPlus();
-      setIsProUser(result);
-      setIsProPlusUser(isProPlusUser);
+      const { isPro, isProPlus } = await getSubscriptionStatus();
+      setIsProUser(isPro);
+      setIsProPlusUser(isProPlus);
       setLoadingPro(false);
     }
     checkPro();
