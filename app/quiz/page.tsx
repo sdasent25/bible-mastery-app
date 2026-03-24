@@ -38,7 +38,6 @@ export default function QuizPage() {
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
   const [isContinueTrainingMode, setIsContinueTrainingMode] = useState(false);
-  const [showContinueLocked, setShowContinueLocked] = useState(false);
   const [quizSeed, setQuizSeed] = useState(0);
   const [isWeaknessMode, setIsWeaknessMode] = useState(false);
   const [weakQuestions, setWeakQuestions] = useState<Question[]>([]);
@@ -111,13 +110,12 @@ export default function QuizPage() {
   const handleContinueTraining = () => {
     if (isProPlusUser) {
       setIsContinueTrainingMode(true);
-      setShowContinueLocked(false);
       setQuizSeed(prev => prev + 1);
       resetQuiz();
       return;
     }
 
-    setShowContinueLocked(true);
+    window.location.assign('/upgrade');
   };
 
   const buildWeakQuestionSet = (ids: string[]) => {
@@ -420,22 +418,17 @@ export default function QuizPage() {
             </button>
             {!isReviewMode && (
               <>
+                <p className="text-center text-sm text-gray-600">Keep training and master scripture</p>
                 <button
                   onClick={handleContinueTraining}
-                  className="w-full bg-black text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className={`w-full py-3 px-4 rounded-lg font-semibold focus:outline-none focus:ring-2 ${
+                    isProPlusUser
+                      ? 'bg-black text-white hover:bg-gray-900 focus:ring-gray-500'
+                      : 'bg-gray-200 text-gray-700 border border-gray-300 hover:bg-gray-300 focus:ring-gray-400'
+                  }`}
                 >
-                  Continue Training
+                  {isProPlusUser ? 'Continue Training' : '🔒 Continue Training'}
                 </button>
-                {showContinueLocked && !isProPlusUser && (
-                  <div className="rounded-lg border border-gray-300 bg-gray-50 p-3 text-center">
-                    <p className="text-gray-900 mb-3">🔒 Continue Training is available on Pro+</p>
-                    <Link href="/upgrade" className="inline-block">
-                      <button className="bg-blue-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Upgrade to Pro+
-                      </button>
-                    </Link>
-                  </div>
-                )}
               </>
             )}
             {!isReviewMode && incorrectQuestions.length > 0 && (
