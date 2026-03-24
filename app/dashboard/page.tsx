@@ -237,6 +237,24 @@ export default function Dashboard() {
         )}
       </section>
 
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Training Programs</h2>
+          <p className="mt-1 text-sm text-gray-600">Follow guided paths that walk you through scripture step by step.</p>
+        </div>
+        <Link href={isProUser ? '/programs' : '/upgrade'}>
+          <button className="w-full rounded-xl bg-slate-900 p-4 text-white shadow-md transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500">
+            <div className="flex items-center">
+              <span className="mr-4 text-3xl">🗺️</span>
+              <div className="text-left">
+                <div className="text-lg font-bold">View Programs</div>
+                <div className="text-sm text-slate-200">Structured learning for Pro and Pro+</div>
+              </div>
+            </div>
+          </button>
+        </Link>
+      </section>
+
       {/* Scholar Mode - Pro+ Exclusive */}
       {isProPlusUser && (
         <section className="rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 p-5 shadow-md">

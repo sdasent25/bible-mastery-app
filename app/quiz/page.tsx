@@ -5,6 +5,14 @@ import Link from 'next/link';
 import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
+import { getProgramById, toQuizSegmentId } from '@/lib/programs';
+import {
+  clearActiveProgram,
+  getProgramProgress,
+  markProgramBonusAwarded,
+  markProgramSegmentComplete,
+  startProgram
+} from '@/lib/programProgress';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 
@@ -12,6 +20,8 @@ type IncorrectItem = {
   question: Question;
   userAnswer: string;
 };
+
+const PROGRAM_COMPLETION_BONUS_XP = 50;
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -43,20 +53,46 @@ export default function QuizPage() {
   const [weakQuestions, setWeakQuestions] = useState<Question[]>([]);
   const [noWeakAreasMessage, setNoWeakAreasMessage] = useState(false);
   const [mode, setMode] = useState<'normal' | 'training' | 'scholar'>('normal');
+  const [activeProgramId, setActiveProgramId] = useState<string | null>(null);
+  const [activeProgramSegmentIndex, setActiveProgramSegmentIndex] = useState<number | null>(null);
+  const [programProgressSaved, setProgramProgressSaved] = useState(false);
 
+  const activeProgram = getProgramById(activeProgramId);
+  const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
+  const isFinalProgramSegment = Boolean(
+    activeProgram &&
+    activeProgramSegmentIndex !== null &&
+    activeProgramSegmentIndex === activeProgram.segments.length - 1
+  );
+  const nextProgramSegment = activeProgram && activeProgramSegmentIndex !== null
+    ? activeProgram.segments[activeProgramSegmentIndex + 1] || null
+    : null;
 
   useEffect(() => {
     const initializeQuiz = async () => {
       const search = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(search);
       const segmentParam = params.get('segment') || 'genesis_1_3';
+      const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
-      
+
       if (modeParam === 'scholar') {
         setMode('scholar');
       }
-      
-      setSegment(segmentParam);
+
+      const matchedProgram = getProgramById(programParam);
+      if (matchedProgram) {
+        const matchedIndex = matchedProgram.segments.findIndex(
+          (programSegment) => toQuizSegmentId(programSegment.segment) === segmentParam
+        );
+        const safeIndex = matchedIndex >= 0 ? matchedIndex : 0;
+
+        setActiveProgramId(matchedProgram.id);
+        setActiveProgramSegmentIndex(safeIndex);
+        setSegment(toQuizSegmentId(matchedProgram.segments[safeIndex].segment));
+      } else {
+        setSegment(segmentParam);
+      }
 
       const completed = await hasCompletedToday();
       setCompletedToday(completed);
@@ -80,10 +116,15 @@ export default function QuizPage() {
       // Block non-Pro+ users from Scholar Mode
       if (mode === 'scholar' && !isProPlus) {
         window.location.assign('/upgrade');
+        return;
+      }
+
+      if (activeProgramId && !isPro) {
+        window.location.assign('/upgrade');
       }
     }
     checkPro();
-  }, [mode]);
+  }, [activeProgramId, mode]);
 
   const questions = useMemo(() => {
     if (!paramsInitialized) return [] as Question[];
@@ -98,8 +139,10 @@ export default function QuizPage() {
       for (const seg of allSegments) {
         combinedQuestions = combinedQuestions.concat(getQuestions(seg, 'hard'));
       }
-      
+
       fetchedQuestions = combinedQuestions.slice(0, 15);
+    } else if (isProgramMode) {
+      fetchedQuestions = getQuestions(segment, 'mixed', isProPlusUser).slice(0, 15);
     } else if (isProPlusUser) {
       fetchedQuestions = getQuestions(segment, 'mixed', true).slice(0, 15);
     } else if (isProUser) {
@@ -123,7 +166,7 @@ export default function QuizPage() {
         correctIndex: newCorrectIndex
       };
     });
-  }, [paramsInitialized, segment, isProUser, isProPlusUser, quizSeed, mode]);
+  }, [isProgramMode, isProPlusUser, isProUser, mode, paramsInitialized, quizSeed, segment]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -189,14 +232,45 @@ export default function QuizPage() {
 
   useEffect(() => {
     const markComplete = async () => {
-      if (quizCompleted && !isReviewMode && !streakSaved && !isTrainingMode) {
+      if (quizCompleted && !isReviewMode && !streakSaved && !isTrainingMode && !isProgramMode) {
         await completeToday();
         setStreakSaved(true);
       }
     };
 
     markComplete();
-  }, [quizCompleted, isReviewMode, streakSaved, isTrainingMode]);
+  }, [isProgramMode, isReviewMode, isTrainingMode, quizCompleted, streakSaved]);
+
+  useEffect(() => {
+    const syncProgramProgress = async () => {
+      if (
+        !quizCompleted ||
+        isReviewMode ||
+        !activeProgram ||
+        activeProgramSegmentIndex === null ||
+        programProgressSaved
+      ) {
+        return;
+      }
+
+      setProgramProgressSaved(true);
+      markProgramSegmentComplete(activeProgram.id, activeProgramSegmentIndex);
+
+      if (activeProgramSegmentIndex === activeProgram.segments.length - 1) {
+        const progress = getProgramProgress(activeProgram.id);
+
+        if (!progress.bonusAwarded) {
+          const updatedXp = await addXp(PROGRAM_COMPLETION_BONUS_XP);
+          setTotalXp(updatedXp);
+          markProgramBonusAwarded(activeProgram.id);
+        }
+
+        clearActiveProgram(activeProgram.id);
+      }
+    };
+
+    syncProgramProgress();
+  }, [activeProgram, activeProgramSegmentIndex, isReviewMode, programProgressSaved, quizCompleted]);
 
   if (loadingPro) {
     return <div className="p-6 text-black">Loading...</div>;
@@ -228,8 +302,8 @@ export default function QuizPage() {
     );
   }
 
-  // Check if user already completed today and not in review or scholar mode
-  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && mode !== 'scholar') {
+  // Check if user already completed today and not in review, scholar, or program mode
+  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && !isProgramMode && mode !== 'scholar') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -384,6 +458,7 @@ export default function QuizPage() {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setScore(0);
+    setProgramProgressSaved(false);
 
     setQuizCompleted(false);
     setIncorrectQuestions([]);
@@ -416,23 +491,58 @@ export default function QuizPage() {
     setShowRetryPrompt(false);
   };
 
+  const handleContinueProgram = () => {
+    if (!activeProgram || activeProgramSegmentIndex === null) {
+      return;
+    }
+
+    const nextSegment = activeProgram.segments[activeProgramSegmentIndex + 1];
+    if (!nextSegment) {
+      window.location.assign('/programs');
+      return;
+    }
+
+    startProgram(activeProgram.id);
+    window.location.assign(`/quiz?program=${activeProgram.id}&segment=${toQuizSegmentId(nextSegment.segment)}`);
+  };
+
   if (quizCompleted) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
-            {isReviewMode ? 'Review Completed!' : isTrainingMode ? 'Training session complete!' : 'Quiz Completed!'}
+            {isReviewMode
+              ? 'Review Completed!'
+              : isProgramMode
+                ? isFinalProgramSegment
+                  ? 'Program Complete 🎉'
+                  : 'Segment Complete!'
+                : isTrainingMode
+                  ? 'Training session complete!'
+                  : 'Quiz Completed!'}
           </h1>
           <div className="text-center mb-6">
             {isReviewMode ? (
               <p className="text-sm text-gray-600 mt-2">
                 Review complete — great job reinforcing your knowledge
               </p>
+            ) : isProgramMode ? (
+              <>
+                <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
+                <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
+                {isFinalProgramSegment ? (
+                  <p className="text-sm text-gray-600 mt-2">
+                    You finished {activeProgram?.title} and earned {PROGRAM_COMPLETION_BONUS_XP} bonus XP.
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-600 mt-2">Next: {nextProgramSegment?.label}</p>
+                )}
+              </>
             ) : isTrainingMode ? (
               <>
                 <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
                 <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
-                <p className="text-sm text-gray-600 mt-2\">You&apos;re building mastery with every session!</p>
+                <p className="text-sm text-gray-600 mt-2">You&apos;re building mastery with every session!</p>
               </>
             ) : (
               <>
@@ -446,13 +556,28 @@ export default function QuizPage() {
             {!isReviewMode && isTrainingMode && (
               <p className="text-center text-sm text-gray-700 font-medium">Keep going — every question makes you stronger</p>
             )}
+            {!isReviewMode && isProgramMode && (
+              <p className="text-center text-sm text-gray-700 font-medium">
+                {isFinalProgramSegment
+                  ? 'You completed the full path. Bonus XP has been added to your journey.'
+                  : 'Stay with the path and keep building momentum segment by segment.'}
+              </p>
+            )}
+            {!isReviewMode && isProgramMode && !isFinalProgramSegment && (
+              <button
+                onClick={handleContinueProgram}
+                className="w-full bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Continue Program
+              </button>
+            )}
             <button
               onClick={resetQuiz}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              {isReviewMode ? 'Back to Quiz' : 'Retry Quiz'}
+              {isReviewMode ? 'Back to Quiz' : isProgramMode ? 'Retry Segment' : 'Retry Quiz'}
             </button>
-            {!isReviewMode && (
+            {!isReviewMode && !isProgramMode && (
               <>
                 {!isTrainingMode && (
                   <p className="text-center text-sm text-gray-600">Keep training and master scripture</p>
@@ -468,6 +593,13 @@ export default function QuizPage() {
                   {isProPlusUser ? 'Continue Training' : '🔒 Continue Training'}
                 </button>
               </>
+            )}
+            {!isReviewMode && isProgramMode && isFinalProgramSegment && (
+              <Link href="/programs" className="block">
+                <button className="w-full bg-slate-900 text-white py-3 px-4 rounded-lg font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500">
+                  View Programs
+                </button>
+              </Link>
             )}
             {!isReviewMode && incorrectQuestions.length > 0 && (
               <button
@@ -498,20 +630,35 @@ export default function QuizPage() {
               Training Mode
             </div>
           )}
+          {!isReviewMode && isProgramMode && (
+            <div className="mb-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800">
+              Program Mode
+            </div>
+          )}
           {!isReviewMode && mode === 'scholar' && (
             <div className="mb-2 inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
               Scholar Mode
             </div>
           )}
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {isReviewMode ? 'Review Mode' : mode === 'scholar' ? 'Master Training' : isTrainingMode ? 'Training Session' : 'Bible Quiz'}
+            {isReviewMode
+              ? 'Review Mode'
+              : mode === 'scholar'
+                ? 'Master Training'
+                : isProgramMode
+                  ? activeProgram?.title || 'Training Program'
+                  : isTrainingMode
+                    ? 'Training Session'
+                    : 'Bible Quiz'}
           </h1>
           <p className="text-gray-600">
             {isReviewMode
               ? 'Reinforce what you missed'
-              : 'Test your knowledge and earn XP as part of your daily mastery routine.'}
+              : isProgramMode
+                ? 'Move through your guided program one segment at a time.'
+                : 'Test your knowledge and earn XP as part of your daily mastery routine.'}
           </p>
-          {!isReviewMode && !quizCompleted && (
+          {!isReviewMode && !quizCompleted && !isProgramMode && (
             <div className="mt-4 space-y-2">
               <button
                 onClick={handleTrainWeakAreas}
@@ -537,16 +684,38 @@ export default function QuizPage() {
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-xl font-semibold text-gray-800">
-                {mode === 'scholar' ? 'All Segments' : activeQuestions[0]?.reference || 'Unknown Segment'}
+                {mode === 'scholar'
+                  ? 'All Segments'
+                  : isProgramMode
+                    ? activeProgram?.segments[activeProgramSegmentIndex || 0]?.label || activeQuestions[0]?.reference || 'Unknown Segment'
+                    : activeQuestions[0]?.reference || 'Unknown Segment'}
               </h2>
-              <p className="text-gray-600">{mode === 'scholar' ? 'Scholar training across scripture' : 'Segment being studied'}</p>
+              <p className="text-gray-600">
+                {mode === 'scholar'
+                  ? 'Scholar training across scripture'
+                  : isProgramMode
+                    ? `Program path: ${activeProgram?.title || 'Training Program'}`
+                    : 'Segment being studied'}
+              </p>
             </div>
             <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
               mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
                 ? 'bg-yellow-500 text-gray-900'
+                : isProgramMode
+                  ? 'bg-slate-100 text-slate-800'
                 : isWeaknessMode ? 'bg-indigo-100 text-indigo-800' : isProPlusUser ? 'bg-purple-100 text-purple-800' : isProUser ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
             }`}>
-              {mode === 'scholar' || currentQuestion?.difficulty === 'scholar' ? '🏆 Scholar' : isWeaknessMode ? 'Weak Areas' : isProPlusUser ? 'Pro+ Mixed' : isProUser ? 'Mixed' : 'Easy'}
+              {mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
+                ? '🏆 Scholar'
+                : isProgramMode
+                  ? 'Program'
+                  : isWeaknessMode
+                    ? 'Weak Areas'
+                    : isProPlusUser
+                      ? 'Pro+ Mixed'
+                      : isProUser
+                        ? 'Mixed'
+                        : 'Easy'}
             </span>
           </div>
         </div>
