@@ -399,13 +399,19 @@ export default function QuizPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
           <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
-            {isReviewMode ? 'Review Completed!' : 'Quiz Completed!'}
+            {isReviewMode ? 'Review Completed!' : isTrainingMode ? 'Training session complete!' : 'Quiz Completed!'}
           </h1>
           <div className="text-center mb-6">
             {isReviewMode ? (
               <p className="text-sm text-gray-600 mt-2">
                 Review complete — great job reinforcing your knowledge
               </p>
+            ) : isTrainingMode ? (
+              <>
+                <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
+                <p className="text-lg text-gray-700">XP Total: {totalXp}</p>
+                <p className="text-sm text-gray-600 mt-2\">You&apos;re building mastery with every session!</p>
+              </>
             ) : (
               <>
                 <p className="text-lg text-gray-700">Correct Answers: {score} / {questions.length}</p>
@@ -415,6 +421,9 @@ export default function QuizPage() {
             )}
           </div>
           <div className="space-y-3">
+            {!isReviewMode && isTrainingMode && (
+              <p className="text-center text-sm text-gray-700 font-medium">Keep going — every question makes you stronger</p>
+            )}
             <button
               onClick={resetQuiz}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -423,7 +432,9 @@ export default function QuizPage() {
             </button>
             {!isReviewMode && (
               <>
-                <p className="text-center text-sm text-gray-600">Keep training and master scripture</p>
+                {!isTrainingMode && (
+                  <p className="text-center text-sm text-gray-600">Keep training and master scripture</p>
+                )}
                 <button
                   onClick={handleContinueTraining}
                   className={`w-full py-3 px-4 rounded-lg font-semibold focus:outline-none focus:ring-2 ${
@@ -466,7 +477,7 @@ export default function QuizPage() {
             </div>
           )}
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {isReviewMode ? 'Review Mode' : 'Bible Quiz'}
+            {isReviewMode ? 'Review Mode' : isTrainingMode ? 'Training Session' : 'Bible Quiz'}
           </h1>
           <p className="text-gray-600">
             {isReviewMode
