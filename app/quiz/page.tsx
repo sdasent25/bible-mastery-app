@@ -225,10 +225,10 @@ export default function QuizPage() {
               onClick={handleTrainWeakAreas}
               className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Train Weak Areas
+              Review Past Answers
             </button>
             {noWeakAreasMessage && (
-              <p className="text-center text-sm text-gray-700">You&apos;re doing great! No weak areas yet.</p>
+              <p className="text-center text-sm text-gray-700">You&apos;re doing great! No past errors to review right now.</p>
             )}
             {isProPlusUser ? (
               <button
@@ -469,10 +469,10 @@ export default function QuizPage() {
                 onClick={handleTrainWeakAreas}
                 className="bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                Train Weak Areas
+                Review Past Answers
               </button>
               {noWeakAreasMessage && (
-                <p className="text-sm text-gray-700">You&apos;re doing great! No weak areas yet.</p>
+                <p className="text-sm text-gray-700">You&apos;re doing great! No past errors to review right now.</p>
               )}
             </div>
           )}
