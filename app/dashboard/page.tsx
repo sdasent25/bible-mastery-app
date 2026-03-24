@@ -273,6 +273,24 @@ export default function Dashboard() {
         </Link>
       </section>
 
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Friends</h2>
+          <p className="mt-1 text-sm text-gray-600">Invite friends and see your social circle grow.</p>
+        </div>
+        <Link href="/friends">
+          <button className="w-full rounded-xl bg-indigo-600 p-4 text-white shadow-md transition hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <div className="flex items-center">
+              <span className="mr-4 text-3xl">👥</span>
+              <div className="text-left">
+                <div className="text-lg font-bold">View Friends</div>
+                <div className="text-sm text-indigo-100">Share your invite link and connect</div>
+              </div>
+            </div>
+          </button>
+        </Link>
+      </section>
+
       {/* Scholar Mode - Pro+ Exclusive */}
       {isProPlusUser && (
         <section className="rounded-xl bg-linear-to-br from-purple-50 to-indigo-50 border-2 border-purple-200 p-5 shadow-md">
