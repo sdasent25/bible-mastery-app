@@ -2,7 +2,12 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
-import { getMyFriends, type FriendRow } from '@/lib/friends';
+import {
+  getFriendLeaderboard,
+  getMyFriends,
+  type FriendLeaderboardEntry,
+  type FriendRow
+} from '@/lib/friends';
 import { supabase } from '@/lib/supabase';
 
 function toDisplayName(friend: FriendRow) {
@@ -21,6 +26,7 @@ function formatJoinedDate(value: string) {
 export default function FriendsPage() {
   const [loading, setLoading] = useState(true);
   const [friends, setFriends] = useState<FriendRow[]>([]);
+  const [leaderboard, setLeaderboard] = useState<FriendLeaderboardEntry[]>([]);
   const [userId, setUserId] = useState<string>('');
 
   useEffect(() => {
@@ -34,6 +40,8 @@ export default function FriendsPage() {
       setUserId(authData.user.id);
       const rows = await getMyFriends();
       setFriends(rows);
+      const board = await getFriendLeaderboard();
+      setLeaderboard(board);
       setLoading(false);
     }
 
@@ -95,6 +103,38 @@ export default function FriendsPage() {
                   <p className="text-xs text-gray-600">Joined: {formatJoinedDate(friend.created_at)}</p>
                 </div>
               ))}
+            </div>
+          )}
+        </section>
+
+        <section className="rounded-xl bg-white p-4 shadow-md">
+          <h2 className="mb-3 text-lg font-bold text-gray-900">Friend Leaderboard</h2>
+
+          {friends.length === 0 ? (
+            <p className="text-sm text-gray-600">Invite friends to compete</p>
+          ) : (
+            <div>
+              <div className="grid grid-cols-[64px_1fr_90px] gap-3 border-b border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                <span>Rank</span>
+                <span>Name</span>
+                <span className="text-right">XP</span>
+              </div>
+              <div>
+                {leaderboard.map((entry, index) => (
+                  <div
+                    key={`${entry.userId}-${index}`}
+                    className={`grid grid-cols-[64px_1fr_90px] gap-3 border-b border-gray-100 px-3 py-3 last:border-b-0 ${
+                      entry.isCurrentUser ? 'bg-indigo-50' : ''
+                    }`}
+                  >
+                    <span className={`font-bold ${entry.isCurrentUser ? 'text-indigo-700' : 'text-gray-900'}`}>#{index + 1}</span>
+                    <span className={`${entry.isCurrentUser ? 'font-bold text-indigo-700' : 'text-gray-800'}`}>{entry.name}</span>
+                    <span className={`text-right font-semibold ${entry.isCurrentUser ? 'text-indigo-700' : 'text-emerald-700'}`}>
+                      {entry.xp}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </section>

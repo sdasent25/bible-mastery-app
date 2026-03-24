@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { signOut } from '@/lib/auth';
+import { getFriendLeaderboard, type FriendLeaderboardEntry } from '@/lib/friends';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { getSubscriptionStatus } from '@/lib/user';
@@ -31,6 +32,7 @@ export default function Dashboard() {
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
   const [currentSegment, setCurrentSegment] = useState('genesis-1-3');
+  const [friendLeaderboard, setFriendLeaderboard] = useState<FriendLeaderboardEntry[]>([]);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -82,12 +84,25 @@ export default function Dashboard() {
     checkPro();
   }, []);
 
+  useEffect(() => {
+    async function loadFriendBoard() {
+      const board = await getFriendLeaderboard();
+      setFriendLeaderboard(board);
+    }
+
+    loadFriendBoard();
+  }, []);
+
   const level = Math.floor(xp / 100) + 1;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
   const currentSegmentForQuiz = currentSegment.replace(/-/g, '_');
   const journeyCurrentIndex = segments.indexOf(currentSegment);
+  const yourFriendRank = friendLeaderboard.findIndex((entry) => entry.isCurrentUser) + 1;
+  const yourFriendEntry = friendLeaderboard.find((entry) => entry.isCurrentUser);
+  const topFriendEntry = friendLeaderboard[0];
+  const rankDiff = topFriendEntry && yourFriendEntry ? topFriendEntry.xp - yourFriendEntry.xp : 0;
 
   const handleLogout = async () => {
     await signOut();
@@ -289,6 +304,24 @@ export default function Dashboard() {
             </div>
           </button>
         </Link>
+      </section>
+
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-3">
+        <div>
+          <h2 className="text-lg font-bold text-gray-900">Your Rank Among Friends</h2>
+          {friendLeaderboard.length <= 1 ? (
+            <p className="mt-1 text-sm text-gray-600">Invite friends to compete</p>
+          ) : (
+            <>
+              <p className="mt-1 text-sm text-gray-700">Rank: #{yourFriendRank} of {friendLeaderboard.length}</p>
+              <p className="text-sm text-gray-700">
+                {rankDiff > 0
+                  ? `${rankDiff} XP behind #1`
+                  : 'You are currently leading your friends'}
+              </p>
+            </>
+          )}
+        </div>
       </section>
 
       {/* Scholar Mode - Pro+ Exclusive */}

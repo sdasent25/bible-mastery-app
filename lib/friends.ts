@@ -7,6 +7,28 @@ export type FriendRow = {
   created_at: string
 }
 
+export type FriendLeaderboardEntry = {
+  userId: string
+  name: string
+  xp: number
+  isCurrentUser: boolean
+}
+
+function formatDateLocal(date: Date): string {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+function getCurrentWeekStart(): string {
+  const now = new Date()
+  const weekStart = new Date(now)
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay())
+  weekStart.setHours(0, 0, 0, 0)
+  return formatDateLocal(weekStart)
+}
+
 export async function addFriendship(
   userId: string,
   friendId: string,
@@ -67,4 +89,51 @@ export async function getMyFriends(): Promise<FriendRow[]> {
   }
 
   return (data || []) as FriendRow[]
+}
+
+export async function getFriendLeaderboard(): Promise<FriendLeaderboardEntry[]> {
+  const { data: authData } = await supabase.auth.getUser()
+  const user = authData.user
+  if (!user) {
+    return []
+  }
+
+  const friends = await getMyFriends()
+  const weekStart = getCurrentWeekStart()
+
+  const userIds = [user.id, ...friends.map((friend) => friend.friend_id)]
+  const uniqueUserIds = Array.from(new Set(userIds))
+
+  const { data: weeklyRows, error } = await supabase
+    .from('weekly_xp')
+    .select('user_id, xp')
+    .eq('week_start', weekStart)
+    .in('user_id', uniqueUserIds)
+
+  if (error) {
+    console.error('Error loading friend leaderboard weekly xp:', error)
+  }
+
+  const xpByUser = new Map<string, number>()
+  for (const row of (weeklyRows || []) as Array<{ user_id: string; xp: number | null }>) {
+    xpByUser.set(row.user_id, row.xp || 0)
+  }
+
+  const entries: FriendLeaderboardEntry[] = [
+    {
+      userId: user.id,
+      name: 'You',
+      xp: xpByUser.get(user.id) || 0,
+      isCurrentUser: true
+    },
+    ...friends.map((friend) => ({
+      userId: friend.friend_id,
+      name: friend.friend_display || `Friend ${friend.friend_id.slice(0, 8)}`,
+      xp: xpByUser.get(friend.friend_id) || 0,
+      isCurrentUser: false
+    }))
+  ]
+
+  entries.sort((a, b) => b.xp - a.xp)
+  return entries
 }
