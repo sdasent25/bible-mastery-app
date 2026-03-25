@@ -1,68 +1,150 @@
-export type Flashcard = {
-  verse: string
-  reference: string
-  category: string
+import { supabase } from './supabase'
+
+export type FlashcardCategory = {
+  id: string
+  userId: string
+  name: string
+  createdAt: string | null
 }
 
-export const flashcards: Flashcard[] = [
-  {
-    verse: 'For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.',
-    reference: 'John 3:16',
-    category: 'Gospels'
-  },
-  {
-    verse: 'Jesus said to him, "I am the way, and the truth, and the life. No one comes to the Father except through me."',
-    reference: 'John 14:6',
-    category: 'Gospels'
-  },
-  {
-    verse: 'But seek first the kingdom of God and his righteousness, and all these things will be added to you.',
-    reference: 'Matthew 6:33',
-    category: 'Gospels'
-  },
-  {
-    verse: 'Come to me, all who labor and are heavy laden, and I will give you rest.',
-    reference: 'Matthew 11:28',
-    category: 'Gospels'
-  },
-  {
-    verse: 'Trust in the Lord with all your heart, and do not lean on your own understanding.',
-    reference: 'Proverbs 3:5',
-    category: 'Wisdom'
-  },
-  {
-    verse: 'Your word is a lamp to my feet and a light to my path.',
-    reference: 'Psalm 119:105',
-    category: 'Psalms'
-  },
-  {
-    verse: 'I can do all things through him who strengthens me.',
-    reference: 'Philippians 4:13',
-    category: 'Epistles'
-  },
-  {
-    verse: 'Do not be anxious about anything, but in everything by prayer and supplication with thanksgiving let your requests be made known to God.',
-    reference: 'Philippians 4:6',
-    category: 'Epistles'
-  },
-  {
-    verse: 'And we know that for those who love God all things work together for good, for those who are called according to his purpose.',
-    reference: 'Romans 8:28',
-    category: 'Epistles'
-  },
-  {
-    verse: 'The Lord is my shepherd; I shall not want.',
-    reference: 'Psalm 23:1',
-    category: 'Psalms'
-  },
-  {
-    verse: 'Be strong and courageous. Do not be frightened, and do not be dismayed, for the Lord your God is with you wherever you go.',
-    reference: 'Joshua 1:9',
-    category: 'History'
-  },
-  {
-    verse: 'The steadfast love of the Lord never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.',
-    reference: 'Lamentations 3:22-23',
-    category: 'Prophets'
+export type Flashcard = {
+  id: string
+  userId: string
+  verse: string
+  reference: string
+  categoryId: string | null
+  createdAt: string | null
+}
+
+type FlashcardCategoryRow = {
+  id: string
+  user_id: string
+  name: string
+  created_at: string | null
+}
+
+type FlashcardRow = {
+  id: string
+  user_id: string
+  verse: string
+  reference: string
+  category_id: string | null
+  created_at: string | null
+}
+
+async function getCurrentUserId() {
+  const { data: { user } } = await supabase.auth.getUser()
+  return user?.id ?? null
+}
+
+function mapCategory(row: FlashcardCategoryRow): FlashcardCategory {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    name: row.name,
+    createdAt: row.created_at
   }
-]
+}
+
+function mapFlashcard(row: FlashcardRow): Flashcard {
+  return {
+    id: row.id,
+    userId: row.user_id,
+    verse: row.verse,
+    reference: row.reference,
+    categoryId: row.category_id,
+    createdAt: row.created_at
+  }
+}
+
+export async function getFlashcardCategories(): Promise<FlashcardCategory[]> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('flashcard_categories')
+    .select('id, user_id, name, created_at')
+    .eq('user_id', userId)
+    .order('name', { ascending: true })
+
+  if (error) {
+    console.error('Error loading flashcard categories:', error)
+    return []
+  }
+
+  return ((data || []) as FlashcardCategoryRow[]).map(mapCategory)
+}
+
+export async function getFlashcards(): Promise<Flashcard[]> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return []
+  }
+
+  const { data, error } = await supabase
+    .from('flashcards')
+    .select('id, user_id, verse, reference, category_id, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true })
+
+  if (error) {
+    console.error('Error loading flashcards:', error)
+    return []
+  }
+
+  return ((data || []) as FlashcardRow[]).map(mapFlashcard)
+}
+
+export async function createFlashcardCategory(name: string): Promise<FlashcardCategory | null> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from('flashcard_categories')
+    .insert({
+      user_id: userId,
+      name
+    })
+    .select('id, user_id, name, created_at')
+    .single<FlashcardCategoryRow>()
+
+  if (error) {
+    console.error('Error creating flashcard category:', error)
+    return null
+  }
+
+  return mapCategory(data)
+}
+
+export async function createFlashcard(input: {
+  verse: string
+  reference: string
+  categoryId: string
+}): Promise<Flashcard | null> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from('flashcards')
+    .insert({
+      user_id: userId,
+      verse: input.verse,
+      reference: input.reference,
+      category_id: input.categoryId
+    })
+    .select('id, user_id, verse, reference, category_id, created_at')
+    .single<FlashcardRow>()
+
+  if (error) {
+    console.error('Error creating flashcard:', error)
+    return null
+  }
+
+  return mapFlashcard(data)
+}
