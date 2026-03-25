@@ -87,6 +87,7 @@ export default function FlashcardsPage() {
   const [isSubmittingCategory, setIsSubmittingCategory] = useState(false)
   const [isSubmittingFlashcard, setIsSubmittingFlashcard] = useState(false)
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
+  const [flashcardFormError, setFlashcardFormError] = useState('')
 
   useEffect(() => {
     async function initialize() {
@@ -194,10 +195,16 @@ export default function FlashcardsPage() {
     const reference = flashcardForm.reference.trim()
     const categoryId = flashcardForm.categoryId
 
-    if (!verse || !reference || !categoryId) {
+    if (!categoryId) {
+      setFlashcardFormError('Please select a category before adding a flashcard')
       return
     }
 
+    if (!verse || !reference) {
+      return
+    }
+
+    setFlashcardFormError('')
     setIsSubmittingFlashcard(true)
     const newFlashcard = await createFlashcard({ verse, reference, categoryId })
     setIsSubmittingFlashcard(false)
@@ -382,31 +389,65 @@ export default function FlashcardsPage() {
                     />
                   </label>
 
-                  <label className="block">
-                    <span className="text-sm font-semibold text-gray-900">Category</span>
-                    <select
-                      value={flashcardForm.categoryId}
-                      onChange={(event) => setFlashcardForm((current) => ({ ...current, categoryId: event.target.value }))}
-                      className="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">Select a category</option>
-                      {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <div className="block">
+                    <span className="text-sm font-semibold text-gray-900">Category *</span>
+                    {categories.length > 0 ? (
+                      <>
+                        <select
+                          value={flashcardForm.categoryId}
+                          onChange={(event) => {
+                            setFlashcardForm((current) => ({ ...current, categoryId: event.target.value }))
+                            if (event.target.value) {
+                              setFlashcardFormError('')
+                            }
+                          }}
+                          className="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="">Select a category</option>
+                          {categories.map((category) => (
+                            <option key={category.id} value={category.id}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                        <p className="mt-2 text-sm text-gray-600">
+                          Required — create a category first if none exist
+                        </p>
+                      </>
+                    ) : (
+                      <div className="mt-2 rounded-xl border border-dashed border-gray-300 bg-white p-4">
+                        <p className="text-sm font-medium text-gray-900">
+                          You need to create a category first
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowCategoryForm(true)
+                            setShowFlashcardForm(true)
+                          }}
+                          className="mt-3 rounded-xl border border-gray-300 px-4 py-2 font-semibold text-gray-900 transition hover:bg-gray-100"
+                        >
+                          Create Category
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
+
+              {flashcardFormError && (
+                <p className="mt-4 text-sm font-medium text-red-600">
+                  {flashcardFormError}
+                </p>
+              )}
 
               <div className="mt-4 flex justify-end">
                 <button
                   type="submit"
-                  disabled={isSubmittingFlashcard || categories.length === 0}
+                  disabled={isSubmittingFlashcard || categories.length === 0 || !flashcardForm.categoryId}
                   className="rounded-xl bg-blue-700 px-4 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-300"
                 >
-                  {isSubmittingFlashcard ? 'Saving...' : 'Save Flashcard'}
+                  {isSubmittingFlashcard ? 'Saving...' : 'Add Flashcard'}
                 </button>
               </div>
 
