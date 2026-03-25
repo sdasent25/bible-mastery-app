@@ -8,6 +8,7 @@ import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { getSubscriptionStatus } from '@/lib/user';
 import { segments } from '@/lib/questions';
+import { getPerformanceStats, type PerformanceStats } from '@/lib/performance';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -23,6 +24,15 @@ const shortSegmentLabels: Record<string, string> = {
   'genesis-10-11': 'Gen 10–11'
 };
 
+function normalizeSegmentKey(segmentId: string) {
+  return segmentId.replace(/_/g, '-');
+}
+
+function formatSegmentLabel(segmentId: string) {
+  const normalized = normalizeSegmentKey(segmentId);
+  return segmentLabels[normalized] || segmentId.replace(/_/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 export default function Dashboard() {
   const [streak, setStreak] = useState(0);
   const [completedToday, setCompletedToday] = useState(false);
@@ -33,6 +43,11 @@ export default function Dashboard() {
   const [loadingPro, setLoadingPro] = useState(true);
   const [currentSegment, setCurrentSegment] = useState('genesis-1-3');
   const [friendLeaderboard, setFriendLeaderboard] = useState<FriendLeaderboardEntry[]>([]);
+  const [performanceStats, setPerformanceStats] = useState<PerformanceStats>({
+    totalAnswered: 0,
+    totalCorrect: 0,
+    bySegment: {}
+  });
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -44,6 +59,8 @@ export default function Dashboard() {
 
       const storedXp = await getXp();
       setXp(storedXp);
+
+      setPerformanceStats(getPerformanceStats());
     };
 
     loadDashboardData();
@@ -103,6 +120,27 @@ export default function Dashboard() {
   const yourFriendEntry = friendLeaderboard.find((entry) => entry.isCurrentUser);
   const topFriendEntry = friendLeaderboard[0];
   const rankDiff = topFriendEntry && yourFriendEntry ? topFriendEntry.xp - yourFriendEntry.xp : 0;
+  const hasPerformanceData = performanceStats.totalAnswered > 0;
+  const accuracy = hasPerformanceData
+    ? Math.round((performanceStats.totalCorrect / performanceStats.totalAnswered) * 100)
+    : 0;
+  const segmentPerformanceEntries = Object.entries(performanceStats.bySegment)
+    .filter(([, value]) => value.answered > 0)
+    .map(([segmentId, value]) => ({
+      segmentId,
+      accuracy: value.correct / value.answered,
+      answered: value.answered
+    }));
+  const strongestArea = segmentPerformanceEntries.length
+    ? segmentPerformanceEntries.reduce((best, current) =>
+      current.accuracy > best.accuracy ? current : best
+    )
+    : null;
+  const focusArea = segmentPerformanceEntries.length
+    ? segmentPerformanceEntries.reduce((lowest, current) =>
+      current.accuracy < lowest.accuracy ? current : lowest
+    )
+    : null;
 
   const handleLogout = async () => {
     await signOut();
@@ -156,6 +194,51 @@ export default function Dashboard() {
         <div className="h-4 w-full rounded-full bg-gray-200">
           <div className="h-4 rounded-full bg-blue-600 transition-all" style={{ width: `${levelProgress}%` }} />
         </div>
+      </section>
+
+      <section className="rounded-xl bg-slate-900 p-5 shadow-md text-white">
+        <h2 className="text-lg font-bold">Your Performance</h2>
+        {hasPerformanceData ? (
+          <>
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-lg bg-slate-800 p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-300">Accuracy</p>
+                <p className="mt-1 text-2xl font-bold">{accuracy}%</p>
+              </div>
+              <div className="rounded-lg bg-slate-800 p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-300">Total Questions Answered</p>
+                <p className="mt-1 text-2xl font-bold">{performanceStats.totalAnswered}</p>
+              </div>
+              <div className="rounded-lg bg-slate-800 p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-300">Current Streak</p>
+                <p className="mt-1 text-2xl font-bold">{streak} days</p>
+              </div>
+            </div>
+
+            {(strongestArea || focusArea) && (
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-lg border border-emerald-500/50 bg-emerald-500/10 p-4">
+                  <p className="text-xs uppercase tracking-wide text-emerald-200">Strongest Area</p>
+                  <p className="mt-1 text-base font-semibold text-emerald-50">
+                    {strongestArea
+                      ? `${formatSegmentLabel(strongestArea.segmentId)} (${Math.round(strongestArea.accuracy * 100)}%)`
+                      : 'Not enough data yet'}
+                  </p>
+                </div>
+                <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4">
+                  <p className="text-xs uppercase tracking-wide text-amber-200">Focus Area</p>
+                  <p className="mt-1 text-base font-semibold text-amber-50">
+                    {focusArea
+                      ? `${formatSegmentLabel(focusArea.segmentId)} (${Math.round(focusArea.accuracy * 100)}%)`
+                      : 'Not enough data yet'}
+                  </p>
+                </div>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="mt-3 text-sm text-slate-200">Start training to see your stats</p>
+        )}
       </section>
 
       {/* Training Progress */}

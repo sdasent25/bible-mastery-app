@@ -14,6 +14,7 @@ import {
 } from '@/lib/programProgress';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
+import { recordAnswerPerformance } from '@/lib/performance';
 
 type IncorrectItem = {
   question: Question;
@@ -434,10 +435,13 @@ export default function QuizPage() {
 
     if (!isReviewMode) {
       const handleProgress = async () => {
+        const isCorrect = answerIndex === currentQuestion.correctIndex;
+        recordAnswerPerformance(currentQuestion.segmentId, isCorrect);
+
         const previousXp = await getXp();
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
-        if (answerIndex === currentQuestion.correctIndex) {
+        if (isCorrect) {
           setScore(score + 1);
           const updatedXp = await addXp(10);
           setTotalXp(updatedXp);
