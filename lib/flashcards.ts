@@ -12,6 +12,7 @@ export type Flashcard = {
   userId: string
   verse: string
   reference: string
+  status: 'new' | 'learning' | 'mastered'
   categoryId: string | null
   createdAt: string | null
 }
@@ -28,6 +29,7 @@ type FlashcardRow = {
   user_id: string
   verse: string
   reference: string
+  status: 'new' | 'learning' | 'mastered' | null
   category_id: string | null
   created_at: string | null
 }
@@ -52,6 +54,7 @@ function mapFlashcard(row: FlashcardRow): Flashcard {
     userId: row.user_id,
     verse: row.verse,
     reference: row.reference,
+    status: row.status === 'learning' || row.status === 'mastered' ? row.status : 'new',
     categoryId: row.category_id,
     createdAt: row.created_at
   }
@@ -85,7 +88,7 @@ export async function getFlashcards(): Promise<Flashcard[]> {
 
   const { data, error } = await supabase
     .from('flashcards')
-    .select('id, user_id, verse, reference, category_id, created_at')
+    .select('id, user_id, verse, reference, status, category_id, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: true })
 
@@ -136,13 +139,39 @@ export async function createFlashcard(input: {
       user_id: userId,
       verse: input.verse,
       reference: input.reference,
+      status: 'new',
       category_id: input.categoryId
     })
-    .select('id, user_id, verse, reference, category_id, created_at')
+    .select('id, user_id, verse, reference, status, category_id, created_at')
     .single<FlashcardRow>()
 
   if (error) {
     console.error('Error creating flashcard:', error)
+    return null
+  }
+
+  return mapFlashcard(data)
+}
+
+export async function updateFlashcardStatus(
+  flashcardId: string,
+  status: 'new' | 'learning' | 'mastered'
+): Promise<Flashcard | null> {
+  const userId = await getCurrentUserId()
+  if (!userId) {
+    return null
+  }
+
+  const { data, error } = await supabase
+    .from('flashcards')
+    .update({ status })
+    .eq('id', flashcardId)
+    .eq('user_id', userId)
+    .select('id, user_id, verse, reference, status, category_id, created_at')
+    .single<FlashcardRow>()
+
+  if (error) {
+    console.error('Error updating flashcard status:', error)
     return null
   }
 

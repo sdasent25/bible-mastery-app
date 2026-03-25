@@ -8,7 +8,8 @@ import {
   getFlashcardCategories,
   getFlashcards,
   type Flashcard,
-  type FlashcardCategory
+  type FlashcardCategory,
+  updateFlashcardStatus
 } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 
@@ -22,6 +23,52 @@ const defaultFlashcardForm: FlashcardForm = {
   verse: '',
   reference: '',
   categoryId: ''
+}
+
+const statusPriority: Record<Flashcard['status'], number> = {
+  learning: 0,
+  new: 1,
+  mastered: 2
+}
+
+function getNextStatus(currentStatus: Flashcard['status'], result: 'correct' | 'review'): Flashcard['status'] {
+  if (result === 'review') {
+    return 'learning'
+  }
+
+  if (currentStatus === 'new') {
+    return 'learning'
+  }
+
+  if (currentStatus === 'learning') {
+    return 'mastered'
+  }
+
+  return 'mastered'
+}
+
+function getStatusLabelClasses(status: Flashcard['status']) {
+  if (status === 'mastered') {
+    return 'bg-emerald-100 text-emerald-800'
+  }
+
+  if (status === 'learning') {
+    return 'bg-amber-100 text-amber-800'
+  }
+
+  return 'bg-slate-100 text-slate-700'
+}
+
+function formatStatusLabel(status: Flashcard['status']) {
+  if (status === 'mastered') {
+    return 'Mastered'
+  }
+
+  if (status === 'learning') {
+    return 'Learning'
+  }
+
+  return 'New'
 }
 
 export default function FlashcardsPage() {
@@ -39,6 +86,7 @@ export default function FlashcardsPage() {
   const [flashcardForm, setFlashcardForm] = useState<FlashcardForm>(defaultFlashcardForm)
   const [isSubmittingCategory, setIsSubmittingCategory] = useState(false)
   const [isSubmittingFlashcard, setIsSubmittingFlashcard] = useState(false)
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
 
   useEffect(() => {
     async function initialize() {
@@ -76,22 +124,33 @@ export default function FlashcardsPage() {
     return flashcards.filter((flashcard) => flashcard.categoryId === selectedCategoryId)
   }, [flashcards, selectedCategoryId])
 
-  const safeCurrentCardIndex = filteredFlashcards.length > 0
-    ? currentCardIndex % filteredFlashcards.length
+  const orderedFlashcards = useMemo(() => {
+    return [...filteredFlashcards].sort((left, right) => {
+      const priorityDifference = statusPriority[left.status] - statusPriority[right.status]
+      if (priorityDifference !== 0) {
+        return priorityDifference
+      }
+
+      return left.createdAt?.localeCompare(right.createdAt || '') || 0
+    })
+  }, [filteredFlashcards])
+
+  const safeCurrentCardIndex = orderedFlashcards.length > 0
+    ? currentCardIndex % orderedFlashcards.length
     : 0
 
-  const currentCard = filteredFlashcards[safeCurrentCardIndex] || null
+  const currentCard = orderedFlashcards[safeCurrentCardIndex] || null
 
   const handleRevealAnswer = () => {
     setShowAnswer(true)
   }
 
   const handleNextCard = () => {
-    if (filteredFlashcards.length === 0) {
+    if (orderedFlashcards.length === 0) {
       return
     }
 
-    setCurrentCardIndex((previousIndex) => (previousIndex + 1) % filteredFlashcards.length)
+    setCurrentCardIndex((previousIndex) => (previousIndex + 1) % orderedFlashcards.length)
     setShowAnswer(false)
   }
 
@@ -154,6 +213,42 @@ export default function FlashcardsPage() {
       categoryId
     })
     setShowFlashcardForm(false)
+  }
+
+  const handleFlashcardResult = async (result: 'correct' | 'review') => {
+    if (!currentCard) {
+      return
+    }
+
+    const nextStatus = getNextStatus(currentCard.status, result)
+    setIsUpdatingStatus(true)
+    const updatedFlashcard = await updateFlashcardStatus(currentCard.id, nextStatus)
+    setIsUpdatingStatus(false)
+
+    if (!updatedFlashcard) {
+      return
+    }
+
+    setFlashcards((currentItems) =>
+      currentItems.map((flashcard) =>
+        flashcard.id === updatedFlashcard.id ? updatedFlashcard : flashcard
+      )
+    )
+
+    setShowAnswer(false)
+
+    const currentIndexInOrderedDeck = orderedFlashcards.findIndex((flashcard) => flashcard.id === currentCard.id)
+    if (currentIndexInOrderedDeck === -1) {
+      setCurrentCardIndex(0)
+      return
+    }
+
+    if (orderedFlashcards.length === 1) {
+      setCurrentCardIndex(0)
+      return
+    }
+
+    setCurrentCardIndex((currentIndexInOrderedDeck + 1) % orderedFlashcards.length)
   }
 
   if (loadingPlan) {
@@ -369,11 +464,16 @@ export default function FlashcardsPage() {
           ) : currentCard ? (
             <div className="mt-8">
               <div className="mb-6 flex items-center justify-between gap-3">
-                <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">
-                  {currentCard.categoryId ? categoryMap.get(currentCard.categoryId)?.name || 'Uncategorized' : 'Uncategorized'}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">
+                    {currentCard.categoryId ? categoryMap.get(currentCard.categoryId)?.name || 'Uncategorized' : 'Uncategorized'}
+                  </span>
+                  <span className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusLabelClasses(currentCard.status)}`}>
+                    {formatStatusLabel(currentCard.status)}
+                  </span>
+                </div>
                 <span className="text-sm font-medium text-gray-500">
-                  Card {safeCurrentCardIndex + 1} of {filteredFlashcards.length}
+                  Card {safeCurrentCardIndex + 1} of {orderedFlashcards.length}
                 </span>
               </div>
 
@@ -422,6 +522,27 @@ export default function FlashcardsPage() {
                   Next Card
                 </button>
               </div>
+
+              {showAnswer && (
+                <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => handleFlashcardResult('correct')}
+                    disabled={isUpdatingStatus}
+                    className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300"
+                  >
+                    {isUpdatingStatus ? 'Saving...' : 'Got it right'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleFlashcardResult('review')}
+                    disabled={isUpdatingStatus}
+                    className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-amber-300"
+                  >
+                    {isUpdatingStatus ? 'Saving...' : 'Need to review'}
+                  </button>
+                </div>
+              )}
             </div>
           ) : null}
         </section>
