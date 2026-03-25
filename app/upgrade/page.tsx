@@ -59,7 +59,7 @@ export default function UpgradePage() {
 
         <section className="grid grid-cols-1 gap-5 md:grid-cols-2 md:items-stretch">
           <article className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-gray-900">Pro</h2>
+            <h2 className="text-xl font-bold text-gray-900">Pro — Learn the Bible</h2>
             <p className="mt-1 text-sm font-medium text-gray-700">Learn the Bible step by step</p>
 
             <ul className="mt-4 space-y-2 text-gray-800">
@@ -69,8 +69,8 @@ export default function UpgradePage() {
             </ul>
 
             <div className="mt-5 space-y-1 border-t border-gray-200 pt-4">
-              <p className="text-gray-900 font-semibold">$4.99/month or $39/year</p>
-              <p className="text-gray-700">Family: $9.99/month or $79/year</p>
+              <p className="text-xl font-extrabold text-gray-900">$4.99/month</p>
+              <p className="text-sm text-gray-700">or $9.99/month for up to 6 family members</p>
             </div>
 
             <a
@@ -88,7 +88,7 @@ export default function UpgradePage() {
               Best Value
             </span>
 
-            <h2 className="text-2xl font-extrabold text-gray-900">Pro+</h2>
+            <h2 className="text-2xl font-extrabold text-gray-900">Pro+ — Master the Bible</h2>
             <p className="mt-1 text-sm font-medium text-gray-700">Train without limits and master scripture</p>
 
             <ul className="mt-4 space-y-2 text-gray-800">
@@ -99,8 +99,8 @@ export default function UpgradePage() {
             </ul>
 
             <div className="mt-5 space-y-1 border-t border-gray-200 pt-4">
-              <p className="text-gray-900 font-semibold">$9.99/month or $79/year</p>
-              <p className="text-gray-700">Family: $19.99/month or $149/year</p>
+              <p className="text-xl font-extrabold text-gray-900">$9.99/month</p>
+              <p className="text-sm text-gray-700">or $19.99/month for up to 6 family members</p>
             </div>
 
             <a
