@@ -355,6 +355,24 @@ export default function Dashboard() {
 
       <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
         <div>
+          <h2 className="text-lg font-bold text-gray-900">Flashcard Training</h2>
+          <p className="mt-1 text-sm text-gray-600">Memorize verses by recalling each reference one card at a time.</p>
+        </div>
+        <Link href="/flashcards">
+          <button className="w-full rounded-xl bg-amber-500 p-4 text-white shadow-md transition hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400">
+            <div className="flex items-center">
+              <span className="mr-4 text-3xl">🗂️</span>
+              <div className="text-left">
+                <div className="text-lg font-bold">Start Training</div>
+                <div className="text-sm text-amber-100">Pro+ verse memorization practice</div>
+              </div>
+            </div>
+          </button>
+        </Link>
+      </section>
+
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
+        <div>
           <h2 className="text-lg font-bold text-gray-900">Weekly Leaderboard</h2>
           <p className="mt-1 text-sm text-gray-600">See who is leading this week and where you rank.</p>
         </div>
