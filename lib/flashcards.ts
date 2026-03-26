@@ -130,9 +130,6 @@ export async function createFlashcard(input: {
 }): Promise<Flashcard | null> {
   const userId = await getCurrentUserId()
 
-  console.log('USER ID:', userId)
-  console.log('INPUT:', input)
-
   if (!userId) {
     throw new Error('No user session found')
   }
@@ -141,25 +138,31 @@ export async function createFlashcard(input: {
     .from('flashcards')
     .insert({
       user_id: userId,
-      verse: input.verse,
+      verse_text: input.verse,
       reference: input.reference,
       status: 'new',
       category_id: input.categoryId
     })
-    .select()
+    .select('id, user_id, verse_text, reference, status, category_id, created_at')
 
   if (error) {
     console.error('INSERT ERROR:', error)
     throw error
   }
 
-  console.log('INSERT SUCCESS:', data)
-
   if (!data || data.length === 0) {
     throw new Error('Insert succeeded but no data returned')
   }
 
-  return mapFlashcard(data[0])
+  return {
+    id: data[0].id,
+    userId: data[0].user_id,
+    verse: data[0].verse_text,
+    reference: data[0].reference,
+    status: data[0].status || 'new',
+    categoryId: data[0].category_id,
+    createdAt: data[0].created_at
+  }
 }
 
 export async function updateFlashcardStatus(
