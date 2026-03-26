@@ -19,7 +19,7 @@ type FlashcardForm = {
   categoryId: string
 }
 
-type TrainingMode = 'single' | 'multi'
+type TrainingMode = 'flashcard' | 'multi' | 'chapter'
 
 type ComparedWord = {
   word: string
@@ -30,6 +30,7 @@ type ComparedVerse = {
   flashcardId: string
   reference: string
   words: ComparedWord[]
+  accuracy: number
 }
 
 const defaultFlashcardForm: FlashcardForm = {
@@ -85,7 +86,7 @@ function formatStatusLabel(status: Flashcard['status']) {
 }
 
 function normalizeWord(word: string) {
-  return word.toLowerCase().replace(/^[^a-z0-9']+|[^a-z0-9']+$/gi, '')
+  return word.toLowerCase().replace(/^[^a-z0-9']+|[^a-z0-9':-]+$/gi, '')
 }
 
 function compareVerseWords(expectedText: string, typedWords: string[], startIndex: number) {
@@ -94,9 +95,11 @@ function compareVerseWords(expectedText: string, typedWords: string[], startInde
     word,
     isCorrect: normalizeWord(word) === normalizeWord(typedWords[startIndex + index] || '')
   }))
+  const correctCount = words.filter((word) => word.isCorrect).length
 
   return {
     words,
+    accuracy: words.length > 0 ? correctCount / words.length : 0,
     nextIndex: startIndex + expectedWords.length
   }
 }
@@ -112,9 +115,38 @@ function buildComparedVerses(flashcards: Flashcard[], typedText: string): Compar
     return {
       flashcardId: flashcard.id,
       reference: flashcard.reference,
-      words: comparison.words
+      words: comparison.words,
+      accuracy: comparison.accuracy
     }
   })
+}
+
+function getReferenceRangeLabel(cards: Flashcard[]) {
+  if (cards.length === 0) {
+    return ''
+  }
+
+  if (cards.length === 1) {
+    return cards[0].reference
+  }
+
+  const firstReference = cards[0].reference
+  const lastReference = cards[cards.length - 1].reference
+  const firstMatch = firstReference.match(/^(.*?)(\d+):(\d+)$/)
+  const lastMatch = lastReference.match(/^(.*?)(\d+):(\d+)$/)
+
+  if (firstMatch && lastMatch) {
+    const [, firstBook, firstChapter, firstVerse] = firstMatch
+    const [, lastBook, lastChapter, lastVerse] = lastMatch
+    const trimmedFirstBook = firstBook.trim()
+    const trimmedLastBook = lastBook.trim()
+
+    if (trimmedFirstBook === trimmedLastBook && firstChapter === lastChapter) {
+      return `${trimmedFirstBook} ${firstChapter}:${firstVerse}-${lastVerse}`
+    }
+  }
+
+  return `${firstReference} - ${lastReference}`
 }
 
 function getActiveCards(cards: Flashcard[], startIndex: number, mode: TrainingMode) {
@@ -122,12 +154,25 @@ function getActiveCards(cards: Flashcard[], startIndex: number, mode: TrainingMo
     return []
   }
 
-  if (mode === 'single' || cards.length === 1) {
+  if (mode === 'flashcard' || cards.length === 1) {
     return [cards[startIndex % cards.length]]
   }
 
-  const batchSize = Math.min(4, Math.max(2, cards.length >= 3 ? 3 : 2))
-  return Array.from({ length: batchSize }, (_, offset) => cards[(startIndex + offset) % cards.length])
+  if (mode === 'multi') {
+    const batchSize = Math.min(4, Math.max(2, cards.length >= 3 ? 3 : 2))
+    return Array.from({ length: batchSize }, (_, offset) => cards[(startIndex + offset) % cards.length])
+  }
+
+  const baseCard = cards[startIndex % cards.length]
+  const sameCategoryCards = cards.filter((card) => card.categoryId === baseCard.categoryId)
+  const categoryIndex = sameCategoryCards.findIndex((card) => card.id === baseCard.id)
+  const chapterSize = Math.min(8, Math.max(4, sameCategoryCards.length >= 6 ? 6 : sameCategoryCards.length))
+
+  if (sameCategoryCards.length <= chapterSize) {
+    return sameCategoryCards
+  }
+
+  return sameCategoryCards.slice(categoryIndex, categoryIndex + chapterSize)
 }
 
 export default function FlashcardsPage() {
@@ -150,7 +195,7 @@ export default function FlashcardsPage() {
   const [typedAnswer, setTypedAnswer] = useState('')
   const [showTypingResult, setShowTypingResult] = useState(false)
   const [showAnimatedResult, setShowAnimatedResult] = useState(false)
-  const [trainingMode, setTrainingMode] = useState<TrainingMode>('single')
+  const [trainingMode, setTrainingMode] = useState<TrainingMode>('flashcard')
 
   useEffect(() => {
     async function initialize() {
@@ -199,20 +244,47 @@ export default function FlashcardsPage() {
     })
   }, [filteredFlashcards])
 
-  const safeCurrentCardIndex = orderedFlashcards.length > 0
-    ? currentCardIndex % orderedFlashcards.length
+  const chapterEligibleCategoryIds = useMemo(() => {
+    const counts = new Map<string, number>()
+
+    for (const flashcard of orderedFlashcards) {
+      if (!flashcard.categoryId) continue
+      counts.set(flashcard.categoryId, (counts.get(flashcard.categoryId) || 0) + 1)
+    }
+
+    return new Set(
+      Array.from(counts.entries())
+        .filter(([, count]) => count >= 4)
+        .map(([categoryId]) => categoryId)
+    )
+  }, [orderedFlashcards])
+
+  const chapterEligibleFlashcards = useMemo(() => {
+    return orderedFlashcards.filter((flashcard) =>
+      flashcard.categoryId ? chapterEligibleCategoryIds.has(flashcard.categoryId) : false
+    )
+  }, [chapterEligibleCategoryIds, orderedFlashcards])
+
+  const activeDeck = trainingMode === 'chapter' ? chapterEligibleFlashcards : orderedFlashcards
+
+  const safeCurrentCardIndex = activeDeck.length > 0
+    ? currentCardIndex % activeDeck.length
     : 0
 
   const activeCards = useMemo(() => {
-    return getActiveCards(orderedFlashcards, safeCurrentCardIndex, trainingMode)
-  }, [orderedFlashcards, safeCurrentCardIndex, trainingMode])
+    return getActiveCards(activeDeck, safeCurrentCardIndex, trainingMode)
+  }, [activeDeck, safeCurrentCardIndex, trainingMode])
 
   const currentCard = activeCards[0] || null
+  const combinedReferenceLabel = useMemo(() => getReferenceRangeLabel(activeCards), [activeCards])
   const comparedVerses = useMemo(() => buildComparedVerses(activeCards, typedAnswer), [activeCards, typedAnswer])
   const allComparedWords = comparedVerses.flatMap((verse) => verse.words)
   const correctWordCount = allComparedWords.filter((item) => item.isCorrect).length
   const accuracyScore = allComparedWords.length > 0 ? correctWordCount / allComparedWords.length : 0
   const isMostlyCorrect = accuracyScore >= 0.8
+  const isChapterProgress = trainingMode === 'chapter' && accuracyScore >= 0.7 && accuracyScore < 0.8
+  const canUseMultiMode = orderedFlashcards.length >= 2
+  const canUseChapterMode = chapterEligibleFlashcards.length >= 4
 
   useEffect(() => {
     if (!showTypingResult) return
@@ -235,12 +307,12 @@ export default function FlashcardsPage() {
   }
 
   const handleNextCard = () => {
-    if (orderedFlashcards.length === 0) {
+    if (activeDeck.length === 0) {
       return
     }
 
-    const stepSize = trainingMode === 'multi' ? activeCards.length : 1
-    setCurrentCardIndex((previousIndex) => (previousIndex + stepSize) % orderedFlashcards.length)
+    const stepSize = trainingMode === 'flashcard' ? 1 : activeCards.length
+    setCurrentCardIndex((previousIndex) => (previousIndex + stepSize) % activeDeck.length)
     setShowAnswer(false)
     resetTypingFeedback()
   }
@@ -252,8 +324,16 @@ export default function FlashcardsPage() {
     resetTypingFeedback()
   }
 
-  const handleTrainingModeToggle = () => {
-    setTrainingMode((currentMode) => currentMode === 'single' ? 'multi' : 'single')
+  const handleTrainingModeChange = (mode: TrainingMode) => {
+    if (mode === 'multi' && !canUseMultiMode) {
+      return
+    }
+
+    if (mode === 'chapter' && !canUseChapterMode) {
+      return
+    }
+
+    setTrainingMode(mode)
     setCurrentCardIndex(0)
     setShowAnswer(false)
     resetTypingFeedback()
@@ -349,8 +429,8 @@ export default function FlashcardsPage() {
     setShowAnswer(false)
     resetTypingFeedback()
 
-    const stepSize = trainingMode === 'multi' ? activeCards.length : 1
-    setCurrentCardIndex((previousIndex) => (previousIndex + stepSize) % orderedFlashcards.length)
+    const stepSize = trainingMode === 'flashcard' ? 1 : activeCards.length
+    setCurrentCardIndex((previousIndex) => (previousIndex + stepSize) % activeDeck.length)
   }
 
   const handleCheckTypedAnswer = () => {
@@ -591,21 +671,56 @@ export default function FlashcardsPage() {
 
               <div className="block">
                 <span className="text-sm font-semibold text-gray-900">Training Mode</span>
-                <button
-                  type="button"
-                  onClick={handleTrainingModeToggle}
-                  disabled={orderedFlashcards.length < 2}
-                  className="mt-2 w-full rounded-xl border border-gray-300 px-4 py-3 font-semibold text-gray-900 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400"
-                >
-                  {trainingMode === 'multi' ? 'Single Verse Mode' : 'Multi-Verse Mode'}
-                </button>
+                <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                  <button
+                    type="button"
+                    onClick={() => handleTrainingModeChange('flashcard')}
+                    className={`rounded-xl px-4 py-3 font-semibold transition ${
+                      trainingMode === 'flashcard'
+                        ? 'bg-slate-900 text-white'
+                        : 'border border-gray-300 text-gray-900 hover:bg-gray-100'
+                    }`}
+                  >
+                    Flashcard
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleTrainingModeChange('multi')}
+                    disabled={!canUseMultiMode}
+                    className={`rounded-xl px-4 py-3 font-semibold transition ${
+                      trainingMode === 'multi'
+                        ? 'bg-slate-900 text-white'
+                        : 'border border-gray-300 text-gray-900 hover:bg-gray-100'
+                    } disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400`}
+                  >
+                    Multi-Verse
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleTrainingModeChange('chapter')}
+                    disabled={!canUseChapterMode}
+                    className={`rounded-xl px-4 py-3 font-semibold transition ${
+                      trainingMode === 'chapter'
+                        ? 'bg-slate-900 text-white'
+                        : 'border border-gray-300 text-gray-900 hover:bg-gray-100'
+                    } disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-400`}
+                  >
+                    Chapter
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          {trainingMode === 'multi' && orderedFlashcards.length < 2 && (
+          {trainingMode === 'multi' && !canUseMultiMode && (
             <p className="mt-4 text-sm text-gray-600">
               Add at least two flashcards in this deck to use Multi-Verse Mode.
+            </p>
+          )}
+
+          {trainingMode === 'chapter' && !canUseChapterMode && (
+            <p className="mt-4 text-sm text-gray-600">
+              Add at least four flashcards in the same category to use Chapter Mode.
             </p>
           )}
 
@@ -635,16 +750,18 @@ export default function FlashcardsPage() {
                   <span className={`rounded-full px-3 py-1 text-sm font-semibold ${getStatusLabelClasses(currentCard.status)}`}>
                     {formatStatusLabel(currentCard.status)}
                   </span>
-                  {trainingMode === 'multi' && (
+                  {trainingMode !== 'flashcard' && (
                     <span className="rounded-full bg-slate-900 px-3 py-1 text-sm font-semibold text-white">
-                      Multi-Verse
+                      {trainingMode === 'multi' ? 'Multi-Verse' : 'Chapter'}
                     </span>
                   )}
                 </div>
                 <span className="text-sm font-medium text-gray-500">
-                  {trainingMode === 'multi'
-                    ? `Sequence of ${activeCards.length} verses`
-                    : `Card ${safeCurrentCardIndex + 1} of ${orderedFlashcards.length}`}
+                  {trainingMode === 'flashcard'
+                    ? `Card ${safeCurrentCardIndex + 1} of ${orderedFlashcards.length}`
+                    : trainingMode === 'multi'
+                      ? `Sequence of ${activeCards.length} verses`
+                      : `${activeCards.length} verse passage`}
                 </span>
               </div>
 
@@ -655,24 +772,24 @@ export default function FlashcardsPage() {
               >
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
-                    {showAnswer ? 'Reference' : trainingMode === 'multi' ? 'Verse Sequence' : 'Verse'}
+                    {showAnswer
+                      ? trainingMode === 'flashcard' ? 'Reference' : 'Reference Range'
+                      : trainingMode === 'flashcard' ? 'Verse' : trainingMode === 'multi' ? 'Verse Sequence' : 'Passage'}
                   </p>
                 </div>
 
                 <div className="space-y-5 py-6 text-center">
                   {showAnswer ? (
                     <div className="space-y-3">
-                      {activeCards.map((card, index) => (
-                        <p key={card.id} className="text-2xl font-extrabold text-slate-900 md:text-3xl">
-                          {trainingMode === 'multi' ? `Verse ${index + 1}: ` : ''}{card.reference}
-                        </p>
-                      ))}
+                      <p className="text-2xl font-extrabold text-slate-900 md:text-3xl">
+                        {trainingMode === 'flashcard' ? currentCard.reference : combinedReferenceLabel}
+                      </p>
                     </div>
                   ) : (
                     <div className="space-y-5">
                       {activeCards.map((card, index) => (
                         <div key={card.id}>
-                          {trainingMode === 'multi' && (
+                          {trainingMode !== 'flashcard' && (
                             <p className="mb-2 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">
                               Verse {index + 1}
                             </p>
@@ -714,13 +831,19 @@ export default function FlashcardsPage() {
                   <div>
                     <h3 className="text-base font-bold text-gray-900">Typing Practice</h3>
                     <p className="mt-1 text-sm text-gray-600">
-                      {trainingMode === 'multi'
-                        ? 'Type the entire multi-verse sequence from memory.'
-                        : 'Type the verse from memory for word-by-word feedback.'}
+                      {trainingMode === 'flashcard'
+                        ? 'Type the verse from memory for word-by-word feedback.'
+                        : trainingMode === 'multi'
+                          ? 'Type the entire multi-verse sequence from memory.'
+                          : 'Type the full passage from memory with section-by-section feedback.'}
                     </p>
                   </div>
                   <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
-                    {trainingMode === 'multi' ? 'Sequence Recall' : 'Verse Recall'}
+                    {trainingMode === 'chapter'
+                      ? 'Passage Recall'
+                      : trainingMode === 'multi'
+                        ? 'Sequence Recall'
+                        : 'Verse Recall'}
                   </span>
                 </div>
 
@@ -735,8 +858,14 @@ export default function FlashcardsPage() {
                         setShowAnimatedResult(false)
                       }
                     }}
-                    placeholder={trainingMode === 'multi' ? 'Type the full verse sequence here' : 'Type the verse here'}
-                    rows={trainingMode === 'multi' ? 6 : 4}
+                    placeholder={
+                      trainingMode === 'chapter'
+                        ? 'Type the full passage here'
+                        : trainingMode === 'multi'
+                          ? 'Type the full verse sequence here'
+                          : 'Type the verse here'
+                    }
+                    rows={trainingMode === 'flashcard' ? 4 : trainingMode === 'multi' ? 6 : 8}
                     className="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
                   />
                 </label>
@@ -761,30 +890,53 @@ export default function FlashcardsPage() {
 
                 <div
                   className={`overflow-hidden transition-all duration-300 ${
-                    showTypingResult ? 'mt-4 max-h-[48rem] opacity-100' : 'max-h-0 opacity-0'
+                    showTypingResult ? 'mt-4 max-h-[64rem] opacity-100' : 'max-h-0 opacity-0'
                   }`}
                 >
                   <div
                     className={`rounded-2xl border p-4 transition duration-300 ${
                       isMostlyCorrect
                         ? 'border-emerald-200 bg-emerald-50'
-                        : 'border-amber-200 bg-amber-50'
+                        : isChapterProgress
+                          ? 'border-blue-200 bg-blue-50'
+                          : 'border-amber-200 bg-amber-50'
                     } ${showAnimatedResult ? 'scale-100 opacity-100' : 'scale-[0.98] opacity-0'}`}
                   >
                     <p className={`text-base font-bold ${
-                      isMostlyCorrect ? 'text-emerald-800' : 'text-amber-800'
+                      isMostlyCorrect
+                        ? 'text-emerald-800'
+                        : isChapterProgress
+                          ? 'text-blue-800'
+                          : 'text-amber-800'
                     }`}>
-                      {isMostlyCorrect ? "Great job! 🎉" : "Keep going — you're close 💪"}
+                      {isMostlyCorrect
+                        ? 'Great job! 🎉'
+                        : isChapterProgress
+                          ? 'Great progress — keep refining'
+                          : "Keep going — you're close 💪"}
                     </p>
                     <p className="mt-1 text-sm text-gray-600">
                       Correct version
                     </p>
                     <div className="mt-4 space-y-4">
                       {comparedVerses.map((verse, index) => (
-                        <div key={verse.flashcardId}>
-                          <p className="mb-2 text-sm font-semibold text-gray-700">
-                            {trainingMode === 'multi' ? `Verse ${index + 1} • ${verse.reference}` : verse.reference}
-                          </p>
+                        <div key={verse.flashcardId} className="rounded-xl border border-gray-200 bg-white/70 p-4">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <p className="text-sm font-semibold text-gray-700">
+                              {trainingMode === 'flashcard'
+                                ? verse.reference
+                                : `Verse ${index + 1} • ${verse.reference}`}
+                            </p>
+                            <span className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                              verse.accuracy >= 0.8
+                                ? 'bg-emerald-100 text-emerald-800'
+                                : verse.accuracy >= 0.7
+                                  ? 'bg-blue-100 text-blue-800'
+                                  : 'bg-amber-100 text-amber-800'
+                            }`}>
+                              {Math.round(verse.accuracy * 100)}%
+                            </span>
+                          </div>
                           <div className="flex flex-wrap gap-x-2 gap-y-3 text-base leading-7">
                             {verse.words.map((item, wordIndex) => (
                               <span
@@ -814,7 +966,13 @@ export default function FlashcardsPage() {
                     disabled={isUpdatingStatus}
                     className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300"
                   >
-                    {isUpdatingStatus ? 'Saving...' : trainingMode === 'multi' ? 'Got them right' : 'Got it right'}
+                    {isUpdatingStatus
+                      ? 'Saving...'
+                      : trainingMode === 'flashcard'
+                        ? 'Got it right'
+                        : trainingMode === 'multi'
+                          ? 'Got them right'
+                          : 'Passage was correct'}
                   </button>
                   <button
                     type="button"
@@ -822,14 +980,20 @@ export default function FlashcardsPage() {
                     disabled={isUpdatingStatus}
                     className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-amber-300"
                   >
-                    {isUpdatingStatus ? 'Saving...' : trainingMode === 'multi' ? 'Review this sequence' : 'Need to review'}
+                    {isUpdatingStatus
+                      ? 'Saving...'
+                      : trainingMode === 'flashcard'
+                        ? 'Need to review'
+                        : trainingMode === 'multi'
+                          ? 'Review this sequence'
+                          : 'Review this passage'}
                   </button>
                 </div>
               )}
 
-              {showAnswer && trainingMode === 'multi' && (
+              {showAnswer && trainingMode !== 'flashcard' && (
                 <p className="mt-3 text-sm text-gray-600">
-                  This result will update all verses in the current sequence.
+                  This result will update all verses in the current {trainingMode === 'chapter' ? 'passage' : 'sequence'}.
                 </p>
               )}
             </div>
