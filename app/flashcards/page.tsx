@@ -71,6 +71,20 @@ function formatStatusLabel(status: Flashcard['status']) {
   return 'New'
 }
 
+function normalizeWord(word: string) {
+  return word.toLowerCase().replace(/^[^a-z0-9']+|[^a-z0-9']+$/gi, '')
+}
+
+function buildWordComparison(expectedText: string, typedText: string) {
+  const expectedWords = expectedText.trim().split(/\s+/).filter(Boolean)
+  const typedWords = typedText.trim().split(/\s+/).filter(Boolean)
+
+  return expectedWords.map((word, index) => ({
+    word,
+    isCorrect: normalizeWord(word) === normalizeWord(typedWords[index] || '')
+  }))
+}
+
 export default function FlashcardsPage() {
   const [categories, setCategories] = useState<FlashcardCategory[]>([])
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
@@ -88,6 +102,9 @@ export default function FlashcardsPage() {
   const [isSubmittingFlashcard, setIsSubmittingFlashcard] = useState(false)
   const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
   const [flashcardFormError, setFlashcardFormError] = useState('')
+  const [typedAnswer, setTypedAnswer] = useState('')
+  const [showTypingResult, setShowTypingResult] = useState(false)
+  const [showAnimatedResult, setShowAnimatedResult] = useState(false)
 
   useEffect(() => {
     async function initialize() {
@@ -141,6 +158,33 @@ export default function FlashcardsPage() {
     : 0
 
   const currentCard = orderedFlashcards[safeCurrentCardIndex] || null
+  const wordComparison = useMemo(() => {
+    if (!currentCard) {
+      return []
+    }
+
+    return buildWordComparison(currentCard.verse, typedAnswer)
+  }, [currentCard, typedAnswer])
+
+  const correctWordCount = wordComparison.filter((item) => item.isCorrect).length
+  const accuracyScore = wordComparison.length > 0 ? correctWordCount / wordComparison.length : 0
+  const isMostlyCorrect = accuracyScore >= 0.8
+
+  useEffect(() => {
+    if (!showTypingResult) return
+
+    const timeoutId = window.setTimeout(() => {
+      setShowAnimatedResult(true)
+    }, 150)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [showTypingResult])
+
+  const resetTypingFeedback = () => {
+    setTypedAnswer('')
+    setShowTypingResult(false)
+    setShowAnimatedResult(false)
+  }
 
   const handleRevealAnswer = () => {
     setShowAnswer(true)
@@ -153,12 +197,14 @@ export default function FlashcardsPage() {
 
     setCurrentCardIndex((previousIndex) => (previousIndex + 1) % orderedFlashcards.length)
     setShowAnswer(false)
+    resetTypingFeedback()
   }
 
   const handleCategoryFilterChange = (categoryId: string) => {
     setSelectedCategoryId(categoryId)
     setCurrentCardIndex(0)
     setShowAnswer(false)
+    resetTypingFeedback()
   }
 
   const handleCreateCategory = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -243,6 +289,7 @@ export default function FlashcardsPage() {
     )
 
     setShowAnswer(false)
+    resetTypingFeedback()
 
     const currentIndexInOrderedDeck = orderedFlashcards.findIndex((flashcard) => flashcard.id === currentCard.id)
     if (currentIndexInOrderedDeck === -1) {
@@ -256,6 +303,14 @@ export default function FlashcardsPage() {
     }
 
     setCurrentCardIndex((currentIndexInOrderedDeck + 1) % orderedFlashcards.length)
+  }
+
+  const handleCheckTypedAnswer = () => {
+    if (!typedAnswer.trim()) {
+      return
+    }
+
+    setShowTypingResult(true)
   }
 
   if (loadingPlan) {
@@ -562,6 +617,92 @@ export default function FlashcardsPage() {
                 >
                   Next Card
                 </button>
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <h3 className="text-base font-bold text-gray-900">Typing Practice</h3>
+                    <p className="mt-1 text-sm text-gray-600">
+                      Type the verse from memory for word-by-word feedback.
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white">
+                    Verse Recall
+                  </span>
+                </div>
+
+                <label className="mt-4 block">
+                  <span className="text-sm font-semibold text-gray-900">Your answer</span>
+                  <textarea
+                    value={typedAnswer}
+                    onChange={(event) => {
+                      setTypedAnswer(event.target.value)
+                      if (showTypingResult) {
+                        setShowTypingResult(false)
+                        setShowAnimatedResult(false)
+                      }
+                    }}
+                    placeholder="Type the verse here"
+                    rows={4}
+                    className="mt-2 w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  />
+                </label>
+
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={handleCheckTypedAnswer}
+                    disabled={!typedAnswer.trim()}
+                    className="rounded-xl bg-blue-700 px-5 py-3 font-semibold text-white transition hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-blue-300"
+                  >
+                    Check Answer
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resetTypingFeedback}
+                    className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-900 transition hover:bg-gray-100"
+                  >
+                    Reset
+                  </button>
+                </div>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${
+                    showTypingResult ? 'mt-4 max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div
+                    className={`rounded-2xl border p-4 transition duration-300 ${
+                      isMostlyCorrect
+                        ? 'border-emerald-200 bg-emerald-50'
+                        : 'border-amber-200 bg-amber-50'
+                    } ${showAnimatedResult ? 'scale-100 opacity-100' : 'scale-[0.98] opacity-0'}`}
+                  >
+                    <p className={`text-base font-bold ${
+                      isMostlyCorrect ? 'text-emerald-800' : 'text-amber-800'
+                    }`}>
+                      {isMostlyCorrect ? "Great job! 🎉" : "Keep going — you're close 💪"}
+                    </p>
+                    <p className="mt-1 text-sm text-gray-600">
+                      Correct version
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-x-2 gap-y-3 text-base leading-7">
+                      {wordComparison.map((item, index) => (
+                        <span
+                          key={`${item.word}-${index}`}
+                          className={`rounded-md px-2 py-1 font-semibold transition-colors duration-200 ${
+                            item.isCorrect
+                              ? 'bg-emerald-100 text-emerald-800'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {item.word}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {showAnswer && (
