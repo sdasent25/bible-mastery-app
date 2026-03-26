@@ -129,11 +129,15 @@ export async function createFlashcard(input: {
   categoryId: string
 }): Promise<Flashcard | null> {
   const userId = await getCurrentUserId()
+
+  console.log('USER ID:', userId)
+  console.log('INPUT:', input)
+
   if (!userId) {
-    return null
+    throw new Error('No user session found')
   }
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from('flashcards')
     .insert({
       user_id: userId,
@@ -142,27 +146,20 @@ export async function createFlashcard(input: {
       status: 'new',
       category_id: input.categoryId
     })
+    .select()
 
   if (error) {
-    console.error('Error creating flashcard:', error)
-    return null
+    console.error('INSERT ERROR:', error)
+    throw error
   }
 
-  // FETCH AFTER INSERT (RLS-safe)
-  const { data, error: fetchError } = await supabase
-    .from('flashcards')
-    .select('id, user_id, verse, reference, status, category_id, created_at')
-    .eq('user_id', userId)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .single()
+  console.log('INSERT SUCCESS:', data)
 
-  if (fetchError) {
-    console.error('Error fetching new flashcard:', fetchError)
-    return null
+  if (!data || data.length === 0) {
+    throw new Error('Insert succeeded but no data returned')
   }
 
-  return mapFlashcard(data)
+  return mapFlashcard(data[0])
 }
 
 export async function updateFlashcardStatus(
