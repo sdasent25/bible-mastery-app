@@ -133,7 +133,7 @@ export async function createFlashcard(input: {
     return null
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('flashcards')
     .insert({
       user_id: userId,
@@ -142,11 +142,23 @@ export async function createFlashcard(input: {
       status: 'new',
       category_id: input.categoryId
     })
-    .select('id, user_id, verse, reference, status, category_id, created_at')
-    .single<FlashcardRow>()
 
   if (error) {
     console.error('Error creating flashcard:', error)
+    return null
+  }
+
+  // FETCH AFTER INSERT (RLS-safe)
+  const { data, error: fetchError } = await supabase
+    .from('flashcards')
+    .select('id, user_id, verse, reference, status, category_id, created_at')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single()
+
+  if (fetchError) {
+    console.error('Error fetching new flashcard:', fetchError)
     return null
   }
 
