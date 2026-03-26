@@ -177,3 +177,55 @@ export async function updateFlashcardStatus(
 
   return mapFlashcard(data)
 }
+
+export async function deleteFlashcard(flashcardId: string): Promise<boolean> {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return false
+
+  const { error } = await supabase
+    .from('flashcards')
+    .delete()
+    .eq('id', flashcardId)
+    .eq('user_id', user.id)
+
+  if (error) {
+    console.error('Error deleting flashcard:', error)
+    return false
+  }
+
+  return true
+}
+
+export async function updateFlashcard(
+  flashcardId: string,
+  updates: { verse: string; reference: string }
+): Promise<Flashcard | null> {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data, error } = await supabase
+    .from('flashcards')
+    .update({
+      verse: updates.verse,
+      reference: updates.reference
+    })
+    .eq('id', flashcardId)
+    .eq('user_id', user.id)
+    .select('id, user_id, verse, reference, status, category_id, created_at')
+    .single()
+
+  if (error) {
+    console.error('Error updating flashcard:', error)
+    return null
+  }
+
+  return {
+    id: data.id,
+    userId: data.user_id,
+    verse: data.verse,
+    reference: data.reference,
+    status: data.status || 'new',
+    categoryId: data.category_id,
+    createdAt: data.created_at
+  }
+}

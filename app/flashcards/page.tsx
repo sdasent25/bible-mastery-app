@@ -5,10 +5,12 @@ import { useEffect, useMemo, useState } from 'react'
 import {
   createFlashcard,
   createFlashcardCategory,
+  deleteFlashcard,
   getFlashcardCategories,
   getFlashcards,
   type Flashcard,
   type FlashcardCategory,
+  updateFlashcard,
   updateFlashcardStatus
 } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
@@ -196,6 +198,9 @@ export default function FlashcardsPage() {
   const [showTypingResult, setShowTypingResult] = useState(false)
   const [showAnimatedResult, setShowAnimatedResult] = useState(false)
   const [trainingMode, setTrainingMode] = useState<TrainingMode>('flashcard')
+  const [editingCardId, setEditingCardId] = useState<string | null>(null)
+  const [editVerse, setEditVerse] = useState('')
+  const [editReference, setEditReference] = useState('')
 
   useEffect(() => {
     async function initialize() {
@@ -431,6 +436,44 @@ export default function FlashcardsPage() {
 
     const stepSize = trainingMode === 'flashcard' ? 1 : activeCards.length
     setCurrentCardIndex((previousIndex) => (previousIndex + stepSize) % activeDeck.length)
+  }
+
+  const handleDelete = async (id: string) => {
+    const success = await deleteFlashcard(id)
+    if (!success) return
+
+    setFlashcards((cards) => cards.filter((card) => card.id !== id))
+
+    if (editingCardId === id) {
+      setEditingCardId(null)
+      setEditVerse('')
+      setEditReference('')
+    }
+  }
+
+  const startEdit = (card: Flashcard) => {
+    setEditingCardId(card.id)
+    setEditVerse(card.verse)
+    setEditReference(card.reference)
+  }
+
+  const saveEdit = async () => {
+    if (!editingCardId) return
+
+    const updated = await updateFlashcard(editingCardId, {
+      verse: editVerse,
+      reference: editReference
+    })
+
+    if (!updated) return
+
+    setFlashcards((cards) =>
+      cards.map((card) => (card.id === updated.id ? updated : card))
+    )
+
+    setEditingCardId(null)
+    setEditVerse('')
+    setEditReference('')
   }
 
   const handleCheckTypedAnswer = () => {
@@ -825,6 +868,53 @@ export default function FlashcardsPage() {
                   Next Card
                 </button>
               </div>
+
+              {currentCard && (
+                <div className="mt-4 flex gap-3">
+                  <button
+                    onClick={() => startEdit(currentCard)}
+                    className="rounded-xl border border-gray-300 px-4 py-2 font-semibold text-gray-900 transition hover:bg-gray-100"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => handleDelete(currentCard.id)}
+                    className="rounded-xl bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+
+              {editingCardId && (
+                <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+                  <textarea
+                    value={editVerse}
+                    onChange={(event) => setEditVerse(event.target.value)}
+                    className="w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                    rows={4}
+                  />
+                  <input
+                    value={editReference}
+                    onChange={(event) => setEditReference(event.target.value)}
+                    className="mt-2 w-full rounded-xl border border-gray-300 bg-white p-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500"
+                  />
+                  <div className="mt-3 flex gap-2">
+                    <button
+                      onClick={saveEdit}
+                      className="rounded-xl bg-blue-600 px-3 py-2 font-semibold text-white transition hover:bg-blue-700"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditingCardId(null)}
+                      className="rounded-xl border border-gray-300 px-3 py-2 font-semibold text-gray-900 transition hover:bg-gray-100"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4">
                 <div className="flex items-center justify-between gap-3">
