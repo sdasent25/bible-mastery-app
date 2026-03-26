@@ -13,7 +13,7 @@ const games = [
   {
     title: 'Fill-in-the-Blank',
     description: 'Complete missing words from scripture passages to sharpen precise recall.',
-    href: '#'
+    href: '/games/fill-in-the-blank'
   },
   {
     title: 'Match Verse → Reference',
