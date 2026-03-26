@@ -373,6 +373,24 @@ export default function Dashboard() {
 
       <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
         <div>
+          <h2 className="text-lg font-bold text-gray-900">Game Training</h2>
+          <p className="mt-1 text-sm text-gray-600">Train your mind through interactive challenges built for faster recall.</p>
+        </div>
+        <Link href="/games">
+          <button className="w-full rounded-xl bg-rose-600 p-4 text-white shadow-md transition hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-500">
+            <div className="flex items-center">
+              <span className="mr-4 text-3xl">🎮</span>
+              <div className="text-left">
+                <div className="text-lg font-bold">Play Games</div>
+                <div className="text-sm text-rose-100">Pro+ interactive challenge modes</div>
+              </div>
+            </div>
+          </button>
+        </Link>
+      </section>
+
+      <section className="rounded-xl bg-white p-5 shadow-md space-y-4">
+        <div>
           <h2 className="text-lg font-bold text-gray-900">Weekly Leaderboard</h2>
           <p className="mt-1 text-sm text-gray-600">See who is leading this week and where you rank.</p>
         </div>
