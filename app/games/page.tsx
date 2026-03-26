@@ -7,15 +7,18 @@ import { getSubscriptionStatus } from '@/lib/user'
 const games = [
   {
     title: 'Flashcard Sprint',
-    description: 'Move fast through verse recall rounds built for quick memorization reps.'
+    description: 'Move fast through verse recall rounds built for quick memorization reps.',
+    href: '/games/flashcard-sprint'
   },
   {
     title: 'Fill-in-the-Blank',
-    description: 'Complete missing words from scripture passages to sharpen precise recall.'
+    description: 'Complete missing words from scripture passages to sharpen precise recall.',
+    href: '#'
   },
   {
     title: 'Match Verse → Reference',
-    description: 'Pair each verse with its correct reference through rapid matching challenges.'
+    description: 'Pair each verse with its correct reference through rapid matching challenges.',
+    href: '#'
   }
 ]
 
@@ -95,12 +98,22 @@ export default function GamesPage() {
                 <h2 className="text-xl font-bold text-gray-900">{game.title}</h2>
                 <p className="mt-3 text-sm leading-6 text-gray-600">{game.description}</p>
               </div>
-              <button
-                type="button"
-                className="mt-6 rounded-xl bg-slate-900 px-4 py-3 font-semibold text-white transition hover:bg-black"
-              >
-                Play
-              </button>
+              {game.href === '#' ? (
+                <button
+                  type="button"
+                  disabled
+                  className="mt-6 rounded-xl bg-gray-200 px-4 py-3 font-semibold text-gray-500"
+                >
+                  Coming Soon
+                </button>
+              ) : (
+                <Link
+                  href={game.href}
+                  className="mt-6 rounded-xl bg-slate-900 px-4 py-3 text-center font-semibold text-white transition hover:bg-black"
+                >
+                  Play
+                </Link>
+              )}
             </article>
           ))}
         </section>
