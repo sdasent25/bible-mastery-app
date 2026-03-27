@@ -10,6 +10,7 @@ import { getSubscriptionStatus } from '@/lib/user';
 import { segments } from '@/lib/questions';
 import { getPerformanceStats, type PerformanceStats } from '@/lib/performance';
 import { getDailyProgress } from '@/lib/daily';
+import { hasClaimedReward } from '@/lib/rewards';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -112,6 +113,7 @@ export default function Dashboard() {
 
   const level = Math.floor(xp / 100) + 1;
   const streak = typeof window !== 'undefined' ? getStreak() : 0;
+  const rewardClaimed = typeof window !== 'undefined' ? hasClaimedReward() : false;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -226,6 +228,18 @@ export default function Dashboard() {
         {daily.completed && (
           <p className="text-green-600 font-bold">
             🎉 Daily Complete!
+          </p>
+        )}
+
+        {daily.completed && !rewardClaimed && (
+          <p className="text-blue-600 font-bold mt-2">
+            🎁 +50 XP Bonus Earned!
+          </p>
+        )}
+
+        {daily.completed && rewardClaimed && (
+          <p className="text-gray-600 font-medium mt-2">
+            Reward claimed ✔
           </p>
         )}
       </div>
