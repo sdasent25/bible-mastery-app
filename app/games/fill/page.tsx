@@ -37,14 +37,18 @@ export default function FillGame() {
     return () => clearInterval(interval)
   }, [useTimer, started])
 
-  async function load() {
-    const data = await getFlashcards()
-    setCards(data)
-  }
+async function load() {
+  const data = await getFlashcards()
+  setCards(data)
 
-  function generateQuestion() {
-    const card = cards[Math.floor(Math.random() * cards.length)]
-    const words = card.verse.split(' ')
+  if (data.length > 0) {
+    generateQuestionFromData(data)
+  }
+}
+
+function generateQuestionFromData(data: any[]) {
+  const card = data[Math.floor(Math.random() * data.length)]
+  const words = card.verse.split(' ')
 
     let hideCount = 2
     if (card.status === 'learning') hideCount = Math.floor(words.length * 0.4)
@@ -64,12 +68,12 @@ export default function FillGame() {
   }
 
   function startGame() {
-    setStarted(true)
-    setRound(1)
-    setScore(0)
-    setStreak(0)
-    generateQuestion()
-  }
+  setStarted(true)
+  setRound(1)
+  setScore(0)
+  setStreak(0)
+  generateQuestionFromData(cards)
+}
 
   function handleSubmit() {
     if (!question) return
@@ -99,11 +103,11 @@ export default function FillGame() {
     if (round >= 10) {
       setStarted(false)
       return
-    }
-
-    setRound((r) => r + 1)
-    generateQuestion()
   }
+
+  setRound((r) => r + 1)
+  generateQuestionFromData(cards)
+}
 
   if (!started) {
     return (
