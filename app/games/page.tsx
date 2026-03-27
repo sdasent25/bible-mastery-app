@@ -1,128 +1,32 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { getSubscriptionStatus } from '@/lib/user'
-
-const games = [
-  {
-    title: 'Flashcard Sprint',
-    description: 'Move fast through verse recall rounds built for quick memorization reps.',
-    href: '/games/flashcard-sprint'
-  },
-  {
-    title: 'Fill-in-the-Blank',
-    description: 'Complete missing words from scripture passages to sharpen precise recall.',
-    href: '/games/fill-in-the-blank'
-  },
-  {
-    title: 'Match Verse → Reference',
-    description: 'Pair each verse with its correct reference through rapid matching challenges.',
-    href: '#'
-  }
-]
 
 export default function GamesPage() {
-  const [isProPlusUser, setIsProPlusUser] = useState(false)
-  const [loadingPlan, setLoadingPlan] = useState(true)
-
-  useEffect(() => {
-    async function loadPlan() {
-      const { isProPlus } = await getSubscriptionStatus()
-      setIsProPlusUser(isProPlus)
-      setLoadingPlan(false)
-    }
-
-    loadPlan()
-  }, [])
-
-  if (loadingPlan) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-        <p className="text-lg text-gray-700">Loading games...</p>
-      </div>
-    )
-  }
-
-  if (!isProPlusUser) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-6 md:py-12">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-3xl text-white">
-            🔒
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-            Game Training
-          </h1>
-          <p className="mt-2 text-base text-gray-600">
-            Train your mind through interactive challenges
-          </p>
-          <p className="mt-6 text-lg font-semibold text-gray-900">
-            Unlock Game Training with Pro+
-          </p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-            <Link
-              href="/upgrade"
-              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-center font-semibold text-white transition hover:bg-black"
-            >
-              Upgrade to Pro+
-            </Link>
-            <Link
-              href="/dashboard"
-              className="w-full rounded-xl border border-gray-300 px-5 py-3 text-center font-semibold text-gray-900 transition hover:bg-gray-100"
-            >
-              Back to Dashboard
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-6 md:py-10">
-      <div className="mx-auto w-full max-w-5xl space-y-8">
-        <header className="text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 md:text-4xl">
-            Game Training
-          </h1>
-          <p className="mt-2 text-base text-gray-600 md:text-lg">
-            Train your mind through interactive challenges
-          </p>
-        </header>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-4xl mx-auto">
 
-        <section className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {games.map((game) => (
-            <article key={game.title} className="flex h-full flex-col rounded-3xl border border-gray-200 bg-white p-6 shadow-md">
-              <div className="flex-1">
-                <h2 className="text-xl font-bold text-gray-900">{game.title}</h2>
-                <p className="mt-3 text-sm leading-6 text-gray-600">{game.description}</p>
-              </div>
-              {game.href === '#' ? (
-                <button
-                  type="button"
-                  disabled
-                  className="mt-6 rounded-xl bg-gray-200 px-4 py-3 font-semibold text-gray-500"
-                >
-                  Coming Soon
-                </button>
-              ) : (
-                <Link
-                  href={game.href}
-                  className="mt-6 rounded-xl bg-slate-900 px-4 py-3 text-center font-semibold text-white transition hover:bg-black"
-                >
-                  Play
-                </Link>
-              )}
-            </article>
-          ))}
-        </section>
+        <h1 className="text-3xl font-bold text-center mb-6">
+          Games
+        </h1>
 
-        <div className="text-center">
-          <Link href="/dashboard" className="text-sm font-semibold text-gray-600 transition hover:text-gray-900">
-            Back to Dashboard
+        <div className="grid gap-4">
+
+          <Link href="/games/fill" className="p-6 bg-white rounded-xl shadow hover:shadow-md">
+            <h2 className="text-xl font-bold">Fill in the Blank</h2>
+            <p className="text-gray-600 mt-2">
+              Test your memory by filling in missing words
+            </p>
           </Link>
+
+          <div className="p-6 bg-gray-100 rounded-xl opacity-50">
+            <h2 className="text-xl font-bold">Flashcard Sprint</h2>
+            <p>Coming soon</p>
+          </div>
+
         </div>
+
       </div>
     </div>
   )
