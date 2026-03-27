@@ -162,25 +162,34 @@ export default function FillGame() {
 
         {/* GAME CARD */}
         {question && (
-          <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
+          <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 transition-all duration-200 hover:shadow-xl">
 
             <div className="mb-6">
-              <p className="text-center text-xl font-semibold text-gray-900 leading-relaxed">
+              <p className="text-xl text-center leading-relaxed text-gray-900 font-semibold">
 
-                {question.words.map((word, i) =>
-                  question.hiddenIndexes.includes(i) ? (
-                    <input
-                      key={i}
-                      value={answers[i] || ''}
-                      onChange={(e) =>
-                        setAnswers({ ...answers, [i]: e.target.value })
-                      }
-                      className="mx-2 w-28 text-center text-lg font-bold border-b-4 border-blue-600 bg-transparent focus:outline-none"
-                    />
-                  ) : (
-                    <span key={i} className="mx-2">{word}</span>
+                {question.words.map((word, i) => {
+
+                  const isBlank = question.hiddenIndexes.includes(i)
+
+                  return (
+                    <span key={i} className="inline-flex items-center mx-1">
+
+                      {isBlank ? (
+                        <input
+                          value={answers[i] || ''}
+                          onChange={(e) =>
+                            setAnswers({ ...answers, [i]: e.target.value })
+                          }
+                          className="min-w-[80px] border-b-2 border-blue-600 text-center text-lg font-bold bg-transparent focus:outline-none"
+                        />
+                      ) : (
+                        <span>{word}</span>
+                      )}
+
+                    </span>
                   )
-                )}
+
+                })}
 
               </p>
             </div>
@@ -207,15 +216,23 @@ export default function FillGame() {
                       Not quite — keep going 💪
                     </p>
 
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {question.hiddenIndexes.map((i) => (
-                        <span
-                          key={i}
-                          className="bg-gray-200 px-3 py-1 rounded-lg font-semibold"
-                        >
-                          {question.words[i]}
-                        </span>
-                      ))}
+                    <div className="mt-4 text-center">
+
+                      <p className="text-sm text-gray-600 mb-2">
+                        Correct answers:
+                      </p>
+
+                      <div className="flex flex-wrap justify-center gap-2">
+                        {question.hiddenIndexes.map((i) => (
+                          <span
+                            key={i}
+                            className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg font-semibold"
+                          >
+                            {question.words[i]}
+                          </span>
+                        ))}
+                      </div>
+
                     </div>
                   </div>
                 )}
