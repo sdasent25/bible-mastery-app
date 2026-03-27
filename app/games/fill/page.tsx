@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { getFlashcards } from '@/lib/flashcards'
+import { getSubscriptionStatus } from '@/lib/user'
 
 export default function FillGame() {
   const [cards, setCards] = useState<any[]>([])
@@ -16,10 +17,25 @@ export default function FillGame() {
 
   const [useTimer, setUseTimer] = useState(false)
   const [time, setTime] = useState(15)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    load()
+    async function init() {
+      await getSubscriptionStatus()
+
+      const data = await getFlashcards()
+      setCards(data)
+      setLoading(false)
+    }
+
+    init()
   }, [])
+
+  useEffect(() => {
+    if (cards.length > 0 && started && !question) {
+      generateQuestionFromData(cards)
+    }
+  }, [cards, started])
 
   useEffect(() => {
     if (!useTimer || !started) return
@@ -36,30 +52,6 @@ export default function FillGame() {
 
     return () => clearInterval(interval)
   }, [useTimer, started])
-
-  async function load() {
-    let attempts = 0
-
-    while (attempts < 5) {
-      const data = await getFlashcards()
-
-      if (data.length > 0) {
-        setCards(data)
-        return
-      }
-
-      await new Promise((res) => setTimeout(res, 500))
-      attempts++
-    }
-
-    console.log('No flashcards found after retries')
-  }
-
-  useEffect(() => {
-    if (cards.length > 0 && started && !question) {
-      generateQuestionFromData(cards)
-    }
-  }, [cards, started])
 
 function generateQuestionFromData(data: any[]) {
   const card = data[Math.floor(Math.random() * data.length)]
@@ -120,9 +112,17 @@ function generateQuestionFromData(data: any[]) {
       return
   }
 
-  setRound((r) => r + 1)
-  generateQuestionFromData(cards)
-}
+    setRound((r) => r + 1)
+    generateQuestionFromData(cards)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg font-semibold">Loading game...</p>
+      </div>
+    )
+  }
 
   if (!started) {
     return (
