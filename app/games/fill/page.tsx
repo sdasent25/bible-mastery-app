@@ -31,7 +31,6 @@ export default function FillGame() {
       setCards(data)
       setLoading(false)
     }
-
     init()
   }, [])
 
@@ -108,23 +107,29 @@ export default function FillGame() {
   }
 
   if (loading) {
-    return <div className="p-10 text-center">Loading...</div>
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <p className="text-xl font-bold text-gray-900">Loading game...</p>
+      </div>
+    )
   }
 
   if (!started) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="bg-white p-8 rounded-2xl shadow-lg text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+        <div className="bg-white p-10 rounded-3xl shadow-xl text-center max-w-md w-full">
 
-          <h1 className="text-3xl font-bold mb-4">Fill in the Blank</h1>
+          <h1 className="text-3xl font-extrabold text-gray-900 mb-3">
+            Fill in the Blank
+          </h1>
 
-          <p className="text-gray-600 mb-6">
-            Test your memory using your saved flashcards
+          <p className="text-gray-700 mb-8">
+            Strengthen your memory using your saved verses
           </p>
 
           <button
             onClick={startGame}
-            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold text-lg shadow-md"
           >
             Start Game
           </button>
@@ -135,77 +140,89 @@ export default function FillGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 px-4 py-8">
       <div className="max-w-3xl mx-auto">
 
         {/* HEADER */}
-        <div className="flex justify-between mb-6 font-semibold text-gray-800">
-          <div>Q {round}/10</div>
-          <div className="text-blue-600">XP: {xp}</div>
-          <div>🔥 {streak}</div>
+        <div className="flex justify-between items-center mb-6">
+
+          <div className="bg-white px-4 py-2 rounded-full shadow text-gray-900 font-semibold">
+            Q {round}/10
+          </div>
+
+          <div className="bg-blue-100 px-4 py-2 rounded-full font-bold text-blue-700 shadow">
+            XP {xp}
+          </div>
+
+          <div className="bg-orange-100 px-4 py-2 rounded-full font-bold text-orange-600 shadow">
+            🔥 {streak}
+          </div>
+
         </div>
 
-        {/* CARD */}
+        {/* GAME CARD */}
         {question && (
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+          <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200">
 
-            <p className="text-lg text-center leading-relaxed text-gray-900 font-medium">
-              {question.words.map((w, i) =>
-                question.hiddenIndexes.includes(i) ? (
-                  <input
-                    key={i}
-                    value={answers[i] || ''}
-                    onChange={(e) =>
-                      setAnswers({ ...answers, [i]: e.target.value })
-                    }
-                    className="border-b-2 border-blue-600 mx-1 w-24 text-center font-bold text-gray-900 bg-transparent focus:outline-none"
-                  />
-                ) : (
-                  <span key={i} className="mx-1">{w}</span>
-                )
-              )}
-            </p>
+            <div className="mb-6">
+              <p className="text-center text-xl font-semibold text-gray-900 leading-relaxed">
+
+                {question.words.map((word, i) =>
+                  question.hiddenIndexes.includes(i) ? (
+                    <input
+                      key={i}
+                      value={answers[i] || ''}
+                      onChange={(e) =>
+                        setAnswers({ ...answers, [i]: e.target.value })
+                      }
+                      className="mx-2 w-28 text-center text-lg font-bold border-b-4 border-blue-600 bg-transparent focus:outline-none"
+                    />
+                  ) : (
+                    <span key={i} className="mx-2">{word}</span>
+                  )
+                )}
+
+              </p>
+            </div>
 
             {!showResult ? (
-              <div className="text-center mt-6">
+              <div className="text-center">
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow"
                 >
                   Submit
                 </button>
               </div>
             ) : (
-              <div className="text-center mt-6">
+              <div className="text-center">
 
                 {lastCorrect ? (
-                  <p className="text-green-600 text-xl font-bold">
+                  <p className="text-green-600 text-2xl font-extrabold mb-4">
                     Nice! +10 XP 🎉
                   </p>
                 ) : (
-                  <>
-                    <p className="text-red-600 text-xl font-bold">
+                  <div className="mb-4">
+                    <p className="text-red-600 text-xl font-bold mb-3">
                       Not quite — keep going 💪
                     </p>
-                    <p className="text-sm text-gray-700 mt-2">
-                      Correct answers:
-                    </p>
-                    <div className="mt-2 flex flex-wrap justify-center gap-2">
+
+                    <div className="flex flex-wrap justify-center gap-2">
                       {question.hiddenIndexes.map((i) => (
                         <span
                           key={i}
-                          className="px-2 py-1 bg-gray-200 rounded text-sm font-semibold"
+                          className="bg-gray-200 px-3 py-1 rounded-lg font-semibold"
                         >
                           {question.words[i]}
                         </span>
                       ))}
                     </div>
-                  </>
+                  </div>
                 )}
 
                 <button
                   onClick={nextQuestion}
-                  className="mt-4 bg-black text-white px-6 py-3 rounded-xl font-bold"
+                  className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-2xl font-bold text-lg shadow"
                 >
                   Next
                 </button>
