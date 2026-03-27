@@ -11,7 +11,7 @@ export function getDailyProgress() {
 
   return data
     ? JSON.parse(data)
-    : { count: 0, completed: false }
+    : { count: 0, completed: false, reward: false }
 }
 
 export function updateDailyProgress() {
@@ -20,7 +20,8 @@ export function updateDailyProgress() {
 
   const updated = {
     count: data.count + 1,
-    completed: data.count + 1 >= 5
+    completed: data.count + 1 >= 5,
+    reward: false
   }
 
   localStorage.setItem(`daily-${key}`, JSON.stringify(updated))
