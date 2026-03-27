@@ -19,6 +19,7 @@ export default function FillGame() {
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [xp, setXp] = useState(0)
+  const [doubleXP, setDoubleXP] = useState(false)
 
   const [question, setQuestion] = useState<Question | null>(null)
   const [answers, setAnswers] = useState<Record<number, string>>({})
@@ -103,7 +104,7 @@ export default function FillGame() {
     if (isPerfect) {
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
-      setXp((x) => x + 10)
+      setXp((x) => x + (doubleXP ? 20 : 10))
     } else {
       setStreak(0)
     }
@@ -154,6 +155,13 @@ export default function FillGame() {
             Start Game
           </button>
 
+          <button
+            onClick={() => setDoubleXP((d) => !d)}
+            className="mt-4 bg-purple-600 text-white px-4 py-2 rounded-xl font-bold"
+          >
+            {doubleXP ? 'Disable 2x XP' : 'Enable 2x XP'}
+          </button>
+
         </div>
       </div>
     )
@@ -166,6 +174,9 @@ export default function FillGame() {
         <div className="flex justify-between mb-6 font-bold text-gray-900">
           <div>Q {round}/10</div>
           <div className="text-blue-600">XP {xp}</div>
+          <div className="bg-purple-100 px-4 py-2 rounded-full font-bold text-purple-700 shadow">
+            {doubleXP ? '⚡ 2x XP' : 'XP Normal'}
+          </div>
           <div>🔥 {streak}</div>
         </div>
 

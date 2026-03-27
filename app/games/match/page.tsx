@@ -10,6 +10,7 @@ export default function MatchGame() {
   const [selectedVerse, setSelectedVerse] = useState<string | null>(null)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [doubleXP, setDoubleXP] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -29,7 +30,7 @@ export default function MatchGame() {
     const correct = pairs.find(p => p.verse === selectedVerse)
 
     if (correct?.reference === reference) {
-      setScore(s => s + 1)
+      setScore(s => s + (doubleXP ? 2 : 1))
       setStreak(s => s + 1)
       updateDailyProgress()
       setPairs(prev => prev.filter(p => p.verse !== selectedVerse))
@@ -47,7 +48,19 @@ export default function MatchGame() {
         {/* HEADER */}
         <div className="flex justify-between mb-6 text-gray-900 font-bold">
           <div>Score: {score}</div>
+          <div className="bg-purple-100 px-4 py-2 rounded-full font-bold text-purple-700">
+            {doubleXP ? '⚡ 2x XP' : 'XP Normal'}
+          </div>
           <div>🔥 {streak}</div>
+        </div>
+
+        <div className="mb-6">
+          <button
+            onClick={() => setDoubleXP((d) => !d)}
+            className="bg-purple-600 text-white px-4 py-2 rounded-xl font-bold"
+          >
+            {doubleXP ? 'Disable 2x XP' : 'Enable 2x XP'}
+          </button>
         </div>
 
         <div className="grid grid-cols-2 gap-6">
