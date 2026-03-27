@@ -2,48 +2,67 @@
 
 import { useState } from 'react'
 
-const correctOrder = [
-  'Genesis',
-  'Exodus',
-  'Leviticus',
-  'Numbers',
-  'Deuteronomy'
+const sections = [
+  {
+    title: 'Pentateuch',
+    books: ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy']
+  },
+  {
+    title: 'History',
+    books: ['Joshua', 'Judges', 'Ruth']
+  },
+  {
+    title: 'Poetry & Wisdom',
+    books: ['Job', 'Psalms', 'Proverbs']
+  },
+  {
+    title: 'Major Prophets',
+    books: ['Isaiah', 'Jeremiah']
+  },
+  {
+    title: 'Gospels',
+    books: ['Matthew', 'Mark', 'Luke', 'John']
+  }
 ]
 
 export default function BooksGame() {
-  const [books, setBooks] = useState(
-    [...correctOrder].sort(() => Math.random() - 0.5)
+  const [gameSections, setGameSections] = useState(
+    sections.map(section => ({
+      ...section,
+      books: [...section.books].sort(() => Math.random() - 0.5)
+    }))
   )
 
   const [result, setResult] = useState<string | null>(null)
 
-  function moveUp(index: number) {
+  function moveUp(sectionIndex: number, index: number) {
     if (index === 0) return
 
-    const newBooks = [...books]
-    ;[newBooks[index], newBooks[index - 1]] = [
-      newBooks[index - 1],
-      newBooks[index]
-    ]
+    const updated = [...gameSections]
+    const books = [...updated[sectionIndex].books]
 
-    setBooks(newBooks)
+    ;[books[index], books[index - 1]] = [books[index - 1], books[index]]
+
+    updated[sectionIndex].books = books
+    setGameSections(updated)
   }
 
-  function moveDown(index: number) {
+  function moveDown(sectionIndex: number, index: number) {
+    const books = gameSections[sectionIndex].books
     if (index === books.length - 1) return
 
+    const updated = [...gameSections]
     const newBooks = [...books]
-    ;[newBooks[index], newBooks[index + 1]] = [
-      newBooks[index + 1],
-      newBooks[index]
-    ]
 
-    setBooks(newBooks)
+    ;[newBooks[index], newBooks[index + 1]] = [newBooks[index + 1], newBooks[index]]
+
+    updated[sectionIndex].books = newBooks
+    setGameSections(updated)
   }
 
   function checkOrder() {
-    const isCorrect = books.every(
-      (b, i) => b === correctOrder[i]
+    const isCorrect = gameSections.every(section =>
+      section.books.every((book, i) => book === sections.find(s => s.title === section.title)?.books[i])
     )
 
     setResult(isCorrect ? 'correct' : 'wrong')
@@ -51,27 +70,37 @@ export default function BooksGame() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-3xl mx-auto">
 
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Order the Books
         </h1>
 
-        <div className="space-y-3">
-          {books.map((book, i) => (
-            <div
-              key={book}
-              className="flex justify-between items-center p-4 bg-white rounded-xl border text-gray-900 font-semibold"
-            >
-              <span>{book}</span>
+        {gameSections.map((section, sIndex) => (
+          <div key={section.title} className="mb-6">
 
-              <div className="flex gap-2">
-                <button onClick={() => moveUp(i)}>⬆️</button>
-                <button onClick={() => moveDown(i)}>⬇️</button>
-              </div>
+            <h2 className="text-lg font-bold text-blue-700 mb-3">
+              {section.title}
+            </h2>
+
+            <div className="space-y-2">
+              {section.books.map((book, i) => (
+                <div
+                  key={book}
+                  className="flex justify-between items-center p-4 bg-white rounded-xl border text-gray-900 font-semibold"
+                >
+                  <span>{book}</span>
+
+                  <div className="flex gap-2">
+                    <button onClick={() => moveUp(sIndex, i)}>⬆️</button>
+                    <button onClick={() => moveDown(sIndex, i)}>⬇️</button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+          </div>
+        ))}
 
         <div className="text-center mt-6">
           <button
