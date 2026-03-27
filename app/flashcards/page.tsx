@@ -201,6 +201,8 @@ export default function FlashcardsPage() {
   const [editingCardId, setEditingCardId] = useState<string | null>(null)
   const [editVerse, setEditVerse] = useState('')
   const [editReference, setEditReference] = useState('')
+  const [streak, setStreak] = useState(0)
+  const [isMuted, setIsMuted] = useState(false)
 
   useEffect(() => {
     async function initialize() {
@@ -307,6 +309,20 @@ export default function FlashcardsPage() {
     setShowAnimatedResult(false)
   }
 
+  const playSuccessSound = () => {
+    if (isMuted) return
+    const audio = new Audio('/sounds/correct.mp3')
+    audio.volume = 0.4
+    void audio.play()
+  }
+
+  const playFailSound = () => {
+    if (isMuted) return
+    const audio = new Audio('/sounds/wrong.mp3')
+    audio.volume = 0.4
+    void audio.play()
+  }
+
   const handleRevealAnswer = () => {
     setShowAnswer(true)
   }
@@ -406,22 +422,28 @@ export default function FlashcardsPage() {
   }
 
   const handleFlashcardResult = async (result: 'correct' | 'review') => {
-    if (activeCards.length === 0) {
-      return
+    if (activeCards.length === 0) return
+
+    if (result === 'correct') {
+      setStreak((s) => s + 1)
+      playSuccessSound()
+    } else {
+      setStreak(0)
+      playFailSound()
     }
 
     setIsUpdatingStatus(true)
+
     const updatedCards = await Promise.all(
       activeCards.map((card) =>
         updateFlashcardStatus(card.id, getNextStatus(card.status, result))
       )
     )
+
     setIsUpdatingStatus(false)
 
     const successfulUpdates = updatedCards.filter((card): card is Flashcard => card !== null)
-    if (successfulUpdates.length === 0) {
-      return
-    }
+    if (successfulUpdates.length === 0) return
 
     const updatedCardMap = new Map(successfulUpdates.map((card) => [card.id, card]))
 
@@ -785,6 +807,19 @@ export default function FlashcardsPage() {
             </div>
           ) : currentCard ? (
             <div className="mt-8">
+              <div className="mb-2 flex items-center justify-between gap-3">
+                <div className="text-sm font-semibold text-orange-600">
+                  🔥 {streak} streak
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsMuted((m) => !m)}
+                  className="text-sm text-gray-600 transition hover:text-black"
+                >
+                  {isMuted ? '🔇 Muted' : '🔊 Sound On'}
+                </button>
+              </div>
+
               <div className="mb-6 flex items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-800">
@@ -806,6 +841,17 @@ export default function FlashcardsPage() {
                       ? `Sequence of ${activeCards.length} verses`
                       : `${activeCards.length} verse passage`}
                 </span>
+              </div>
+
+              <div className="mb-4 w-full">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+                  <div
+                    className="h-full bg-blue-600 transition-all duration-300"
+                    style={{
+                      width: `${((safeCurrentCardIndex + 1) / activeDeck.length) * 100}%`
+                    }}
+                  />
+                </div>
               </div>
 
               <button
@@ -1054,28 +1100,28 @@ export default function FlashcardsPage() {
                     type="button"
                     onClick={() => handleFlashcardResult('correct')}
                     disabled={isUpdatingStatus}
-                    className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-emerald-300"
+                    className="rounded-xl bg-green-500 px-5 py-3 font-semibold text-white transition hover:bg-green-600 disabled:cursor-not-allowed disabled:bg-green-300"
                   >
                     {isUpdatingStatus
                       ? 'Saving...'
                       : trainingMode === 'flashcard'
-                        ? 'Got it right'
+                        ? 'I Got This'
                         : trainingMode === 'multi'
-                          ? 'Got them right'
+                          ? 'I Got This'
                           : 'Passage was correct'}
                   </button>
                   <button
                     type="button"
                     onClick={() => handleFlashcardResult('review')}
                     disabled={isUpdatingStatus}
-                    className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-white transition hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-amber-300"
+                    className="rounded-xl bg-yellow-500 px-5 py-3 font-semibold text-white transition hover:bg-yellow-600 disabled:cursor-not-allowed disabled:bg-yellow-300"
                   >
                     {isUpdatingStatus
                       ? 'Saving...'
                       : trainingMode === 'flashcard'
-                        ? 'Need to review'
+                        ? 'Need Practice'
                         : trainingMode === 'multi'
-                          ? 'Review this sequence'
+                          ? 'Need Practice'
                           : 'Review this passage'}
                   </button>
                 </div>
