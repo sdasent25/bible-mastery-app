@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
+import { updateDailyProgress } from '@/lib/daily'
 
 type Question = {
   words: string[]
@@ -106,6 +107,8 @@ export default function FillGame() {
     } else {
       setStreak(0)
     }
+
+    updateDailyProgress()
 
     setShowResult(true)
   }

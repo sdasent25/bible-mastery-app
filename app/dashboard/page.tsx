@@ -9,6 +9,7 @@ import { getXp } from '@/lib/xp';
 import { getSubscriptionStatus } from '@/lib/user';
 import { segments } from '@/lib/questions';
 import { getPerformanceStats, type PerformanceStats } from '@/lib/performance';
+import { getDailyProgress } from '@/lib/daily';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -39,6 +40,7 @@ export default function Dashboard() {
   const [completedToday, setCompletedToday] = useState(false);
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
+  const [daily, setDaily] = useState({ count: 0, completed: false });
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
@@ -62,6 +64,7 @@ export default function Dashboard() {
       setXp(storedXp);
 
       setPerformanceStats(getPerformanceStats());
+      setDaily(getDailyProgress());
     };
 
     loadDashboardData();
@@ -196,6 +199,29 @@ export default function Dashboard() {
           <div className="h-4 rounded-full bg-blue-600 transition-all" style={{ width: `${levelProgress}%` }} />
         </div>
       </section>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Daily Challenge
+        </h2>
+
+        <p className="text-gray-900 mb-2">
+          {daily.count} / 5 completed
+        </p>
+
+        <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+          <div
+            className="bg-blue-600 h-2 rounded-full"
+            style={{ width: `${(daily.count / 5) * 100}%` }}
+          />
+        </div>
+
+        {daily.completed && (
+          <p className="text-green-600 font-bold">
+            🎉 Daily Complete!
+          </p>
+        )}
+      </div>
 
       <section className="rounded-xl bg-slate-900 p-5 shadow-md text-white">
         <h2 className="text-lg font-bold">Your Performance</h2>

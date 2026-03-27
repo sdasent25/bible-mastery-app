@@ -5,7 +5,10 @@ export function getTodayKey() {
 export function getDailyProgress() {
   const key = getTodayKey()
   const data = localStorage.getItem(`daily-${key}`)
-  return data ? JSON.parse(data) : { count: 0, completed: false }
+
+  return data
+    ? JSON.parse(data)
+    : { count: 0, completed: false }
 }
 
 export function updateDailyProgress() {
@@ -18,5 +21,6 @@ export function updateDailyProgress() {
   }
 
   localStorage.setItem(`daily-${key}`, JSON.stringify(updated))
+
   return updated
 }
