@@ -55,7 +55,14 @@ export default function FillGame() {
 
 function generateQuestionFromData(data: any[]) {
   const card = data[Math.floor(Math.random() * data.length)]
-  const words = card.verse.split(' ')
+    const verseText = card.verse_text
+
+    if (!verseText) {
+      console.log('Missing verse_text:', card)
+      return
+    }
+
+    const words = verseText.split(' ')
 
     let hideCount = 2
     if (card.status === 'learning') hideCount = Math.floor(words.length * 0.4)
