@@ -1,23 +1,3 @@
-You are fixing and stabilizing the Fill-in-the-Blank game page in a Next.js App Router app.
-
-GOAL:
-- Use saved flashcards as the source
-- Start a 10-question round
-- Always render a question after Start Game
-- Show a clear empty state if no flashcards exist
-- Keep the UI clean, readable, and engaging
-- Remove fragile logic and replace the entire file
-
-IMPORTANT:
-- Return the FULL FILE ONLY
-- Do not return explanations
-- Do not use snippets
-- Keep the existing imports unless replaced below
-
-FILE: /app/games/fill/page.tsx
-
-REPLACE THE ENTIRE FILE WITH:
-
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
@@ -56,21 +36,14 @@ function pickHiddenIndexes(words: string[], status: Flashcard['status']) {
   return shuffled
     .slice(0, hideCount)
     .map(({ index }) => index)
-    .sort((a, b) => a - b)
 }
 
 function buildQuestion(card: Flashcard): FillQuestion | null {
-  const verseText = card.verse?.trim()
+  if (!card.verse) return null
 
-  if (!verseText) {
-    return null
-  }
+  const words = card.verse.split(' ').filter(Boolean)
 
-  const words = verseText.split(/\s+/).filter(Boolean)
-
-  if (words.length === 0) {
-    return null
-  }
+  if (words.length === 0) return null
 
   return {
     cardId: card.id,
@@ -93,11 +66,6 @@ export default function FillGame() {
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showResult, setShowResult] = useState(false)
 
-  const [useTimer, setUseTimer] = useState(false)
-  const [time, setTime] = useState(DEFAULT_TIME)
-
-  const hasCards = cards.length > 0
-
   useEffect(() => {
     async function init() {
       await getSubscriptionStatus()
@@ -109,79 +77,45 @@ export default function FillGame() {
     init()
   }, [])
 
-  useEffect(() => {
-    if (!started || !useTimer || !question || showResult) return
-
-    const interval = window.setInterval(() => {
-      setTime((current) => {
-        if (current <= 1) {
-          window.clearInterval(interval)
-          handleSubmit()
-          return 0
-        }
-
-        return current - 1
-      })
-    }, 1000)
-
-    return () => window.clearInterval(interval)
-  }, [started, useTimer, question, showResult])
-
-  const progressPercent = useMemo(() => {
-    return (round / ROUND_LENGTH) * 100
-  }, [round])
-
-  function generateQuestionFromCards(sourceCards: Flashcard[]) {
-    if (sourceCards.length === 0) {
-      setQuestion(null)
-      return
-    }
-
-    const shuffled = [...sourceCards].sort(() => Math.random() - 0.5)
-
-    for (const card of shuffled) {
-      const nextQuestion = buildQuestion(card)
-      if (nextQuestion) {
-        setQuestion(nextQuestion)
-        setAnswers({})
-        setShowResult(false)
-        setTime(DEFAULT_TIME)
-        return
-      }
-    }
-
-    setQuestion(null)
-  }
-
   function startGame() {
-    if (!hasCards) return
+    if (cards.length === 0) return
 
     setStarted(true)
     setRound(1)
     setScore(0)
     setStreak(0)
-    generateQuestionFromCards(cards)
+
+    generateQuestion(cards)
+  }
+
+  function generateQuestion(data: Flashcard[]) {
+    const shuffled = [...data].sort(() => Math.random() - 0.5)
+
+    for (const card of shuffled) {
+      const q = buildQuestion(card)
+      if (q) {
+        setQuestion(q)
+        setAnswers({})
+        setShowResult(false)
+        return
+      }
+    }
   }
 
   function handleSubmit() {
     if (!question) return
 
-    let correctCount = 0
+    let correct = 0
 
-    question.hiddenIndexes.forEach((index) => {
-      const userAnswer = (answers[index] || '').trim().toLowerCase()
-      const correctAnswer = question.words[index].trim().toLowerCase()
-
-      if (userAnswer === correctAnswer) {
-        correctCount += 1
+    question.hiddenIndexes.forEach((i) => {
+      if ((answers[i] || '').toLowerCase() === question.words[i].toLowerCase()) {
+        correct++
       }
     })
 
-    const isPerfect = correctCount === question.hiddenIndexes.length
-
-    if (isPerfect) {
-      setScore((current) => current + 1)
-      setStreak((current) => current + 1)
+    if (correct === question.hiddenIndexes.length) {
+      setScore((s) => s + 1)
+      setStreak((s) => s + 1)
     } else {
       setStreak(0)
     }
@@ -190,208 +124,64 @@ export default function FillGame() {
   }
 
   function nextQuestion() {
-    if (round >= ROUND_LENGTH) {
+    if (round >= 10) {
       setStarted(false)
-      setQuestion(null)
       return
     }
 
-    setRound((current) => current + 1)
-    generateQuestionFromCards(cards)
-  }
-
-  function restartGame() {
-    setStarted(false)
-    setRound(1)
-    setScore(0)
-    setStreak(0)
-    setQuestion(null)
-    setAnswers({})
-    setShowResult(false)
-    setTime(DEFAULT_TIME)
+    setRound((r) => r + 1)
+    generateQuestion(cards)
   }
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <p className="text-lg font-semibold text-gray-900">Loading game...</p>
-      </div>
-    )
-  }
-
-  if (!hasCards) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-2xl rounded-3xl bg-white p-8 text-center shadow-lg">
-          <h1 className="text-3xl font-extrabold text-gray-900">Fill in the Blank</h1>
-          <p className="mt-3 text-base text-gray-700">
-            You need at least one saved flashcard before this game can start.
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/flashcards"
-              className="rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
-            >
-              Go to Flashcards
-            </Link>
-            <Link
-              href="/games"
-              className="rounded-xl border border-gray-300 px-5 py-3 font-semibold text-gray-900 transition hover:bg-gray-100"
-            >
-              Back to Games
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
+    return <div className="p-10 text-center">Loading...</div>
   }
 
   if (!started) {
     return (
-      <div className="min-h-screen bg-gray-50 px-4 py-10">
-        <div className="mx-auto max-w-2xl rounded-3xl bg-white p-8 text-center shadow-lg">
-          <h1 className="text-3xl font-extrabold text-gray-900">Fill in the Blank</h1>
-          <p className="mt-3 text-base text-gray-700">
-            Use your saved flashcards to complete missing words and strengthen recall.
-          </p>
-
-          <div className="mt-6 flex items-center justify-center">
-            <button
-              type="button"
-              onClick={() => setUseTimer((current) => !current)}
-              className="rounded-xl border border-gray-300 px-4 py-2 font-semibold text-gray-900 transition hover:bg-gray-100"
-            >
-              {useTimer ? '⏱ Timer On' : '⏱ Timer Off'}
-            </button>
-          </div>
-
-          <div className="mt-8">
-            <button
-              type="button"
-              onClick={startGame}
-              className="rounded-2xl bg-blue-600 px-8 py-4 text-lg font-bold text-white transition hover:bg-blue-700"
-            >
-              Start Game
-            </button>
-          </div>
-
-          <p className="mt-4 text-sm font-medium text-gray-600">
-            10 questions · built from your own flashcards
-          </p>
-        </div>
+      <div className="p-10 text-center">
+        <h1 className="text-2xl font-bold mb-4">Fill in the Blank</h1>
+        <button onClick={startGame} className="bg-blue-600 text-white px-6 py-3 rounded">
+          Start Game
+        </button>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8">
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-4 h-3 w-full overflow-hidden rounded-full bg-gray-200">
-          <div
-            className="h-full rounded-full bg-blue-600 transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+    <div className="p-6">
+      <div className="mb-4">Score: {score} | 🔥 {streak}</div>
 
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-          <div className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow">
-            Question {round} / {ROUND_LENGTH}
-          </div>
-          <div className="rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-800 shadow">
-            Score: {score}
-          </div>
-          <div className="rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-700 shadow">
-            🔥 {streak} streak
-          </div>
-        </div>
-
-        {useTimer && (
-          <div className="mb-4 text-center text-base font-bold text-red-600">
-            ⏱ {time}s
-          </div>
-        )}
-
-        {question ? (
-          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
-            <div className="mb-4 text-center">
-              <p className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-                Reference
-              </p>
-              <p className="mt-1 text-lg font-bold text-gray-900">{question.reference}</p>
-            </div>
-
-            <div className="rounded-2xl bg-gray-50 p-5">
-              <div className="flex flex-wrap items-center justify-center gap-y-3 text-lg font-medium leading-relaxed text-gray-900">
-                {question.words.map((word, index) => {
-                  if (question.hiddenIndexes.includes(index)) {
-                    return (
-                      <input
-                        key={index}
-                        value={answers[index] || ''}
-                        onChange={(event) =>
-                          setAnswers((current) => ({
-                            ...current,
-                            [index]: event.target.value
-                          }))
-                        }
-                        className="mx-1 w-24 rounded-none border-0 border-b-2 border-blue-500 bg-transparent px-1 py-1 text-center font-bold text-gray-900 outline-none focus:border-blue-700"
-                      />
-                    )
+      {question && (
+        <div>
+          <p className="mb-4">
+            {question.words.map((w, i) =>
+              question.hiddenIndexes.includes(i) ? (
+                <input
+                  key={i}
+                  value={answers[i] || ''}
+                  onChange={(e) =>
+                    setAnswers({ ...answers, [i]: e.target.value })
                   }
-
-                  return (
-                    <span key={index} className="mx-1">
-                      {word}
-                    </span>
-                  )
-                })}
-              </div>
-            </div>
-
-            {!showResult ? (
-              <div className="mt-6 flex justify-center">
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className="rounded-2xl bg-blue-600 px-8 py-3 font-bold text-white transition hover:bg-blue-700"
-                >
-                  Submit
-                </button>
-              </div>
-            ) : (
-              <div className="mt-6 text-center">
-                <p className="text-xl font-extrabold text-gray-900">
-                  {streak > 0 ? 'Nice! 🎉' : 'Keep going 💪'}
-                </p>
-                <p className="mt-2 text-sm text-gray-600">
-                  You can keep building memory with the next verse.
-                </p>
-
-                <div className="mt-5 flex justify-center gap-3">
-                  <button
-                    type="button"
-                    onClick={nextQuestion}
-                    className="rounded-2xl bg-gray-900 px-6 py-3 font-bold text-white transition hover:bg-black"
-                  >
-                    {round >= ROUND_LENGTH ? 'See Results' : 'Next'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={restartGame}
-                    className="rounded-2xl border border-gray-300 px-6 py-3 font-bold text-gray-900 transition hover:bg-gray-100"
-                  >
-                    Restart
-                  </button>
-                </div>
-              </div>
+                  className="border-b mx-1"
+                />
+              ) : (
+                <span key={i} className="mx-1">{w}</span>
+              )
             )}
-          </div>
-        ) : (
-          <div className="rounded-3xl border border-dashed border-gray-300 bg-white p-8 text-center shadow">
-            <p className="text-lg font-semibold text-gray-900">Preparing your question...</p>
-          </div>
-        )}
-      </div>
+          </p>
+
+          {!showResult ? (
+            <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded">
+              Submit
+            </button>
+          ) : (
+            <button onClick={nextQuestion} className="bg-black text-white px-4 py-2 rounded">
+              Next
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
 }
