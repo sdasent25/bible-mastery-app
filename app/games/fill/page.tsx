@@ -7,6 +7,7 @@ import { getSubscriptionStatus } from '@/lib/user'
 type Question = {
   words: string[]
   hiddenIndexes: number[]
+  reference: string
 }
 
 export default function FillGame() {
@@ -52,7 +53,11 @@ export default function FillGame() {
       if (!hiddenIndexes.includes(i)) hiddenIndexes.push(i)
     }
 
-    setQuestion({ words, hiddenIndexes })
+    setQuestion({
+      words,
+      hiddenIndexes,
+      reference: card.reference
+    })
     setAnswers({})
     setShowResult(false)
     setLastCorrect(null)
@@ -165,6 +170,15 @@ export default function FillGame() {
           <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 transition-all duration-200 hover:shadow-xl">
 
             <div className="mb-6">
+              <div className="text-center mb-4">
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                  Reference
+                </p>
+                <p className="text-lg font-bold text-gray-900">
+                  {question.reference}
+                </p>
+              </div>
+
               <p className="text-xl text-center leading-relaxed text-gray-900 font-semibold">
 
                 {question.words.map((word, i) => {
