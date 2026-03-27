@@ -210,9 +210,7 @@ export default function FlashcardsPage() {
       setIsProPlusUser(isProPlus)
       setLoadingPlan(false)
 
-      if (!isProPlus) {
-        return
-      }
+      // allow loading for all users (temporary for development)
 
       setLoadingData(true)
       const [loadedCategories, loadedFlashcards] = await Promise.all([
