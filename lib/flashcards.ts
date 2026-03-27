@@ -52,7 +52,7 @@ function mapFlashcard(row: FlashcardRow): Flashcard {
   return {
     id: row.id,
     userId: row.user_id,
-    verse: row.verse,
+    verse: row.verse_text,
     reference: row.reference,
     status: row.status === 'learning' || row.status === 'mastered' ? row.status : 'new',
     categoryId: row.category_id,
