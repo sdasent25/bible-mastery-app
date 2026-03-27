@@ -27,7 +27,7 @@ type FlashcardCategoryRow = {
 type FlashcardRow = {
   id: string
   user_id: string
-  verse: string
+  verse_text: string
   reference: string
   status: 'new' | 'learning' | 'mastered' | null
   category_id: string | null
