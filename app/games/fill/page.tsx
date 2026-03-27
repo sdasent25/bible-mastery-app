@@ -1,56 +1,12 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
-import Link from 'next/link'
+import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 
-type FillQuestion = {
-  cardId: string
-  reference: string
+type Question = {
   words: string[]
   hiddenIndexes: number[]
-}
-
-const ROUND_LENGTH = 10
-const DEFAULT_TIME = 15
-
-function pickHiddenIndexes(words: string[], status: Flashcard['status']) {
-  const safeIndexes = words
-    .map((word, index) => ({ word, index }))
-    .filter(({ word }) => word.trim().length > 0)
-
-  let hideCount = 2
-
-  if (status === 'learning') {
-    hideCount = Math.max(2, Math.floor(words.length * 0.35))
-  }
-
-  if (status === 'mastered') {
-    hideCount = Math.max(3, Math.floor(words.length * 0.6))
-  }
-
-  hideCount = Math.min(hideCount, safeIndexes.length)
-
-  const shuffled = [...safeIndexes].sort(() => Math.random() - 0.5)
-  return shuffled
-    .slice(0, hideCount)
-    .map(({ index }) => index)
-}
-
-function buildQuestion(card: Flashcard): FillQuestion | null {
-  if (!card.verse) return null
-
-  const words = card.verse.split(' ').filter(Boolean)
-
-  if (words.length === 0) return null
-
-  return {
-    cardId: card.id,
-    reference: card.reference,
-    words,
-    hiddenIndexes: pickHiddenIndexes(words, card.status)
-  }
 }
 
 export default function FillGame() {
@@ -61,10 +17,12 @@ export default function FillGame() {
   const [round, setRound] = useState(1)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [xp, setXp] = useState(0)
 
-  const [question, setQuestion] = useState<FillQuestion | null>(null)
+  const [question, setQuestion] = useState<Question | null>(null)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showResult, setShowResult] = useState(false)
+  const [lastCorrect, setLastCorrect] = useState<boolean | null>(null)
 
   useEffect(() => {
     async function init() {
@@ -77,6 +35,30 @@ export default function FillGame() {
     init()
   }, [])
 
+  function generateQuestion(data: Flashcard[]) {
+    const card = data[Math.floor(Math.random() * data.length)]
+    const words = card.verse.split(' ')
+
+    const hideCount =
+      card.status === 'mastered'
+        ? Math.floor(words.length * 0.6)
+        : card.status === 'learning'
+        ? Math.floor(words.length * 0.4)
+        : 2
+
+    const hiddenIndexes: number[] = []
+
+    while (hiddenIndexes.length < hideCount) {
+      const i = Math.floor(Math.random() * words.length)
+      if (!hiddenIndexes.includes(i)) hiddenIndexes.push(i)
+    }
+
+    setQuestion({ words, hiddenIndexes })
+    setAnswers({})
+    setShowResult(false)
+    setLastCorrect(null)
+  }
+
   function startGame() {
     if (cards.length === 0) return
 
@@ -84,22 +66,9 @@ export default function FillGame() {
     setRound(1)
     setScore(0)
     setStreak(0)
+    setXp(0)
 
     generateQuestion(cards)
-  }
-
-  function generateQuestion(data: Flashcard[]) {
-    const shuffled = [...data].sort(() => Math.random() - 0.5)
-
-    for (const card of shuffled) {
-      const q = buildQuestion(card)
-      if (q) {
-        setQuestion(q)
-        setAnswers({})
-        setShowResult(false)
-        return
-      }
-    }
   }
 
   function handleSubmit() {
@@ -113,9 +82,14 @@ export default function FillGame() {
       }
     })
 
-    if (correct === question.hiddenIndexes.length) {
+    const isCorrect = correct === question.hiddenIndexes.length
+
+    setLastCorrect(isCorrect)
+
+    if (isCorrect) {
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
+      setXp((x) => x + 10)
     } else {
       setStreak(0)
     }
@@ -139,49 +113,95 @@ export default function FillGame() {
 
   if (!started) {
     return (
-      <div className="p-10 text-center">
-        <h1 className="text-2xl font-bold mb-4">Fill in the Blank</h1>
-        <button onClick={startGame} className="bg-blue-600 text-white px-6 py-3 rounded">
-          Start Game
-        </button>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-8 rounded-2xl shadow-lg text-center">
+
+          <h1 className="text-3xl font-bold mb-4">Fill in the Blank</h1>
+
+          <p className="text-gray-600 mb-6">
+            Test your memory using your saved flashcards
+          </p>
+
+          <button
+            onClick={startGame}
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+          >
+            Start Game
+          </button>
+
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-4">Score: {score} | 🔥 {streak}</div>
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="max-w-3xl mx-auto">
 
-      {question && (
-        <div>
-          <p className="mb-4">
-            {question.words.map((w, i) =>
-              question.hiddenIndexes.includes(i) ? (
-                <input
-                  key={i}
-                  value={answers[i] || ''}
-                  onChange={(e) =>
-                    setAnswers({ ...answers, [i]: e.target.value })
-                  }
-                  className="border-b mx-1"
-                />
-              ) : (
-                <span key={i} className="mx-1">{w}</span>
-              )
-            )}
-          </p>
-
-          {!showResult ? (
-            <button onClick={handleSubmit} className="bg-blue-600 text-white px-4 py-2 rounded">
-              Submit
-            </button>
-          ) : (
-            <button onClick={nextQuestion} className="bg-black text-white px-4 py-2 rounded">
-              Next
-            </button>
-          )}
+        {/* HEADER */}
+        <div className="flex justify-between mb-6 font-semibold">
+          <div>Q {round}/10</div>
+          <div className="text-blue-600">XP: {xp}</div>
+          <div>🔥 {streak}</div>
         </div>
-      )}
+
+        {/* CARD */}
+        {question && (
+          <div className="bg-white p-6 rounded-2xl shadow">
+
+            <p className="text-lg text-center leading-relaxed">
+              {question.words.map((w, i) =>
+                question.hiddenIndexes.includes(i) ? (
+                  <input
+                    key={i}
+                    value={answers[i] || ''}
+                    onChange={(e) =>
+                      setAnswers({ ...answers, [i]: e.target.value })
+                    }
+                    className="border-b-2 border-blue-500 mx-1 w-24 text-center font-semibold"
+                  />
+                ) : (
+                  <span key={i} className="mx-1">{w}</span>
+                )
+              )}
+            </p>
+
+            {!showResult ? (
+              <div className="text-center mt-6">
+                <button
+                  onClick={handleSubmit}
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+                >
+                  Submit
+                </button>
+              </div>
+            ) : (
+              <div className="text-center mt-6">
+
+                {lastCorrect ? (
+                  <p className="text-green-600 text-xl font-bold">
+                    Nice! +10 XP 🎉
+                  </p>
+                ) : (
+                  <p className="text-red-600 text-xl font-bold">
+                    Not quite — keep going 💪
+                  </p>
+                )}
+
+                <button
+                  onClick={nextQuestion}
+                  className="mt-4 bg-black text-white px-6 py-3 rounded-xl font-bold"
+                >
+                  Next
+                </button>
+
+              </div>
+            )}
+
+          </div>
+        )}
+
+      </div>
     </div>
   )
 }
