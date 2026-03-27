@@ -12,6 +12,7 @@ import { getPerformanceStats, type PerformanceStats } from '@/lib/performance';
 import { getDailyProgress } from '@/lib/daily';
 import { hasClaimedReward } from '@/lib/rewards';
 import { hasFreeze } from '@/lib/freeze';
+import { getAchievements } from '@/lib/achievements';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -116,6 +117,7 @@ export default function Dashboard() {
   const streak = typeof window !== 'undefined' ? getStreak() : 0;
   const rewardClaimed = typeof window !== 'undefined' ? hasClaimedReward() : false;
   const freezeAvailable = typeof window !== 'undefined' ? hasFreeze() : false;
+  const achievements = typeof window !== 'undefined' ? getAchievements() : [];
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -260,6 +262,27 @@ export default function Dashboard() {
             Freeze used
           </p>
         )}
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Achievements
+        </h2>
+
+        {achievements.length === 0 && (
+          <p className="text-gray-900">No achievements yet</p>
+        )}
+
+        <div className="flex flex-wrap gap-2 mt-2">
+          {achievements.map((a: string, i: number) => (
+            <span
+              key={i}
+              className="bg-green-100 text-green-800 px-3 py-1 rounded-lg font-semibold"
+            >
+              {a}
+            </span>
+          ))}
+        </div>
       </div>
 
       <section className="rounded-xl bg-slate-900 p-5 shadow-md text-white">

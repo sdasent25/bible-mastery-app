@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { updateDailyProgress } from '@/lib/daily'
+import { unlockAchievement } from '@/lib/achievements'
 
 type Question = {
   words: string[]
@@ -102,9 +103,21 @@ export default function FillGame() {
     const isPerfect = correct === question.hiddenIndexes.length
 
     if (isPerfect) {
+      const xpGain = doubleXP ? 20 : 10
+      const nextXp = xp + xpGain
+      const nextStreak = streak + 1
+
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
-      setXp((x) => x + (doubleXP ? 20 : 10))
+      setXp((x) => x + xpGain)
+
+      if (nextXp >= 50) {
+        unlockAchievement('50 XP Earned')
+      }
+
+      if (nextStreak >= 3) {
+        unlockAchievement('3 Streak')
+      }
     } else {
       setStreak(0)
     }
