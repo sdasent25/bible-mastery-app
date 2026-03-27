@@ -36,7 +36,6 @@ function formatSegmentLabel(segmentId: string) {
 
 
 export default function Dashboard() {
-  const [streak, setStreak] = useState(0);
   const [completedToday, setCompletedToday] = useState(false);
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
@@ -54,9 +53,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     const loadDashboardData = async () => {
-      const streakData = await getStreak();
-      setStreak(streakData.currentStreak);
-
       const completed = await hasCompletedToday();
       setCompletedToday(completed);
 
@@ -115,6 +111,7 @@ export default function Dashboard() {
   }, []);
 
   const level = Math.floor(xp / 100) + 1;
+  const streak = typeof window !== 'undefined' ? getStreak() : 0;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -199,6 +196,16 @@ export default function Dashboard() {
           <div className="h-4 rounded-full bg-blue-600 transition-all" style={{ width: `${levelProgress}%` }} />
         </div>
       </section>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mb-6">
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Streak
+        </h2>
+
+        <p className="text-2xl font-extrabold text-orange-600">
+          🔥 {streak} day streak
+        </p>
+      </div>
 
       <div className="bg-white p-6 rounded-2xl shadow border mt-6">
         <h2 className="text-lg font-bold text-gray-900 mb-2">

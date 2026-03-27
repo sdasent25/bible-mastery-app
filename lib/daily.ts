@@ -1,3 +1,5 @@
+import { updateStreak } from './streak'
+
 export function getTodayKey() {
   return new Date().toISOString().split('T')[0]
 }
@@ -21,6 +23,10 @@ export function updateDailyProgress() {
   }
 
   localStorage.setItem(`daily-${key}`, JSON.stringify(updated))
+
+  if (updated.completed) {
+    updateStreak(true)
+  }
 
   return updated
 }
