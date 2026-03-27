@@ -167,15 +167,15 @@ export default function FillGame() {
         </div>
 
         {question && (
-          <div className="bg-white p-8 rounded-2xl shadow border">
+          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
 
-            <p className="text-xl text-center font-semibold leading-relaxed">
+            <p className="text-xl text-center font-semibold leading-relaxed text-gray-900 opacity-100">
 
               {question.words.map((w, i) => {
                 const isBlank = question.hiddenIndexes.includes(i)
                 const isCorrect = wordResults[i]
 
-                if (!isBlank) return <span key={i} className="mx-1">{w}</span>
+                if (!isBlank) return <span key={i} className="mx-1 text-gray-900 font-semibold">{w}</span>
 
                 return (
                   <input
@@ -184,7 +184,7 @@ export default function FillGame() {
                     onChange={(e) =>
                       setAnswers({ ...answers, [i]: e.target.value })
                     }
-                    className={`mx-2 w-24 text-center text-lg font-bold border-b-4 ${
+                    className={`mx-2 w-24 text-center text-lg font-bold border-b-4 text-gray-900 opacity-100 bg-white ${
                       showResult
                         ? isCorrect
                           ? 'border-green-500'
