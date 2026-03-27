@@ -139,7 +139,7 @@ export default function FillGame() {
       <div className="max-w-3xl mx-auto">
 
         {/* HEADER */}
-        <div className="flex justify-between mb-6 font-semibold">
+        <div className="flex justify-between mb-6 font-semibold text-gray-800">
           <div>Q {round}/10</div>
           <div className="text-blue-600">XP: {xp}</div>
           <div>🔥 {streak}</div>
@@ -147,9 +147,9 @@ export default function FillGame() {
 
         {/* CARD */}
         {question && (
-          <div className="bg-white p-6 rounded-2xl shadow">
+          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
 
-            <p className="text-lg text-center leading-relaxed">
+            <p className="text-lg text-center leading-relaxed text-gray-900 font-medium">
               {question.words.map((w, i) =>
                 question.hiddenIndexes.includes(i) ? (
                   <input
@@ -158,7 +158,7 @@ export default function FillGame() {
                     onChange={(e) =>
                       setAnswers({ ...answers, [i]: e.target.value })
                     }
-                    className="border-b-2 border-blue-500 mx-1 w-24 text-center font-semibold"
+                    className="border-b-2 border-blue-600 mx-1 w-24 text-center font-bold text-gray-900 bg-transparent focus:outline-none"
                   />
                 ) : (
                   <span key={i} className="mx-1">{w}</span>
@@ -183,9 +183,24 @@ export default function FillGame() {
                     Nice! +10 XP 🎉
                   </p>
                 ) : (
-                  <p className="text-red-600 text-xl font-bold">
-                    Not quite — keep going 💪
-                  </p>
+                  <>
+                    <p className="text-red-600 text-xl font-bold">
+                      Not quite — keep going 💪
+                    </p>
+                    <p className="text-sm text-gray-700 mt-2">
+                      Correct answers:
+                    </p>
+                    <div className="mt-2 flex flex-wrap justify-center gap-2">
+                      {question.hiddenIndexes.map((i) => (
+                        <span
+                          key={i}
+                          className="px-2 py-1 bg-gray-200 rounded text-sm font-semibold"
+                        >
+                          {question.words[i]}
+                        </span>
+                      ))}
+                    </div>
+                  </>
                 )}
 
                 <button
