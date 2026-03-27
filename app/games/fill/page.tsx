@@ -129,7 +129,7 @@ export default function FillGame() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="bg-white p-10 rounded-2xl shadow text-center">
 
-          <h1 className="text-3xl font-bold mb-4">Fill in the Blank</h1>
+          <h1 className="text-3xl font-bold mb-4 text-gray-900">Fill in the Blank</h1>
 
           {sessionMissed.length > 0 && (
             <div className="mb-6">
@@ -160,7 +160,7 @@ export default function FillGame() {
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto">
 
-        <div className="flex justify-between mb-6 font-bold">
+        <div className="flex justify-between mb-6 font-bold text-gray-900">
           <div>Q {round}/10</div>
           <div className="text-blue-600">XP {xp}</div>
           <div>🔥 {streak}</div>
