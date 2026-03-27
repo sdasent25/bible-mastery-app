@@ -3,19 +3,12 @@
 import { useEffect, useState } from 'react'
 import { getFlashcards } from '@/lib/flashcards'
 
-type Question = {
-  original: string
-  words: string[]
-  hiddenIndexes: number[]
-}
-
 export default function FillGame() {
   const [cards, setCards] = useState<any[]>([])
-  const [question, setQuestion] = useState<Question | null>(null)
-  const [answers, setAnswers] = useState<Record<number, string>>({})
+  const [question, setQuestion] = useState<any>(null)
+  const [answers, setAnswers] = useState<any>({})
   const [showResult, setShowResult] = useState(false)
   const [useTimer, setUseTimer] = useState(false)
-  const [time, setTime] = useState(15)
 
   useEffect(() => {
     load()
@@ -61,27 +54,27 @@ export default function FillGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 px-4 py-10">
       <div className="max-w-3xl mx-auto">
 
-        <h1 className="text-2xl font-bold mb-4">Fill in the Blank</h1>
+        <h1 className="text-2xl font-extrabold text-gray-900 mb-6 text-center">
+          Fill in the Blank
+        </h1>
 
-        <div className="mb-4">
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={useTimer}
-              onChange={() => setUseTimer(!useTimer)}
-            />
-            Enable Timer
-          </label>
+        <div className="flex justify-center mb-6">
+          <button
+            onClick={() => setUseTimer(!useTimer)}
+            className="px-4 py-2 rounded-xl bg-gray-200 text-gray-900 font-semibold"
+          >
+            {useTimer ? '⏱ Timer ON' : '⏱ Timer OFF'}
+          </button>
         </div>
 
         {question && (
-          <div className="bg-white p-6 rounded-xl shadow">
+          <div className="bg-white p-6 rounded-2xl shadow-md border border-gray-200">
 
-            <p className="text-lg leading-relaxed">
-              {question.words.map((word, index) => {
+            <p className="text-lg leading-relaxed font-medium text-gray-900 text-center">
+              {question.words.map((word: string, index: number) => {
                 if (question.hiddenIndexes.includes(index)) {
                   return (
                     <input
@@ -90,7 +83,7 @@ export default function FillGame() {
                       onChange={(e) =>
                         setAnswers({ ...answers, [index]: e.target.value })
                       }
-                      className="border-b-2 border-gray-400 mx-1 w-24 text-center"
+                      className="border-b-2 border-blue-500 mx-1 w-24 text-center font-semibold outline-none"
                     />
                   )
                 }
@@ -99,27 +92,53 @@ export default function FillGame() {
               })}
             </p>
 
-            <button
-              onClick={handleSubmit}
-              className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-            >
-              Submit
-            </button>
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleSubmit}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold"
+              >
+                Submit
+              </button>
+            </div>
 
             {showResult && (
-              <div className="mt-4">
-                {question.words.map((word, index) => {
+              <div className="mt-6">
+
+                <h2 className="text-center text-lg font-bold mb-4 text-gray-900">
+                  Results
+                </h2>
+
+                <div className="space-y-2">
+                  {question.words.map((word: string, index: number) => {
                   if (!question.hiddenIndexes.includes(index)) return null
 
                   const user = answers[index] || ''
                   const correct = user.toLowerCase() === word.toLowerCase()
 
                   return (
-                    <div key={index} className={correct ? 'text-green-600' : 'text-red-600'}>
-                      {word}
-                    </div>
+                      <div
+                        key={index}
+                        className={`p-2 rounded-lg text-center font-semibold ${
+                          correct
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-700'
+                        }`}
+                      >
+                        {word}
+                      </div>
                   )
-                })}
+                  })}
+                </div>
+
+                <div className="flex justify-center mt-6">
+                  <button
+                    onClick={() => generateQuestion(cards)}
+                    className="bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-xl font-semibold"
+                  >
+                    Next Question
+                  </button>
+                </div>
+
               </div>
             )}
 
