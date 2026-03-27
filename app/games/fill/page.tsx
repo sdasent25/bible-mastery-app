@@ -38,8 +38,21 @@ export default function FillGame() {
   }, [useTimer, started])
 
   async function load() {
-    const data = await getFlashcards()
-    setCards(data)
+    let attempts = 0
+
+    while (attempts < 5) {
+      const data = await getFlashcards()
+
+      if (data.length > 0) {
+        setCards(data)
+        return
+      }
+
+      await new Promise((res) => setTimeout(res, 500))
+      attempts++
+    }
+
+    console.log('No flashcards found after retries')
   }
 
   useEffect(() => {
