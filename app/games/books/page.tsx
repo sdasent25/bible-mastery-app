@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const sections = [
   {
@@ -64,14 +64,29 @@ const sections = [
 ]
 
 export default function BooksGame() {
-  const [gameSections, setGameSections] = useState(
-    sections.map(section => ({
+  const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy')
+  const [gameSections, setGameSections] = useState<typeof sections>([])
+
+  const [result, setResult] = useState<string | null>(null)
+
+  useEffect(() => {
+    let selectedSections = sections
+
+    if (difficulty === 'easy') {
+      selectedSections = sections.slice(0, 1)
+    }
+
+    if (difficulty === 'medium') {
+      selectedSections = sections.slice(0, 3)
+    }
+
+    const randomized = selectedSections.map(section => ({
       ...section,
       books: [...section.books].sort(() => Math.random() - 0.5)
     }))
-  )
 
-  const [result, setResult] = useState<string | null>(null)
+    setGameSections(randomized)
+  }, [difficulty])
 
   function moveUp(sectionIndex: number, index: number) {
     if (index === 0) return
@@ -115,6 +130,18 @@ export default function BooksGame() {
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Books of the Bible
         </h1>
+
+        <div className="mb-6 text-center">
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value as any)}
+            className="p-2 border rounded-lg"
+          >
+            <option value="easy">Beginner</option>
+            <option value="medium">Intermediate</option>
+            <option value="hard">Advanced</option>
+          </select>
+        </div>
 
         {gameSections.map((section, sIndex) => (
           <div key={section.title} className="mb-6">
