@@ -9,19 +9,57 @@ const sections = [
   },
   {
     title: 'History',
-    books: ['Joshua', 'Judges', 'Ruth']
+    books: [
+      'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel',
+      '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles',
+      'Ezra', 'Nehemiah', 'Esther'
+    ]
   },
   {
     title: 'Poetry & Wisdom',
-    books: ['Job', 'Psalms', 'Proverbs']
+    books: ['Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon']
   },
   {
     title: 'Major Prophets',
-    books: ['Isaiah', 'Jeremiah']
+    books: ['Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel']
   },
+  {
+    title: 'Minor Prophets',
+    books: [
+      'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah',
+      'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi'
+    ]
+  },
+
+  // NEW TESTAMENT
+
   {
     title: 'Gospels',
     books: ['Matthew', 'Mark', 'Luke', 'John']
+  },
+  {
+    title: 'Acts',
+    books: ['Acts']
+  },
+  {
+    title: "Paul's Letters",
+    books: [
+      'Romans', '1 Corinthians', '2 Corinthians', 'Galatians',
+      'Ephesians', 'Philippians', 'Colossians',
+      '1 Thessalonians', '2 Thessalonians',
+      '1 Timothy', '2 Timothy', 'Titus', 'Philemon'
+    ]
+  },
+  {
+    title: 'General Letters',
+    books: [
+      'Hebrews', 'James', '1 Peter', '2 Peter',
+      '1 John', '2 John', '3 John', 'Jude'
+    ]
+  },
+  {
+    title: 'Revelation',
+    books: ['Revelation']
   }
 ]
 
@@ -62,7 +100,9 @@ export default function BooksGame() {
 
   function checkOrder() {
     const isCorrect = gameSections.every(section =>
-      section.books.every((book, i) => book === sections.find(s => s.title === section.title)?.books[i])
+      section.books.every((book, i) =>
+        book === sections.find(s => s.title === section.title)?.books[i]
+      )
     )
 
     setResult(isCorrect ? 'correct' : 'wrong')
@@ -70,10 +110,10 @@ export default function BooksGame() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-4xl mx-auto">
 
         <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-          Order the Books
+          Books of the Bible
         </h1>
 
         {gameSections.map((section, sIndex) => (
@@ -119,7 +159,7 @@ export default function BooksGame() {
 
         {result === 'wrong' && (
           <p className="text-red-600 text-center mt-4 font-bold">
-            Not quite — try again 💪
+            Not quite — keep going 💪
           </p>
         )}
 
