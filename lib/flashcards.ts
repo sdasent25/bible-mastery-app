@@ -88,7 +88,7 @@ export async function getFlashcards(): Promise<Flashcard[]> {
 
   const { data, error } = await supabase
     .from('flashcards')
-    .select('id, user_id, verse, reference, status, category_id, created_at')
+    .select('id, user_id, verse_text, reference, status, category_id, created_at')
     .eq('user_id', userId)
     .order('created_at', { ascending: true })
 
@@ -179,7 +179,7 @@ export async function updateFlashcardStatus(
     .update({ status })
     .eq('id', flashcardId)
     .eq('user_id', userId)
-    .select('id, user_id, verse, reference, status, category_id, created_at')
+    .select('id, user_id, verse_text, reference, status, category_id, created_at')
     .single<FlashcardRow>()
 
   if (error) {
