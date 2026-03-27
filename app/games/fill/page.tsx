@@ -54,8 +54,11 @@ export default function FillGame() {
   }, [useTimer, started])
 
 function generateQuestionFromData(data: any[]) {
+  console.log('FLASHCARDS DATA:', data)
   const card = data[Math.floor(Math.random() * data.length)]
+    console.log('SELECTED CARD:', card)
     const verseText = card.verse_text
+    console.log('VERSE TEXT:', verseText)
 
     if (!verseText) {
       console.log('Missing verse_text:', card)
