@@ -37,14 +37,16 @@ export default function FillGame() {
     return () => clearInterval(interval)
   }, [useTimer, started])
 
-async function load() {
-  const data = await getFlashcards()
-  setCards(data)
-
-  if (data.length > 0) {
-    generateQuestionFromData(data)
+  async function load() {
+    const data = await getFlashcards()
+    setCards(data)
   }
-}
+
+  useEffect(() => {
+    if (cards.length > 0 && started && !question) {
+      generateQuestionFromData(cards)
+    }
+  }, [cards, started])
 
 function generateQuestionFromData(data: any[]) {
   const card = data[Math.floor(Math.random() * data.length)]
@@ -68,12 +70,12 @@ function generateQuestionFromData(data: any[]) {
   }
 
   function startGame() {
-  setStarted(true)
-  setRound(1)
-  setScore(0)
-  setStreak(0)
-  generateQuestionFromData(cards)
-}
+    setStarted(true)
+    setRound(1)
+    setScore(0)
+    setStreak(0)
+    setQuestion(null)
+  }
 
   function handleSubmit() {
     if (!question) return
