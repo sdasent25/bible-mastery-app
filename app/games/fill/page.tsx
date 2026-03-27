@@ -7,7 +7,6 @@ import { getSubscriptionStatus } from '@/lib/user'
 type Question = {
   words: string[]
   hiddenIndexes: number[]
-  reference: string
 }
 
 export default function FillGame() {
@@ -23,7 +22,10 @@ export default function FillGame() {
   const [question, setQuestion] = useState<Question | null>(null)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showResult, setShowResult] = useState(false)
-  const [lastCorrect, setLastCorrect] = useState<boolean | null>(null)
+  const [wordResults, setWordResults] = useState<Record<number, boolean>>({})
+
+  const [missedWords, setMissedWords] = useState<string[]>([])
+  const [sessionMissed, setSessionMissed] = useState<string[]>([])
 
   useEffect(() => {
     async function init() {
@@ -53,14 +55,10 @@ export default function FillGame() {
       if (!hiddenIndexes.includes(i)) hiddenIndexes.push(i)
     }
 
-    setQuestion({
-      words,
-      hiddenIndexes,
-      reference: card.reference
-    })
+    setQuestion({ words, hiddenIndexes })
     setAnswers({})
     setShowResult(false)
-    setLastCorrect(null)
+    setWordResults({})
   }
 
   function startGame() {
@@ -71,6 +69,7 @@ export default function FillGame() {
     setScore(0)
     setStreak(0)
     setXp(0)
+    setSessionMissed([])
 
     generateQuestion(cards)
   }
@@ -79,18 +78,28 @@ export default function FillGame() {
     if (!question) return
 
     let correct = 0
+    const results: Record<number, boolean> = {}
 
     question.hiddenIndexes.forEach((i) => {
-      if ((answers[i] || '').toLowerCase() === question.words[i].toLowerCase()) {
+      const user = (answers[i] || '').toLowerCase()
+      const actual = question.words[i].toLowerCase()
+
+      const isCorrect = user === actual
+      results[i] = isCorrect
+
+      if (isCorrect) {
         correct++
+      } else {
+        setMissedWords((prev) => [...prev, actual])
+        setSessionMissed((prev) => [...prev, actual])
       }
     })
 
-    const isCorrect = correct === question.hiddenIndexes.length
+    setWordResults(results)
 
-    setLastCorrect(isCorrect)
+    const isPerfect = correct === question.hiddenIndexes.length
 
-    if (isCorrect) {
+    if (isPerfect) {
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
       setXp((x) => x + 10)
@@ -112,29 +121,32 @@ export default function FillGame() {
   }
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <p className="text-xl font-bold text-gray-900">Loading game...</p>
-      </div>
-    )
+    return <div className="p-10 text-center text-lg font-bold">Loading...</div>
   }
 
   if (!started) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-        <div className="bg-white p-10 rounded-3xl shadow-xl text-center max-w-md w-full">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="bg-white p-10 rounded-2xl shadow text-center">
 
-          <h1 className="text-3xl font-extrabold text-gray-900 mb-3">
-            Fill in the Blank
-          </h1>
+          <h1 className="text-3xl font-bold mb-4">Fill in the Blank</h1>
 
-          <p className="text-gray-700 mb-8">
-            Strengthen your memory using your saved verses
-          </p>
+          {sessionMissed.length > 0 && (
+            <div className="mb-6">
+              <p className="font-semibold mb-2">Review Words:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                {sessionMissed.map((w, i) => (
+                  <span key={i} className="bg-gray-200 px-2 py-1 rounded">
+                    {w}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
 
           <button
             onClick={startGame}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-2xl font-bold text-lg shadow-md"
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
           >
             Start Game
           </button>
@@ -145,115 +157,61 @@ export default function FillGame() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-8">
+    <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto">
 
-        {/* HEADER */}
-        <div className="flex justify-between items-center mb-6">
-
-          <div className="bg-white px-4 py-2 rounded-full shadow text-gray-900 font-semibold">
-            Q {round}/10
-          </div>
-
-          <div className="bg-blue-100 px-4 py-2 rounded-full font-bold text-blue-700 shadow">
-            XP {xp}
-          </div>
-
-          <div className="bg-orange-100 px-4 py-2 rounded-full font-bold text-orange-600 shadow">
-            🔥 {streak}
-          </div>
-
+        <div className="flex justify-between mb-6 font-bold">
+          <div>Q {round}/10</div>
+          <div className="text-blue-600">XP {xp}</div>
+          <div>🔥 {streak}</div>
         </div>
 
-        {/* GAME CARD */}
         {question && (
-          <div className="bg-white p-8 rounded-3xl shadow-lg border border-gray-200 transition-all duration-200 hover:shadow-xl">
+          <div className="bg-white p-8 rounded-2xl shadow border">
 
-            <div className="mb-6">
-              <div className="text-center mb-4">
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
-                  Reference
-                </p>
-                <p className="text-lg font-bold text-gray-900">
-                  {question.reference}
-                </p>
-              </div>
+            <p className="text-xl text-center font-semibold leading-relaxed">
 
-              <p className="text-xl text-center leading-relaxed text-gray-900 font-semibold">
+              {question.words.map((w, i) => {
+                const isBlank = question.hiddenIndexes.includes(i)
+                const isCorrect = wordResults[i]
 
-                {question.words.map((word, i) => {
+                if (!isBlank) return <span key={i} className="mx-1">{w}</span>
 
-                  const isBlank = question.hiddenIndexes.includes(i)
+                return (
+                  <input
+                    key={i}
+                    value={answers[i] || ''}
+                    onChange={(e) =>
+                      setAnswers({ ...answers, [i]: e.target.value })
+                    }
+                    className={`mx-2 w-24 text-center text-lg font-bold border-b-4 ${
+                      showResult
+                        ? isCorrect
+                          ? 'border-green-500'
+                          : 'border-red-500'
+                        : 'border-blue-500'
+                    }`}
+                  />
+                )
+              })}
 
-                  return (
-                    <span key={i} className="inline-flex items-center mx-1">
-
-                      {isBlank ? (
-                        <input
-                          value={answers[i] || ''}
-                          onChange={(e) =>
-                            setAnswers({ ...answers, [i]: e.target.value })
-                          }
-                          className="min-w-[80px] border-b-2 border-blue-600 text-center text-lg font-bold bg-transparent focus:outline-none"
-                        />
-                      ) : (
-                        <span>{word}</span>
-                      )}
-
-                    </span>
-                  )
-
-                })}
-
-              </p>
-            </div>
+            </p>
 
             {!showResult ? (
-              <div className="text-center">
+              <div className="text-center mt-6">
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
                 >
                   Submit
                 </button>
               </div>
             ) : (
-              <div className="text-center">
-
-                {lastCorrect ? (
-                  <p className="text-green-600 text-2xl font-extrabold mb-4">
-                    Nice! +10 XP 🎉
-                  </p>
-                ) : (
-                  <div className="mb-4">
-                    <p className="text-red-600 text-xl font-bold mb-3">
-                      Not quite — keep going 💪
-                    </p>
-
-                    <div className="mt-4 text-center">
-
-                      <p className="text-sm text-gray-600 mb-2">
-                        Correct answers:
-                      </p>
-
-                      <div className="flex flex-wrap justify-center gap-2">
-                        {question.hiddenIndexes.map((i) => (
-                          <span
-                            key={i}
-                            className="px-3 py-1 bg-blue-100 text-blue-800 rounded-lg font-semibold"
-                          >
-                            {question.words[i]}
-                          </span>
-                        ))}
-                      </div>
-
-                    </div>
-                  </div>
-                )}
+              <div className="text-center mt-6">
 
                 <button
                   onClick={nextQuestion}
-                  className="bg-gray-900 hover:bg-black text-white px-8 py-4 rounded-2xl font-bold text-lg shadow"
+                  className="bg-black text-white px-6 py-3 rounded-xl font-bold"
                 >
                   Next
                 </button>
