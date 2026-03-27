@@ -1,3 +1,5 @@
+import { hasFreeze, useFreeze } from './freeze'
+
 export function getStreak() {
   const streak = localStorage.getItem('streak')
   return streak ? parseInt(streak) : 0
@@ -12,7 +14,14 @@ export function updateStreak(completedToday: boolean) {
   const lastDate = getLastCompletedDate()
   let streak = getStreak()
 
-  if (!completedToday) return streak
+  if (!completedToday) {
+    if (hasFreeze()) {
+      useFreeze()
+      return streak
+    } else {
+      streak = 0
+    }
+  }
 
   if (lastDate === today) return streak
 
