@@ -131,6 +131,26 @@ export default function BooksGame() {
           Books of the Bible
         </h1>
 
+        <div className="bg-white p-5 rounded-2xl shadow border border-gray-200 mb-6 text-center">
+
+          <h2 className="text-lg font-bold text-gray-900 mb-2">
+            How to Play
+          </h2>
+
+          <p className="text-gray-900">
+            Arrange the books in the correct order within each section.
+          </p>
+
+          <p className="text-gray-900 mt-2">
+            Use the arrows to move books up or down.
+          </p>
+
+          <p className="text-gray-900 mt-2">
+            Press <span className="font-bold">Check</span> when you think it&apos;s correct.
+          </p>
+
+        </div>
+
         <div className="mb-6 text-center">
           <select
             value={difficulty}
