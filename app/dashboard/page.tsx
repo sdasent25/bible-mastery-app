@@ -16,6 +16,7 @@ import { getAchievements } from '@/lib/achievements';
 import { getSession } from '@/lib/resume';
 import { getDailyStats, getWeeklyStats } from '@/lib/stats';
 import { getFamily, createFamily } from '@/lib/family';
+import { getAvatar, setAvatar } from '@/lib/avatar';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -49,6 +50,7 @@ export default function Dashboard() {
   const [family, setFamily] = useState<any>(null);
   const [friends, setFriends] = useState<any[]>([]);
   const [inviteCode, setInviteCode] = useState('');
+  const [avatar, setUserAvatar] = useState('🙂');
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
@@ -89,6 +91,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     setFriends(getFriends())
+  }, [])
+
+  useEffect(() => {
+    setUserAvatar(getAvatar())
   }, [])
 
   useEffect(() => {
@@ -190,6 +196,32 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="mx-auto max-w-3xl space-y-7">
+      <div className="bg-white p-6 rounded-2xl shadow border mb-6 text-center">
+
+        <div className="text-4xl mb-2">
+          {avatar}
+        </div>
+
+        <p className="font-bold text-gray-900 mb-3">
+          Your Avatar
+        </p>
+
+        <div className="flex justify-center gap-3">
+          {['🙂', '🔥', '⚡', '📖', '💪'].map((a) => (
+            <button
+              key={a}
+              onClick={() => {
+                setUserAvatar(a)
+                setAvatar(a)
+              }}
+              className="text-2xl"
+            >
+              {a}
+            </button>
+          ))}
+        </div>
+
+      </div>
       {session && (
         <div className="bg-white p-6 rounded-2xl shadow border mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-2">
