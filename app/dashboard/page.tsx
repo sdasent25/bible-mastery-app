@@ -15,6 +15,7 @@ import { hasFreeze } from '@/lib/freeze';
 import { getAchievements } from '@/lib/achievements';
 import { getSession } from '@/lib/resume';
 import { getDailyStats, getWeeklyStats } from '@/lib/stats';
+import { getFamily, createFamily } from '@/lib/family';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -45,6 +46,7 @@ export default function Dashboard() {
   const [xp, setXp] = useState(0);
   const [reviewCount] = useState(0);
   const [daily, setDaily] = useState({ count: 0, completed: false });
+  const [family, setFamily] = useState<any>(null);
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
@@ -77,6 +79,11 @@ export default function Dashboard() {
       queueMicrotask(() => setCurrentSegment(saved));
     }
   }, []);
+
+  useEffect(() => {
+    const f = getFamily()
+    setFamily(f)
+  }, [])
 
   useEffect(() => {
     if (!completedToday) return;
@@ -354,6 +361,43 @@ export default function Dashboard() {
         <p className="text-gray-900">
           Sessions: {weeklyStats.sessions}
         </p>
+
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Family
+        </h2>
+
+        {!family && (
+          <button
+            onClick={() => setFamily(createFamily('My Family'))}
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold"
+          >
+            Create Family
+          </button>
+        )}
+
+        {family && (
+          <div>
+
+            <p className="font-bold mb-3">{family.name}</p>
+
+            <div className="space-y-2">
+              {family.members.map((m: any, i: number) => (
+                <div
+                  key={i}
+                  className="flex justify-between bg-gray-100 p-3 rounded-lg"
+                >
+                  <span>{m.name}</span>
+                  <span className="font-bold">{m.score}</span>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        )}
 
       </div>
 
