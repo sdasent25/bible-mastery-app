@@ -207,7 +207,7 @@ export default function FillGame() {
         </div>
 
         {question && (
-          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200">
+          <div className="bg-white p-8 rounded-2xl shadow-md border border-gray-200 transition-all duration-200">
 
             <p className="text-xl text-center font-semibold leading-relaxed text-gray-900 opacity-100">
 
@@ -241,7 +241,7 @@ export default function FillGame() {
               <div className="text-center mt-6">
                 <button
                   onClick={handleSubmit}
-                  className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-all duration-200"
                 >
                   Submit
                 </button>
@@ -249,9 +249,20 @@ export default function FillGame() {
             ) : (
               <div className="text-center mt-6">
 
+                {question.hiddenIndexes.every((i) => wordResults[i]) && (
+                  <>
+                    <div className="text-4xl mb-2">
+                      ✅
+                    </div>
+                    <p className="text-green-600 text-2xl font-extrabold mb-4 animate-pulse">
+                      +10 XP 🎉
+                    </p>
+                  </>
+                )}
+
                 <button
                   onClick={nextQuestion}
-                  className="bg-black text-white px-6 py-3 rounded-xl font-bold"
+                  className="bg-black text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-all duration-200"
                 >
                   Next
                 </button>
