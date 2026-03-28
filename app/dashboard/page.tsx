@@ -288,24 +288,41 @@ export default function Dashboard() {
       </div>
 
       <div className="bg-white p-6 rounded-2xl shadow border mt-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-2">
+        <h2 className="text-lg font-bold text-gray-900 mb-3">
           Achievements
         </h2>
 
-        {achievements.length === 0 && (
-          <p className="text-gray-900">No achievements yet</p>
+        {achievements.length === 0 ? (
+          <div className="rounded-xl bg-gray-50 border border-gray-200 p-4 text-center">
+            <p className="text-gray-900 font-medium">
+              No achievements yet
+            </p>
+            <p className="text-gray-700 text-sm mt-1">
+              Keep training to unlock your first badge.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+            {achievements.map((a: string, i: number) => (
+              <div
+                key={i}
+                className="bg-green-50 border border-green-200 rounded-xl p-4"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="text-2xl">🏆</div>
+                  <div>
+                    <p className="text-green-800 font-bold">
+                      {a}
+                    </p>
+                    <p className="text-green-700 text-sm">
+                      Achievement unlocked
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
-
-        <div className="flex flex-wrap gap-2 mt-2">
-          {achievements.map((a: string, i: number) => (
-            <span
-              key={i}
-              className="bg-green-100 text-green-800 px-3 py-1 rounded-lg font-semibold"
-            >
-              {a}
-            </span>
-          ))}
-        </div>
       </div>
 
       <div className="bg-white p-6 rounded-2xl shadow border mt-6">
