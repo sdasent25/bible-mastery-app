@@ -64,6 +64,10 @@ const sections = [
 ]
 
 export default function BooksGame() {
+  const [score, setScore] = useState(0)
+  const [streak, setStreak] = useState(0)
+  const [time, setTime] = useState(60)
+  const [started, setStarted] = useState(false)
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy')
   const [gameSections, setGameSections] = useState<typeof sections>([])
 
@@ -87,6 +91,23 @@ export default function BooksGame() {
 
     setGameSections(randomized)
   }, [difficulty])
+
+  useEffect(() => {
+    if (!started) return
+
+    const interval = setInterval(() => {
+      setTime((t) => {
+        if (t <= 1) {
+          clearInterval(interval)
+          setStarted(false)
+          return 0
+        }
+        return t - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [started])
 
   function moveUp(sectionIndex: number, index: number) {
     if (index === 0) return
@@ -120,7 +141,14 @@ export default function BooksGame() {
       )
     )
 
-    setResult(isCorrect ? 'correct' : 'wrong')
+    if (isCorrect) {
+      setScore((s) => s + 10)
+      setStreak((s) => s + 1)
+      setResult('correct')
+    } else {
+      setStreak(0)
+      setResult('wrong')
+    }
   }
 
   return (
@@ -151,6 +179,17 @@ export default function BooksGame() {
 
         </div>
 
+        {!started && (
+          <div className="text-center mb-6">
+            <button
+              onClick={() => setStarted(true)}
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold"
+            >
+              Start Game
+            </button>
+          </div>
+        )}
+
         <div className="mb-6 text-center">
           <select
             value={difficulty}
@@ -162,6 +201,14 @@ export default function BooksGame() {
             <option value="hard">Advanced</option>
           </select>
         </div>
+
+        {started && (
+          <div className="flex justify-between mb-6 font-bold text-gray-900">
+            <div>⏱ {time}s</div>
+            <div>Score: {score}</div>
+            <div>🔥 {streak}</div>
+          </div>
+        )}
 
         {gameSections.map((section, sIndex) => (
           <div key={section.title} className="mb-6">
@@ -199,14 +246,14 @@ export default function BooksGame() {
         </div>
 
         {result === 'correct' && (
-          <p className="text-green-600 text-center mt-4 font-bold">
-            Perfect! 🎉
+          <p className="text-green-600 text-center mt-4 font-bold text-lg">
+            Perfect! +10 XP 🎉
           </p>
         )}
 
         {result === 'wrong' && (
-          <p className="text-red-600 text-center mt-4 font-bold">
-            Not quite — keep going 💪
+          <p className="text-red-600 text-center mt-4 font-bold text-lg">
+            Not quite — keep trying 💪
           </p>
         )}
 
