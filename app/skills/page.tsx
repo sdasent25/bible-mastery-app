@@ -1,16 +1,24 @@
 'use client'
 
-import { useState } from 'react'
-
-const skills = [
-  { name: 'Gospels', unlocked: true },
-  { name: 'Faith', unlocked: true },
-  { name: 'Love', unlocked: false },
-  { name: 'Prayer', unlocked: false }
-]
+import { useEffect, useState } from 'react'
+import { getWeeklyStats } from '@/lib/stats'
 
 export default function SkillsPage() {
-  const [skillList] = useState(skills)
+  const [skills, setSkills] = useState<any[]>([])
+
+  useEffect(() => {
+    const stats = getWeeklyStats()
+    const xp = stats.xp || 0
+
+    const updatedSkills = [
+      { name: 'Gospels', unlocked: true },
+      { name: 'Faith', unlocked: xp >= 50 },
+      { name: 'Love', unlocked: xp >= 100 },
+      { name: 'Prayer', unlocked: xp >= 200 }
+    ]
+
+    setSkills(updatedSkills)
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -22,7 +30,7 @@ export default function SkillsPage() {
 
         <div className="space-y-4">
 
-          {skillList.map((skill) => (
+          {skills.map((skill) => (
             <div
               key={skill.name}
               className={`p-5 rounded-xl border font-semibold ${
