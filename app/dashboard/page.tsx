@@ -376,6 +376,10 @@ export default function Dashboard() {
           Family
         </h2>
 
+        <p className="text-gray-900 mb-3">
+          Your household group (up to 6 members). Share progress and grow together.
+        </p>
+
         {!family && (
           <button
             onClick={() => setFamily(createFamily('My Family'))}
@@ -412,6 +416,10 @@ export default function Dashboard() {
         <h2 className="text-lg font-bold text-gray-900 mb-2">
           Friends
         </h2>
+
+        <p className="text-gray-900 mb-3">
+          Invite others to compete, compare scores, and stay motivated.
+        </p>
 
         <button
           onClick={() => setInviteCode(generateInviteCode())}
