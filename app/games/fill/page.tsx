@@ -6,6 +6,7 @@ import { getSubscriptionStatus } from '@/lib/user'
 import { updateDailyProgress } from '@/lib/daily'
 import { unlockAchievement } from '@/lib/achievements'
 import { saveSession } from '@/lib/resume'
+import { updateStats } from '@/lib/stats'
 
 type Question = {
   words: string[]
@@ -111,6 +112,7 @@ export default function FillGame() {
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
       setXp((x) => x + xpGain)
+      updateStats(10)
 
       if (nextXp >= 50) {
         unlockAchievement('50 XP Earned')

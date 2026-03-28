@@ -14,6 +14,7 @@ import { hasClaimedReward } from '@/lib/rewards';
 import { hasFreeze } from '@/lib/freeze';
 import { getAchievements } from '@/lib/achievements';
 import { getSession } from '@/lib/resume';
+import { getDailyStats, getWeeklyStats } from '@/lib/stats';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -120,6 +121,8 @@ export default function Dashboard() {
   const freezeAvailable = typeof window !== 'undefined' ? hasFreeze() : false;
   const achievements = typeof window !== 'undefined' ? getAchievements() : [];
   const session = typeof window !== 'undefined' ? getSession() : null;
+  const dailyStats = typeof window !== 'undefined' ? getDailyStats() : { xp: 0, sessions: 0 };
+  const weeklyStats = typeof window !== 'undefined' ? getWeeklyStats() : { xp: 0, sessions: 0 };
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -303,6 +306,38 @@ export default function Dashboard() {
             </span>
           ))}
         </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Daily Recap
+        </h2>
+
+        <p className="text-gray-900">
+          XP Today: {dailyStats.xp}
+        </p>
+
+        <p className="text-gray-900">
+          Sessions: {dailyStats.sessions}
+        </p>
+
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Weekly Summary
+        </h2>
+
+        <p className="text-gray-900">
+          XP This Week: {weeklyStats.xp}
+        </p>
+
+        <p className="text-gray-900">
+          Sessions: {weeklyStats.sessions}
+        </p>
+
       </div>
 
       <section className="rounded-xl bg-slate-900 p-5 shadow-md text-white">

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { updateDailyProgress } from '@/lib/daily'
 import { saveSession } from '@/lib/resume'
+import { updateStats } from '@/lib/stats'
 
 export default function MatchGame() {
   const [cards, setCards] = useState<Flashcard[]>([])
@@ -39,6 +40,7 @@ export default function MatchGame() {
       })
       setStreak(s => s + 1)
       updateDailyProgress()
+      updateStats(10)
       setPairs(prev => prev.filter(p => p.verse !== selectedVerse))
     } else {
       setStreak(0)
