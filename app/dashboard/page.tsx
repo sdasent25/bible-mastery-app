@@ -13,6 +13,7 @@ import { getDailyProgress } from '@/lib/daily';
 import { hasClaimedReward } from '@/lib/rewards';
 import { hasFreeze } from '@/lib/freeze';
 import { getAchievements } from '@/lib/achievements';
+import { getSession } from '@/lib/resume';
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -118,6 +119,7 @@ export default function Dashboard() {
   const rewardClaimed = typeof window !== 'undefined' ? hasClaimedReward() : false;
   const freezeAvailable = typeof window !== 'undefined' ? hasFreeze() : false;
   const achievements = typeof window !== 'undefined' ? getAchievements() : [];
+  const session = typeof window !== 'undefined' ? getSession() : null;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -172,6 +174,24 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
       <div className="mx-auto max-w-3xl space-y-7">
+      {session && (
+        <div className="bg-white p-6 rounded-2xl shadow border mb-6">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">
+            Continue Training
+          </h2>
+
+          <p className="text-gray-900 mb-2">
+            Resume your last session
+          </p>
+
+          <Link
+            href={`/games/${session.game}`}
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold inline-block"
+          >
+            Continue →
+          </Link>
+        </div>
+      )}
       <div className="flex justify-end">
         <button
           onClick={handleLogout}

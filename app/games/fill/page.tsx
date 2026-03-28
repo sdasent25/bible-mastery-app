@@ -5,6 +5,7 @@ import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { updateDailyProgress } from '@/lib/daily'
 import { unlockAchievement } from '@/lib/achievements'
+import { saveSession } from '@/lib/resume'
 
 type Question = {
   words: string[]
@@ -123,6 +124,12 @@ export default function FillGame() {
     }
 
     updateDailyProgress()
+    saveSession({
+      game: 'fill',
+      round,
+      score,
+      streak
+    })
 
     setShowResult(true)
   }

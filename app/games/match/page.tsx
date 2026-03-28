@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { updateDailyProgress } from '@/lib/daily'
+import { saveSession } from '@/lib/resume'
 
 export default function MatchGame() {
   const [cards, setCards] = useState<Flashcard[]>([])
@@ -31,6 +32,11 @@ export default function MatchGame() {
 
     if (correct?.reference === reference) {
       setScore(s => s + (doubleXP ? 2 : 1))
+      saveSession({
+        game: 'match',
+        score,
+        streak
+      })
       setStreak(s => s + 1)
       updateDailyProgress()
       setPairs(prev => prev.filter(p => p.verse !== selectedVerse))
