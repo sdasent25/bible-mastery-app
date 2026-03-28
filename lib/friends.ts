@@ -137,3 +137,21 @@ export async function getFriendLeaderboard(): Promise<FriendLeaderboardEntry[]> 
   entries.sort((a, b) => b.xp - a.xp)
   return entries
 }
+
+export function getFriends() {
+  const data = localStorage.getItem('friends')
+  return data ? JSON.parse(data) : []
+}
+
+export function addFriend(name: string) {
+  const friends = getFriends()
+
+  const updated = [...friends, { name, score: 0 }]
+
+  localStorage.setItem('friends', JSON.stringify(updated))
+  return updated
+}
+
+export function generateInviteCode() {
+  return Math.random().toString(36).substring(2, 8)
+}

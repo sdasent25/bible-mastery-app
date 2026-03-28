@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { signOut } from '@/lib/auth';
-import { getFriendLeaderboard, type FriendLeaderboardEntry } from '@/lib/friends';
+import { getFriendLeaderboard, getFriends, addFriend, generateInviteCode, type FriendLeaderboardEntry } from '@/lib/friends';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { getSubscriptionStatus } from '@/lib/user';
@@ -47,6 +47,8 @@ export default function Dashboard() {
   const [reviewCount] = useState(0);
   const [daily, setDaily] = useState({ count: 0, completed: false });
   const [family, setFamily] = useState<any>(null);
+  const [friends, setFriends] = useState<any[]>([]);
+  const [inviteCode, setInviteCode] = useState('');
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
@@ -83,6 +85,10 @@ export default function Dashboard() {
   useEffect(() => {
     const f = getFamily()
     setFamily(f)
+  }, [])
+
+  useEffect(() => {
+    setFriends(getFriends())
   }, [])
 
   useEffect(() => {
@@ -398,6 +404,43 @@ export default function Dashboard() {
 
           </div>
         )}
+
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow border mt-6">
+
+        <h2 className="text-lg font-bold text-gray-900 mb-2">
+          Friends
+        </h2>
+
+        <button
+          onClick={() => setInviteCode(generateInviteCode())}
+          className="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold mb-3"
+        >
+          Generate Invite
+        </button>
+
+        {inviteCode && (
+          <p className="mb-3 font-bold">
+            Invite Code: {inviteCode}
+          </p>
+        )}
+
+        <button
+          onClick={() => setFriends(addFriend('New Friend'))}
+          className="bg-gray-900 text-white px-4 py-2 rounded-xl font-bold mb-3"
+        >
+          Add Friend (Demo)
+        </button>
+
+        <div className="space-y-2">
+          {friends.map((f, i) => (
+            <div key={i} className="flex justify-between bg-gray-100 p-3 rounded-lg">
+              <span>{f.name}</span>
+              <span className="font-bold">{f.score}</span>
+            </div>
+          ))}
+        </div>
 
       </div>
 
