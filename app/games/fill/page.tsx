@@ -114,12 +114,16 @@ export default function FillGame() {
       setXp((x) => x + xpGain)
       updateStats(10)
 
-      if (nextXp >= 50) {
-        unlockAchievement('50 XP Earned')
+      if (xp >= 50) {
+        unlockAchievement('XP Starter', '⚡')
       }
 
-      if (nextStreak >= 3) {
-        unlockAchievement('3 Streak')
+      if (streak >= 3) {
+        unlockAchievement('On Fire', '🔥')
+      }
+
+      if (score >= 5) {
+        unlockAchievement('Sharp Mind', '🧠')
       }
     } else {
       setStreak(0)

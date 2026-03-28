@@ -303,7 +303,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-            {achievements.map((a: string, i: number) => (
+            {achievements.map((a: any, i: number) => (
               <div
                 key={i}
                 className="bg-green-50 border border-green-200 rounded-xl p-4"
@@ -312,7 +312,7 @@ export default function Dashboard() {
                   <div className="text-2xl">🏆</div>
                   <div>
                     <p className="text-green-800 font-bold">
-                      {a}
+                      {a.icon} {a.name}
                     </p>
                     <p className="text-green-700 text-sm">
                       Achievement unlocked
