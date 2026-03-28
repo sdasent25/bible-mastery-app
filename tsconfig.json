@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "scripts/uploadGenesis.js"  ],
+, "scripts/uploadQuestions.js"  ],
   "exclude": ["node_modules"]
 }
