@@ -1,99 +1,54 @@
-'use client';
+"use client"
 
-import Link from 'next/link';
-import { useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
-import { addMutualFriendship } from '@/lib/friends';
+import { useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export default function SignupPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const supabase = createClient()
 
-  const params = useSearchParams();
-  const refUserId = useMemo(() => params.get('ref') || '', [params]);
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [message, setMessage] = useState("")
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
+  const handleSignup = async () => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password
+    })
 
-    try {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (signUpError) throw signUpError;
-
-      const newUserId = data.user?.id;
-      if (newUserId && refUserId && newUserId !== refUserId) {
-        await addMutualFriendship(newUserId, refUserId, email, null);
-      }
-
-      window.location.assign('/dashboard');
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-    } finally {
-      setLoading(false);
+    if (error) {
+      setMessage(error.message)
+    } else {
+      setMessage("Signup successful. Check your email.")
     }
-  };
+  }
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow p-6 space-y-4">
-        <h1 className="text-2xl font-bold text-center text-gray-900">Sign Up</h1>
+    <div style={{ padding: 20 }}>
+      <h1>Signup</h1>
 
-        {refUserId && (
-          <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-900">
-            You were invited by a friend.
-          </div>
-        )}
+      <input
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-        {error && (
-          <div className="rounded border border-red-400 bg-red-100 px-4 py-2 text-red-700">
-            {error}
-          </div>
-        )}
+      <br /><br />
 
-        <form onSubmit={handleSignup} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+      <input
+        placeholder="Password"
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+      <br /><br />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-600 py-2 font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
-          >
-            {loading ? 'Creating Account...' : 'Create Account'}
-          </button>
-        </form>
+      <button onClick={handleSignup}>
+        Sign Up
+      </button>
 
-        <Link href="/login" className="block text-center text-sm text-blue-600 hover:text-blue-700">
-          Already have an account? Login
-        </Link>
-      </div>
-    </main>
-  );
+      <p>{message}</p>
+    </div>
+  )
 }
