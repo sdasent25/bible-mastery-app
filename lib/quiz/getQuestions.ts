@@ -28,7 +28,7 @@ export async function getQuestions({
   userId,
   limit = 10
 }: GetQuestionsParams) {
-  const supabase = createClient()
+  const supabase = await createClient()
   const { data: historyData, error: historyError } = await supabase
     .from("user_question_history")
     .select("question_id")
@@ -125,7 +125,7 @@ async function fetchQuestionsByDifficulty({
   seenQuestionIds,
   applySeenFilter
 }: {
-  supabase: ReturnType<typeof createClient>
+  supabase: Awaited<ReturnType<typeof createClient>>
   book: string
   chapter: number
   difficulty: string
