@@ -5,86 +5,56 @@ export const dynamic = "force-dynamic"
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json()
-
-    const { questionId, correct } = body
-
-    if (!questionId) {
-      return NextResponse.json(
-        { error: "Missing fields" },
-        { status: 400 }
-      )
-    }
-
     const supabase = await createClient()
 
     const {
-      data: { user }
+      data: { user },
+      error: userError
     } = await supabase.auth.getUser()
 
-    if (!user) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      )
+    if (userError || !user) {
+      console.error("AUTH ERROR:", userError)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const userId = user.id
+    const body = await req.json()
+    const { questionId, correct } = body
 
-    // Check if record exists
     const { data: existing } = await supabase
       .from("user_question_history")
       .select("*")
-      .eq("user_id", userId)
+      .eq("user_id", user.id)
       .eq("question_id", questionId)
       .maybeSingle()
 
     if (existing) {
-      const { error } = await supabase
+      await supabase
         .from("user_question_history")
         .update({
           correct,
-          last_seen: new Date().toISOString(),
           times_seen: existing.times_seen + 1,
           times_correct: correct
             ? existing.times_correct + 1
-            : existing.times_correct
+            : existing.times_correct,
+          last_seen: new Date().toISOString()
         })
         .eq("id", existing.id)
-
-      if (error) {
-        console.error("SUPABASE ERROR:", error)
-        return NextResponse.json(
-          { error: error.message },
-          { status: 500 }
-        )
-      }
     } else {
-      const { error } = await supabase
+      await supabase
         .from("user_question_history")
         .insert({
-          user_id: userId,
+          user_id: user.id,
           question_id: questionId,
           correct,
           times_seen: 1,
           times_correct: correct ? 1 : 0
         })
-
-      if (error) {
-        console.error("SUPABASE ERROR:", error)
-        return NextResponse.json(
-          { error: error.message },
-          { status: 500 }
-        )
-      }
     }
 
     return NextResponse.json({ success: true })
+
   } catch (err) {
-    console.error("ANSWER SAVE ERROR:", err)
-    return NextResponse.json(
-      { error: "Failed to save answer" },
-      { status: 500 }
-    )
+    console.error("SAVE ERROR:", err)
+    return NextResponse.json({ error: "Failed" }, { status: 500 })
   }
 }
