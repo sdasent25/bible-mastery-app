@@ -431,12 +431,31 @@ export default function QuizPage() {
 
   const handleAnswerSelect = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
+    const correctAnswer = currentQuestion.correctIndex;
+    console.log("ANSWER CLICKED", {
+      questionId: currentQuestion.id,
+      selectedAnswer: answerIndex,
+      correctAnswer
+    });
     setSelectedAnswer(answerIndex);
 
     if (!isReviewMode) {
       const handleProgress = async () => {
         const isCorrect = answerIndex === currentQuestion.correctIndex;
         recordAnswerPerformance(currentQuestion.segmentId, isCorrect);
+
+        const response = await fetch("/api/quiz/answer", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            questionId: currentQuestion.id,
+            correct: isCorrect
+          })
+        });
+        console.log("API RESPONSE", await response.clone().json());
 
         const previousXp = await getXp();
         const previousLevel = Math.floor(previousXp / 100) + 1;
