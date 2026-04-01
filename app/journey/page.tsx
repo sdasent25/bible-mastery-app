@@ -1,4 +1,5 @@
 import JourneyPath from "@/components/journey/JourneyPath"
+import SeriesHeader from "@/components/journey/SeriesHeader"
 
 const navItems = ["Dashboard", "Journey", "Training", "Review", "Settings"]
 
@@ -30,7 +31,7 @@ export default function JourneyPage() {
         </aside>
 
         <section className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-          <div className="mx-auto max-w-md md:max-w-[700px]">
+          <div className="mx-auto max-w-xl">
             <header className="mb-8 text-center md:hidden">
               <h1 className="text-3xl font-bold tracking-tight">Journey</h1>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
@@ -45,6 +46,7 @@ export default function JourneyPage() {
               </p>
             </header>
 
+            <SeriesHeader />
             <JourneyPath />
           </div>
         </section>
