@@ -3,8 +3,9 @@
 import { createClient } from "@/lib/supabase/server"
 
 type GetQuestionsParams = {
-  book: string
-  chapter: number
+  book?: string
+  chapter?: number
+  day?: number
   isPro: boolean
   userId: string
   limit?: number
@@ -12,6 +13,8 @@ type GetQuestionsParams = {
 
 type QuestionRow = {
   id: string
+  day: number | null
+  reference: string
   question: string
   option_a: string
   option_b: string
@@ -21,9 +24,17 @@ type QuestionRow = {
   difficulty: "easy" | "medium" | "hard"
 }
 
+type QuestionHistoryRow = {
+  question_id: string | null
+  times_seen: number | null
+  times_correct: number | null
+  last_seen_at: string | null
+}
+
 export async function getQuestions({
   book,
   chapter,
+  day,
   isPro,
   userId,
   limit = 10
@@ -31,18 +42,24 @@ export async function getQuestions({
   const supabase = await createClient()
   const { data: historyData, error: historyError } = await supabase
     .from("user_question_history")
-    .select("question_id")
+    .select("question_id, times_seen, times_correct, last_seen_at")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
     .limit(50)
 
   if (historyError) {
-    throw new Error("Error fetching user question history")
+    console.error("HISTORY ERROR:", historyError)
   }
+
+  const historyMap = new Map()
+
+  historyData?.forEach((item) => {
+    historyMap.set(item.question_id, item)
+  })
 
   const seenQuestionIds: string[] =
     historyData
-      ?.map((row: { question_id: string | null }) => row.question_id)
+      ?.map((row: QuestionHistoryRow) => row.question_id)
       .filter((questionId): questionId is string => Boolean(questionId)) ?? []
 
   // 🎯 STEP 1 — Determine difficulty distribution
@@ -66,6 +83,7 @@ export async function getQuestions({
       supabase,
       book,
       chapter,
+      day,
       difficulty,
       count,
       seenQuestionIds,
@@ -79,6 +97,7 @@ export async function getQuestions({
             supabase,
             book,
             chapter,
+            day,
             difficulty,
             count,
             seenQuestionIds,
@@ -100,8 +119,35 @@ export async function getQuestions({
 
   const uniqueQuestions = Array.from(uniqueMap.values())
 
-  // 🔀 STEP 4 — Shuffle final question order
-  const finalQuestions = shuffleArray(uniqueQuestions)
+  // 🎯 STEP 4 — Prioritize unseen and weaker questions
+  const scored = uniqueQuestions.map((q) => {
+    const history = historyMap.get(q.id) as QuestionHistoryRow | undefined
+
+    if (!history) {
+      return { ...q, score: 1000 }
+    }
+
+    const timesSeen = history.times_seen ?? 0
+    const timesCorrect = history.times_correct ?? 0
+    const accuracy = timesSeen > 0 ? timesCorrect / timesSeen : 0
+    const weaknessScore = (1 - accuracy) * 500
+    const repetitionPenalty = timesSeen * -5
+    const recencyBonus = history.last_seen_at
+      ? Math.max(
+          0,
+          50 - (Date.now() - new Date(history.last_seen_at).getTime()) / 1000000
+        )
+      : 0
+
+    return {
+      ...q,
+      score: weaknessScore + repetitionPenalty + recencyBonus
+    }
+  })
+
+  scored.sort((a, b) => b.score - a.score)
+
+  const finalQuestions = shuffleArray(scored.slice(0, limit))
 
   // 🔀 STEP 5 — Shuffle answer choices
   const formatted = finalQuestions.map(formatQuestion)
@@ -116,18 +162,35 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5)
 }
 
+function toSegmentId(day: number | null) {
+  switch (day) {
+    case 1:
+      return "genesis_1_3"
+    case 2:
+      return "genesis_4_6"
+    case 3:
+      return "genesis_7_9"
+    case 4:
+      return "genesis_10_11"
+    default:
+      return "genesis_1_3"
+  }
+}
+
 async function fetchQuestionsByDifficulty({
   supabase,
   book,
   chapter,
+  day,
   difficulty,
   count,
   seenQuestionIds,
   applySeenFilter
 }: {
   supabase: Awaited<ReturnType<typeof createClient>>
-  book: string
-  chapter: number
+  book?: string
+  chapter?: number
+  day?: number
   difficulty: string
   count: number
   seenQuestionIds: string[]
@@ -136,10 +199,20 @@ async function fetchQuestionsByDifficulty({
   let query = supabase
     .from("questions")
     .select("*")
-    .eq("book", book)
-    .eq("chapter", chapter)
     .eq("difficulty", difficulty)
     .limit(count * 3)
+
+  if (typeof day === "number") {
+    query = query.eq("day", day)
+  } else {
+    if (book) {
+      query = query.eq("book", book)
+    }
+
+    if (typeof chapter === "number") {
+      query = query.eq("chapter", chapter)
+    }
+  }
 
   if (applySeenFilter && seenQuestionIds.length > 0) {
     query = query.not("id", "in", `(${seenQuestionIds.join(",")})`)
@@ -174,9 +247,14 @@ function formatQuestion(q: QuestionRow) {
 
   return {
     id: q.id,
+    uuid: q.id,
+    segmentId: toSegmentId(q.day),
+    reference: q.reference,
     question: q.question,
     options: shuffled.map((o) => o.text),
+    correctIndex,
     correctAnswerIndex: correctIndex,
+    explanation: `Review ${q.reference} for context.`,
     difficulty: q.difficulty
   }
 }

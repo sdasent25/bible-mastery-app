@@ -6,7 +6,6 @@ import { supabase } from '@/lib/supabase';
 
 type LeaderboardRow = {
   user_id: string;
-  user_display: string | null;
   xp: number;
 };
 
@@ -43,7 +42,7 @@ export default function LeaderboardPage() {
 
       const { data, error } = await supabase
         .from('weekly_xp')
-        .select('user_id, user_display, xp')
+        .select('user_id, xp')
         .eq('week_start', currentWeekStart)
         .order('xp', { ascending: false })
         .limit(50);
@@ -95,7 +94,7 @@ export default function LeaderboardPage() {
               {rows.map((row, index) => (
                 <div key={`${row.user_id}-${index}`} className="grid grid-cols-[64px_1fr_90px] gap-3 border-b border-gray-100 px-3 py-3 last:border-b-0">
                   <span className="font-bold text-gray-900">#{index + 1}</span>
-                  <span className="truncate text-gray-800">{row.user_display || 'User'}</span>
+                  <span className="truncate text-gray-800">{`User ${row.user_id.slice(0, 8)}`}</span>
                   <span className="text-right font-semibold text-emerald-700">{row.xp}</span>
                 </div>
               ))}

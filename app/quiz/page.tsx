@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { getQuestions, type Question } from '@/lib/questions';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
@@ -15,6 +14,17 @@ import {
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
+
+type Question = {
+  id: string;
+  segmentId: string;
+  reference: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+  difficulty: 'easy' | 'medium' | 'hard' | 'scholar';
+};
 
 type IncorrectItem = {
   question: Question;
@@ -47,6 +57,7 @@ export default function QuizPage() {
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
+  const [loadingQuestions, setLoadingQuestions] = useState(true);
   const [isTrainingMode, setIsTrainingMode] = useState(false);
   const [quizSeed, setQuizSeed] = useState(0);
   const [isWeaknessMode, setIsWeaknessMode] = useState(false);
@@ -56,6 +67,7 @@ export default function QuizPage() {
   const [activeProgramId, setActiveProgramId] = useState<string | null>(null);
   const [activeProgramSegmentIndex, setActiveProgramSegmentIndex] = useState<number | null>(null);
   const [programProgressSaved, setProgramProgressSaved] = useState(false);
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
@@ -130,47 +142,60 @@ export default function QuizPage() {
     checkPro();
   }, [activeProgramId, mode]);
 
-  const questions = useMemo(() => {
-    if (!paramsInitialized) return [] as Question[];
-
-    let fetchedQuestions: Question[];
-
-    if (mode === 'scholar') {
-      // Scholar Mode: Load questions from all segments at hard difficulty
-      const allSegments = ['genesis_1_3', 'genesis_4_6', 'genesis_7_9', 'genesis_10_11'];
-      let combinedQuestions: Question[] = [];
-      
-      for (const seg of allSegments) {
-        combinedQuestions = combinedQuestions.concat(getQuestions(seg, 'hard'));
-      }
-
-      fetchedQuestions = combinedQuestions.slice(0, 15);
-    } else if (isProgramMode) {
-      fetchedQuestions = getQuestions(segment, 'mixed', isProPlusUser).slice(0, 15);
-    } else if (isProPlusUser) {
-      fetchedQuestions = getQuestions(segment, 'mixed', true).slice(0, 15);
-    } else if (isProUser) {
-      fetchedQuestions = getQuestions(segment, 'mixed', false).slice(0, 15);
-    } else {
-      fetchedQuestions = getQuestions(segment, 'easy').slice(0, 2);
+  useEffect(() => {
+    if (!paramsInitialized || loadingPro) {
+      return;
     }
 
-    const startIndex = fetchedQuestions.length > 0 ? quizSeed % fetchedQuestions.length : 0;
-    const seededQuestions = fetchedQuestions.length > 0
-      ? [...fetchedQuestions.slice(startIndex), ...fetchedQuestions.slice(0, startIndex)]
-      : fetchedQuestions;
+    const loadQuestions = async () => {
+      setLoadingQuestions(true);
 
-    // Shuffle answers for each question
-    return seededQuestions.map(q => {
-      const shuffledOptions = shuffleArray(q.options);
-      const newCorrectIndex = shuffledOptions.indexOf(q.options[q.correctIndex]);
-      return {
-        ...q,
-        options: shuffledOptions,
-        correctIndex: newCorrectIndex
-      };
-    });
-  }, [isProgramMode, isProPlusUser, isProUser, mode, paramsInitialized, quizSeed, segment]);
+      try {
+        const resolvedSegment =
+          isProgramMode && activeProgram && activeProgramSegmentIndex !== null
+            ? toQuizSegmentId(activeProgram.segments[activeProgramSegmentIndex].segment)
+            : segment;
+
+        const response = await fetch(
+          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
+          {
+            credentials: 'include'
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          console.error('Error loading quiz questions:', data);
+          setQuestions([]);
+          return;
+        }
+
+        setQuestions((data as Question[]).map((q) => ({
+          ...q,
+          id: q.id
+        })));
+      } catch (error) {
+        console.error('Error loading quiz questions:', error);
+        setQuestions([]);
+      } finally {
+        setLoadingQuestions(false);
+      }
+    };
+
+    loadQuestions();
+  }, [
+    activeProgram,
+    activeProgramSegmentIndex,
+    isProgramMode,
+    isProPlusUser,
+    isProUser,
+    loadingPro,
+    mode,
+    paramsInitialized,
+    quizSeed,
+    segment
+  ]);
 
   const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
   const totalQuestions = activeQuestions.length;
@@ -207,20 +232,7 @@ export default function QuizPage() {
 
   const buildWeakQuestionSet = (ids: string[]) => {
     const idSet = new Set(ids);
-    const collected = new Map<string, Question>();
-
-    for (let i = 0; i < 8; i++) {
-      const batch = getQuestions(segment, 'mixed');
-      for (const question of batch) {
-        if (idSet.has(question.id)) {
-          collected.set(question.id, question);
-        }
-      }
-
-      if (collected.size >= idSet.size) break;
-    }
-
-    return shuffleArray(Array.from(collected.values()));
+    return shuffleArray(questions.filter((question) => idSet.has(question.id)));
   };
 
   const handleTrainWeakAreas = () => {
@@ -302,6 +314,14 @@ export default function QuizPage() {
     );
   }
 
+  if (loadingQuestions) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <p className="text-lg text-gray-700">Loading questions...</p>
+      </div>
+    );
+  }
+
   if (showLevelUp && newLevel !== null) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
@@ -321,7 +341,7 @@ export default function QuizPage() {
   }
 
   // Check if user already completed today and not in review, scholar, or program mode
-  if (completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && !isProgramMode && mode !== 'scholar') {
+  if (false && completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && !isProgramMode && mode !== 'scholar') {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-6">
@@ -443,6 +463,9 @@ export default function QuizPage() {
       const handleProgress = async () => {
         const isCorrect = answerIndex === currentQuestion.correctIndex;
         recordAnswerPerformance(currentQuestion.segmentId, isCorrect);
+
+        console.log("CURRENT QUESTION:", currentQuestion);
+        console.log("SENDING QUESTION ID:", currentQuestion.id);
 
         const response = await fetch("/api/quiz/answer", {
           method: "POST",
@@ -717,6 +740,9 @@ export default function QuizPage() {
               >
                 Review Past Answers
               </button>
+              <Link href="/quiz?mode=scholar">
+                <button>Scholar Mode</button>
+              </Link>
               {noWeakAreasMessage && (
                 <p className="text-sm text-gray-700">You&apos;re doing great! No past errors to review right now.</p>
               )}

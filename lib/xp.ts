@@ -15,7 +15,7 @@ function getCurrentWeekStart(): string {
   return formatDateLocal(weekStart)
 }
 
-async function addWeeklyXp(userId: string, userEmail: string | null | undefined, amount: number) {
+async function addWeeklyXp(userId: string, _userEmail: string | null | undefined, amount: number) {
   const weekStart = getCurrentWeekStart()
 
   const { data: existing, error: fetchError } = await supabase
@@ -38,8 +38,7 @@ async function addWeeklyXp(userId: string, userEmail: string | null | undefined,
       {
         user_id: userId,
         week_start: weekStart,
-        xp: nextXp,
-        user_display: userEmail || 'User'
+        xp: nextXp
       },
       { onConflict: 'user_id,week_start' }
     )
