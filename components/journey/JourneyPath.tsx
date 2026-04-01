@@ -17,20 +17,24 @@ const nodes: JourneyNodeType[] = [
 
 export default function JourneyPath() {
   return (
-    <div className="mx-auto flex w-full max-w-[700px] flex-col gap-10 px-4 py-8">
-      {nodes.map((node, index) => {
-        const alignmentClass = index % 2 === 0 ? "justify-start" : "justify-end"
+    <div className="mx-auto w-full max-w-xl px-4 py-8">
+      <div className="relative flex flex-col space-y-12">
+        <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-slate-200 dark:bg-slate-800" />
+        {nodes.map((node, index) => {
+          const alignmentClass =
+            index % 2 === 0 ? "items-start pl-6" : "items-end pr-6"
 
-        return (
-          <div key={node.title} className={`flex w-full ${alignmentClass}`}>
-            <JourneyNode
-              title={node.title}
-              status={node.status}
-              isBoss={node.isBoss}
-            />
-          </div>
-        )
-      })}
+          return (
+            <div key={node.title} className={`relative flex w-full ${alignmentClass}`}>
+              <JourneyNode
+                title={node.title}
+                status={node.status}
+                isBoss={node.isBoss}
+              />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
