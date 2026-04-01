@@ -1,6 +1,6 @@
 export default function SeriesHeader() {
   return (
-    <div className="mb-6 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 p-6 shadow-sm dark:from-slate-800 dark:to-slate-700">
+    <div className="mb-6 rounded-xl bg-gradient-to-br from-blue-200 to-indigo-200 p-8 shadow-lg dark:from-slate-700 dark:to-slate-800 dark:border dark:border-white/10">
       <div className="mx-auto w-full text-center sm:text-left">
         <p className="text-sm text-gray-500 dark:text-gray-300">
           Series • Pentateuch

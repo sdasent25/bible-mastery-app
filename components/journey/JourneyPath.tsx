@@ -19,28 +19,28 @@ export default function JourneyPath() {
   return (
     <div className="relative mx-auto w-full max-w-xl px-4 py-8">
       <div className="relative flex flex-col space-y-12">
-        <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-gray-300 dark:bg-gray-600" />
+        <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-gray-300/40 dark:bg-gray-600/30" />
         {nodes.map((node, index) => {
           const alignmentClass =
             index % 2 === 0 ? "items-start pl-6" : "items-end pr-6"
-          const flamePositionClass =
-            index % 2 === 0 ? "left-[7.5rem] md:left-[6.5rem]" : "right-[7.5rem] md:right-[6.5rem]"
 
           return (
             <div key={node.title} className={`relative flex w-full ${alignmentClass}`}>
-              {node.status === "available" && (
-                <div
-                  className={`absolute top-5 text-xl ${flamePositionClass}`}
-                  aria-hidden="true"
-                >
-                  🔥
-                </div>
-              )}
-              <JourneyNode
-                title={node.title}
-                status={node.status}
-                isBoss={node.isBoss}
-              />
+              <div className="relative">
+                {node.status === "available" && (
+                  <div
+                    className="absolute right-0 top-0 z-10 translate-x-1/2 -translate-y-1/2 text-2xl"
+                    aria-hidden="true"
+                  >
+                    🔥
+                  </div>
+                )}
+                <JourneyNode
+                  title={node.title}
+                  status={node.status}
+                  isBoss={node.isBoss}
+                />
+              </div>
             </div>
           )
         })}

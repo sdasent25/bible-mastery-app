@@ -41,7 +41,7 @@ export default function JourneyNode({
     : "h-20 w-20 text-sm md:h-16 md:w-16"
   const availableStateClass =
     status === "available"
-      ? "ring-4 ring-blue-400 animate-pulse"
+      ? "ring-4 ring-blue-400/50 animate-pulse"
       : ""
 
   return (
