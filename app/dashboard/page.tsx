@@ -279,15 +279,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-150px] left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-blue-500 opacity-10 blur-3xl" />
-      </div>
-      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-slate-950 to-transparent" />
-      <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
-
-      <div className="relative z-10 flex w-full">
-        <div className="hidden w-72 border-r border-slate-800 p-6 lg:block">
+    <div className="flex min-h-screen bg-slate-950 text-white">
+      <div className="hidden w-64 border-r border-white/10 lg:block">
+        <div className="p-6">
           <div className="sticky top-6">
             <h2 className="text-2xl font-bold">Bible Mastery</h2>
             <p className="mt-2 text-sm text-slate-400">
@@ -325,8 +319,10 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="mx-auto max-w-4xl flex-1 p-6">
+      <div className="flex-1 px-10 py-8">
+        <div className="max-w-5xl">
           <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
           <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)]">
             <p className="text-sm text-slate-400">Level</p>
@@ -403,21 +399,19 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="hidden w-80 p-6 lg:block">
-          <div className="space-y-4">
-            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
-              🔥 {streak} day streak
-            </div>
+      <div className="hidden w-80 flex-col gap-4 border-l border-white/5 p-6 xl:flex">
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+          🔥 {streak} day streak
+        </div>
 
-            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
-              📊 Accuracy: {hasPerformanceData ? accuracy : 82}%
-            </div>
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+          📊 Accuracy: {hasPerformanceData ? accuracy : 87}%
+        </div>
 
-            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
-              🎯 You're close to unlocking the next level
-            </div>
-          </div>
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+          🎯 You're close to unlocking the next level
         </div>
       </div>
     </div>
