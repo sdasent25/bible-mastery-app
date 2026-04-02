@@ -47,6 +47,7 @@ export default function QuizPage() {
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [flameState, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
+  const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -230,6 +231,20 @@ export default function QuizPage() {
 
     window.location.assign('/upgrade');
   };
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (selectedAnswer !== null) return;
+
+      if (e.key === "1") handleAnswerSelect(0);
+      if (e.key === "2") handleAnswerSelect(1);
+      if (e.key === "3") handleAnswerSelect(2);
+      if (e.key === "4") handleAnswerSelect(3);
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selectedAnswer, currentQuestion]);
 
   const buildWeakQuestionSet = (ids: string[]) => {
     const idSet = new Set(ids);
@@ -485,6 +500,10 @@ export default function QuizPage() {
 
         if (isCorrect) {
           setFlameState("correct");
+          setShowCelebration(true);
+          setTimeout(() => {
+            setShowCelebration(false);
+          }, 500);
           setStreak(prev => prev + 1);
           setScore(score + 1);
           const updatedXp = await addXp(10);
@@ -505,6 +524,12 @@ export default function QuizPage() {
               : [...prev, { question: currentQuestion, userAnswer: currentQuestion.options[answerIndex] }]
           );
         }
+
+        setTimeout(() => {
+          if (currentQuestionIndex < totalQuestions - 1) {
+            handleNextQuestion();
+          }
+        }, 800);
       };
 
       handleProgress();
@@ -530,6 +555,7 @@ export default function QuizPage() {
     setScore(0);
     setStreak(0);
     setFlameState("idle");
+    setShowCelebration(false);
     setProgramProgressSaved(false);
 
     setQuizCompleted(false);
@@ -742,6 +768,11 @@ export default function QuizPage() {
               {flameState === "correct" && "🔥🔥"}
               {flameState === "wrong" && "😔"}
             </div>
+            {showCelebration && (
+              <div className="mb-2 text-center text-3xl text-yellow-400 animate-bounce">
+                ✨ +10 XP
+              </div>
+            )}
             <h3 className="mb-8 text-2xl font-semibold leading-relaxed text-white md:text-3xl">
               {currentQuestion.question}
             </h3>
@@ -752,6 +783,9 @@ export default function QuizPage() {
               </div>
             )}
 
+            <p className="text-xs text-slate-400 text-center mb-2">
+              Press 1-4 to answer quickly
+            </p>
             <div className="space-y-4">
               {currentQuestion.options.map((answer, index) => {
                 let buttonClass = 'w-full text-left py-4 px-5 rounded-xl border border-slate-700 bg-slate-800 text-white transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 active:scale-95 ';
@@ -761,24 +795,22 @@ export default function QuizPage() {
                   buttonClass += 'hover:bg-slate-700 hover:scale-[1.02]';
                 } else if (index === currentQuestion.correctIndex) {
                   buttonClass += 'bg-green-600 border-green-400 text-white';
-                  label = 'Correct';
                 } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
                   buttonClass += 'bg-red-600 border-red-400 text-white';
-                  label = 'Incorrect';
                 } else {
                   buttonClass += 'opacity-80';
                 }
 
-                if (selectedAnswer !== null && index === selectedAnswer && index !== currentQuestion.correctIndex) {
-                  label = 'Your Choice';
+                if (selectedAnswer !== null) {
+                  if (index === currentQuestion.correctIndex) {
+                    label = 'Correct';
+                  } else if (index === selectedAnswer) {
+                    label = 'Your Choice';
+                  }
                 }
 
                 if (selectedAnswer === index) {
                   buttonClass += ' scale-95';
-                }
-
-                if (selectedAnswer !== null && index === currentQuestion.correctIndex) {
-                  buttonClass += ' animate-pulse';
                 }
 
                 return (
@@ -801,9 +833,9 @@ export default function QuizPage() {
             {selectedAnswer !== null && (
               <div className="mt-4 text-center">
                 {selectedAnswer === currentQuestion.correctIndex ? (
-                  <p className="text-green-400 font-bold text-lg">Correct 🔥</p>
+                  <p className="text-green-400 font-bold text-lg">Correct! +10 XP 🔥</p>
                 ) : (
-                  <p className="text-red-400 font-bold text-lg">Incorrect</p>
+                  <p className="text-red-400 font-bold text-lg">Not quite — keep going 💪</p>
                 )}
               </div>
             )}
