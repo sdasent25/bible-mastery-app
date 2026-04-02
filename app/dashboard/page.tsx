@@ -268,7 +268,7 @@ export default function Dashboard() {
   };
 
   const cardStyle =
-    "bg-slate-900 hover:bg-slate-800 transition-all duration-200 p-5 rounded-xl text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-[1.02] cursor-pointer border border-white/5";
+    "bg-slate-900 hover:bg-slate-800 transition-all duration-200 p-5 rounded-xl text-white font-semibold text-lg hover:scale-[1.02] cursor-pointer border border-white/5";
 
   if (loadingPro) {
     return (
@@ -279,7 +279,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white">
+    <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-120px] left-1/2 -translate-x-1/2 w-[900px] h-[900px] bg-blue-500 opacity-10 blur-3xl rounded-full" />
+      </div>
+
       <div className="hidden w-64 border-r border-white/10 lg:block">
         <div className="p-6">
           <div className="sticky top-6">
@@ -321,10 +325,17 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="flex-1 px-10 py-8">
+      <div className="relative z-10 flex-1 px-10 py-8">
         <div className="max-w-5xl">
           <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
-          <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+          <div className="flex justify-center mb-6">
+            <img
+              src="/flame.png"
+              alt="Flame"
+              className="w-14 h-14 drop-shadow-lg"
+            />
+          </div>
+          <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)] mb-6">
             <p className="text-sm text-slate-400">Level</p>
             <p className="text-2xl font-bold">Level {level}</p>
             <p className="text-sm text-slate-400 mt-1">
@@ -338,15 +349,32 @@ export default function Dashboard() {
             </div>
           </div>
           {nextSegment && (
-            <button
-              onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
-              className="mt-6 w-full rounded-xl bg-blue-600 py-4 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] hover:shadow-blue-500/30"
-            >
-              Continue → {nextSegment.replace(/_/g, " ")}
-            </button>
+            <div className="bg-slate-900 p-6 rounded-2xl shadow-xl mb-6 border border-white/5">
+              <p className="text-sm text-slate-400 mb-2 text-center">
+                Continue your journey
+              </p>
+
+              <button
+                onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
+                className="w-full rounded-xl bg-blue-600 py-4 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] hover:shadow-blue-500/30"
+              >
+                Continue → {nextSegment.replace(/_/g, " ")}
+              </button>
+            </div>
           )}
 
-          <div className="mt-6 rounded-xl bg-slate-900 p-6 shadow-lg">
+          <div className="flex justify-center gap-3 mb-6">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className={`w-4 h-4 rounded-full ${
+                  i <= 3 ? "bg-blue-500" : "bg-slate-700"
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="rounded-xl bg-slate-900 p-6 shadow-lg">
             <h2 className="text-lg font-semibold mb-4 text-white">
               Weekly Progress
             </h2>
@@ -369,7 +397,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-4">
+          <div className="mt-6 grid grid-cols-1 gap-5">
             <div
               onClick={() => router.push("/journey")}
               className={cardStyle}
@@ -401,16 +429,20 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="hidden w-80 flex-col gap-4 border-l border-white/5 p-6 xl:flex">
-        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+      <div className="hidden w-80 flex-col gap-5 border-l border-white/5 p-6 xl:flex">
+        <p className="text-xs text-slate-400 uppercase tracking-wide mb-2">
+          Your Progress
+        </p>
+
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5 transition-all duration-200 hover:scale-[1.02]">
           🔥 {streak} day streak
         </div>
 
-        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5 transition-all duration-200 hover:scale-[1.02]">
           📊 Accuracy: {hasPerformanceData ? accuracy : 87}%
         </div>
 
-        <div className="bg-slate-900 p-5 rounded-xl border border-white/5">
+        <div className="bg-slate-900 p-5 rounded-xl border border-white/5 transition-all duration-200 hover:scale-[1.02]">
           🎯 You're close to unlocking the next level
         </div>
       </div>
