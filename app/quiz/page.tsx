@@ -695,122 +695,111 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-6">
-          {!isReviewMode && isTrainingMode && (
-            <div className="mb-2 inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-800">
-              Training Mode
-            </div>
-          )}
-          {!isReviewMode && isProgramMode && (
-            <div className="mb-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800">
-              Program Mode
-            </div>
-          )}
-          {!isReviewMode && mode === 'scholar' && (
-            <div className="mb-2 inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
-              Scholar Mode
-            </div>
-          )}
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            {isReviewMode
-              ? 'Review Mode'
-              : mode === 'scholar'
-                ? 'Master Training'
+    <div className="min-h-screen bg-gray-50 px-4 py-4 md:py-6 lg:py-8">
+      <div className="mx-auto max-w-xl space-y-4">
+        <div className="space-y-4">
+          <div className="text-center">
+            {!isReviewMode && isTrainingMode && (
+              <div className="mb-2 inline-flex items-center rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-800">
+                Training Mode
+              </div>
+            )}
+            {!isReviewMode && isProgramMode && (
+              <div className="mb-2 inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800">
+                Program Mode
+              </div>
+            )}
+            {!isReviewMode && mode === 'scholar' && (
+              <div className="mb-2 inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
+                Scholar Mode
+              </div>
+            )}
+            <h1 className="mb-2 text-3xl font-bold text-gray-800">
+              {isReviewMode
+                ? 'Review Mode'
+                : mode === 'scholar'
+                  ? 'Master Training'
+                  : isProgramMode
+                    ? activeProgram?.title || 'Training Program'
+                    : isTrainingMode
+                      ? 'Training Session'
+                      : 'Bible Quiz'}
+            </h1>
+            <p className="text-gray-600">
+              {isReviewMode
+                ? 'Reinforce what you missed'
                 : isProgramMode
-                  ? activeProgram?.title || 'Training Program'
-                  : isTrainingMode
-                    ? 'Training Session'
-                    : 'Bible Quiz'}
-          </h1>
-          <p className="text-gray-600">
-            {isReviewMode
-              ? 'Reinforce what you missed'
-              : isProgramMode
-                ? 'Move through your guided program one segment at a time.'
-                : 'Test your knowledge and earn XP as part of your daily mastery routine.'}
-          </p>
-          {!isReviewMode && !quizCompleted && !isProgramMode && (
-            <div className="mt-4 space-y-2">
-              <button
-                onClick={handleTrainWeakAreas}
-                className="bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Review Past Answers
-              </button>
-              <Link href="/quiz?mode=scholar">
-                <button>Scholar Mode</button>
-              </Link>
-              {noWeakAreasMessage && (
-                <p className="text-sm text-gray-700">You&apos;re doing great! No past errors to review right now.</p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Summary Row */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6 flex justify-between items-center">
-          <span className="text-gray-700">Score: {score} / {questions.length}</span>
-          <span className="text-gray-700">XP: {totalXp}</span>
-        </div>
-
-        {/* Segment Card */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-semibold text-gray-800">
+                  ? 'Move through your guided program one segment at a time.'
+                  : 'Test your knowledge and earn XP as part of your daily mastery routine.'}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="font-medium text-gray-700">
                 {mode === 'scholar'
                   ? 'All Segments'
                   : isProgramMode
                     ? activeProgram?.segments[activeProgramSegmentIndex || 0]?.label || activeQuestions[0]?.reference || 'Unknown Segment'
                     : activeQuestions[0]?.reference || 'Unknown Segment'}
-              </h2>
-              <p className="text-gray-600">
-                {mode === 'scholar'
-                  ? 'Scholar training across scripture'
+              </span>
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
+                  ? 'bg-yellow-500 text-gray-900'
                   : isProgramMode
-                    ? `Program path: ${activeProgram?.title || 'Training Program'}`
-                    : 'Segment being studied'}
-              </p>
+                    ? 'bg-slate-100 text-slate-800'
+                    : isWeaknessMode ? 'bg-indigo-100 text-indigo-800' : isProPlusUser ? 'bg-purple-100 text-purple-800' : isProUser ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+              }`}>
+                {mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
+                  ? '🏆 Scholar'
+                  : isProgramMode
+                    ? 'Program'
+                    : isWeaknessMode
+                      ? 'Weak Areas'
+                      : isProPlusUser
+                        ? 'Pro+ Mixed'
+                        : isProUser
+                          ? 'Mixed'
+                          : 'Easy'}
+              </span>
             </div>
-            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-              mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
-                ? 'bg-yellow-500 text-gray-900'
-                : isProgramMode
-                  ? 'bg-slate-100 text-slate-800'
-                : isWeaknessMode ? 'bg-indigo-100 text-indigo-800' : isProPlusUser ? 'bg-purple-100 text-purple-800' : isProUser ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-            }`}>
-              {mode === 'scholar' || currentQuestion?.difficulty === 'scholar'
-                ? '🏆 Scholar'
-                : isProgramMode
-                  ? 'Program'
-                  : isWeaknessMode
-                    ? 'Weak Areas'
-                    : isProPlusUser
-                      ? 'Pro+ Mixed'
-                      : isProUser
-                        ? 'Mixed'
-                        : 'Easy'}
-            </span>
+          </div>
+
+          {!isReviewMode && !quizCompleted && !isProgramMode && (
+            <div className="space-y-2 text-center">
+              <button
+                onClick={handleTrainWeakAreas}
+                className="rounded-lg bg-indigo-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Review Past Answers
+              </button>
+              <div>
+                <Link href="/quiz?mode=scholar">
+                  <button className="rounded-lg bg-white px-4 py-2 font-semibold text-gray-800 shadow-sm transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    Scholar Mode
+                  </button>
+                </Link>
+              </div>
+              {noWeakAreasMessage && (
+                <p className="text-sm text-gray-700">You&apos;re doing great! No past errors to review right now.</p>
+              )}
+            </div>
+          )}
+
+          <div className="rounded-2xl bg-white p-5 shadow-md">
+            <div className="mb-3 flex items-center justify-between text-sm font-semibold text-gray-700">
+              <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
+              <span>XP: {totalXp}</span>
+            </div>
+            <div className="h-3 w-full rounded-full bg-gray-200">
+              <div
+                className="h-3 rounded-full bg-blue-600 transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         </div>
 
-        {/* Progress Indicator */}
-        <div className="bg-white rounded-lg shadow-md p-4 mb-6">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-gray-700">Question {currentQuestionIndex + 1} of {totalQuestions}</span>
-          </div>
-          <div className="w-full bg-gray-200 rounded-full h-3">
-            <div className="bg-blue-600 h-3 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-
-        {/* Question Card */}
-        <div className={`rounded-lg shadow-md p-6 mb-6 ${
+        <div className={`rounded-2xl p-8 shadow-lg ${
           currentQuestion.difficulty === 'scholar'
-            ? 'bg-gray-900 border-2 border-yellow-500'
+            ? 'border-2 border-yellow-500 bg-gray-900'
             : 'bg-white'
         }`}>
           {currentQuestion.difficulty === 'scholar' && (
@@ -818,7 +807,7 @@ export default function QuizPage() {
               <p className="text-yellow-400 font-bold text-center text-sm tracking-wider">🏆 SCHOLAR MODE</p>
             </div>
           )}
-          <h3 className={`text-xl leading-relaxed font-semibold mb-6 ${
+          <h3 className={`mb-6 text-2xl font-semibold leading-relaxed ${
             currentQuestion.difficulty === 'scholar'
               ? 'text-white'
               : 'text-gray-900'
@@ -832,40 +821,38 @@ export default function QuizPage() {
 
           <div className="space-y-4">
             {currentQuestion.options.map((answer, index) => {
-              let buttonClass = 'w-full text-left py-4 px-4 rounded-lg border-2 transition-all focus:outline-none focus:ring-2 min-h-14 ';
+              let buttonClass = 'w-full min-h-14 rounded-xl border-2 px-5 py-4 text-left transition-all duration-200 focus:outline-none focus:ring-2 active:scale-95 ';
               let label = '';
 
               if (currentQuestion.difficulty === 'scholar') {
-                // Scholar mode styling
                 if (selectedAnswer === null) {
-                  buttonClass += 'bg-gray-800 text-white border-yellow-500 hover:bg-gray-700';
+                  buttonClass += 'border-gray-300 bg-white text-gray-900 hover:scale-[1.02] hover:bg-gray-100 focus:ring-blue-500';
                 } else if (index === currentQuestion.correctIndex) {
-                  buttonClass += 'bg-green-900 text-green-100 border-green-500';
+                  buttonClass += 'border-green-600 bg-green-100 text-green-900';
                   label = 'Correct';
                 } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
-                  buttonClass += 'bg-red-900 text-red-100 border-red-500';
+                  buttonClass += 'border-red-600 bg-red-100 text-red-900';
                   label = 'Incorrect';
                 } else {
-                  buttonClass += 'bg-gray-800 text-white border-gray-600';
+                  buttonClass += 'border-gray-300 bg-white text-gray-900 opacity-80';
                 }
                 if (selectedAnswer !== null) {
-                  buttonClass += ' focus:ring-yellow-500';
+                  buttonClass += ' focus:ring-blue-500';
                 }
               } else {
-                // Regular mode styling
                 if (selectedAnswer === null) {
-                  buttonClass += 'bg-white text-gray-900 border-gray-300 hover:bg-gray-100 focus:ring-2 focus:ring-blue-500';
+                  buttonClass += 'border-gray-300 bg-white text-gray-900 hover:scale-[1.02] hover:bg-gray-100 focus:ring-blue-500';
                 } else if (index === currentQuestion.correctIndex) {
-                  buttonClass += 'bg-green-100 text-green-900 border-green-700';
+                  buttonClass += 'border-green-600 bg-green-100 text-green-900';
                   label = 'Correct';
                 } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
-                  buttonClass += 'bg-red-100 text-red-900 border-red-700';
+                  buttonClass += 'border-red-600 bg-red-100 text-red-900';
                   label = 'Incorrect';
                 } else {
-                  buttonClass += 'bg-white text-gray-900 border-gray-300';
+                  buttonClass += 'border-gray-300 bg-white text-gray-900 opacity-80';
                 }
                 if (selectedAnswer !== null) {
-                  buttonClass += ' focus:ring-2 focus:ring-blue-500';
+                  buttonClass += ' focus:ring-blue-500';
                 }
               }
 
@@ -891,20 +878,20 @@ export default function QuizPage() {
           </div>
 
           {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
-            <div className={`mt-4 p-3 rounded-lg ${
+            <div className={`mt-5 rounded-lg p-4 ${
               currentQuestion.difficulty === 'scholar'
                 ? 'bg-gray-800 border border-yellow-500 text-yellow-100'
-                : 'bg-gray-50 text-gray-700'
+                : 'bg-gray-100 text-gray-700'
             }`}>
               <p>{currentQuestion.explanation}</p>
             </div>
           )}
 
           {selectedAnswer !== null && (
-            <div className={`mt-4 p-3 rounded-lg ${
+            <div className={`mt-5 rounded-lg p-4 ${
               currentQuestion.difficulty === 'scholar'
                 ? 'bg-gray-800 border border-yellow-500 text-yellow-100'
-                : 'bg-gray-50 text-gray-700'
+                : 'bg-gray-100 text-gray-700'
             }`}>
               <p>{currentQuestion.explanation}</p>
             </div>
@@ -920,11 +907,10 @@ export default function QuizPage() {
           )}
         </div>
 
-        {/* Next Question Button */}
         {selectedAnswer !== null && (
           <button
             onClick={handleNextQuestion}
-            className="w-full bg-blue-700 text-white py-4 px-4 rounded-lg text-lg font-bold shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-xl bg-blue-700 px-4 py-4 text-lg font-bold text-white shadow-md transition-all duration-200 hover:scale-[1.02] hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {currentQuestionIndex < totalQuestions - 1 ? 'Next Question' : isReviewMode ? 'Finish Review' : 'Finish Quiz'}
           </button>
