@@ -46,6 +46,7 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
+  const [flameState, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -483,6 +484,7 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
+          setFlameState("correct");
           setStreak(prev => prev + 1);
           setScore(score + 1);
           const updatedXp = await addXp(10);
@@ -494,6 +496,7 @@ export default function QuizPage() {
             setShowLevelUp(true);
           }
         } else {
+          setFlameState("wrong");
           setStreak(0);
           addIncorrectQuestion(currentQuestion.id);
           setIncorrectQuestions(prev =>
@@ -510,6 +513,7 @@ export default function QuizPage() {
 
   const handleNextQuestion = () => {
     setTimeout(() => {
+      setFlameState("idle");
       if (currentQuestionIndex < totalQuestions - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedAnswer(null);
@@ -525,6 +529,7 @@ export default function QuizPage() {
     setSelectedAnswer(null);
     setScore(0);
     setStreak(0);
+    setFlameState("idle");
     setProgramProgressSaved(false);
 
     setQuizCompleted(false);
@@ -730,12 +735,12 @@ export default function QuizPage() {
                 <p className="text-center text-sm font-bold tracking-wider text-yellow-400">🏆 SCHOLAR MODE</p>
               </div>
             )}
-            <div className="mb-2 text-center text-2xl">
-              {selectedAnswer === null
-                ? "🤔"
-                : selectedAnswer === currentQuestion.correctIndex
-                  ? "🔥"
-                  : "😬"}
+            <div className={`mb-3 text-center text-3xl transition-all duration-200 ${
+              flameState === "correct" ? "scale-110" : ""
+            }`}>
+              {flameState === "idle" && "🔥"}
+              {flameState === "correct" && "🔥🔥"}
+              {flameState === "wrong" && "😔"}
             </div>
             <h3 className="mb-8 text-2xl font-semibold leading-relaxed text-white md:text-3xl">
               {currentQuestion.question}
