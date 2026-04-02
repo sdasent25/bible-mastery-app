@@ -268,7 +268,7 @@ export default function Dashboard() {
   };
 
   const cardStyle =
-    "bg-slate-900 hover:bg-slate-800 transition-all p-5 rounded-xl text-white font-semibold text-lg shadow-md cursor-pointer";
+    "bg-slate-900 hover:bg-slate-800 transition-all duration-200 p-5 rounded-xl text-white font-semibold text-lg shadow-md hover:shadow-lg hover:scale-[1.02] cursor-pointer border border-white/5";
 
   if (loadingPro) {
     return (
@@ -279,128 +279,144 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white">
-      <div className="hidden w-72 border-r border-slate-800 p-6 lg:block">
-        <div className="sticky top-6">
-          <h2 className="text-2xl font-bold">Bible Mastery</h2>
-          <p className="mt-2 text-sm text-slate-400">
-            Dashboard navigation
-          </p>
+    <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-150px] left-1/2 h-[800px] w-[800px] -translate-x-1/2 rounded-full bg-blue-500 opacity-10 blur-3xl" />
+      </div>
+      <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-slate-950 to-transparent" />
+      <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
 
-          <div className="mt-8 space-y-4">
-            <div
-              onClick={() => router.push("/dashboard")}
-              className={cardStyle}
-            >
-              Home
+      <div className="relative z-10 flex w-full">
+        <div className="hidden w-72 border-r border-slate-800 p-6 lg:block">
+          <div className="sticky top-6">
+            <h2 className="text-2xl font-bold">Bible Mastery</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Dashboard navigation
+            </p>
+
+            <div className="mt-8 space-y-4">
+              <div
+                onClick={() => router.push("/dashboard")}
+                className="cursor-pointer rounded-xl border border-blue-500/30 bg-blue-600/20 p-5 text-lg font-semibold text-white transition-all hover:bg-slate-800"
+              >
+                Home
+              </div>
+
+              <div
+                onClick={() => router.push("/journey")}
+                className="cursor-pointer rounded-xl border border-white/5 bg-slate-900 p-5 text-lg font-semibold text-white transition-all hover:bg-slate-800"
+              >
+                Journey
+              </div>
+
+              <div
+                onClick={() => router.push("/quiz")}
+                className="cursor-pointer rounded-xl border border-white/5 bg-slate-900 p-5 text-lg font-semibold text-white transition-all hover:bg-slate-800"
+              >
+                Training
+              </div>
+
+              <div
+                onClick={() => router.push("/review")}
+                className="cursor-pointer rounded-xl border border-white/5 bg-slate-900 p-5 text-lg font-semibold text-white transition-all hover:bg-slate-800"
+              >
+                Review
+              </div>
             </div>
+          </div>
+        </div>
 
+        <div className="mx-auto max-w-4xl flex-1 p-6">
+          <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+          <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+            <p className="text-sm text-slate-400">Level</p>
+            <p className="text-2xl font-bold">Level {level}</p>
+            <p className="text-sm text-slate-400 mt-1">
+              XP: {totalXp} / {(level * 100)}
+            </p>
+            <div className="mt-3 w-full bg-slate-800 rounded-full h-2">
+              <div
+                className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                style={{ width: `${(totalXp % 100) * 1}%` }}
+              />
+            </div>
+          </div>
+          {nextSegment && (
+            <button
+              onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
+              className="mt-6 w-full rounded-xl bg-blue-600 py-4 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] hover:shadow-blue-500/30"
+            >
+              Continue → {nextSegment.replace(/_/g, " ")}
+            </button>
+          )}
+
+          <div className="mt-6 rounded-xl bg-slate-900 p-6 shadow-lg">
+            <h2 className="text-lg font-semibold mb-4 text-white">
+              Weekly Progress
+            </h2>
+
+            <div className="flex items-end justify-between h-32 gap-2">
+              {weeklyXp.map((value, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center">
+                  <div className="flex h-full w-full items-end rounded-md bg-slate-800">
+                    <div
+                      className="w-full bg-blue-500 rounded-md transition-all duration-500"
+                      style={{ height: `${value * 2}px` }}
+                    />
+                  </div>
+
+                  <span className="text-xs text-slate-400 mt-1">
+                    {["S", "M", "T", "W", "T", "F", "S"][i]}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 grid grid-cols-1 gap-4">
             <div
               onClick={() => router.push("/journey")}
               className={cardStyle}
             >
-              Journey
+              📖 Continue Journey
             </div>
 
             <div
               onClick={() => router.push("/quiz")}
               className={cardStyle}
             >
-              Training
+              🎮 Training Mode
             </div>
 
             <div
               onClick={() => router.push("/review")}
               className={cardStyle}
             >
-              Review
+              🧠 Review Weak Areas
+            </div>
+
+            <div
+              onClick={() => router.push("/settings")}
+              className={cardStyle}
+            >
+              ⚙️ Settings
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex-1 max-w-3xl mx-auto p-6">
-        <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
-        <div className="rounded-xl bg-slate-900 p-4 text-white">
-          <p className="text-sm text-slate-400">Level</p>
-          <p className="text-2xl font-bold">Level {level}</p>
-          <p className="text-sm text-slate-400 mt-1">
-            XP: {totalXp} / {(level * 100)}
-          </p>
-        </div>
-        {nextSegment && (
-          <button
-            onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
-            className="mt-6 w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl text-lg font-bold shadow-lg"
-          >
-            Continue → {nextSegment.replace(/_/g, " ")}
-          </button>
-        )}
+        <div className="hidden w-80 p-6 lg:block">
+          <div className="space-y-4">
+            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
+              🔥 {streak} day streak
+            </div>
 
-        <div className="mt-8 bg-slate-900 p-6 rounded-xl shadow-lg">
-          <h2 className="text-lg font-semibold mb-4 text-white">
-            Weekly Progress
-          </h2>
+            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
+              📊 Accuracy: {hasPerformanceData ? accuracy : 82}%
+            </div>
 
-          <div className="flex items-end justify-between h-32 gap-2">
-            {weeklyXp.map((value, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center">
-                <div
-                  className="w-full bg-blue-500 rounded-md transition-all duration-300"
-                  style={{ height: `${value * 2}px` }}
-                />
-
-                <span className="text-xs text-slate-400 mt-1">
-                  {["S", "M", "T", "W", "T", "F", "S"][i]}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-4">
-          <div
-            onClick={() => router.push("/journey")}
-            className={cardStyle}
-          >
-            📖 Continue Journey
-          </div>
-
-          <div
-            onClick={() => router.push("/quiz")}
-            className={cardStyle}
-          >
-            🎮 Training Mode
-          </div>
-
-          <div
-            onClick={() => router.push("/review")}
-            className={cardStyle}
-          >
-            🧠 Review Weak Areas
-          </div>
-
-          <div
-            onClick={() => router.push("/settings")}
-            className={cardStyle}
-          >
-            ⚙️ Settings
-          </div>
-        </div>
-      </div>
-
-      <div className="w-80 p-6 hidden lg:block">
-        <div className="space-y-4">
-          <div className="bg-slate-900 p-4 rounded-xl">
-            🔥 {streak} day streak
-          </div>
-
-          <div className="bg-slate-900 p-4 rounded-xl">
-            📊 Accuracy: {hasPerformanceData ? accuracy : 82}%
-          </div>
-
-          <div className="bg-slate-900 p-4 rounded-xl">
-            🎯 You're close to unlocking the next level
+            <div className="rounded-xl border border-white/5 bg-slate-900 p-5 transition-all duration-200 hover:bg-slate-800">
+              🎯 You're close to unlocking the next level
+            </div>
           </div>
         </div>
       </div>
