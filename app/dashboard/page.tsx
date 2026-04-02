@@ -279,8 +279,47 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 p-5 text-white">
-      <div className="mx-auto max-w-xl text-center">
+    <div className="flex min-h-screen bg-slate-950 text-white">
+      <div className="hidden w-72 border-r border-slate-800 p-6 lg:block">
+        <div className="sticky top-6">
+          <h2 className="text-2xl font-bold">Bible Mastery</h2>
+          <p className="mt-2 text-sm text-slate-400">
+            Dashboard navigation
+          </p>
+
+          <div className="mt-8 space-y-4">
+            <div
+              onClick={() => router.push("/dashboard")}
+              className={cardStyle}
+            >
+              Home
+            </div>
+
+            <div
+              onClick={() => router.push("/journey")}
+              className={cardStyle}
+            >
+              Journey
+            </div>
+
+            <div
+              onClick={() => router.push("/quiz")}
+              className={cardStyle}
+            >
+              Training
+            </div>
+
+            <div
+              onClick={() => router.push("/review")}
+              className={cardStyle}
+            >
+              Review
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-1 max-w-3xl mx-auto p-6">
         <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
         <div className="rounded-xl bg-slate-900 p-4 text-white">
           <p className="text-sm text-slate-400">Level</p>
@@ -346,6 +385,22 @@ export default function Dashboard() {
             className={cardStyle}
           >
             ⚙️ Settings
+          </div>
+        </div>
+      </div>
+
+      <div className="w-80 p-6 hidden lg:block">
+        <div className="space-y-4">
+          <div className="bg-slate-900 p-4 rounded-xl">
+            🔥 {streak} day streak
+          </div>
+
+          <div className="bg-slate-900 p-4 rounded-xl">
+            📊 Accuracy: {hasPerformanceData ? accuracy : 82}%
+          </div>
+
+          <div className="bg-slate-900 p-4 rounded-xl">
+            🎯 You're close to unlocking the next level
           </div>
         </div>
       </div>
