@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { createClient } from "@supabase/supabase-js";
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
@@ -545,6 +546,9 @@ export default function QuizPage() {
         setShowRetryPrompt(false);
       } else {
         setQuizCompleted(true);
+        if (!isReviewMode && !isTrainingMode) {
+          updateMastery();
+        }
       }
     }, 300);
   };
@@ -603,6 +607,40 @@ export default function QuizPage() {
     const nextSegment = activeProgram.segments[resumeIndex];
 
     window.location.assign(`/quiz?program=${activeProgram.id}&segment=${toQuizSegmentId(nextSegment.segment)}`);
+  };
+
+  const updateMastery = async () => {
+    try {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const totalAnswered = questions.length;
+      const totalCorrect = score;
+      const accuracy = totalCorrect / totalAnswered;
+
+      await supabase
+        .from("user_segment_mastery")
+        .upsert({
+          user_id: user.id,
+          segment: segment,
+          total_answered: totalAnswered,
+          total_correct: totalCorrect,
+          accuracy: accuracy,
+          mastered: accuracy >= 0.8 && totalAnswered >= 10,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: "user_id,segment"
+        });
+
+    } catch (err) {
+      console.error("Error updating mastery:", err);
+    }
   };
 
   if (quizCompleted) {
