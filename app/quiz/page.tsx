@@ -45,6 +45,7 @@ export default function QuizPage() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [totalXp, setTotalXp] = useState(0);
+  const [streak, setStreak] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -482,6 +483,7 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
+          setStreak(prev => prev + 1);
           setScore(score + 1);
           const updatedXp = await addXp(10);
           setTotalXp(updatedXp);
@@ -492,6 +494,7 @@ export default function QuizPage() {
             setShowLevelUp(true);
           }
         } else {
+          setStreak(0);
           addIncorrectQuestion(currentQuestion.id);
           setIncorrectQuestions(prev =>
             prev.some(q => q.question.id === currentQuestion.id)
@@ -506,19 +509,22 @@ export default function QuizPage() {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex < totalQuestions - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedAnswer(null);
-      setShowRetryPrompt(false);
-    } else {
-      setQuizCompleted(true);
-    }
+    setTimeout(() => {
+      if (currentQuestionIndex < totalQuestions - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setSelectedAnswer(null);
+        setShowRetryPrompt(false);
+      } else {
+        setQuizCompleted(true);
+      }
+    }, 300);
   };
 
   const resetQuiz = () => {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setScore(0);
+    setStreak(0);
     setProgramProgressSaved(false);
 
     setQuizCompleted(false);
@@ -695,6 +701,13 @@ export default function QuizPage() {
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-xl px-4 py-4">
         <div className="space-y-4">
+          <div className="flex justify-center mb-2">
+            {streak > 0 && (
+              <div className="text-orange-400 font-semibold text-sm flex items-center gap-1">
+                🔥 {streak} streak
+              </div>
+            )}
+          </div>
           <div className="flex items-center justify-between mb-4 text-sm text-slate-300">
             <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
             <span>XP: {totalXp}</span>
@@ -717,6 +730,13 @@ export default function QuizPage() {
                 <p className="text-center text-sm font-bold tracking-wider text-yellow-400">🏆 SCHOLAR MODE</p>
               </div>
             )}
+            <div className="mb-2 text-center text-2xl">
+              {selectedAnswer === null
+                ? "🤔"
+                : selectedAnswer === currentQuestion.correctIndex
+                  ? "🔥"
+                  : "😬"}
+            </div>
             <h3 className="mb-8 text-2xl font-semibold leading-relaxed text-white md:text-3xl">
               {currentQuestion.question}
             </h3>
@@ -748,6 +768,14 @@ export default function QuizPage() {
                   label = 'Your Choice';
                 }
 
+                if (selectedAnswer === index) {
+                  buttonClass += ' scale-95';
+                }
+
+                if (selectedAnswer !== null && index === currentQuestion.correctIndex) {
+                  buttonClass += ' animate-pulse';
+                }
+
                 return (
                   <button
                     key={index}
@@ -764,6 +792,16 @@ export default function QuizPage() {
                 );
               })}
             </div>
+
+            {selectedAnswer !== null && (
+              <div className="mt-4 text-center">
+                {selectedAnswer === currentQuestion.correctIndex ? (
+                  <p className="text-green-400 font-bold text-lg">Correct 🔥</p>
+                ) : (
+                  <p className="text-red-400 font-bold text-lg">Incorrect</p>
+                )}
+              </div>
+            )}
 
             {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
               <div className={`mt-6 rounded-lg p-4 ${
