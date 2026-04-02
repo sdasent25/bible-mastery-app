@@ -52,6 +52,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [completedToday, setCompletedToday] = useState(false);
   const [xp, setXp] = useState(0);
+  const [weeklyXp, setWeeklyXp] = useState<number[]>([0, 0, 0, 0, 0, 0, 0]);
   const [nextSegment, setNextSegment] = useState<string | null>(null);
   const [reviewCount] = useState(0);
   const [daily, setDaily] = useState({ count: 0, completed: false });
@@ -98,6 +99,32 @@ export default function Dashboard() {
     }
 
     getUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchWeeklyXp = async () => {
+      const fallback = [0, 0, 0, 0, 0, 0, 0];
+
+      try {
+        const res = await fetch("/api/analytics/weekly-xp");
+        const data = await res.json();
+
+        if (
+          Array.isArray(data) &&
+          data.length === 7 &&
+          data.every((value) => typeof value === "number")
+        ) {
+          setWeeklyXp(data);
+          return;
+        }
+      } catch (error) {
+        console.error("Failed to fetch weekly XP", error);
+      }
+
+      setWeeklyXp(fallback);
+    };
+
+    fetchWeeklyXp();
   }, []);
 
   useEffect(() => {
@@ -270,6 +297,27 @@ export default function Dashboard() {
             Continue → {nextSegment.replace(/_/g, " ")}
           </button>
         )}
+
+        <div className="mt-8 bg-slate-900 p-6 rounded-xl shadow-lg">
+          <h2 className="text-lg font-semibold mb-4 text-white">
+            Weekly Progress
+          </h2>
+
+          <div className="flex items-end justify-between h-32 gap-2">
+            {weeklyXp.map((value, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center">
+                <div
+                  className="w-full bg-blue-500 rounded-md transition-all duration-300"
+                  style={{ height: `${value * 2}px` }}
+                />
+
+                <span className="text-xs text-slate-400 mt-1">
+                  {["S", "M", "T", "W", "T", "F", "S"][i]}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="mt-8 grid grid-cols-1 gap-4">
           <div
