@@ -1,7 +1,6 @@
 'use client';
 
 import { createClient } from "@supabase/supabase-js";
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import { signOut } from '@/lib/auth';
@@ -241,6 +240,9 @@ export default function Dashboard() {
     }
   };
 
+  const cardStyle =
+    "bg-slate-900 hover:bg-slate-800 transition-all p-5 rounded-xl text-white font-semibold text-lg shadow-md cursor-pointer";
+
   if (loadingPro) {
     return (
       <div className="p-6 text-black">
@@ -251,9 +253,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-slate-950 p-5 text-white">
-      <div className="mx-auto max-w-xl">
+      <div className="mx-auto max-w-xl text-center">
         <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
-        <div className="bg-slate-900 p-4 rounded-xl text-white">
+        <div className="rounded-xl bg-slate-900 p-4 text-white">
           <p className="text-sm text-slate-400">Level</p>
           <p className="text-2xl font-bold">Level {level}</p>
           <p className="text-sm text-slate-400 mt-1">
@@ -268,6 +270,36 @@ export default function Dashboard() {
             Continue → {nextSegment.replace(/_/g, " ")}
           </button>
         )}
+
+        <div className="mt-8 grid grid-cols-1 gap-4">
+          <div
+            onClick={() => router.push("/journey")}
+            className={cardStyle}
+          >
+            📖 Continue Journey
+          </div>
+
+          <div
+            onClick={() => router.push("/quiz")}
+            className={cardStyle}
+          >
+            🎮 Training Mode
+          </div>
+
+          <div
+            onClick={() => router.push("/review")}
+            className={cardStyle}
+          >
+            🧠 Review Weak Areas
+          </div>
+
+          <div
+            onClick={() => router.push("/settings")}
+            className={cardStyle}
+          >
+            ⚙️ Settings
+          </div>
+        </div>
       </div>
     </div>
   );
