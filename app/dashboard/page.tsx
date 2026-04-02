@@ -156,6 +156,7 @@ export default function Dashboard() {
   }, []);
 
   const level = Math.floor(xp / 100) + 1;
+  const totalXp = xp;
   const currentLevelXp = xp % 100;
   const levelProgress = (currentLevelXp / 100) * 100;
   const currentJourneyLabel = segmentLabels[currentSegment] || 'Genesis 1–3';
@@ -212,8 +213,17 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Dashboard Test</h1>
+    <div className="min-h-screen bg-slate-950 p-5 text-white">
+      <div className="mx-auto max-w-xl">
+        <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+        <div className="bg-slate-900 p-4 rounded-xl text-white">
+          <p className="text-sm text-slate-400">Level</p>
+          <p className="text-2xl font-bold">Level {level}</p>
+          <p className="text-sm text-slate-400 mt-1">
+            XP: {totalXp} / {(level * 100)}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

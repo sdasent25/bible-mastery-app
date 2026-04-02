@@ -786,7 +786,7 @@ export default function QuizPage() {
           </div>
           <div className="flex items-center justify-between mb-4 text-sm text-slate-300">
             <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
-            <span>XP: {totalXp}</span>
+            <span>XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}</span>
           </div>
 
           <div className="h-3 rounded-full bg-slate-800">
