@@ -6,7 +6,7 @@ type JourneyNodeProps = {
 
 const statusStyles = {
   locked:
-    "bg-slate-300 text-slate-600 shadow-slate-300/40 dark:bg-slate-800 dark:text-slate-400 dark:shadow-black/30 opacity-70",
+    "bg-slate-300 text-slate-600 shadow-slate-300/40 dark:bg-slate-800 dark:text-slate-400 dark:shadow-black/30 opacity-50",
   available:
     "bg-blue-500 text-white shadow-blue-500/30 dark:bg-blue-400 dark:text-slate-950 dark:shadow-blue-900/30",
   complete:
@@ -36,6 +36,7 @@ export default function JourneyNode({
   status,
   isBoss = false
 }: JourneyNodeProps) {
+  const isLocked = status === "locked"
   const sizeClass = isBoss
     ? "h-24 w-24 text-base md:h-20 md:w-20"
     : "h-20 w-20 text-sm md:h-16 md:w-16"
@@ -43,6 +44,9 @@ export default function JourneyNode({
     status === "available"
       ? "ring-4 ring-blue-400/50 animate-pulse"
       : ""
+  const interactionClass = isLocked
+    ? "cursor-not-allowed"
+    : "cursor-pointer hover:scale-105"
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -50,10 +54,11 @@ export default function JourneyNode({
         type="button"
         className={[
           "flex items-center justify-center rounded-full border border-white/30 font-semibold",
-          "shadow-lg transition duration-200 ease-out hover:scale-105 active:scale-95",
+          "shadow-lg transition-all duration-200 ease-out active:scale-95",
           "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2",
           "dark:border-white/10 dark:focus:ring-blue-300 dark:focus:ring-offset-slate-950",
           sizeClass,
+          interactionClass,
           availableStateClass,
           statusStyles[status]
         ].join(" ")}

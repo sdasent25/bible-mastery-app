@@ -729,9 +729,16 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="mx-auto max-w-xl px-4 py-4">
-        <div className="space-y-4">
+    <div className="min-h-screen bg-slate-950 relative overflow-hidden text-white">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-100px] left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500 opacity-10 blur-3xl" />
+        <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-slate-950 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
+        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
+      </div>
+      <div className="relative z-10">
+        <div className="mx-auto max-w-xl px-4 py-4">
+          <div className="space-y-4">
           <div className="flex justify-center mb-2">
             {streak > 0 && (
               <div className="text-orange-400 font-semibold text-sm flex items-center gap-1">
@@ -751,7 +758,7 @@ export default function QuizPage() {
             />
           </div>
 
-          <div className={`rounded-2xl p-8 shadow-xl ${
+          <div className={`rounded-2xl p-8 shadow-xl shadow-[0_0_30px_rgba(59,130,246,0.1)] ${
             currentQuestion.difficulty === 'scholar'
               ? 'border-2 border-yellow-500 bg-slate-900'
               : 'bg-slate-900'
@@ -761,12 +768,17 @@ export default function QuizPage() {
                 <p className="text-center text-sm font-bold tracking-wider text-yellow-400">🏆 SCHOLAR MODE</p>
               </div>
             )}
-            <div className={`mb-3 text-center text-3xl transition-all duration-200 ${
-              flameState === "correct" ? "scale-110" : ""
-            }`}>
-              {flameState === "idle" && "🔥"}
-              {flameState === "correct" && "🔥🔥"}
-              {flameState === "wrong" && "😔"}
+            <div className="flex justify-center mb-4">
+              <img
+                src="/flame.png"
+                alt="Flame"
+                className={`
+                  w-10 h-10
+                  transition-all duration-200
+                  ${flameState === "correct" ? "scale-125" : ""}
+                  ${flameState === "wrong" ? "opacity-70" : ""}
+                `}
+              />
             </div>
             {showCelebration && (
               <div className="mb-2 text-center text-3xl text-yellow-400 animate-bounce">
@@ -878,6 +890,7 @@ export default function QuizPage() {
               {currentQuestionIndex < totalQuestions - 1 ? 'Next Question' : isReviewMode ? 'Finish Review' : 'Finish Quiz'}
             </button>
           )}
+          </div>
         </div>
       </div>
     </div>
