@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { createClient } from "@supabase/supabase-js"
 
 import JourneyNode from "@/components/journey/JourneyNode"
 
@@ -22,6 +24,48 @@ const nodes: JourneyNodeType[] = [
 
 export default function JourneyPath() {
   const router = useRouter()
+  const [mastery, setMastery] = useState<Record<string, boolean>>({})
+
+  useEffect(() => {
+    const fetchMastery = async () => {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+
+      const { data } = await supabase
+        .from("user_segment_mastery")
+        .select("segment, mastered")
+
+      if (data) {
+        const map: Record<string, boolean> = {}
+        data.forEach((row) => {
+          map[row.segment] = row.mastered
+        })
+        setMastery(map)
+      }
+    }
+
+    fetchMastery()
+  }, [])
+
+  const computedNodes = nodes.map((node, index) => {
+    if (!node.segment) return node
+
+    const isMastered = mastery[node.segment]
+
+    if (isMastered) {
+      return { ...node, status: "complete" as const }
+    }
+
+    const previousNode = nodes[index - 1]
+
+    if (!previousNode || (previousNode.segment && mastery[previousNode.segment])) {
+      return { ...node, status: "available" as const }
+    }
+
+    return { ...node, status: "locked" as const }
+  })
 
   const handleNodeClick = (node: JourneyNodeType) => {
     if (node.status === "locked") return
@@ -35,7 +79,7 @@ export default function JourneyPath() {
     <div className="relative mx-auto w-full max-w-xl px-4 py-8">
       <div className="relative flex flex-col space-y-12">
         <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-gray-300/40 dark:bg-gray-600/30" />
-        {nodes.map((node, index) => {
+        {computedNodes.map((node, index) => {
           const alignmentClass =
             index % 2 === 0 ? "items-start pl-6" : "items-end pr-6"
 
