@@ -1,13 +1,14 @@
 'use client';
 
+import { createClient } from "@supabase/supabase-js";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
 import { signOut } from '@/lib/auth';
 import { getFriends, addFriend, generateInviteCode, type FriendLeaderboardEntry } from '@/lib/friends';
 import { getStreak, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { getSubscriptionStatus } from '@/lib/user';
-import { segments } from '@/lib/questions';
 import { getPerformanceStats, type PerformanceStats } from '@/lib/performance';
 import { getDailyProgress } from '@/lib/daily';
 import { hasClaimedReward } from '@/lib/rewards';
@@ -17,6 +18,13 @@ import { getSession } from '@/lib/resume';
 import { getDailyStats, getWeeklyStats } from '@/lib/stats';
 import { getFamily, createFamily } from '@/lib/family';
 import { supabase } from '@/lib/supabase';
+
+const segments = [
+  "genesis_1_3",
+  "genesis_4_6",
+  "genesis_7_9",
+  "genesis_10_11"
+];
 
 const segmentLabels: Record<string, string> = {
   'genesis-1-3': 'Genesis 1–3',
@@ -42,8 +50,10 @@ function formatSegmentLabel(segmentId: string) {
 }
 
 export default function Dashboard() {
+  const router = useRouter();
   const [completedToday, setCompletedToday] = useState(false);
   const [xp, setXp] = useState(0);
+  const [nextSegment, setNextSegment] = useState<string | null>(null);
   const [reviewCount] = useState(0);
   const [daily, setDaily] = useState({ count: 0, completed: false });
   const [streak, setStreak] = useState(0);
@@ -155,6 +165,33 @@ export default function Dashboard() {
     setWeeklyStats(getWeeklyStats());
   }, []);
 
+  useEffect(() => {
+    const fetchProgress = async () => {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const { data } = await supabase
+        .from("user_segment_mastery")
+        .select("segment, mastered");
+
+      const masteryMap: Record<string, boolean> = {};
+      data?.forEach((row: { segment: string; mastered: boolean }) => {
+        masteryMap[row.segment] = row.mastered;
+      });
+
+      for (const seg of segments) {
+        if (!masteryMap[seg]) {
+          setNextSegment(seg);
+          break;
+        }
+      }
+    };
+
+    fetchProgress();
+  }, []);
+
   const level = Math.floor(xp / 100) + 1;
   const totalXp = xp;
   const currentLevelXp = xp % 100;
@@ -223,6 +260,14 @@ export default function Dashboard() {
             XP: {totalXp} / {(level * 100)}
           </p>
         </div>
+        {nextSegment && (
+          <button
+            onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
+            className="mt-6 w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl text-lg font-bold shadow-lg"
+          >
+            Continue → {nextSegment.replace(/_/g, " ")}
+          </button>
+        )}
       </div>
     </div>
   );
