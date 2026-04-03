@@ -827,9 +827,31 @@ export default function QuizPage() {
       <div className="relative z-10 flex-1 px-10 py-8">
         <div className="max-w-4xl">
           <div className="space-y-4 md:space-y-6">
-            <div className="flex items-center justify-between text-sm text-slate-300">
-              <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
-              <span>XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}</span>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={() => router.push('/journey')}
+                  className="
+                    text-slate-400
+                    hover:text-white
+                    text-2xl
+                    font-bold
+                    transition-all
+                    active:scale-90
+                  "
+                  aria-label="Close quiz and return to journey"
+                >
+                  ✕
+                </button>
+
+                <span className="text-sm md:text-base text-slate-300">
+                  Question {currentQuestionIndex + 1} of {totalQuestions}
+                </span>
+              </div>
+
+              <div className="text-sm md:text-base text-slate-300">
+                XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}
+              </div>
             </div>
 
             <div className="h-3 rounded-full bg-slate-800">
