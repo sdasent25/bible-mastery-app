@@ -4,60 +4,62 @@ type JourneyNodeProps = {
   isBoss?: boolean
 }
 
+const iconMap = {
+  "Creation": "/icons/creation.png",
+  "Adam & Eve": "/icons/garden.png",
+  "Cain & Abel": "/icons/offering.png",
+  "Noah": "/icons/ark.png",
+  "Tower of Babel": "/icons/tower.png",
+}
+
 const labelStyles = {
   locked: "text-slate-500 dark:text-slate-400",
   available: "text-slate-700 dark:text-slate-200",
   complete: "text-slate-700 dark:text-slate-200"
 } as const
 
-function StatusIcon({ status }: Pick<JourneyNodeProps, "status">) {
-  if (status === "locked") {
-    return <span aria-hidden="true" className="text-lg">🔒</span>
-  }
-
-  return <span aria-hidden="true" className="text-lg">•</span>
-}
-
 export default function JourneyNode({
   title,
   status,
   isBoss = false
 }: JourneyNodeProps) {
-  const sizeClass = isBoss
-    ? "w-20 h-20 text-base md:w-24 md:h-24"
-    : "w-16 h-16"
+  const sizeClass = "w-24 h-24"
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <button
-        type="button"
+      <div
         className={[
-          "relative rounded-full flex items-center justify-center text-white font-bold transition-all duration-200",
-          "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-blue-300 dark:focus:ring-offset-slate-950",
+          "relative rounded-full flex items-center justify-center overflow-hidden transition-all duration-200",
           sizeClass,
           status === "complete"
-            ? "bg-gradient-to-br from-green-400 to-green-600 shadow-lg hover:scale-105 active:scale-95"
+            ? "bg-gradient-to-br from-green-400 to-green-600 shadow-lg shadow-[0_10px_0_rgba(0,0,0,0.35)] hover:scale-110 active:scale-95"
             : "",
           status === "available"
-            ? "bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-[0_8px_0_rgba(30,64,175,0.8)] ring-4 ring-blue-400/40 animate-pulse hover:scale-105 active:scale-95"
+            ? "bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-[0_10px_0_rgba(0,0,0,0.35)] ring-4 ring-blue-400/40 animate-pulse hover:scale-110 active:scale-95"
             : "",
           status === "locked"
-            ? "bg-slate-700 shadow-inner opacity-60 cursor-not-allowed"
-            : "cursor-pointer"
+            ? "bg-slate-700 shadow-inner shadow-[0_10px_0_rgba(0,0,0,0.35)] opacity-50"
+            : ""
         ].join(" ")}
-        aria-label={`${title} ${status}`}
       >
-        <div className="absolute inset-1 rounded-full bg-white/10 blur-sm" />
+        <div className="absolute inset-2 rounded-full bg-white/10 blur-sm" />
+        <img
+          src={iconMap[title as keyof typeof iconMap] || "/icons/default.png"}
+          alt={title}
+          className="relative z-10 w-12 h-12 object-contain"
+        />
+        {status === "locked" && (
+          <div className="absolute inset-0 flex items-center justify-center text-lg">
+            🔒
+          </div>
+        )}
         {status === "complete" && (
           <div className="absolute top-1 right-1 text-xs">✓</div>
         )}
-        <span className="relative z-10">
-          <StatusIcon status={status} />
-        </span>
-      </button>
+      </div>
       <span
         className={[
-          "max-w-[7rem] text-center text-sm font-medium",
+          "mt-3 max-w-[8rem] text-center text-xl font-semibold",
           labelStyles[status]
         ].join(" ")}
       >
