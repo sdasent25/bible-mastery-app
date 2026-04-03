@@ -17,7 +17,6 @@ import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
 import Flame from '@/components/Flame';
-import XpPop from '@/components/XpPop';
 
 type Question = {
   id: string;
@@ -52,10 +51,10 @@ export default function QuizPage() {
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [combo, setCombo] = useState(0);
-  const [showResult, setShowResult] = useState<"correct" | "wrong" | null>(null);
+  const [, setShowResult] = useState<"correct" | "wrong" | null>(null);
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
-  const [showXp, setShowXp] = useState(false);
-  const [showCelebration, setShowCelebration] = useState(false);
+  const [, setShowXp] = useState(false);
+  const [, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -473,6 +472,8 @@ export default function QuizPage() {
 
   const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
+  const isAnswered = selectedAnswer !== null;
+  const isCorrectAnswer = selectedAnswer === currentQuestion.correctIndex;
 
   const handleAnswerSelect = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
@@ -483,10 +484,6 @@ export default function QuizPage() {
       correctAnswer
     });
     setSelectedAnswer(answerIndex);
-    document.getElementById("continueBtn")?.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
 
     if (!isReviewMode) {
       const handleProgress = async () => {
@@ -889,24 +886,12 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="flex justify-center mb-2 md:mb-4">
-                <Flame
-                  state={
-                    showResult === "correct"
-                      ? "happy"
-                      : showResult === "wrong"
-                        ? "sad"
-                        : combo >= 3
-                          ? "super"
-                          : "idle"
-                  }
-                  size={64}
-                />
-              </div>
-
-              {showCelebration && (
-                <div className="mb-2 text-center text-3xl text-yellow-400 animate-bounce">
-                  ✨ +10 XP
+              {!isAnswered && (
+                <div className="flex justify-center mb-2 md:mb-4">
+                  <Flame
+                    state={combo >= 3 ? "super" : "idle"}
+                    size={64}
+                  />
                 </div>
               )}
 
@@ -920,104 +905,97 @@ export default function QuizPage() {
                 </p>
               )}
 
-              {showResult === "correct" && (
-                <div className="text-green-400 text-xl font-bold text-center mt-4 animate-pop">
-                  +10 XP 🔥
-                </div>
-              )}
-
               {isReviewMode && currentIncorrectItem && (
                 <div className="mb-4 rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
                   You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
                 </div>
               )}
 
-              <p className="text-sm text-slate-300 text-center mb-2">
-                Choose an answer
-              </p>
+              {!isAnswered && (
+                <>
+                  <p className="text-sm text-slate-300 text-center mb-2">
+                    Choose an answer
+                  </p>
 
-              <div className="flex flex-col gap-3 md:gap-6 max-h-none">
-                {currentQuestion.options.map((answer, index) => {
-                  let buttonClass = `
-                    relative
-                    w-full text-left
-                    py-4 md:py-7
-                    px-4 md:px-6
-                    rounded-xl md:rounded-2xl
-                    border border-white/10
-                    bg-slate-900
-                    text-base md:text-2xl font-medium
-                    min-h-[60px] md:min-h-[100px]
-                    transition-all duration-200
-                    hover:bg-slate-800
-                    hover:scale-[1.02]
-                    hover:shadow-lg
-                    active:scale-95
-                    button-primary
-                    focus:outline-none focus:ring-2 focus:ring-blue-500
-                  `;
-                  let label = '';
-
-                  if (selectedAnswer === null) {
-                    buttonClass += ' text-white';
-                  } else if (index !== currentQuestion.correctIndex && index !== selectedAnswer) {
-                    buttonClass += ' opacity-80 text-slate-300';
-                  } else {
-                    buttonClass += ' text-white';
-                  }
-
-                  if (selectedAnswer !== null) {
-                    if (index === currentQuestion.correctIndex) {
-                      label = 'Correct';
-                    } else if (index === selectedAnswer) {
-                      label = 'Your Choice';
-                    }
-                  }
-
-                  if (selectedAnswer === index) {
-                    buttonClass += ' scale-95 ring-2 ring-blue-400';
-                  }
-
-                  if (showResult === "correct" && index === currentQuestion.correctIndex) {
-                    buttonClass += ' bg-green-500/20 border-green-400 animate-correct shadow-[0_0_20px_rgba(34,197,94,0.5)]';
-                  }
-
-                  if (showResult === "wrong" && selectedAnswer === index) {
-                    buttonClass += ' bg-red-500/20 border-red-400 animate-shake';
-                  }
-
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswerSelect(index)}
-                      disabled={selectedAnswer !== null}
-                      className={buttonClass}
-                      aria-label={`Answer option ${index + 1}: ${answer}`}
-                    >
-                      {showXp && selectedAnswer === index && (
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2">
-                          <XpPop value={10} />
-                        </div>
-                      )}
-                      <div className="flex items-center justify-between gap-4">
-                        <span>
-                          <span className="font-bold text-xl mr-4">
-                            {["A", "B", "C", "D"][index]}.
+                  <div className="flex flex-col gap-3 md:gap-6 max-h-none">
+                    {currentQuestion.options.map((answer, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleAnswerSelect(index)}
+                        disabled={selectedAnswer !== null}
+                        className="
+                          relative
+                          w-full text-left
+                          py-4 md:py-7
+                          px-4 md:px-6
+                          rounded-xl md:rounded-2xl
+                          border border-white/10
+                          bg-slate-900
+                          text-base md:text-2xl font-medium
+                          min-h-[60px] md:min-h-[100px]
+                          transition-all duration-200
+                          hover:bg-slate-800
+                          hover:scale-[1.02]
+                          hover:shadow-lg
+                          active:scale-95
+                          button-primary
+                          focus:outline-none focus:ring-2 focus:ring-blue-500
+                          text-white
+                        "
+                        aria-label={`Answer option ${index + 1}: ${answer}`}
+                      >
+                        <div className="flex items-center justify-between gap-4">
+                          <span>
+                            <span className="font-bold text-xl mr-4">
+                              {["A", "B", "C", "D"][index]}.
+                            </span>
+                            {answer}
                           </span>
-                          {answer}
-                        </span>
-                        {label && <span className="text-sm font-semibold">{label}</span>}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
 
-              {selectedAnswer !== null && (
-                <div className="text-center mt-4 text-lg font-bold">
-                  {selectedAnswer === currentQuestion.correctIndex
-                    ? "Correct! 🔥"
-                    : "Not quite — try again 💪"}
+              {isAnswered && (
+                <div className="flex flex-col items-center justify-center text-center mt-6 animate-[fadeIn_0.25s_ease]">
+                  <div className={`text-3xl font-bold mb-4 ${isCorrectAnswer ? "text-green-400" : "text-red-400"}`}>
+                    {isCorrectAnswer ? "Correct! 🔥" : "Not quite 💪"}
+                  </div>
+
+                  <Flame
+                    state={isCorrectAnswer ? "happy" : "sad"}
+                    size={72}
+                  />
+
+                  {isCorrectAnswer && (
+                    <div className="text-2xl text-green-400 font-bold mt-4 animate-pop">
+                      +10 XP 🔥
+                    </div>
+                  )}
+
+                  <button
+                    id="continueBtn"
+                    onClick={handleNextQuestion}
+                    className="
+                      mt-6
+                      w-full
+                      bg-blue-600
+                      hover:bg-blue-500
+                      text-white
+                      font-bold
+                      text-xl
+                      px-6 py-4
+                      rounded-xl
+                      shadow-lg
+                      transition-all duration-200
+                      hover:scale-[1.03]
+                      active:scale-95
+                    "
+                  >
+                    Continue →
+                  </button>
                 </div>
               )}
 
@@ -1031,7 +1009,7 @@ export default function QuizPage() {
                 </div>
               )}
 
-              {selectedAnswer !== null && (
+              {isAnswered && (
                 <div className={`mt-6 rounded-lg p-4 ${
                   currentQuestion.difficulty === 'scholar'
                     ? 'border border-yellow-500 bg-slate-800 text-slate-200'
@@ -1051,15 +1029,6 @@ export default function QuizPage() {
               )}
             </div>
 
-            {selectedAnswer !== null && (
-              <button
-                id="continueBtn"
-                onClick={handleNextQuestion}
-                className="w-full mt-4 py-4 text-lg md:text-xl rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {currentQuestionIndex < totalQuestions - 1 ? 'Next Question' : isReviewMode ? 'Finish Review' : 'Finish Quiz'}
-              </button>
-            )}
           </div>
         </div>
       </div>
