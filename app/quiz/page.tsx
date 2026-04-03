@@ -928,7 +928,7 @@ export default function QuizPage() {
                     min-h-[60px] md:min-h-[100px]
                     transition-all duration-200
                     hover:bg-slate-800
-                    hover:scale-[1.03]
+                    hover:scale-[1.02]
                     hover:shadow-lg
                     active:scale-95
                     button-primary
@@ -1033,7 +1033,7 @@ export default function QuizPage() {
               <button
                 id="continueBtn"
                 onClick={handleNextQuestion}
-                className="w-full py-4 text-lg md:text-xl rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full mt-4 py-4 text-lg md:text-xl rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {currentQuestionIndex < totalQuestions - 1 ? 'Next Question' : isReviewMode ? 'Finish Review' : 'Finish Quiz'}
               </button>
