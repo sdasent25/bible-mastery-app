@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
 import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
@@ -142,22 +141,12 @@ function Node({
   const isLocked = node.state === "locked"
 
   return (
-    <motion.div
-      whileTap={{ scale: 0.92 }}
-      className="flex flex-col items-center cursor-pointer"
+    <div
+      className="flex flex-col items-center cursor-pointer active:scale-95 transition-transform"
       onClick={onClick}
     >
       {/* NODE */}
-      <motion.div
-        animate={
-          isActive
-            ? { scale: [1, 1.08, 1] }
-            : { scale: 1 }
-        }
-        transition={{
-          repeat: isActive ? Infinity : 0,
-          duration: 1.5,
-        }}
+      <div
         className={`
           w-24 h-24 md:w-28 md:h-28 rounded-full
           flex items-center justify-center
@@ -167,7 +156,7 @@ function Node({
               ? "bg-gray-700 border-gray-600 opacity-50"
               : "bg-gradient-to-br from-[#1E2A44] to-[#0F172A]"
           }
-          ${isActive ? "border-yellow-400 shadow-[0_0_25px_rgba(255,200,0,0.6)]" : "border-gray-600"}
+          ${isActive ? "border-yellow-400 shadow-[0_0_25px_rgba(255,200,0,0.6)] animate-pulse" : "border-gray-600"}
         `}
       >
         <Image
@@ -177,7 +166,7 @@ function Node({
           height={40}
           className={`${isLocked ? "grayscale" : ""}`}
         />
-      </motion.div>
+      </div>
 
       {/* LABEL */}
       <div className="mt-3 text-center">
@@ -200,12 +189,8 @@ function Node({
 
       {/* ACTIVE PULSE */}
       {isActive && (
-        <motion.div
-          className="absolute w-28 h-28 rounded-full border-2 border-yellow-400"
-          animate={{ scale: [1, 1.5], opacity: [0.6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-        />
+        <div className="absolute w-28 h-28 rounded-full border-2 border-yellow-400 animate-pulse" />
       )}
-    </motion.div>
+    </div>
   )
 }
