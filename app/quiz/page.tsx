@@ -824,9 +824,9 @@ export default function QuizPage() {
         </div>
       </aside>
 
-      <div className="relative z-10 flex-1 px-10 py-8">
+      <div className="relative z-10 flex-1 px-10 py-4 md:py-8">
         <div className="max-w-4xl">
-          <div className="space-y-4 md:space-y-6">
+          <div className="space-y-3 md:space-y-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-4">
                 <button
@@ -863,7 +863,7 @@ export default function QuizPage() {
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-10 shadow-xl border border-white/5 ${
+              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-5 md:p-10 shadow-xl border border-white/5 ${
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-500'
                   : ''
@@ -877,7 +877,7 @@ export default function QuizPage() {
 
               <div className="flex justify-center mb-3">
                 {streak > 0 && (
-                  <div className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-400/30 text-orange-400 font-bold text-lg animate-pop">
+                  <div className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-400/30 text-orange-400 font-bold text-base md:text-lg animate-pop">
                     🔥 Streak {streak}
                   </div>
                 )}
@@ -889,7 +889,7 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-2 md:mb-4">
                 <Flame
                   state={
                     showResult === "correct"
@@ -900,7 +900,7 @@ export default function QuizPage() {
                           ? "super"
                           : "idle"
                   }
-                  size={72}
+                  size={64}
                 />
               </div>
 
@@ -915,7 +915,7 @@ export default function QuizPage() {
               </h3>
 
               {currentQuestion.reference && (
-                <p className="text-base text-slate-300 text-center mb-4">
+                <p className="text-base text-slate-300 text-center mb-2">
                   {currentQuestion.reference}
                 </p>
               )}
@@ -932,7 +932,7 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <p className="text-sm text-slate-300 text-center mb-3">
+              <p className="text-sm text-slate-300 text-center mb-2">
                 Choose an answer
               </p>
 
