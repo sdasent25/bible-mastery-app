@@ -23,7 +23,7 @@ export default function JourneyNode({
   status,
   isBoss = false
 }: JourneyNodeProps) {
-  const sizeClass = "w-24 h-24"
+  const sizeClass = "w-28 h-28"
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -59,7 +59,7 @@ export default function JourneyNode({
       </div>
       <span
         className={[
-          "mt-3 max-w-[8rem] text-center text-xl font-semibold",
+          "text-xl font-semibold mt-4 max-w-[8rem] text-center",
           labelStyles[status]
         ].join(" ")}
       >

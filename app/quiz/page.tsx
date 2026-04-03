@@ -840,17 +840,17 @@ export default function QuizPage() {
 
             <div className="h-3 rounded-full bg-slate-800">
               <div
-                className="transition-all duration-500 ease-out h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                className="transition-all duration-500 ease-out h-4 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
                 style={{ width: `${progress}%` }}
               />
             </div>
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] rounded-2xl border border-white/5 p-8 shadow-xl shadow-[0_0_30px_rgba(59,130,246,0.1)] ${
+              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-10 shadow-xl border border-white/5 ${
                 currentQuestion.difficulty === 'scholar'
-                  ? 'border-2 border-yellow-500 bg-slate-900'
-                  : 'bg-slate-900/95'
+                  ? 'border-2 border-yellow-500'
+                  : ''
               }`}
             >
               {currentQuestion.difficulty === 'scholar' && (
@@ -859,17 +859,17 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="mb-3 flex justify-center">
+              <div className="flex justify-center mb-3">
                 {streak > 0 && (
-                  <div className="flex items-center gap-2 rounded-full border border-orange-500/20 bg-orange-500/10 px-4 py-1 text-sm font-semibold text-orange-300">
+                  <div className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-400/30 text-orange-400 font-bold text-lg animate-pop">
                     🔥 Streak {streak}
                   </div>
                 )}
               </div>
 
               {combo >= 2 && (
-                <div className="text-orange-400 text-center font-bold mb-2 animate-pop">
-                  🔥 {combo} in a row!
+                <div className="text-orange-400 text-center font-bold text-xl mb-3 animate-pop">
+                  ⚡ {combo} combo!
                 </div>
               )}
 
@@ -884,13 +884,13 @@ export default function QuizPage() {
                           ? "super"
                           : "idle"
                   }
-                  size={64}
+                  size={72}
                 />
               </div>
 
               <div className="relative flex justify-center">
                 {showXp && (
-                  <div className="absolute text-green-400 font-bold text-xl animate-xp-pop">
+                  <div className="absolute text-green-400 font-bold text-2xl animate-xp-pop">
                     +10 XP
                   </div>
                 )}
@@ -903,12 +903,12 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <h3 className="mb-3 text-center text-2xl font-semibold leading-relaxed text-white md:text-3xl">
+              <h3 className="text-5xl font-bold leading-tight text-center mb-8">
                 {currentQuestion.question}
               </h3>
 
               {currentQuestion.reference && (
-                <p className="mb-6 text-center text-sm text-slate-400">
+                <p className="text-base text-slate-300 text-center mb-4">
                   {currentQuestion.reference}
                 </p>
               )}
@@ -927,14 +927,17 @@ export default function QuizPage() {
                 {currentQuestion.options.map((answer, index) => {
                   let buttonClass = `
                     w-full text-left
-                    py-5 px-6
-                    rounded-xl
+                    py-8 px-6
+                    rounded-2xl
                     border border-white/10
                     bg-slate-900
+                    text-2xl font-medium
                     transition-all duration-200
                     hover:bg-slate-800
                     hover:scale-[1.03]
+                    hover:shadow-lg
                     active:scale-95
+                    button-primary
                     focus:outline-none focus:ring-2 focus:ring-blue-500
                   `;
                   let label = '';
@@ -960,7 +963,7 @@ export default function QuizPage() {
                   }
 
                   if (showResult === "correct" && index === currentQuestion.correctIndex) {
-                    buttonClass += ' bg-green-500/20 border-green-400 animate-correct';
+                    buttonClass += ' bg-green-500/20 border-green-400 animate-correct shadow-[0_0_20px_rgba(34,197,94,0.5)]';
                   }
 
                   if (showResult === "wrong" && selectedAnswer === index) {
@@ -976,8 +979,8 @@ export default function QuizPage() {
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-base font-medium">
-                          <span className="font-bold mr-3">
+                        <span>
+                          <span className="font-bold text-xl mr-4">
                             {["A", "B", "C", "D"][index]}.
                           </span>
                           {answer}
@@ -1040,16 +1043,25 @@ export default function QuizPage() {
       </div>
 
       <div className="w-80 p-6 hidden xl:flex flex-col gap-4 border-l border-white/5 relative z-10">
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5">
+        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
           🔥 Streak: {streak}
+          <div className="mt-2 h-2 bg-slate-800 rounded-full">
+            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
+          </div>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5">
+        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
           ⚡ Combo: {combo}
+          <div className="mt-2 h-2 bg-slate-800 rounded-full">
+            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
+          </div>
         </div>
 
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5">
+        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
           🎯 Keep going to level up
+          <div className="mt-2 h-2 bg-slate-800 rounded-full">
+            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
+          </div>
         </div>
       </div>
     </div>

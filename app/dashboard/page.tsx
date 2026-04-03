@@ -331,7 +331,7 @@ export default function Dashboard() {
           <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
           <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)] mb-6">
             <p className="text-sm text-slate-400">Level</p>
-            <p className="text-2xl font-bold">Level {level}</p>
+            <p className="text-4xl font-bold">Level {level}</p>
             <p className="text-sm text-slate-400 mt-1">
               XP: {totalXp} / {(level * 100)}
             </p>
@@ -353,7 +353,7 @@ export default function Dashboard() {
 
               <button
                 onClick={() => router.push(`/quiz?segment=${nextSegment}`)}
-                className="w-full rounded-xl bg-blue-600 py-4 text-lg font-bold text-white shadow-lg transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] hover:shadow-blue-500/30"
+                className="button-primary w-full rounded-xl py-6 px-6 text-xl font-bold text-white shadow-lg transition-all duration-200 hover:bg-blue-500 hover:scale-[1.02] hover:shadow-blue-500/30"
               >
                 Continue → {nextSegment.replace(/_/g, " ")}
               </button>
