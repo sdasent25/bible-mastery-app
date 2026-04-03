@@ -31,23 +31,41 @@ export default function JourneyPage() {
         </aside>
 
         <section className="flex-1 px-4 py-8 sm:px-6 lg:px-10">
-          <div className="mx-auto max-w-xl">
-            <header className="mb-8 text-center md:hidden">
-              <h1 className="text-3xl font-bold tracking-tight">Journey</h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                Pentateuch → Genesis
-              </p>
-            </header>
+          <div className="mx-auto flex max-w-6xl gap-8">
+            <div className="flex-1">
+              <header className="mb-8 text-center md:hidden">
+                <h1 className="text-3xl font-bold tracking-tight">Journey</h1>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  Pentateuch → Genesis
+                </p>
+              </header>
 
-            <header className="mb-8 hidden text-center md:block">
-              <h1 className="text-4xl font-bold tracking-tight">Journey</h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                Pentateuch → Genesis
-              </p>
-            </header>
+              <header className="mb-8 hidden rounded-2xl bg-gradient-to-r from-slate-800 to-slate-700 p-6 text-center shadow-lg md:block">
+                <h1 className="text-4xl font-bold tracking-tight">Journey</h1>
+                <p className="mt-2 text-sm text-slate-300 dark:text-slate-300">
+                  Pentateuch → Genesis
+                </p>
+              </header>
 
-            <SeriesHeader />
-            <JourneyPath />
+              <SeriesHeader />
+              <JourneyPath />
+            </div>
+
+            <div className="hidden w-80 p-6 xl:block">
+              <div className="space-y-4">
+                <div className="rounded-xl bg-slate-900 p-4 text-slate-100">
+                  🔥 Progress: 4 / 6 complete
+                </div>
+
+                <div className="rounded-xl bg-slate-900 p-4 text-slate-100">
+                  🎯 Next: Tower of Babel
+                </div>
+
+                <div className="rounded-xl bg-slate-900 p-4 text-slate-100">
+                  🧠 Review Genesis 4–6
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </div>

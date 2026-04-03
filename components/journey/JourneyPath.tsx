@@ -77,35 +77,47 @@ export default function JourneyPath() {
 
   return (
     <div className="relative mx-auto w-full max-w-xl px-4 py-8">
-      <div className="relative flex flex-col space-y-12">
-        <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px -translate-x-1/2 bg-gray-300/40 dark:bg-gray-600/30" />
-        {computedNodes.map((node, index) => {
-          const alignmentClass =
-            index % 2 === 0 ? "items-start pl-6" : "items-end pr-6"
+      <div className="flex justify-center">
+        <div className="relative flex flex-col items-center gap-12">
+          <div className="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gradient-to-b from-blue-500/50 to-transparent" />
+          {computedNodes.map((node, index) => {
+            const alignmentClass =
+              index % 2 === 0 ? "-translate-x-16" : "translate-x-16"
 
-          return (
-            <div key={node.title} className={`relative flex w-full ${alignmentClass}`}>
-              <div
-                onClick={() => handleNodeClick(node)}
-                className="relative cursor-pointer"
-              >
-                {node.status === "available" && (
-                  <div
-                    className="absolute right-0 top-0 z-10 translate-x-1/2 -translate-y-1/2 text-2xl"
-                    aria-hidden="true"
-                  >
-                    🔥
+            return (
+              <div key={node.title} className={`relative ${alignmentClass}`}>
+                <div
+                  onClick={() => handleNodeClick(node)}
+                  className="relative cursor-pointer shadow-lg transition-all hover:scale-105"
+                >
+                  <div className="relative">
+                    {node.status === "available" && (
+                      <div
+                        className="absolute -right-6 top-1/2 -translate-y-1/2"
+                        aria-hidden="true"
+                      >
+                        🔥
+                      </div>
+                    )}
+                    <div
+                      className={
+                        node.status === "available"
+                          ? "rounded-full ring-4 ring-blue-400/50 animate-pulse"
+                          : ""
+                      }
+                    >
+                      <JourneyNode
+                        title={node.title}
+                        status={node.status}
+                        isBoss={node.isBoss}
+                      />
+                    </div>
                   </div>
-                )}
-                <JourneyNode
-                  title={node.title}
-                  status={node.status}
-                  isBoss={node.isBoss}
-                />
+                </div>
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
     </div>
   )
