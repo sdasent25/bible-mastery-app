@@ -18,12 +18,12 @@ export default function Flame({
   size?: number
 }) {
   const flameMap: Record<FlameState, string> = {
-    idle: "/flame/flame-idle.png",
-    happy: "/flame/flame-happy.png",
-    super: "/flame/flame-super.png",
-    sad: "/flame/flame-sad.png",
-    sleep: "/flame/flame-sleep.png",
-    levelup: "/flame/flame-levelup.png",
+    idle: "/flame-idle.png",
+    happy: "/flame-happy.png",
+    super: "/flame-super.png",
+    sad: "/flame-sad.png",
+    sleep: "/flame-sleep.png",
+    levelup: "/flame-levelup.png",
   }
 
   return (

@@ -329,6 +329,9 @@ export default function Dashboard() {
       <div className="relative z-10 flex-1 px-10 py-8">
         <div className="max-w-5xl">
           <h1 className="mb-4 text-3xl font-bold">Dashboard</h1>
+          <div className="flex justify-center mb-4">
+            <Flame state={streak >= 3 ? "super" : "idle"} size={72} />
+          </div>
           <div className="rounded-xl bg-slate-900 p-4 text-white shadow-[0_0_25px_rgba(59,130,246,0.15)] mb-6">
             <p className="text-sm text-slate-400">Level</p>
             <p className="text-2xl font-bold">Level {level}</p>
@@ -344,9 +347,6 @@ export default function Dashboard() {
           </div>
           {nextSegment && (
             <div className="bg-slate-900 p-6 rounded-2xl shadow-xl mb-6 border border-white/5">
-              <div className="flex justify-center mb-4">
-                <Flame state={streak >= 3 ? "super" : "idle"} size={72} />
-              </div>
               <p className="text-sm text-slate-400 mb-2 text-center">
                 Continue your journey
               </p>
