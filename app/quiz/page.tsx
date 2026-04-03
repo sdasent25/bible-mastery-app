@@ -888,15 +888,6 @@ export default function QuizPage() {
                 />
               </div>
 
-              <div className="relative flex justify-center">
-                {showXp && (
-                  <div className="absolute text-green-400 font-bold text-2xl animate-xp-pop">
-                    +10 XP
-                  </div>
-                )}
-                {showXp && <XpPop value={10} />}
-              </div>
-
               {showCelebration && (
                 <div className="mb-2 text-center text-3xl text-yellow-400 animate-bounce">
                   ✨ +10 XP
@@ -913,6 +904,12 @@ export default function QuizPage() {
                 </p>
               )}
 
+              {showResult === "correct" && (
+                <div className="text-green-400 text-xl font-bold text-center mt-4 animate-pop">
+                  +10 XP 🔥
+                </div>
+              )}
+
               {isReviewMode && currentIncorrectItem && (
                 <div className="mb-4 rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
                   You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
@@ -926,6 +923,7 @@ export default function QuizPage() {
               <div className="space-y-4">
                 {currentQuestion.options.map((answer, index) => {
                   let buttonClass = `
+                    relative
                     w-full text-left
                     py-8 px-6
                     rounded-2xl
@@ -978,6 +976,11 @@ export default function QuizPage() {
                       className={buttonClass}
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
+                      {showXp && selectedAnswer === index && (
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2">
+                          <XpPop value={10} />
+                        </div>
+                      )}
                       <div className="flex items-center justify-between gap-4">
                         <span>
                           <span className="font-bold text-xl mr-4">
