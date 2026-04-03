@@ -15,6 +15,7 @@ import {
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
+import Flame from '@/components/Flame';
 
 type Question = {
   id: string;
@@ -47,7 +48,7 @@ export default function QuizPage() {
   const [score, setScore] = useState(0);
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
-  const [flameState, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
+  const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
@@ -343,7 +344,9 @@ export default function QuizPage() {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
         <div className="w-full max-w-md rounded-xl bg-white p-6 text-center shadow-2xl">
-          <div className="text-5xl mb-4">🎉</div>
+          <div className="mb-4 flex justify-center">
+            <Flame state="levelup" size={80} />
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Level Up!</h1>
           <p className="text-lg text-gray-700 mb-6">You&apos;re now Level {newLevel}</p>
           <button
@@ -807,15 +810,15 @@ export default function QuizPage() {
               </div>
             )}
             <div className="flex justify-center mb-4">
-              <img
-                src="/flame.png"
-                alt="Flame"
-                className={`
-                  w-10 h-10
-                  transition-all duration-200
-                  ${flameState === "correct" ? "scale-125" : ""}
-                  ${flameState === "wrong" ? "opacity-70" : ""}
-                `}
+              <Flame
+                state={
+                  selectedAnswer === null
+                    ? "idle"
+                    : selectedAnswer === currentQuestion.correctIndex
+                      ? "happy"
+                      : "sad"
+                }
+                size={64}
               />
             </div>
             {showCelebration && (
