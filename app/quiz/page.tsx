@@ -52,6 +52,7 @@ export default function QuizPage() {
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [combo, setCombo] = useState(0);
+  const [showResult, setShowResult] = useState<"correct" | "wrong" | null>(null);
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [showXp, setShowXp] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
@@ -508,11 +509,13 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
-          setFlameState("correct");
+          setShowResult("correct");
           setShowXp(true);
+          setFlameState("correct");
           setTimeout(() => {
+            setShowResult(null);
             setShowXp(false);
-          }, 700);
+          }, 600);
           setShowCelebration(true);
           setTimeout(() => {
             setShowCelebration(false);
@@ -529,9 +532,13 @@ export default function QuizPage() {
             setShowLevelUp(true);
           }
         } else {
+          setShowResult("wrong");
           setFlameState("wrong");
           setStreak(0);
           setCombo(0);
+          setTimeout(() => {
+            setShowResult(null);
+          }, 600);
           addIncorrectQuestion(currentQuestion.id);
           setIncorrectQuestions(prev =>
             prev.some(q => q.question.id === currentQuestion.id)
@@ -573,6 +580,7 @@ export default function QuizPage() {
     setScore(0);
     setStreak(0);
     setCombo(0);
+    setShowResult(null);
     setFlameState("idle");
     setShowXp(false);
     setShowCelebration(false);
@@ -832,7 +840,7 @@ export default function QuizPage() {
 
             <div className="h-3 rounded-full bg-slate-800">
               <div
-                className="transition-all duration-300 h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                className="transition-all duration-500 ease-out h-3 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.5)]"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -860,7 +868,7 @@ export default function QuizPage() {
               </div>
 
               {combo >= 2 && (
-                <div className="text-orange-400 text-center font-semibold mb-2">
+                <div className="text-orange-400 text-center font-bold mb-2 animate-pop">
                   🔥 {combo} in a row!
                 </div>
               )}
@@ -868,17 +876,24 @@ export default function QuizPage() {
               <div className="flex justify-center mb-4">
                 <Flame
                   state={
-                    selectedAnswer === null
-                      ? "idle"
-                      : selectedAnswer === currentQuestion.correctIndex
-                        ? "happy"
-                        : "sad"
+                    showResult === "correct"
+                      ? "happy"
+                      : showResult === "wrong"
+                        ? "sad"
+                        : combo >= 3
+                          ? "super"
+                          : "idle"
                   }
                   size={64}
                 />
               </div>
 
               <div className="relative flex justify-center">
+                {showXp && (
+                  <div className="absolute text-green-400 font-bold text-xl animate-xp-pop">
+                    +10 XP
+                  </div>
+                )}
                 {showXp && <XpPop value={10} />}
               </div>
 
@@ -916,9 +931,9 @@ export default function QuizPage() {
                     rounded-xl
                     border border-white/10
                     bg-slate-900
-                    hover:bg-slate-800
                     transition-all duration-200
-                    hover:scale-[1.02]
+                    hover:bg-slate-800
+                    hover:scale-[1.03]
                     active:scale-95
                     focus:outline-none focus:ring-2 focus:ring-blue-500
                   `;
@@ -926,12 +941,10 @@ export default function QuizPage() {
 
                   if (selectedAnswer === null) {
                     buttonClass += ' text-white';
-                  } else if (index === currentQuestion.correctIndex) {
-                    buttonClass += ' bg-green-600 border-green-400 text-white';
-                  } else if (index === selectedAnswer && index !== currentQuestion.correctIndex) {
-                    buttonClass += ' bg-red-600 border-red-400 text-white';
-                  } else {
+                  } else if (index !== currentQuestion.correctIndex && index !== selectedAnswer) {
                     buttonClass += ' opacity-80 text-slate-300';
+                  } else {
+                    buttonClass += ' text-white';
                   }
 
                   if (selectedAnswer !== null) {
@@ -943,7 +956,15 @@ export default function QuizPage() {
                   }
 
                   if (selectedAnswer === index) {
-                    buttonClass += ' scale-95';
+                    buttonClass += ' scale-95 ring-2 ring-blue-400';
+                  }
+
+                  if (showResult === "correct" && index === currentQuestion.correctIndex) {
+                    buttonClass += ' bg-green-500/20 border-green-400 animate-correct';
+                  }
+
+                  if (showResult === "wrong" && selectedAnswer === index) {
+                    buttonClass += ' bg-red-500/20 border-red-400 animate-shake';
                   }
 
                   return (
