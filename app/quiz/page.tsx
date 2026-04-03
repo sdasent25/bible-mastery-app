@@ -512,14 +512,10 @@ export default function QuizPage() {
           setShowResult("correct");
           setShowXp(true);
           setFlameState("correct");
-          setTimeout(() => {
-            setShowResult(null);
-            setShowXp(false);
-          }, 600);
           setShowCelebration(true);
           setTimeout(() => {
             setShowCelebration(false);
-          }, 500);
+          }, 1000);
           setStreak(prev => prev + 1);
           setCombo(prev => prev + 1);
           setScore(score + 1);
@@ -536,9 +532,6 @@ export default function QuizPage() {
           setFlameState("wrong");
           setStreak(0);
           setCombo(0);
-          setTimeout(() => {
-            setShowResult(null);
-          }, 600);
           addIncorrectQuestion(currentQuestion.id);
           setIncorrectQuestions(prev =>
             prev.some(q => q.question.id === currentQuestion.id)
@@ -548,10 +541,17 @@ export default function QuizPage() {
         }
 
         setTimeout(() => {
+          if (isCorrect) {
+            setShowResult(null);
+            setShowXp(false);
+          } else {
+            setShowResult(null);
+          }
+
           if (currentQuestionIndex < totalQuestions - 1) {
             handleNextQuestion();
           }
-        }, 800);
+        }, isCorrect ? 1100 : 700);
       };
 
       handleProgress();
@@ -571,7 +571,7 @@ export default function QuizPage() {
           updateMastery();
         }
       }
-    }, 300);
+    }, 900);
   };
 
   const resetQuiz = () => {
