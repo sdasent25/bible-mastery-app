@@ -483,6 +483,10 @@ export default function QuizPage() {
       correctAnswer
     });
     setSelectedAnswer(answerIndex);
+    document.getElementById("continueBtn")?.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
 
     if (!isReviewMode) {
       const handleProgress = async () => {
@@ -540,18 +544,6 @@ export default function QuizPage() {
           );
         }
 
-        setTimeout(() => {
-          if (isCorrect) {
-            setShowResult(null);
-            setShowXp(false);
-          } else {
-            setShowResult(null);
-          }
-
-          if (currentQuestionIndex < totalQuestions - 1) {
-            handleNextQuestion();
-          }
-        }, isCorrect ? 1100 : 700);
       };
 
       handleProgress();
@@ -559,19 +551,21 @@ export default function QuizPage() {
   };
 
   const handleNextQuestion = () => {
-    setTimeout(() => {
-      setFlameState("idle");
-      if (currentQuestionIndex < totalQuestions - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedAnswer(null);
-        setShowRetryPrompt(false);
-      } else {
-        setQuizCompleted(true);
-        if (!isReviewMode && !isTrainingMode) {
-          updateMastery();
-        }
+    setShowResult(null);
+    setShowXp(false);
+    setShowCelebration(false);
+    setFlameState("idle");
+
+    if (currentQuestionIndex < totalQuestions - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setSelectedAnswer(null);
+      setShowRetryPrompt(false);
+    } else {
+      setQuizCompleted(true);
+      if (!isReviewMode && !isTrainingMode) {
+        updateMastery();
       }
-    }, 900);
+    }
   };
 
   const resetQuiz = () => {
@@ -832,7 +826,7 @@ export default function QuizPage() {
 
       <div className="relative z-10 flex-1 px-10 py-8">
         <div className="max-w-4xl">
-          <div className="space-y-5">
+          <div className="space-y-4 md:space-y-6">
             <div className="flex items-center justify-between text-sm text-slate-300">
               <span>Question {currentQuestionIndex + 1} of {totalQuestions}</span>
               <span>XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}</span>
@@ -894,7 +888,7 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <h3 className="text-5xl font-bold leading-tight text-center mb-8">
+              <h3 className="text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
                 {currentQuestion.question}
               </h3>
 
@@ -920,16 +914,18 @@ export default function QuizPage() {
                 Choose an answer
               </p>
 
-              <div className="space-y-4">
+              <div className="flex flex-col gap-3 md:gap-6 max-h-none">
                 {currentQuestion.options.map((answer, index) => {
                   let buttonClass = `
                     relative
                     w-full text-left
-                    py-8 px-6
-                    rounded-2xl
+                    py-4 md:py-7
+                    px-4 md:px-6
+                    rounded-xl md:rounded-2xl
                     border border-white/10
                     bg-slate-900
-                    text-2xl font-medium
+                    text-base md:text-2xl font-medium
+                    min-h-[60px] md:min-h-[100px]
                     transition-all duration-200
                     hover:bg-slate-800
                     hover:scale-[1.03]
@@ -1035,8 +1031,9 @@ export default function QuizPage() {
 
             {selectedAnswer !== null && (
               <button
+                id="continueBtn"
                 onClick={handleNextQuestion}
-                className="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-xl text-lg font-bold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full py-4 text-lg md:text-xl rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-white shadow-lg transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {currentQuestionIndex < totalQuestions - 1 ? 'Next Question' : isReviewMode ? 'Finish Review' : 'Finish Quiz'}
               </button>
