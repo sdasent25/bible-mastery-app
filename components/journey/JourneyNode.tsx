@@ -4,15 +4,6 @@ type JourneyNodeProps = {
   isBoss?: boolean
 }
 
-const statusStyles = {
-  locked:
-    "bg-slate-300 text-slate-600 shadow-slate-300/40 dark:bg-slate-800 dark:text-slate-400 dark:shadow-black/30 opacity-50",
-  available:
-    "bg-blue-500 text-white shadow-blue-500/30 dark:bg-blue-400 dark:text-slate-950 dark:shadow-blue-900/30",
-  complete:
-    "bg-emerald-500 text-white shadow-emerald-500/30 dark:bg-emerald-400 dark:text-slate-950 dark:shadow-emerald-900/30"
-} as const
-
 const labelStyles = {
   locked: "text-slate-500 dark:text-slate-400",
   available: "text-slate-700 dark:text-slate-200",
@@ -20,10 +11,6 @@ const labelStyles = {
 } as const
 
 function StatusIcon({ status }: Pick<JourneyNodeProps, "status">) {
-  if (status === "complete") {
-    return <span aria-hidden="true" className="text-lg font-bold">✓</span>
-  }
-
   if (status === "locked") {
     return <span aria-hidden="true" className="text-lg">🔒</span>
   }
@@ -36,35 +23,37 @@ export default function JourneyNode({
   status,
   isBoss = false
 }: JourneyNodeProps) {
-  const isLocked = status === "locked"
   const sizeClass = isBoss
-    ? "h-24 w-24 text-base md:h-20 md:w-20"
-    : "h-20 w-20 text-sm md:h-16 md:w-16"
-  const availableStateClass =
-    status === "available"
-      ? "ring-4 ring-blue-400/50 animate-pulse"
-      : ""
-  const interactionClass = isLocked
-    ? "cursor-not-allowed"
-    : "cursor-pointer hover:scale-105"
+    ? "w-20 h-20 text-base md:w-24 md:h-24"
+    : "w-16 h-16"
 
   return (
     <div className="flex flex-col items-center gap-4">
       <button
         type="button"
         className={[
-          "flex items-center justify-center rounded-full border border-white/30 font-semibold",
-          "shadow-lg transition-all duration-200 ease-out active:scale-95",
-          "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2",
-          "dark:border-white/10 dark:focus:ring-blue-300 dark:focus:ring-offset-slate-950",
+          "relative rounded-full flex items-center justify-center text-white font-bold transition-all duration-200",
+          "focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-blue-300 dark:focus:ring-offset-slate-950",
           sizeClass,
-          interactionClass,
-          availableStateClass,
-          statusStyles[status]
+          status === "complete"
+            ? "bg-gradient-to-br from-green-400 to-green-600 shadow-lg hover:scale-105 active:scale-95"
+            : "",
+          status === "available"
+            ? "bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-[0_8px_0_rgba(30,64,175,0.8)] ring-4 ring-blue-400/40 animate-pulse hover:scale-105 active:scale-95"
+            : "",
+          status === "locked"
+            ? "bg-slate-700 shadow-inner opacity-60 cursor-not-allowed"
+            : "cursor-pointer"
         ].join(" ")}
         aria-label={`${title} ${status}`}
       >
-        <StatusIcon status={status} />
+        <div className="absolute inset-1 rounded-full bg-white/10 blur-sm" />
+        {status === "complete" && (
+          <div className="absolute top-1 right-1 text-xs">✓</div>
+        )}
+        <span className="relative z-10">
+          <StatusIcon status={status} />
+        </span>
       </button>
       <span
         className={[
