@@ -961,17 +961,27 @@ export default function QuizPage() {
               {isAnswered && (
                 <div className="flex flex-col items-center justify-center text-center mt-6 animate-[fadeIn_0.25s_ease]">
                   <div className={`text-3xl font-bold mb-4 ${isCorrectAnswer ? "text-green-400" : "text-red-400"}`}>
-                    {isCorrectAnswer ? "Correct! 🔥" : "Not quite 💪"}
+                    {isCorrectAnswer ? "Correct!" : "Not quite 💪"}
                   </div>
 
-                  <Flame
-                    state={isCorrectAnswer ? "happy" : "sad"}
-                    size={72}
-                  />
+                  <div className="animate-float">
+                    <Flame
+                      state={isCorrectAnswer ? "happy" : "sad"}
+                      size={96}
+                    />
+                  </div>
+
+                  <div className="mt-4 text-lg text-slate-300">
+                    Correct Answer:
+                  </div>
+
+                  <div className="text-xl font-semibold text-white mt-1">
+                    {currentQuestion.options[currentQuestion.correctIndex]}
+                  </div>
 
                   {isCorrectAnswer && (
                     <div className="text-2xl text-green-400 font-bold mt-4 animate-pop">
-                      +10 XP 🔥
+                      +10 XP
                     </div>
                   )}
 

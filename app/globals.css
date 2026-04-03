@@ -91,7 +91,7 @@ p {
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-8px); }
 }
 
 @keyframes bounceSoft {
@@ -128,7 +128,7 @@ p {
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 2.5s ease-in-out infinite;
 }
 
 .animate-bounce-soft {
