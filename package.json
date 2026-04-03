@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "preinstall": "npm config set legacy-peer-deps true",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
+  },
+  "overrides": {
+    "framer-motion": "11.11.17"
   },
   "dependencies": {
     "@supabase/ssr": "^0.9.0",
