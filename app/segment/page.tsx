@@ -50,17 +50,18 @@ export default function SegmentIntro() {
 
       <div className="w-full flex-1 flex items-center justify-center p-4">
         <div className="relative w-full max-w-md h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
-          <div className="absolute top-0 left-0 text-xs text-red-400 z-50">
-            {segment}
-          </div>
-
           {segment === "genesis-1-3" ? (
             <video
               autoPlay
-              loop
               muted
               playsInline
               preload="auto"
+              onLoadedMetadata={(e) => {
+                e.currentTarget.playbackRate = 0.85
+              }}
+              onEnded={(e) => {
+                e.currentTarget.pause()
+              }}
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src="/animations/genesis/creation.mp4" type="video/mp4" />
