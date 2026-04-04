@@ -329,6 +329,24 @@ export default function JourneyPage() {
 
           {/* PATH */}
           <div className="flex-1 relative">
+            <div className="hidden md:flex justify-between mb-4">
+              <button
+                onClick={() => activeIndex > 0 && setActiveIndex(activeIndex - 1)}
+                className="bg-slate-800 px-4 py-2 rounded-lg text-white"
+              >
+                ←
+              </button>
+
+              <button
+                onClick={() =>
+                  activeIndex < nodes.length - 1 && setActiveIndex(activeIndex + 1)
+                }
+                className="bg-slate-800 px-4 py-2 rounded-lg text-white"
+              >
+                →
+              </button>
+            </div>
+
             <div
               className="relative flex items-center justify-center h-[520px] overflow-hidden touch-pan-y"
               onMouseDown={handleStart}
@@ -343,7 +361,6 @@ export default function JourneyPage() {
                 const translateX = offset * 160
                 const translateY = Math.abs(offset) * 22
                 const scale = isActive ? 1 : 0.8
-                const rotate = offset * -15
                 const zIndex = 100 - Math.abs(offset)
 
                 return (
@@ -355,16 +372,12 @@ export default function JourneyPage() {
                         translateX(${translateX}px)
                         translateY(${translateY}px)
                         scale(${scale})
-                        rotateY(${rotate}deg)
                       `,
                       zIndex,
                       opacity: Math.abs(offset) > 2 ? 0 : 1,
                     }}
                   >
-                    <div
-                      className="relative flex flex-col items-center"
-                      style={isActive ? { animation: "slowSpin 20s linear infinite" } : {}}
-                    >
+                    <div className="relative flex flex-col items-center">
                       {isActive && (
                         <div className="absolute inset-0 z-0 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
                       )}
@@ -377,9 +390,13 @@ export default function JourneyPage() {
 
                       <div
                         onClick={() => {
-                          if (!isLocked) {
-                            playSound("/sounds/tap.mp3")
-                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                          if (index === activeIndex) {
+                            if (!isLocked) {
+                              playSound("/sounds/tap.mp3")
+                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                            }
+                          } else {
+                            setActiveIndex(index)
                           }
                         }}
                         className={`
@@ -422,6 +439,18 @@ export default function JourneyPage() {
                   </div>
                 )
               })}
+            </div>
+
+            <div className="flex justify-center mt-6 gap-2">
+              {nodes.map((_, i) => (
+                <div
+                  key={i}
+                  className={`
+                    w-2.5 h-2.5 rounded-full transition-all
+                    ${i === activeIndex ? "bg-yellow-400 scale-125" : "bg-slate-600"}
+                  `}
+                />
+              ))}
             </div>
           </div>
 
