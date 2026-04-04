@@ -164,8 +164,25 @@ export default function JourneyPage() {
 
           {/* PATH */}
           <div className="flex-1 flex flex-col items-center relative">
-
-            <div className="absolute top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-400 to-transparent" />
+            <svg
+              className="absolute top-0 left-1/2 -translate-x-1/2 h-full pointer-events-none"
+              width="200"
+              height="100%"
+              viewBox="0 0 200 1000"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="
+                  M100 0
+                  C140 150, 60 300, 100 450
+                  C140 600, 60 750, 100 900
+                "
+                stroke="rgba(255, 200, 0, 0.7)"
+                strokeWidth="3"
+                fill="none"
+                style={{ filter: "drop-shadow(0 0 6px rgba(255,200,0,0.5))" }}
+              />
+            </svg>
 
             <div className="flex flex-col items-center gap-14 py-6">
               {nodes.map((node, index) => (
