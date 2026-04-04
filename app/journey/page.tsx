@@ -137,6 +137,17 @@ export default function JourneyPage() {
     loadProgram()
   }, [selectedProgram])
 
+  useEffect(() => {
+    if (nodes.length === 0) return
+
+    const timer = window.setTimeout(() => {
+      const activeEl = document.querySelector(".scale-105")
+      activeEl?.scrollIntoView({ behavior: "smooth", inline: "center" })
+    }, 300)
+
+    return () => window.clearTimeout(timer)
+  }, [nodes])
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0B1220] text-white">
@@ -305,73 +316,79 @@ export default function JourneyPage() {
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
 
           {/* PATH */}
-          <div className="flex-1 flex flex-col items-center relative">
-            <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-yellow-400/80 via-yellow-300/50 to-transparent blur-[0.5px]" />
+          <div className="flex-1 relative">
+            <div className="overflow-x-auto scroll-smooth snap-x snap-mandatory flex gap-6 px-6 py-10">
+              {nodes.map((node, index) => {
+                const isActive = node.state === "active"
+                const isLocked = node.state === "locked"
 
-            <div className="flex flex-col items-center gap-14 py-6">
-              {nodes.map((node, index) => (
-                <div key={index} className="relative flex flex-col items-center">
-                  {node.state === "active" && (
-                    <div className="absolute w-52 h-72 md:w-60 md:h-80 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
-                  )}
-
+                return (
                   <div
-                    onClick={() => {
-                      if (node.state !== "locked") {
-                        playSound("/sounds/tap.mp3")
-                        router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
-                      }
-                    }}
+                    key={index}
                     className={`
-                      relative cursor-pointer transition-all duration-200
-                      active:scale-95
-                      hover:scale-[1.02]
+                      snap-center flex-shrink-0
+                      transition-all duration-300
+                      ${isActive ? "scale-105" : "scale-95 opacity-70"}
                     `}
                   >
-                    <div
-                      className={`
-                        relative w-48 md:w-56 h-64 md:h-72
-                        rounded-2xl overflow-hidden
-                        border
-                        shadow-xl
-                        ${node.state === "locked"
-                          ? "opacity-40 border-gray-700"
-                          : "border-gray-600"}
-                        ${node.state === "active"
-                          ? "ring-2 ring-yellow-400 shadow-[0_0_45px_rgba(255,200,0,0.9)] scale-105"
-                          : ""}
-                      `}
-                    >
-                      <Image
-                        src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                        alt="node"
-                        fill
+                    <div className="relative">
+                      {isActive && (
+                        <div className="absolute inset-0 z-0 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
+                      )}
+
+                      {isLocked && (
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 rounded-2xl">
+                          <span className="text-2xl">🔒</span>
+                        </div>
+                      )}
+
+                      <div
+                        onClick={() => {
+                          if (!isLocked) {
+                            playSound("/sounds/tap.mp3")
+                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                          }
+                        }}
                         className={`
-                          object-cover
-                          ${node.state === "locked" ? "grayscale" : ""}
+                          relative w-56 md:w-64 h-72 md:h-80
+                          rounded-2xl overflow-hidden
+                          cursor-pointer
+                          border
+                          transition-all duration-200
+                          active:scale-95
+                          ${isActive
+                            ? "border-yellow-400 shadow-[0_0_40px_rgba(255,200,0,0.9)]"
+                            : "border-gray-600"}
                         `}
-                      />
+                      >
+                        <Image
+                          src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                          alt="node"
+                          fill
+                          className={`
+                            object-cover
+                            ${isLocked ? "grayscale" : ""}
+                          `}
+                        />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                    </div>
-
-                    {node.state === "active" && (
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 mb-3 text-yellow-300 font-bold text-sm tracking-wide animate-float-slow">
-                        START
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                       </div>
-                    )}
 
-                    <div className="mt-3 text-center">
-                      <div className="font-semibold text-sm md:text-base">
-                        {node.label}
+                      {isActive && (
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-300 font-bold text-sm animate-float-slow">
+                          START
+                        </div>
+                      )}
+
+                      <div className="mt-3 text-center">
+                        <div className="font-semibold text-white">
+                          {node.label}
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  <div className="absolute w-20 h-4 bg-black/40 blur-md rounded-full top-full mt-2" />
-
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
 
