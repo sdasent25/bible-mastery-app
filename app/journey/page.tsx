@@ -63,6 +63,7 @@ export default function JourneyPage() {
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const [completedPrograms, setCompletedPrograms] = useState<string[]>([])
+  const [streak, setStreak] = useState(3)
   const [dailyProgress, setDailyProgress] = useState(1)
   const dailyGoal = 2
 
@@ -251,7 +252,12 @@ export default function JourneyPage() {
         <div className="lg:hidden sticky top-0 z-30 mb-4">
           <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
             <div className="flex items-center justify-between text-sm mb-1">
-              <span className="text-slate-300">🎯 Daily Goal</span>
+              <span className="text-orange-400 font-semibold animate-pulse">
+                🔥 {streak}
+              </span>
+              <span className="text-slate-300">
+                🎯 Goal
+              </span>
               <span className="font-semibold text-white">
                 {dailyProgress} / {dailyGoal}
               </span>
@@ -371,6 +377,16 @@ export default function JourneyPage() {
               <div className="text-sm text-slate-300">Weak Areas</div>
               <div className="text-lg font-semibold">
                 {weakCount > 0 ? `${weakCount} to review` : "None"}
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <div className="text-sm text-slate-300 mb-1">
+                🔥 Streak
+              </div>
+
+              <div className="text-lg font-bold text-orange-400">
+                {streak} days
               </div>
             </div>
 
