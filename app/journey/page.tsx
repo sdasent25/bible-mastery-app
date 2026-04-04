@@ -270,13 +270,16 @@ export default function JourneyPage() {
           <div />
         </div>
 
-        <div className="flex flex-col items-center justify-center text-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold">
-            {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
-          </h1>
-          <p className="text-slate-300 mt-1">
-            Progress through Scripture
-          </p>
+        <div className="flex justify-center mb-8">
+          <div className="text-center max-w-md">
+            <h1 className="text-3xl md:text-4xl font-bold">
+              {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
+            </h1>
+
+            <p className="text-slate-300 mt-1">
+              Progress through Scripture
+            </p>
+          </div>
         </div>
 
         <div className="lg:hidden sticky top-0 z-30 mb-4">
@@ -428,8 +431,8 @@ export default function JourneyPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                       </div>
 
-                      {isActive && (
-                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-300 font-bold text-sm animate-float-slow">
+                      {isActive && !isLocked && (
+                        <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
                           START
                         </div>
                       )}
@@ -459,11 +462,11 @@ export default function JourneyPage() {
           </div>
 
           {/* RIGHT PANEL */}
-          <div className="lg:w-80 w-full bg-[#121A2B] rounded-2xl p-6 shadow-xl h-fit">
+          <div className="lg:w-80 w-full bg-[#121A2B] rounded-2xl p-6 shadow-xl h-fit space-y-6">
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
-            <div className="mb-6">
+            <div className="space-y-2">
               <div className="text-sm text-slate-300 mb-1">
                 {completedCount} / {totalCount} complete
               </div>
@@ -482,12 +485,14 @@ export default function JourneyPage() {
               </div>
             )}
 
-            <div className="mb-6">
+            <div className="space-y-2">
               <div className="text-sm text-slate-300">XP</div>
               <div className="text-lg font-bold">{xp}</div>
             </div>
 
-            <div className="mb-6">
+            <div className="h-px bg-white/5" />
+
+            <div className="space-y-2">
               <div className="text-sm text-slate-300">Weak Areas</div>
               <div className="text-lg font-semibold">
                 {weakCount > 0 ? `${weakCount} to review` : "None"}
@@ -518,17 +523,23 @@ export default function JourneyPage() {
               </button>
             )}
 
-            <div className="mb-6">
-              <div className="text-sm text-slate-300 mb-1">
-                🔥 Streak
-              </div>
+            <div className="h-px bg-white/5" />
 
-              <div className="text-lg font-bold text-orange-400">
-                {streak} days
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-slate-300">
+                  🔥 Streak
+                </span>
+
+                <span className="text-orange-400 font-semibold">
+                  {streak} days
+                </span>
               </div>
             </div>
 
-            <div className="mb-6">
+            <div className="h-px bg-white/5" />
+
+            <div className="space-y-2">
               <div className="text-sm text-slate-300 mb-1">
                 🎯 Daily Goal
               </div>
