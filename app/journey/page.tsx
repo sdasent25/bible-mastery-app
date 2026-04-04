@@ -66,6 +66,9 @@ export default function JourneyPage() {
   const [streak, setStreak] = useState(3)
   const [dailyProgress, setDailyProgress] = useState(1)
   const dailyGoal = 2
+  const handleTrainWeak = () => {
+    router.push("/quiz?mode=training")
+  }
 
   useEffect(() => {
     async function loadAllProgress() {
@@ -272,6 +275,27 @@ export default function JourneyPage() {
           </div>
         </div>
 
+        {weakCount > 0 && (
+          <div className="lg:hidden mb-4">
+            <button
+              onClick={handleTrainWeak}
+              className="
+                w-full
+                bg-purple-600 hover:bg-purple-500
+                text-white
+                py-2.5
+                rounded-xl
+                font-semibold
+                text-sm
+                transition-all
+                active:scale-95
+              "
+            >
+              ⚡ Train Weak Areas
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
 
           {/* PATH */}
@@ -379,6 +403,25 @@ export default function JourneyPage() {
                 {weakCount > 0 ? `${weakCount} to review` : "None"}
               </div>
             </div>
+
+            {weakCount > 0 && (
+              <button
+                onClick={handleTrainWeak}
+                className="
+                  w-full
+                  bg-purple-600 hover:bg-purple-500
+                  text-white
+                  py-3
+                  rounded-xl
+                  font-semibold
+                  transition-all
+                  active:scale-95
+                  mt-2
+                "
+              >
+                Train Weak Areas →
+              </button>
+            )}
 
             <div className="mb-6">
               <div className="text-sm text-slate-300 mb-1">
