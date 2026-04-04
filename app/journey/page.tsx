@@ -15,6 +15,7 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [selectedProgram, setSelectedProgram] = useState("genesis")
 
   const [nodes, setNodes] = useState<
@@ -94,7 +95,7 @@ export default function JourneyPage() {
   const progressPercent = Math.round((completedCount / totalCount) * 100)
 
   return (
-    <div className="min-h-screen bg-[#0B1220] text-white flex">
+    <div className="min-h-screen bg-[#0B1220] text-white flex relative">
 
       {/* LEFT NAV */}
       <aside className="hidden lg:flex w-72 flex-col p-6 border-r border-white/10">
@@ -137,6 +138,18 @@ export default function JourneyPage() {
 
       {/* MAIN */}
       <div className="flex-1 px-4 md:px-8 py-6">
+        <div className="lg:hidden flex items-center justify-between mb-4">
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="text-white text-2xl font-bold"
+          >
+            ☰
+          </button>
+
+          <div className="text-lg font-semibold">Genesis</div>
+
+          <div />
+        </div>
 
         <div className="text-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold">
@@ -242,6 +255,66 @@ export default function JourneyPage() {
             </button>
 
           </div>
+        </div>
+      </div>
+
+      {menuOpen && (
+        <div
+          onClick={() => setMenuOpen(false)}
+          className="fixed inset-0 bg-black/50 z-40"
+        />
+      )}
+
+      <div
+        className={`
+          fixed top-0 left-0 h-full w-64 bg-[#0B1220] z-50
+          transform transition-transform duration-300
+          ${menuOpen ? "translate-x-0" : "-translate-x-full"}
+          lg:hidden
+        `}
+      >
+        <div className="p-6">
+
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-lg font-bold">Menu</h2>
+            <button onClick={() => setMenuOpen(false)}>✕</button>
+          </div>
+
+          <NavItem label="Journey" active />
+          <NavItem label="Training" />
+          <NavItem label="Review" />
+          <NavItem label="Programs" />
+          <NavItem label="Dashboard" />
+
+          <div className="mt-6">
+            <h3 className="text-sm text-slate-400 mb-2">Books</h3>
+
+            {programs.map((program, index) => {
+              const isUnlocked =
+                index === 0 || completedPrograms.includes(programs[index - 1].id)
+
+              return (
+                <div
+                  key={program.id}
+                  onClick={() => {
+                    if (isUnlocked) {
+                      setSelectedProgram(program.id)
+                      setMenuOpen(false)
+                    }
+                  }}
+                  className={`
+                    px-3 py-2 rounded-lg mb-1 text-sm
+                    ${selectedProgram === program.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                    ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
+                  `}
+                >
+                  {program.title}
+                  {!isUnlocked && " 🔒"}
+                </div>
+              )
+            })}
+          </div>
+
         </div>
       </div>
     </div>
