@@ -17,6 +17,9 @@ export default function JourneyPage() {
 
   const [loading, setLoading] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    Pentateuch: true,
+  })
   const [selectedProgram, setSelectedProgram] = useState("genesis")
 
   const [nodes, setNodes] = useState<
@@ -102,6 +105,68 @@ export default function JourneyPage() {
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const progressPercent = Math.round((completedCount / totalCount) * 100)
+  const renderSections = (
+    <div className="mt-8">
+      <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
+
+      {bibleSections.map((section) => {
+        const isOpen = openSections[section.name]
+
+        return (
+          <div key={section.name} className="mb-4">
+
+            {/* SECTION HEADER */}
+            <div
+              onClick={() =>
+                setOpenSections(prev => ({
+                  ...prev,
+                  [section.name]: !prev[section.name],
+                }))
+              }
+              className="flex justify-between items-center cursor-pointer text-xs text-slate-400 uppercase tracking-wide mb-2 hover:text-white"
+            >
+              <span>{section.name}</span>
+              <span>{isOpen ? "−" : "+"}</span>
+            </div>
+
+            {/* BOOKS */}
+            {isOpen && section.books.map((book) => {
+
+              const program = programs.find(p =>
+                p.title.replace(" Program","") === book
+              )
+
+              const isUnlocked =
+                book === "Genesis" ||
+                completedPrograms.includes(program?.id || "")
+
+              return (
+                <div
+                  key={book}
+                  onClick={() => {
+                    if (program) {
+                      setSelectedProgram(program.id)
+                      if (typeof setMenuOpen !== "undefined") {
+                        setMenuOpen(false)
+                      }
+                    }
+                  }}
+                  className={`
+                    px-3 py-2 rounded-lg mb-1 text-sm transition-all
+                    ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                    ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
+                  `}
+                >
+                  {book}
+                  {!isUnlocked && " 🔒"}
+                </div>
+              )
+            })}
+          </div>
+        )
+      })}
+    </div>
+  )
 
   return (
     <div className="min-h-screen bg-[#0B1220] text-white flex relative">
@@ -118,51 +183,7 @@ export default function JourneyPage() {
         <NavItem label="Dashboard" />
 
         {/* BOOK SELECTOR */}
-        <div className="mt-8">
-          <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
-
-          {bibleSections.map((section, sIndex) => (
-            <div key={section.name} className="mb-4">
-
-              <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
-                {section.name}
-              </div>
-
-              {section.books.map((book, bIndex) => {
-
-                const program = programs.find(p =>
-                  p.title.replace(" Program","") === book
-                )
-
-                const isUnlocked =
-                  sIndex === 0 && bIndex === 0
-                  || completedPrograms.includes(program?.id || "")
-
-                return (
-                  <div
-                    key={book}
-                    onClick={() => {
-                      if (program) {
-                        setSelectedProgram(program.id)
-                        if (typeof setMenuOpen !== "undefined") {
-                          setMenuOpen(false)
-                        }
-                      }
-                    }}
-                    className={`
-                      px-3 py-2 rounded-lg mb-1 text-sm transition-all
-                      ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
-                      ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
-                    `}
-                  >
-                    {book}
-                    {!isUnlocked && " 🔒"}
-                  </div>
-                )
-              })}
-            </div>
-          ))}
-        </div>
+        {renderSections}
       </aside>
 
       {/* MAIN */}
@@ -327,51 +348,7 @@ export default function JourneyPage() {
           <NavItem label="Programs" />
           <NavItem label="Dashboard" />
 
-          <div className="mt-6">
-            <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
-
-            {bibleSections.map((section, sIndex) => (
-              <div key={section.name} className="mb-4">
-
-                <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
-                  {section.name}
-                </div>
-
-                {section.books.map((book, bIndex) => {
-
-                  const program = programs.find(p =>
-                    p.title.replace(" Program","") === book
-                  )
-
-                  const isUnlocked =
-                    sIndex === 0 && bIndex === 0
-                    || completedPrograms.includes(program?.id || "")
-
-                  return (
-                    <div
-                      key={book}
-                      onClick={() => {
-                        if (program) {
-                          setSelectedProgram(program.id)
-                          if (typeof setMenuOpen !== "undefined") {
-                            setMenuOpen(false)
-                          }
-                        }
-                      }}
-                      className={`
-                        px-3 py-2 rounded-lg mb-1 text-sm transition-all
-                        ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
-                        ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
-                      `}
-                    >
-                      {book}
-                      {!isUnlocked && " 🔒"}
-                    </div>
-                  )
-                })}
-              </div>
-            ))}
-          </div>
+          {renderSections}
 
         </div>
       </div>

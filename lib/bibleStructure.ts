@@ -15,9 +15,12 @@ export const bibleSections = [
     books: ["Job","Psalms","Proverbs","Ecclesiastes","Song of Solomon"],
   },
   {
-    name: "Prophets",
+    name: "Major Prophets",
+    books: ["Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel"],
+  },
+  {
+    name: "Minor Prophets",
     books: [
-      "Isaiah","Jeremiah","Lamentations","Ezekiel","Daniel",
       "Hosea","Joel","Amos","Obadiah","Jonah","Micah",
       "Nahum","Habakkuk","Zephaniah","Haggai","Zechariah","Malachi"
     ],
