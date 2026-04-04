@@ -12,6 +12,12 @@ import { getIncorrectQuestions } from "@/lib/review"
 
 type NodeState = "complete" | "active" | "locked"
 
+function playSound(src: string) {
+  const audio = new Audio(src)
+  audio.volume = 0.4
+  audio.play().catch(() => {})
+}
+
 function getNodeIcon(label: string) {
   if (label.includes("1–3")) return "creation.png"
   if (label.includes("4–6")) return "people.png"
@@ -233,7 +239,7 @@ export default function JourneyPage() {
         <div className="lg:hidden flex items-center justify-between mb-4">
           <button
             onClick={() => setMenuOpen(true)}
-            className="text-white text-2xl font-bold"
+            className="rounded-xl px-3 py-3 text-white text-2xl font-bold transition-all duration-150 hover:scale-[1.02] active:scale-95 active:brightness-90"
           >
             ☰
           </button>
@@ -283,12 +289,17 @@ export default function JourneyPage() {
                 w-full
                 bg-purple-600 hover:bg-purple-500
                 text-white
-                py-2.5
+                py-3
                 rounded-xl
                 font-semibold
                 text-sm
-                transition-all
+                transition-all duration-150
+                hover:scale-[1.02]
+                shadow-md hover:shadow-lg
                 active:scale-95
+                active:brightness-90
+                disabled:opacity-50
+                disabled:cursor-not-allowed
               "
             >
               ⚡ Train Weak Areas
@@ -312,6 +323,7 @@ export default function JourneyPage() {
                   <div
                     onClick={() => {
                       if (node.state !== "locked") {
+                        playSound("/sounds/tap.mp3")
                         router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                       }
                     }}
@@ -414,8 +426,13 @@ export default function JourneyPage() {
                   py-3
                   rounded-xl
                   font-semibold
-                  transition-all
+                  transition-all duration-150
+                  hover:scale-[1.02]
+                  shadow-md hover:shadow-lg
                   active:scale-95
+                  active:brightness-90
+                  disabled:opacity-50
+                  disabled:cursor-not-allowed
                   mt-2
                 "
               >
@@ -458,10 +475,11 @@ export default function JourneyPage() {
               onClick={() => {
                 if (!program) return
                 if (activeNode) {
+                  playSound("/sounds/click.mp3")
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg active:scale-95 transition-all"
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue →
             </button>
@@ -489,7 +507,12 @@ export default function JourneyPage() {
 
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-bold">Menu</h2>
-            <button onClick={() => setMenuOpen(false)}>✕</button>
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="rounded-xl px-3 py-3 text-white transition-all duration-150 hover:scale-[1.02] active:scale-95 active:brightness-90"
+            >
+              ✕
+            </button>
           </div>
 
           <NavItem label="Journey" active />
@@ -509,8 +532,8 @@ export default function JourneyPage() {
 function NavItem({ label, active = false }: { label: string; active?: boolean }) {
   return (
     <div
-      className={`px-4 py-3 rounded-xl mb-2 font-semibold cursor-pointer ${
-        active ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-800"
+      className={`px-4 py-3 rounded-xl mb-2 font-semibold cursor-pointer transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 ${
+        active ? "bg-blue-600 text-white hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]" : "text-slate-300 hover:bg-slate-800"
       }`}
     >
       {label}

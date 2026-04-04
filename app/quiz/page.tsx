@@ -36,6 +36,12 @@ type IncorrectItem = {
 
 const PROGRAM_COMPLETION_BONUS_XP = 50;
 
+function playSound(src: string) {
+  const audio = new Audio(src);
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
+}
+
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -364,7 +370,7 @@ export default function QuizPage() {
           <p className="text-lg text-gray-700 mb-6">You&apos;re now Level {newLevel}</p>
           <button
             onClick={() => setShowLevelUp(false)}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Continue
           </button>
@@ -387,19 +393,19 @@ export default function QuizPage() {
             New questions unlock tomorrow 🔥
           </p>
           <div className="space-y-3">
-            <button
-              onClick={handleTrainWeakAreas}
-              className="w-full bg-indigo-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              Review Past Answers
-            </button>
+              <button
+                onClick={handleTrainWeakAreas}
+                className="w-full bg-indigo-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-indigo-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                Review Past Answers
+              </button>
             {noWeakAreasMessage && (
               <p className="text-center text-sm text-slate-300">You&apos;re doing great! No past errors to review right now.</p>
             )}
             {isProPlusUser ? (
               <button
                 onClick={handleContinueTraining}
-                className="w-full bg-black text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-gray-900 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Continue Training
               </button>
@@ -407,7 +413,7 @@ export default function QuizPage() {
               <div className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-center">
                 <p className="text-white mb-3">🔒 Continue Training is available on Pro+</p>
                 <Link href="/upgrade" className="block">
-                  <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Upgrade to Pro+
                   </button>
                 </Link>
@@ -416,13 +422,13 @@ export default function QuizPage() {
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={() => startReview()}
-                className="w-full bg-yellow-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full bg-yellow-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-yellow-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-500"
               >
                 Review Mistakes
               </button>
             )}
             <Link href="/dashboard" className="block">
-              <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
                 Back to Dashboard
               </button>
             </Link>
@@ -444,11 +450,11 @@ export default function QuizPage() {
             <li>Deeper understanding of each passage</li>
           </ul>
           <div className="space-y-3">
-            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
               Upgrade to Pro
             </button>
             <Link href="/dashboard" className="block">
-              <button className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
+              <button className="w-full bg-gray-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-gray-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500">
                 Back to Dashboard
               </button>
             </Link>
@@ -518,6 +524,7 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
+          playSound("/sounds/correct.mp3");
           setShowResult("correct");
           setShowXpGain(true);
           setTimeout(() => setShowXpGain(false), 800);
@@ -534,10 +541,12 @@ export default function QuizPage() {
 
           const currentLevel = Math.floor(updatedXp / 100) + 1;
           if (currentLevel > previousLevel) {
+            playSound("/sounds/level-up.mp3");
             setNewLevel(currentLevel);
             setShowLevelUp(true);
           }
         } else {
+          playSound("/sounds/wrong.mp3");
           setShowResult("wrong");
           setFlameState("wrong");
           setStreak(0);
@@ -745,7 +754,7 @@ export default function QuizPage() {
                     `/segment?program=${activeProgram?.id}&segment=${toQuizSegmentId(next.segment)}`
                   )
                 }
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-500 active:scale-95"
+                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue Journey →
               </button>
@@ -754,7 +763,7 @@ export default function QuizPage() {
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={handleTrainWeakAreas}
-                className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-500 active:scale-95"
+                className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-purple-500 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Train Weak Areas
               </button>
@@ -763,7 +772,7 @@ export default function QuizPage() {
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={startReview}
-                className="w-full bg-yellow-600 text-white py-3 rounded-xl font-semibold hover:bg-yellow-500 active:scale-95"
+                className="w-full bg-yellow-600 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-yellow-500 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Review Mistakes
               </button>
@@ -771,7 +780,7 @@ export default function QuizPage() {
 
             <button
               onClick={() => router.push('/journey')}
-              className="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold hover:bg-slate-600"
+              className="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-slate-600 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Back to Journey
             </button>
@@ -821,9 +830,9 @@ export default function QuizPage() {
                 type="button"
                 onClick={() => router.push(item.href)}
                 className={[
-                  "w-full rounded-xl px-4 py-4 text-left text-base font-semibold transition-all duration-200",
+                  "w-full rounded-xl px-4 py-4 text-left text-base font-semibold transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed",
                   item.active
-                    ? "border border-blue-500/30 bg-blue-600/20 text-white"
+                    ? "border border-blue-500/30 bg-blue-600/20 text-white hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]"
                     : "border border-white/5 bg-slate-900 text-slate-200 hover:bg-slate-800 hover:text-white"
                 ].join(" ")}
               >
@@ -842,12 +851,16 @@ export default function QuizPage() {
                 <button
                   onClick={() => router.push('/journey')}
                   className="
+                    rounded-xl
+                    px-3 py-3
                     text-slate-400
                     hover:text-white
                     text-2xl
                     font-bold
-                    transition-all
-                    active:scale-90
+                    transition-all duration-150
+                    hover:scale-[1.02]
+                    active:scale-95
+                    active:brightness-90
                   "
                   aria-label="Close quiz and return to journey"
                 >
@@ -946,11 +959,15 @@ export default function QuizPage() {
                           bg-slate-900
                           text-base md:text-2xl font-medium
                           min-h-[60px] md:min-h-[100px]
-                          transition-all duration-200
+                          transition-all duration-150
                           hover:bg-slate-800
                           hover:scale-[1.02]
                           hover:shadow-lg
+                          shadow-md
                           active:scale-95
+                          active:brightness-90
+                          disabled:opacity-50
+                          disabled:cursor-not-allowed
                           button-primary
                           focus:outline-none focus:ring-2 focus:ring-blue-500
                           text-white
@@ -1000,7 +1017,10 @@ export default function QuizPage() {
 
                   <button
                     id="continueBtn"
-                    onClick={handleNextQuestion}
+                    onClick={() => {
+                      playSound("/sounds/click.mp3");
+                      handleNextQuestion();
+                    }}
                     className="
                       mt-6
                       w-full
@@ -1011,10 +1031,15 @@ export default function QuizPage() {
                       text-xl
                       px-6 py-4
                       rounded-xl
-                      shadow-lg
-                      transition-all duration-200
-                      hover:scale-[1.03]
+                      shadow-md
+                      transition-all duration-150
+                      hover:scale-[1.02]
+                      hover:shadow-lg
+                      hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]
                       active:scale-95
+                      active:brightness-90
+                      disabled:opacity-50
+                      disabled:cursor-not-allowed
                     "
                   >
                     Continue →
@@ -1045,7 +1070,7 @@ export default function QuizPage() {
               {isReviewMode && selectedAnswer !== null && (
                 <button
                   onClick={handleTryAgain}
-                  className="mt-3 w-full bg-indigo-600 text-white py-2 px-4 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="mt-3 w-full bg-indigo-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-indigo-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   Try Again
                 </button>
