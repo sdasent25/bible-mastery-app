@@ -989,7 +989,7 @@ export default function QuizPage() {
               {isAnswered && (
                 <div className="flex flex-col items-center justify-center text-center mt-6 animate-[fadeIn_0.25s_ease]">
                   <div className={`text-3xl font-bold mb-4 ${isCorrectAnswer ? "text-green-400" : "text-red-400"}`}>
-                    {isCorrectAnswer ? "Correct!" : "Not quite 💪"}
+                    {isCorrectAnswer ? "Correct!" : "Not quite"}
                   </div>
 
                   <div className="animate-float">

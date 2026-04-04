@@ -68,6 +68,21 @@ export default function RootLayout({
     checkAuth();
   }, [pathname, router]);
 
+  useEffect(() => {
+    const sounds = [
+      "/sounds/correct.mp3",
+      "/sounds/wrong.mp3",
+      "/sounds/click.mp3",
+      "/sounds/tap.mp3",
+      "/sounds/level-up.mp3",
+    ];
+
+    sounds.forEach((src) => {
+      const audio = new Audio(src);
+      audio.preload = "auto";
+    });
+  }, []);
+
   // Show loading state while checking authentication
   if (isAuthenticated === null) {
     return (
