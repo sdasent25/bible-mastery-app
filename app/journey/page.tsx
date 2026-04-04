@@ -1,9 +1,3 @@
-Replace the entire file:
-
-app/journey/page.tsx
-
-with the following:
-
 "use client"
 
 import { useEffect, useState } from "react"
