@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { getProgramById, programs } from "@/lib/programs"
+import { bibleSections } from "@/lib/bibleStructure"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
@@ -52,19 +53,27 @@ export default function JourneyPage() {
   useEffect(() => {
     async function loadProgram() {
       const program = getProgramById(selectedProgram)
-      if (!program) return
+      if (!program) {
+        setNodes([])
+        setLoading(false)
+        return
+      }
 
       const progress = await getProgramProgress(selectedProgram)
 
       const mapped = program.segments.map((seg, index) => {
         let state: NodeState = "locked"
 
-        if (progress.completed) {
+        if (!program) {
+          state = "locked"
+        } else if (progress.completed) {
           state = "complete"
         } else if (index < progress.currentSegmentIndex) {
           state = "complete"
         } else if (index === progress.currentSegmentIndex) {
           state = "active"
+        } else {
+          state = "locked"
         }
 
         return {
@@ -112,69 +121,47 @@ export default function JourneyPage() {
         <div className="mt-8">
           <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
 
-          {/* Pentateuch */}
-          <div className="mb-3">
-            <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
-              Pentateuch
-            </div>
+          {bibleSections.map((section, sIndex) => (
+            <div key={section.name} className="mb-4">
 
-            {programs.map((program, index) => {
-              const isUnlocked =
-                index === 0 || completedPrograms.includes(programs[index - 1].id)
+              <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
+                {section.name}
+              </div>
 
-              // Clean label (remove "Program")
-              const cleanLabel = program.title.replace(" Program", "")
+              {section.books.map((book, bIndex) => {
 
-              return (
-                <div
-                  key={program.id}
-                  onClick={() => {
-                    if (isUnlocked) {
-                      setSelectedProgram(program.id)
-                      if (typeof setMenuOpen !== "undefined") {
-                        setMenuOpen(false)
+                const program = programs.find(p =>
+                  p.title.replace(" Program","") === book
+                )
+
+                const isUnlocked =
+                  sIndex === 0 && bIndex === 0
+                  || completedPrograms.includes(program?.id || "")
+
+                return (
+                  <div
+                    key={book}
+                    onClick={() => {
+                      if (program) {
+                        setSelectedProgram(program.id)
+                        if (typeof setMenuOpen !== "undefined") {
+                          setMenuOpen(false)
+                        }
                       }
-                    }
-                  }}
-                  className={`
-                    px-3 py-2 rounded-lg mb-1 cursor-pointer text-sm
-                    transition-all
-                    ${selectedProgram === program.id ? "bg-blue-600 text-white" : "text-slate-300"}
-                    ${!isUnlocked ? "opacity-40 cursor-not-allowed" : "hover:bg-slate-800"}
-                  `}
-                >
-                  {cleanLabel}
-                  {!isUnlocked && " 🔒"}
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Placeholder for future sections */}
-          <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-            History
-          </div>
-          <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-          <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-            Wisdom
-          </div>
-          <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-          <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-            Prophets
-          </div>
-          <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-          <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-            Gospels
-          </div>
-          <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-          <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-            Epistles
-          </div>
-          <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
+                    }}
+                    className={`
+                      px-3 py-2 rounded-lg mb-1 text-sm transition-all
+                      ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                      ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
+                    `}
+                  >
+                    {book}
+                    {!isUnlocked && " 🔒"}
+                  </div>
+                )
+              })}
+            </div>
+          ))}
         </div>
       </aside>
 
@@ -279,6 +266,12 @@ export default function JourneyPage() {
               </div>
             </div>
 
+            {selectedProgram !== "genesis" && (
+              <div className="mt-4 text-sm text-yellow-400">
+                🔒 Complete previous book to unlock
+              </div>
+            )}
+
             <div className="mb-6">
               <div className="text-sm text-slate-300">XP</div>
               <div className="text-lg font-bold">{xp}</div>
@@ -337,69 +330,47 @@ export default function JourneyPage() {
           <div className="mt-6">
             <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
 
-            {/* Pentateuch */}
-            <div className="mb-3">
-              <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
-                Pentateuch
-              </div>
+            {bibleSections.map((section, sIndex) => (
+              <div key={section.name} className="mb-4">
 
-              {programs.map((program, index) => {
-                const isUnlocked =
-                  index === 0 || completedPrograms.includes(programs[index - 1].id)
+                <div className="text-xs text-slate-500 uppercase tracking-wide mb-2">
+                  {section.name}
+                </div>
 
-                // Clean label (remove "Program")
-                const cleanLabel = program.title.replace(" Program", "")
+                {section.books.map((book, bIndex) => {
 
-                return (
-                  <div
-                    key={program.id}
-                    onClick={() => {
-                      if (isUnlocked) {
-                        setSelectedProgram(program.id)
-                        if (typeof setMenuOpen !== "undefined") {
-                          setMenuOpen(false)
+                  const program = programs.find(p =>
+                    p.title.replace(" Program","") === book
+                  )
+
+                  const isUnlocked =
+                    sIndex === 0 && bIndex === 0
+                    || completedPrograms.includes(program?.id || "")
+
+                  return (
+                    <div
+                      key={book}
+                      onClick={() => {
+                        if (program) {
+                          setSelectedProgram(program.id)
+                          if (typeof setMenuOpen !== "undefined") {
+                            setMenuOpen(false)
+                          }
                         }
-                      }
-                    }}
-                    className={`
-                      px-3 py-2 rounded-lg mb-1 cursor-pointer text-sm
-                      transition-all
-                      ${selectedProgram === program.id ? "bg-blue-600 text-white" : "text-slate-300"}
-                      ${!isUnlocked ? "opacity-40 cursor-not-allowed" : "hover:bg-slate-800"}
-                    `}
-                  >
-                    {cleanLabel}
-                    {!isUnlocked && " 🔒"}
-                  </div>
-                )
-              })}
-            </div>
-
-            {/* Placeholder for future sections */}
-            <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-              History
-            </div>
-            <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-            <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-              Wisdom
-            </div>
-            <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-            <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-              Prophets
-            </div>
-            <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-            <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-              Gospels
-            </div>
-            <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
-
-            <div className="text-xs text-slate-500 uppercase tracking-wide mt-4 mb-2">
-              Epistles
-            </div>
-            <div className="text-slate-500 text-sm opacity-50">Locked 🔒</div>
+                      }}
+                      className={`
+                        px-3 py-2 rounded-lg mb-1 text-sm transition-all
+                        ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                        ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
+                      `}
+                    >
+                      {book}
+                      {!isUnlocked && " 🔒"}
+                    </div>
+                  )
+                })}
+              </div>
+            ))}
           </div>
 
         </div>
