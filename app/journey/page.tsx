@@ -60,6 +60,7 @@ export default function JourneyPage() {
   const [nodes, setNodes] = useState<
     { label: string; segment: string; state: NodeState }[]
   >([])
+  const [activeIndex, setActiveIndex] = useState(0)
 
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
@@ -67,8 +68,25 @@ export default function JourneyPage() {
   const [streak, setStreak] = useState(3)
   const [dailyProgress, setDailyProgress] = useState(1)
   const dailyGoal = 2
+  let startX = 0
+
   const handleTrainWeak = () => {
     router.push("/quiz?mode=training")
+  }
+
+  const handleStart = (e: any) => {
+    startX = e.touches ? e.touches[0].clientX : e.clientX
+  }
+
+  const handleEnd = (e: any) => {
+    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX
+    const diff = startX - endX
+
+    if (diff > 50 && activeIndex < nodes.length - 1) {
+      setActiveIndex(activeIndex + 1)
+    } else if (diff < -50 && activeIndex > 0) {
+      setActiveIndex(activeIndex - 1)
+    }
   }
 
   useEffect(() => {
@@ -138,14 +156,8 @@ export default function JourneyPage() {
   }, [selectedProgram])
 
   useEffect(() => {
-    if (nodes.length === 0) return
-
-    const timer = window.setTimeout(() => {
-      const activeEl = document.querySelector(".scale-105")
-      activeEl?.scrollIntoView({ behavior: "smooth", inline: "center" })
-    }, 300)
-
-    return () => window.clearTimeout(timer)
+    const idx = nodes.findIndex(n => n.state === "active")
+    if (idx >= 0) setActiveIndex(idx)
   }, [nodes])
 
   if (loading) {
@@ -317,28 +329,49 @@ export default function JourneyPage() {
 
           {/* PATH */}
           <div className="flex-1 relative">
-            <div className="overflow-x-auto scroll-smooth snap-x snap-mandatory flex gap-6 px-6 py-10">
+            <div
+              className="relative flex items-center justify-center h-[520px] overflow-hidden touch-pan-y"
+              onMouseDown={handleStart}
+              onMouseUp={handleEnd}
+              onTouchStart={handleStart}
+              onTouchEnd={handleEnd}
+            >
               {nodes.map((node, index) => {
-                const isActive = node.state === "active"
+                const offset = index - activeIndex
+                const isActive = offset === 0
                 const isLocked = node.state === "locked"
+                const translateX = offset * 160
+                const translateY = Math.abs(offset) * 22
+                const scale = isActive ? 1 : 0.8
+                const rotate = offset * -15
+                const zIndex = 100 - Math.abs(offset)
 
                 return (
                   <div
                     key={index}
-                    className={`
-                      snap-center flex-shrink-0
-                      transition-all duration-300
-                      ${isActive ? "scale-105" : "scale-95 opacity-70"}
-                    `}
+                    className="absolute transition-all duration-300"
+                    style={{
+                      transform: `
+                        translateX(${translateX}px)
+                        translateY(${translateY}px)
+                        scale(${scale})
+                        rotateY(${rotate}deg)
+                      `,
+                      zIndex,
+                      opacity: Math.abs(offset) > 2 ? 0 : 1,
+                    }}
                   >
-                    <div className="relative">
+                    <div
+                      className="relative flex flex-col items-center"
+                      style={isActive ? { animation: "slowSpin 20s linear infinite" } : {}}
+                    >
                       {isActive && (
                         <div className="absolute inset-0 z-0 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
                       )}
 
                       {isLocked && (
-                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 rounded-2xl">
-                          <span className="text-2xl">🔒</span>
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 rounded-2xl backdrop-blur-sm">
+                          <span className="text-xl">🔒</span>
                         </div>
                       )}
 
@@ -367,7 +400,7 @@ export default function JourneyPage() {
                           fill
                           className={`
                             object-cover
-                            ${isLocked ? "grayscale" : ""}
+                            ${isLocked ? "opacity-70 saturate-75" : ""}
                           `}
                         />
 
