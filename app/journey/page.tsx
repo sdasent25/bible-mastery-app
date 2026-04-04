@@ -256,53 +256,59 @@ export default function JourneyPage() {
               {nodes.map((node, index) => (
                 <div key={index} className="relative flex flex-col items-center">
 
-                  {node.state === "active" && (
-                    <div className="mb-3 text-yellow-300 font-bold text-sm tracking-wide">
-                      START
-                    </div>
-                  )}
-
                   <div
                     onClick={() => {
                       if (node.state !== "locked") {
-                        router.push(`/quiz?program=${selectedProgram}&segment=${node.segment}`)
+                        router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                       }
                     }}
                     className={`
-                      w-28 h-28 md:w-36 md:h-36 rounded-full
-                      flex items-center justify-center
-                      border cursor-pointer
-                      transition-all duration-200
+                      relative cursor-pointer transition-all duration-200
                       active:scale-95
-                      shadow-lg
-                      ${node.state === "locked"
-                        ? "bg-gray-700 border-gray-600 opacity-40"
-                        : "bg-gradient-to-br from-[#1E2A44] to-[#0F172A] hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"}
-                      ${node.state === "active"
-                        ? "border-yellow-400 shadow-[0_0_45px_rgba(255,200,0,1)] scale-115"
-                        : "border-gray-600"}
+                      hover:scale-[1.02]
                     `}
                   >
-                    <div className="flex items-center justify-center p-3">
+                    <div
+                      className={`
+                        relative w-48 md:w-56 h-64 md:h-72
+                        rounded-2xl overflow-hidden
+                        border
+                        shadow-xl
+                        ${node.state === "locked"
+                          ? "opacity-40 border-gray-700"
+                          : "border-gray-600"}
+                        ${node.state === "active"
+                          ? "ring-2 ring-yellow-400 shadow-[0_0_30px_rgba(255,200,0,0.8)] scale-105"
+                          : ""}
+                      `}
+                    >
                       <Image
                         src={`/icons/genesis/${getNodeIcon(node.label)}`}
                         alt="node"
-                        width={64}
-                        height={64}
+                        fill
                         className={`
-                          ${node.state === "locked" ? "grayscale opacity-50" : ""}
+                          object-cover
+                          ${node.state === "locked" ? "grayscale" : ""}
                         `}
                       />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    </div>
+
+                    {node.state === "active" && (
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-300 font-bold text-sm">
+                        START
+                      </div>
+                    )}
+
+                    <div className="mt-3 text-center">
+                      <div className="font-semibold text-sm md:text-base">
+                        {node.label}
+                      </div>
                     </div>
                   </div>
 
                   <div className="absolute w-20 h-4 bg-black/40 blur-md rounded-full top-full mt-2" />
-
-                  <div className="mt-2 text-center">
-                    <div className="font-semibold text-sm md:text-base">
-                      {node.label}
-                    </div>
-                  </div>
 
                 </div>
               ))}
@@ -349,7 +355,7 @@ export default function JourneyPage() {
               onClick={() => {
                 if (!program) return
                 if (activeNode) {
-                  router.push(`/quiz?program=${selectedProgram}&segment=${activeNode.segment}`)
+                  router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
               className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg active:scale-95 transition-all"
