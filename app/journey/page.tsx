@@ -377,7 +377,7 @@ export default function JourneyPage() {
                         scale(${scale})
                       `,
                       zIndex,
-                      opacity: Math.abs(offset) > 2 ? 0 : 1,
+                      opacity: Math.abs(offset) > 2 ? 0 : Math.abs(offset) > 0 ? 0.85 : 1,
                     }}
                   >
                     <div className="relative flex flex-col items-center">
@@ -386,7 +386,7 @@ export default function JourneyPage() {
                       )}
 
                       {isLocked && (
-                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 rounded-2xl backdrop-blur-sm">
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/25 rounded-2xl">
                           <span className="text-xl">🔒</span>
                         </div>
                       )}
@@ -409,6 +409,7 @@ export default function JourneyPage() {
                           border
                           transition-all duration-200
                           active:scale-95
+                          hover:scale-[1.03]
                           ${isActive
                             ? "border-yellow-400 shadow-[0_0_40px_rgba(255,200,0,0.9)]"
                             : "border-gray-600"}
@@ -420,7 +421,7 @@ export default function JourneyPage() {
                           fill
                           className={`
                             object-cover
-                            ${isLocked ? "opacity-70 saturate-75" : ""}
+                            ${isLocked ? "opacity-70 saturate-90" : ""}
                           `}
                         />
 
