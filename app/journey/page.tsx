@@ -120,8 +120,10 @@ export default function JourneyPage() {
       if (program) {
         segments = program.segments
       } else {
-        const cleanName = selectedProgram
-        segments = generatePreviewSegments(cleanName)
+        segments = Array.from({ length: 10 }).map((_, i) => ({
+          label: `${selectedProgram} ${i * 3 + 1}–${i * 3 + 3}`,
+          segment: `${selectedProgram.toLowerCase()}-${i}`,
+        }))
       }
 
       const progress = program
@@ -131,7 +133,9 @@ export default function JourneyPage() {
       const mapped = segments.map((seg, index) => {
         let state: NodeState = "locked"
 
-        if (program) {
+        if (!program || selectedProgram !== "genesis") {
+          state = "locked"
+        } else if (program) {
           if (progress.completed) {
             state = "complete"
           } else if (index < progress.currentSegmentIndex) {
@@ -158,6 +162,7 @@ export default function JourneyPage() {
   useEffect(() => {
     const idx = nodes.findIndex(n => n.state === "active")
     if (idx >= 0) setActiveIndex(idx)
+    else setActiveIndex(0)
   }, [nodes])
 
   if (loading) {
@@ -204,10 +209,6 @@ export default function JourneyPage() {
                 p.title.replace(" Program","") === book
               )
 
-              const isUnlocked =
-                book === "Genesis" ||
-                completedPrograms.includes(program?.id || "")
-
               return (
                 <div
                   key={book}
@@ -220,11 +221,11 @@ export default function JourneyPage() {
                   className={`
                     px-3 py-2 rounded-lg mb-1 text-sm transition-all
                     ${selectedProgram === (program?.id || book) ? "bg-blue-600 text-white" : "text-slate-300"}
-                    ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
+                    hover:bg-slate-800
                   `}
                 >
                   {book}
-                  {!isUnlocked && " 🔒"}
+                  {book !== "Genesis" && " 🔒"}
                 </div>
               )
             })}
@@ -262,14 +263,16 @@ export default function JourneyPage() {
             ☰
           </button>
 
-          <div className="text-lg font-semibold">Genesis</div>
+          <div className="text-lg font-semibold">
+            {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
+          </div>
 
           <div />
         </div>
 
-        <div className="text-center mb-6">
+        <div className="flex flex-col items-center justify-center text-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold">
-            {program?.title || selectedProgram}
+            {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
           </h1>
           <p className="text-slate-300 mt-1">
             Progress through Scripture
@@ -348,7 +351,7 @@ export default function JourneyPage() {
             </div>
 
             <div
-              className="relative flex items-center justify-center h-[520px] overflow-hidden touch-pan-y"
+              className="relative flex items-center justify-center h-[480px] md:h-[520px] overflow-hidden touch-pan-x"
               onMouseDown={handleStart}
               onMouseUp={handleEnd}
               onTouchStart={handleStart}
