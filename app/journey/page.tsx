@@ -12,6 +12,19 @@ import { getIncorrectQuestions } from "@/lib/review"
 
 type NodeState = "complete" | "active" | "locked"
 
+function generatePreviewSegments(bookName: string) {
+  const segments = []
+
+  for (let i = 1; i <= 10; i++) {
+    segments.push({
+      label: `${bookName} ${i * 3 - 2}–${i * 3}`,
+      segment: `${bookName.toLowerCase()}-${i}`,
+    })
+  }
+
+  return segments
+}
+
 export default function JourneyPage() {
   const router = useRouter()
 
@@ -56,27 +69,30 @@ export default function JourneyPage() {
   useEffect(() => {
     async function loadProgram() {
       const program = getProgramById(selectedProgram)
-      if (!program) {
-        setNodes([])
-        setLoading(false)
-        return
+      let segments = []
+
+      if (program) {
+        segments = program.segments
+      } else {
+        const cleanName = selectedProgram
+        segments = generatePreviewSegments(cleanName)
       }
 
-      const progress = await getProgramProgress(selectedProgram)
+      const progress = program
+        ? await getProgramProgress(selectedProgram)
+        : { completed: false, currentSegmentIndex: -1 }
 
-      const mapped = program.segments.map((seg, index) => {
+      const mapped = segments.map((seg, index) => {
         let state: NodeState = "locked"
 
-        if (!program) {
-          state = "locked"
-        } else if (progress.completed) {
-          state = "complete"
-        } else if (index < progress.currentSegmentIndex) {
-          state = "complete"
-        } else if (index === progress.currentSegmentIndex) {
-          state = "active"
-        } else {
-          state = "locked"
+        if (program) {
+          if (progress.completed) {
+            state = "complete"
+          } else if (index < progress.currentSegmentIndex) {
+            state = "complete"
+          } else if (index === progress.currentSegmentIndex) {
+            state = "active"
+          }
         }
 
         return {
@@ -105,6 +121,7 @@ export default function JourneyPage() {
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const progressPercent = Math.round((completedCount / totalCount) * 100)
+  const program = getProgramById(selectedProgram)
   const renderSections = (
     <div className="mt-8">
       <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
@@ -144,16 +161,14 @@ export default function JourneyPage() {
                 <div
                   key={book}
                   onClick={() => {
-                    if (program) {
-                      setSelectedProgram(program.id)
-                      if (typeof setMenuOpen !== "undefined") {
-                        setMenuOpen(false)
-                      }
+                    setSelectedProgram(program?.id || book)
+                    if (typeof setMenuOpen !== "undefined") {
+                      setMenuOpen(false)
                     }
                   }}
                   className={`
                     px-3 py-2 rounded-lg mb-1 text-sm transition-all
-                    ${selectedProgram === program?.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                    ${selectedProgram === (program?.id || book) ? "bg-blue-600 text-white" : "text-slate-300"}
                     ${!isUnlocked ? "opacity-40" : "hover:bg-slate-800"}
                   `}
                 >
@@ -203,7 +218,7 @@ export default function JourneyPage() {
 
         <div className="text-center mb-6">
           <h1 className="text-3xl md:text-4xl font-bold">
-            {getProgramById(selectedProgram)?.title}
+            {program?.title || selectedProgram}
           </h1>
           <p className="text-slate-300 mt-1">
             Progress through Scripture
@@ -287,9 +302,9 @@ export default function JourneyPage() {
               </div>
             </div>
 
-            {selectedProgram !== "genesis" && (
+            {!program && (
               <div className="mt-4 text-sm text-yellow-400">
-                🔒 Complete previous book to unlock
+                🔒 Complete previous book to unlock this one
               </div>
             )}
 
@@ -307,6 +322,7 @@ export default function JourneyPage() {
 
             <button
               onClick={() => {
+                if (!program) return
                 if (activeNode) {
                   router.push(`/quiz?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
