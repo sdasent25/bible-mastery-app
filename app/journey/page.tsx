@@ -164,39 +164,14 @@ export default function JourneyPage() {
 
           {/* PATH */}
           <div className="flex-1 flex flex-col items-center relative">
-            <svg
-              className="absolute top-0 left-1/2 -translate-x-1/2 h-full pointer-events-none"
-              width="200"
-              height="100%"
-              viewBox="0 0 200 1000"
-              preserveAspectRatio="none"
-            >
-              <path
-                d="
-                  M100 0
-                  C140 150, 60 300, 100 450
-                  C140 600, 60 750, 100 900
-                "
-                stroke="rgba(255, 200, 0, 0.7)"
-                strokeWidth="3"
-                fill="none"
-                style={{ filter: "drop-shadow(0 0 6px rgba(255,200,0,0.5))" }}
-              />
-            </svg>
+            <div className="absolute top-0 bottom-0 w-[2px] bg-gradient-to-b from-yellow-400/80 via-yellow-300/50 to-transparent blur-[0.5px]" />
 
             <div className="flex flex-col items-center gap-14 py-6">
               {nodes.map((node, index) => (
-                <div
-                  key={index}
-                  className="relative flex flex-col items-center"
-                  style={{
-                    transform: `translateX(${Math.sin(index * 0.8) * 60}px)`,
-                    marginTop: index % 2 === 0 ? "0px" : "10px"
-                  }}
-                >
+                <div key={index} className="relative flex flex-col items-center">
 
                   {node.state === "active" && (
-                    <div className="mb-2 text-yellow-400 font-bold text-sm animate-pulse">
+                    <div className="mb-3 text-yellow-300 font-bold text-sm tracking-wide">
                       START
                     </div>
                   )}
@@ -210,11 +185,16 @@ export default function JourneyPage() {
                     className={`
                       w-24 h-24 md:w-28 md:h-28 rounded-full
                       flex items-center justify-center
-                      border-2 cursor-pointer
+                      border cursor-pointer
                       transition-all duration-200
                       active:scale-95 hover:scale-105
-                      ${node.state === "locked" ? "bg-gray-700 border-gray-600 opacity-50" : "bg-[#1E2A44]"}
-                      ${node.state === "active" ? "border-yellow-400 shadow-[0_0_25px_rgba(255,200,0,0.7)] animate-pulse" : "border-gray-600"}
+                      shadow-lg
+                      ${node.state === "locked"
+                        ? "bg-gray-700 border-gray-600 opacity-40"
+                        : "bg-gradient-to-br from-[#1E2A44] to-[#0F172A]"}
+                      ${node.state === "active"
+                        ? "border-yellow-400 shadow-[0_0_35px_rgba(255,200,0,0.9)] scale-110"
+                        : "border-gray-600"}
                     `}
                   >
                     <Image
@@ -225,6 +205,8 @@ export default function JourneyPage() {
                       className={node.state === "locked" ? "grayscale" : ""}
                     />
                   </div>
+
+                  <div className="absolute w-20 h-4 bg-black/40 blur-md rounded-full top-full mt-2" />
 
                   <div className="mt-2 text-center">
                     <div className="font-semibold text-sm md:text-base">
