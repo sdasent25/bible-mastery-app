@@ -54,7 +54,7 @@ export default function QuizPage() {
   const [, setShowResult] = useState<"correct" | "wrong" | null>(null);
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [, setShowXp] = useState(false);
-  const [, setShowCelebration] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -566,6 +566,8 @@ export default function QuizPage() {
       setShowRetryPrompt(false);
     } else {
       setQuizCompleted(true);
+      setShowCelebration(true);
+      setTimeout(() => setShowCelebration(false), 1200);
       if (!isReviewMode && !isTrainingMode) {
         updateMastery();
       }
@@ -657,8 +659,20 @@ export default function QuizPage() {
 
   if (quizCompleted) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
+      <>
+        {showCelebration && (
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
+            <div className="animate-pop text-center">
+              <div className="text-5xl mb-2">🔥</div>
+              <div className="text-xl font-bold text-white">
+                Well Done
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
+          <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
           <h1 className="text-2xl font-bold text-center text-white mb-4">
             {isReviewMode
               ? 'Review Completed!'
@@ -752,13 +766,25 @@ export default function QuizPage() {
               Back to Journey
             </button>
           </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      {showCelebration && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
+          <div className="animate-pop text-center">
+            <div className="text-5xl mb-2">🔥</div>
+            <div className="text-xl font-bold text-white">
+              Well Done
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-[-100px] left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500 opacity-10 blur-3xl" />
         <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-slate-950 to-transparent" />
