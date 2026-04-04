@@ -255,6 +255,9 @@ export default function JourneyPage() {
             <div className="flex flex-col items-center gap-14 py-6">
               {nodes.map((node, index) => (
                 <div key={index} className="relative flex flex-col items-center">
+                  {node.state === "active" && (
+                    <div className="absolute w-52 h-72 md:w-60 md:h-80 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
+                  )}
 
                   <div
                     onClick={() => {
@@ -278,7 +281,7 @@ export default function JourneyPage() {
                           ? "opacity-40 border-gray-700"
                           : "border-gray-600"}
                         ${node.state === "active"
-                          ? "ring-2 ring-yellow-400 shadow-[0_0_30px_rgba(255,200,0,0.8)] scale-105"
+                          ? "ring-2 ring-yellow-400 shadow-[0_0_45px_rgba(255,200,0,0.9)] scale-105"
                           : ""}
                       `}
                     >
@@ -296,7 +299,7 @@ export default function JourneyPage() {
                     </div>
 
                     {node.state === "active" && (
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-300 font-bold text-sm">
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 mb-3 text-yellow-300 font-bold text-sm tracking-wide animate-float-slow">
                         START
                       </div>
                     )}
