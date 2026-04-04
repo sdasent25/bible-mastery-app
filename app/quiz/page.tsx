@@ -16,6 +16,7 @@ import {
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
+import { playSound } from '@/lib/sound';
 import Flame from '@/components/Flame';
 
 type Question = {
@@ -35,12 +36,6 @@ type IncorrectItem = {
 };
 
 const PROGRAM_COMPLETION_BONUS_XP = 50;
-
-function playSound(src: string) {
-  const audio = new Audio(src);
-  audio.volume = 0.4;
-  audio.play().catch(() => {});
-}
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);

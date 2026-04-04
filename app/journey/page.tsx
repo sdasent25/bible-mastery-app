@@ -9,14 +9,9 @@ import { bibleSections } from "@/lib/bibleStructure"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
+import { playSound } from "@/lib/sound"
 
 type NodeState = "complete" | "active" | "locked"
-
-function playSound(src: string) {
-  const audio = new Audio(src)
-  audio.volume = 0.4
-  audio.play().catch(() => {})
-}
 
 function getNodeIcon(label: string) {
   if (label.includes("1–3")) return "creation.png"

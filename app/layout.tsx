@@ -16,6 +16,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+function SoundToggle() {
+  const [enabled, setEnabled] = useState(true);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("sound");
+    if (stored === "off") setEnabled(false);
+  }, []);
+
+  const toggle = () => {
+    const next = !enabled;
+    setEnabled(next);
+    localStorage.setItem("sound", next ? "on" : "off");
+  };
+
+  return (
+    <button
+      onClick={toggle}
+      className="fixed top-4 right-4 z-50 bg-black/40 text-white px-3 py-2 rounded-lg backdrop-blur"
+    >
+      {enabled ? "🔊" : "🔇"}
+    </button>
+  );
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,6 +88,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <SoundToggle />
         {children}
         <footer className="text-sm text-gray-600 mt-10 pb-6 text-center">
           <p>
