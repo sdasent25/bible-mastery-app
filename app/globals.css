@@ -179,6 +179,16 @@ p {
   animation: xpPop 1.2s ease-out;
 }
 
+@keyframes xpFloat {
+  0% { transform: translateY(0px); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-40px); opacity: 0; }
+}
+
+.animate-xp {
+  animation: xpFloat 0.8s ease-out;
+}
+
 @keyframes unlockPop {
   0% {
     transform: scale(0.7);

@@ -53,7 +53,8 @@ export default function QuizPage() {
   const [combo, setCombo] = useState(0);
   const [, setShowResult] = useState<"correct" | "wrong" | null>(null);
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
-  const [, setShowXp] = useState(false);
+  const [showXpGain, setShowXpGain] = useState(false);
+  const [xpAmount, setXpAmount] = useState(10);
   const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
@@ -518,7 +519,8 @@ export default function QuizPage() {
 
         if (isCorrect) {
           setShowResult("correct");
-          setShowXp(true);
+          setShowXpGain(true);
+          setTimeout(() => setShowXpGain(false), 800);
           setFlameState("correct");
           setShowCelebration(true);
           setTimeout(() => {
@@ -556,7 +558,7 @@ export default function QuizPage() {
 
   const handleNextQuestion = () => {
     setShowResult(null);
-    setShowXp(false);
+    setShowXpGain(false);
     setShowCelebration(false);
     setFlameState("idle");
 
@@ -582,7 +584,7 @@ export default function QuizPage() {
     setCombo(0);
     setShowResult(null);
     setFlameState("idle");
-    setShowXp(false);
+    setShowXpGain(false);
     setShowCelebration(false);
     setProgramProgressSaved(false);
 
@@ -660,6 +662,14 @@ export default function QuizPage() {
   if (quizCompleted) {
     return (
       <>
+        {showXpGain && (
+          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
+            <div className="animate-xp text-green-400 font-bold text-2xl">
+              +{xpAmount} XP
+            </div>
+          </div>
+        )}
+
         {showCelebration && (
           <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
             <div className="animate-pop text-center">
@@ -774,6 +784,14 @@ export default function QuizPage() {
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
+      {showXpGain && (
+        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
+          <div className="animate-xp text-green-400 font-bold text-2xl">
+            +{xpAmount} XP
+          </div>
+        </div>
+      )}
+
       {showCelebration && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
           <div className="animate-pop text-center">
