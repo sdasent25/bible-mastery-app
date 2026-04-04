@@ -63,6 +63,8 @@ export default function JourneyPage() {
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const [completedPrograms, setCompletedPrograms] = useState<string[]>([])
+  const [dailyProgress, setDailyProgress] = useState(1)
+  const dailyGoal = 2
 
   useEffect(() => {
     async function loadAllProgress() {
@@ -351,6 +353,27 @@ export default function JourneyPage() {
               <div className="text-sm text-slate-300">Weak Areas</div>
               <div className="text-lg font-semibold">
                 {weakCount > 0 ? `${weakCount} to review` : "None"}
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <div className="text-sm text-slate-300 mb-1">
+                🎯 Daily Goal
+              </div>
+
+              <div className="text-sm font-semibold mb-2">
+                Complete {dailyGoal} segments
+              </div>
+
+              <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-green-400"
+                  style={{ width: `${(dailyProgress / dailyGoal) * 100}%` }}
+                />
+              </div>
+
+              <div className="text-xs text-slate-400 mt-1">
+                {dailyProgress} / {dailyGoal}
               </div>
             </div>
 
