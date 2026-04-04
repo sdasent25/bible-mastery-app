@@ -16,7 +16,7 @@ import {
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
-import { playSound } from '@/lib/sound';
+import { playSound, triggerHaptic } from '@/lib/sound';
 import Flame from '@/components/Flame';
 
 type Question = {
@@ -520,6 +520,7 @@ export default function QuizPage() {
 
         if (isCorrect) {
           playSound("/sounds/correct.mp3");
+          triggerHaptic("light");
           setShowResult("correct");
           setShowXpGain(true);
           setTimeout(() => setShowXpGain(false), 800);
@@ -537,11 +538,13 @@ export default function QuizPage() {
           const currentLevel = Math.floor(updatedXp / 100) + 1;
           if (currentLevel > previousLevel) {
             playSound("/sounds/level-up.mp3");
+            triggerHaptic("heavy");
             setNewLevel(currentLevel);
             setShowLevelUp(true);
           }
         } else {
           playSound("/sounds/wrong.mp3");
+          triggerHaptic("medium");
           setShowResult("wrong");
           setFlameState("wrong");
           setStreak(0);
@@ -1014,6 +1017,7 @@ export default function QuizPage() {
                     id="continueBtn"
                     onClick={() => {
                       playSound("/sounds/click.mp3");
+                      triggerHaptic("light");
                       handleNextQuestion();
                     }}
                     className="
