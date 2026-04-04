@@ -52,11 +52,13 @@ export default function SegmentIntro() {
         <div className="relative w-full max-w-md h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
           {imageName === "creation.png" ? (
             <video
-              src="/icons/animations/genesis/creation.mp4"
+              src="/animations/genesis/creation.mp4"
               autoPlay
               loop
               muted
               playsInline
+              preload="auto"
+              onError={(e) => console.log("Video failed to load")}
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
