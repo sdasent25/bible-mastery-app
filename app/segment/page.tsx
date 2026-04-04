@@ -10,6 +10,12 @@ export default function SegmentIntro() {
   const segment = params.get("segment") || ""
   const program = params.get("program") || "genesis"
 
+  function formatSegment(segment: string) {
+    const parts = segment.split("-")
+    const book = parts[0].charAt(0).toUpperCase() + parts[0].slice(1)
+    return `${book} ${parts[1]}-${parts[2]}`
+  }
+
   function getImage(currentSegment: string) {
     if (currentSegment.includes("1-3")) return "creation.png"
     if (currentSegment.includes("4-6")) return "people.png"
@@ -44,18 +50,29 @@ export default function SegmentIntro() {
 
       <div className="w-full flex-1 flex items-center justify-center p-4">
         <div className="relative w-full max-w-md h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
-          <Image
-            src={`/icons/genesis/${imageName}`}
-            alt="segment"
-            fill
-            className="object-cover"
-          />
+          {imageName === "creation.png" ? (
+            <video
+              src="/icons/animations/genesis/creation.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          ) : (
+            <Image
+              src={`/icons/genesis/${imageName}`}
+              alt="segment"
+              fill
+              className="object-cover"
+            />
+          )}
 
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
           <div className="absolute bottom-6 left-4 right-4 text-center">
             <h1 className="text-2xl font-bold mb-2">
-              {segment.replace("-", " ")}
+              {formatSegment(segment)}
             </h1>
             <p className="text-sm text-slate-300">
               Read and understand this passage before testing your knowledge
