@@ -248,6 +248,24 @@ export default function JourneyPage() {
           </p>
         </div>
 
+        <div className="lg:hidden sticky top-0 z-30 mb-4">
+          <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
+            <div className="flex items-center justify-between text-sm mb-1">
+              <span className="text-slate-300">🎯 Daily Goal</span>
+              <span className="font-semibold text-white">
+                {dailyProgress} / {dailyGoal}
+              </span>
+            </div>
+
+            <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-green-400"
+                style={{ width: `${(dailyProgress / dailyGoal) * 100}%` }}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
 
           {/* PATH */}
