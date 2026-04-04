@@ -86,9 +86,16 @@ export default function QuizPage() {
     activeProgramSegmentIndex !== null &&
     activeProgramSegmentIndex === activeProgram.segments.length - 1
   );
-  const nextProgramSegment = activeProgram && activeProgramSegmentIndex !== null
-    ? activeProgram.segments[activeProgramSegmentIndex + 1] || null
-    : null;
+  const nextSegment = () => {
+    if (!activeProgram || activeProgramSegmentIndex === null) return null;
+
+    const nextIndex = activeProgramSegmentIndex + 1;
+
+    if (nextIndex >= activeProgram.segments.length) return null;
+
+    return activeProgram.segments[nextIndex];
+  };
+  const next = nextSegment();
 
   useEffect(() => {
     const initializeQuiz = async () => {
@@ -614,23 +621,6 @@ export default function QuizPage() {
     { label: 'Review', href: '/review', active: false },
   ];
 
-  const handleContinueProgram = async () => {
-    if (!activeProgram || activeProgramSegmentIndex === null) {
-      return;
-    }
-
-    const progress = await getProgramProgress(activeProgram.id);
-    if (progress.completed) {
-      window.location.assign('/programs');
-      return;
-    }
-
-    const resumeIndex = getResumeSegmentIndex(progress, activeProgram.segments.length);
-    const nextSegment = activeProgram.segments[resumeIndex];
-
-    window.location.assign(`/quiz?program=${activeProgram.id}&segment=${toQuizSegmentId(nextSegment.segment)}`);
-  };
-
   const updateMastery = async () => {
     try {
       const supabase = createClient(
@@ -697,7 +687,7 @@ export default function QuizPage() {
                     You finished {activeProgram?.title} and earned {PROGRAM_COMPLETION_BONUS_XP} bonus XP.
                   </p>
                 ) : (
-                  <p className="text-sm text-slate-300 mt-2">Next: {nextProgramSegment?.label}</p>
+                  <p className="text-sm text-slate-300 mt-2">Next: {next?.label}</p>
                 )}
               </>
             ) : isTrainingMode ? (
@@ -720,68 +710,47 @@ export default function QuizPage() {
               </>
             )}
           </div>
+          <p className="text-sm text-slate-300 text-center mb-4">
+            What would you like to do next?
+          </p>
           <div className="space-y-3">
-            {!isReviewMode && isTrainingMode && (
-              <p className="text-center text-sm text-slate-300 font-medium">Keep going — every question makes you stronger</p>
-            )}
-            {!isReviewMode && isProgramMode && (
-              <p className="text-center text-sm text-slate-300 font-medium">
-                {isFinalProgramSegment
-                  ? 'You completed the full path. Bonus XP has been added to your journey.'
-                  : 'Stay with the path and keep building momentum segment by segment.'}
-              </p>
-            )}
-            {!isReviewMode && isProgramMode && !isFinalProgramSegment && (
+            {next && (
               <button
-                onClick={handleContinueProgram}
-                className="w-full bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onClick={() =>
+                  router.push(
+                    `/segment?program=${activeProgram?.id}&segment=${toQuizSegmentId(next.segment)}`
+                  )
+                }
+                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-blue-500 active:scale-95"
               >
-                Continue Program
+                Continue Journey →
               </button>
             )}
-            <button
-              onClick={resetQuiz}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {isReviewMode ? 'Back to Quiz' : isProgramMode ? 'Retry Segment' : 'Retry Quiz'}
-            </button>
-            {!isReviewMode && !isProgramMode && (
-              <>
-                {!isTrainingMode && (
-                  <p className="text-center text-sm text-slate-300">Keep training and master scripture</p>
-                )}
-                <button
-                  onClick={handleContinueTraining}
-                  className={`w-full py-3 px-4 rounded-lg font-semibold focus:outline-none focus:ring-2 ${
-                    isProPlusUser
-                      ? 'bg-black text-white hover:bg-gray-900 focus:ring-gray-500'
-                      : 'bg-gray-200 text-gray-700 border border-gray-300 hover:bg-gray-300 focus:ring-gray-400'
-                  }`}
-                >
-                  {isProPlusUser ? 'Continue Training' : '🔒 Continue Training'}
-                </button>
-              </>
+
+            {incorrectQuestions.length > 0 && (
+              <button
+                onClick={handleTrainWeakAreas}
+                className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-500 active:scale-95"
+              >
+                Train Weak Areas
+              </button>
             )}
-            {!isReviewMode && isProgramMode && isFinalProgramSegment && (
-              <Link href="/programs" className="block">
-                <button className="w-full bg-slate-900 text-white py-3 px-4 rounded-lg font-semibold hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-500">
-                  View Programs
-                </button>
-              </Link>
-            )}
-            {!isReviewMode && incorrectQuestions.length > 0 && (
+
+            {incorrectQuestions.length > 0 && (
               <button
                 onClick={startReview}
-                className="w-full bg-yellow-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                className="w-full bg-yellow-600 text-white py-3 rounded-xl font-semibold hover:bg-yellow-500 active:scale-95"
               >
-                Review Your Mistakes
+                Review Mistakes
               </button>
             )}
-            <Link href="/dashboard" className="block">
-              <button className="w-full bg-gray-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500">
-                Back to Dashboard
-              </button>
-            </Link>
+
+            <button
+              onClick={() => router.push('/journey')}
+              className="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold hover:bg-slate-600"
+            >
+              Back to Journey
+            </button>
           </div>
         </div>
       </div>
