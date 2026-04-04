@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
-import { getProgramById } from "@/lib/programs"
+import { getProgramById, programs } from "@/lib/programs"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
@@ -15,26 +15,45 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
+  const [selectedProgram, setSelectedProgram] = useState("genesis")
+
   const [nodes, setNodes] = useState<
     { label: string; segment: string; state: NodeState }[]
   >([])
 
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
-
-  const PROGRAM_ID = "genesis"
+  const [completedPrograms, setCompletedPrograms] = useState<string[]>([])
 
   useEffect(() => {
-    async function load() {
-      const program = getProgramById(PROGRAM_ID)
-      if (!program) return
-
-      const progress = await getProgramProgress(PROGRAM_ID)
+    async function loadAllProgress() {
       const xpVal = await getXp()
       const incorrect = getIncorrectQuestions()
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
+
+      const completed: string[] = []
+
+      for (const program of programs) {
+        const progress = await getProgramProgress(program.id)
+        if (progress.completed) {
+          completed.push(program.id)
+        }
+      }
+
+      setCompletedPrograms(completed)
+    }
+
+    loadAllProgress()
+  }, [])
+
+  useEffect(() => {
+    async function loadProgram() {
+      const program = getProgramById(selectedProgram)
+      if (!program) return
+
+      const progress = await getProgramProgress(selectedProgram)
 
       const mapped = program.segments.map((seg, index) => {
         let state: NodeState = "locked"
@@ -58,18 +77,18 @@ export default function JourneyPage() {
       setLoading(false)
     }
 
-    load()
-  }, [])
+    loadProgram()
+  }, [selectedProgram])
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0B1220] text-white">
-        Loading journey...
+        Loading...
       </div>
     )
   }
 
-  const activeNode = nodes.find((n) => n.state === "active")
+  const activeNode = nodes.find(n => n.state === "active")
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const progressPercent = Math.round((completedCount / totalCount) * 100)
@@ -78,7 +97,8 @@ export default function JourneyPage() {
     <div className="min-h-screen bg-[#0B1220] text-white flex">
 
       {/* LEFT NAV */}
-      <aside className="hidden lg:flex w-64 flex-col p-6 border-r border-white/10">
+      <aside className="hidden lg:flex w-72 flex-col p-6 border-r border-white/10">
+
         <h2 className="text-xl font-bold mb-6">Bible Athlete</h2>
 
         <NavItem label="Journey" active />
@@ -86,41 +106,68 @@ export default function JourneyPage() {
         <NavItem label="Review" />
         <NavItem label="Programs" />
         <NavItem label="Dashboard" />
+
+        {/* BOOK SELECTOR */}
+        <div className="mt-8">
+          <h3 className="text-sm text-slate-400 mb-3">Books</h3>
+
+          {programs.map((program, index) => {
+            const isUnlocked =
+              index === 0 || completedPrograms.includes(programs[index - 1].id)
+
+            return (
+              <div
+                key={program.id}
+                onClick={() => {
+                  if (isUnlocked) setSelectedProgram(program.id)
+                }}
+                className={`
+                  px-3 py-2 rounded-lg mb-1 cursor-pointer text-sm
+                  ${selectedProgram === program.id ? "bg-blue-600 text-white" : "text-slate-300"}
+                  ${!isUnlocked ? "opacity-40 cursor-not-allowed" : "hover:bg-slate-800"}
+                `}
+              >
+                {program.title}
+                {!isUnlocked && " 🔒"}
+              </div>
+            )
+          })}
+        </div>
       </aside>
 
       {/* MAIN */}
       <div className="flex-1 px-4 md:px-8 py-6">
 
-        {/* HEADER */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl md:text-4xl font-bold">Genesis</h1>
-          <p className="text-slate-300 mt-1">The beginning of everything</p>
+          <h1 className="text-3xl md:text-4xl font-bold">
+            {getProgramById(selectedProgram)?.title}
+          </h1>
+          <p className="text-slate-300 mt-1">
+            Progress through Scripture
+          </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
 
-          {/* CENTER PATH */}
+          {/* PATH */}
           <div className="flex-1 flex flex-col items-center relative">
 
-            {/* PATH LINE */}
             <div className="absolute top-0 bottom-0 w-1 bg-gradient-to-b from-yellow-400 to-transparent" />
 
             <div className="flex flex-col items-center gap-14 py-6">
               {nodes.map((node, index) => (
                 <div key={index} className="relative flex flex-col items-center">
 
-                  {/* START LABEL */}
                   {node.state === "active" && (
                     <div className="mb-2 text-yellow-400 font-bold text-sm animate-pulse">
                       START
                     </div>
                   )}
 
-                  {/* NODE */}
                   <div
                     onClick={() => {
                       if (node.state !== "locked") {
-                        router.push(`/quiz?program=${PROGRAM_ID}&segment=${node.segment}`)
+                        router.push(`/quiz?program=${selectedProgram}&segment=${node.segment}`)
                       }
                     }}
                     className={`
@@ -142,18 +189,10 @@ export default function JourneyPage() {
                     />
                   </div>
 
-                  {/* LABEL */}
                   <div className="mt-2 text-center">
-                    <div className="font-semibold text-sm md:text-base text-white">
+                    <div className="font-semibold text-sm md:text-base">
                       {node.label}
                     </div>
-
-                    {node.state === "complete" && (
-                      <div className="text-green-400 text-xs mt-1">Complete</div>
-                    )}
-                    {node.state === "locked" && (
-                      <div className="text-slate-400 text-xs mt-1">Locked</div>
-                    )}
                   </div>
 
                 </div>
@@ -166,10 +205,9 @@ export default function JourneyPage() {
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
-            {/* PROGRESS */}
             <div className="mb-6">
               <div className="text-sm text-slate-300 mb-1">
-                {completedCount} / {totalCount} segments complete
+                {completedCount} / {totalCount} complete
               </div>
 
               <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
@@ -180,13 +218,11 @@ export default function JourneyPage() {
               </div>
             </div>
 
-            {/* XP */}
             <div className="mb-6">
               <div className="text-sm text-slate-300">XP</div>
               <div className="text-lg font-bold">{xp}</div>
             </div>
 
-            {/* WEAK AREAS */}
             <div className="mb-6">
               <div className="text-sm text-slate-300">Weak Areas</div>
               <div className="text-lg font-semibold">
@@ -194,11 +230,10 @@ export default function JourneyPage() {
               </div>
             </div>
 
-            {/* CONTINUE */}
             <button
               onClick={() => {
                 if (activeNode) {
-                  router.push(`/quiz?program=${PROGRAM_ID}&segment=${activeNode.segment}`)
+                  router.push(`/quiz?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
               className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg active:scale-95 transition-all"
@@ -216,10 +251,8 @@ export default function JourneyPage() {
 function NavItem({ label, active = false }: { label: string; active?: boolean }) {
   return (
     <div
-      className={`px-4 py-3 rounded-xl mb-2 font-semibold cursor-pointer transition ${
-        active
-          ? "bg-blue-600 text-white"
-          : "text-slate-300 hover:bg-slate-800"
+      className={`px-4 py-3 rounded-xl mb-2 font-semibold cursor-pointer ${
+        active ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-800"
       }`}
     >
       {label}
