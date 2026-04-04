@@ -169,7 +169,14 @@ export default function JourneyPage() {
 
             <div className="flex flex-col items-center gap-14 py-6">
               {nodes.map((node, index) => (
-                <div key={index} className="relative flex flex-col items-center">
+                <div
+                  key={index}
+                  className="relative flex flex-col items-center"
+                  style={{
+                    transform: `translateX(${Math.sin(index * 0.8) * 60}px)`,
+                    marginTop: index % 2 === 0 ? "0px" : "10px"
+                  }}
+                >
 
                   {node.state === "active" && (
                     <div className="mb-2 text-yellow-400 font-bold text-sm animate-pulse">
