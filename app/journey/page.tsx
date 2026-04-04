@@ -12,6 +12,27 @@ import { getIncorrectQuestions } from "@/lib/review"
 
 type NodeState = "complete" | "active" | "locked"
 
+function getNodeIcon(label: string) {
+  if (label.includes("1–3")) return "creation.png"
+  if (label.includes("4–6")) return "people.png"
+  if (label.includes("7–9")) return "flood.png"
+  if (label.includes("10–12")) return "tower.png"
+  if (label.includes("13–15")) return "promise.png"
+  if (label.includes("16–18")) return "covenant.png"
+  if (label.includes("19–21")) return "fire.png"
+  if (label.includes("22–24")) return "sacrifice.png"
+  if (label.includes("25–27")) return "twins.png"
+  if (label.includes("28–30")) return "ladder.png"
+  if (label.includes("31–33")) return "reunion.png"
+  if (label.includes("34–36")) return "conflict.png"
+  if (label.includes("37–39")) return "coat.png"
+  if (label.includes("40–42")) return "prison.png"
+  if (label.includes("43–46")) return "provision.png"
+  if (label.includes("47–50")) return "egypt.png"
+
+  return "globe.svg"
+}
+
 function generatePreviewSegments(bookName: string) {
   const segments = []
 
@@ -248,27 +269,31 @@ export default function JourneyPage() {
                       }
                     }}
                     className={`
-                      w-24 h-24 md:w-28 md:h-28 rounded-full
+                      w-28 h-28 md:w-36 md:h-36 rounded-full
                       flex items-center justify-center
                       border cursor-pointer
                       transition-all duration-200
-                      active:scale-95 hover:scale-105
+                      active:scale-95
                       shadow-lg
                       ${node.state === "locked"
                         ? "bg-gray-700 border-gray-600 opacity-40"
-                        : "bg-gradient-to-br from-[#1E2A44] to-[#0F172A]"}
+                        : "bg-gradient-to-br from-[#1E2A44] to-[#0F172A] hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]"}
                       ${node.state === "active"
-                        ? "border-yellow-400 shadow-[0_0_35px_rgba(255,200,0,0.9)] scale-110"
+                        ? "border-yellow-400 shadow-[0_0_45px_rgba(255,200,0,1)] scale-115"
                         : "border-gray-600"}
                     `}
                   >
-                    <Image
-                      src="/globe.svg"
-                      alt="node"
-                      width={40}
-                      height={40}
-                      className={node.state === "locked" ? "grayscale" : ""}
-                    />
+                    <div className="flex items-center justify-center p-3">
+                      <Image
+                        src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                        alt="node"
+                        width={64}
+                        height={64}
+                        className={`
+                          ${node.state === "locked" ? "grayscale opacity-50" : ""}
+                        `}
+                      />
+                    </div>
                   </div>
 
                   <div className="absolute w-20 h-4 bg-black/40 blur-md rounded-full top-full mt-2" />
