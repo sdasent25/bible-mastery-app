@@ -22,16 +22,14 @@ export default function DashboardPage() {
 
     const { data, error } = await supabase
       .from("profiles")
-      .select("xp")
+      .select("xp, streak")
       .eq("id", userRes.user.id)
       .single()
 
     if (!error && data) {
       setXp(data.xp || 0)
+      setStreak(data.streak || 0)
     }
-
-    const storedStreak = localStorage.getItem("streak") || 0
-    setStreak(Number(storedStreak))
 
     setLoading(false)
   }
