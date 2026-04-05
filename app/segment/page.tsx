@@ -43,13 +43,13 @@ export default function SegmentIntro() {
     <div className="min-h-screen bg-[#0B1220] text-white flex flex-col">
       <button
         onClick={() => router.push("/journey")}
-        className="absolute top-4 left-4 z-50 text-white text-2xl font-bold bg-black/40 px-3 py-1 rounded-lg backdrop-blur"
+        className="absolute top-4 left-4 z-50 text-white text-2xl bg-black/40 px-3 py-1 rounded-lg"
       >
         ✕
       </button>
 
-      <div className="w-full flex-1 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-md h-[70vh] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 pt-12">
+        <div className="relative w-full max-w-md h-[60vh] rounded-2xl overflow-hidden shadow-2xl">
           {segment === "genesis-1-3" ? (
             <video
               autoPlay
@@ -75,7 +75,7 @@ export default function SegmentIntro() {
             />
           )}
 
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
           <div className="absolute bottom-6 left-4 right-4 text-center">
             <h1 className="text-2xl font-bold mb-2">
@@ -86,26 +86,26 @@ export default function SegmentIntro() {
             </p>
           </div>
         </div>
-      </div>
 
-      <div className="p-4 space-y-3">
-        <a
-          href={`https://www.biblegateway.com/passage/?search=${segment.replace("-", "%20")}`}
-          target="_blank"
-          rel="noreferrer"
-          className="block w-full text-center bg-slate-800 hover:bg-slate-700 py-3 rounded-xl font-semibold"
-        >
-          Read Scripture
-        </a>
+        <div className="w-full max-w-md mt-6 space-y-3">
+          <a
+            href={`https://www.biblegateway.com/passage/?search=${segment.replace("-", "%20")}`}
+            target="_blank"
+            rel="noreferrer"
+            className="block w-full text-center bg-slate-800 hover:bg-slate-700 py-3 rounded-xl font-semibold"
+          >
+            Read Scripture
+          </a>
 
-        <button
-          onClick={() =>
-            router.push(`/quiz?program=${program}&segment=${segment}`)
-          }
-          className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg"
-        >
-          Continue →
-        </button>
+          <button
+            onClick={() =>
+              router.push(`/quiz?program=${program}&segment=${segment}`)
+            }
+            className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg"
+          >
+            Continue →
+          </button>
+        </div>
       </div>
     </div>
   )

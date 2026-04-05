@@ -440,12 +440,6 @@ export default function JourneyPage() {
                         </div>
                       )}
 
-                      {isActive && (
-                        <div className="absolute -right-10 top-1/2 -translate-y-1/2 animate-float-slow text-xl">
-                          🔥
-                        </div>
-                      )}
-
                       <div className="mt-3 text-center">
                         <div className="font-semibold text-white">
                           {node.label}
