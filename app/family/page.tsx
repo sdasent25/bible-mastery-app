@@ -117,7 +117,9 @@ export default function FamilyPage() {
   async function resendInvite(invite: FamilyInvite) {
     const inviteLink = `${window.location.origin}/family/join?token=${invite.token}`
 
-    alert(`Invite link:\n${inviteLink}`)
+    await navigator.clipboard.writeText(inviteLink)
+
+    alert("Invite link copied! Share it with the user.")
   }
 
   async function removeMember(userIdToRemove: string) {
