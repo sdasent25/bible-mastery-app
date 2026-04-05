@@ -81,7 +81,7 @@ export default function FlashcardsLearnPage() {
       return "Type the full verse"
     }
 
-    return words.map((word, i) =>
+    return words.map((word: string, i: number) =>
       hiddenIndices.includes(i) ? "_____" : word
     ).join(" ")
   }
@@ -94,8 +94,8 @@ export default function FlashcardsLearnPage() {
   function handleSubmit() {
     tapSound.current?.play().catch(() => {})
 
-    const correctWords = hiddenIndices.map(i => words[i])
-    const userWords = input.split(" ")
+    const correctWords = hiddenIndices.map((i: number) => words[i])
+    const userWords: string[] = input.split(" ")
 
     const correct = step === 2
       ? [normalize(card.verse_text)]
