@@ -105,18 +105,26 @@ export default function FamilyPage() {
 
     const inviteLink = `${window.location.origin}/family/join?token=${data.token}`
 
-    await fetch("/api/send-invite", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        inviteLink,
-        familyName: "Bible Athlete Family",
-        inviter: "A Family Member",
-      }),
-    })
+    try {
+      const res = await fetch("/api/send-invite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          inviteLink,
+          familyName: "Bible Athlete Family",
+          inviter: "A Family Member",
+        }),
+      })
+
+      const dataRes = await res.json()
+
+      console.log("API RESPONSE:", dataRes)
+    } catch (err) {
+      console.error("FETCH ERROR:", err)
+    }
 
     setEmail("")
     load()
