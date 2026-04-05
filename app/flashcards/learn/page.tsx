@@ -55,6 +55,7 @@ export default function FlashcardsLearnPage() {
   const [combo, setCombo] = useState(1)
   const [xpPop, setXpPop] = useState<string | null>(null)
   const [shake, setShake] = useState(false)
+  const [showEnd, setShowEnd] = useState(false)
 
   const tapSound = useRef<HTMLAudioElement | null>(null)
   const correctSound = useRef<HTMLAudioElement | null>(null)
@@ -188,7 +189,12 @@ export default function FlashcardsLearnPage() {
   }
 
   function nextCard() {
-    setIndex((prev) => (prev + 1) % flashcards.length)
+    if (index >= flashcards.length - 1) {
+      setShowEnd(true)
+      return
+    }
+
+    setIndex((prev) => prev + 1)
     setStep(0)
     setMascot("idle")
     setHiddenIndices([])
@@ -218,6 +224,9 @@ export default function FlashcardsLearnPage() {
         correctSound.current?.play().catch(() => undefined)
         setFeedback("correct")
         setMascot("happy")
+        if (streak >= 3) {
+          // slight scale boost handled via class
+        }
         const gainedXp = 1 * combo
         setXpPop(`+${gainedXp} XP`)
         setTimeout(() => setXpPop(null), 800)
@@ -225,6 +234,9 @@ export default function FlashcardsLearnPage() {
         setCombo((prev) => prev + 1)
         if (isFirstTry && combo >= 2) {
           setXpPop(`+${gainedXp} XP ✨`)
+        }
+        if (streak > 0 && streak % 3 === 0) {
+          setXpPop("+5 Bonus XP 🎉")
         }
         setHiddenIndices([])
 
@@ -258,11 +270,17 @@ export default function FlashcardsLearnPage() {
       correctSound.current?.play().catch(() => undefined)
       setFeedback("correct")
       setMascot("happy")
+      if (streak >= 3) {
+        // slight scale boost handled via class
+      }
       const gainedXp = 1 * combo
       setXpPop(combo >= 2 ? `+${gainedXp} XP ✨` : `+${gainedXp} XP`)
       setTimeout(() => setXpPop(null), 800)
       setStreak((prev) => prev + 1)
       setCombo((prev) => prev + 1)
+      if (streak > 0 && streak % 3 === 0) {
+        setXpPop("+5 Bonus XP 🎉")
+      }
 
       setTimeout(() => {
         setMascot("idle")
@@ -283,8 +301,46 @@ export default function FlashcardsLearnPage() {
     }
   }
 
+  if (showEnd) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center space-y-6">
+        <img
+          src="/flame-happy.png"
+          className="w-20 h-20 animate-float"
+          alt="happy flame mascot"
+        />
+
+        <h2 className="text-2xl font-bold text-white">
+          You're on a roll 🔥
+        </h2>
+
+        <p className="text-white/80">
+          Want to do one more?
+        </p>
+
+        <button
+          onClick={() => {
+            setShowEnd(false)
+            setIndex(0)
+            setStep(0)
+          }}
+          className="w-full max-w-xs bg-blue-600 py-4 rounded-xl font-semibold"
+        >
+          Keep Going
+        </button>
+
+        <button
+          onClick={() => router.push("/flashcards")}
+          className="w-full max-w-xs bg-neutral-700 py-4 rounded-xl font-semibold"
+        >
+          Back to Flashcards
+        </button>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col border-t border-blue-500/20">
       <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
         <button
           onClick={() => router.push("/flashcards")}
@@ -315,9 +371,15 @@ export default function FlashcardsLearnPage() {
                   ? "/flame-happy.png"
                   : "/flame-sad.png"
               }
-              className="w-20 h-20 object-contain animate-float transition-all duration-300"
+              className={`w-20 h-20 object-contain animate-float transition-all duration-300 ${
+                mascot === "happy" && streak >= 3 ? "scale-110" : ""
+              }`}
               alt="mascot"
             />
+          </div>
+
+          <div className="text-center text-orange-400 font-semibold">
+            🔥 {streak} streak
           </div>
 
           <h1 className="text-2xl font-bold text-white text-center">
@@ -339,11 +401,6 @@ export default function FlashcardsLearnPage() {
             {combo > 1 && (
               <span className="rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-yellow-300">
                 Combo x{combo}
-              </span>
-            )}
-            {streak > 1 && (
-              <span className="rounded-full border border-green-500/40 bg-green-500/10 px-2 py-0.5 text-green-300">
-                {streak} streak
               </span>
             )}
           </div>
@@ -411,7 +468,7 @@ export default function FlashcardsLearnPage() {
 
           <button
             onClick={handleSubmit}
-            className={`w-full py-4 rounded-xl font-semibold transition-all duration-150 active:scale-95 ${
+            className={`w-full py-4 rounded-xl font-semibold transition hover:brightness-110 duration-150 active:scale-95 ${
               feedback === "correct"
                 ? "bg-green-600"
                 : feedback === "wrong"
