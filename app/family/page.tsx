@@ -11,12 +11,16 @@ type FamilyMember = {
 type FamilyInvite = {
   id: string
   email: string
+  family_id: string
+  accepted_at?: string | null
+  status?: string | null
 }
 
 export default function FamilyPage() {
   const [members, setMembers] = useState<FamilyMember[]>([])
   const [removedMembers, setRemovedMembers] = useState<FamilyMember[]>([])
   const [invites, setInvites] = useState<FamilyInvite[]>([])
+  const [myInvites, setMyInvites] = useState<FamilyInvite[]>([])
   const [email, setEmail] = useState("")
   const [familyId, setFamilyId] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
@@ -27,6 +31,18 @@ export default function FamilyPage() {
     if (!userRes?.user) return
 
     const userId = userRes.user.id
+    const email = userRes.user.email
+    if (!email) {
+      setMyInvites([])
+    } else {
+      const { data: myInvitesData } = await supabase
+        .from("family_invites")
+        .select("*")
+        .eq("email", email)
+        .is("accepted_at", null)
+
+      setMyInvites((myInvitesData || []) as FamilyInvite[])
+    }
 
     const { data: memberships } = await supabase
       .from("family_members")
@@ -104,6 +120,37 @@ export default function FamilyPage() {
     load()
   }
 
+  async function acceptInvite(invite: FamilyInvite) {
+    const { data: userRes } = await supabase.auth.getUser()
+    if (!userRes?.user) return
+
+    const userId = userRes.user.id
+
+    const { data: existingMemberships } = await supabase
+      .from("family_members")
+      .select("user_id")
+      .eq("user_id", userId)
+      .eq("family_id", invite.family_id)
+
+    if (!existingMemberships || existingMemberships.length === 0) {
+      await supabase.from("family_members").insert({
+        family_id: invite.family_id,
+        user_id: userId,
+        role: "member",
+      })
+    }
+
+    await supabase
+      .from("family_invites")
+      .update({
+        status: "accepted",
+        accepted_at: new Date().toISOString(),
+      })
+      .eq("id", invite.id)
+
+    load()
+  }
+
   if (noFamily) {
     return (
       <div className="max-w-xl mx-auto space-y-6">
@@ -123,6 +170,30 @@ export default function FamilyPage() {
 
   return (
     <div className="max-w-xl mx-auto space-y-6">
+      {myInvites.length > 0 && (
+        <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
+          <h2 className="text-white font-semibold">
+            Invites For You
+          </h2>
+
+          {myInvites.map((invite) => (
+            <div
+              key={invite.id}
+              className="flex justify-between items-center text-white/80"
+            >
+              <span>Family Invite</span>
+
+              <button
+                onClick={() => acceptInvite(invite)}
+                className="bg-blue-600 px-4 py-2 rounded-xl text-sm"
+              >
+                Accept
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold text-white text-center">
         Family
       </h1>
