@@ -105,24 +105,33 @@ export default function FamilyPage() {
         Family
       </h1>
 
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 flex justify-between">
+        <div>
+          <p className="text-sm text-white/60">Members</p>
+          <p className="text-xl font-bold text-white">{members.length}</p>
+        </div>
+
+        <div>
+          <p className="text-sm text-white/60">Family XP</p>
+          <p className="text-xl font-bold text-white">
+            {members.length * 100} XP
+          </p>
+        </div>
+      </div>
+
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
-        <h2 className="text-white font-semibold">Members</h2>
+        <h2 className="text-white font-semibold">Leaderboard</h2>
 
         {members.map((member, i) => (
           <div
             key={member.user_id}
             className="flex justify-between items-center text-white/80"
           >
-            <span>Member {i + 1}</span>
+            <span>
+              {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`} Member {i + 1}
+            </span>
 
-            {isOwner && i !== 0 && (
-              <button
-                onClick={() => removeMember(member.user_id)}
-                className="text-red-400 text-sm"
-              >
-                Remove
-              </button>
-            )}
+            <span>{100 * (members.length - i)} XP</span>
           </div>
         ))}
       </div>
@@ -150,9 +159,40 @@ export default function FamilyPage() {
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
         <h2 className="text-white font-semibold">Pending Invites</h2>
 
+        {invites.length === 0 && (
+          <p className="text-white/60 text-sm">No pending invites</p>
+        )}
+
         {invites.map((invite) => (
-          <div key={invite.id} className="text-white/70 text-sm">
-            {invite.email}
+          <div key={invite.id} className="flex justify-between text-white/70 text-sm">
+            <span>{invite.email}</span>
+            <span className="text-yellow-400">Pending</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
+        <h2 className="text-white font-semibold">Members</h2>
+
+        {members.map((member, i) => (
+          <div
+            key={member.user_id}
+            className="flex justify-between items-center text-white/80"
+          >
+            <span>Member {i + 1}</span>
+
+            {isOwner && i !== 0 && (
+              <button
+                onClick={() => {
+                  if (confirm("Remove this member?")) {
+                    removeMember(member.user_id)
+                  }
+                }}
+                className="text-red-400 text-sm"
+              >
+                Remove
+              </button>
+            )}
           </div>
         ))}
       </div>
