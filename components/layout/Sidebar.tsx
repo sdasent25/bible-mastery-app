@@ -98,12 +98,11 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
       <div className="flex-1 space-y-4">
         <h1 className="text-xl font-bold">Bible Athlete</h1>
 
-        <div className="space-y-1">
-          {navItem("Journey", "/journey")}
-          {navItem("Training", "/flashcards")}
-          {navItem("Review", "/review")}
-          {navItem("Programs", "/programs")}
-          {navItem("Dashboard", "/dashboard")}
+        <div className="space-y-2">
+          {navItem("🏠 Dashboard", "/dashboard")}
+          {navItem("📖 Journey", "/journey")}
+          {navItem("🧠 Flashcards", "/flashcards")}
+          {navItem("🏆 Leaderboard", "/leaderboard")}
         </div>
 
         <div className="pt-4 space-y-2">
