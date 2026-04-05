@@ -5,8 +5,10 @@ import { createFlashcard } from "@/lib/flashcards"
 
 export default function CreateFlashcard({
   onCreated,
+  messages,
 }: {
   onCreated: () => void | Promise<void>
+  messages: Record<string, string>
 }) {
   const [verse, setVerse] = useState("")
   const [reference, setReference] = useState("")
@@ -39,14 +41,14 @@ export default function CreateFlashcard({
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <textarea
-        placeholder="Enter verse text..."
+        placeholder={messages.enter_verse}
         value={verse}
         onChange={(e) => setVerse(e.target.value)}
         className="w-full p-3 rounded-lg bg-neutral-900 text-white border border-neutral-700 focus:outline-none"
       />
 
       <input
-        placeholder="Reference (John 3:16)"
+        placeholder={messages.reference}
         value={reference}
         onChange={(e) => setReference(e.target.value)}
         className="w-full p-3 rounded-lg bg-neutral-900 text-white border border-neutral-700 focus:outline-none"
@@ -56,7 +58,7 @@ export default function CreateFlashcard({
         className="w-full bg-green-600 hover:bg-green-500 transition py-3 rounded-lg font-semibold"
         disabled={loading}
       >
-        {loading ? "Saving..." : "Add Flashcard"}
+        {loading ? messages.saving : messages.add_flashcard}
       </button>
     </form>
   )

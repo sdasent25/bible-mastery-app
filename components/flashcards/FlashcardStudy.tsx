@@ -5,8 +5,10 @@ import { updateFlashcardStatus } from "@/lib/flashcards"
 
 export default function FlashcardStudy({
   flashcards,
+  messages,
 }: {
   flashcards: Array<{ id: string; reference: string; verse_text: string }>
+  messages: Record<string, string>
 }) {
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
@@ -27,7 +29,7 @@ export default function FlashcardStudy({
   if (!flashcards.length) {
     return (
       <div className="text-center text-gray-400">
-        No flashcards yet
+        {messages.no_flashcards}
       </div>
     )
   }
@@ -54,7 +56,7 @@ export default function FlashcardStudy({
   return (
     <div className="space-y-4">
       <div className="text-sm text-gray-400 text-center">
-        {index + 1} / {flashcards.length}
+        {messages.progress}: {index + 1} / {flashcards.length}
       </div>
 
       <div
@@ -70,23 +72,23 @@ export default function FlashcardStudy({
         <div className="grid grid-cols-3 gap-2">
           <button
             onClick={() => handleAnswer("again")}
-            className="bg-red-600 py-3 rounded-xl font-semibold active:scale-95"
+            className="bg-red-500 py-3 rounded-xl font-semibold active:scale-95"
           >
-            Again
+            {messages.didnt_know}
           </button>
 
           <button
             onClick={() => handleAnswer("hard")}
-            className="bg-yellow-500 py-3 rounded-xl font-semibold active:scale-95"
+            className="bg-amber-500 py-3 rounded-xl font-semibold active:scale-95 text-black"
           >
-            Hard
+            {messages.almost}
           </button>
 
           <button
             onClick={() => handleAnswer("easy")}
-            className="bg-green-600 py-3 rounded-xl font-semibold active:scale-95"
+            className="bg-blue-600 py-3 rounded-xl font-semibold active:scale-95"
           >
-            Easy
+            {messages.got_it}
           </button>
         </div>
       )}

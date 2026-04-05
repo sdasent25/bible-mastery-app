@@ -5,6 +5,8 @@ import "./globals.css";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import { getLocale, getMessages } from "@/lib/i18n";
+import LanguageToggle from "@/components/LanguageToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +35,7 @@ function SoundToggle() {
   return (
     <button
       onClick={toggle}
-      className="fixed top-4 right-4 z-50 bg-black/40 text-white px-3 py-2 rounded-lg backdrop-blur"
+      className="bg-black/40 text-white px-3 py-2 rounded-lg backdrop-blur"
     >
       {enabled ? "🔊" : "🔇"}
     </button>
@@ -46,6 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [locale, setLocale] = useState("en");
   const router = useRouter();
   const pathname = usePathname();
 
@@ -83,11 +86,18 @@ export default function RootLayout({
     });
   }, []);
 
+  useEffect(() => {
+    const nextLocale = getLocale();
+    setLocale(nextLocale);
+    document.documentElement.lang = nextLocale;
+    void getMessages(nextLocale);
+  }, []);
+
   // Show loading state while checking authentication
   if (isAuthenticated === null) {
     return (
       <html
-        lang="en"
+        lang={locale}
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col items-center justify-center">
@@ -99,11 +109,14 @@ export default function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SoundToggle />
+        <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
+          <LanguageToggle />
+          <SoundToggle />
+        </div>
         {children}
         <footer className="text-sm text-gray-600 mt-10 pb-6 text-center">
           <p>
