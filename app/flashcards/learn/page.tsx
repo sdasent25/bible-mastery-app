@@ -82,6 +82,11 @@ export default function FlashcardsLearnPage() {
     return getEligibleIndices(tokens)
   }, [tokens])
 
+  const totalSteps = useMemo(() => {
+    if (!tokens.length) return 3
+    return tokens.length > 20 ? 4 : 3
+  }, [tokens])
+
   useEffect(() => {
     if (!card || tokens.length === 0) return
 
@@ -90,10 +95,9 @@ export default function FlashcardsLearnPage() {
     if (step === 0) {
       nextHidden = getRandomIndices(eligibleIndices, 2)
     } else if (step === 1) {
-      nextHidden = getRandomIndices(
-        eligibleIndices,
-        Math.max(2, Math.ceil(eligibleIndices.length / 2))
-      )
+      nextHidden = getRandomIndices(eligibleIndices, 4)
+    } else if (step === 2 && totalSteps === 4) {
+      nextHidden = getRandomIndices(eligibleIndices, 6)
     } else {
       nextHidden = []
     }
@@ -103,7 +107,7 @@ export default function FlashcardsLearnPage() {
     setInputStatus(new Array(nextHidden.length).fill(null))
     setFullVerseInput("")
     setFeedback(null)
-  }, [card, step, eligibleIndices, tokens.length])
+  }, [card, step, eligibleIndices, tokens.length, totalSteps])
 
   if (!flashcards.length) {
     return (
@@ -129,7 +133,7 @@ export default function FlashcardsLearnPage() {
   }
 
   function renderPrompt() {
-    if (step === 2) {
+    if (step === totalSteps - 1) {
       return (
         <div className="p-6 rounded-2xl bg-neutral-900 text-white text-center border border-neutral-700 min-h-[160px] flex items-center justify-center text-lg leading-relaxed">
           Type the full verse from memory
@@ -193,7 +197,7 @@ export default function FlashcardsLearnPage() {
   function handleSubmit() {
     tapSound.current?.play().catch(() => undefined)
 
-    if (step < 2) {
+    if (step < totalSteps - 1) {
       const correctAnswers = hiddenIndices.map((hiddenIndex) => tokens[hiddenIndex]?.clean || "")
       const userAnswers = inputs.map((value) => normalizeWord(value))
 
@@ -209,15 +213,18 @@ export default function FlashcardsLearnPage() {
         correctSound.current?.play().catch(() => undefined)
         setFeedback("correct")
         setMascot("happy")
+        setHiddenIndices([])
 
         setTimeout(() => {
           setMascot("idle")
           setFeedback(null)
-          if (step < 2) {
+          if (step < totalSteps - 1) {
             setStep((prev) => prev + 1)
             setInputStatus([])
+          } else {
+            nextCard()
           }
-        }, 800)
+        }, 700)
       } else {
         wrongSound.current?.play().catch(() => undefined)
         setFeedback("wrong")
@@ -292,9 +299,13 @@ export default function FlashcardsLearnPage() {
           Fill in the missing parts of the verse
         </p>
 
+        <div className="text-center text-white/70 text-sm">
+          Step {step + 1} of {totalSteps}
+        </div>
+
         {renderPrompt()}
 
-        {step < 2 ? (
+        {step < totalSteps - 1 ? (
           <>
             <p className="text-center text-white/70 text-sm">
               Enter each missing word below
@@ -338,7 +349,7 @@ export default function FlashcardsLearnPage() {
           </div>
         )}
 
-        {step === 2 && (
+        {step === totalSteps - 1 && (
           <p className="text-center text-white/70 text-sm">
             Type the full verse as accurately as you can
           </p>
@@ -348,7 +359,7 @@ export default function FlashcardsLearnPage() {
           onClick={handleSubmit}
           className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
         >
-          Submit
+          Check Answer
         </button>
       </div>
     </div>
