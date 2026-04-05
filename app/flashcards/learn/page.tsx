@@ -291,6 +291,10 @@ export default function FlashcardsLearnPage() {
           Active Recall
         </h1>
 
+        <p className="text-center text-white/80 text-sm font-medium">
+          {card.reference}
+        </p>
+
         <p className="text-center text-white/80 text-sm">
           Fill in the missing parts of the verse
         </p>
