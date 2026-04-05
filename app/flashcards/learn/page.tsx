@@ -48,6 +48,7 @@ export default function FlashcardsLearnPage() {
   const [mascot, setMascot] = useState<"idle" | "happy" | "sad">("idle")
   const [hiddenIndices, setHiddenIndices] = useState<number[]>([])
   const [inputs, setInputs] = useState<string[]>([])
+  const [inputStatus, setInputStatus] = useState<("correct" | "wrong" | null)[]>([])
   const [fullVerseInput, setFullVerseInput] = useState("")
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null)
 
@@ -99,6 +100,7 @@ export default function FlashcardsLearnPage() {
 
     setHiddenIndices(nextHidden)
     setInputs(new Array(nextHidden.length).fill(""))
+    setInputStatus(new Array(nextHidden.length).fill(null))
     setFullVerseInput("")
     setFeedback(null)
   }, [card, step, eligibleIndices, tokens.length])
@@ -183,6 +185,7 @@ export default function FlashcardsLearnPage() {
     setMascot("idle")
     setHiddenIndices([])
     setInputs([])
+    setInputStatus([])
     setFullVerseInput("")
     setFeedback(null)
   }
@@ -194,9 +197,13 @@ export default function FlashcardsLearnPage() {
       const correctAnswers = hiddenIndices.map((hiddenIndex) => tokens[hiddenIndex]?.clean || "")
       const userAnswers = inputs.map((value) => normalizeWord(value))
 
-      const isCorrect =
-        correctAnswers.length === userAnswers.length &&
-        correctAnswers.every((answer, i) => userAnswers[i] === answer)
+      const statusArray = correctAnswers.map((answer, i) =>
+        userAnswers[i] === answer ? "correct" : "wrong"
+      )
+
+      setInputStatus(statusArray)
+
+      const isCorrect = statusArray.every((status) => status === "correct")
 
       if (isCorrect) {
         correctSound.current?.play().catch(() => undefined)
@@ -208,6 +215,7 @@ export default function FlashcardsLearnPage() {
           setFeedback(null)
           if (step < 2) {
             setStep((prev) => prev + 1)
+            setInputStatus([])
           }
         }, 800)
       } else {
@@ -299,7 +307,12 @@ export default function FlashcardsLearnPage() {
                   value={value}
                   onChange={(e) => handleInputChange(e.target.value, inputIndex)}
                   placeholder={`Word ${inputIndex + 1}`}
-                  className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base min-h-[52px]"
+                  className={`
+                    w-full p-4 rounded-xl bg-neutral-900 text-white text-base min-h-[52px] border
+                    ${inputStatus[inputIndex] === "correct" ? "border-green-500" : ""}
+                    ${inputStatus[inputIndex] === "wrong" ? "border-red-500" : "border-neutral-700"}
+                    focus:outline-none focus:border-blue-500
+                  `}
                 />
               ))}
             </div>
