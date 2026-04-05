@@ -12,6 +12,7 @@ type FamilyInvite = {
   id: string
   email: string
   family_id: string
+  token?: string | null
   accepted_at?: string | null
   status?: string | null
 }
@@ -87,10 +88,18 @@ export default function FamilyPage() {
   async function sendInvite() {
     if (!email || !familyId) return
 
-    await supabase.from("family_invites").insert({
-      family_id: familyId,
-      email,
-    })
+    const { data } = await supabase
+      .from("family_invites")
+      .insert({
+        family_id: familyId,
+        email,
+      })
+      .select()
+      .single()
+
+    const inviteLink = `${window.location.origin}/family/join?token=${data.token}`
+
+    alert(`Invite link:\n${inviteLink}`)
 
     setEmail("")
     load()

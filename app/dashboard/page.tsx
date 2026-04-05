@@ -48,6 +48,18 @@ export default function DashboardPage() {
         Dashboard
       </h1>
 
+      <div
+        onClick={() => router.push("/flashcards/learn")}
+        className="bg-blue-600 hover:bg-blue-500 transition rounded-2xl p-6 cursor-pointer text-center"
+      >
+        <h2 className="text-xl font-semibold text-white">
+          Start Daily Training
+        </h2>
+        <p className="text-sm text-white/90 mt-1">
+          Build your memory and keep your streak alive 🔥
+        </p>
+      </div>
+
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 flex justify-between items-center">
         <div>
           <p className="text-sm text-white/70">Total XP</p>

@@ -240,7 +240,7 @@ export default function FlashcardsLearnPage() {
         }
         const gainedXp = 1 * combo
         setXpPop(`+${gainedXp} XP`)
-        setTimeout(() => setXpPop(null), 800)
+        setTimeout(() => setXpPop(null), 600)
         setStreak((prev) => prev + 1)
         setCombo((prev) => prev + 1)
         if (isFirstTry && combo >= 2) {
@@ -256,7 +256,7 @@ export default function FlashcardsLearnPage() {
           setFeedback(null)
           setInputStatus([])
           setStep((prev) => prev + 1)
-        }, 700)
+        }, 500)
       } else {
         wrongSound.current?.play().catch(() => undefined)
         setFeedback("wrong")
@@ -268,7 +268,7 @@ export default function FlashcardsLearnPage() {
 
         setTimeout(() => {
           setMascot("idle")
-        }, 800)
+        }, 600)
       }
 
       return
@@ -296,7 +296,7 @@ export default function FlashcardsLearnPage() {
       }
       const gainedXp = 1 * combo
       setXpPop(combo >= 2 ? `+${gainedXp} XP ✨` : `+${gainedXp} XP`)
-      setTimeout(() => setXpPop(null), 800)
+      setTimeout(() => setXpPop(null), 600)
       setStreak((prev) => prev + 1)
       setCombo((prev) => prev + 1)
       if (streak > 0 && streak % 3 === 0) {
@@ -306,7 +306,7 @@ export default function FlashcardsLearnPage() {
       setTimeout(() => {
         setMascot("idle")
         nextCard()
-      }, 800)
+      }, 600)
     } else {
       wrongSound.current?.play().catch(() => undefined)
       setFeedback("wrong")
@@ -318,7 +318,7 @@ export default function FlashcardsLearnPage() {
 
       setTimeout(() => {
         setMascot("idle")
-      }, 800)
+      }, 600)
     }
   }
 
@@ -332,11 +332,11 @@ export default function FlashcardsLearnPage() {
         />
 
         <h2 className="text-2xl font-bold text-white">
-          You're on a roll 🔥
+          You’re on a roll 🔥
         </h2>
 
         <p className="text-white/80">
-          Want to do one more?
+          Want to keep going?
         </p>
 
         <button
@@ -347,14 +347,14 @@ export default function FlashcardsLearnPage() {
           }}
           className="w-full max-w-xs bg-blue-600 py-4 rounded-xl font-semibold"
         >
-          Keep Going
+          Continue Training
         </button>
 
         <button
-          onClick={() => router.push("/flashcards")}
+          onClick={() => router.push("/dashboard")}
           className="w-full max-w-xs bg-neutral-700 py-4 rounded-xl font-semibold"
         >
-          Back to Flashcards
+          Back to Dashboard
         </button>
       </div>
     )
