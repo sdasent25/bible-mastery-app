@@ -45,6 +45,7 @@ export default function FlashcardsLearnPage() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
   const [step, setStep] = useState(0)
+  const [mascot, setMascot] = useState<"idle" | "happy" | "sad">("idle")
   const [hiddenIndices, setHiddenIndices] = useState<number[]>([])
   const [inputs, setInputs] = useState<string[]>([])
   const [fullVerseInput, setFullVerseInput] = useState("")
@@ -175,6 +176,7 @@ export default function FlashcardsLearnPage() {
   function nextCard() {
     setIndex((prev) => (prev + 1) % flashcards.length)
     setStep(0)
+    setMascot("idle")
     setHiddenIndices([])
     setInputs([])
     setFullVerseInput("")
@@ -195,8 +197,10 @@ export default function FlashcardsLearnPage() {
       if (isCorrect) {
         correctSound.current?.play().catch(() => undefined)
         setFeedback("correct")
+        setMascot("happy")
 
         setTimeout(() => {
+          setMascot("idle")
           setFeedback(null)
           if (step < 2) {
             setStep((prev) => prev + 1)
@@ -205,6 +209,11 @@ export default function FlashcardsLearnPage() {
       } else {
         wrongSound.current?.play().catch(() => undefined)
         setFeedback("wrong")
+        setMascot("sad")
+
+        setTimeout(() => {
+          setMascot("idle")
+        }, 800)
       }
 
       return
@@ -216,13 +225,20 @@ export default function FlashcardsLearnPage() {
     if (isFullVerseCorrect) {
       correctSound.current?.play().catch(() => undefined)
       setFeedback("correct")
+      setMascot("happy")
 
       setTimeout(() => {
+        setMascot("idle")
         nextCard()
       }, 800)
     } else {
       wrongSound.current?.play().catch(() => undefined)
       setFeedback("wrong")
+      setMascot("sad")
+
+      setTimeout(() => {
+        setMascot("idle")
+      }, 800)
     }
   }
 
@@ -242,6 +258,20 @@ export default function FlashcardsLearnPage() {
       </div>
 
       <div className="flex-1 px-4 py-6 max-w-xl mx-auto w-full space-y-6">
+        <div className="flex justify-center">
+          <img
+            src={
+              mascot === "idle"
+                ? "/flame-idle.png"
+                : mascot === "happy"
+                ? "/flame-happy.png"
+                : "/flame-sad.png"
+            }
+            className="w-16 h-16 object-contain animate-float transition-all duration-300"
+            alt="mascot"
+          />
+        </div>
+
         <h1 className="text-2xl font-bold text-white text-center">
           Active Recall
         </h1>
