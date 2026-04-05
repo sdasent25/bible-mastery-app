@@ -233,22 +233,6 @@ export default function JourneyPage() {
 
   return (
     <div className="min-h-screen bg-[#0B1220] text-white flex relative">
-
-      {/* LEFT NAV */}
-      <aside className="hidden lg:flex w-72 flex-col p-6 border-r border-white/10">
-
-        <h2 className="text-xl font-bold mb-6">Bible Athlete</h2>
-
-        <NavItem label="Journey" active />
-        <NavItem label="Training" />
-        <NavItem label="Review" />
-        <NavItem label="Programs" />
-        <NavItem label="Dashboard" />
-
-        {/* BOOK SELECTOR */}
-        {renderSections}
-      </aside>
-
       {/* MAIN */}
       <div className="flex-1 px-4 md:px-8 py-6">
         <div className="flex justify-center mb-8">
