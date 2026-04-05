@@ -51,6 +51,10 @@ export default function FlashcardsLearnPage() {
   const [inputStatus, setInputStatus] = useState<("correct" | "wrong" | null)[]>([])
   const [fullVerseInput, setFullVerseInput] = useState("")
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null)
+  const [streak, setStreak] = useState(0)
+  const [combo, setCombo] = useState(1)
+  const [xpPop, setXpPop] = useState<string | null>(null)
+  const [shake, setShake] = useState(false)
 
   const tapSound = useRef<HTMLAudioElement | null>(null)
   const correctSound = useRef<HTMLAudioElement | null>(null)
@@ -200,6 +204,7 @@ export default function FlashcardsLearnPage() {
     if (step < totalSteps - 1) {
       const correctAnswers = hiddenIndices.map((hiddenIndex) => tokens[hiddenIndex]?.clean || "")
       const userAnswers = inputs.map((value) => normalizeWord(value))
+      const isFirstTry = inputStatus.every((status) => status === null)
 
       const statusArray = correctAnswers.map((answer, i) =>
         userAnswers[i] === answer ? "correct" : "wrong"
@@ -213,6 +218,14 @@ export default function FlashcardsLearnPage() {
         correctSound.current?.play().catch(() => undefined)
         setFeedback("correct")
         setMascot("happy")
+        const gainedXp = 1 * combo
+        setXpPop(`+${gainedXp} XP`)
+        setTimeout(() => setXpPop(null), 800)
+        setStreak((prev) => prev + 1)
+        setCombo((prev) => prev + 1)
+        if (isFirstTry && combo >= 2) {
+          setXpPop(`+${gainedXp} XP ✨`)
+        }
         setHiddenIndices([])
 
         setTimeout(() => {
@@ -225,6 +238,10 @@ export default function FlashcardsLearnPage() {
         wrongSound.current?.play().catch(() => undefined)
         setFeedback("wrong")
         setMascot("sad")
+        setShake(true)
+        setTimeout(() => setShake(false), 300)
+        setCombo(1)
+        setStreak(0)
 
         setTimeout(() => {
           setMascot("idle")
@@ -241,6 +258,11 @@ export default function FlashcardsLearnPage() {
       correctSound.current?.play().catch(() => undefined)
       setFeedback("correct")
       setMascot("happy")
+      const gainedXp = 1 * combo
+      setXpPop(combo >= 2 ? `+${gainedXp} XP ✨` : `+${gainedXp} XP`)
+      setTimeout(() => setXpPop(null), 800)
+      setStreak((prev) => prev + 1)
+      setCombo((prev) => prev + 1)
 
       setTimeout(() => {
         setMascot("idle")
@@ -250,6 +272,10 @@ export default function FlashcardsLearnPage() {
       wrongSound.current?.play().catch(() => undefined)
       setFeedback("wrong")
       setMascot("sad")
+      setShake(true)
+      setTimeout(() => setShake(false), 300)
+      setCombo(1)
+      setStreak(0)
 
       setTimeout(() => {
         setMascot("idle")
@@ -272,95 +298,130 @@ export default function FlashcardsLearnPage() {
         </div>
       </div>
 
-      <div className="flex-1 px-4 py-4 max-w-xl mx-auto w-full space-y-5">
-        <div className="flex justify-center mt-2 mb-2">
-          <img
-            src={
-              mascot === "idle"
-                ? "/flame-idle.png"
-                : mascot === "happy"
-                ? "/flame-happy.png"
-                : "/flame-sad.png"
-            }
-            className="w-20 h-20 object-contain animate-float transition-all duration-300"
-            alt="mascot"
-          />
-        </div>
-
-        <h1 className="text-2xl font-bold text-white text-center">
-          Active Recall
-        </h1>
-
-        <p className="text-center text-white/80 text-sm font-medium">
-          {card.reference}
-        </p>
-
-        <p className="text-center text-white/80 text-sm">
-          Fill in the missing parts of the verse
-        </p>
-
-        <div className="text-center text-white/70 text-sm">
-          Step {step + 1} of {totalSteps}
-        </div>
-
-        {renderPrompt()}
-
-        {step < totalSteps - 1 ? (
-          <>
-            <p className="text-center text-white/70 text-sm">
-              Enter each missing word below
-            </p>
-
-            <div className={`grid gap-3 ${inputs.length === 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
-              {inputs.map((value, inputIndex) => (
-                <input
-                  key={`input-${inputIndex}`}
-                  value={value}
-                  onChange={(e) => handleInputChange(e.target.value, inputIndex)}
-                  placeholder={`Word ${inputIndex + 1}`}
-                  className={`
-                    w-full p-4 rounded-xl bg-neutral-900 text-white text-base min-h-[52px] border
-                    ${inputStatus[inputIndex] === "correct" ? "border-green-500" : ""}
-                    ${inputStatus[inputIndex] === "wrong" ? "border-red-500" : "border-neutral-700"}
-                    focus:outline-none focus:border-blue-500
-                  `}
-                />
-              ))}
-            </div>
-          </>
-        ) : (
-          <textarea
-            value={fullVerseInput}
-            onChange={(e) => setFullVerseInput(e.target.value)}
-            placeholder="Type the full verse..."
-            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base min-h-[140px]"
-          />
-        )}
-
-        {feedback === "correct" && (
-          <div className="text-green-400 text-center font-semibold">
-            Correct ✅
+      <div className="flex-1 px-4 py-4 max-w-xl mx-auto w-full relative">
+        {xpPop && (
+          <div className="absolute top-20 left-1/2 -translate-x-1/2 text-yellow-400 text-xl font-bold animate-bounce z-10 pointer-events-none">
+            {xpPop}
           </div>
         )}
 
-        {feedback === "wrong" && (
-          <div className="text-red-400 text-center font-semibold">
-            Try again
+        <div key={`${card.id}-${step}`} className="transition-all duration-300 animate-fade-in space-y-5">
+          <div className="flex justify-center mt-2 mb-2">
+            <img
+              src={
+                mascot === "idle"
+                  ? "/flame-idle.png"
+                  : mascot === "happy"
+                  ? "/flame-happy.png"
+                  : "/flame-sad.png"
+              }
+              className="w-20 h-20 object-contain animate-float transition-all duration-300"
+              alt="mascot"
+            />
           </div>
-        )}
 
-        {step === totalSteps - 1 && (
-          <p className="text-center text-white/70 text-sm">
-            Type the full verse as accurately as you can
+          <h1 className="text-2xl font-bold text-white text-center">
+            Active Recall
+          </h1>
+
+          <p className="text-center text-white/80 text-sm font-medium">
+            {card.reference}
           </p>
-        )}
 
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
-        >
-          Check Answer
-        </button>
+          <p className="text-center text-white/80 text-sm">
+            Fill in the missing parts of the verse
+          </p>
+
+          <div className="flex items-center justify-center gap-3 text-sm">
+            <span className="text-white/70">
+              Step {step + 1} of {totalSteps}
+            </span>
+            {combo > 1 && (
+              <span className="rounded-full border border-yellow-500/40 bg-yellow-500/10 px-2 py-0.5 text-yellow-300">
+                Combo x{combo}
+              </span>
+            )}
+            {streak > 1 && (
+              <span className="rounded-full border border-green-500/40 bg-green-500/10 px-2 py-0.5 text-green-300">
+                {streak} streak
+              </span>
+            )}
+          </div>
+
+          <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all duration-300"
+              style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
+            />
+          </div>
+
+          <div className={shake ? "animate-shake" : ""}>
+            {renderPrompt()}
+          </div>
+
+          {step < totalSteps - 1 ? (
+            <>
+              <p className="text-center text-white/70 text-sm">
+                Enter each missing word below
+              </p>
+
+              <div className={`grid gap-3 ${inputs.length === 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
+                {inputs.map((value, inputIndex) => (
+                  <input
+                    key={`input-${inputIndex}`}
+                    value={value}
+                    onChange={(e) => handleInputChange(e.target.value, inputIndex)}
+                    placeholder={`Word ${inputIndex + 1}`}
+                    className={`
+                      w-full p-4 rounded-xl bg-neutral-900 text-white text-base min-h-[52px] border
+                      ${inputStatus[inputIndex] === "correct" ? "border-green-500" : ""}
+                      ${inputStatus[inputIndex] === "wrong" ? "border-red-500" : "border-neutral-700"}
+                      focus:outline-none focus:border-blue-500
+                    `}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <textarea
+              value={fullVerseInput}
+              onChange={(e) => setFullVerseInput(e.target.value)}
+              placeholder="Type the full verse..."
+              className={`w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base min-h-[140px] ${shake ? "animate-shake" : ""}`}
+            />
+          )}
+
+          {feedback === "correct" && (
+            <div className="text-green-400 text-center font-semibold">
+              Correct ✅
+            </div>
+          )}
+
+          {feedback === "wrong" && (
+            <div className="text-red-400 text-center font-semibold">
+              Try again
+            </div>
+          )}
+
+          {step === totalSteps - 1 && (
+            <p className="text-center text-white/70 text-sm">
+              Type the full verse as accurately as you can
+            </p>
+          )}
+
+          <button
+            onClick={handleSubmit}
+            className={`w-full py-4 rounded-xl font-semibold transition-all duration-150 active:scale-95 ${
+              feedback === "correct"
+                ? "bg-green-600"
+                : feedback === "wrong"
+                ? "bg-red-600"
+                : "bg-blue-600"
+            }`}
+          >
+            Check Answer
+          </button>
+        </div>
       </div>
     </div>
   )
