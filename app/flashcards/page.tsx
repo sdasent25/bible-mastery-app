@@ -1,53 +1,38 @@
-'use client'
+"use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react"
+import { getFlashcards } from "@/lib/flashcards"
 
-type Flashcard = {
-  reference: string
-  text: string
-}
+import CreateFlashcard from "@/components/flashcards/CreateFlashcard"
+import FlashcardList from "@/components/flashcards/FlashcardList"
+import FlashcardStudy from "@/components/flashcards/FlashcardStudy"
 
 export default function FlashcardsPage() {
-  const [cards, setCards] = useState<Flashcard[]>([])
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [flashcards, setFlashcards] = useState<any[]>([])
+  const [selected, setSelected] = useState<any>(null)
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      const res = await fetch('/api/flashcards')
-      const data = await res.json()
-      setCards(data)
-    }
-
-    fetchCards()
-  }, [])
-
-  const currentCard = cards[currentIndex]
-
-  if (cards.length === 0) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <p>No flashcards yet</p>
-      </div>
-    )
+  async function load() {
+    const data = await getFlashcards()
+    setFlashcards(data)
   }
 
+  useEffect(() => {
+    load()
+  }, [])
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-      <div className="bg-slate-900 p-8 rounded-2xl shadow-xl max-w-xl w-full text-center">
-        <p className="text-sm text-slate-400 mb-2">
-          {currentCard?.reference}
-        </p>
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="p-4 space-y-6 max-w-xl mx-auto">
+        <h1 className="text-2xl font-bold text-white">Flashcards</h1>
 
-        <p className="text-xl leading-relaxed mb-6">
-          {currentCard?.text}
-        </p>
+        <CreateFlashcard onCreated={load} />
 
-        <button
-          onClick={() => setCurrentIndex((prev) => (prev + 1) % cards.length)}
-          className="w-full bg-blue-600 py-3 rounded-xl font-bold hover:bg-blue-500"
-        >
-          Next Card
-        </button>
+        <FlashcardStudy card={selected} />
+
+        <FlashcardList
+          flashcards={flashcards}
+          onSelect={setSelected}
+        />
       </div>
     </div>
   )
