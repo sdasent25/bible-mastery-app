@@ -135,6 +135,8 @@ export default function FlashcardsLearnPage() {
       )
     }
 
+    let blankCounter = -1
+
     return (
       <div className="p-6 rounded-2xl bg-neutral-900 text-white text-center border border-neutral-700 min-h-[180px] flex flex-wrap items-center justify-center gap-2 text-lg leading-relaxed">
         {tokens.map((token, tokenIndex) => {
@@ -148,12 +150,14 @@ export default function FlashcardsLearnPage() {
             )
           }
 
+          blankCounter += 1
+
           return (
             <span
               key={`blank-${tokenIndex}`}
-              className="inline-flex items-center justify-center min-w-[84px] h-11 px-3 rounded-xl border border-blue-500 bg-blue-500/10 text-blue-200 text-base font-medium"
+              className="inline-flex items-center justify-center min-w-[48px] h-10 px-3 rounded-xl border border-blue-500 bg-blue-500/10 text-blue-300 text-sm font-semibold"
             >
-              blank
+              {blankCounter + 1}
             </span>
           )
         })}
@@ -257,8 +261,8 @@ export default function FlashcardsLearnPage() {
         </div>
       </div>
 
-      <div className="flex-1 px-4 py-6 max-w-xl mx-auto w-full space-y-6">
-        <div className="flex justify-center">
+      <div className="flex-1 px-4 py-4 max-w-xl mx-auto w-full space-y-5">
+        <div className="flex justify-center mt-2 mb-2">
           <img
             src={
               mascot === "idle"
@@ -267,7 +271,7 @@ export default function FlashcardsLearnPage() {
                 ? "/flame-happy.png"
                 : "/flame-sad.png"
             }
-            className="w-16 h-16 object-contain animate-float transition-all duration-300"
+            className="w-20 h-20 object-contain animate-float transition-all duration-300"
             alt="mascot"
           />
         </div>
@@ -283,17 +287,23 @@ export default function FlashcardsLearnPage() {
         {renderPrompt()}
 
         {step < 2 ? (
-          <div className={`grid gap-3 ${inputs.length === 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
-            {inputs.map((value, inputIndex) => (
-              <input
-                key={`input-${inputIndex}`}
-                value={value}
-                onChange={(e) => handleInputChange(e.target.value, inputIndex)}
-                placeholder={`Missing word ${inputIndex + 1}`}
-                className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base"
-              />
-            ))}
-          </div>
+          <>
+            <p className="text-center text-white/70 text-sm">
+              Enter each missing word below
+            </p>
+
+            <div className={`grid gap-3 ${inputs.length === 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
+              {inputs.map((value, inputIndex) => (
+                <input
+                  key={`input-${inputIndex}`}
+                  value={value}
+                  onChange={(e) => handleInputChange(e.target.value, inputIndex)}
+                  placeholder={`Word ${inputIndex + 1}`}
+                  className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base min-h-[52px]"
+                />
+              ))}
+            </div>
+          </>
         ) : (
           <textarea
             value={fullVerseInput}
@@ -313,12 +323,6 @@ export default function FlashcardsLearnPage() {
           <div className="text-red-400 text-center font-semibold">
             Try again
           </div>
-        )}
-
-        {step < 2 && (
-          <p className="text-center text-white/70 text-sm">
-            Enter the missing words in order
-          </p>
         )}
 
         {step === 2 && (
