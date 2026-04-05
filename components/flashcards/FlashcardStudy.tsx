@@ -142,7 +142,7 @@ export default function FlashcardStudy({
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="flex flex-col min-h-screen">
       <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
         <button
           onClick={() => router.push("/dashboard")}
@@ -156,17 +156,18 @@ export default function FlashcardStudy({
         </div>
       </div>
 
-      <div className="flex-1 flex flex-col justify-center px-4 py-6 space-y-6 relative max-w-xl mx-auto w-full">
+      <div className="flex-1 px-4 py-4 space-y-4 relative max-w-xl mx-auto w-full">
         {xpPop && (
           <div className="absolute top-4 left-1/2 -translate-x-1/2 text-green-400 font-bold animate-bounce">
             {xpPop}
           </div>
         )}
 
-        <div
-          onClick={handleFlip}
-          className="perspective"
-        >
+        <div className="mt-2">
+          <div
+            onClick={handleFlip}
+            className="perspective"
+          >
           <div
             className={`relative w-full min-h-[260px] transition-transform duration-500 transform-style preserve-3d ${
               flipped ? "rotate-y-180" : ""
@@ -179,6 +180,7 @@ export default function FlashcardStudy({
             <div className="absolute w-full h-full backface-hidden rotate-y-180 p-6 rounded-2xl bg-neutral-800 text-white flex items-center justify-center text-center border border-neutral-700">
               {card.reference}
             </div>
+          </div>
           </div>
         </div>
 
