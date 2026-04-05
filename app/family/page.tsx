@@ -86,6 +86,8 @@ export default function FamilyPage() {
   }, [])
 
   async function sendInvite() {
+    console.log("SEND INVITE CLICKED")
+
     if (!email || !familyId) return
 
     const { data: userRes } = await supabase.auth.getUser()
