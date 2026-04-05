@@ -88,15 +88,15 @@ export default function FamilyPage() {
   async function sendInvite() {
     if (!email || !familyId) return
 
-    const authUser = await supabase.auth.getUser()
-    if (!authUser.data.user) return
+    const { data: userRes } = await supabase.auth.getUser()
+    if (!userRes.user) return
 
     const { data } = await supabase
       .from("family_invites")
       .insert({
         family_id: familyId,
         email,
-        invited_by: authUser.data.user.id,
+        invited_by: userRes.user.id,
       })
       .select()
       .single()
@@ -105,10 +105,13 @@ export default function FamilyPage() {
 
     await fetch("/api/send-invite", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         email,
         inviteLink,
-        familyName: "Your Family",
+        familyName: "Bible Athlete Family",
         inviter: "A Family Member",
       }),
     })
