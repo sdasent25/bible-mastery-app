@@ -48,8 +48,8 @@ export default function SegmentIntro() {
         ✕
       </button>
 
-      <div className="flex-1 flex flex-col items-center justify-center px-4 pt-12">
-        <div className="relative w-full max-w-md h-[60vh] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="flex-1 flex flex-col items-center justify-start px-4 pt-6">
+        <div className="relative w-full max-w-md h-[55vh] rounded-2xl overflow-hidden shadow-2xl">
           {segment === "genesis-1-3" ? (
             <video
               autoPlay
@@ -87,7 +87,7 @@ export default function SegmentIntro() {
           </div>
         </div>
 
-        <div className="w-full max-w-md mt-6 space-y-3">
+        <div className="w-full max-w-md mt-2 space-y-2">
           <a
             href={`https://www.biblegateway.com/passage/?search=${segment.replace("-", "%20")}`}
             target="_blank"
