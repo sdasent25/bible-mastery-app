@@ -18,7 +18,7 @@ export default function FlashcardsHome() {
         <h2 className="text-xl font-semibold text-white">
           Start Daily Training
         </h2>
-        <p className="text-sm text-blue-100 mt-1">
+        <p className="text-sm text-white/90 mt-1">
           Review your flashcards and build memory
         </p>
       </div>
@@ -26,40 +26,40 @@ export default function FlashcardsHome() {
       <div className="space-y-3">
         <div
           onClick={() => router.push("/flashcards/learn")}
-          className="bg-neutral-900 hover:bg-neutral-800 transition rounded-xl p-4 cursor-pointer border border-neutral-700"
+          className="bg-neutral-900 hover:bg-neutral-800 hover:brightness-110 transition rounded-xl p-4 cursor-pointer border border-neutral-600"
         >
           <h3 className="text-white font-semibold">Learn</h3>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-white/80">
             Memorize scripture step by step
           </p>
         </div>
 
         <div
           onClick={() => router.push("/flashcards/review")}
-          className="bg-neutral-900 hover:bg-neutral-800 transition rounded-xl p-4 cursor-pointer border border-neutral-700"
+          className="bg-neutral-900 hover:bg-neutral-800 hover:brightness-110 transition rounded-xl p-4 cursor-pointer border border-neutral-600"
         >
           <h3 className="text-white font-semibold">Review Flashcards</h3>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-white/80">
             Go through all your flashcards
           </p>
         </div>
 
         <div
           onClick={() => router.push("/flashcards/practice")}
-          className="bg-neutral-900 hover:bg-neutral-800 transition rounded-xl p-4 cursor-pointer border border-neutral-700"
+          className="bg-neutral-900 hover:bg-neutral-800 hover:brightness-110 transition rounded-xl p-4 cursor-pointer border border-neutral-600"
         >
           <h3 className="text-white font-semibold">Practice Weak Cards</h3>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-white/80">
             Focus on the ones you struggle with
           </p>
         </div>
 
         <div
           onClick={() => router.push("/flashcards/create")}
-          className="bg-neutral-900 hover:bg-neutral-800 transition rounded-xl p-4 cursor-pointer border border-neutral-700"
+          className="bg-neutral-900 hover:bg-neutral-800 hover:brightness-110 transition rounded-xl p-4 cursor-pointer border border-neutral-600"
         >
           <h3 className="text-white font-semibold">Add Flashcard</h3>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-white/80">
             Add your own verses to learn
           </p>
         </div>
