@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
-    await resend.emails.send({
+    const response = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
       subject: "🔥 You’ve been invited to join a Bible Athlete family",
@@ -47,9 +47,11 @@ export async function POST(req: Request) {
       `,
     })
 
+    console.log("RESEND RESPONSE:", response)
+
     return new Response(JSON.stringify({ success: true }), { status: 200 })
   } catch (error) {
-    console.error(error)
+    console.error("EMAIL ERROR:", error)
     return new Response(JSON.stringify({ error }), { status: 500 })
   }
 }
