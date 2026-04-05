@@ -105,6 +105,21 @@ export default function FamilyPage() {
     load()
   }
 
+  async function deleteInvite(inviteId: string) {
+    await supabase
+      .from("family_invites")
+      .delete()
+      .eq("id", inviteId)
+
+    load()
+  }
+
+  async function resendInvite(invite: FamilyInvite) {
+    const inviteLink = `${window.location.origin}/family/join?token=${invite.token}`
+
+    alert(`Invite link:\n${inviteLink}`)
+  }
+
   async function removeMember(userIdToRemove: string) {
     await supabase
       .from("family_members")
@@ -274,9 +289,36 @@ export default function FamilyPage() {
         )}
 
         {invites.map((invite) => (
-          <div key={invite.id} className="flex justify-between text-white/70 text-sm">
-            <span>{invite.email}</span>
-            <span className="text-yellow-400">Pending</span>
+          <div
+            key={invite.id}
+            className="flex flex-col gap-2 text-white/70 text-sm border-b border-neutral-800 pb-2"
+          >
+            <div className="flex justify-between items-center">
+              <span>{invite.email}</span>
+              <span className="text-yellow-400">Pending</span>
+            </div>
+
+            {isOwner && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => resendInvite(invite)}
+                  className="text-blue-400 text-xs"
+                >
+                  Resend
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (confirm("Delete this invite?")) {
+                      deleteInvite(invite.id)
+                    }
+                  }}
+                  className="text-red-400 text-xs"
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
