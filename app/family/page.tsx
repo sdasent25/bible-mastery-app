@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabase"
 
 type FamilyMember = {
   user_id: string
+  status?: string | null
 }
 
 type FamilyInvite = {
@@ -14,6 +15,7 @@ type FamilyInvite = {
 
 export default function FamilyPage() {
   const [members, setMembers] = useState<FamilyMember[]>([])
+  const [removedMembers, setRemovedMembers] = useState<FamilyMember[]>([])
   const [invites, setInvites] = useState<FamilyInvite[]>([])
   const [email, setEmail] = useState("")
   const [familyId, setFamilyId] = useState<string | null>(null)
@@ -44,10 +46,15 @@ export default function FamilyPage() {
 
     const { data: membersData } = await supabase
       .from("family_members")
-      .select("user_id")
+      .select("user_id, status")
       .eq("family_id", membership.family_id)
 
-    setMembers((membersData || []) as FamilyMember[])
+    const allMembers = (membersData || []) as FamilyMember[]
+    const activeMembers = allMembers.filter((member) => member.status !== "pending_removal")
+    const removedMembers = allMembers.filter((member) => member.status === "pending_removal")
+
+    setMembers(activeMembers)
+    setRemovedMembers(removedMembers)
 
     const { data: invitesData } = await supabase
       .from("family_invites")
@@ -76,8 +83,23 @@ export default function FamilyPage() {
   async function removeMember(userIdToRemove: string) {
     await supabase
       .from("family_members")
-      .delete()
+      .update({
+        status: "pending_removal",
+        removed_at: new Date().toISOString(),
+      })
       .eq("user_id", userIdToRemove)
+
+    load()
+  }
+
+  async function undoRemove(userIdToRestore: string) {
+    await supabase
+      .from("family_members")
+      .update({
+        status: "active",
+        removed_at: null,
+      })
+      .eq("user_id", userIdToRestore)
 
     load()
   }
@@ -191,6 +213,32 @@ export default function FamilyPage() {
                 className="text-red-400 text-sm"
               >
                 Remove
+              </button>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
+        <h2 className="text-white font-semibold">Recently Removed</h2>
+
+        {removedMembers.length === 0 && (
+          <p className="text-white/60 text-sm">No recent removals</p>
+        )}
+
+        {removedMembers.map((member) => (
+          <div
+            key={member.user_id}
+            className="flex justify-between items-center text-white/70"
+          >
+            <span>Member</span>
+
+            {isOwner && (
+              <button
+                onClick={() => undoRemove(member.user_id)}
+                className="text-blue-400 text-sm"
+              >
+                Undo
               </button>
             )}
           </div>
