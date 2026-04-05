@@ -263,10 +263,7 @@ export default function JourneyPage() {
             ☰
           </button>
 
-          <div className="text-lg font-semibold">
-            {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
-          </div>
-
+          <div />
           <div />
         </div>
 
@@ -354,10 +351,16 @@ export default function JourneyPage() {
             </div>
 
             <div
-              className="relative flex items-center justify-center h-[480px] md:h-[520px] overflow-hidden touch-pan-x"
+              className="
+                relative flex items-center justify-center
+                h-[480px] md:h-[520px]
+                overflow-hidden
+                touch-pan-x
+              "
               onMouseDown={handleStart}
               onMouseUp={handleEnd}
               onTouchStart={handleStart}
+              onTouchMove={(e) => e.stopPropagation()}
               onTouchEnd={handleEnd}
             >
               {nodes.map((node, index) => {
@@ -365,8 +368,7 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const translateX = offset * 160
-                const translateY = Math.abs(offset) * 22
-                const scale = isActive ? 1 : 0.8
+                const scale = isActive ? 1.08 : 0.85
                 const zIndex = 100 - Math.abs(offset)
 
                 return (
@@ -376,9 +378,10 @@ export default function JourneyPage() {
                     style={{
                       transform: `
                         translateX(${translateX}px)
-                        translateY(${translateY}px)
+                        translateY(${isActive ? "-10px" : "0px"})
                         scale(${scale})
                       `,
+                      willChange: "transform",
                       zIndex,
                       opacity: Math.abs(offset) > 2 ? 0 : Math.abs(offset) > 0 ? 0.85 : 1,
                     }}
@@ -434,6 +437,12 @@ export default function JourneyPage() {
                       {isActive && !isLocked && (
                         <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
                           START
+                        </div>
+                      )}
+
+                      {isActive && (
+                        <div className="absolute -right-10 top-1/2 -translate-y-1/2 animate-float-slow text-xl">
+                          🔥
                         </div>
                       )}
 
