@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { getLocale, getMessages } from "@/lib/i18n";
 import LanguageToggle from "@/components/LanguageToggle";
+import AppLayout from "@/components/layout/AppLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -117,7 +118,7 @@ export default function RootLayout({
           <LanguageToggle />
           <SoundToggle />
         </div>
-        {children}
+        <AppLayout>{children}</AppLayout>
         <footer className="text-sm text-gray-600 mt-10 pb-6 text-center">
           <p>
             © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
