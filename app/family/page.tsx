@@ -88,22 +88,30 @@ export default function FamilyPage() {
   async function sendInvite() {
     if (!email || !familyId) return
 
-    const { data: userRes } = await supabase.auth.getUser()
-    if (!userRes?.user) return
+    const authUser = await supabase.auth.getUser()
+    if (!authUser.data.user) return
 
     const { data } = await supabase
       .from("family_invites")
       .insert({
         family_id: familyId,
         email,
-        invited_by: userRes.user.id,
+        invited_by: authUser.data.user.id,
       })
       .select()
       .single()
 
     const inviteLink = `${window.location.origin}/family/join?token=${data.token}`
 
-    alert(`Invite link:\n${inviteLink}`)
+    await fetch("/api/send-invite", {
+      method: "POST",
+      body: JSON.stringify({
+        email,
+        inviteLink,
+        familyName: "Your Family",
+        inviter: "A Family Member",
+      }),
+    })
 
     setEmail("")
     load()
