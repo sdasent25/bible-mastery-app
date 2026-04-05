@@ -3,9 +3,14 @@ import { Resend } from "resend"
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
+  console.log("SEND INVITE API CALLED")
+
   const { email, inviteLink, familyName, inviter } = await req.json()
 
   try {
+    console.log("Sending email to:", email)
+    console.log("Invite link:", inviteLink)
+
     await resend.emails.send({
       from: "Bible Athlete <onboarding@yourdomain.com>",
       to: email,
