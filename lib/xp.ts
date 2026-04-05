@@ -1,27 +1,31 @@
-import { supabase } from './supabase'
+import { supabase } from "./supabase"
 
 const MAX_XP_PER_EVENT = 50
 const ALLOWED_XP_SOURCES = new Set([
-  'quiz',
-  'quiz_answer',
-  'quiz_completion',
-  'program_completion',
-  'flashcards',
-  'flashcard_study',
-  'flashcard_sprint',
-  'fill_in_the_blank',
-  'game',
-  'side_quest',
-  'daily',
-  'bonus',
-  'unknown'
+  "quiz",
+  "quiz_answer",
+  "quiz_completion",
+  "program_completion",
+  "flashcards",
+  "flashcard_study",
+  "flashcard_sprint",
+  "fill_in_the_blank",
+  "game",
+  "side_quest",
+  "daily",
+  "bonus",
+  "recall",
+  "unknown",
 ])
 
-function formatDateLocal(date: Date): string {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
+function getTodayDate() {
+  return new Date().toISOString().split("T")[0]
+}
+
+function getYesterdayDate() {
+  const d = new Date()
+  d.setDate(d.getDate() - 1)
+  return d.toISOString().split("T")[0]
 }
 
 function getCurrentWeekStart(): string {
@@ -29,40 +33,46 @@ function getCurrentWeekStart(): string {
   const weekStart = new Date(now)
   weekStart.setDate(weekStart.getDate() - weekStart.getDay())
   weekStart.setHours(0, 0, 0, 0)
-  return formatDateLocal(weekStart)
+  return weekStart.toISOString().split("T")[0]
 }
 
-async function addWeeklyXp(userId: string, _userEmail: string | null | undefined, amount: number) {
+async function addWeeklyXp(userId: string, amount: number) {
   const weekStart = getCurrentWeekStart()
 
   const { data: existing, error: fetchError } = await supabase
-    .from('weekly_xp')
-    .select('xp')
-    .eq('user_id', userId)
-    .eq('week_start', weekStart)
+    .from("weekly_xp")
+    .select("xp")
+    .eq("user_id", userId)
+    .eq("week_start", weekStart)
     .maybeSingle<{ xp: number | null }>()
 
   if (fetchError) {
-    console.error('Error reading weekly XP:', fetchError)
+    console.error("Error reading weekly XP:", fetchError)
     return
   }
 
   const nextXp = (existing?.xp || 0) + amount
 
   const { error: upsertError } = await supabase
-    .from('weekly_xp')
+    .from("weekly_xp")
     .upsert(
       {
         user_id: userId,
         week_start: weekStart,
-        xp: nextXp
+        xp: nextXp,
       },
-      { onConflict: 'user_id,week_start' }
+      { onConflict: "user_id,week_start" }
     )
 
   if (upsertError) {
-    console.error('Error writing weekly XP:', upsertError)
+    console.error("Error writing weekly XP:", upsertError)
   }
+}
+
+function syncLocalStreak(streak: number, today: string) {
+  if (typeof window === "undefined") return
+  localStorage.setItem("streak", String(streak))
+  localStorage.setItem("last-completed-date", today)
 }
 
 export async function getXp(): Promise<number> {
@@ -71,22 +81,22 @@ export async function getXp(): Promise<number> {
     if (!user) return 0
 
     const { data, error } = await supabase
-      .from('profiles')
-      .select('xp')
-      .eq('id', user.id)
+      .from("profiles")
+      .select("xp")
+      .eq("id", user.id)
       .single()
 
     if (error || !data) return 0
     return data.xp || 0
   } catch (error) {
-    console.error('Error getting XP:', error)
+    console.error("Error getting XP:", error)
     return 0
   }
 }
 
-export async function addXp(amount: number, source = 'unknown'): Promise<number> {
+export async function addXp(amount: number, source = "unknown"): Promise<number> {
   if (
-    typeof amount !== 'number' ||
+    typeof amount !== "number" ||
     Number.isNaN(amount) ||
     !Number.isFinite(amount) ||
     amount <= 0
@@ -95,33 +105,65 @@ export async function addXp(amount: number, source = 'unknown'): Promise<number>
   }
 
   const normalizedAmount = Math.min(Math.floor(amount), MAX_XP_PER_EVENT)
-  const normalizedSource = ALLOWED_XP_SOURCES.has(source) ? source : 'unknown'
+  const normalizedSource = ALLOWED_XP_SOURCES.has(source) ? source : "unknown"
 
   try {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return 0
 
-    const current = await getXp()
-    const updated = current + normalizedAmount
+    const { data: profile, error: fetchError } = await supabase
+      .from("profiles")
+      .select("xp, streak, last_active_date")
+      .eq("id", user.id)
+      .single<{ xp: number | null; streak: number | null; last_active_date: string | null }>()
 
-    const { error } = await supabase
-      .from('profiles')
-      .upsert({ id: user.id, xp: updated })
+    if (fetchError) throw fetchError
 
-    if (error) throw error
+    const currentXp = profile?.xp || 0
+    const currentStreak = profile?.streak || 0
+    const lastDate = profile?.last_active_date
+    const today = getTodayDate()
+    const yesterday = getYesterdayDate()
 
-    // Keep a weekly running total for leaderboard ranking.
-    await addWeeklyXp(user.id, user.email, normalizedAmount)
+    let newStreak = currentStreak
 
-    console.info('XP awarded', {
+    if (!lastDate) {
+      newStreak = 1
+    } else if (lastDate === today) {
+      newStreak = currentStreak
+    } else if (lastDate === yesterday) {
+      newStreak = currentStreak + 1
+    } else {
+      newStreak = 1
+    }
+
+    const updated = currentXp + normalizedAmount
+
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .upsert({
+        id: user.id,
+        xp: updated,
+        streak: newStreak,
+        last_active_date: today,
+      })
+
+    if (updateError) throw updateError
+
+    syncLocalStreak(newStreak, today)
+
+    await addWeeklyXp(user.id, normalizedAmount)
+
+    console.info("XP awarded", {
       userId: user.id,
       source: normalizedSource,
-      amount: normalizedAmount
+      amount: normalizedAmount,
+      streak: newStreak,
     })
 
     return updated
   } catch (error) {
-    console.error('Error adding XP:', error)
+    console.error("Error adding XP:", error)
     return await getXp()
   }
 }
