@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import { updateFlashcardStatus } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
@@ -11,6 +12,7 @@ export default function FlashcardStudy({
   flashcards: Array<{ id: string; reference: string; verse_text: string }>
   messages: Record<string, string>
 }) {
+  const router = useRouter()
   const SESSION_SIZE = 10
 
   const [session, setSession] = useState<Array<{ id: string; reference: string; verse_text: string }>>([])
@@ -18,6 +20,17 @@ export default function FlashcardStudy({
   const [flipped, setFlipped] = useState(false)
   const [complete, setComplete] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const [xpPop, setXpPop] = useState<string | null>(null)
+
+  const tapSound = useRef<HTMLAudioElement | null>(null)
+  const correctSound = useRef<HTMLAudioElement | null>(null)
+  const wrongSound = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    tapSound.current = new Audio("/sounds/tap.mp3")
+    correctSound.current = new Audio("/sounds/correct.mp3")
+    wrongSound.current = new Audio("/sounds/wrong.mp3")
+  }, [])
 
   useEffect(() => {
     if (flashcards.length) {
@@ -31,8 +44,6 @@ export default function FlashcardStudy({
       setComplete(false)
     }
   }, [flashcards])
-
-  const card = session[index]
 
   useEffect(() => {
     setFlipped(false)
@@ -52,16 +63,25 @@ export default function FlashcardStudy({
     )
   }
 
+  const card = session[index]
+
   if (complete) {
     return (
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-4 mt-10 px-4">
         <h2 className="text-2xl font-bold text-white">Session Complete 🎉</h2>
 
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-600 px-6 py-3 rounded-xl font-semibold"
+          className="w-full bg-blue-600 py-3 rounded-xl font-semibold"
         >
           Start New Session
+        </button>
+
+        <button
+          onClick={() => router.push("/dashboard")}
+          className="w-full bg-neutral-700 py-3 rounded-xl font-semibold"
+        >
+          Back to Dashboard
         </button>
       </div>
     )
@@ -76,6 +96,11 @@ export default function FlashcardStudy({
     setIndex(0)
   }
 
+  function handleFlip() {
+    tapSound.current?.play().catch(() => {})
+    setFlipped(!flipped)
+  }
+
   async function handleAnswer(type: "again" | "hard" | "easy") {
     setAnimating(true)
     let newSession = [...session]
@@ -85,22 +110,27 @@ export default function FlashcardStudy({
       const current = newSession.splice(index, 1)[0]
       newSession.splice(1, 0, current)
       xpToAdd = 0
+      wrongSound.current?.play().catch(() => {})
     }
 
     if (type === "hard") {
       const current = newSession.splice(index, 1)[0]
       newSession.push(current)
       xpToAdd = 1
+      correctSound.current?.play().catch(() => {})
     }
 
     if (type === "easy") {
       newSession.splice(index, 1)
       xpToAdd = 2
+      correctSound.current?.play().catch(() => {})
     }
 
     updateFlashcardStatus(card.id, type).catch(console.error)
 
     if (xpToAdd > 0) {
+      setXpPop(`+${xpToAdd} XP`)
+      setTimeout(() => setXpPop(null), 800)
       addXp(xpToAdd, "flashcards").catch(console.error)
     }
 
@@ -112,44 +142,71 @@ export default function FlashcardStudy({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="text-sm text-gray-400 text-center">
-        {session.length} remaining
-      </div>
+    <div className="min-h-screen flex flex-col">
+      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
+        <button
+          onClick={() => router.push("/dashboard")}
+          className="text-sm text-gray-300"
+        >
+          ← Dashboard
+        </button>
 
-      <div
-        onClick={() => setFlipped(!flipped)}
-        className={`p-6 rounded-2xl bg-neutral-900 text-white cursor-pointer min-h-[240px] flex items-center justify-center text-center border border-neutral-700 transition-all duration-200 ${animating ? "scale-95 opacity-70" : ""}`}
-      >
-        <div className="text-lg leading-relaxed">
-          {flipped ? card.reference : card.verse_text}
+        <div className="text-sm text-gray-400">
+          {session.length} left
         </div>
       </div>
 
-      {flipped && (
-        <div className="grid grid-cols-3 gap-2">
-          <button
-            onClick={() => handleAnswer("again")}
-            className="bg-red-500 py-3 rounded-xl font-semibold active:scale-95"
-          >
-            {messages.didnt_know}
-          </button>
+      <div className="flex-1 flex flex-col justify-center px-4 py-6 space-y-6 relative max-w-xl mx-auto w-full">
+        {xpPop && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 text-green-400 font-bold animate-bounce">
+            {xpPop}
+          </div>
+        )}
 
-          <button
-            onClick={() => handleAnswer("hard")}
-            className="bg-amber-500 py-3 rounded-xl font-semibold active:scale-95 text-black"
+        <div
+          onClick={handleFlip}
+          className="perspective"
+        >
+          <div
+            className={`relative w-full min-h-[260px] transition-transform duration-500 transform-style preserve-3d ${
+              flipped ? "rotate-y-180" : ""
+            } ${animating ? "scale-95 opacity-70" : ""}`}
           >
-            {messages.almost}
-          </button>
+            <div className="absolute w-full h-full backface-hidden p-6 rounded-2xl bg-neutral-900 text-white flex items-center justify-center text-center border border-neutral-700 text-lg leading-relaxed">
+              {card.verse_text}
+            </div>
 
-          <button
-            onClick={() => handleAnswer("easy")}
-            className="bg-blue-600 py-3 rounded-xl font-semibold active:scale-95"
-          >
-            {messages.got_it}
-          </button>
+            <div className="absolute w-full h-full backface-hidden rotate-y-180 p-6 rounded-2xl bg-neutral-800 text-white flex items-center justify-center text-center border border-neutral-700">
+              {card.reference}
+            </div>
+          </div>
         </div>
-      )}
+
+        {flipped && (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <button
+              onClick={() => handleAnswer("again")}
+              className="bg-red-500 py-4 rounded-xl font-semibold"
+            >
+              {messages.didnt_know}
+            </button>
+
+            <button
+              onClick={() => handleAnswer("hard")}
+              className="bg-amber-500 py-4 rounded-xl font-semibold text-black"
+            >
+              {messages.almost}
+            </button>
+
+            <button
+              onClick={() => handleAnswer("easy")}
+              className="bg-blue-600 py-4 rounded-xl font-semibold"
+            >
+              {messages.got_it}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
