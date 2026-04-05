@@ -4,6 +4,17 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getFlashcards } from "@/lib/flashcards"
 
+function getRandomIndices(length: number, count: number) {
+  const indices = new Set<number>()
+  const target = Math.min(length, count)
+
+  while (indices.size < target) {
+    indices.add(Math.floor(Math.random() * length))
+  }
+
+  return Array.from(indices)
+}
+
 export default function FlashcardsLearnPage() {
   const router = useRouter()
 
@@ -12,6 +23,7 @@ export default function FlashcardsLearnPage() {
   const [step, setStep] = useState(0)
   const [input, setInput] = useState("")
   const [feedback, setFeedback] = useState<string | null>(null)
+  const [hiddenIndices, setHiddenIndices] = useState<number[]>([])
   const tapSound = useRef<HTMLAudioElement | null>(null)
   const correctSound = useRef<HTMLAudioElement | null>(null)
   const wrongSound = useRef<HTMLAudioElement | null>(null)
@@ -31,6 +43,28 @@ export default function FlashcardsLearnPage() {
     load()
   }, [])
 
+  function normalize(text: string) {
+    return text.toLowerCase().replace(/[^\w\s]/g, "").trim()
+  }
+
+  useEffect(() => {
+    if (!flashcards.length) return
+
+    const words = flashcards[index]?.verse_text.split(" ") || []
+
+    if (step === 0) {
+      setHiddenIndices(getRandomIndices(words.length, 2))
+      return
+    }
+
+    if (step === 1) {
+      setHiddenIndices(getRandomIndices(words.length, Math.ceil(words.length / 2)))
+      return
+    }
+
+    setHiddenIndices([])
+  }, [index, step, flashcards])
+
   if (!flashcards.length) {
     return (
       <div className="text-center text-gray-400 mt-10">
@@ -43,34 +77,38 @@ export default function FlashcardsLearnPage() {
   const words = card.verse_text.split(" ")
 
   function getPrompt() {
-    if (step === 0) {
-      return words.slice(0, 2).join(" ") + " _____ _____"
+    if (step === 2) {
+      return "Type the full verse"
     }
 
-    if (step === 1) {
-      return words.slice(0, 2).join(" ") + " _____ _____ _____ _____"
-    }
-
-    return "Type the full verse"
+    return words.map((word, i) =>
+      hiddenIndices.includes(i) ? "_____" : word
+    ).join(" ")
   }
 
   function getAnswer() {
-    if (step === 0) return words.slice(2, 4).join(" ")
-    if (step === 1) return words.slice(2, Math.ceil(words.length / 2)).join(" ")
-    return card.verse_text
-  }
-
-  function normalize(text: string) {
-    return text.toLowerCase().replace(/[^\w\s]/g, "").trim()
+    const verseWords = card.verse_text.split(" ")
+    return hiddenIndices.map(i => verseWords[i]).join(" ")
   }
 
   function handleSubmit() {
     tapSound.current?.play().catch(() => {})
 
-    const correct = normalize(getAnswer())
-    const user = normalize(input)
+    const correctWords = hiddenIndices.map(i => words[i])
+    const userWords = input.split(" ")
 
-    if (correct.includes(user) || user.includes(correct)) {
+    const correct = step === 2
+      ? [normalize(card.verse_text)]
+      : correctWords.map(w => normalize(w))
+    const user = step === 2
+      ? [normalize(input)]
+      : userWords.map(w => normalize(w))
+
+    const isCorrect = step === 2
+      ? correct[0].includes(user[0]) || user[0].includes(correct[0])
+      : correct.every((word) => user.includes(word))
+
+    if (isCorrect) {
       correctSound.current?.play().catch(() => {})
       setFeedback("correct")
 
