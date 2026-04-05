@@ -94,7 +94,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   }
 
   return (
-    <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4">
+    <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
       <div className="flex-1 space-y-4">
         <h1 className="text-xl font-bold">Bible Athlete</h1>
 

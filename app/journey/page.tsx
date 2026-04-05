@@ -51,7 +51,6 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
-  const [menuOpen, setMenuOpen] = useState(false)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     Pentateuch: true,
   })
@@ -214,9 +213,6 @@ export default function JourneyPage() {
                   key={book}
                   onClick={() => {
                     setSelectedProgram(program?.id || book)
-                    if (typeof setMenuOpen !== "undefined") {
-                      setMenuOpen(false)
-                    }
                   }}
                   className={`
                     px-3 py-2 rounded-lg mb-1 text-sm transition-all
@@ -255,18 +251,6 @@ export default function JourneyPage() {
 
       {/* MAIN */}
       <div className="flex-1 px-4 md:px-8 py-6">
-        <div className="lg:hidden flex items-center justify-between mb-4">
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="rounded-xl px-3 py-3 text-white text-2xl font-bold transition-all duration-150 hover:scale-[1.02] active:scale-95 active:brightness-90"
-          >
-            ☰
-          </button>
-
-          <div />
-          <div />
-        </div>
-
         <div className="flex justify-center mb-8">
           <div className="text-center max-w-md">
             <h1 className="text-3xl md:text-4xl font-bold">
@@ -580,55 +564,6 @@ export default function JourneyPage() {
         </div>
       </div>
 
-      {menuOpen && (
-        <div
-          onClick={() => setMenuOpen(false)}
-          className="fixed inset-0 bg-black/50 z-40"
-        />
-      )}
-
-      <div
-        className={`
-          fixed top-0 left-0 h-full w-64 bg-[#0B1220] z-50
-          transform transition-transform duration-300
-          ${menuOpen ? "translate-x-0" : "-translate-x-full"}
-          lg:hidden
-        `}
-      >
-        <div className="p-6">
-
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-bold">Menu</h2>
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="rounded-xl px-3 py-3 text-white transition-all duration-150 hover:scale-[1.02] active:scale-95 active:brightness-90"
-            >
-              ✕
-            </button>
-          </div>
-
-          <NavItem label="Journey" active />
-          <NavItem label="Training" />
-          <NavItem label="Review" />
-          <NavItem label="Programs" />
-          <NavItem label="Dashboard" />
-
-          {renderSections}
-
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function NavItem({ label, active = false }: { label: string; active?: boolean }) {
-  return (
-    <div
-      className={`px-4 py-3 rounded-xl mb-2 font-semibold cursor-pointer transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 ${
-        active ? "bg-blue-600 text-white hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]" : "text-slate-300 hover:bg-slate-800"
-      }`}
-    >
-      {label}
     </div>
   )
 }

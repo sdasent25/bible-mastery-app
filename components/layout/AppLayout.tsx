@@ -10,14 +10,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen bg-[#020617] text-white">
       {open && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 md:hidden"
+          className="fixed inset-0 bg-black/60 z-[90] md:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
       <div
         className={`
-          fixed md:relative z-50 h-full w-64 bg-[#020617]
+          fixed md:relative z-[100] h-full w-64 bg-[#020617]
           transform transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
