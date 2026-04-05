@@ -303,7 +303,10 @@ export default function FamilyPage() {
           />
 
           <button
-            onClick={sendInvite}
+            onClick={() => {
+              console.log("BUTTON CLICKED")
+              sendInvite()
+            }}
             className="w-full bg-blue-600 py-3 rounded-xl font-semibold"
           >
             Send Invite
