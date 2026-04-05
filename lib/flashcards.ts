@@ -8,6 +8,13 @@ export type Flashcard = {
   createdAt: string | null
 }
 
+function mapStudyResultToStatus(status: "new" | "learning" | "mastered" | "again" | "hard" | "easy") {
+  if (status === "again") return "new"
+  if (status === "hard") return "learning"
+  if (status === "easy") return "mastered"
+  return status
+}
+
 export async function createFlashcard({
   verse_text,
   reference,
@@ -49,16 +56,18 @@ export async function getFlashcards() {
 
 export async function updateFlashcardStatus(
   id: string,
-  status: "new" | "learning" | "mastered"
+  status: "new" | "learning" | "mastered" | "again" | "hard" | "easy"
 ) {
   const { data: userRes } = await supabase.auth.getUser()
 
   if (!userRes?.user) throw new Error("Not authenticated")
 
+  const nextStatus = mapStudyResultToStatus(status)
+
   const { data, error } = await supabase
     .from("flashcards")
     .update({
-      status,
+      status: nextStatus,
       updated_at: new Date().toISOString(),
     })
     .eq("id", id)
@@ -72,7 +81,7 @@ export async function updateFlashcardStatus(
     id: data.id,
     verse: data.verse_text,
     reference: data.reference,
-    status: data.status,
+    status: nextStatus,
     createdAt: data.created_at,
   } satisfies Flashcard
 }
