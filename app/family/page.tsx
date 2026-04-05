@@ -18,6 +18,7 @@ export default function FamilyPage() {
   const [email, setEmail] = useState("")
   const [familyId, setFamilyId] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
+  const [noFamily, setNoFamily] = useState(false)
 
   async function load() {
     const { data: userRes } = await supabase.auth.getUser()
@@ -25,28 +26,33 @@ export default function FamilyPage() {
 
     const userId = userRes.user.id
 
-    const { data: member } = await supabase
+    const { data: memberships } = await supabase
       .from("family_members")
       .select("*")
       .eq("user_id", userId)
-      .single()
 
-    if (!member) return
+    if (!memberships || memberships.length === 0) {
+      setNoFamily(true)
+      return
+    }
 
-    setFamilyId(member.family_id)
-    setIsOwner(member.role === "owner")
+    const membership = memberships[0]
+
+    setNoFamily(false)
+    setFamilyId(membership.family_id)
+    setIsOwner(membership.role === "owner")
 
     const { data: membersData } = await supabase
       .from("family_members")
       .select("user_id")
-      .eq("family_id", member.family_id)
+      .eq("family_id", membership.family_id)
 
     setMembers((membersData || []) as FamilyMember[])
 
     const { data: invitesData } = await supabase
       .from("family_invites")
       .select("*")
-      .eq("family_id", member.family_id)
+      .eq("family_id", membership.family_id)
 
     setInvites((invitesData || []) as FamilyInvite[])
   }
@@ -74,6 +80,23 @@ export default function FamilyPage() {
       .eq("user_id", userIdToRemove)
 
     load()
+  }
+
+  if (noFamily) {
+    return (
+      <div className="max-w-xl mx-auto space-y-6">
+        <h1 className="text-3xl font-bold text-white text-center">
+          Family
+        </h1>
+
+        <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3 text-center">
+          <h2 className="text-white font-semibold">No Family Found</h2>
+          <p className="text-sm text-white/60">
+            Join or create a family plan to manage members and invites.
+          </p>
+        </div>
+      </div>
+    )
   }
 
   return (
