@@ -12,7 +12,11 @@ type SectionKey =
   | "gospels"
   | "epistles"
 
-export default function Sidebar() {
+type SidebarProps = {
+  closeMobile?: () => void
+}
+
+export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
@@ -37,7 +41,8 @@ export default function Sidebar() {
     return (
       <Link
         href={href}
-        className={`block px-4 py-2 rounded-xl transition font-medium ${
+        onClick={() => closeMobile?.()}
+        className={`block px-4 py-3 rounded-xl transition font-medium ${
           active
             ? "bg-blue-600 text-white shadow-md"
             : "text-white/80 hover:bg-neutral-800 hover:text-white"
@@ -81,7 +86,7 @@ export default function Sidebar() {
   }
 
   return (
-    <div className="hidden md:flex flex-col w-64 border-r border-neutral-800 p-4 space-y-4">
+    <div className="flex h-full flex-col border-r border-neutral-800 p-4 space-y-4">
       <h1 className="text-xl font-bold">Bible Athlete</h1>
 
       <div className="space-y-1">
