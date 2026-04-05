@@ -7,6 +7,10 @@ import { supabase } from "@/lib/supabase"
 type FamilyInvite = {
   id: string
   family_id: string
+  invited_by?: string | null
+  families?: {
+    name?: string | null
+  } | null
 }
 
 export default function JoinFamilyPage() {
@@ -16,6 +20,7 @@ export default function JoinFamilyPage() {
   const [loading, setLoading] = useState(true)
   const [invite, setInvite] = useState<FamilyInvite | null>(null)
   const [joined, setJoined] = useState(false)
+  const [inviterEmail, setInviterEmail] = useState("")
 
   const token = params.get("token")
 
@@ -28,22 +33,50 @@ export default function JoinFamilyPage() {
 
       const { data } = await supabase
         .from("family_invites")
-        .select("*")
+        .select(`
+          *,
+          families(name),
+          invited_by
+        `)
         .eq("token", token)
         .single()
 
       setInvite(data as FamilyInvite | null)
+      setInviterEmail("A family member")
+
+      if ((data as FamilyInvite | null)?.invited_by) {
+        await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", (data as FamilyInvite).invited_by)
+          .single()
+
+        setInviterEmail("A family member")
+      }
+
       setLoading(false)
     }
 
     load()
   }, [token])
 
+  useEffect(() => {
+    async function autoJoin() {
+      const { data: userRes } = await supabase.auth.getUser()
+
+      if (userRes?.user && invite && !joined) {
+        joinFamily()
+      }
+    }
+
+    autoJoin()
+  }, [invite, joined])
+
   async function joinFamily() {
     const { data: userRes } = await supabase.auth.getUser()
 
     if (!userRes?.user) {
-      router.push("/login")
+      router.push(`/login?redirect=/family/join?token=${token}`)
       return
     }
 
@@ -77,7 +110,7 @@ export default function JoinFamilyPage() {
 
     setTimeout(() => {
       router.push("/dashboard")
-    }, 1500)
+    }, 1200)
   }
 
   if (loading) {
@@ -90,7 +123,13 @@ export default function JoinFamilyPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-6 max-w-md w-full space-y-4 text-center">
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-6 max-w-md w-full space-y-5 text-center">
+        <img
+          src="/flame-happy.png"
+          className="w-20 h-20 mx-auto animate-float"
+          alt="happy flame mascot"
+        />
+
         <h1 className="text-2xl font-bold text-white">
           🎉 You&apos;ve Been Invited!
         </h1>
@@ -98,6 +137,22 @@ export default function JoinFamilyPage() {
         <p className="text-white/80">
           Join a family and start competing together
         </p>
+
+        {invite.families?.name && (
+          <div className="bg-neutral-800 rounded-xl p-3">
+            <p className="text-sm text-white/60">Family</p>
+            <p className="text-white font-medium">
+              {invite.families.name}
+            </p>
+          </div>
+        )}
+
+        <div className="bg-neutral-800 rounded-xl p-3">
+          <p className="text-sm text-white/60">Invited by</p>
+          <p className="text-white font-medium">
+            {inviterEmail}
+          </p>
+        </div>
 
         {!joined ? (
           <button

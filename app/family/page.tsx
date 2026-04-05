@@ -88,11 +88,15 @@ export default function FamilyPage() {
   async function sendInvite() {
     if (!email || !familyId) return
 
+    const { data: userRes } = await supabase.auth.getUser()
+    if (!userRes?.user) return
+
     const { data } = await supabase
       .from("family_invites")
       .insert({
         family_id: familyId,
         email,
+        invited_by: userRes.user.id,
       })
       .select()
       .single()
