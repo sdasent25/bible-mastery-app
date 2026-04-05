@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getFlashcards } from "@/lib/flashcards"
 
@@ -12,6 +12,15 @@ export default function FlashcardsLearnPage() {
   const [step, setStep] = useState(0)
   const [input, setInput] = useState("")
   const [feedback, setFeedback] = useState<string | null>(null)
+  const tapSound = useRef<HTMLAudioElement | null>(null)
+  const correctSound = useRef<HTMLAudioElement | null>(null)
+  const wrongSound = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    tapSound.current = new Audio("/sounds/tap.mp3")
+    correctSound.current = new Audio("/sounds/correct.mp3")
+    wrongSound.current = new Audio("/sounds/wrong.mp3")
+  }, [])
 
   useEffect(() => {
     async function load() {
@@ -56,10 +65,13 @@ export default function FlashcardsLearnPage() {
   }
 
   function handleSubmit() {
+    tapSound.current?.play().catch(() => {})
+
     const correct = normalize(getAnswer())
     const user = normalize(input)
 
     if (correct.includes(user) || user.includes(correct)) {
+      correctSound.current?.play().catch(() => {})
       setFeedback("correct")
 
       setTimeout(() => {
@@ -73,6 +85,7 @@ export default function FlashcardsLearnPage() {
         }
       }, 800)
     } else {
+      wrongSound.current?.play().catch(() => {})
       setFeedback("wrong")
     }
   }
