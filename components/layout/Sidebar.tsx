@@ -32,15 +32,15 @@ export default function Sidebar() {
   }
 
   function navItem(label: string, href: string) {
-    const active = pathname === href
+    const active = pathname.startsWith(href)
 
     return (
       <Link
         href={href}
-        className={`block px-4 py-2 rounded-lg transition ${
+        className={`block px-4 py-2 rounded-xl transition font-medium ${
           active
-            ? "bg-blue-600 text-white"
-            : "text-gray-300 hover:bg-neutral-800"
+            ? "bg-blue-600 text-white shadow-md"
+            : "text-white/80 hover:bg-neutral-800 hover:text-white"
         }`}
       >
         {label}
@@ -50,9 +50,9 @@ export default function Sidebar() {
 
   function bookItem(label: string, locked = false) {
     return (
-      <div className="flex items-center justify-between px-4 py-1 text-sm text-gray-300">
+      <div className="flex items-center justify-between px-4 py-1.5 text-sm text-white/80 hover:text-white transition">
         <span>{label}</span>
-        {locked && <span>🔒</span>}
+        {locked && <span className="text-xs">🔒</span>}
       </div>
     )
   }
@@ -66,7 +66,7 @@ export default function Sidebar() {
       <div>
         <div
           onClick={() => toggle(key)}
-          className="cursor-pointer text-sm text-gray-300"
+          className="cursor-pointer text-sm text-white/80"
         >
           {label}
         </div>
@@ -93,7 +93,7 @@ export default function Sidebar() {
       </div>
 
       <div className="pt-4 space-y-2">
-        <p className="text-sm text-gray-400">Sections</p>
+        <p className="text-xs text-white/60 uppercase tracking-wide">Sections</p>
 
         {sectionItem("pentateuch", "Pentateuch", (
           <>
