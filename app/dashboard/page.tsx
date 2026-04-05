@@ -9,6 +9,7 @@ export default function DashboardPage() {
 
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
+  const [invite, setInvite] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   async function load() {
@@ -31,7 +32,46 @@ export default function DashboardPage() {
       setStreak(data.streak || 0)
     }
 
+    const email = userRes.user.email
+
+    if (email) {
+      const { data: inviteData } = await supabase
+        .from("family_invites")
+        .select("*")
+        .ilike("email", email.trim())
+        .is("accepted_at", null)
+        .limit(1)
+        .single()
+
+      if (inviteData) {
+        setInvite(inviteData)
+      }
+    }
+
     setLoading(false)
+  }
+
+  async function acceptInvite() {
+    const { data: userRes } = await supabase.auth.getUser()
+    if (!userRes?.user || !invite) return
+
+    const userId = userRes.user.id
+
+    await supabase.from("family_members").insert({
+      family_id: invite.family_id,
+      user_id: userId,
+      role: "member",
+    })
+
+    await supabase
+      .from("family_invites")
+      .update({
+        status: "accepted",
+        accepted_at: new Date().toISOString(),
+      })
+      .eq("id", invite.id)
+
+    setInvite(null)
   }
 
   useEffect(() => {
@@ -44,6 +84,21 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">
+      {invite && (
+        <div className="bg-blue-600/10 border border-blue-500 rounded-2xl p-4 space-y-2">
+          <p className="text-white font-semibold text-center">
+            🎉 You&apos;ve been invited to join a family!
+          </p>
+
+          <button
+            onClick={acceptInvite}
+            className="w-full bg-blue-600 py-3 rounded-xl font-semibold"
+          >
+            Join Family
+          </button>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold text-white text-center">
         Dashboard
       </h1>
@@ -73,6 +128,17 @@ export default function DashboardPage() {
           </p>
         </div>
       </div>
+
+      {xp === 0 && (
+        <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 text-center space-y-2">
+          <p className="text-white font-semibold">
+            Welcome! 👋
+          </p>
+          <p className="text-white/70 text-sm">
+            Start training to begin building your streak
+          </p>
+        </div>
+      )}
 
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
         <p className="text-white font-semibold">Daily Progress</p>
