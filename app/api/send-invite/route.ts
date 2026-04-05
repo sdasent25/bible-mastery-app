@@ -1,3 +1,6 @@
+export const runtime = "nodejs"
+
+import { NextResponse } from "next/server"
 import { Resend } from "resend"
 
 export async function POST(req: Request) {
@@ -49,9 +52,9 @@ export async function POST(req: Request) {
 
     console.log("RESEND RESPONSE:", response)
 
-    return new Response(JSON.stringify({ success: true }), { status: 200 })
+    return NextResponse.json({ success: true })
   } catch (error) {
     console.error("EMAIL ERROR:", error)
-    return new Response(JSON.stringify({ error }), { status: 500 })
+    return NextResponse.json({ error }, { status: 500 })
   }
 }
