@@ -218,12 +218,8 @@ export default function FlashcardsLearnPage() {
         setTimeout(() => {
           setMascot("idle")
           setFeedback(null)
-          if (step < totalSteps - 1) {
-            setStep((prev) => prev + 1)
-            setInputStatus([])
-          } else {
-            nextCard()
-          }
+          setInputStatus([])
+          setStep((prev) => prev + 1)
         }, 700)
       } else {
         wrongSound.current?.play().catch(() => undefined)
