@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getFlashcards } from "@/lib/flashcards"
+import { addXp } from "@/lib/xp"
 
 const STOP_WORDS = new Set([
   "the", "and", "of", "so", "he", "she", "it", "in", "to", "a", "is", "was",
@@ -223,6 +224,16 @@ export default function FlashcardsLearnPage() {
       if (isCorrect) {
         correctSound.current?.play().catch(() => undefined)
         setFeedback("correct")
+        let xpEarned = 0
+
+        if (step === 0) xpEarned = 1
+        if (step === 1) xpEarned = 2
+        if (step === totalSteps - 1) xpEarned = 3
+
+        if (xpEarned > 0) {
+          addXp(xpEarned, "recall").catch(console.error)
+          setXpPop(`+${xpEarned} XP ✨`)
+        }
         setMascot("happy")
         if (streak >= 3) {
           // slight scale boost handled via class
@@ -269,6 +280,16 @@ export default function FlashcardsLearnPage() {
     if (isFullVerseCorrect) {
       correctSound.current?.play().catch(() => undefined)
       setFeedback("correct")
+      let xpEarned = 0
+
+      if (step === 0) xpEarned = 1
+      if (step === 1) xpEarned = 2
+      if (step === totalSteps - 1) xpEarned = 3
+
+      if (xpEarned > 0) {
+        addXp(xpEarned, "recall").catch(console.error)
+        setXpPop(`+${xpEarned} XP ✨`)
+      }
       setMascot("happy")
       if (streak >= 3) {
         // slight scale boost handled via class
