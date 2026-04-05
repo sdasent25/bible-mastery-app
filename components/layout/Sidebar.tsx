@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 type SectionKey =
   | "pentateuch"
@@ -18,6 +19,7 @@ type SidebarProps = {
 
 export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -27,6 +29,12 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     gospels: false,
     epistles: false,
   })
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    closeMobile?.()
+    router.push("/")
+  }
 
   function toggle(section: SectionKey) {
     setOpenSections((prev) => ({
@@ -86,70 +94,91 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   }
 
   return (
-    <div className="flex h-full flex-col border-r border-neutral-800 p-4 space-y-4">
-      <h1 className="text-xl font-bold">Bible Athlete</h1>
+    <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4">
+      <div className="flex-1 space-y-4">
+        <h1 className="text-xl font-bold">Bible Athlete</h1>
 
-      <div className="space-y-1">
-        {navItem("Journey", "/journey")}
-        {navItem("Training", "/flashcards")}
-        {navItem("Review", "/review")}
-        {navItem("Programs", "/programs")}
-        {navItem("Dashboard", "/dashboard")}
+        <div className="space-y-1">
+          {navItem("Journey", "/journey")}
+          {navItem("Training", "/flashcards")}
+          {navItem("Review", "/review")}
+          {navItem("Programs", "/programs")}
+          {navItem("Dashboard", "/dashboard")}
+        </div>
+
+        <div className="pt-4 space-y-2">
+          <p className="text-xs text-white/60 uppercase tracking-wide">Sections</p>
+
+          {sectionItem("pentateuch", "Pentateuch", (
+            <>
+              {bookItem("Genesis")}
+              {bookItem("Exodus", true)}
+              {bookItem("Leviticus", true)}
+              {bookItem("Numbers", true)}
+              {bookItem("Deuteronomy", true)}
+            </>
+          ))}
+
+          {sectionItem("history", "History", (
+            <>
+              {bookItem("Joshua", true)}
+              {bookItem("Judges", true)}
+              {bookItem("Ruth", true)}
+            </>
+          ))}
+
+          {sectionItem("wisdom", "Wisdom", (
+            <>
+              {bookItem("Job", true)}
+              {bookItem("Psalms", true)}
+              {bookItem("Proverbs", true)}
+            </>
+          ))}
+
+          {sectionItem("prophets", "Prophets", (
+            <>
+              {bookItem("Isaiah", true)}
+              {bookItem("Jeremiah", true)}
+              {bookItem("Ezekiel", true)}
+            </>
+          ))}
+
+          {sectionItem("gospels", "Gospels", (
+            <>
+              {bookItem("Matthew", true)}
+              {bookItem("Mark", true)}
+              {bookItem("Luke", true)}
+              {bookItem("John", true)}
+            </>
+          ))}
+
+          {sectionItem("epistles", "Epistles", (
+            <>
+              {bookItem("Romans", true)}
+              {bookItem("1 Corinthians", true)}
+              {bookItem("Hebrews", true)}
+            </>
+          ))}
+        </div>
       </div>
 
-      <div className="pt-4 space-y-2">
-        <p className="text-xs text-white/60 uppercase tracking-wide">Sections</p>
+      <div className="pt-4 border-t border-neutral-800 space-y-2">
+        <button
+          onClick={() => {
+            closeMobile?.()
+            router.push("/settings")
+          }}
+          className="w-full text-left px-4 py-3 rounded-xl text-white/80 hover:bg-neutral-800 hover:text-white transition"
+        >
+          ⚙️ Settings
+        </button>
 
-        {sectionItem("pentateuch", "Pentateuch", (
-          <>
-            {bookItem("Genesis")}
-            {bookItem("Exodus", true)}
-            {bookItem("Leviticus", true)}
-            {bookItem("Numbers", true)}
-            {bookItem("Deuteronomy", true)}
-          </>
-        ))}
-
-        {sectionItem("history", "History", (
-          <>
-            {bookItem("Joshua", true)}
-            {bookItem("Judges", true)}
-            {bookItem("Ruth", true)}
-          </>
-        ))}
-
-        {sectionItem("wisdom", "Wisdom", (
-          <>
-            {bookItem("Job", true)}
-            {bookItem("Psalms", true)}
-            {bookItem("Proverbs", true)}
-          </>
-        ))}
-
-        {sectionItem("prophets", "Prophets", (
-          <>
-            {bookItem("Isaiah", true)}
-            {bookItem("Jeremiah", true)}
-            {bookItem("Ezekiel", true)}
-          </>
-        ))}
-
-        {sectionItem("gospels", "Gospels", (
-          <>
-            {bookItem("Matthew", true)}
-            {bookItem("Mark", true)}
-            {bookItem("Luke", true)}
-            {bookItem("John", true)}
-          </>
-        ))}
-
-        {sectionItem("epistles", "Epistles", (
-          <>
-            {bookItem("Romans", true)}
-            {bookItem("1 Corinthians", true)}
-            {bookItem("Hebrews", true)}
-          </>
-        ))}
+        <button
+          onClick={handleLogout}
+          className="w-full text-left px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition"
+        >
+          🚪 Logout
+        </button>
       </div>
     </div>
   )
