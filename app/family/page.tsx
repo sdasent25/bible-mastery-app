@@ -38,7 +38,7 @@ export default function FamilyPage() {
       const { data: myInvitesData } = await supabase
         .from("family_invites")
         .select("*")
-        .eq("email", email)
+        .ilike("email", email.trim())
         .is("accepted_at", null)
 
       setMyInvites((myInvitesData || []) as FamilyInvite[])
@@ -171,7 +171,15 @@ export default function FamilyPage() {
   return (
     <div className="max-w-xl mx-auto space-y-6">
       {myInvites.length > 0 && (
-        <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">
+        <div className="border-2 border-blue-500 bg-blue-500/10 rounded-2xl p-5 space-y-3">
+          <h2 className="text-white font-bold text-lg text-center">
+            🎉 You've Been Invited!
+          </h2>
+
+          <p className="text-center text-white/80 text-sm">
+            Join your family to start competing together
+          </p>
+
           <h2 className="text-white font-semibold">
             Invites For You
           </h2>
