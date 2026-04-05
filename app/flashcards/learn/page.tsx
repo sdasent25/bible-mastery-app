@@ -10,6 +10,8 @@ export default function FlashcardsLearnPage() {
   const [flashcards, setFlashcards] = useState<any[]>([])
   const [index, setIndex] = useState(0)
   const [step, setStep] = useState(0)
+  const [input, setInput] = useState("")
+  const [feedback, setFeedback] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -31,24 +33,55 @@ export default function FlashcardsLearnPage() {
   const card = flashcards[index]
   const words = card.verse_text.split(" ")
 
-  function getDisplayText() {
-    if (step === 0) return words.slice(0, 2).join(" ")
-    if (step === 1) return words.slice(0, 4).join(" ")
-    if (step === 2) return words.slice(0, Math.ceil(words.length / 2)).join(" ")
+  function getPrompt() {
+    if (step === 0) {
+      return words.slice(0, 2).join(" ") + " _____ _____"
+    }
+
+    if (step === 1) {
+      return words.slice(0, 2).join(" ") + " _____ _____ _____ _____"
+    }
+
+    return "Type the full verse"
+  }
+
+  function getAnswer() {
+    if (step === 0) return words.slice(2, 4).join(" ")
+    if (step === 1) return words.slice(2, Math.ceil(words.length / 2)).join(" ")
     return card.verse_text
   }
 
-  function handleNextStep() {
-    if (step < 3) {
-      setStep(step + 1)
+  function normalize(text: string) {
+    return text.toLowerCase().replace(/[^\w\s]/g, "").trim()
+  }
+
+  function handleSubmit() {
+    const correct = normalize(getAnswer())
+    const user = normalize(input)
+
+    if (correct.includes(user) || user.includes(correct)) {
+      setFeedback("correct")
+
+      setTimeout(() => {
+        setInput("")
+        setFeedback(null)
+
+        if (step < 2) {
+          setStep(step + 1)
+        } else {
+          nextCard()
+        }
+      }, 800)
     } else {
-      nextCard()
+      setFeedback("wrong")
     }
   }
 
   function nextCard() {
     setIndex((prev) => (prev + 1) % flashcards.length)
     setStep(0)
+    setInput("")
+    setFeedback(null)
   }
 
   return (
@@ -68,28 +101,41 @@ export default function FlashcardsLearnPage() {
 
       <div className="flex-1 px-4 py-6 max-w-xl mx-auto w-full space-y-6">
         <h1 className="text-2xl font-bold text-white text-center">
-          Learn Step by Step
+          Active Recall
         </h1>
 
         <p className="text-center text-white/80 text-sm">
-          Reveal the verse gradually and train your memory
+          Fill in the missing parts of the verse
         </p>
 
         <div className="p-6 rounded-2xl bg-neutral-900 text-white text-center border border-neutral-700 min-h-[200px] flex items-center justify-center text-lg leading-relaxed">
-          {getDisplayText()}
+          {getPrompt()}
         </div>
 
-        {step === 3 && (
-          <p className="text-center text-gray-400">
-            {card.reference}
-          </p>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your answer..."
+          className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none text-base"
+        />
+
+        {feedback === "correct" && (
+          <div className="text-green-400 text-center font-semibold">
+            Correct ✅
+          </div>
+        )}
+
+        {feedback === "wrong" && (
+          <div className="text-red-400 text-center font-semibold">
+            Try again
+          </div>
         )}
 
         <button
-          onClick={handleNextStep}
+          onClick={handleSubmit}
           className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
         >
-          {step < 3 ? "Continue" : "Next Verse"}
+          Submit
         </button>
       </div>
     </div>
