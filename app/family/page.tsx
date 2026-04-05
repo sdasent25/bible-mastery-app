@@ -125,7 +125,7 @@ export default function FamilyPage() {
 
       try {
         await navigator.clipboard.writeText(inviteLink)
-        alert("Invite sent! Link copied as backup.")
+        alert("Invitation sent! 📧")
       } catch {
         alert(`Invite sent!\n\nCopy this link:\n${inviteLink}`)
       }
@@ -151,10 +151,23 @@ export default function FamilyPage() {
     const inviteLink = `${window.location.origin}/family/join?token=${invite.token}`
 
     try {
-      await navigator.clipboard.writeText(inviteLink)
-      alert("Invite link copied! Paste it to share.")
+      await fetch("/api/send-invite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: invite.email,
+          inviteLink,
+          familyName: "Bible Athlete Family",
+          inviter: "A Family Member",
+        }),
+      })
+
+      alert("Invitation sent!")
     } catch (err) {
-      prompt("Copy this invite link:", inviteLink)
+      console.error(err)
+      alert("Failed to resend invite")
     }
   }
 
