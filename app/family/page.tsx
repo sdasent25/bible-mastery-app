@@ -86,27 +86,31 @@ export default function FamilyPage() {
   }, [])
 
   async function sendInvite() {
-    console.log("SEND INVITE CLICKED")
-
-    if (!email || !familyId) return
-
-    const { data: userRes } = await supabase.auth.getUser()
-    if (!userRes.user) return
-
-    const { data } = await supabase
-      .from("family_invites")
-      .insert({
-        family_id: familyId,
-        email,
-        invited_by: userRes.user.id,
-      })
-      .select()
-      .single()
-
-    const inviteLink = `${window.location.origin}/family/join?token=${data.token}`
+    if (!email) return
 
     try {
-      const res = await fetch("/api/send-invite", {
+      const { data: userRes } = await supabase.auth.getUser()
+      const userId = userRes?.user?.id
+
+      const { data, error } = await supabase
+        .from("family_invites")
+        .insert({
+          family_id: familyId,
+          email,
+          invited_by: userId,
+        })
+        .select()
+        .single()
+
+      if (error) {
+        console.error(error)
+        alert("Error creating invite")
+        return
+      }
+
+      const inviteLink = `${window.location.origin}/family/join?token=${data.token}`
+
+      await fetch("/api/send-invite", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,15 +123,19 @@ export default function FamilyPage() {
         }),
       })
 
-      const dataRes = await res.json()
+      try {
+        await navigator.clipboard.writeText(inviteLink)
+        alert("Invite sent! Link copied as backup.")
+      } catch {
+        alert(`Invite sent!\n\nCopy this link:\n${inviteLink}`)
+      }
 
-      console.log("API RESPONSE:", dataRes)
+      setEmail("")
+      load()
     } catch (err) {
-      console.error("FETCH ERROR:", err)
+      console.error(err)
+      alert("Failed to send invite")
     }
-
-    setEmail("")
-    load()
   }
 
   async function deleteInvite(inviteId: string) {
