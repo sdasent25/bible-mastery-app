@@ -1,11 +1,12 @@
-import { Resend } from "resend"
 import { NextResponse } from "next/server"
+import { Resend } from "resend"
 
 export const runtime = "nodejs"
 
 export async function POST(req: Request) {
   try {
-    const { email, inviteLink, familyName, inviter } = await req.json()
+    // Debug check for server logs without exposing the key itself.
+    console.log("RESEND KEY EXISTS:", !!process.env.RESEND_API_KEY)
 
     if (!process.env.RESEND_API_KEY) {
       throw new Error("Missing RESEND_API_KEY")
@@ -13,32 +14,36 @@ export async function POST(req: Request) {
 
     const resend = new Resend(process.env.RESEND_API_KEY)
 
+    const body = await req.json()
+    const { email, inviteLink } = body
+
+    if (!email || !inviteLink) {
+      return NextResponse.json(
+        { error: "Missing email or invite link" },
+        { status: 400 },
+      )
+    }
+
     const response = await resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
-      subject: "🔥 You’ve been invited to join a Bible Athlete family",
+      subject: "You're invited to Bible Athlete",
       html: `
-        <div style="background:#020617;padding:40px;font-family:sans-serif;color:white;text-align:center;">
-          
-          <h1>You’ve Been Invited 🔥</h1>
-
-          <p>${inviter} invited you to join:</p>
-
-          <h2>${familyName}</h2>
-
-          <a href="${inviteLink}" 
-             style="display:inline-block;margin-top:20px;padding:14px 24px;background:#2563eb;color:white;text-decoration:none;border-radius:10px;font-weight:bold;">
-             Join Family
-          </a>
+        <div style="font-family: sans-serif;">
+          <h2>You’ve been invited!</h2>
+          <p>Click below to join your family:</p>
+          <a href="${inviteLink}">${inviteLink}</a>
         </div>
       `,
     })
 
-    console.log("EMAIL SENT:", response)
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
+    return NextResponse.json({ success: true, response })
+  } catch (error: any) {
     console.error("EMAIL ERROR:", error)
-    return NextResponse.json({ error }, { status: 500 })
+
+    return NextResponse.json(
+      { error: error.message || "Email failed" },
+      { status: 500 },
+    )
   }
 }
