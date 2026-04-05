@@ -1,42 +1,67 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getFlashcards } from "@/lib/flashcards"
 
-const STOP_WORDS = [
-  "the", "and", "of", "to", "a", "is", "in", "that", "he", "she", "it", "so", "for", "on", "with", "as", "was"
-]
+const STOP_WORDS = new Set([
+  "the", "and", "of", "so", "he", "she", "it", "in", "to", "a", "is", "was",
+  "were", "be", "been", "being", "that", "this", "these", "those", "for",
+  "on", "at", "by", "from", "with", "as", "an", "but", "if", "or", "nor", "not",
+])
 
-function isMeaningful(word: string) {
-  return !STOP_WORDS.includes(word.toLowerCase())
+type Flashcard = {
+  id: string
+  verse_text: string
+  reference: string
 }
 
-function getValidIndices(words: string[]) {
-  return words
-    .map((w: string, i: number) => (isMeaningful(w) ? i : null))
-    .filter((i): i is number => i !== null)
+function normalizeWord(word: string) {
+  return word.toLowerCase().replace(/[^\w]/g, "").trim()
 }
 
-function getRandomIndicesFromValid(words: string[], count: number) {
-  const valid = getValidIndices(words)
-  const shuffled = [...valid].sort(() => 0.5 - Math.random())
-  return shuffled.slice(0, Math.min(valid.length, count))
+function tokenizeVerse(verse: string) {
+  return verse.split(" ").map((token) => ({
+    original: token,
+    clean: normalizeWord(token),
+  }))
+}
+
+function getEligibleIndices(tokens: { original: string; clean: string }[]) {
+  return tokens
+    .map((token, index) => ({ token, index }))
+    .filter(({ token }) => token.clean.length > 2 && !STOP_WORDS.has(token.clean))
+    .map(({ index }) => index)
+}
+
+function getRandomIndices(pool: number[], count: number) {
+  const shuffled = [...pool].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, Math.min(count, pool.length)).sort((a, b) => a - b)
 }
 
 export default function FlashcardsLearnPage() {
   const router = useRouter()
 
-  const [flashcards, setFlashcards] = useState<any[]>([])
+  const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
   const [step, setStep] = useState(0)
-  const [input, setInput] = useState("")
-  const [feedback, setFeedback] = useState<string | null>(null)
   const [hiddenIndices, setHiddenIndices] = useState<number[]>([])
   const [inputs, setInputs] = useState<string[]>([])
+  const [fullVerseInput, setFullVerseInput] = useState("")
+  const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null)
+
   const tapSound = useRef<HTMLAudioElement | null>(null)
   const correctSound = useRef<HTMLAudioElement | null>(null)
   const wrongSound = useRef<HTMLAudioElement | null>(null)
+
+  useEffect(() => {
+    async function load() {
+      const data = await getFlashcards()
+      setFlashcards((data || []) as Flashcard[])
+    }
+
+    load()
+  }, [])
 
   useEffect(() => {
     tapSound.current = new Audio("/sounds/tap.mp3")
@@ -44,113 +69,161 @@ export default function FlashcardsLearnPage() {
     wrongSound.current = new Audio("/sounds/wrong.mp3")
   }, [])
 
-  useEffect(() => {
-    async function load() {
-      const data = await getFlashcards()
-      setFlashcards(data || [])
-    }
+  const card = flashcards[index]
 
-    load()
-  }, [])
+  const tokens = useMemo(() => {
+    if (!card) return []
+    return tokenizeVerse(card.verse_text)
+  }, [card])
 
-  function normalize(text: string) {
-    return text.toLowerCase().replace(/[^\w\s]/g, "").trim()
-  }
+  const eligibleIndices = useMemo(() => {
+    return getEligibleIndices(tokens)
+  }, [tokens])
 
   useEffect(() => {
-    if (!flashcards.length) return
+    if (!card || tokens.length === 0) return
 
-    const words = flashcards[index]?.verse_text.split(" ") || []
+    let nextHidden: number[] = []
 
     if (step === 0) {
-      setHiddenIndices(getRandomIndicesFromValid(words, 2))
-      return
-    }
-
-    if (step === 1) {
-      setHiddenIndices(getRandomIndicesFromValid(words, Math.ceil(words.length / 2)))
-      return
-    }
-
-    setHiddenIndices([])
-  }, [index, step, flashcards])
-
-  useEffect(() => {
-    if (hiddenIndices.length) {
-      setInputs(new Array(hiddenIndices.length).fill(""))
+      nextHidden = getRandomIndices(eligibleIndices, 2)
+    } else if (step === 1) {
+      nextHidden = getRandomIndices(
+        eligibleIndices,
+        Math.max(2, Math.ceil(eligibleIndices.length / 2))
+      )
     } else {
-      setInputs([])
+      nextHidden = []
     }
-  }, [hiddenIndices])
+
+    setHiddenIndices(nextHidden)
+    setInputs(new Array(nextHidden.length).fill(""))
+    setFullVerseInput("")
+    setFeedback(null)
+  }, [card, step, eligibleIndices, tokens.length])
 
   if (!flashcards.length) {
     return (
-      <div className="text-center text-gray-400 mt-10">
-        No flashcards yet
+      <div className="min-h-screen flex flex-col">
+        <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
+          <button
+            onClick={() => router.push("/flashcards")}
+            className="text-sm text-gray-300"
+          >
+            ← Flashcards
+          </button>
+
+          <div className="text-sm text-white/80">
+            Learn
+          </div>
+        </div>
+
+        <div className="px-4 py-10 text-center text-white/80">
+          No flashcards yet
+        </div>
       </div>
     )
   }
 
-  const card = flashcards[index]
-  const words = card.verse_text.split(" ")
-
-  function getPrompt() {
+  function renderPrompt() {
     if (step === 2) {
-      return "Type the full verse"
+      return (
+        <div className="p-6 rounded-2xl bg-neutral-900 text-white text-center border border-neutral-700 min-h-[160px] flex items-center justify-center text-lg leading-relaxed">
+          Type the full verse from memory
+        </div>
+      )
     }
+
+    return (
+      <div className="p-6 rounded-2xl bg-neutral-900 text-white text-center border border-neutral-700 min-h-[180px] flex flex-wrap items-center justify-center gap-2 text-lg leading-relaxed">
+        {tokens.map((token, tokenIndex) => {
+          const isHidden = hiddenIndices.includes(tokenIndex)
+
+          if (!isHidden) {
+            return (
+              <span key={`token-${tokenIndex}`} className="text-white">
+                {token.original}
+              </span>
+            )
+          }
+
+          return (
+            <span
+              key={`blank-${tokenIndex}`}
+              className="inline-flex items-center justify-center min-w-[84px] h-11 px-3 rounded-xl border border-blue-500 bg-blue-500/10 text-blue-200 text-base font-medium"
+            >
+              blank
+            </span>
+          )
+        })}
+      </div>
+    )
   }
 
-  function getAnswer() {
-    const verseWords = card.verse_text.split(" ")
-    return hiddenIndices.map(i => verseWords[i]).join(" ")
+  function normalizeText(text: string) {
+    return text.toLowerCase().replace(/[^\w\s]/g, "").replace(/\s+/g, " ").trim()
   }
 
-  function handleSubmit() {
-    tapSound.current?.play().catch(() => {})
-
-    const verseWords = card.verse_text.split(" ")
-    const correctWords = hiddenIndices.map((i: number) => verseWords[i])
-
-    const normalizedCorrect = step === 2
-      ? [normalize(card.verse_text)]
-      : correctWords.map((w: string) => normalize(w))
-    const normalizedUser = step === 2
-      ? [normalize(input)]
-      : inputs.map((w: string) => normalize(w))
-
-    const isCorrect = step === 2
-      ? normalizedCorrect[0].includes(normalizedUser[0]) || normalizedUser[0].includes(normalizedCorrect[0])
-      : normalizedCorrect.every((word: string, i: number) =>
-          normalizedUser[i] === word
-        )
-
-    if (isCorrect) {
-      correctSound.current?.play().catch(() => {})
-      setFeedback("correct")
-
-      setTimeout(() => {
-        setInput("")
-        setInputs([])
-        setFeedback(null)
-
-        if (step < 2) {
-          setStep(step + 1)
-        } else {
-          nextCard()
-        }
-      }, 800)
-    } else {
-      wrongSound.current?.play().catch(() => {})
-      setFeedback("wrong")
-    }
+  function handleInputChange(value: string, inputIndex: number) {
+    setInputs((prev) => {
+      const next = [...prev]
+      next[inputIndex] = value
+      return next
+    })
   }
 
   function nextCard() {
     setIndex((prev) => (prev + 1) % flashcards.length)
     setStep(0)
-    setInput("")
+    setHiddenIndices([])
     setInputs([])
+    setFullVerseInput("")
     setFeedback(null)
+  }
+
+  function handleSubmit() {
+    tapSound.current?.play().catch(() => undefined)
+
+    if (step < 2) {
+      const correctAnswers = hiddenIndices.map((hiddenIndex) => tokens[hiddenIndex]?.clean || "")
+      const userAnswers = inputs.map((value) => normalizeWord(value))
+
+      const isCorrect =
+        correctAnswers.length === userAnswers.length &&
+        correctAnswers.every((answer, i) => userAnswers[i] === answer)
+
+      if (isCorrect) {
+        correctSound.current?.play().catch(() => undefined)
+        setFeedback("correct")
+
+        setTimeout(() => {
+          setFeedback(null)
+          if (step < 2) {
+            setStep((prev) => prev + 1)
+          }
+        }, 800)
+      } else {
+        wrongSound.current?.play().catch(() => undefined)
+        setFeedback("wrong")
+      }
+
+      return
+    }
+
+    const isFullVerseCorrect =
+      normalizeText(fullVerseInput) === normalizeText(card.verse_text)
+
+    if (isFullVerseCorrect) {
+      correctSound.current?.play().catch(() => undefined)
+      setFeedback("correct")
+
+      setTimeout(() => {
+        nextCard()
+      }, 800)
+    } else {
+      wrongSound.current?.play().catch(() => undefined)
+      setFeedback("wrong")
+    }
   }
 
   return (
@@ -177,47 +250,27 @@ export default function FlashcardsLearnPage() {
           Fill in the missing parts of the verse
         </p>
 
-        <div className="p-6 rounded-2xl bg-neutral-900 text-white border border-neutral-700 min-h-[160px] flex flex-wrap gap-2 justify-center text-lg leading-relaxed">
-          {step === 2 ? (
-            <span>{getPrompt()}</span>
-          ) : (
-            words.map((word: string, i: number) =>
-              hiddenIndices.includes(i) ? (
-                <span
-                  key={i}
-                  className="px-2 py-1 border-b-2 border-blue-500 min-w-[40px] text-center"
-                >
-                  _____
-                </span>
-              ) : (
-                <span key={i}>{word}</span>
-              )
-            )
-          )}
-        </div>
+        {renderPrompt()}
 
-        {step === 2 ? (
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your answer..."
-            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none text-base"
-          />
-        ) : (
-          <div className="flex flex-wrap gap-2 justify-center">
-            {inputs.map((val: string, i: number) => (
+        {step < 2 ? (
+          <div className={`grid gap-3 ${inputs.length === 2 ? "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
+            {inputs.map((value, inputIndex) => (
               <input
-                key={i}
-                value={val}
-                onChange={(e) => {
-                  const updated = [...inputs]
-                  updated[i] = e.target.value
-                  setInputs(updated)
-                }}
-                className="w-20 p-2 text-center rounded-lg bg-neutral-900 border border-neutral-700 text-white"
+                key={`input-${inputIndex}`}
+                value={value}
+                onChange={(e) => handleInputChange(e.target.value, inputIndex)}
+                placeholder={`Missing word ${inputIndex + 1}`}
+                className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base"
               />
             ))}
           </div>
+        ) : (
+          <textarea
+            value={fullVerseInput}
+            onChange={(e) => setFullVerseInput(e.target.value)}
+            placeholder="Type the full verse..."
+            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none focus:border-blue-500 text-base min-h-[140px]"
+          />
         )}
 
         {feedback === "correct" && (
@@ -230,6 +283,18 @@ export default function FlashcardsLearnPage() {
           <div className="text-red-400 text-center font-semibold">
             Try again
           </div>
+        )}
+
+        {step < 2 && (
+          <p className="text-center text-white/70 text-sm">
+            Enter the missing words in order
+          </p>
+        )}
+
+        {step === 2 && (
+          <p className="text-center text-white/70 text-sm">
+            Type the full verse as accurately as you can
+          </p>
         )}
 
         <button
