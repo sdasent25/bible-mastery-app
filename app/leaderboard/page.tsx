@@ -1,113 +1,114 @@
-'use client';
+"use client"
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { useEffect, useState } from "react"
+import { supabase } from "@/lib/supabase"
 
-type LeaderboardRow = {
-  user_id: string;
-  xp: number;
-};
-
-function formatDateLocal(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function getCurrentWeekStart(): string {
-  const now = new Date();
-  const weekStart = new Date(now);
-  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-  weekStart.setHours(0, 0, 0, 0);
-  return formatDateLocal(weekStart);
+type LeaderboardUser = {
+  user_id: string
+  family_id: string
+  xp: number
 }
 
 export default function LeaderboardPage() {
-  const [loading, setLoading] = useState(true);
-  const [rows, setRows] = useState<LeaderboardRow[]>([]);
-  const [weekStart, setWeekStart] = useState('');
+  const [users, setUsers] = useState<LeaderboardUser[]>([])
+  const [currentUser, setCurrentUser] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [noFamily, setNoFamily] = useState(false)
 
-  useEffect(() => {
-    async function loadLeaderboard() {
-      const { data: authData } = await supabase.auth.getUser();
-      if (!authData.user) {
-        window.location.assign('/login');
-        return;
-      }
+  async function load() {
+    setLoading(true)
 
-      const currentWeekStart = getCurrentWeekStart();
-      setWeekStart(currentWeekStart);
-
-      const { data, error } = await supabase
-        .from('weekly_xp')
-        .select('user_id, xp')
-        .eq('week_start', currentWeekStart)
-        .order('xp', { ascending: false })
-        .limit(50);
-
-      if (error) {
-        console.error('Error loading leaderboard:', error);
-        setRows([]);
-      } else {
-        setRows((data || []) as LeaderboardRow[]);
-      }
-
-      setLoading(false);
+    const { data: userRes } = await supabase.auth.getUser()
+    if (!userRes?.user) {
+      setLoading(false)
+      return
     }
 
-    loadLeaderboard();
-  }, []);
+    const userId = userRes.user.id
+    setCurrentUser(userId)
+
+    const { data: member } = await supabase
+      .from("family_members")
+      .select("family_id")
+      .eq("user_id", userId)
+      .single()
+
+    if (!member?.family_id) {
+      setNoFamily(true)
+      setLoading(false)
+      return
+    }
+
+    const { data, error } = await supabase
+      .from("family_leaderboard")
+      .select("*")
+      .eq("family_id", member.family_id)
+      .order("xp", { ascending: false })
+
+    if (!error && data) {
+      setUsers(data as LeaderboardUser[])
+    }
+
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-        <div className="mx-auto max-w-3xl">
-          <p className="text-gray-700">Loading weekly leaderboard...</p>
-        </div>
-      </main>
-    );
+      <div className="text-center text-white/80 mt-10">
+        Loading leaderboard...
+      </div>
+    )
+  }
+
+  if (noFamily) {
+    return (
+      <div className="text-center text-white/80 mt-10 space-y-3">
+        <h2 className="text-xl font-semibold">No Family Found</h2>
+        <p className="text-sm text-white/60">
+          Join or create a family plan to see leaderboard
+        </p>
+      </div>
+    )
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
-      <div className="mx-auto max-w-3xl space-y-6">
-        <header className="rounded-xl bg-white p-5 shadow-md">
-          <h1 className="text-3xl font-bold text-gray-900">Weekly Leaderboard</h1>
-          <p className="mt-1 text-sm text-gray-600">Current week starting: {weekStart}</p>
-        </header>
+    <div className="max-w-xl mx-auto space-y-6">
+      <h1 className="text-3xl font-bold text-white text-center">
+        Leaderboard
+      </h1>
 
-        {rows.length === 0 ? (
-          <section className="rounded-xl bg-white p-6 text-center shadow-md">
-            <p className="text-lg font-semibold text-gray-900">No rankings yet for this week</p>
-            <p className="mt-2 text-sm text-gray-600">Complete quizzes to be the first on the board.</p>
-          </section>
-        ) : (
-          <section className="rounded-xl bg-white p-4 shadow-md">
-            <div className="grid grid-cols-[64px_1fr_90px] gap-3 border-b border-gray-200 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-gray-500">
-              <span>Rank</span>
-              <span>User</span>
-              <span className="text-right">XP</span>
-            </div>
-            <div>
-              {rows.map((row, index) => (
-                <div key={`${row.user_id}-${index}`} className="grid grid-cols-[64px_1fr_90px] gap-3 border-b border-gray-100 px-3 py-3 last:border-b-0">
-                  <span className="font-bold text-gray-900">#{index + 1}</span>
-                  <span className="truncate text-gray-800">{`User ${row.user_id.slice(0, 8)}`}</span>
-                  <span className="text-right font-semibold text-emerald-700">{row.xp}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+      <div className="bg-neutral-900 border border-neutral-700 rounded-2xl divide-y divide-neutral-800">
+        {users.map((user, index) => {
+          const isCurrent = user.user_id === currentUser
 
-        <Link href="/dashboard" className="block">
-          <button className="w-full rounded-xl bg-gray-700 p-4 font-semibold text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500">
-            Back to Dashboard
-          </button>
-        </Link>
+          return (
+            <div
+              key={user.user_id}
+              className={`flex items-center justify-between px-5 py-4 ${
+                isCurrent ? "bg-blue-600/20" : ""
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-lg font-bold text-white">
+                  #{index + 1}
+                </span>
+
+                <span className="text-white/90">
+                  {isCurrent ? "You" : "Member"}
+                </span>
+              </div>
+
+              <span className="text-white font-semibold">
+                {user.xp} XP
+              </span>
+            </div>
+          )
+        })}
       </div>
-    </main>
-  );
+    </div>
+  )
 }
