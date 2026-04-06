@@ -1,18 +1,18 @@
 export type GeneratedPlan = {
-  timeline: number
+  timelineDays: number
   segmentsPerDay: number
   trainingEnabled: boolean
   estimatedDays: number
 }
 
-export function generatePlan(days: number, trainingEnabled: boolean): GeneratedPlan {
+export function generatePlan(timelineDays: number, trainingEnabled: boolean): GeneratedPlan {
   const totalSegments = 365
-  const segmentsPerDay = totalSegments / days
+  const segmentsPerDay = Math.ceil(totalSegments / timelineDays)
 
   return {
-    timeline: days,
-    segmentsPerDay: Math.ceil(segmentsPerDay),
+    timelineDays,
+    segmentsPerDay,
     trainingEnabled,
-    estimatedDays: days,
+    estimatedDays: timelineDays,
   }
 }

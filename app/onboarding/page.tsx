@@ -22,18 +22,18 @@ const trainingOptions = [
 export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep] = useState(1)
-  const [timeline, setTimeline] = useState<number | null>(null)
+  const [selectedTimeline, setSelectedTimeline] = useState<number | null>(null)
   const [trainingEnabled, setTrainingEnabled] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
   const plan = useMemo(() => {
-    if (timeline === null || trainingEnabled === null) {
+    if (selectedTimeline === null || trainingEnabled === null) {
       return null
     }
 
-    return generatePlan(timeline, trainingEnabled)
-  }, [timeline, trainingEnabled])
+    return generatePlan(selectedTimeline, trainingEnabled)
+  }, [selectedTimeline, trainingEnabled])
 
   useEffect(() => {
     let active = true
@@ -67,10 +67,11 @@ export default function OnboardingPage() {
   }, [router])
 
   async function handleStartJourney() {
-    if (!plan) return
+    if (!selectedTimeline || trainingEnabled === null) return
 
     try {
       setSaving(true)
+      const plan = generatePlan(selectedTimeline, trainingEnabled)
       await saveUserPlan(plan)
       router.push("/home")
     } catch (error) {
@@ -100,7 +101,7 @@ export default function OnboardingPage() {
               <button
                 key={option.value}
                 onClick={() => {
-                  setTimeline(option.value)
+                  setSelectedTimeline(option.value)
                   setStep(2)
                 }}
                 className="rounded-xl border border-white/10 bg-[#121826] px-5 py-5 text-left text-xl font-bold text-white shadow-[0_0_30px_rgba(34,197,94,0.08)] transition hover:border-[#22c55e]/50 hover:bg-[#162033]"
@@ -171,7 +172,7 @@ export default function OnboardingPage() {
           <div className="mt-8 space-y-4 rounded-xl border border-white/10 bg-[#121826] p-5 text-white shadow-[0_0_40px_rgba(34,197,94,0.08)]">
             <div className="space-y-1">
               <p className="text-lg font-bold text-white">
-                You&apos;ll complete the Bible in {plan.timeline} days
+                You&apos;ll complete the Bible in {plan.timelineDays} days
               </p>
               <p className="text-base text-white">
                 Reading about {plan.segmentsPerDay} segments per day

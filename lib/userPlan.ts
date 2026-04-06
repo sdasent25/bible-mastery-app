@@ -7,40 +7,38 @@ export type UserPlan = GeneratedPlan & {
 
 type UserSettingsRow = {
   user_id: string
-  reading_time: number | null
+  timeline_days: number | null
   segments_per_day: number | null
   training_enabled: boolean | null
   estimated_days: number | null
 }
 
-export async function saveUserPlan(plan: GeneratedPlan) {
+export async function saveUserPlan(plan: {
+  timelineDays: number
+  segmentsPerDay: number
+  trainingEnabled: boolean
+  estimatedDays: number
+}) {
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
   if (!user) {
-    throw new Error("User must be signed in to save a plan.")
-  }
-
-  const payload = {
-    user_id: user.id,
-    reading_time: plan.timeline,
-    segments_per_day: plan.segmentsPerDay,
-    training_enabled: plan.trainingEnabled,
-    estimated_days: plan.estimatedDays,
+    return
   }
 
   const { error } = await supabase
     .from("user_settings")
-    .upsert(payload, { onConflict: "user_id" })
+    .upsert({
+      user_id: user.id,
+      timeline_days: plan.timelineDays,
+      segments_per_day: plan.segmentsPerDay,
+      training_enabled: plan.trainingEnabled,
+      estimated_days: plan.estimatedDays,
+    }, { onConflict: "user_id" })
 
   if (error) {
-    throw error
-  }
-
-  return {
-    userId: user.id,
-    ...plan,
+    console.error("Error saving user plan:", error)
   }
 }
 
@@ -55,7 +53,7 @@ export async function getUserPlan(): Promise<UserPlan | null> {
 
   const { data, error } = await supabase
     .from("user_settings")
-    .select("user_id, reading_time, segments_per_day, training_enabled, estimated_days")
+    .select("user_id, timeline_days, segments_per_day, training_enabled, estimated_days")
     .eq("user_id", user.id)
     .maybeSingle<UserSettingsRow>()
 
@@ -70,7 +68,7 @@ export async function getUserPlan(): Promise<UserPlan | null> {
 
   return {
     userId: data.user_id,
-    timelineDays: data.reading_time ?? 365,
+    timelineDays: data.timeline_days ?? 365,
     segmentsPerDay: data.segments_per_day ?? 1,
     trainingEnabled: data.training_enabled === true,
     estimatedDays: data.estimated_days ?? 365,
