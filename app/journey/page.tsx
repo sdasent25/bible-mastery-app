@@ -188,8 +188,10 @@ export default function JourneyPage() {
       // Fallback if no progress system exists
       if (!progress || progress.currentSegmentIndex === undefined) {
         progress = {
+          programId: selectedProgram,
           completed: false,
           currentSegmentIndex: 0,
+          bonusAwarded: false,
         }
       }
 
