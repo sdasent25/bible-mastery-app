@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { createClient } from "@/lib/supabase/client"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -10,6 +11,7 @@ export default function DashboardPage() {
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
   const [invite, setInvite] = useState<any>(null)
+  const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
   async function load() {
@@ -76,6 +78,28 @@ export default function DashboardPage() {
 
   useEffect(() => {
     load()
+  }, [])
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const profileClient = createClient()
+
+      const {
+        data: { user },
+      } = await profileClient.auth.getUser()
+
+      if (!user) return
+
+      const { data } = await profileClient
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single()
+
+      setProfile(data)
+    }
+
+    fetchProfile()
   }, [])
 
   if (loading) {
@@ -157,10 +181,26 @@ export default function DashboardPage() {
 
       <div className="space-y-3">
         <button
-          onClick={() => router.push("/flashcards/learn")}
+          onClick={() => {
+            if (!profile) return
+
+            if (profile.plan_type === "pro_plus") {
+              router.push("/journey")
+              return
+            }
+
+            if (profile.plan_type === "trial") {
+              router.push("/journey")
+              return
+            }
+
+            router.push("/upgrade")
+          }}
           className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
         >
-          Continue Learning
+          {profile?.plan_type === "pro"
+            ? "Unlock Your Journey"
+            : "Continue Learning"}
         </button>
 
         <button
