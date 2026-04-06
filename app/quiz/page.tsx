@@ -14,6 +14,7 @@ import {
   markProgramBonusAwarded,
 } from '@/lib/programProgress';
 import { incrementDailyProgress } from '@/lib/dailyProgress';
+import { incrementWeeklyScore } from '@/lib/weeklyScore';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
@@ -323,6 +324,7 @@ export default function QuizPage() {
       setProgramProgressSaved(true);
       const nextProgress = await completeProgramSegment(activeProgram.id, activeProgram.segments.length);
       await incrementDailyProgress();
+      await incrementWeeklyScore(1);
       console.log("Daily progress incremented");
 
       if (activeProgramSegmentIndex === activeProgram.segments.length - 1) {
