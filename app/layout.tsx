@@ -20,12 +20,13 @@ const geistMono = Geist_Mono({
 });
 
 function SoundToggle() {
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
 
-  useEffect(() => {
-    const stored = localStorage.getItem("sound");
-    if (stored === "off") setEnabled(false);
-  }, []);
+    return localStorage.getItem("sound") !== "off";
+  });
 
   const toggle = () => {
     const next = !enabled;
@@ -49,19 +50,28 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [locale, setLocale] = useState("en");
+  const [locale] = useState(() => {
+    if (typeof window === "undefined") {
+      return "en";
+    }
+
+    return getLocale();
+  });
   const router = useRouter();
   const pathname = usePathname();
+  const publicRoutes = ['/', '/login', '/signup', '/upgrade', '/terms', '/privacy'];
+  const isPublicRoute = publicRoutes.includes(pathname);
 
   useEffect(() => {
     const checkAuth = async () => {
+      if (isPublicRoute) {
+        setIsAuthenticated(false);
+        return;
+      }
+
       const { data: { user } } = await supabase.auth.getUser();
       const authenticated = !!user;
       setIsAuthenticated(authenticated);
-
-      // Public routes that don't require authentication
-      const publicRoutes = ['/login', '/upgrade'];
-      const isPublicRoute = publicRoutes.includes(pathname);
 
       // Redirect to login if not authenticated and not on public route
       if (!authenticated && !isPublicRoute) {
@@ -70,7 +80,7 @@ export default function RootLayout({
     };
 
     checkAuth();
-  }, [pathname, router]);
+  }, [isPublicRoute, pathname, router]);
 
   useEffect(() => {
     const sounds = [
@@ -88,14 +98,12 @@ export default function RootLayout({
   }, []);
 
   useEffect(() => {
-    const nextLocale = getLocale();
-    setLocale(nextLocale);
-    document.documentElement.lang = nextLocale;
-    void getMessages(nextLocale);
-  }, []);
+    document.documentElement.lang = locale;
+    void getMessages(locale);
+  }, [locale]);
 
   // Show loading state while checking authentication
-  if (isAuthenticated === null) {
+  if (isAuthenticated === null && !isPublicRoute) {
     return (
       <html
         lang={locale}
@@ -118,12 +126,25 @@ export default function RootLayout({
           <LanguageToggle />
           <SoundToggle />
         </div>
-        <AppLayout>{children}</AppLayout>
-        <footer className="text-sm text-gray-600 mt-10 pb-6 text-center">
-          <p>
-            © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
-          </p>
-        </footer>
+        {isPublicRoute ? (
+          <>
+            {children}
+            <footer className="border-t border-white/10 bg-[#050816] px-6 py-8 text-center text-sm text-white/80">
+              <p>
+                © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
+              </p>
+            </footer>
+          </>
+        ) : (
+          <>
+            <AppLayout>{children}</AppLayout>
+            <footer className="mt-10 pb-6 text-center text-sm text-white/70">
+              <p>
+                © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
+              </p>
+            </footer>
+          </>
+        )}
       </body>
     </html>
   );
