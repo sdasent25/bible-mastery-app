@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
-import { getProgramById, programs } from "@/lib/programs"
+import { getProgramById } from "@/lib/programs"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
@@ -23,6 +23,13 @@ type JourneyLockReason =
 type JourneyAccessResult = {
   locked: boolean
   reason: JourneyLockReason
+}
+
+type JourneyNode = {
+  label: string
+  segment: string
+  state: NodeState
+  access: JourneyAccessResult
 }
 
 function getSegmentAccess(planType: JourneyPlanType, segment: string): JourneyAccessResult {
@@ -98,16 +105,12 @@ export default function JourneyPage() {
 
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
-  const selectedProgram = "genesis"
-
-  const [nodes, setNodes] = useState<
-    { label: string; segment: string; state: NodeState; access: JourneyAccessResult }[]
-  >([])
+  const [nodes, setNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [planType, setPlanType] = useState<JourneyPlanType>("free")
-
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
+  const selectedProgram = "genesis"
   const streak = 3
   const dailyProgress = 1
   const dailyGoal = 2
@@ -117,12 +120,12 @@ export default function JourneyPage() {
     router.push("/quiz?mode=training")
   }
 
-  const handleStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    startX.current = "touches" in e ? e.touches[0].clientX : e.clientX
+  const handleStart = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    startX.current = "touches" in event ? event.touches[0].clientX : event.clientX
   }
 
-  const handleEnd = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
-    const endX = "changedTouches" in e ? e.changedTouches[0].clientX : e.clientX
+  const handleEnd = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    const endX = "changedTouches" in event ? event.changedTouches[0].clientX : event.clientX
     const diff = startX.current - endX
 
     if (diff > 50 && activeIndex < nodes.length - 1) {
@@ -159,14 +162,9 @@ export default function JourneyPage() {
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
-
-      for (const program of programs) {
-        const progress = await getProgramProgress(program.id)
-        void progress
-      }
     }
 
-    loadAllProgress()
+    void loadAllProgress()
   }, [])
 
   useEffect(() => {
@@ -222,7 +220,7 @@ export default function JourneyPage() {
       setLoading(false)
     }
 
-    loadProgram()
+    void loadProgram()
   }, [planType, selectedProgram])
 
   if (loading || !profileLoaded) {
@@ -237,7 +235,7 @@ export default function JourneyPage() {
   const focusedNode = nodes[activeIndex]
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
-  const progressPercent = Math.round((completedCount / totalCount) * 100)
+  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
   const program = getProgramById(selectedProgram)
   const focusedReason = focusedNode?.access.reason
   const paywallReason = (() => {
@@ -284,7 +282,6 @@ export default function JourneyPage() {
     <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
-      {/* MAIN */}
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
         <div className="flex justify-center mb-8">
@@ -326,29 +323,14 @@ export default function JourneyPage() {
           <div className="lg:hidden mb-4">
             <button
               onClick={handleTrainWeak}
-              className="
-                w-full
-                bg-purple-600 hover:bg-purple-500
-                text-white
-                py-3
-                rounded-xl
-                font-semibold
-                text-sm
-                transition-all duration-150
-                hover:scale-[1.02]
-                shadow-md hover:shadow-lg
-                active:scale-95
-                active:brightness-90
-                disabled:opacity-50
-                disabled:cursor-not-allowed
-              "
+              className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ⚡ Train Weak Areas
+              Train Weak Areas
             </button>
           </div>
         )}
 
-        <div className="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row">
+        <div className="flex flex-col lg:flex-row gap-8 max-w-5xl mx-auto">
 
           {/* PATH */}
           <div className="flex-1 relative">
@@ -433,7 +415,10 @@ export default function JourneyPage() {
                           rounded-2xl overflow-hidden
                           cursor-pointer
                           border
-                          transition-all duration-300 transition transform hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]
+                          transition-all duration-300
+                          active:scale-[0.98]
+                          hover:scale-[1.02]
+                          hover:shadow-xl
                           ${isActive
                             ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]"
                             : "border-gray-600"}
@@ -541,7 +526,7 @@ export default function JourneyPage() {
             {weakCount > 0 && (
               <button
                 onClick={handleTrainWeak}
-                className="mt-2 w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition transform transition-all duration-200 hover:scale-[1.02] hover:bg-[#222C40] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-2 w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Train Weak Areas →
               </button>
@@ -592,7 +577,7 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
-              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!activeNode}
             >
               Continue →

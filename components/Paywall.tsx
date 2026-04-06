@@ -9,14 +9,10 @@ type PaywallProps = {
 
 export default function Paywall({ onSelectPlan }: PaywallProps) {
   const [isFamily, setIsFamily] = useState(false)
-  const cardClass = "bg-[#121826] border border-gray-800 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-  const primaryButtonClass = "w-full md:w-auto bg-green-500 text-black font-bold rounded-xl px-6 py-3 shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 transition transform hover:scale-[1.02] active:scale-[0.98]"
-  const secondaryButtonClass = "w-full md:w-auto bg-[#1A2233] border border-gray-700 text-white rounded-xl px-6 py-3 transition-all duration-200 hover:bg-[#222C40] transition transform hover:scale-[1.02] active:scale-[0.98]"
 
   return (
-    <div className="relative min-h-screen bg-[#0B0F1A] px-4 py-16 text-white">
-      <div className="absolute left-1/2 top-[-100px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[120px]" />
-      <div className="relative mx-auto flex max-w-5xl flex-col items-center transition-opacity duration-300">
+    <div className="min-h-screen bg-[#0B0F1A] text-white px-4 py-16">
+      <div className="max-w-5xl mx-auto flex flex-col items-center">
         <h2 className="text-center text-sm text-green-400 mb-2">
           🔒 Your Journey is Locked
         </h2>
@@ -40,11 +36,11 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           <p>🔥 XP + Streak System</p>
         </div>
 
-        <div className={`mb-6 flex w-full max-w-md p-1 ${cardClass}`}>
+        <div className="w-full max-w-md flex bg-[#121826] p-1 rounded-lg mb-6">
           <button
             onClick={() => setIsFamily(false)}
-            className={`flex-1 rounded-md py-2 text-sm font-bold transition-all duration-200 ${
-              !isFamily ? "bg-green-500 text-black" : "text-gray-200"
+            className={`flex-1 py-2 rounded-md text-sm ${
+              !isFamily ? "bg-blue-600 text-white" : "text-gray-200"
             }`}
           >
             Individual
@@ -52,8 +48,8 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
 
           <button
             onClick={() => setIsFamily(true)}
-            className={`flex-1 rounded-md py-2 text-sm font-bold transition-all duration-200 ${
-              isFamily ? "bg-green-500 text-black" : "text-gray-200"
+            className={`flex-1 py-2 rounded-md text-sm ${
+              isFamily ? "bg-blue-600 text-white" : "text-gray-200"
             }`}
           >
             Family (Up to 6)
@@ -64,10 +60,10 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           {isFamily ? "Up to 6 family members" : "Single user plan"}
         </p>
 
-        <div className="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-2 items-stretch">
-          <div className={`flex h-full w-full flex-col justify-between p-5 ${cardClass}`}>
+        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+          <div className="w-full bg-[#121826] border border-neutral-800 rounded-xl p-5 flex flex-col justify-between h-full">
             <div className="flex-grow">
-              <h2 className="mb-2 text-xl font-bold text-white">Pro</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">Pro</h2>
               <p className="text-gray-200 mb-3">
                 {isFamily ? "$19.99 / month" : "$6.99 / month"}
               </p>
@@ -86,14 +82,14 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
                 onClick={() =>
                   onSelectPlan(isFamily ? "family_pro" : "pro")
                 }
-                className={secondaryButtonClass}
+                className="w-full bg-gray-700 text-white hover:bg-neutral-600 transition py-2 rounded-lg font-semibold active:scale-95"
               >
                 Continue with Pro
               </button>
             </div>
           </div>
 
-          <div className={`relative flex h-full w-full flex-col justify-between p-5 ${cardClass} border-2 border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.4)]`}>
+          <div className="relative w-full bg-[#121826] border-2 border-green-500 rounded-xl p-5 scale-105 shadow-[0_0_20px_rgba(34,197,94,0.45)] flex flex-col justify-between h-full">
             <div className="absolute top-3 right-3 bg-green-500 text-black text-xs px-2 py-1 rounded-full font-bold">
               MOST POPULAR
             </div>
@@ -128,7 +124,7 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
                 onClick={() =>
                   onSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")
                 }
-                className={primaryButtonClass}
+                className="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg transition active:scale-95"
               >
                 Start My Journey
               </button>
