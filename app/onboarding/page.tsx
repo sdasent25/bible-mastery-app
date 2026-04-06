@@ -73,7 +73,7 @@ export default function OnboardingPage() {
       setSaving(true)
       const plan = generatePlan(selectedTimeline, trainingEnabled)
       await saveUserPlan(plan)
-      router.push("/home")
+      router.push("/journey")
     } catch (error) {
       console.error("Error saving onboarding plan:", error)
       setSaving(false)
