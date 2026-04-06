@@ -8,13 +8,10 @@ import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
 import {
-  completeProgramSegment,
+  completeSegment,
   getProgramProgress,
   getResumeSegmentIndex,
-  markProgramBonusAwarded,
 } from '@/lib/programProgress';
-import { incrementDailyProgress } from '@/lib/dailyProgress';
-import { incrementWeeklyScore } from '@/lib/weeklyScore';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
@@ -36,8 +33,6 @@ type IncorrectItem = {
   question: Question;
   userAnswer: string;
 };
-
-const PROGRAM_COMPLETION_BONUS_XP = 50;
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -81,6 +76,7 @@ export default function QuizPage() {
   const [activeProgramId, setActiveProgramId] = useState<string | null>(null);
   const [activeProgramSegmentIndex, setActiveProgramSegmentIndex] = useState<number | null>(null);
   const [programProgressSaved, setProgramProgressSaved] = useState(false);
+  const [programLimitReached, setProgramLimitReached] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
 
   const activeProgram = getProgramById(activeProgramId);
@@ -322,17 +318,16 @@ export default function QuizPage() {
       }
 
       setProgramProgressSaved(true);
-      const nextProgress = await completeProgramSegment(activeProgram.id, activeProgram.segments.length);
-      await incrementDailyProgress();
-      await incrementWeeklyScore(1);
-      console.log("Daily progress incremented");
+      const result = await completeSegment();
 
-      if (activeProgramSegmentIndex === activeProgram.segments.length - 1) {
-        if (!nextProgress.bonusAwarded) {
-          const updatedXp = await addXp(PROGRAM_COMPLETION_BONUS_XP);
-          setTotalXp(updatedXp);
-          await markProgramBonusAwarded(activeProgram.id);
-        }
+      if (result.limitReached) {
+        setProgramLimitReached(true);
+        return;
+      }
+
+      if (!result.success) {
+        setProgramProgressSaved(false);
+        return;
       }
     };
 
@@ -599,6 +594,7 @@ export default function QuizPage() {
     setShowXpGain(false);
     setShowCelebration(false);
     setProgramProgressSaved(false);
+    setProgramLimitReached(false);
 
     setQuizCompleted(false);
     setIncorrectQuestions([]);
@@ -674,6 +670,12 @@ export default function QuizPage() {
   if (quizCompleted) {
     return (
       <>
+        {programLimitReached && (
+          <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-md rounded-2xl border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-center text-sm font-semibold text-amber-200 shadow-lg">
+            Daily limit reached. Upgrade or come back tomorrow to continue.
+          </div>
+        )}
+
         {showXpGain && (
           <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
             <div className="animate-xp text-green-400 font-bold text-2xl">
@@ -720,7 +722,7 @@ export default function QuizPage() {
                 </p>
                 {isFinalProgramSegment ? (
                   <p className="text-sm text-slate-300 mt-2">
-                    You finished {activeProgram?.title} and earned {PROGRAM_COMPLETION_BONUS_XP} bonus XP.
+                    You finished {activeProgram?.title}.
                   </p>
                 ) : (
                   <p className="text-sm text-slate-300 mt-2">Next: {next?.label}</p>

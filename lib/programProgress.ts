@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/client"
 import { supabase } from './supabase'
 
 export type ProgramProgress = {
@@ -91,34 +92,6 @@ export async function getProgramsProgress(programIds: string[]): Promise<Record<
   return mapped
 }
 
-async function saveProgramProgress(programId: string, progress: Omit<ProgramProgress, 'programId'>) {
-  const userId = await getCurrentUserId()
-  if (!userId) {
-    return getDefaultProgress(programId)
-  }
-
-  const payload = {
-    user_id: userId,
-    program_id: programId,
-    current_segment_index: progress.currentSegmentIndex,
-    completed: progress.completed,
-    bonus_awarded: progress.bonusAwarded
-  }
-
-  const { error } = await supabase
-    .from('user_program_progress')
-    .upsert(payload, { onConflict: 'user_id,program_id' })
-
-  if (error) {
-    console.error('Error saving program progress:', error)
-  }
-
-  return {
-    programId,
-    ...progress
-  }
-}
-
 export function getResumeSegmentIndex(progress: ProgramProgress, totalSegments: number) {
   if (totalSegments <= 0) return 0
   if (progress.completed) return totalSegments - 1
@@ -126,32 +99,36 @@ export function getResumeSegmentIndex(progress: ProgramProgress, totalSegments: 
   return Math.min(progress.currentSegmentIndex, totalSegments - 1)
 }
 
-export async function completeProgramSegment(programId: string, totalSegments: number) {
-  const existing = await getProgramProgress(programId)
+export async function completeSegment() {
+  const supabase = createClient()
 
-  if (existing.completed) {
-    return existing
+  const {
+    data: { user },
+    error: userError,
+  } = await supabase.auth.getUser()
+
+  if (userError || !user) {
+    console.error("User not found")
+    return { success: false }
   }
 
-  const nextSegmentIndex = existing.currentSegmentIndex + 1
-  const completed = nextSegmentIndex >= totalSegments
-
-  return saveProgramProgress(programId, {
-    currentSegmentIndex: completed ? totalSegments : nextSegmentIndex,
-    completed,
-    bonusAwarded: existing.bonusAwarded
+  const { data, error } = await supabase.rpc("complete_segment", {
+    p_user_id: user.id,
   })
-}
 
-export async function markProgramBonusAwarded(programId: string) {
-  const existing = await getProgramProgress(programId)
-  if (existing.bonusAwarded) {
-    return existing
+  if (error) {
+    console.error("Error completing segment:", error)
+    return { success: false }
   }
 
-  return saveProgramProgress(programId, {
-    currentSegmentIndex: existing.currentSegmentIndex,
-    completed: existing.completed,
-    bonusAwarded: true
-  })
+  if (data === false) {
+    return {
+      success: false,
+      limitReached: true,
+    }
+  }
+
+  return {
+    success: true,
+  }
 }
