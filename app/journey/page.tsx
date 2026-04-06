@@ -214,7 +214,6 @@ export default function JourneyPage() {
         }
       })
 
-      setNodes(mapped)
       let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
       if (firstActiveIndex === -1 && mapped.length > 0) {
@@ -222,6 +221,7 @@ export default function JourneyPage() {
         firstActiveIndex = 0
       }
 
+      setNodes(mapped)
       setActiveIndex(firstActiveIndex)
       setLoading(false)
     }
