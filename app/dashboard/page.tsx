@@ -13,6 +13,8 @@ export default function DashboardPage() {
   const [streak, setStreak] = useState(0)
   const [invite, setInvite] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
+  const [plan, setPlan] = useState<string | null>(null)
+  const [, setInFamily] = useState(false)
   const [dailyTarget, setDailyTarget] = useState(1)
   const [timelineDays, setTimelineDays] = useState(365)
   const [loading, setLoading] = useState(true)
@@ -50,6 +52,14 @@ export default function DashboardPage() {
       setXp(data.xp || 0)
       setStreak(data.streak || 0)
     }
+
+    const { data: access } = await supabase
+      .from("user_access")
+      .select("final_plan, in_family")
+      .single()
+
+    setPlan(access?.final_plan ?? null)
+    setInFamily(access?.in_family === true)
 
     const plan = await getUserPlan()
     if (plan) {
@@ -198,10 +208,12 @@ export default function DashboardPage() {
         </div>
 
         <p className="text-sm text-white/70">
-          You&apos;re scheduled to complete {dailyTarget} segments today
+          {plan === "free"
+            ? "You can complete 1 segment today (Free Plan)"
+            : "Continue your daily journey"}
         </p>
         <p className="text-xs text-white/50">
-          Based on your {timelineDays}-day plan
+          Based on your {timelineDays}-day plan · target {dailyTarget} per day
         </p>
       </div>
 
@@ -229,6 +241,12 @@ export default function DashboardPage() {
             : "Continue Learning"}
         </button>
 
+        {plan === "free" && (
+          <div className="mt-4 text-center text-sm text-yellow-400">
+            Free plan: 1 segment per day. Upgrade to unlock full journey.
+          </div>
+        )}
+
         <button
           onClick={() => window.location.href = "/upgrade"}
           className="w-full bg-green-600 mt-4 py-3 rounded-lg font-bold"
@@ -240,14 +258,14 @@ export default function DashboardPage() {
           onClick={() => router.push("/flashcards/review")}
           className="w-full bg-neutral-800 py-4 rounded-xl font-semibold"
         >
-          Review Flashcards
+          {plan === "free" ? "Review Flashcards · Upgrade for full access" : "Review Flashcards"}
         </button>
 
         <button
           onClick={() => router.push("/flashcards/practice")}
           className="w-full bg-neutral-800 py-4 rounded-xl font-semibold"
         >
-          Practice Weak Cards
+          {plan === "free" ? "Practice Weak Cards · Upgrade for full access" : "Practice Weak Cards"}
         </button>
       </div>
     </div>
