@@ -13,7 +13,7 @@ import { supabase } from "@/lib/supabase"
 import Paywall from "@/components/Paywall"
 
 type NodeState = "complete" | "active" | "locked"
-type JourneyPlanType = "trial" | "pro" | "pro_plus" | "free"
+type JourneyPlanType = "trial" | "pro" | "pro_plus"
 type JourneyLockReason =
   | "TRIAL_LIMIT"
   | "PRO_REQUIRES_UPGRADE"
@@ -107,7 +107,7 @@ export default function JourneyPage() {
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [nodes, setNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [planType, setPlanType] = useState<JourneyPlanType>("free")
+  const [planType, setPlanType] = useState<JourneyPlanType>("trial")
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const selectedProgram = "genesis"
@@ -152,10 +152,10 @@ export default function JourneyPage() {
         setPlanType(
           nextPlan === "trial" || nextPlan === "pro" || nextPlan === "pro_plus"
             ? nextPlan
-            : "free",
+            : "trial",
         )
       } else {
-        setPlanType("free")
+        setPlanType("trial")
       }
 
       setProfileLoaded(true)
