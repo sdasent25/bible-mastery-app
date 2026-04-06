@@ -199,6 +199,23 @@ export default function LandingPage() {
         </div>
       </section>
 
+      <section className="flex justify-center px-6 py-20">
+        <div className="relative w-full max-w-sm">
+          <div className="absolute inset-0 rounded-3xl bg-green-500 opacity-10 blur-3xl" />
+
+          <div className="relative rounded-3xl border border-gray-800 bg-[#121826] p-3 shadow-2xl">
+            <video
+              src="/preview.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full rounded-2xl"
+            />
+          </div>
+        </div>
+      </section>
+
       <section className="px-5 py-18 sm:px-6 md:px-8 lg:px-10">
         <div className="mx-auto max-w-7xl">
           <div className="max-w-2xl">
