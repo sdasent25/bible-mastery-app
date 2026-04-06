@@ -196,23 +196,19 @@ export default function JourneyPage() {
       }
 
       const mapped = segments.map((seg, index) => {
+        const access = getSegmentAccess(planType, seg.segment)
+
         let state: NodeState = "locked"
 
-        if (!program || selectedProgram !== "genesis") {
-          state = "locked"
-        } else if (program) {
-          if (progress.completed) {
-            state = "complete"
-          } else if (index < progress.currentSegmentIndex) {
+        if (!access.locked) {
+          if (index < progress.currentSegmentIndex) {
             state = "complete"
           } else if (index === progress.currentSegmentIndex) {
             state = "active"
+          } else {
+            state = "locked"
           }
-        }
-
-        const access = getSegmentAccess(planType, seg.segment)
-
-        if (access.locked) {
+        } else {
           state = "locked"
         }
 
