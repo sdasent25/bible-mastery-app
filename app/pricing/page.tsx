@@ -1,9 +1,23 @@
 "use client"
 
+import { supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
 
 export default function PricingPage() {
   const router = useRouter()
+
+  const handleSelectPlan = async (plan: string) => {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user) {
+      router.push("/signup")
+      return
+    }
+
+    router.push(`/upgrade?plan=${plan}`)
+  }
 
   const plans = [
     {
@@ -104,7 +118,11 @@ export default function PricingPage() {
               </ul>
 
               <button
-                onClick={() => router.push(plan.path)}
+                onClick={() =>
+                  plan.name === "Free"
+                    ? router.push("/signup")
+                    : handleSelectPlan(plan.name.toLowerCase().replace("+", "_plus"))
+                }
                 className={`w-full rounded-lg py-2 font-semibold transition-transform hover:scale-[1.01] active:scale-[0.99] ${
                   plan.highlight
                     ? "bg-green-500 text-black"
