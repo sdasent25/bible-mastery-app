@@ -10,7 +10,6 @@ import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
 import { supabase } from "@/lib/supabase"
-import Paywall from "@/components/Paywall"
 
 type NodeState = "complete" | "active" | "locked"
 type JourneyPlanType = "trial" | "pro" | "pro_plus"
@@ -265,45 +264,8 @@ export default function JourneyPage() {
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
   const program = getProgramById(selectedProgram)
   const focusedReason = focusedNode?.access.reason
-  const paywallReason = (() => {
-    if (!profileLoaded || nodes.length === 0) return null
-
-    const currentNode = nodes[activeIndex] || nodes[0]
-    if (!currentNode) return null
-
-    const match = currentNode.segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
-    const currentBook = match
-      ? match[1].charAt(0).toUpperCase() + match[1].slice(1)
-      : null
-    const currentChapter = match ? Number(match[3]) : null
-
-    if (planType === "trial" && (currentBook !== "Genesis" || (currentChapter !== null && currentChapter > 3))) {
-      return "TRIAL_LIMIT"
-    }
-
-    if (planType === "pro") {
-      return "PRO_REQUIRES_UPGRADE"
-    }
-
-    return null
-  })()
-
-  if (paywallReason) {
-    return (
-      <Paywall
-        reason={paywallReason}
-        onSelectPlan={(plan) => {
-          if (plan === "pro") {
-            window.location.href = "/upgrade?plan=pro"
-          }
-
-          if (plan === "pro_plus") {
-            window.location.href = "/upgrade?plan=pro_plus"
-          }
-        }}
-      />
-    )
-  }
+  // Only show paywall if user clicks locked content
+  // Do NOT block entire screen
 
   return (
     <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">
