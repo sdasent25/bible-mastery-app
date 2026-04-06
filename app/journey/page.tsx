@@ -282,16 +282,18 @@ export default function JourneyPage() {
 
   return (
     <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">
-      <div className="absolute left-1/2 top-[-100px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[120px]" />
+      <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
+      <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       {/* MAIN */}
       <div className="relative flex-1 px-4 py-6 md:px-8">
+        <div className="transition-opacity duration-300">
         <div className="flex justify-center mb-8">
           <div className="text-center max-w-md">
-            <h1 className="text-3xl md:text-4xl font-bold">
+            <h1 className="text-3xl md:text-5xl font-bold text-white">
               {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
             </h1>
 
-            <p className="text-slate-300 mt-1">
+            <p className="text-gray-200 mt-1">
               Progress through Scripture
             </p>
           </div>
@@ -303,7 +305,7 @@ export default function JourneyPage() {
               <span className="text-orange-400 font-semibold animate-pulse">
                 🔥 {streak}
               </span>
-              <span className="text-slate-300">
+              <span className="text-gray-200">
                 🎯 Goal
               </span>
               <span className="font-semibold text-white">
@@ -353,7 +355,7 @@ export default function JourneyPage() {
             <div className="hidden md:flex justify-between mb-4">
               <button
                 onClick={() => activeIndex > 0 && setActiveIndex(activeIndex - 1)}
-                className="bg-slate-800 px-4 py-2 rounded-lg text-white"
+                className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 ←
               </button>
@@ -362,7 +364,7 @@ export default function JourneyPage() {
                 onClick={() =>
                   activeIndex < nodes.length - 1 && setActiveIndex(activeIndex + 1)
                 }
-                className="bg-slate-800 px-4 py-2 rounded-lg text-white"
+                className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 →
               </button>
@@ -406,7 +408,7 @@ export default function JourneyPage() {
                   >
                     <div className="relative flex flex-col items-center">
                       {isActive && (
-                        <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300" />
+                        <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
                       )}
 
                       {isLocked && (
@@ -431,9 +433,9 @@ export default function JourneyPage() {
                           rounded-2xl overflow-hidden
                           cursor-pointer
                           border
-                          transition-all duration-300 transition transform hover:scale-[1.02] active:scale-[0.98]
+                          transition-all duration-300 transition transform hover:scale-[1.02] hover:shadow-xl active:scale-[0.98]
                           ${isActive
-                            ? "border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.4)]"
+                            ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]"
                             : "border-gray-600"}
                         `}
                       >
@@ -473,7 +475,7 @@ export default function JourneyPage() {
                   key={i}
                   className={`
                     w-2.5 h-2.5 rounded-full transition-all
-                    ${i === activeIndex ? "bg-yellow-400 scale-125" : "bg-slate-600"}
+                    ${i === activeIndex ? "bg-green-400 scale-125" : "bg-gray-600"}
                   `}
                 />
               ))}
@@ -481,18 +483,18 @@ export default function JourneyPage() {
           </div>
 
           {/* RIGHT PANEL */}
-          <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:w-80">
+          <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
             <div className="space-y-2">
-              <div className="text-sm text-slate-300 mb-1">
+              <div className="text-sm text-gray-200 mb-1">
                 {completedCount} / {totalCount} complete
               </div>
 
               <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-yellow-400"
+                  className="h-full bg-green-400"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -523,14 +525,14 @@ export default function JourneyPage() {
             )}
 
             <div className="space-y-2">
-              <div className="text-sm text-slate-300">XP</div>
+              <div className="text-sm text-gray-200">XP</div>
               <div className="text-lg font-bold">{xp}</div>
             </div>
 
             <div className="h-px bg-white/5" />
 
             <div className="space-y-2">
-              <div className="text-sm text-slate-300">Weak Areas</div>
+              <div className="text-sm text-gray-200">Weak Areas</div>
               <div className="text-lg font-semibold">
                 {weakCount > 0 ? `${weakCount} to review` : "None"}
               </div>
@@ -549,7 +551,7 @@ export default function JourneyPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-slate-300">
+                <span className="text-sm text-gray-200">
                   🔥 Streak
                 </span>
 
@@ -562,7 +564,7 @@ export default function JourneyPage() {
             <div className="h-px bg-white/5" />
 
             <div className="space-y-2">
-              <div className="text-sm text-slate-300 mb-1">
+              <div className="text-sm text-gray-200 mb-1">
                 🎯 Daily Goal
               </div>
 
@@ -577,7 +579,7 @@ export default function JourneyPage() {
                 />
               </div>
 
-              <div className="text-xs text-slate-400 mt-1">
+              <div className="text-xs text-gray-200 mt-1">
                 {dailyProgress} / {dailyGoal}
               </div>
             </div>
@@ -590,13 +592,14 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
-              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!activeNode}
             >
               Continue →
             </button>
 
           </div>
+        </div>
         </div>
       </div>
 
