@@ -43,10 +43,10 @@ export default function SegmentIntro() {
         .from("profiles")
         .select("plan_type")
         .eq("id", user.id)
-        .single()
+        .maybeSingle()
 
       if (isMounted) {
-        setPlanType(profile?.plan_type || "trial")
+        setPlanType(profile?.plan_type ?? "trial")
         setProfileLoaded(true)
       }
     }

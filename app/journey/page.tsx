@@ -145,9 +145,9 @@ export default function JourneyPage() {
           .from("profiles")
           .select("plan_type")
           .eq("id", userRes.user.id)
-          .single()
+          .maybeSingle()
 
-        const nextPlan = profile?.plan_type
+        const nextPlan = profile?.plan_type ?? "trial"
         setPlanType(
           nextPlan === "trial" || nextPlan === "pro" || nextPlan === "pro_plus"
             ? nextPlan

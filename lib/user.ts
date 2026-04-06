@@ -34,7 +34,7 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
     .from('profiles')
     .select('plan_type')
     .eq('id', user.id)
-    .single()
+    .maybeSingle()
 
   const plan = getPlanFromProfile(profile)
   const { isPro, isProPlus } = getPlanFlags(plan)
@@ -78,7 +78,7 @@ export async function getUser() {
       .from('profiles')
       .select('plan_type')
       .eq('id', user.id)
-      .single()
+      .maybeSingle()
 
     const planType = getPlanFromProfile(profile)
     const { isPro, isProPlus } = getPlanFlags(planType)

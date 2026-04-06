@@ -49,7 +49,7 @@ export default function JoinFamilyPage() {
           .from("profiles")
           .select("id")
           .eq("id", (data as FamilyInvite).invited_by)
-          .single()
+          .maybeSingle()
 
         setInviterEmail("A family member")
       }

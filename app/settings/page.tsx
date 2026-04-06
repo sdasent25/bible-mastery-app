@@ -21,7 +21,7 @@ export default function SettingsPage() {
           .from("profiles")
           .select("plan_type")
           .eq("id", userRes.user.id)
-          .single()
+          .maybeSingle()
 
         if (data?.plan_type) {
           setPlan(data.plan_type)

@@ -84,7 +84,7 @@ export async function getXp(): Promise<number> {
       .from("profiles")
       .select("xp")
       .eq("id", user.id)
-      .single()
+      .maybeSingle()
 
     if (error || !data) return 0
     return data.xp || 0
@@ -115,7 +115,7 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
       .from("profiles")
       .select("xp, streak, last_active_date")
       .eq("id", user.id)
-      .single<{ xp: number | null; streak: number | null; last_active_date: string | null }>()
+      .maybeSingle<{ xp: number | null; streak: number | null; last_active_date: string | null }>()
 
     if (fetchError) throw fetchError
 

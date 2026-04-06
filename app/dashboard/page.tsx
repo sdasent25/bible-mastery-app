@@ -41,7 +41,7 @@ export default function DashboardPage() {
       .from("profiles")
       .select("xp, streak")
       .eq("id", userRes.user.id)
-      .single()
+      .maybeSingle()
 
     if (!error && data) {
       setXp(data.xp || 0)
@@ -108,7 +108,7 @@ export default function DashboardPage() {
         .from("profiles")
         .select("*")
         .eq("id", user.id)
-        .single()
+        .maybeSingle()
 
       setProfile(data)
     }
