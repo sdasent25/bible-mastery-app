@@ -37,7 +37,7 @@ export default function SignupPage() {
           Become a Bible Athlete
         </h1>
 
-        <p className="mb-6 text-center text-sm text-gray-300">
+        <p className="mb-6 text-center text-sm text-white">
           Start your journey today. Build consistency in God&apos;s Word.
         </p>
 
