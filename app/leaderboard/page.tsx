@@ -1,17 +1,65 @@
 "use client"
 
-import { useState } from "react"
+import { supabase } from "@/lib/supabase"
+import { useEffect, useState } from "react"
 
-const leaderboard = [
-  { id: 1, name: "You", xp: 1855 },
-  { id: 2, name: "Sarah", xp: 1720 },
-  { id: 3, name: "David", xp: 1600 },
-  { id: 4, name: "Rachel", xp: 1500 },
-  { id: 5, name: "John", xp: 1400 },
-]
+type LeaderboardEntry = {
+  id: string
+  name: string
+  xp: number
+}
 
 export default function LeaderboardPage() {
-  const [tab, setTab] = useState<"family" | "global">("family")
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadLeaderboard = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      setCurrentUserId(user.id)
+
+      const { data: membership } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", user.id)
+        .maybeSingle()
+
+      if (!membership?.family_id) return
+
+      const { data: members } = await supabase
+        .from("family_members")
+        .select("user_id")
+        .eq("family_id", membership.family_id)
+
+      const userIds = members?.map((member) => member.user_id) || []
+
+      if (userIds.length === 0) return
+
+      const { data: profiles } = await supabase
+        .from("profiles")
+        .select("id, xp")
+        .in("id", userIds)
+
+      if (!profiles) return
+
+      const formatted = profiles
+        .map((profile) => ({
+          id: profile.id,
+          name: profile.id === user.id ? "You" : "Member",
+          xp: profile.xp || 0,
+        }))
+        .sort((a, b) => b.xp - a.xp)
+
+      setLeaderboard(formatted)
+    }
+
+    void loadLeaderboard()
+  }, [])
+
   const currentUser = leaderboard.find((user) => user.name === "You")
   const users = leaderboard
 
@@ -23,25 +71,9 @@ export default function LeaderboardPage() {
 
       <div className="flex gap-2 justify-center">
         <button
-          onClick={() => setTab("family")}
-          className={`px-4 py-2 rounded-xl ${
-            tab === "family"
-              ? "bg-blue-600 text-white"
-              : "bg-neutral-800 text-white/70"
-          }`}
+          className="px-4 py-2 rounded-xl bg-blue-600 text-white"
         >
           Family
-        </button>
-
-        <button
-          onClick={() => setTab("global")}
-          className={`px-4 py-2 rounded-xl ${
-            tab === "global"
-              ? "bg-blue-600 text-white"
-              : "bg-neutral-800 text-white/70"
-          }`}
-        >
-          Global
         </button>
       </div>
 
@@ -54,12 +86,12 @@ export default function LeaderboardPage() {
 
       {users.length === 0 ? (
         <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white/70">
-          No activity yet — start training to climb the leaderboard
+          Join a family to compete on the leaderboard
         </div>
       ) : (
         <div className="max-w-xl mx-auto mt-6 space-y-3 px-4">
           {users.map((user, index) => {
-            const isCurrentUser = user.name === "You"
+            const isCurrentUser = user.id === currentUserId
 
             return (
               <div
