@@ -11,6 +11,7 @@ import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
 import { supabase } from "@/lib/supabase"
+import Paywall from "@/components/Paywall"
 
 type NodeState = "complete" | "active" | "locked"
 type JourneyPlanType = "trial" | "pro" | "pro_plus" | "free"
@@ -110,6 +111,7 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
+  const [profileLoaded, setProfileLoaded] = useState(false)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     Pentateuch: true,
   })
@@ -120,6 +122,7 @@ export default function JourneyPage() {
   >([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [planType, setPlanType] = useState<JourneyPlanType>("free")
+  const [paywallReason, setPaywallReason] = useState<string | null>(null)
 
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
@@ -170,6 +173,8 @@ export default function JourneyPage() {
       } else {
         setPlanType("free")
       }
+
+      setProfileLoaded(true)
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
@@ -249,7 +254,37 @@ export default function JourneyPage() {
     else setActiveIndex(0)
   }, [nodes])
 
-  if (loading) {
+  useEffect(() => {
+    if (!profileLoaded || nodes.length === 0) return
+
+    const currentNode = nodes[activeIndex] || nodes[0]
+    if (!currentNode) {
+      setPaywallReason(null)
+      return
+    }
+
+    const match = currentNode.segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
+    const currentBook = match
+      ? match[1].charAt(0).toUpperCase() + match[1].slice(1)
+      : null
+    const currentChapter = match ? Number(match[3]) : null
+
+    if (planType === "trial") {
+      if (currentBook !== "Genesis" || (currentChapter !== null && currentChapter > 3)) {
+        setPaywallReason("TRIAL_LIMIT")
+        return
+      }
+    }
+
+    if (planType === "pro") {
+      setPaywallReason("PRO_REQUIRES_UPGRADE")
+      return
+    }
+
+    setPaywallReason(null)
+  }, [activeIndex, nodes, planType, profileLoaded])
+
+  if (loading || !profileLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0B1220] text-white">
         Loading...
@@ -317,6 +352,23 @@ export default function JourneyPage() {
       })}
     </div>
   )
+
+  if (paywallReason) {
+    return (
+      <Paywall
+        reason={paywallReason}
+        onSelectPlan={(plan) => {
+          if (plan === "pro") {
+            window.location.href = "/upgrade?plan=pro"
+          }
+
+          if (plan === "pro_plus") {
+            window.location.href = "/upgrade?plan=pro_plus"
+          }
+        }}
+      />
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#0B1220] text-white flex relative">

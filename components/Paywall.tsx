@@ -1,6 +1,7 @@
 "use client"
 
 type PaywallProps = {
+  reason?: string | null
   onSelectPlan: (plan: "pro" | "pro_plus") => void
 }
 
