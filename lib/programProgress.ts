@@ -49,10 +49,10 @@ export async function getProgramProgress(programId: string): Promise<ProgramProg
 
   const { data, error } = await supabase
     .from('user_program_progress')
-    .select('program_id, current_segment_index, completed, bonus_awarded')
+    .select('*')
     .eq('user_id', userId)
     .eq('program_id', programId)
-    .maybeSingle<ProgramProgressRow>()
+    .single()
 
   console.log("DB progress row:", data)
 
