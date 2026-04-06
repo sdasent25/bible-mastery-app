@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { supabase as appSupabase } from "@/lib/supabase"
 import { createClient } from "@/lib/supabase/client"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const supabase = createClientComponentClient()
 
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -14,16 +16,30 @@ export default function DashboardPage() {
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data, error } = await supabase.auth.getUser()
+
+      console.log("ACTIVE USER:", {
+        email: data.user?.email,
+        id: data.user?.id,
+        error
+      })
+    }
+
+    checkUser()
+  }, [])
+
   async function load() {
     setLoading(true)
 
-    const { data: userRes } = await supabase.auth.getUser()
+    const { data: userRes } = await appSupabase.auth.getUser()
     if (!userRes?.user) {
       setLoading(false)
       return
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await appSupabase
       .from("profiles")
       .select("xp, streak")
       .eq("id", userRes.user.id)
@@ -37,7 +53,7 @@ export default function DashboardPage() {
     const email = userRes.user.email
 
     if (email) {
-      const { data: inviteData } = await supabase
+      const { data: inviteData } = await appSupabase
         .from("family_invites")
         .select("*")
         .ilike("email", email.trim())
@@ -54,18 +70,18 @@ export default function DashboardPage() {
   }
 
   async function acceptInvite() {
-    const { data: userRes } = await supabase.auth.getUser()
+    const { data: userRes } = await appSupabase.auth.getUser()
     if (!userRes?.user || !invite) return
 
     const userId = userRes.user.id
 
-    await supabase.from("family_members").insert({
+    await appSupabase.from("family_members").insert({
       family_id: invite.family_id,
       user_id: userId,
       role: "member",
     })
 
-    await supabase
+    await appSupabase
       .from("family_invites")
       .update({
         status: "accepted",
