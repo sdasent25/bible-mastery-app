@@ -215,8 +215,14 @@ export default function JourneyPage() {
       })
 
       setNodes(mapped)
-      const nextActiveIndex = mapped.findIndex((node) => node.state === "active")
-      setActiveIndex(nextActiveIndex >= 0 ? nextActiveIndex : 0)
+      let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
+
+      if (firstActiveIndex === -1 && mapped.length > 0) {
+        mapped[0].state = "active"
+        firstActiveIndex = 0
+      }
+
+      setActiveIndex(firstActiveIndex)
       setLoading(false)
     }
 
