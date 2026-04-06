@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { createClient } from "@/lib/supabase/client"
+import { getUserPlan } from "@/lib/userPlan"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -12,6 +13,8 @@ export default function DashboardPage() {
   const [streak, setStreak] = useState(0)
   const [invite, setInvite] = useState<any>(null)
   const [profile, setProfile] = useState<any>(null)
+  const [dailyTarget, setDailyTarget] = useState(1)
+  const [timelineDays, setTimelineDays] = useState(365)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -46,6 +49,12 @@ export default function DashboardPage() {
     if (!error && data) {
       setXp(data.xp || 0)
       setStreak(data.streak || 0)
+    }
+
+    const plan = await getUserPlan()
+    if (plan) {
+      setDailyTarget(plan.segmentsPerDay)
+      setTimelineDays(plan.timelineDays)
     }
 
     const email = userRes.user.email
@@ -189,7 +198,10 @@ export default function DashboardPage() {
         </div>
 
         <p className="text-sm text-white/70">
-          Keep going to reach your goal 🎯
+          You&apos;re scheduled to complete {dailyTarget} segments today
+        </p>
+        <p className="text-xs text-white/50">
+          Based on your {timelineDays}-day plan
         </p>
       </div>
 

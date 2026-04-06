@@ -6,6 +6,7 @@ import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
 import { getProgramProgress } from "@/lib/programProgress"
+import { getUserPlan } from "@/lib/userPlan"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
@@ -29,6 +30,7 @@ type JourneyNode = {
   segment: string
   state: NodeState
   access: JourneyAccessResult
+  isTodayTarget: boolean
 }
 
 function getSegmentAccess(planType: JourneyPlanType, segment: string): JourneyAccessResult {
@@ -109,10 +111,10 @@ export default function JourneyPage() {
   const [planType, setPlanType] = useState<JourneyPlanType>("trial")
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
+  const [dailyGoal, setDailyGoal] = useState(2)
+  const [completedToday, setCompletedToday] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
-  const dailyProgress = 1
-  const dailyGoal = 2
   const startX = useRef(0)
 
   const handleTrainWeak = () => {
@@ -139,6 +141,7 @@ export default function JourneyPage() {
       const xpVal = await getXp()
       const incorrect = getIncorrectQuestions()
       const { data: userRes } = await supabase.auth.getUser()
+      const plan = await getUserPlan()
 
       if (userRes?.user) {
         const { data: profile } = await supabase
@@ -161,6 +164,7 @@ export default function JourneyPage() {
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
+      setDailyGoal(plan?.segmentsPerDay ?? 2)
     }
 
     void loadAllProgress()
@@ -194,6 +198,10 @@ export default function JourneyPage() {
         }
       }
 
+      const start = progress.currentSegmentIndex
+      const end = start + dailyGoal
+      const nextCompletedToday = progress.currentSegmentIndex % Math.max(dailyGoal, 1)
+
       const mapped = segments.map((seg, index) => {
         const isTrial = planType === "trial"
         const isPro = planType === "pro"
@@ -225,6 +233,7 @@ export default function JourneyPage() {
         }
 
         const access = getSegmentAccess(planType, seg.segment)
+        const isTodayTarget = index >= start && index < end
         let state: NodeState = "locked"
 
         if (nodeState.complete) {
@@ -248,6 +257,7 @@ export default function JourneyPage() {
           segment: seg.segment,
           state,
           access,
+          isTodayTarget,
         }
       })
 
@@ -263,11 +273,12 @@ export default function JourneyPage() {
 
       setNodes(mapped)
       setActiveIndex(firstActiveIndex)
+      setCompletedToday(nextCompletedToday)
       setLoading(false)
     }
 
     void loadProgram()
-  }, [planType, selectedProgram])
+  }, [dailyGoal, planType, selectedProgram])
 
   if (loading || !profileLoaded) {
     return (
@@ -282,6 +293,10 @@ export default function JourneyPage() {
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+  const dailyProgressPercent = Math.min(
+    Math.round((completedToday / Math.max(dailyGoal, 1)) * 100),
+    100,
+  )
   const program = getProgramById(selectedProgram)
   const focusedReason = focusedNode?.access.reason
   // Only show paywall if user clicks locked content
@@ -398,6 +413,10 @@ export default function JourneyPage() {
                     }}
                   >
                     <div className="relative flex flex-col items-center">
+                      {node.isTodayTarget && !isLocked && (
+                        <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
+                      )}
+
                       {isActive && (
                         <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
                       )}
@@ -569,12 +588,12 @@ export default function JourneyPage() {
               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-green-400"
-                  style={{ width: `${(dailyProgress / dailyGoal) * 100}%` }}
+                  style={{ width: `${dailyProgressPercent}%` }}
                 />
               </div>
 
               <div className="text-xs text-gray-200 mt-1">
-                {dailyProgress} / {dailyGoal}
+                {completedToday} / {dailyGoal}
               </div>
             </div>
 

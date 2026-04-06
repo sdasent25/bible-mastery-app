@@ -44,7 +44,7 @@ export async function saveUserPlan(plan: GeneratedPlan) {
   }
 }
 
-export async function getUserPlan() {
+export async function getUserPlan(): Promise<UserPlan | null> {
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -70,9 +70,9 @@ export async function getUserPlan() {
 
   return {
     userId: data.user_id,
-    timeline: data.reading_time ?? 365,
+    timelineDays: data.reading_time ?? 365,
     segmentsPerDay: data.segments_per_day ?? 1,
     trainingEnabled: data.training_enabled === true,
-    estimatedDays: data.estimated_days ?? 396,
+    estimatedDays: data.estimated_days ?? 365,
   }
 }

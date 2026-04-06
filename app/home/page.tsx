@@ -5,14 +5,19 @@ import { useRouter } from "next/navigation"
 
 import { getProgramById } from "@/lib/programs"
 import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
-import { getUserPlan } from "@/lib/userPlan"
+import { getUserPlan, type UserPlan } from "@/lib/userPlan"
 import { supabase } from "@/lib/supabase"
 
 type HomeState = {
   currentSegmentLabel: string
   currentSegmentSlug: string
+  currentSegmentIndex: number
   segmentNumber: number
   totalSegments: number
+  highlightedRangeLabel: string
+  completedToday: number
+  progressPercent: number
+  segmentsPerDay: number
 }
 
 function getSegmentChapterSummary(segment: string) {
@@ -31,6 +36,14 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true)
   const [trainingEnabled, setTrainingEnabled] = useState(true)
   const [homeState, setHomeState] = useState<HomeState | null>(null)
+
+  function getCompletedToday(segmentIndex: number, plan: UserPlan) {
+    if (plan.segmentsPerDay <= 1) {
+      return 0
+    }
+
+    return segmentIndex % plan.segmentsPerDay
+  }
 
   useEffect(() => {
     let active = true
@@ -62,6 +75,16 @@ export default function HomePage() {
       const progress = await getProgramProgress(program.id)
       const resumeIndex = getResumeSegmentIndex(progress, program.segments.length)
       const currentSegment = program.segments[resumeIndex] || program.segments[0]
+      const highlightedEndIndex = Math.min(
+        resumeIndex + Math.max(plan.segmentsPerDay - 1, 0),
+        program.segments.length - 1,
+      )
+      const highlightedEndSegment = program.segments[highlightedEndIndex] || currentSegment
+      const completedToday = getCompletedToday(resumeIndex, plan)
+      const progressPercent = Math.min(
+        Math.round((completedToday / Math.max(plan.segmentsPerDay, 1)) * 100),
+        100,
+      )
 
       if (!active) return
 
@@ -69,8 +92,13 @@ export default function HomePage() {
       setHomeState({
         currentSegmentLabel: currentSegment.label,
         currentSegmentSlug: currentSegment.segment,
+        currentSegmentIndex: resumeIndex,
         segmentNumber: Math.min(resumeIndex + 1, program.segments.length),
         totalSegments: program.segments.length,
+        highlightedRangeLabel: `${currentSegment.label} -> ${highlightedEndSegment.label}`,
+        completedToday,
+        progressPercent,
+        segmentsPerDay: plan.segmentsPerDay,
       })
       setLoading(false)
     }
@@ -120,9 +148,30 @@ export default function HomePage() {
           <p className="mt-2 text-base text-white">
             {segmentSummary}
           </p>
+          <p className="mt-2 text-sm text-white">
+            You&apos;re scheduled to complete {homeState?.segmentsPerDay || 1} segments today
+          </p>
           <p className="mt-1 text-sm text-white">
             Segment {homeState?.segmentNumber || 1} of {homeState?.totalSegments || 16}
           </p>
+          <p className="mt-1 text-sm text-white">
+            Today&apos;s range: {homeState?.highlightedRangeLabel || "Genesis 1–3 -> Genesis 1–3"}
+          </p>
+          <p className="mt-1 text-sm text-white/80">
+            Starting from segment {(homeState?.currentSegmentIndex || 0) + 1}
+          </p>
+          <div className="mt-4">
+            <div className="mb-2 flex items-center justify-between text-sm text-white">
+              <span>{homeState?.completedToday || 0} completed today</span>
+              <span>{homeState?.progressPercent || 0}%</span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-[#22c55e] transition-all duration-300"
+                style={{ width: `${homeState?.progressPercent || 0}%` }}
+              />
+            </div>
+          </div>
           <button
             onClick={() => router.push(continueHref)}
             className="mt-5 w-full rounded-xl bg-[#22c55e] px-5 py-4 text-lg font-black text-[#07110b] shadow-[0_0_35px_rgba(34,197,94,0.28)] transition hover:scale-[1.01]"
