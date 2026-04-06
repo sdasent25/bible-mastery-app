@@ -1,32 +1,18 @@
 export type GeneratedPlan = {
-  readingTime: number
+  timeline: number
   segmentsPerDay: number
   trainingEnabled: boolean
   estimatedDays: number
 }
 
-export function generatePlan(readingTime: number, trainingEnabled: boolean): GeneratedPlan {
-  let segmentsPerDay = 1
-
-  if (readingTime === 15) {
-    segmentsPerDay = 1
-  }
-
-  if (readingTime === 20) {
-    segmentsPerDay = 2
-  }
-
-  if (readingTime === 30) {
-    segmentsPerDay = 3
-  }
-
-  const totalSegments = 396
-  const days = totalSegments / segmentsPerDay
+export function generatePlan(days: number, trainingEnabled: boolean): GeneratedPlan {
+  const totalSegments = 365
+  const segmentsPerDay = totalSegments / days
 
   return {
-    readingTime,
-    segmentsPerDay,
+    timeline: days,
+    segmentsPerDay: Math.ceil(segmentsPerDay),
     trainingEnabled,
-    estimatedDays: Math.round(days),
+    estimatedDays: days,
   }
 }

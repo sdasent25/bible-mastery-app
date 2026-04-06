@@ -8,9 +8,10 @@ import { getUserPlan, saveUserPlan } from "@/lib/userPlan"
 import { supabase } from "@/lib/supabase"
 
 const readingOptions = [
-  { label: "15 min (Standard)", value: 15 },
-  { label: "20 min (Focused)", value: 20 },
-  { label: "30+ min (Deep Focus)", value: 30 },
+  { label: "90 Days (Fast)", value: 90 },
+  { label: "120 Days (Strong)", value: 120 },
+  { label: "180 Days (Balanced)", value: 180 },
+  { label: "365 Days (Steady)", value: 365 },
 ]
 
 const trainingOptions = [
@@ -21,18 +22,18 @@ const trainingOptions = [
 export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep] = useState(1)
-  const [readingTime, setReadingTime] = useState<number | null>(null)
+  const [timeline, setTimeline] = useState<number | null>(null)
   const [trainingEnabled, setTrainingEnabled] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
 
   const plan = useMemo(() => {
-    if (readingTime === null || trainingEnabled === null) {
+    if (timeline === null || trainingEnabled === null) {
       return null
     }
 
-    return generatePlan(readingTime, trainingEnabled)
-  }, [readingTime, trainingEnabled])
+    return generatePlan(timeline, trainingEnabled)
+  }, [timeline, trainingEnabled])
 
   useEffect(() => {
     let active = true
@@ -87,7 +88,7 @@ export default function OnboardingPage() {
               Step 1 of 3
             </p>
             <h1 className="text-3xl font-black text-white sm:text-4xl">
-              How much time do you want to spend reading daily?
+              How quickly do you want to complete the Bible?
             </h1>
             <p className="text-base text-white">
               Choose a pace that feels sustainable every day.
@@ -99,7 +100,7 @@ export default function OnboardingPage() {
               <button
                 key={option.value}
                 onClick={() => {
-                  setReadingTime(option.value)
+                  setTimeline(option.value)
                   setStep(2)
                 }}
                 className="rounded-xl border border-white/10 bg-[#121826] px-5 py-5 text-left text-xl font-bold text-white shadow-[0_0_30px_rgba(34,197,94,0.08)] transition hover:border-[#22c55e]/50 hover:bg-[#162033]"
@@ -168,9 +169,13 @@ export default function OnboardingPage() {
 
         {plan && (
           <div className="mt-8 space-y-4 rounded-xl border border-white/10 bg-[#121826] p-5 text-white shadow-[0_0_40px_rgba(34,197,94,0.08)]">
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm uppercase tracking-[0.24em] text-white">Reading time</span>
-              <span className="text-lg font-bold">{plan.readingTime}+ min</span>
+            <div className="space-y-1">
+              <p className="text-lg font-bold text-white">
+                You&apos;ll complete the Bible in {plan.timeline} days
+              </p>
+              <p className="text-base text-white">
+                Reading about {plan.segmentsPerDay} segments per day
+              </p>
             </div>
             <div className="flex items-center justify-between gap-4">
               <span className="text-sm uppercase tracking-[0.24em] text-white">Segments per day</span>

@@ -24,7 +24,7 @@ export async function saveUserPlan(plan: GeneratedPlan) {
 
   const payload = {
     user_id: user.id,
-    reading_time: plan.readingTime,
+    reading_time: plan.timeline,
     segments_per_day: plan.segmentsPerDay,
     training_enabled: plan.trainingEnabled,
     estimated_days: plan.estimatedDays,
@@ -70,7 +70,7 @@ export async function getUserPlan() {
 
   return {
     userId: data.user_id,
-    readingTime: data.reading_time ?? 10,
+    timeline: data.reading_time ?? 365,
     segmentsPerDay: data.segments_per_day ?? 1,
     trainingEnabled: data.training_enabled === true,
     estimatedDays: data.estimated_days ?? 396,
