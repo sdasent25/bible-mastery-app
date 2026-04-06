@@ -1,14 +1,61 @@
-"use client"
-
 import Image from "next/image"
-import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
 
-export default function SegmentIntro() {
-  const params = useSearchParams()
-  const router = useRouter()
+type SegmentPageProps = {
+  searchParams: Promise<{
+    segment?: string
+    program?: string
+  }>
+}
 
-  const segment = params.get("segment") || ""
-  const program = params.get("program") || "genesis"
+export default async function SegmentIntro({ searchParams }: SegmentPageProps) {
+  const params = await searchParams
+  const segment = params.segment || ""
+  const program = params.program || "genesis"
+
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/login")
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("plan_type")
+    .eq("id", user.id)
+    .single()
+
+  const planType = profile?.plan_type || "trial"
+
+  const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
+
+  let book: string | null = null
+  let chapter: number | null = null
+
+  if (match) {
+    book = match[1].charAt(0).toUpperCase() + match[1].slice(1)
+    chapter = Number(match[3])
+  }
+
+  if (planType === "trial") {
+    if (book !== "Genesis" || (chapter !== null && chapter > 3)) {
+      redirect("/upgrade")
+    }
+  }
+
+  if (planType === "pro") {
+    redirect("/upgrade")
+  }
+
+  if (planType !== "pro_plus" && planType !== "trial") {
+    redirect("/upgrade")
+  }
 
   function formatSegment(segment: string) {
     const parts = segment.split("-")
@@ -41,12 +88,12 @@ export default function SegmentIntro() {
 
   return (
     <div className="min-h-screen bg-[#0B1220] text-white flex flex-col">
-      <button
-        onClick={() => router.push("/journey")}
+      <Link
+        href="/journey"
         className="absolute top-4 left-4 z-50 text-white text-2xl bg-black/40 px-3 py-1 rounded-lg"
       >
         ✕
-      </button>
+      </Link>
 
       <div className="flex-1 flex flex-col items-center justify-start px-4 pt-6">
         <div className="relative w-full max-w-md h-[55vh] rounded-2xl overflow-hidden shadow-2xl">
@@ -56,12 +103,6 @@ export default function SegmentIntro() {
               muted
               playsInline
               preload="auto"
-              onLoadedMetadata={(e) => {
-                e.currentTarget.playbackRate = 0.85
-              }}
-              onEnded={(e) => {
-                e.currentTarget.pause()
-              }}
               className="absolute inset-0 w-full h-full object-cover"
             >
               <source src="/animations/genesis/creation.mp4" type="video/mp4" />
@@ -97,14 +138,12 @@ export default function SegmentIntro() {
             Read Scripture
           </a>
 
-          <button
-            onClick={() =>
-              router.push(`/quiz?program=${program}&segment=${segment}`)
-            }
-            className="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg"
+          <Link
+            href={`/quiz?program=${program}&segment=${segment}`}
+            className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
           >
             Continue →
-          </button>
+          </Link>
         </div>
       </div>
     </div>
