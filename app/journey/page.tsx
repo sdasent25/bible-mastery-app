@@ -111,12 +111,39 @@ export default function JourneyPage() {
   const [planType, setPlanType] = useState<JourneyPlanType>("trial")
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
-  const [dailyGoal, setDailyGoal] = useState(2)
+  const [dailyGoal, setDailyGoal] = useState(1)
   const [completedToday, setCompletedToday] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
   const dailyProgress = 0
   const startX = useRef(0)
+
+  useEffect(() => {
+    const loadPlan = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from("user_settings")
+        .select("segments_per_day")
+        .eq("user_id", user.id)
+        .maybeSingle()
+
+      if (error) {
+        console.error("Error loading plan:", error)
+        return
+      }
+
+      if (data?.segments_per_day) {
+        setDailyGoal(data.segments_per_day)
+      }
+    }
+
+    void loadPlan()
+  }, [])
 
   const handleTrainWeak = () => {
     router.push("/quiz?mode=training")
