@@ -131,6 +131,10 @@ export default function PricingPage() {
               >
                 {plan.cta}
               </button>
+
+              <p className="mt-2 text-center text-xs text-gray-400">
+                Create your free account to unlock your plan
+              </p>
             </div>
           ))}
         </div>
