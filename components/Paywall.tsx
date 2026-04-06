@@ -12,9 +12,17 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
 
   return (
     <div className="min-h-screen bg-[#0B0F1A] text-white flex flex-col items-center px-4 py-10">
+      <h2 className="text-center text-sm text-green-400 mb-2">
+        🔒 Your Journey is Locked
+      </h2>
+
       <h1 className="text-3xl font-bold text-center mb-3">
         Become a Bible Athlete
       </h1>
+
+      <p className="text-center text-gray-300 mb-4 text-sm">
+        You&apos;ve completed 3 chapters. Continue your journey through the Bible.
+      </p>
 
       <p className="text-center text-white/70 mb-8">
         Unlock the full system. Train without limits.
@@ -61,10 +69,10 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           </p>
 
           <ul className="text-sm space-y-1 text-white/90">
-            <li>✔ Flashcards</li>
-            <li>✔ Active Recall</li>
-            <li>✔ 🎯 Targeted Practice</li>
-            <li>✔ XP + Streak</li>
+            <li>✔ Scripture Recall</li>
+            <li>✔ Memory Training</li>
+            <li>✔ 🎯 Precision Training</li>
+            <li>✔ XP + Daily Streak 🔥</li>
             <li className="text-red-400">✖ No Journey</li>
           </ul>
 
@@ -114,11 +122,19 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           >
             Start My Journey
           </button>
+
+          <p className="text-xs text-center text-gray-400 mt-2">
+            Start training in seconds
+          </p>
         </div>
       </div>
 
       <p className="text-xs text-white/50 mt-6">
         Upgrade anytime to unlock full training
+      </p>
+
+      <p className="text-xs text-gray-500 mt-6">
+        Cancel anytime • No commitment
       </p>
     </div>
   )
