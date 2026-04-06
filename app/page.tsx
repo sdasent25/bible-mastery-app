@@ -3,6 +3,12 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
+const containerClass = "max-w-5xl mx-auto px-4"
+const sectionClass = "transition-opacity duration-300 py-10 md:py-16"
+const cardClass = "bg-[#121826] border border-gray-800 rounded-2xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+const primaryButtonClass = "w-full md:w-auto bg-green-500 text-black font-bold rounded-xl px-6 py-3 shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 transition transform hover:scale-[1.02] active:scale-[0.98]"
+const secondaryButtonClass = "w-full md:w-auto bg-[#1A2233] border border-gray-700 text-white rounded-xl px-6 py-3 transition-all duration-200 hover:bg-[#222C40] transition transform hover:scale-[1.02] active:scale-[0.98]"
+
 const featureCards = [
   {
     eyebrow: "Recall",
@@ -65,14 +71,16 @@ export default function LandingPage() {
   const router = useRouter()
 
   return (
-    <main className="space-y-16 overflow-hidden bg-[#040816] text-white">
-      <section className="relative isolate min-h-screen">
+    <div className="relative min-h-screen overflow-hidden bg-[#0B0F1A] text-white">
+      <div className="absolute left-1/2 top-[-100px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[120px]" />
+      <main className="relative space-y-16">
+      <section className="relative isolate min-h-screen transition-opacity duration-300">
         <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,#081120_0%,#040816_48%,#03050E_100%)]" />
         <div className="absolute left-1/2 top-[-10rem] -z-10 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-[#1ED760]/12 blur-[140px]" />
         <div className="absolute right-[-8rem] top-[10rem] -z-10 h-[26rem] w-[26rem] rounded-full bg-[#2F7BFF]/12 blur-[120px]" />
         <div className="absolute bottom-[-10rem] left-[-8rem] -z-10 h-[24rem] w-[24rem] rounded-full bg-[#14B8A6]/10 blur-[120px]" />
 
-        <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-5 pb-16 pt-24 sm:px-6 md:px-8">
+        <div className={`${containerClass} flex min-h-screen flex-col pb-16 pt-24`}>
           <header className="flex items-center justify-between gap-4">
             <Link href="/" className="text-sm font-black uppercase tracking-[0.3em] text-[#9BFFB6]">
               Bible Athlete
@@ -81,13 +89,13 @@ export default function LandingPage() {
             <div className="flex items-center gap-3">
               <Link
                 href="/login"
-                className="rounded-full border border-white/14 bg-white/[0.03] px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.06]"
+                className="transition transform rounded-full border border-gray-700 bg-[#1A2233] px-4 py-2 text-sm font-bold text-white transition-all duration-200 hover:scale-[1.02] hover:bg-[#222C40] active:scale-[0.98]"
               >
                 Log In
               </Link>
               <Link
                 href="/signup"
-                className="rounded-full bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-4 py-2 text-sm font-black text-[#07111D] shadow-[0_14px_40px_rgba(82,224,255,0.22)] transition hover:scale-[1.02]"
+                className="transition transform rounded-full bg-green-500 px-4 py-2 text-sm font-bold text-black shadow-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
               >
                 Get Started
               </Link>
@@ -96,7 +104,7 @@ export default function LandingPage() {
 
           <div className="grid flex-1 items-center gap-14 py-12 md:gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
-              <div className="inline-flex rounded-full border border-[#9BFFB6]/20 bg-[#9BFFB6]/10 px-4 py-2 text-sm font-bold text-[#D9FFE6] shadow-[0_12px_35px_rgba(0,0,0,0.18)]">
+              <div className="inline-flex rounded-full border border-gray-800 bg-[#121826] px-4 py-2 text-sm font-bold text-white shadow-lg transition-all duration-300">
                 Premium Bible training for real growth
               </div>
 
@@ -111,28 +119,28 @@ export default function LandingPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <button
                   onClick={() => router.push("/signup")}
-                  className="mt-4 rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-7 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.24)] transition hover:scale-[1.01] active:scale-[0.99] sm:mt-0"
+                  className={`mt-4 sm:mt-0 ${primaryButtonClass}`}
                 >
                   Start Your Journey
                 </button>
                 <button
                   onClick={() => router.push("/journey")}
-                  className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-7 py-4 text-base font-bold text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
+                  className={`mt-4 sm:mt-0 ${secondaryButtonClass}`}
                 >
                   Explore the Journey
                 </button>
               </div>
 
-              <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
+              <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                <div className={`${cardClass} p-4`}>
                   <p className="text-2xl font-black text-white">Daily</p>
                   <p className="mt-2 text-sm leading-6 text-white">Stay consistent with streak-driven sessions that feel purposeful.</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
+                <div className={`${cardClass} p-4`}>
                   <p className="text-2xl font-black text-white">Focused</p>
                   <p className="mt-2 text-sm leading-6 text-white">Train the exact memory skills that help scripture stick.</p>
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
+                <div className={`${cardClass} p-4`}>
                   <p className="text-2xl font-black text-white">Measurable</p>
                   <p className="mt-2 text-sm leading-6 text-white">Track visible progress with XP, streaks, and momentum.</p>
                 </div>
@@ -141,20 +149,20 @@ export default function LandingPage() {
 
             <div className="relative">
               <div className="absolute inset-x-10 top-8 -z-10 h-48 rounded-full bg-[#52E0FF]/14 blur-[110px]" />
-              <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,24,44,0.96),rgba(8,12,24,0.96))] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-5">
-                <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,#0A1325_0%,#07101C_100%)] p-5 sm:p-6">
+              <div className={`${cardClass} p-4 sm:p-5`}>
+                <div className="rounded-[1.7rem] border border-gray-800 bg-[#0F1522] p-5 sm:p-6">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Today&apos;s Training</p>
                       <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">Genesis Mastery</h2>
                     </div>
-                    <div className="rounded-2xl border border-[#9BFFB6]/18 bg-[#9BFFB6]/10 px-4 py-3 text-right shadow-[0_14px_35px_rgba(0,0,0,0.18)]">
+                    <div className={`${cardClass} px-4 py-3 text-right hover:translate-y-0`}>
                       <p className="text-xs font-black uppercase tracking-[0.18em] text-[#D9FFE6]">Current Streak</p>
                       <p className="mt-1 text-2xl font-black text-white">14 days</p>
                     </div>
                   </div>
 
-                  <div className="mt-6 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.18)]">
+                  <div className={`${cardClass} mt-6 p-4 hover:translate-y-0`}>
                     <div className="flex items-center justify-between gap-3 text-sm font-bold text-white">
                       <span>Weekly XP Goal</span>
                       <span>420 / 600 XP</span>
@@ -168,7 +176,7 @@ export default function LandingPage() {
                   </div>
 
                   <div className="mt-5 grid gap-3">
-                    <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.16)]">
+                    <div className={`${cardClass} p-4`}>
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-base font-black text-white">Scripture Recall</p>
@@ -180,7 +188,7 @@ export default function LandingPage() {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.16)]">
+                    <div className={`${cardClass} p-4`}>
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-base font-black text-white">Memory Training</p>
@@ -192,7 +200,7 @@ export default function LandingPage() {
                       </div>
                     </div>
 
-                    <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.04] p-4 shadow-[0_16px_40px_rgba(0,0,0,0.16)]">
+                    <div className={`${cardClass} p-4`}>
                       <div className="flex items-center justify-between gap-3">
                         <div>
                           <p className="text-base font-black text-white">Precision Review</p>
@@ -211,12 +219,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-6 py-20 md:py-24">
-        <div className="mx-auto flex max-w-5xl justify-center">
+      <section className={`${sectionClass} px-4`}>
+        <div className={`${containerClass} flex justify-center`}>
           <div className="relative w-full max-w-sm">
           <div className="absolute inset-0 rounded-3xl bg-green-500 opacity-10 blur-3xl" />
 
-            <div className="relative rounded-3xl border border-gray-800 bg-[#121826] p-3 shadow-2xl">
+            <div className={`${cardClass} relative rounded-3xl p-3`}>
               <video
                 src="/preview.mp4"
                 autoPlay
@@ -230,8 +238,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
-        <div className="mx-auto max-w-5xl">
+      <section className={`${sectionClass} px-4`}>
+        <div className={containerClass}>
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Core Training</p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl md:text-5xl">
@@ -242,11 +250,11 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {featureCards.map((item) => (
               <div
                 key={item.title}
-                className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.025))] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.24)]"
+                className={`${cardClass} p-6`}
               >
                 <p className="text-sm font-black uppercase tracking-[0.24em] text-[#9BFFB6]">{item.eyebrow}</p>
                 <h3 className="mt-4 text-2xl font-black text-white">{item.title}</h3>
@@ -257,8 +265,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
-        <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,#091223_0%,#060A16_100%)] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-8 md:p-10">
+      <section className={`${sectionClass} px-4`}>
+        <div className={`${containerClass} ${cardClass} rounded-[2.2rem] p-6 sm:p-8 md:p-10`}>
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">How It Works</p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
@@ -266,11 +274,11 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+                className={`${cardClass} p-6`}
               >
                 <p className="text-3xl font-black text-[#9BFFB6]">{step.number}</p>
                 <h3 className="mt-4 text-xl font-black text-white">{step.title}</h3>
@@ -281,8 +289,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
-        <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(155,255,182,0.12),transparent_36%),linear-gradient(180deg,#0A1325_0%,#060A16_100%)] p-8 text-center shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-10">
+      <section className={`${sectionClass} px-4`}>
+        <div className={`${containerClass} ${cardClass} rounded-[2.2rem] p-8 text-center sm:p-10`}>
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Built For Real Growth</p>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
             Everything you need to build a stronger Bible habit.
@@ -292,7 +300,7 @@ export default function LandingPage() {
             {valuePoints.map((item) => (
               <div
                 key={item}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-base font-bold text-white shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
+                className={`${cardClass} px-4 py-4 text-base font-bold text-white`}
               >
                 {item}
               </div>
@@ -301,17 +309,17 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-6 py-20 md:py-24">
-        <div className="mx-auto max-w-5xl">
+      <section className={`${sectionClass} px-4`}>
+        <div className={containerClass}>
           <h2 className="mb-10 text-center text-2xl font-bold text-white md:text-3xl">
             What People Are Saying
           </h2>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-md"
+                className={`${cardClass} p-6`}
               >
                 <p className="mb-4 text-white">“{t.text}”</p>
                 <p className="text-sm text-gray-200">{t.name}</p>
@@ -321,8 +329,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 pb-20 pt-20 text-center sm:px-6 md:px-8 md:py-24">
-        <div className="mx-auto max-w-5xl rounded-[2.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(14,21,39,0.98),rgba(7,10,19,0.98))] px-6 py-12 shadow-[0_32px_90px_rgba(0,0,0,0.34)] sm:px-10">
+      <section className={`${sectionClass} px-4 text-center`}>
+        <div className={`${containerClass} ${cardClass} rounded-[2.4rem] px-6 py-12 sm:px-10`}>
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">Start Now</p>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
             Your journey starts here.
@@ -334,13 +342,13 @@ export default function LandingPage() {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <button
               onClick={() => router.push("/signup")}
-              className="mt-4 rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-8 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.22)] transition hover:scale-[1.01] active:scale-[0.99] sm:mt-0"
+              className={`mt-4 sm:mt-0 ${primaryButtonClass}`}
             >
               Begin Training
             </button>
             <button
               onClick={() => router.push("/login")}
-              className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-8 py-4 text-base font-bold text-white shadow-[0_18px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
+              className={`mt-4 sm:mt-0 ${secondaryButtonClass}`}
             >
               Log In
             </button>
@@ -351,6 +359,7 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
-    </main>
+      </main>
+    </div>
   )
 }

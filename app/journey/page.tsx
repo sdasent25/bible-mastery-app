@@ -1,11 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { getProgramById, programs } from "@/lib/programs"
-import { bibleSections } from "@/lib/bibleStructure"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
@@ -94,55 +93,37 @@ function getNodeIcon(label: string) {
   return "globe.svg"
 }
 
-function generatePreviewSegments(bookName: string) {
-  const segments = []
-
-  for (let i = 1; i <= 10; i++) {
-    segments.push({
-      label: `${bookName} ${i * 3 - 2}–${i * 3}`,
-      segment: `${bookName.toLowerCase()}-${i}`,
-    })
-  }
-
-  return segments
-}
-
 export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
-  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    Pentateuch: true,
-  })
-  const [selectedProgram, setSelectedProgram] = useState("genesis")
+  const selectedProgram = "genesis"
 
   const [nodes, setNodes] = useState<
     { label: string; segment: string; state: NodeState; access: JourneyAccessResult }[]
   >([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [planType, setPlanType] = useState<JourneyPlanType>("free")
-  const [paywallReason, setPaywallReason] = useState<string | null>(null)
 
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
-  const [completedPrograms, setCompletedPrograms] = useState<string[]>([])
-  const [streak, setStreak] = useState(3)
-  const [dailyProgress, setDailyProgress] = useState(1)
+  const streak = 3
+  const dailyProgress = 1
   const dailyGoal = 2
-  let startX = 0
+  const startX = useRef(0)
 
   const handleTrainWeak = () => {
     router.push("/quiz?mode=training")
   }
 
-  const handleStart = (e: any) => {
-    startX = e.touches ? e.touches[0].clientX : e.clientX
+  const handleStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    startX.current = "touches" in e ? e.touches[0].clientX : e.clientX
   }
 
-  const handleEnd = (e: any) => {
-    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX
-    const diff = startX - endX
+  const handleEnd = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    const endX = "changedTouches" in e ? e.changedTouches[0].clientX : e.clientX
+    const diff = startX.current - endX
 
     if (diff > 50 && activeIndex < nodes.length - 1) {
       setActiveIndex(activeIndex + 1)
@@ -179,16 +160,10 @@ export default function JourneyPage() {
       setXp(xpVal)
       setWeakCount(incorrect.length)
 
-      const completed: string[] = []
-
       for (const program of programs) {
         const progress = await getProgramProgress(program.id)
-        if (progress.completed) {
-          completed.push(program.id)
-        }
+        void progress
       }
-
-      setCompletedPrograms(completed)
     }
 
     loadAllProgress()
@@ -242,47 +217,13 @@ export default function JourneyPage() {
       })
 
       setNodes(mapped)
+      const nextActiveIndex = mapped.findIndex((node) => node.state === "active")
+      setActiveIndex(nextActiveIndex >= 0 ? nextActiveIndex : 0)
       setLoading(false)
     }
 
     loadProgram()
   }, [planType, selectedProgram])
-
-  useEffect(() => {
-    const idx = nodes.findIndex(n => n.state === "active")
-    if (idx >= 0) setActiveIndex(idx)
-    else setActiveIndex(0)
-  }, [nodes])
-
-  useEffect(() => {
-    if (!profileLoaded || nodes.length === 0) return
-
-    const currentNode = nodes[activeIndex] || nodes[0]
-    if (!currentNode) {
-      setPaywallReason(null)
-      return
-    }
-
-    const match = currentNode.segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
-    const currentBook = match
-      ? match[1].charAt(0).toUpperCase() + match[1].slice(1)
-      : null
-    const currentChapter = match ? Number(match[3]) : null
-
-    if (planType === "trial") {
-      if (currentBook !== "Genesis" || (currentChapter !== null && currentChapter > 3)) {
-        setPaywallReason("TRIAL_LIMIT")
-        return
-      }
-    }
-
-    if (planType === "pro") {
-      setPaywallReason("PRO_REQUIRES_UPGRADE")
-      return
-    }
-
-    setPaywallReason(null)
-  }, [activeIndex, nodes, planType, profileLoaded])
 
   if (loading || !profileLoaded) {
     return (
@@ -299,59 +240,28 @@ export default function JourneyPage() {
   const progressPercent = Math.round((completedCount / totalCount) * 100)
   const program = getProgramById(selectedProgram)
   const focusedReason = focusedNode?.access.reason
-  const renderSections = (
-    <div className="mt-8">
-      <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
+  const paywallReason = (() => {
+    if (!profileLoaded || nodes.length === 0) return null
 
-      {bibleSections.map((section) => {
-        const isOpen = openSections[section.name]
+    const currentNode = nodes[activeIndex] || nodes[0]
+    if (!currentNode) return null
 
-        return (
-          <div key={section.name} className="mb-4">
+    const match = currentNode.segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
+    const currentBook = match
+      ? match[1].charAt(0).toUpperCase() + match[1].slice(1)
+      : null
+    const currentChapter = match ? Number(match[3]) : null
 
-            {/* SECTION HEADER */}
-            <div
-              onClick={() =>
-                setOpenSections(prev => ({
-                  ...prev,
-                  [section.name]: !prev[section.name],
-                }))
-              }
-              className="flex justify-between items-center cursor-pointer text-xs text-slate-400 uppercase tracking-wide mb-2 hover:text-white"
-            >
-              <span>{section.name}</span>
-              <span>{isOpen ? "−" : "+"}</span>
-            </div>
+    if (planType === "trial" && (currentBook !== "Genesis" || (currentChapter !== null && currentChapter > 3))) {
+      return "TRIAL_LIMIT"
+    }
 
-            {/* BOOKS */}
-            {isOpen && section.books.map((book) => {
+    if (planType === "pro") {
+      return "PRO_REQUIRES_UPGRADE"
+    }
 
-              const program = programs.find(p =>
-                p.title.replace(" Program","") === book
-              )
-
-              return (
-                <div
-                  key={book}
-                  onClick={() => {
-                    setSelectedProgram(program?.id || book)
-                  }}
-                  className={`
-                    px-3 py-2 rounded-lg mb-1 text-sm transition-all
-                    ${selectedProgram === (program?.id || book) ? "bg-blue-600 text-white" : "text-slate-300"}
-                    hover:bg-slate-800
-                  `}
-                >
-                  {book}
-                  {book !== "Genesis" && " 🔒"}
-                </div>
-              )
-            })}
-          </div>
-        )
-      })}
-    </div>
-  )
+    return null
+  })()
 
   if (paywallReason) {
     return (
@@ -371,9 +281,10 @@ export default function JourneyPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B1220] text-white flex relative">
+    <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">
+      <div className="absolute left-1/2 top-[-100px] h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[120px]" />
       {/* MAIN */}
-      <div className="flex-1 px-4 md:px-8 py-6">
+      <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="flex justify-center mb-8">
           <div className="text-center max-w-md">
             <h1 className="text-3xl md:text-4xl font-bold">
@@ -435,7 +346,7 @@ export default function JourneyPage() {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
+        <div className="mx-auto flex max-w-5xl flex-col gap-8 lg:flex-row">
 
           {/* PATH */}
           <div className="flex-1 relative">
@@ -495,7 +406,7 @@ export default function JourneyPage() {
                   >
                     <div className="relative flex flex-col items-center">
                       {isActive && (
-                        <div className="absolute inset-0 z-0 rounded-2xl bg-yellow-400/30 blur-xl animate-pulse-glow" />
+                        <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.4)] transition-all duration-300" />
                       )}
 
                       {isLocked && (
@@ -520,11 +431,9 @@ export default function JourneyPage() {
                           rounded-2xl overflow-hidden
                           cursor-pointer
                           border
-                          transition-all duration-200
-                          active:scale-95
-                          hover:scale-[1.03]
+                          transition-all duration-300 transition transform hover:scale-[1.02] active:scale-[0.98]
                           ${isActive
-                            ? "border-yellow-400 shadow-[0_0_40px_rgba(255,200,0,0.9)]"
+                            ? "border-green-500 shadow-[0_0_40px_rgba(34,197,94,0.4)]"
                             : "border-gray-600"}
                         `}
                       >
@@ -572,7 +481,7 @@ export default function JourneyPage() {
           </div>
 
           {/* RIGHT PANEL */}
-          <div className="lg:w-80 w-full bg-[#121A2B] rounded-2xl p-6 shadow-xl h-fit space-y-6">
+          <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl lg:w-80">
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
@@ -630,22 +539,7 @@ export default function JourneyPage() {
             {weakCount > 0 && (
               <button
                 onClick={handleTrainWeak}
-                className="
-                  w-full
-                  bg-purple-600 hover:bg-purple-500
-                  text-white
-                  py-3
-                  rounded-xl
-                  font-semibold
-                  transition-all duration-150
-                  hover:scale-[1.02]
-                  shadow-md hover:shadow-lg
-                  active:scale-95
-                  active:brightness-90
-                  disabled:opacity-50
-                  disabled:cursor-not-allowed
-                  mt-2
-                "
+                className="mt-2 w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition transform transition-all duration-200 hover:scale-[1.02] hover:bg-[#222C40] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Train Weak Areas →
               </button>
@@ -696,7 +590,7 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }
               }}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition transform transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
               disabled={!activeNode}
             >
               Continue →
