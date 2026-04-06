@@ -10,8 +10,67 @@ import { getProgramProgress } from "@/lib/programProgress"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
+import { supabase } from "@/lib/supabase"
 
 type NodeState = "complete" | "active" | "locked"
+type JourneyPlanType = "trial" | "pro" | "pro_plus" | "free"
+type JourneyLockReason =
+  | "TRIAL_LIMIT"
+  | "PRO_REQUIRES_UPGRADE"
+  | "UPGRADE_REQUIRED"
+  | null
+
+type JourneyAccessResult = {
+  locked: boolean
+  reason: JourneyLockReason
+}
+
+function getSegmentAccess(planType: JourneyPlanType, segment: string): JourneyAccessResult {
+  const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
+  if (!match) {
+    return {
+      locked: true,
+      reason: "UPGRADE_REQUIRED",
+    }
+  }
+
+  const [, bookSlug, , endChapter] = match
+  const book = bookSlug.charAt(0).toUpperCase() + bookSlug.slice(1)
+  const chapter = Number(endChapter)
+
+  if (planType === "trial") {
+    if (book !== "Genesis" || chapter > 3) {
+      return {
+        locked: true,
+        reason: "TRIAL_LIMIT",
+      }
+    }
+
+    return {
+      locked: false,
+      reason: null,
+    }
+  }
+
+  if (planType === "pro") {
+    return {
+      locked: true,
+      reason: "PRO_REQUIRES_UPGRADE",
+    }
+  }
+
+  if (planType === "pro_plus") {
+    return {
+      locked: false,
+      reason: null,
+    }
+  }
+
+  return {
+    locked: true,
+    reason: "UPGRADE_REQUIRED",
+  }
+}
 
 function getNodeIcon(label: string) {
   if (label.includes("1–3")) return "creation.png"
@@ -57,9 +116,10 @@ export default function JourneyPage() {
   const [selectedProgram, setSelectedProgram] = useState("genesis")
 
   const [nodes, setNodes] = useState<
-    { label: string; segment: string; state: NodeState }[]
+    { label: string; segment: string; state: NodeState; access: JourneyAccessResult }[]
   >([])
   const [activeIndex, setActiveIndex] = useState(0)
+  const [planType, setPlanType] = useState<JourneyPlanType>("free")
 
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
@@ -92,6 +152,24 @@ export default function JourneyPage() {
     async function loadAllProgress() {
       const xpVal = await getXp()
       const incorrect = getIncorrectQuestions()
+      const { data: userRes } = await supabase.auth.getUser()
+
+      if (userRes?.user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("plan_type")
+          .eq("id", userRes.user.id)
+          .single()
+
+        const nextPlan = profile?.plan_type
+        setPlanType(
+          nextPlan === "trial" || nextPlan === "pro" || nextPlan === "pro_plus"
+            ? nextPlan
+            : "free",
+        )
+      } else {
+        setPlanType("free")
+      }
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
@@ -144,10 +222,17 @@ export default function JourneyPage() {
           }
         }
 
+        const access = getSegmentAccess(planType, seg.segment)
+
+        if (access.locked) {
+          state = "locked"
+        }
+
         return {
           label: seg.label,
           segment: seg.segment,
           state,
+          access,
         }
       })
 
@@ -156,7 +241,7 @@ export default function JourneyPage() {
     }
 
     loadProgram()
-  }, [selectedProgram])
+  }, [planType, selectedProgram])
 
   useEffect(() => {
     const idx = nodes.findIndex(n => n.state === "active")
@@ -173,10 +258,12 @@ export default function JourneyPage() {
   }
 
   const activeNode = nodes.find(n => n.state === "active")
+  const focusedNode = nodes[activeIndex]
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const progressPercent = Math.round((completedCount / totalCount) * 100)
   const program = getProgramById(selectedProgram)
+  const focusedReason = focusedNode?.access.reason
   const renderSections = (
     <div className="mt-8">
       <h3 className="text-sm text-slate-400 mb-3">Sections</h3>
@@ -456,6 +543,24 @@ export default function JourneyPage() {
               </div>
             )}
 
+            {focusedReason === "TRIAL_LIMIT" && (
+              <div className="mt-4 text-sm text-yellow-400">
+                Trial access is limited to Genesis 1-3.
+              </div>
+            )}
+
+            {focusedReason === "PRO_REQUIRES_UPGRADE" && (
+              <div className="mt-4 text-sm text-yellow-400">
+                Pro access requires an upgrade to Pro Plus for Journey chapters.
+              </div>
+            )}
+
+            {focusedReason === "UPGRADE_REQUIRED" && (
+              <div className="mt-4 text-sm text-yellow-400">
+                Upgrade required to continue this Journey path.
+              </div>
+            )}
+
             <div className="space-y-2">
               <div className="text-sm text-slate-300">XP</div>
               <div className="text-lg font-bold">{xp}</div>
@@ -540,6 +645,7 @@ export default function JourneyPage() {
                 }
               }}
               className="w-full bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!activeNode}
             >
               Continue →
             </button>
