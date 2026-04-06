@@ -8,9 +8,9 @@ import { getUserPlan, saveUserPlan } from "@/lib/userPlan"
 import { supabase } from "@/lib/supabase"
 
 const readingOptions = [
-  { label: "10 min", value: 10 },
-  { label: "15 min", value: 15 },
-  { label: "20+ min", value: 20 },
+  { label: "15 min (Standard)", value: 15 },
+  { label: "20 min (Focused)", value: 20 },
+  { label: "30+ min (Deep Focus)", value: 30 },
 ]
 
 const trainingOptions = [

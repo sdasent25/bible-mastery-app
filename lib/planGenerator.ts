@@ -6,23 +6,25 @@ export type GeneratedPlan = {
 }
 
 export function generatePlan(readingTime: number, trainingEnabled: boolean): GeneratedPlan {
-  const normalizedReadingTime = readingTime >= 20 ? 20 : readingTime
-
   let segmentsPerDay = 1
 
-  if (normalizedReadingTime === 15) {
-    segmentsPerDay = 1.5
+  if (readingTime === 15) {
+    segmentsPerDay = 1
   }
 
-  if (normalizedReadingTime === 20) {
+  if (readingTime === 20) {
     segmentsPerDay = 2
+  }
+
+  if (readingTime === 30) {
+    segmentsPerDay = 3
   }
 
   const totalSegments = 396
   const days = totalSegments / segmentsPerDay
 
   return {
-    readingTime: normalizedReadingTime,
+    readingTime,
     segmentsPerDay,
     trainingEnabled,
     estimatedDays: Math.round(days),
