@@ -115,6 +115,7 @@ export default function JourneyPage() {
   const [completedToday, setCompletedToday] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
+  const dailyProgress = 0
   const startX = useRef(0)
 
   const handleTrainWeak = () => {
