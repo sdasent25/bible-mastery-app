@@ -32,7 +32,7 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           <button
             onClick={() => setIsFamily(false)}
             className={`flex-1 py-2 rounded-md text-sm ${
-              !isFamily ? "bg-blue-600 text-white" : "text-gray-400"
+              !isFamily ? "bg-blue-600 text-white" : "text-gray-300"
             }`}
           >
             Individual
@@ -41,14 +41,14 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
           <button
             onClick={() => setIsFamily(true)}
             className={`flex-1 py-2 rounded-md text-sm ${
-              isFamily ? "bg-blue-600 text-white" : "text-gray-400"
+              isFamily ? "bg-blue-600 text-white" : "text-gray-300"
             }`}
           >
             Family (Up to 6)
           </button>
         </div>
 
-        <p className="text-xs text-gray-400 text-center mb-4">
+        <p className="text-xs text-gray-300 text-center mb-4">
           {isFamily
             ? "Share with up to 6 family members"
             : "Single user plan"}
@@ -56,14 +56,14 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
 
         <div className="bg-[#121826] border border-neutral-800 rounded-xl p-5">
           <h2 className="text-xl font-semibold mb-2">Pro</h2>
-          <p className="text-gray-400 mb-3">
+          <p className="text-gray-300 mb-3">
             {isFamily ? "$19.99 / month" : "$6.99 / month"}
           </p>
 
           <ul className="text-sm space-y-1 text-white/90">
             <li>✔ Flashcards</li>
             <li>✔ Active Recall</li>
-            <li>✔ Weak Card Training</li>
+            <li>✔ 🎯 Targeted Practice</li>
             <li>✔ XP + Streak</li>
             <li className="text-red-400">✖ No Journey</li>
           </ul>
