@@ -235,6 +235,14 @@ export default function JourneyPage() {
           state = "locked"
         }
 
+        console.log("NODE DEBUG:", {
+          index,
+          label: seg.label,
+          planType,
+          currentSegmentIndex: progress.currentSegmentIndex,
+          isAccessible,
+        })
+
         return {
           label: seg.label,
           segment: seg.segment,
@@ -242,6 +250,8 @@ export default function JourneyPage() {
           access,
         }
       })
+
+      console.log("MAPPED NODES:", mapped)
 
       let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
