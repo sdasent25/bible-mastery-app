@@ -181,9 +181,17 @@ export default function JourneyPage() {
         }))
       }
 
-      const progress = program
+      let progress = program
         ? await getProgramProgress(selectedProgram)
-        : { completed: false, currentSegmentIndex: -1 }
+        : null
+
+      // Fallback if no progress system exists
+      if (!progress || progress.currentSegmentIndex === undefined) {
+        progress = {
+          completed: false,
+          currentSegmentIndex: 0,
+        }
+      }
 
       const mapped = segments.map((seg, index) => {
         let state: NodeState = "locked"
