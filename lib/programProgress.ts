@@ -52,13 +52,12 @@ export async function getProgramProgress(programId: string): Promise<ProgramProg
     .select('*')
     .eq('user_id', userId)
     .eq('program_id', programId)
-    .single()
+    .maybeSingle()
 
   console.log("DB progress row:", data)
 
-  if (error) {
+  if (error && error.code !== "PGRST116") {
     console.error('Error loading program progress:', error)
-    return getDefaultProgress(programId)
   }
 
   return mapRowToProgress(programId, data)
