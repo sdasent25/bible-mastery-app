@@ -1,37 +1,20 @@
+"use client"
+
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect } from "next/navigation"
-import { createClient } from "@/lib/supabase/server"
+import { useRouter, useSearchParams } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 
-type SegmentPageProps = {
-  searchParams: Promise<{
-    segment?: string
-    program?: string
-  }>
-}
+export default function SegmentIntro() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const supabase = createClient()
+  const [profileLoaded, setProfileLoaded] = useState(false)
+  const [planType, setPlanType] = useState("trial")
 
-export default async function SegmentIntro({ searchParams }: SegmentPageProps) {
-  const params = await searchParams
-  const segment = params.segment || ""
-  const program = params.program || "genesis"
-
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect("/login")
-  }
-
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("plan_type")
-    .eq("id", user.id)
-    .single()
-
-  const planType = profile?.plan_type || "trial"
+  const segment = searchParams.get("segment") || ""
+  const program = searchParams.get("program") || "genesis"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 
@@ -43,18 +26,65 @@ export default async function SegmentIntro({ searchParams }: SegmentPageProps) {
     chapter = Number(match[3])
   }
 
-  if (planType === "trial") {
-    if (book !== "Genesis" || (chapter !== null && chapter > 3)) {
-      redirect("/upgrade")
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadProfile() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push("/login")
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("plan_type")
+        .eq("id", user.id)
+        .single()
+
+      if (isMounted) {
+        setPlanType(profile?.plan_type || "trial")
+        setProfileLoaded(true)
+      }
     }
-  }
 
-  if (planType === "pro") {
-    redirect("/upgrade")
-  }
+    void loadProfile()
 
-  if (planType !== "pro_plus" && planType !== "trial") {
-    redirect("/upgrade")
+    return () => {
+      isMounted = false
+    }
+  }, [router, supabase])
+
+  useEffect(() => {
+    if (!profileLoaded) return
+
+    if (planType === "trial") {
+      if (book !== "Genesis" || (chapter !== null && chapter > 3)) {
+        router.push("/upgrade")
+        return
+      }
+    }
+
+    if (planType === "pro") {
+      router.push("/upgrade")
+      return
+    }
+
+    if (planType !== "pro_plus" && planType !== "trial") {
+      router.push("/upgrade")
+      return
+    }
+  }, [book, chapter, planType, profileLoaded, router])
+
+  if (!profileLoaded) {
+    return (
+      <div className="min-h-screen bg-[#0B1220] text-white flex items-center justify-center">
+        Loading...
+      </div>
+    )
   }
 
   function formatSegment(segment: string) {
