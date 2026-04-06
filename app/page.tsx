@@ -46,18 +46,33 @@ const valuePoints = [
   "Unlimited practice sessions",
 ]
 
+const testimonials = [
+  {
+    text: "This is the first time I’ve actually been consistent with learning the Bible.",
+    name: "Sarah M.",
+  },
+  {
+    text: "The streak system keeps me coming back every day. It actually works.",
+    name: "James R.",
+  },
+  {
+    text: "I’ve memorized more scripture in a week than I have in years.",
+    name: "David K.",
+  },
+]
+
 export default function LandingPage() {
   const router = useRouter()
 
   return (
-    <main className="overflow-hidden bg-[#040816] text-white">
+    <main className="space-y-16 overflow-hidden bg-[#040816] text-white">
       <section className="relative isolate min-h-screen">
         <div className="absolute inset-0 -z-20 bg-[linear-gradient(180deg,#081120_0%,#040816_48%,#03050E_100%)]" />
         <div className="absolute left-1/2 top-[-10rem] -z-10 h-[34rem] w-[34rem] -translate-x-1/2 rounded-full bg-[#1ED760]/12 blur-[140px]" />
         <div className="absolute right-[-8rem] top-[10rem] -z-10 h-[26rem] w-[26rem] rounded-full bg-[#2F7BFF]/12 blur-[120px]" />
         <div className="absolute bottom-[-10rem] left-[-8rem] -z-10 h-[24rem] w-[24rem] rounded-full bg-[#14B8A6]/10 blur-[120px]" />
 
-        <div className="mx-auto flex min-h-screen max-w-7xl flex-col px-5 pb-16 pt-24 sm:px-6 md:px-8 lg:px-10">
+        <div className="mx-auto flex min-h-screen max-w-5xl flex-col px-5 pb-16 pt-24 sm:px-6 md:px-8">
           <header className="flex items-center justify-between gap-4">
             <Link href="/" className="text-sm font-black uppercase tracking-[0.3em] text-[#9BFFB6]">
               Bible Athlete
@@ -79,13 +94,13 @@ export default function LandingPage() {
             </div>
           </header>
 
-          <div className="grid flex-1 items-center gap-14 py-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-18">
+          <div className="grid flex-1 items-center gap-14 py-12 md:gap-16 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="max-w-2xl">
               <div className="inline-flex rounded-full border border-[#9BFFB6]/20 bg-[#9BFFB6]/10 px-4 py-2 text-sm font-bold text-[#D9FFE6] shadow-[0_12px_35px_rgba(0,0,0,0.18)]">
                 Premium Bible training for real growth
               </div>
 
-              <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="mt-6 max-w-3xl text-4xl font-black leading-tight tracking-[-0.05em] text-white md:text-6xl">
                 Train your Bible knowledge
                 <span className="mt-2 block bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] bg-clip-text text-transparent">
                   like an athlete trains to win.
@@ -99,19 +114,19 @@ export default function LandingPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <button
                   onClick={() => router.push("/signup")}
-                  className="rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-7 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.24)] transition hover:scale-[1.01] active:scale-[0.99]"
+                  className="mt-4 rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-7 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.24)] transition hover:scale-[1.01] active:scale-[0.99] sm:mt-0"
                 >
                   Start Your Journey
                 </button>
                 <button
                   onClick={() => router.push("/journey")}
-                  className="rounded-2xl border border-white/14 bg-white/[0.04] px-7 py-4 text-base font-bold text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07]"
+                  className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-7 py-4 text-base font-bold text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
                 >
                   Explore the Journey
                 </button>
               </div>
 
-              <div className="mt-10 grid gap-3 sm:grid-cols-3">
+              <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
                   <p className="text-2xl font-black text-white">Daily</p>
                   <p className="mt-2 text-sm leading-6 text-white">Stay consistent with streak-driven sessions that feel purposeful.</p>
@@ -199,25 +214,27 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="flex justify-center px-6 py-20">
-        <div className="relative w-full max-w-sm">
+      <section className="px-6 py-20 md:py-24">
+        <div className="mx-auto flex max-w-5xl justify-center">
+          <div className="relative w-full max-w-sm">
           <div className="absolute inset-0 rounded-3xl bg-green-500 opacity-10 blur-3xl" />
 
-          <div className="relative rounded-3xl border border-gray-800 bg-[#121826] p-3 shadow-2xl">
-            <video
-              src="/preview.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full rounded-2xl"
-            />
+            <div className="relative rounded-3xl border border-gray-800 bg-[#121826] p-3 shadow-2xl">
+              <video
+                src="/preview.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full rounded-2xl"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="px-5 py-18 sm:px-6 md:px-8 lg:px-10">
-        <div className="mx-auto max-w-7xl">
+      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
+        <div className="mx-auto max-w-5xl">
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Core Training</p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl md:text-5xl">
@@ -228,7 +245,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
             {featureCards.map((item) => (
               <div
                 key={item.title}
@@ -243,8 +260,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 py-18 sm:px-6 md:px-8 lg:px-10">
-        <div className="mx-auto max-w-6xl rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,#091223_0%,#060A16_100%)] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-8 md:p-10">
+      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
+        <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,#091223_0%,#060A16_100%)] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-8 md:p-10">
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">How It Works</p>
             <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
@@ -252,7 +269,7 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
             {steps.map((step) => (
               <div
                 key={step.number}
@@ -267,8 +284,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 py-18 sm:px-6 md:px-8 lg:px-10">
-        <div className="mx-auto max-w-4xl rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(155,255,182,0.12),transparent_36%),linear-gradient(180deg,#0A1325_0%,#060A16_100%)] p-8 text-center shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-10">
+      <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
+        <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(155,255,182,0.12),transparent_36%),linear-gradient(180deg,#0A1325_0%,#060A16_100%)] p-8 text-center shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Built For Real Growth</p>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
             Everything you need to build a stronger Bible habit.
@@ -287,7 +304,27 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="px-5 pb-20 pt-18 text-center sm:px-6 md:px-8 lg:px-10">
+      <section className="px-6 py-20 md:py-24">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-10 text-center text-2xl font-bold text-white md:text-3xl">
+            What People Are Saying
+          </h2>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {testimonials.map((t, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-md"
+              >
+                <p className="mb-4 text-white">“{t.text}”</p>
+                <p className="text-sm text-gray-200">{t.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-5 pb-20 pt-20 text-center sm:px-6 md:px-8 md:py-24">
         <div className="mx-auto max-w-5xl rounded-[2.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(14,21,39,0.98),rgba(7,10,19,0.98))] px-6 py-12 shadow-[0_32px_90px_rgba(0,0,0,0.34)] sm:px-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">Start Now</p>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
@@ -300,13 +337,13 @@ export default function LandingPage() {
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <button
               onClick={() => router.push("/signup")}
-              className="rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-8 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.22)] transition hover:scale-[1.01] active:scale-[0.99]"
+              className="mt-4 rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-8 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.22)] transition hover:scale-[1.01] active:scale-[0.99] sm:mt-0"
             >
               Begin Training
             </button>
             <button
               onClick={() => router.push("/login")}
-              className="rounded-2xl border border-white/14 bg-white/[0.04] px-8 py-4 text-base font-bold text-white shadow-[0_18px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07]"
+              className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-8 py-4 text-base font-bold text-white shadow-[0_18px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
             >
               Log In
             </button>
