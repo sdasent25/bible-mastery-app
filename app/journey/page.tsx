@@ -112,10 +112,10 @@ export default function JourneyPage() {
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const [dailyGoal, setDailyGoal] = useState(1)
+  const [dailyProgress, setDailyProgress] = useState(0)
   const [completedToday, setCompletedToday] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
-  const dailyProgress = 0
   const startX = useRef(0)
 
   useEffect(() => {
@@ -143,6 +143,30 @@ export default function JourneyPage() {
     }
 
     void loadPlan()
+  }, [])
+
+  useEffect(() => {
+    const loadDailyProgress = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const today = new Date().toISOString().split("T")[0]
+
+      const { data } = await supabase
+        .from("daily_progress")
+        .select("segments_completed")
+        .eq("user_id", user.id)
+        .eq("date", today)
+        .maybeSingle()
+
+      if (data?.segments_completed) {
+        setDailyProgress(data.segments_completed)
+      }
+    }
+
+    void loadDailyProgress()
   }, [])
 
   const handleTrainWeak = () => {
@@ -320,9 +344,9 @@ export default function JourneyPage() {
   const focusedNode = nodes[activeIndex]
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
-  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
-  const dailyProgressPercent = Math.min(
-    Math.round((completedToday / Math.max(dailyGoal, 1)) * 100),
+  const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+  const progressPercent = Math.min(
+    (dailyProgress / dailyGoal) * 100,
     100,
   )
   const program = getProgramById(selectedProgram)
@@ -536,7 +560,7 @@ export default function JourneyPage() {
               <div className="w-full h-3 bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-green-400"
-                  style={{ width: `${progressPercent}%` }}
+                  style={{ width: `${overallProgressPercent}%` }}
                 />
               </div>
             </div>
@@ -616,12 +640,12 @@ export default function JourneyPage() {
               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-green-400"
-                  style={{ width: `${dailyProgressPercent}%` }}
+                  style={{ width: `${progressPercent}%` }}
                 />
               </div>
 
               <div className="text-xs text-gray-200 mt-1">
-                {completedToday} / {dailyGoal}
+                {dailyProgress} / {dailyGoal}
               </div>
             </div>
 
