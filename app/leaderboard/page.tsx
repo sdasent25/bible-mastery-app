@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 type LeaderboardEntry = {
   id: string
   name: string
-  xp: number
+  score: number
 }
 
 export default function LeaderboardPage() {
@@ -39,20 +39,20 @@ export default function LeaderboardPage() {
 
       if (userIds.length === 0) return
 
-      const { data: profiles } = await supabase
-        .from("profiles")
-        .select("id, xp")
-        .in("id", userIds)
+      const { data: scores } = await supabase
+        .from("weekly_scores")
+        .select("user_id, score")
 
-      if (!profiles) return
+      if (!scores) return
 
-      const formatted = profiles
-        .map((profile) => ({
-          id: profile.id,
-          name: profile.id === user.id ? "You" : "Member",
-          xp: profile.xp || 0,
+      const formatted = scores
+        .filter((score) => userIds.includes(score.user_id))
+        .map((score) => ({
+          id: score.user_id,
+          name: score.user_id === user.id ? "You" : "Member",
+          score: score.score || 0,
         }))
-        .sort((a, b) => b.xp - a.xp)
+        .sort((a, b) => b.score - a.score)
 
       setLeaderboard(formatted)
     }
@@ -79,8 +79,11 @@ export default function LeaderboardPage() {
 
       <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-5 text-center">
         <p className="text-sm text-white/60">You</p>
+        <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/50">
+          Weekly Score
+        </p>
         <p className="mt-2 text-3xl font-bold text-white">
-          {currentUser?.xp ?? 0} XP
+          {currentUser?.score ?? 0}
         </p>
       </div>
 
@@ -113,7 +116,7 @@ export default function LeaderboardPage() {
                 </div>
 
                 <span className="font-bold text-green-400">
-                  {user.xp} XP
+                  {user.score}
                 </span>
               </div>
             )
