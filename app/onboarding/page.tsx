@@ -66,16 +66,25 @@ export default function OnboardingPage() {
     }
   }, [router])
 
-  async function handleStartJourney() {
-    if (!selectedTimeline || trainingEnabled === null) return
-
+  const handleStartJourney = async () => {
     try {
+      console.log("Start Journey clicked")
+
+      if (!selectedTimeline) {
+        console.warn("No timeline selected")
+        return
+      }
+
+      const plan = generatePlan(selectedTimeline, trainingEnabled ?? false)
+
       setSaving(true)
-      const plan = generatePlan(selectedTimeline, trainingEnabled)
       await saveUserPlan(plan)
+
+      console.log("Plan saved, redirecting...")
+
       router.push("/journey")
-    } catch (error) {
-      console.error("Error saving onboarding plan:", error)
+    } catch (err) {
+      console.error("Start Journey error:", err)
       setSaving(false)
     }
   }
