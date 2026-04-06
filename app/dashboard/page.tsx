@@ -164,6 +164,13 @@ export default function DashboardPage() {
         </button>
 
         <button
+          onClick={() => window.location.href = "/upgrade"}
+          className="w-full bg-green-600 mt-4 py-3 rounded-lg font-bold"
+        >
+          Upgrade Plan (Test)
+        </button>
+
+        <button
           onClick={() => router.push("/flashcards/review")}
           className="w-full bg-neutral-800 py-4 rounded-xl font-semibold"
         >
