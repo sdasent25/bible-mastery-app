@@ -68,10 +68,26 @@ export default function LeaderboardPage() {
   const currentUser = leaderboard.find((user) => user.name === "You")
   const users = leaderboard
   const currentIndex = leaderboard.findIndex((user) => user.id === currentUserId)
-  const diff =
-    currentIndex > 0
-      ? leaderboard[currentIndex - 1].score - leaderboard[currentIndex].score
-      : 0
+  let nudgeMessage = ""
+
+  if (leaderboard.length === 0) {
+    nudgeMessage = "Start training to join the leaderboard"
+  } else if (currentIndex === 0) {
+    nudgeMessage = "🔥 You're leading the family — keep it up!"
+  } else if (currentIndex > 0) {
+    const above = leaderboard[currentIndex - 1]
+    const current = leaderboard[currentIndex]
+
+    const diff = above.score - current.score
+
+    if (diff <= 5) {
+      nudgeMessage = `🔥 You're only ${diff} points from 1st`
+    } else {
+      nudgeMessage = `You're ${diff} points behind ${above.name}`
+    }
+  } else {
+    nudgeMessage = "Stay consistent to climb the leaderboard"
+  }
 
   return (
     <div className="w-full max-w-xl mx-auto px-4 py-6 space-y-6">
@@ -106,55 +122,55 @@ export default function LeaderboardPage() {
           Create or join a family to compete
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-3">
-          {users.map((user, index) => {
-            const isCurrentUser = user.id === currentUserId
-            const isTopThree = index < 3
-            const topThreeStyles =
-              index === 0
-                ? "scale-[1.03] border-yellow-400/70 shadow-[0_0_35px_rgba(250,204,21,0.25)]"
-                : index === 1
-                  ? "scale-[1.01] border-slate-300/50 shadow-[0_0_25px_rgba(226,232,240,0.15)]"
-                  : index === 2
-                    ? "scale-[1.01] border-amber-600/60 shadow-[0_0_25px_rgba(217,119,6,0.18)]"
-                    : ""
+        <>
+          <div className="text-center mb-4 text-sm text-green-400 font-semibold">
+            {nudgeMessage}
+          </div>
 
-            return (
-              <div
-                key={user.id}
-                className={`w-full flex items-center justify-between rounded-xl px-4 py-3 border transition-all ${
-                  isCurrentUser
-                    ? "bg-[#1E293B] border-green-500"
-                    : "bg-[#121826] border-gray-700"
-                } ${isTopThree ? topThreeStyles : ""}`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className={`font-bold text-gray-300 ${
-                    isTopThree ? "text-base" : "text-sm"
-                  }`}>
-                    {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
-                  </span>
+          <div className="flex flex-col items-center gap-3">
+            {users.map((user, index) => {
+              const isCurrentUser = user.id === currentUserId
+              const isTopThree = index < 3
+              const topThreeStyles =
+                index === 0
+                  ? "scale-[1.03] border-yellow-400/70 shadow-[0_0_35px_rgba(250,204,21,0.25)]"
+                  : index === 1
+                    ? "scale-[1.01] border-slate-300/50 shadow-[0_0_25px_rgba(226,232,240,0.15)]"
+                    : index === 2
+                      ? "scale-[1.01] border-amber-600/60 shadow-[0_0_25px_rgba(217,119,6,0.18)]"
+                      : ""
 
-                  <span className={`text-white ${
-                    isTopThree ? "text-lg font-bold" : "font-medium"
-                  }`}>
-                    {user.name}
+              return (
+                <div
+                  key={user.id}
+                  className={`w-full flex items-center justify-between rounded-xl px-4 py-3 border transition-all ${
+                    isCurrentUser
+                      ? "bg-[#1E293B] border-green-500"
+                      : "bg-[#121826] border-gray-700"
+                  } ${isTopThree ? topThreeStyles : ""}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`font-bold text-gray-300 ${
+                      isTopThree ? "text-base" : "text-sm"
+                    }`}>
+                      {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
+                    </span>
+
+                    <span className={`text-white ${
+                      isTopThree ? "text-lg font-bold" : "font-medium"
+                    }`}>
+                      {user.name}
+                    </span>
+                  </div>
+
+                  <span className="font-bold text-green-400">
+                    {user.score}
                   </span>
                 </div>
-
-                <span className="font-bold text-green-400">
-                  {user.score}
-                </span>
-              </div>
-            )
-          })}
-        </div>
-      )}
-
-      {currentIndex > 0 && diff > 0 && (
-        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-4 text-center text-white">
-          You&apos;re {diff} points away from moving up
-        </div>
+              )
+            })}
+          </div>
+        </>
       )}
     </div>
   )
