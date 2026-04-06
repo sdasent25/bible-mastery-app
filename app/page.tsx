@@ -100,15 +100,12 @@ export default function LandingPage() {
                 Premium Bible training for real growth
               </div>
 
-              <h1 className="mt-6 max-w-3xl text-4xl font-black leading-tight tracking-[-0.05em] text-white md:text-6xl">
-                Train your Bible knowledge
-                <span className="mt-2 block bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] bg-clip-text text-transparent">
-                  like an athlete trains to win.
-                </span>
+              <h1 className="mb-6 mt-6 max-w-3xl text-4xl font-bold leading-tight text-white md:text-6xl">
+                The Bible Study App That Actually Works
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-8 text-white sm:text-lg">
-                Build streaks, master scripture, and move through the Bible with a training system designed to make retention feel rewarding.
+              <p className="mb-8 max-w-xl text-lg leading-8 text-gray-200 md:text-xl">
+                Learn, memorize, and master scripture with a powerful training system.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
