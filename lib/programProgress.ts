@@ -48,11 +48,13 @@ export async function getProgramProgress(programId: string): Promise<ProgramProg
   }
 
   const { data, error } = await supabase
-    .from('program_progress')
+    .from('user_program_progress')
     .select('program_id, current_segment_index, completed, bonus_awarded')
     .eq('user_id', userId)
     .eq('program_id', programId)
     .maybeSingle<ProgramProgressRow>()
+
+  console.log("DB progress row:", data)
 
   if (error) {
     console.error('Error loading program progress:', error)
@@ -71,7 +73,7 @@ export async function getProgramsProgress(programIds: string[]): Promise<Record<
   }
 
   const { data, error } = await supabase
-    .from('program_progress')
+    .from('user_program_progress')
     .select('program_id, current_segment_index, completed, bonus_awarded')
     .eq('user_id', userId)
     .in('program_id', programIds)
@@ -105,7 +107,7 @@ async function saveProgramProgress(programId: string, progress: Omit<ProgramProg
   }
 
   const { error } = await supabase
-    .from('program_progress')
+    .from('user_program_progress')
     .upsert(payload, { onConflict: 'user_id,program_id' })
 
   if (error) {
