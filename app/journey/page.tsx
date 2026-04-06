@@ -184,7 +184,7 @@ export default function JourneyPage() {
         ? await getProgramProgress(selectedProgram)
         : null
 
-      // Fallback if no progress system exists
+      // 🚨 HARD FALLBACK — NEVER ALLOW UNDEFINED
       if (!progress || progress.currentSegmentIndex === undefined) {
         progress = {
           programId: selectedProgram,
@@ -199,12 +199,21 @@ export default function JourneyPage() {
         const isPro = planType === "pro"
         const isProPlus = planType === "pro_plus"
 
-        const isAccessible = (() => {
-          if (isProPlus) return true
-          if (isTrial) return index === 0
-          if (isPro) return false
-          return false
-        })()
+        // 🚨 FORCE FIRST NODE ALWAYS ACCESSIBLE
+        let isAccessible = false
+
+        if (isProPlus) {
+          isAccessible = true
+        } else if (isTrial) {
+          isAccessible = index === 0
+        } else if (isPro) {
+          isAccessible = false
+        }
+
+        // 🚨 SAFETY NET — NEVER LOCK FIRST NODE
+        if (index === 0) {
+          isAccessible = true
+        }
 
         const isCompleted = index < progress.currentSegmentIndex
         const isActive = index === progress.currentSegmentIndex
@@ -236,6 +245,7 @@ export default function JourneyPage() {
 
       let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
+      // 🚨 HARD FALLBACK
       if (firstActiveIndex === -1 && mapped.length > 0) {
         mapped[0].state = "active"
         firstActiveIndex = 0
