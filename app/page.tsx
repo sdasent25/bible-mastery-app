@@ -79,6 +79,12 @@ export default function LandingPage() {
             </Link>
 
             <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.push("/pricing")}
+                className="text-sm text-gray-300 transition-colors hover:text-white"
+              >
+                Pricing
+              </button>
               <Link
                 href="/login"
                 className="rounded-full border border-white/14 bg-white/[0.03] px-4 py-2 text-sm font-semibold text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.06]"
@@ -125,6 +131,13 @@ export default function LandingPage() {
                   Explore the Journey
                 </button>
               </div>
+
+              <button
+                onClick={() => router.push("/pricing")}
+                className="mt-2 text-sm text-gray-400 underline transition-colors hover:text-white"
+              >
+                View Plans
+              </button>
 
               <div className="mt-10 grid grid-cols-1 gap-3 md:grid-cols-3">
                 <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.2)]">
