@@ -1,4 +1,4 @@
-create table if not exists public.program_progress (
+create table if not exists public.user_program_progress (
   user_id uuid not null references auth.users (id) on delete cascade,
   program_id text not null,
   current_segment_index integer not null default 0,
@@ -9,23 +9,23 @@ create table if not exists public.program_progress (
   primary key (user_id, program_id)
 );
 
-alter table public.program_progress enable row level security;
+alter table public.user_program_progress enable row level security;
 
-drop policy if exists "Users can read own program progress" on public.program_progress;
+drop policy if exists "Users can read own program progress" on public.user_program_progress;
 create policy "Users can read own program progress"
-on public.program_progress
+on public.user_program_progress
 for select
 using (auth.uid() = user_id);
 
-drop policy if exists "Users can insert own program progress" on public.program_progress;
+drop policy if exists "Users can insert own program progress" on public.user_program_progress;
 create policy "Users can insert own program progress"
-on public.program_progress
+on public.user_program_progress
 for insert
 with check (auth.uid() = user_id);
 
-drop policy if exists "Users can update own program progress" on public.program_progress;
+drop policy if exists "Users can update own program progress" on public.user_program_progress;
 create policy "Users can update own program progress"
-on public.program_progress
+on public.user_program_progress
 for update
 using (auth.uid() = user_id)
 with check (auth.uid() = user_id);
