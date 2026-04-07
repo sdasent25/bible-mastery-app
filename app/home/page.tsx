@@ -49,6 +49,7 @@ export default function HomePage() {
     let active = true
 
     async function loadHome() {
+      // 1. GET USER FIRST
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -58,53 +59,74 @@ export default function HomePage() {
         return
       }
 
-      const { data: profile } = await supabase
+      // 2. HARD BLOCK - ONBOARDING CHECK (RUN FIRST)
+      const { data: profile, error } = await supabase
         .from("profiles")
         .select("onboarding_complete")
         .eq("id", user.id)
         .single()
 
-      if (!profile?.onboarding_complete) {
+      if (error || !profile || profile.onboarding_complete === false) {
         router.replace("/onboarding")
         return
       }
 
+      // 3. ONLY CONTINUE IF ONBOARDING COMPLETE
       const plan = await getUserPlan()
+
       if (!plan) {
         router.replace("/onboarding")
         return
       }
 
       const program = getProgramById("genesis")
+
       if (!program) {
-        if (active) {
-          setLoading(false)
-        }
+        if (active) setLoading(false)
         return
       }
 
       const progress = await getProgramProgress(program.id)
-      const resumeIndex = getResumeSegmentIndex(progress, program.segments.length)
-      const currentSegment = program.segments[resumeIndex] || program.segments[0]
+      const resumeIndex = getResumeSegmentIndex(
+        progress,
+        program.segments.length
+      )
+
+      const currentSegment =
+        program.segments[resumeIndex] || program.segments[0]
+
       const highlightedEndIndex = Math.min(
         resumeIndex + Math.max(plan.segmentsPerDay - 1, 0),
-        program.segments.length - 1,
+        program.segments.length - 1
       )
-      const highlightedEndSegment = program.segments[highlightedEndIndex] || currentSegment
-      const completedToday = getCompletedToday(resumeIndex, plan)
+
+      const highlightedEndSegment =
+        program.segments[highlightedEndIndex] || currentSegment
+
+      const completedToday =
+        plan.segmentsPerDay <= 1
+          ? 0
+          : resumeIndex % plan.segmentsPerDay
+
       const progressPercent = Math.min(
-        Math.round((completedToday / Math.max(plan.segmentsPerDay, 1)) * 100),
-        100,
+        Math.round(
+          (completedToday / Math.max(plan.segmentsPerDay, 1)) * 100
+        ),
+        100
       )
 
       if (!active) return
 
       setTrainingEnabled(plan.trainingEnabled)
+
       setHomeState({
         currentSegmentLabel: currentSegment.label,
         currentSegmentSlug: currentSegment.segment,
         currentSegmentIndex: resumeIndex,
-        segmentNumber: Math.min(resumeIndex + 1, program.segments.length),
+        segmentNumber: Math.min(
+          resumeIndex + 1,
+          program.segments.length
+        ),
         totalSegments: program.segments.length,
         highlightedRangeLabel: `${currentSegment.label} -> ${highlightedEndSegment.label}`,
         completedToday,
