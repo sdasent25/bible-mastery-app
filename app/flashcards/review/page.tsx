@@ -2,15 +2,51 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import { getFlashcards } from "@/lib/flashcards"
 import { getLocale, getMessages } from "@/lib/i18n"
 
 import FlashcardStudy from "@/components/flashcards/FlashcardStudy"
 
+type Flashcard = {
+  id: string
+  reference: string
+  verse_text: string
+}
+
 export default function FlashcardsReviewPage() {
   const router = useRouter()
-  const [flashcards, setFlashcards] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [hasAccess, setHasAccess] = useState(false)
+  const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [messages, setMessages] = useState<Record<string, string> | null>(null)
+
+  useEffect(() => {
+    const checkAccess = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        router.push("/login")
+        return
+      }
+
+      const { data } = await supabase
+        .from("user_access")
+        .select("final_plan")
+        .single()
+
+      if (data?.final_plan === "pro" || data?.final_plan === "pro_plus") {
+        setHasAccess(true)
+      } else {
+        router.push("/pricing?source=flashcards_locked")
+      }
+
+      setLoading(false)
+    }
+
+    void checkAccess()
+  }, [router])
 
   async function load() {
     const data = await getFlashcards()
@@ -22,8 +58,19 @@ export default function FlashcardsReviewPage() {
   }
 
   useEffect(() => {
-    load()
-  }, [])
+    if (!hasAccess) return
+    async function loadFlashcards() {
+      await load()
+    }
+
+    void loadFlashcards()
+  }, [hasAccess])
+
+  if (loading) {
+    return <div className="text-white text-center mt-10">Loading...</div>
+  }
+
+  if (!hasAccess) return null
 
   if (!messages) return null
 

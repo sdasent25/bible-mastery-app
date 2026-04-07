@@ -1,16 +1,51 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import { createFlashcard } from "@/lib/flashcards"
 
 export default function FlashcardsCreatePage() {
   const router = useRouter()
-
+  const [accessLoading, setAccessLoading] = useState(true)
+  const [hasAccess, setHasAccess] = useState(false)
   const [verse, setVerse] = useState("")
   const [reference, setReference] = useState("")
   const [category, setCategory] = useState("")
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const checkAccess = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        router.push("/login")
+        return
+      }
+
+      const { data } = await supabase
+        .from("user_access")
+        .select("final_plan")
+        .single()
+
+      if (data?.final_plan === "pro" || data?.final_plan === "pro_plus") {
+        setHasAccess(true)
+      } else {
+        router.push("/pricing?source=flashcards_locked")
+      }
+
+      setAccessLoading(false)
+    }
+
+    void checkAccess()
+  }, [router])
+
+  if (accessLoading) {
+    return <div className="text-white text-center mt-10">Loading...</div>
+  }
+
+  if (!hasAccess) return null
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import { getFlashcards } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
@@ -42,7 +43,8 @@ function getRandomIndices(pool: number[], count: number) {
 
 export default function FlashcardsLearnPage() {
   const router = useRouter()
-
+  const [loading, setLoading] = useState(true)
+  const [hasAccess, setHasAccess] = useState(false)
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
   const [step, setStep] = useState(0)
@@ -63,13 +65,42 @@ export default function FlashcardsLearnPage() {
   const wrongSound = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
+    const checkAccess = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) {
+        router.push("/login")
+        return
+      }
+
+      const { data } = await supabase
+        .from("user_access")
+        .select("final_plan")
+        .single()
+
+      if (data?.final_plan === "pro" || data?.final_plan === "pro_plus") {
+        setHasAccess(true)
+      } else {
+        router.push("/pricing?source=flashcards_locked")
+      }
+
+      setLoading(false)
+    }
+
+    void checkAccess()
+  }, [router])
+
+  useEffect(() => {
+    if (!hasAccess) return
+
     async function load() {
       const data = await getFlashcards()
       setFlashcards((data || []) as Flashcard[])
     }
 
-    load()
-  }, [])
+    void load()
+  }, [hasAccess])
 
   useEffect(() => {
     tapSound.current = new Audio("/sounds/tap.mp3")
@@ -114,6 +145,12 @@ export default function FlashcardsLearnPage() {
     setFullVerseInput("")
     setFeedback(null)
   }, [card, step, eligibleIndices, tokens.length, totalSteps])
+
+  if (loading) {
+    return <div className="text-white text-center mt-10">Loading...</div>
+  }
+
+  if (!hasAccess) return null
 
   if (!flashcards.length) {
     return (
