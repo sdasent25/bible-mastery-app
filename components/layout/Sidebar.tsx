@@ -131,7 +131,16 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           {navItem("🏠 Dashboard", "/dashboard")}
           {navItem("📖 Journey", "/journey")}
           {navItem("🧠 Flashcards", "/flashcards")}
-          {navItem("🏆 Leaderboard", "/leaderboard")}
+          {planType !== "free" ? (
+            navItem("🏆 Leaderboard", "/leaderboard")
+          ) : (
+            <div
+              onClick={() => router.push("/pricing?source=leaderboard_locked")}
+              className="block px-4 py-3 rounded-xl text-white opacity-50 cursor-pointer"
+            >
+              🏆 Leaderboard 🔒
+            </div>
+          )}
         </div>
 
         <div className="pt-4 space-y-2">
