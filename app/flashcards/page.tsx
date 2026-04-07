@@ -18,6 +18,7 @@ export default function FlashcardsHome() {
       const { data } = await supabase
         .from("user_access")
         .select("final_plan")
+        .eq("user_id", user.id)
         .single()
 
       if (data?.final_plan) setPlanType(data.final_plan)
