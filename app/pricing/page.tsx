@@ -114,7 +114,7 @@ export default function PricingPage() {
               </p>
             )}
 
-            <ul className="text-sm text-gray-300 space-y-2 mb-6">
+            <ul className="text-white text-sm space-y-2 mb-6">
               <li>🔥 Full Bible Journey (Core Experience)</li>
               <li>⚡ Unlimited Training</li>
               <li>🧠 Scholar Mode (review past content)</li>
