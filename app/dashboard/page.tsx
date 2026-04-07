@@ -18,6 +18,31 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    async function checkOnboarding() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.replace("/login")
+        return
+      }
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("onboarding_complete")
+        .eq("id", user.id)
+        .single()
+
+      if (!profile || profile.onboarding_complete === false) {
+        router.replace("/onboarding")
+      }
+    }
+
+    checkOnboarding()
+  }, [router])
+
+  useEffect(() => {
     const checkUser = async () => {
       const { data, error } = await supabase.auth.getUser()
 
