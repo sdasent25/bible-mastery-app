@@ -69,7 +69,7 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-      success_url: `${siteUrl}/dashboard?checkout=success`,
+      success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
       cancel_url: `${siteUrl}/pricing?checkout=cancelled`,
     })
 

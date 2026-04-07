@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { getUserPlan } from "@/lib/userPlan"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -136,6 +137,14 @@ export default function DashboardPage() {
 
     setInvite(null)
   }
+
+  useEffect(() => {
+    const upgrade = searchParams.get("upgrade")
+
+    if (upgrade === "pro_plus") {
+      router.replace("/onboarding/pro-plus")
+    }
+  }, [searchParams, router])
 
   useEffect(() => {
     load()
