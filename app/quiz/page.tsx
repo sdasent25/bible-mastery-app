@@ -81,6 +81,7 @@ export default function QuizPage() {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [previewCompletionSaved, setPreviewCompletionSaved] = useState(false);
   const [previewCompleted, setPreviewCompleted] = useState<boolean | null>(null);
+  const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
   const [questionCount, setQuestionCount] = useState<number | null>(null);
 
   const activeProgram = getProgramById(activeProgramId);
@@ -414,6 +415,19 @@ export default function QuizPage() {
 
   const isFreeUser = !isProUser && !isProPlusUser;
 
+  useEffect(() => {
+    if (!(quizCompleted && isPreviewMode && isFreeUser)) {
+      setShowPreviewPaywall(false);
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      setShowPreviewPaywall(true);
+    }, 800);
+
+    return () => window.clearTimeout(timeout);
+  }, [isFreeUser, isPreviewMode, quizCompleted]);
+
   if (isPreviewMode && isFreeUser && previewCompleted === null) {
     return null;
   }
@@ -427,7 +441,11 @@ export default function QuizPage() {
           </h2>
 
           <p className="text-white mb-6">
-            You've completed the preview. Continue your journey through Scripture.
+            You’ve already started your journey
+          </p>
+
+          <p className="text-white text-sm mb-4">
+            Don’t lose your progress. Keep going and build real consistency.
           </p>
 
           <button
@@ -437,12 +455,22 @@ export default function QuizPage() {
             Start My Journey
           </button>
 
-          <button
-            onClick={() => router.push("/dashboard")}
-            className="mt-3 bg-neutral-700 px-6 py-3 rounded-lg text-white w-full"
-          >
-            Back to Dashboard
-          </button>
+          <p className="text-xs text-yellow-400 mt-2">
+            Start today. Build your streak from day one.
+          </p>
+
+        </div>
+      </div>
+    );
+  }
+
+  if (quizCompleted && isPreviewMode && isFreeUser && !showPreviewPaywall) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
+        <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
+          <div className="text-center text-white animate-pulse mb-4">
+            Completing your preview...
+          </div>
         </div>
       </div>
     );

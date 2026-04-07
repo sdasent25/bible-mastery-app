@@ -1,12 +1,19 @@
 "use client"
 
 import { supabase } from "@/lib/supabase"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 export default function PricingSection() {
   const router = useRouter()
   const [isFamily, setIsFamily] = useState(false)
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("source") === "journey_pro_plus") {
+      document.getElementById("pro-plus")?.scrollIntoView({ behavior: "smooth" })
+    }
+  }, [])
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -99,7 +106,7 @@ export default function PricingSection() {
           </button>
         </div>
 
-        <div className="bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+        <div id="pro-plus" className="bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
           <h2 className="text-xl font-bold text-white mb-2">
             Pro+ {isFamily && "Family"} 🚀
           </h2>
