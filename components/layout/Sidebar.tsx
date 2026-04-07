@@ -39,12 +39,11 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
       if (!user) return
 
       const { data } = await supabase
-        .from("profiles")
-        .select("plan_type")
-        .eq("id", user.id)
+        .from("user_access")
+        .select("final_plan")
         .single()
 
-      if (data?.plan_type) setPlanType(data.plan_type)
+      if (data?.final_plan) setPlanType(data.final_plan)
     }
 
     void loadPlan()
