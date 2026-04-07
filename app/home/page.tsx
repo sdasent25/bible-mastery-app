@@ -58,6 +58,17 @@ export default function HomePage() {
         return
       }
 
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("onboarding_complete")
+        .eq("id", user.id)
+        .single()
+
+      if (!profile?.onboarding_complete) {
+        router.replace("/onboarding")
+        return
+      }
+
       const plan = await getUserPlan()
       if (!plan) {
         router.replace("/onboarding")
