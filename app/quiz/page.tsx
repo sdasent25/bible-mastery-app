@@ -39,15 +39,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
-function getQuestionSize(text: string) {
-  const length = text.length
-
-  if (length < 60) return "text-2xl"
-  if (length < 100) return "text-xl"
-  if (length < 140) return "text-lg"
-  return "text-base"
-}
-
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
@@ -1033,10 +1024,8 @@ export default function QuizPage() {
               )}
 
               <div className="flex-1 flex flex-col justify-center text-center px-2">
-                <div className="max-h-[30vh] flex items-center justify-center px-2 text-center">
-                  <h1
-                    className={`${getQuestionSize(currentQuestion.question)} font-bold leading-snug text-center`}
-                  >
+                <div className="max-h-[30vh] overflow-hidden flex items-center justify-center text-center px-2">
+                  <h1 className="text-xl md:text-2xl font-bold leading-snug">
                     {currentQuestion.question}
                   </h1>
                 </div>
