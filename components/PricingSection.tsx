@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 export default function PricingSection() {
   const router = useRouter()
   const [isFamily, setIsFamily] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState<"pro" | "pro_plus" | null>(null)
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -85,8 +86,14 @@ export default function PricingSection() {
         </div>
       </div>
 
-      <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
-        <div id="pro-plus" className="relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+      <div className="flex gap-4 overflow-x-auto md:grid md:grid-cols-3 md:overflow-visible pb-4 snap-x snap-mandatory">
+        <div
+          id="pro-plus"
+          onClick={() => setSelectedPlan("pro_plus")}
+          className={`relative min-w-[280px] snap-center bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+            selectedPlan === "pro_plus" ? "scale-[1.04] ring-2 ring-green-400" : ""
+          }`}
+        >
           <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
             RECOMMENDED
           </div>
@@ -128,7 +135,9 @@ export default function PricingSection() {
 
           <button
             onClick={handleProPlusCheckout}
-            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
+            onMouseDown={(e) => e.currentTarget.classList.add("scale-95")}
+            onMouseUp={(e) => e.currentTarget.classList.remove("scale-95")}
+            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold animate-pulse"
           >
             Start My Full Journey
           </button>
@@ -138,7 +147,12 @@ export default function PricingSection() {
           </p>
         </div>
 
-        <div className="bg-[#0B1220] border border-blue-500 rounded-2xl p-6">
+        <div
+          onClick={() => setSelectedPlan("pro")}
+          className={`min-w-[280px] snap-center bg-[#0B1220] border border-blue-500 rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+            selectedPlan === "pro" ? "border-blue-400 scale-[1.02]" : ""
+          }`}
+        >
           <h2 className="text-xl font-bold text-white mb-4">
             Pro {isFamily && "Family"}
           </h2>
@@ -173,7 +187,7 @@ export default function PricingSection() {
           </p>
         </div>
 
-        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6">
+        <div className="min-w-[280px] snap-center bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer">
           <h2 className="text-xl font-bold text-white mb-4">Free</h2>
 
           <ul className="text-sm text-white space-y-2 mb-6">
