@@ -64,7 +64,7 @@ export default function PricingSection() {
         Pick how serious you are about mastering scripture
       </p>
 
-      <div className="flex justify-center mb-10">
+      <div className="sticky top-0 z-20 bg-[#0B1220] py-3 mb-6 flex justify-center">
         <div className="bg-[#0B1220] border border-[#1F2A44] rounded-lg p-1 flex">
           <button
             onClick={() => setIsFamily(false)}
@@ -86,11 +86,12 @@ export default function PricingSection() {
         </div>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto md:grid md:grid-cols-3 md:overflow-visible pb-4 snap-x snap-mandatory">
+      <div className="space-y-4 md:space-y-0">
+      <div className="flex flex-col gap-4 md:grid md:grid-cols-3">
         <div
           id="pro-plus"
           onClick={() => setSelectedPlan("pro_plus")}
-          className={`relative min-w-[280px] snap-center bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+          className={`relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
             selectedPlan === "pro_plus" ? "scale-[1.04] ring-2 ring-green-400" : ""
           }`}
         >
@@ -149,7 +150,7 @@ export default function PricingSection() {
 
         <div
           onClick={() => setSelectedPlan("pro")}
-          className={`min-w-[280px] snap-center bg-[#0B1220] border border-blue-500 rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+          className={`bg-[#0B1220] border border-blue-500 rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer ${
             selectedPlan === "pro" ? "border-blue-400 scale-[1.02]" : ""
           }`}
         >
@@ -187,7 +188,7 @@ export default function PricingSection() {
           </p>
         </div>
 
-        <div className="min-w-[280px] snap-center bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer">
+        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer">
           <h2 className="text-xl font-bold text-white mb-4">Free</h2>
 
           <ul className="text-sm text-white space-y-2 mb-6">
@@ -204,6 +205,7 @@ export default function PricingSection() {
             Get Started
           </button>
         </div>
+      </div>
       </div>
     </section>
   )
