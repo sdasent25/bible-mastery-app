@@ -21,14 +21,25 @@ export default function PricingSection() {
 
     const response = await fetch("/api/stripe/checkout", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ plan }),
     })
+
+    if (!response.ok) {
+      return
+    }
 
     const data = await response.json()
 
     if (data.url) {
       window.location.href = data.url
     }
+  }
+
+  const handleProPlusCheckout = async () => {
+    await handleSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")
   }
 
   return (
@@ -141,7 +152,7 @@ export default function PricingSection() {
           </ul>
 
           <button
-            onClick={() => handleSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")}
+            onClick={handleProPlusCheckout}
             className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
           >
             Continue My Journey
