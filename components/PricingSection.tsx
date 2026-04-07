@@ -56,9 +56,12 @@ export default function PricingSection() {
         <PricingContextBanner />
       </Suspense>
 
-      <h1 className="text-3xl font-bold text-white text-center mb-10">
-        Choose Your Path
+      <h1 className="text-3xl font-bold text-white text-center mb-3">
+        Start Your Training
       </h1>
+      <p className="text-center text-gray-300 mb-8">
+        Pick how serious you are about mastering scripture
+      </p>
 
       <div className="flex justify-center mb-10">
         <div className="bg-[#0B1220] border border-[#1F2A44] rounded-lg p-1 flex">
@@ -82,23 +85,57 @@ export default function PricingSection() {
         </div>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6">
-          <h2 className="text-xl font-bold text-white mb-4">Free</h2>
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
+        <div id="pro-plus" className="relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+          <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
+            RECOMMENDED
+          </div>
 
-          <ul className="text-sm text-white space-y-2 mb-6">
-            <li>👁️ View full Bible journey</li>
-            <li>🔒 Locked experience (preview only)</li>
-            <li>🚫 No flashcards</li>
-            <li>🚫 No training</li>
+          <h2 className="text-xl font-bold text-white mb-2">
+            Pro+ {isFamily && "Family"} 🚀
+          </h2>
+          <p className="text-sm text-green-300 mb-2">
+            The complete Bible Athlete experience
+          </p>
+          <p className="text-green-400 font-semibold mb-4">
+            {isFamily ? "$29.99 / month" : "$12.99 / month"}
+          </p>
+
+          {isFamily && (
+            <p className="text-sm text-white mb-4 text-center">
+              Up to 6 members included
+            </p>
+          )}
+
+          <div className="text-sm text-gray-200 mt-3 mb-4">
+            <p>• Build discipline</p>
+            <p>• Master scripture</p>
+            <p>• Stay consistent long-term</p>
+          </div>
+
+          <ul className="text-white text-sm space-y-2 mb-6">
+            <li>🔥 Full Bible Journey (Core Experience)</li>
+            <li>⚡ Unlimited Training</li>
+            <li>🧠 Scholar Mode (review past content)</li>
+            <li>🎯 Deep Retention System</li>
+            <li>🏆 Leaderboard Access</li>
+            <li>✅ Everything in Pro</li>
           </ul>
 
+          <p className="text-xs text-green-400 mb-2">
+            Start in under 2 minutes
+          </p>
+
           <button
-            onClick={() => router.push("/signup")}
-            className="w-full py-3 rounded-lg bg-gray-700 text-white"
+            onClick={handleProPlusCheckout}
+            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
           >
-            Get Started
+            Start My Full Journey
           </button>
+
+          <p className="text-xs text-green-400 text-center mt-2">
+            Most users choose this to stay consistent
+          </p>
         </div>
 
         <div className="bg-[#0B1220] border border-blue-500 rounded-2xl p-6">
@@ -121,7 +158,7 @@ export default function PricingSection() {
             <li>🎯 Practice Weak Cards</li>
             <li>🔥 XP + Streak System</li>
             <li>🏆 Leaderboard Access</li>
-            <li className="text-red-400">🚫 No Journey Access</li>
+            <li className="text-yellow-300">🔒 Full Journey available in Pro+</li>
           </ul>
 
           <button
@@ -130,45 +167,28 @@ export default function PricingSection() {
           >
             Start Training
           </button>
+
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            Best for quick daily practice
+          </p>
         </div>
 
-        <div id="pro-plus" className="relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
-          <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
-            RECOMMENDED
-          </div>
+        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6">
+          <h2 className="text-xl font-bold text-white mb-4">Free</h2>
 
-          <h2 className="text-xl font-bold text-white mb-2">
-            Pro+ {isFamily && "Family"} 🚀
-          </h2>
-          <p className="text-green-400 font-semibold mb-4">
-            {isFamily ? "$29.99 / month" : "$12.99 / month"}
-          </p>
-
-          {isFamily && (
-            <p className="text-sm text-white mb-4 text-center">
-              Up to 6 members included
-            </p>
-          )}
-
-          <ul className="text-white text-sm space-y-2 mb-6">
-            <li>🔥 Full Bible Journey (Core Experience)</li>
-            <li>⚡ Unlimited Training</li>
-            <li>🧠 Scholar Mode (review past content)</li>
-            <li>🎯 Deep Retention System</li>
-            <li>🏆 Leaderboard Access</li>
-            <li>✅ Everything in Pro</li>
+          <ul className="text-sm text-white space-y-2 mb-6">
+            <li>👁️ View full Bible journey</li>
+            <li>🔒 Locked experience (preview only)</li>
+            <li>🚫 No flashcards</li>
+            <li>🚫 No training</li>
           </ul>
 
           <button
-            onClick={handleProPlusCheckout}
-            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
+            onClick={() => router.push("/signup")}
+            className="w-full py-3 rounded-lg bg-gray-700 text-white"
           >
-            Continue My Journey
+            Get Started
           </button>
-
-          <p className="text-xs text-green-400 mt-2">
-            Unlock full Bible progression
-          </p>
         </div>
       </div>
     </section>
