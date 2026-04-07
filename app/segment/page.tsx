@@ -15,6 +15,7 @@ export default function SegmentIntro() {
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
+  const isPreview = searchParams.get("preview") === "true"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 
@@ -42,6 +43,7 @@ export default function SegmentIntro() {
       const { data: access } = await supabase
         .from("user_access")
         .select("final_plan")
+        .eq("user_id", user.id)
         .maybeSingle()
 
       if (isMounted) {
@@ -61,11 +63,13 @@ export default function SegmentIntro() {
   useEffect(() => {
     if (!profileLoaded) return
 
-    if (planType !== "pro_plus") {
+    const isAllowedPreview = planType === "free" && isPreview && segment === "genesis-1-3"
+
+    if (planType !== "pro_plus" && !isAllowedPreview) {
       router.push("/pricing?source=journey_locked")
       return
     }
-  }, [book, chapter, planType, profileLoaded, router])
+  }, [book, chapter, isPreview, planType, profileLoaded, router, segment])
 
   if (!profileLoaded) {
     return (
@@ -157,7 +161,7 @@ export default function SegmentIntro() {
           </a>
 
           <Link
-            href={`/quiz?program=${program}&segment=${segment}`}
+            href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}`}
             className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
           >
             Continue →

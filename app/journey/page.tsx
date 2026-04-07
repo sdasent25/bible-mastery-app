@@ -26,13 +26,17 @@ type JourneyNode = {
   segment: string
   state: NodeState
   access: JourneyAccessResult
+  isAccessible: boolean
   isTodayTarget: boolean
 }
 
-function getSegmentAccess(planType: JourneyPlanType): JourneyAccessResult {
+function getSegmentAccess(
+  planType: JourneyPlanType,
+  isAccessible: boolean,
+): JourneyAccessResult {
   return {
-    locked: planType !== "pro_plus",
-    reason: planType === "pro_plus" ? null : "UPGRADE_REQUIRED",
+    locked: !isAccessible,
+    reason: !isAccessible ? "UPGRADE_REQUIRED" : null,
   }
 }
 
@@ -206,14 +210,24 @@ export default function JourneyPage() {
 
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
+      const isFree = planType === "free"
       const isProPlus = planType === "pro_plus"
 
       const mapped = segments.map((seg, index) => {
-        const isAccessible = isProPlus
-        const isCompleted = isProPlus && index < progress.currentSegmentIndex
-        const isActive = isProPlus && index === progress.currentSegmentIndex
+        let isAccessible = false
 
-        const access = getSegmentAccess(planType)
+        if (isProPlus) {
+          isAccessible = true
+        } else if (isFree && index === 0) {
+          isAccessible = true
+        }
+
+        const isCompleted = isProPlus && index < progress.currentSegmentIndex
+        const isActive =
+          (isProPlus && index === progress.currentSegmentIndex) ||
+          (isFree && index === 0)
+
+        const access = getSegmentAccess(planType, isAccessible)
         const isTodayTarget = index >= start && index < end
         let state: NodeState = "locked"
 
@@ -236,6 +250,7 @@ export default function JourneyPage() {
           segment: seg.segment,
           state,
           access,
+          isAccessible,
           isTodayTarget,
         }
       })
@@ -271,6 +286,8 @@ export default function JourneyPage() {
     100,
   )
   const program = getProgramById(selectedProgram)
+  const isFree = planType === "free"
+  const isPro = planType === "pro"
   const isProPlus = planType === "pro_plus"
 
   return (
@@ -364,6 +381,7 @@ export default function JourneyPage() {
                 const offset = index - activeIndex
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
+                const isAccessible = node.isAccessible
                 const translateX = offset * 160
                 const scale = isActive ? 1.08 : 0.85
                 const zIndex = 100 - Math.abs(offset)
@@ -401,12 +419,19 @@ export default function JourneyPage() {
                       <div
                         onClick={() => {
                           if (index === activeIndex) {
-                            if (isProPlus && !isLocked) {
-                              playSound("/sounds/tap.mp3")
-                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
-                            } else {
+                            if (!isAccessible) {
                               router.push("/pricing?source=journey_locked")
+                              return
                             }
+
+                            playSound("/sounds/tap.mp3")
+
+                            if (isFree) {
+                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}&preview=true`)
+                              return
+                            }
+
+                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                           } else {
                             setActiveIndex(index)
                           }
@@ -555,8 +580,13 @@ export default function JourneyPage() {
             <button
               onClick={() => {
                 if (!program) return
-                if (isProPlus && activeNode) {
+                if ((isProPlus || isFree) && activeNode) {
                   playSound("/sounds/click.mp3")
+                  if (isFree) {
+                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
+                    return
+                  }
+
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                   return
                 }
@@ -564,12 +594,19 @@ export default function JourneyPage() {
                 router.push("/pricing?source=journey_locked")
               }}
               className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!activeNode || !isProPlus}
+              disabled={!activeNode || (!isProPlus && !isFree)}
             >
               Continue →
             </button>
 
-            {!isProPlus && (
+            {isFree && (
+              <div className="mt-4 text-center text-sm text-yellow-400">
+                Preview mode: Complete this first segment to explore.
+                Upgrade to unlock your full journey.
+              </div>
+            )}
+
+            {isPro && (
               <div className="mt-4 text-center text-sm text-yellow-400">
                 Journey is available on Pro+ only. Upgrade to begin.
               </div>

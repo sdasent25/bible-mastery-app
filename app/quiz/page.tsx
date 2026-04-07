@@ -78,6 +78,7 @@ export default function QuizPage() {
   const [programProgressSaved, setProgramProgressSaved] = useState(false);
   const [programLimitReached, setProgramLimitReached] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
@@ -104,6 +105,9 @@ export default function QuizPage() {
       const segmentParam = params.get('segment') || 'genesis_1_3';
       const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
+      const previewParam = params.get('preview') === 'true';
+
+      setIsPreviewMode(previewParam);
 
       if (modeParam === 'scholar') {
         setMode('scholar');
@@ -151,12 +155,12 @@ export default function QuizPage() {
         return;
       }
 
-      if (activeProgramId && !isPro) {
+      if (activeProgramId && !isPro && !isPreviewMode) {
         window.location.assign('/upgrade');
       }
     }
     checkPro();
-  }, [activeProgramId, mode]);
+  }, [activeProgramId, isPreviewMode, mode]);
 
   useEffect(() => {
     if (!paramsInitialized || loadingPro) {
@@ -312,6 +316,7 @@ export default function QuizPage() {
         isReviewMode ||
         !activeProgram ||
         activeProgramSegmentIndex === null ||
+        isPreviewMode ||
         programProgressSaved
       ) {
         return;
@@ -332,7 +337,7 @@ export default function QuizPage() {
     };
 
     syncProgramProgress();
-  }, [activeProgram, activeProgramSegmentIndex, isReviewMode, programProgressSaved, quizCompleted]);
+  }, [activeProgram, activeProgramSegmentIndex, isPreviewMode, isReviewMode, programProgressSaved, quizCompleted]);
 
   if (loadingPro) {
     return <div className="p-6 text-black">Loading...</div>;
@@ -752,7 +757,7 @@ export default function QuizPage() {
             What would you like to do next?
           </p>
           <div className="space-y-3">
-            {next && (
+            {next && !isPreviewMode && (
               <button
                 onClick={() =>
                   router.push(
@@ -762,6 +767,15 @@ export default function QuizPage() {
                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue Journey →
+              </button>
+            )}
+
+            {isPreviewMode && (
+              <button
+                onClick={() => router.push('/pricing?source=journey_locked')}
+                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Unlock Full Journey
               </button>
             )}
 
