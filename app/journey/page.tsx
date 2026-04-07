@@ -73,6 +73,7 @@ export default function JourneyPage() {
   const [weakCount, setWeakCount] = useState(0)
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
+  const [previewCompleted, setPreviewCompleted] = useState(false)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -161,14 +162,22 @@ export default function JourneyPage() {
           .eq("user_id", userRes.user.id)
           .single()
 
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("preview_completed")
+          .eq("id", userRes.user.id)
+          .single()
+
         const nextPlan = data?.final_plan ?? "free"
         setPlanType(
           nextPlan === "pro" || nextPlan === "pro_plus" || nextPlan === "free"
             ? nextPlan
             : "free"
         )
+        setPreviewCompleted(profile?.preview_completed === true)
       } else {
         setPlanType("free")
+        setPreviewCompleted(false)
       }
 
       setProfileLoaded(true)
@@ -210,7 +219,7 @@ export default function JourneyPage() {
 
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
-      const isFree = planType === "free"
+      const isFree = planType === "free" && !previewCompleted
       const isProPlus = planType === "pro_plus"
 
       const mapped = segments.map((seg, index) => {
@@ -263,7 +272,7 @@ export default function JourneyPage() {
     }
 
     void loadProgram()
-  }, [dailyGoal, planType, selectedProgram])
+  }, [dailyGoal, planType, previewCompleted, selectedProgram])
 
   useEffect(() => {
     console.log("JOURNEY FINAL PLAN:", planType)
@@ -286,7 +295,7 @@ export default function JourneyPage() {
     100,
   )
   const program = getProgramById(selectedProgram)
-  const isFree = planType === "free"
+  const isFree = planType === "free" && !previewCompleted
   const isPro = planType === "pro"
   const isProPlus = planType === "pro_plus"
 

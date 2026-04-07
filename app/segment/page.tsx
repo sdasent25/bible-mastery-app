@@ -12,6 +12,7 @@ export default function SegmentIntro() {
   const supabase = createClient()
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [planType, setPlanType] = useState("free")
+  const [previewCompleted, setPreviewCompleted] = useState(false)
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
@@ -46,9 +47,16 @@ export default function SegmentIntro() {
         .eq("user_id", user.id)
         .maybeSingle()
 
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("preview_completed")
+        .eq("id", user.id)
+        .single()
+
       if (isMounted) {
         console.log("FINAL PLAN:", access?.final_plan)
         setPlanType(access?.final_plan ?? "free")
+        setPreviewCompleted(profile?.preview_completed === true)
         setProfileLoaded(true)
       }
     }
@@ -63,13 +71,18 @@ export default function SegmentIntro() {
   useEffect(() => {
     if (!profileLoaded) return
 
+    if (planType === "free" && previewCompleted) {
+      router.push("/journey")
+      return
+    }
+
     const isAllowedPreview = planType === "free" && isPreview && segment === "genesis-1-3"
 
     if (planType !== "pro_plus" && !isAllowedPreview) {
       router.push("/pricing?source=journey_locked")
       return
     }
-  }, [book, chapter, isPreview, planType, profileLoaded, router, segment])
+  }, [book, chapter, isPreview, planType, previewCompleted, profileLoaded, router, segment])
 
   if (!profileLoaded) {
     return (

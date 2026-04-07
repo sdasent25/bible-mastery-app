@@ -79,6 +79,7 @@ export default function QuizPage() {
   const [programLimitReached, setProgramLimitReached] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
+  const [previewCompletionSaved, setPreviewCompletionSaved] = useState(false);
 
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
@@ -338,6 +339,34 @@ export default function QuizPage() {
 
     syncProgramProgress();
   }, [activeProgram, activeProgramSegmentIndex, isPreviewMode, isReviewMode, programProgressSaved, quizCompleted]);
+
+  useEffect(() => {
+    const markPreviewCompleted = async () => {
+      if (!quizCompleted || !isPreviewMode || previewCompletionSaved) {
+        return;
+      }
+
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await supabase
+          .from("profiles")
+          .update({ preview_completed: true })
+          .eq("id", user.id);
+      }
+
+      setPreviewCompletionSaved(true);
+    };
+
+    markPreviewCompleted();
+  }, [isPreviewMode, previewCompletionSaved, quizCompleted]);
 
   if (loadingPro) {
     return <div className="p-6 text-black">Loading...</div>;
