@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 
 export default function FlashcardsHome() {
   const router = useRouter()
-  const [planType, setPlanType] = useState("free")
+  const [planType, setPlanType] = useState<string | null>(null)
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -21,7 +21,12 @@ export default function FlashcardsHome() {
         .eq("user_id", user.id)
         .single()
 
-      if (data?.final_plan) setPlanType(data.final_plan)
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
+
+      if (plan === "free") {
+        router.push("/pricing?source=flashcards_locked")
+      }
     }
 
     void loadPlan()
@@ -32,6 +37,10 @@ export default function FlashcardsHome() {
   useEffect(() => {
     console.log("FLASHCARD PLAN:", planType)
   }, [planType])
+
+  if (planType === null) {
+    return null
+  }
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">

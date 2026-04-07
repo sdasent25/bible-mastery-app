@@ -20,7 +20,7 @@ type SidebarProps = {
 export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const [planType, setPlanType] = useState("free")
+  const [planType, setPlanType] = useState<string | null>(null)
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -44,13 +44,14 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         .eq("user_id", user.id)
         .single()
 
-      console.log("SIDEBAR PLAN:", data?.final_plan)
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
 
-      if (data?.final_plan) setPlanType(data.final_plan)
+      console.log("SIDEBAR PLAN:", plan)
     }
 
     void loadPlan()
-  }, [])
+  }, [router])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -117,6 +118,10 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   const hasLeaderboardAccess =
     planType === "pro" || planType === "pro_plus"
+
+  if (planType === null) {
+    return null
+  }
 
   return (
     <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
