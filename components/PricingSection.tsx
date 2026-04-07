@@ -1,20 +1,13 @@
 "use client"
 
 import { supabase } from "@/lib/supabase"
-import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import PricingContextBanner from "@/components/PricingContext"
+import { Suspense, useState } from "react"
+import { useRouter } from "next/navigation"
 
 export default function PricingSection() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const source = searchParams.get("source")
   const [isFamily, setIsFamily] = useState(false)
-
-  useEffect(() => {
-    if (source === "journey_pro_plus") {
-      document.getElementById("pro-plus")?.scrollIntoView({ behavior: "smooth" })
-    }
-  }, [source])
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -31,21 +24,9 @@ export default function PricingSection() {
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-12">
-      {source === "journey_pro_plus" && (
-        <div className="max-w-xl mx-auto mb-8 bg-[#0B1220] border border-green-500 rounded-2xl p-6 text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">
-            🚀 You Started Your Journey
-          </h2>
-
-          <p className="text-white mb-4">
-            You completed your preview. Continue through the full Bible and build real consistency.
-          </p>
-
-          <p className="text-sm text-yellow-400">
-            Your progress is waiting — don&apos;t stop now.
-          </p>
-        </div>
-      )}
+      <Suspense fallback={null}>
+        <PricingContextBanner />
+      </Suspense>
 
       <h1 className="text-3xl font-bold text-white text-center mb-10">
         Choose Your Path
