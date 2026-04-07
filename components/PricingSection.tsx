@@ -2,18 +2,19 @@
 
 import { supabase } from "@/lib/supabase"
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 export default function PricingSection() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const source = searchParams.get("source")
   const [isFamily, setIsFamily] = useState(false)
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get("source") === "journey_pro_plus") {
+    if (source === "journey_pro_plus") {
       document.getElementById("pro-plus")?.scrollIntoView({ behavior: "smooth" })
     }
-  }, [])
+  }, [source])
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -30,6 +31,22 @@ export default function PricingSection() {
 
   return (
     <section className="max-w-5xl mx-auto px-4 py-12">
+      {source === "journey_pro_plus" && (
+        <div className="max-w-xl mx-auto mb-8 bg-[#0B1220] border border-green-500 rounded-2xl p-6 text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">
+            🚀 You Started Your Journey
+          </h2>
+
+          <p className="text-white mb-4">
+            You completed your preview. Continue through the full Bible and build real consistency.
+          </p>
+
+          <p className="text-sm text-yellow-400">
+            Your progress is waiting — don&apos;t stop now.
+          </p>
+        </div>
+      )}
+
       <h1 className="text-3xl font-bold text-white text-center mb-10">
         Choose Your Path
       </h1>
@@ -106,7 +123,11 @@ export default function PricingSection() {
           </button>
         </div>
 
-        <div id="pro-plus" className="bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+        <div id="pro-plus" className="relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
+          <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
+            RECOMMENDED
+          </div>
+
           <h2 className="text-xl font-bold text-white mb-2">
             Pro+ {isFamily && "Family"} 🚀
           </h2>
@@ -133,8 +154,12 @@ export default function PricingSection() {
             onClick={() => handleSelectPlan("pro_plus")}
             className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
           >
-            Start My Journey
+            Continue My Journey
           </button>
+
+          <p className="text-xs text-green-400 mt-2">
+            Unlock full Bible progression
+          </p>
         </div>
       </div>
     </section>
