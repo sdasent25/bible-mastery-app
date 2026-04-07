@@ -34,11 +34,15 @@ export default function FlashcardsPracticePage() {
       const { data } = await supabase
         .from("user_access")
         .select("final_plan")
+        .eq("user_id", user.id)
         .single()
 
-      console.log("FINAL PLAN:", data?.final_plan)
+      const planType = data?.final_plan ?? "free"
+      const hasAccess = planType === "pro" || planType === "pro_plus"
 
-      if (data?.final_plan === "pro" || data?.final_plan === "pro_plus") {
+      console.log("FLASHCARD ROUTE PLAN:", planType)
+
+      if (hasAccess) {
         setHasAccess(true)
       } else {
         router.push("/pricing?source=flashcards_locked")
