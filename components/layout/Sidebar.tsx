@@ -21,6 +21,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [planType, setPlanType] = useState<string | null>(null)
+  const [isFamily, setIsFamily] = useState(false)
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -40,14 +41,14 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
       const { data } = await supabase
         .from("user_access")
-        .select("final_plan")
+        .select("final_plan, in_family")
         .eq("user_id", user.id)
         .single()
 
-      const plan = data?.final_plan ?? "free"
-      setPlanType(plan)
+      setPlanType(data?.final_plan ?? "free")
+      setIsFamily(data?.in_family === true)
 
-      console.log("SIDEBAR PLAN:", plan)
+      console.log("SIDEBAR PLAN:", data?.final_plan)
     }
 
     void loadPlan()
@@ -118,6 +119,15 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   const hasLeaderboardAccess =
     planType === "pro" || planType === "pro_plus"
+  const planLabel =
+    planType === "pro_plus"
+      ? "Pro+"
+      : planType === "pro"
+        ? "Pro"
+        : "Free"
+  const fullPlanLabel = isFamily
+    ? `${planLabel} (Family)`
+    : `${planLabel} (Individual)`
 
   if (planType === null) {
     return null
@@ -130,11 +140,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         <div className="text-xs mt-2 text-white">
           Plan:{" "}
           <span className="font-semibold text-green-400">
-            {planType === "pro_plus"
-              ? "Pro+"
-              : planType === "pro"
-                ? "Pro"
-                : "Free"}
+            {fullPlanLabel}
           </span>
         </div>
 
