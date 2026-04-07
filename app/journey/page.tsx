@@ -412,7 +412,7 @@ export default function JourneyPage() {
                               playSound("/sounds/tap.mp3")
                               router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                             } else {
-                              alert("Upgrade to Pro+ to start your journey")
+                              router.push("/pricing?source=journey_locked")
                             }
                           } else {
                             setActiveIndex(index)
@@ -568,7 +568,7 @@ export default function JourneyPage() {
                   return
                 }
 
-                alert("Upgrade to Pro+ to start your journey")
+                router.push("/pricing?source=journey_locked")
               }}
               className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!activeNode || !isProPlus}

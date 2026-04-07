@@ -45,7 +45,7 @@ export default function FlashcardsHome() {
         <div
           onClick={() => {
             if (!hasFlashAccess) {
-              alert("Upgrade to Pro to unlock flashcards")
+              router.push("/pricing?source=flashcards_locked")
               return
             }
             router.push("/flashcards/review")
@@ -64,7 +64,7 @@ export default function FlashcardsHome() {
         <div
           onClick={() => {
             if (!hasFlashAccess) {
-              alert("Upgrade to Pro to unlock flashcards")
+              router.push("/pricing?source=flashcards_locked")
               return
             }
             router.push("/flashcards/learn")
@@ -80,7 +80,7 @@ export default function FlashcardsHome() {
         <div
           onClick={() => {
             if (!hasFlashAccess) {
-              alert("Upgrade to Pro to unlock flashcards")
+              router.push("/pricing?source=flashcards_locked")
               return
             }
             router.push("/flashcards/review")
@@ -96,7 +96,7 @@ export default function FlashcardsHome() {
         <div
           onClick={() => {
             if (!hasFlashAccess) {
-              alert("Upgrade to Pro to unlock flashcards")
+              router.push("/pricing?source=flashcards_locked")
               return
             }
             router.push("/flashcards/practice")
@@ -112,7 +112,7 @@ export default function FlashcardsHome() {
         <div
           onClick={() => {
             if (!hasFlashAccess) {
-              alert("Upgrade to Pro to unlock flashcards")
+              router.push("/pricing?source=flashcards_locked")
               return
             }
             router.push("/flashcards/create")
