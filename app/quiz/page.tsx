@@ -6,17 +6,19 @@ import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from '@/lib/supabase';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
-import { addXp, getXp } from '@/lib/xp';
+import { getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
 import {
   completeSegment,
   getProgramProgress,
   getResumeSegmentIndex,
 } from '@/lib/programProgress';
+import { getUserPlan } from '@/lib/userPlan';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
 import { playSound, triggerHaptic } from '@/lib/sound';
+import { getXpConfig } from '@/lib/xpEngine';
 import Flame from '@/components/Flame';
 
 type Question = {
@@ -85,6 +87,7 @@ export default function QuizPage() {
   const [planType, setPlanType] = useState<string | null>(null);
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
   const [questionCount, setQuestionCount] = useState<number | null>(null);
+  const [questionsPerDay, setQuestionsPerDay] = useState(10);
 
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
@@ -149,6 +152,9 @@ export default function QuizPage() {
       const storedXp = await getXp();
       setTotalXp(storedXp);
 
+      const userPlan = await getUserPlan();
+      setQuestionsPerDay(userPlan?.segmentsPerDay ?? 10);
+
       setParamsInitialized(true);
     };
 
@@ -163,12 +169,12 @@ export default function QuizPage() {
       setLoadingPro(false);
 
       if (mode === 'scholar' && !isProPlus) {
-        window.location.assign('/upgrade');
+        window.location.assign('/pricing?source=generic_upgrade');
         return;
       }
 
       if (activeProgramId && !isPro && !isPreviewMode) {
-        window.location.assign('/upgrade');
+        window.location.assign('/pricing?source=generic_upgrade');
       }
     }
     checkPro();
@@ -297,7 +303,7 @@ export default function QuizPage() {
       return;
     }
 
-    window.location.assign('/upgrade');
+    window.location.assign('/pricing?source=generic_upgrade');
   };
 
   useEffect(() => {
@@ -531,7 +537,7 @@ export default function QuizPage() {
             ) : (
               <div className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-center">
                 <p className="text-white mb-3">🔒 Continue Training is available on Pro+</p>
-                <Link href="/upgrade" className="block">
+                <Link href="/pricing?source=link_upgrade" className="block">
                   <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
                     Upgrade to Pro+
                   </button>
@@ -646,9 +652,11 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
+          const { perQuestion } = getXpConfig(questionsPerDay);
           playSound("/sounds/correct.mp3");
           triggerHaptic("light");
           setShowResult("correct");
+          setXpAmount(perQuestion);
           setShowXpGain(true);
           setTimeout(() => setShowXpGain(false), 800);
           setFlameState("correct");
@@ -659,7 +667,18 @@ export default function QuizPage() {
           setStreak(prev => prev + 1);
           setCombo(prev => prev + 1);
           setScore(score + 1);
-          const updatedXp = await addXp(10);
+          const {
+            data: { user },
+          } = await supabase.auth.getUser();
+
+          if (user) {
+            await supabase.rpc("increment_xp", {
+              user_id: user.id,
+              amount: perQuestion,
+            });
+          }
+
+          const updatedXp = await getXp();
           setTotalXp(updatedXp);
 
           const currentLevel = Math.floor(updatedXp / 100) + 1;

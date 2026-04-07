@@ -1,5 +1,8 @@
 import { createClient } from "@/lib/supabase/client"
+import { getStreak } from "@/lib/streak"
 import { supabase } from './supabase'
+import { getUserPlan } from "@/lib/userPlan"
+import { getXpConfig, getStreakBonus } from "@/lib/xpEngine"
 
 export type ProgramProgress = {
   programId: string;
@@ -127,6 +130,18 @@ export async function completeSegment() {
       limitReached: true,
     }
   }
+
+  const userPlan = await getUserPlan()
+  const questionsPerDay = userPlan?.segmentsPerDay ?? 10
+  const currentStreak = typeof window !== "undefined" ? getStreak() : 0
+  const { completionBonus } = getXpConfig(questionsPerDay)
+  const streakBonus = getStreakBonus(currentStreak)
+  const totalXp = completionBonus + streakBonus
+
+  await supabase.rpc("increment_xp", {
+    user_id: user.id,
+    amount: totalXp,
+  })
 
   return {
     success: true,

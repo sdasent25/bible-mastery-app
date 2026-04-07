@@ -230,7 +230,7 @@ export default function FlashcardSprintPage() {
           </p>
           <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
             <Link
-              href="/upgrade"
+              href="/pricing?source=link_upgrade"
               className="w-full rounded-xl bg-slate-900 px-5 py-3 text-center font-semibold text-white transition hover:bg-black"
             >
               Upgrade to Pro+

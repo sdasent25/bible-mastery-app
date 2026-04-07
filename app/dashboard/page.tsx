@@ -8,6 +8,7 @@ import { getUserPlan } from "@/lib/userPlan"
 export default function DashboardPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const level = Math.floor(xp / 500) + 1
 
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
@@ -200,8 +201,8 @@ export default function DashboardPage() {
 
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 flex justify-between items-center">
         <div>
-          <p className="text-sm text-white/70">Total XP</p>
-          <p className="text-2xl font-bold text-white">{xp}</p>
+          <p className="text-sm text-white/70">Level {level}</p>
+          <p className="text-2xl font-bold text-white">{xp} XP</p>
         </div>
 
         <div className="text-right">

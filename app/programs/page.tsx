@@ -76,7 +76,7 @@ export default function ProgramsPage() {
           <h1 className="text-2xl font-bold text-gray-900">Training Programs</h1>
           <p className="text-gray-700">Training Programs are available on Pro and Pro+.</p>
           <button
-            onClick={() => window.location.assign('/upgrade')}
+            onClick={() => window.location.assign('/pricing?source=generic_upgrade')}
             className="rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Upgrade to Unlock Programs

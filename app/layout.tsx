@@ -59,7 +59,7 @@ export default function RootLayout({
   });
   const router = useRouter();
   const pathname = usePathname();
-  const publicRoutes = ['/', '/login', '/signup', '/upgrade', '/terms', '/privacy'];
+  const publicRoutes = ['/', '/login', '/signup', '/terms', '/privacy'];
   const isPublicRoute = publicRoutes.includes(pathname);
 
   useEffect(() => {
