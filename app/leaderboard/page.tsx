@@ -14,8 +14,9 @@ export default function LeaderboardPage() {
   const router = useRouter()
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  const [hasFamily, setHasFamily] = useState(true)
+  const [hasFamily, setHasFamily] = useState(false)
   const [planType, setPlanType] = useState("free")
+  const [inFamily, setInFamily] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -31,19 +32,24 @@ export default function LeaderboardPage() {
 
       const { data } = await supabase
         .from("user_access")
-        .select("final_plan")
+        .select("final_plan, in_family")
+        .eq("user_id", user.id)
         .single()
 
-      console.log("FINAL PLAN:", data?.final_plan)
+      const planType = data?.final_plan
+      const inFamily = data?.in_family === true
 
-      if (data?.final_plan) setPlanType(data.final_plan)
+      console.log("FINAL PLAN:", planType)
+
+      if (planType) setPlanType(planType)
+      setInFamily(inFamily)
       setLoading(false)
     }
 
     void loadPlan()
   }, [])
 
-  const hasAccess = planType === "pro" || planType === "pro_plus"
+  const hasAccess = inFamily
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -61,9 +67,10 @@ export default function LeaderboardPage() {
         .maybeSingle()
 
       if (!membership?.family_id) {
-        setHasFamily(false)
         return
       }
+
+      setHasFamily(true)
 
       const { data: members } = await supabase
         .from("family_members")
@@ -96,19 +103,46 @@ export default function LeaderboardPage() {
     void loadLeaderboard()
   }, [])
 
+  if (!loading && !inFamily && (planType === "pro" || planType === "pro_plus")) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-4">
+            🚧 Leaderboard Coming Soon
+          </h2>
+
+          <p className="text-white mb-4">
+            Individual leaderboard is coming soon.
+          </p>
+
+          <p className="text-white text-sm mb-6">
+            Join a family to compete now or stay tuned for global rankings.
+          </p>
+
+          <button
+            onClick={() => router.push("/pricing")}
+            className="bg-green-500 px-6 py-3 rounded-lg text-white font-bold"
+          >
+            View Plans
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   if (!loading && !hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">
-            Leaderboard is available on Pro and Pro+ plans
+            Leaderboard is a Pro feature
           </h2>
           <p className="text-white mb-6">
             Upgrade to compete and track your progress
           </p>
           <button
-            onClick={() => router.push("/upgrade")}
-            className="bg-green-500 px-6 py-3 rounded-lg text-black font-bold"
+            onClick={() => router.push("/pricing")}
+            className="bg-green-500 px-6 py-3 rounded-lg text-white font-bold"
           >
             Upgrade Plan
           </button>
@@ -175,7 +209,7 @@ export default function LeaderboardPage() {
         </div>
       ) : (
         <>
-          <div className="text-center mb-4 text-sm text-green-400 font-semibold">
+          <div className="text-center mb-4 text-sm text-white font-semibold">
             {nudgeMessage}
           </div>
 
@@ -202,7 +236,7 @@ export default function LeaderboardPage() {
                   } ${isTopThree ? topThreeStyles : ""}`}
                 >
                   <div className="flex items-center gap-3">
-                    <span className={`font-bold text-gray-300 ${
+                    <span className={`font-bold text-white ${
                       isTopThree ? "text-base" : "text-sm"
                     }`}>
                       {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
@@ -215,7 +249,7 @@ export default function LeaderboardPage() {
                     </span>
                   </div>
 
-                  <span className="font-bold text-green-400">
+                  <span className="font-bold text-white">
                     {user.score}
                   </span>
                 </div>
