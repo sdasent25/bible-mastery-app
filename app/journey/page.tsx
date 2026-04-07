@@ -13,12 +13,8 @@ import { playSound } from "@/lib/sound"
 import { supabase } from "@/lib/supabase"
 
 type NodeState = "complete" | "active" | "locked"
-type JourneyPlanType = "trial" | "pro" | "pro_plus"
-type JourneyLockReason =
-  | "TRIAL_LIMIT"
-  | "PRO_REQUIRES_UPGRADE"
-  | "UPGRADE_REQUIRED"
-  | null
+type JourneyPlanType = "free" | "pro" | "pro_plus"
+type JourneyLockReason = "UPGRADE_REQUIRED" | null
 
 type JourneyAccessResult = {
   locked: boolean
@@ -33,50 +29,10 @@ type JourneyNode = {
   isTodayTarget: boolean
 }
 
-function getSegmentAccess(planType: JourneyPlanType, segment: string): JourneyAccessResult {
-  const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
-  if (!match) {
-    return {
-      locked: true,
-      reason: "UPGRADE_REQUIRED",
-    }
-  }
-
-  const [, bookSlug, , endChapter] = match
-  const book = bookSlug.charAt(0).toUpperCase() + bookSlug.slice(1)
-  const chapter = Number(endChapter)
-
-  if (planType === "trial") {
-    if (book !== "Genesis" || chapter > 3) {
-      return {
-        locked: true,
-        reason: "TRIAL_LIMIT",
-      }
-    }
-
-    return {
-      locked: false,
-      reason: null,
-    }
-  }
-
-  if (planType === "pro") {
-    return {
-      locked: true,
-      reason: "PRO_REQUIRES_UPGRADE",
-    }
-  }
-
-  if (planType === "pro_plus") {
-    return {
-      locked: false,
-      reason: null,
-    }
-  }
-
+function getSegmentAccess(planType: JourneyPlanType): JourneyAccessResult {
   return {
-    locked: true,
-    reason: "UPGRADE_REQUIRED",
+    locked: planType !== "pro_plus",
+    reason: planType === "pro_plus" ? null : "UPGRADE_REQUIRED",
   }
 }
 
@@ -108,12 +64,11 @@ export default function JourneyPage() {
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [nodes, setNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [planType, setPlanType] = useState<JourneyPlanType>("trial")
+  const [planType, setPlanType] = useState<JourneyPlanType>("free")
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
-  const [completedToday, setCompletedToday] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -202,14 +157,14 @@ export default function JourneyPage() {
           .eq("id", userRes.user.id)
           .maybeSingle()
 
-        const nextPlan = profile?.plan_type ?? "trial"
+        const nextPlan = profile?.plan_type ?? "free"
         setPlanType(
-          nextPlan === "trial" || nextPlan === "pro" || nextPlan === "pro_plus"
+          nextPlan === "pro_plus" || nextPlan === "pro"
             ? nextPlan
-            : "trial",
+            : "free",
         )
       } else {
-        setPlanType("trial")
+        setPlanType("free")
       }
 
       setProfileLoaded(true)
@@ -252,48 +207,22 @@ export default function JourneyPage() {
 
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
-      const nextCompletedToday = progress.currentSegmentIndex % Math.max(dailyGoal, 1)
+      const hasJourneyAccess = planType === "pro_plus"
 
       const mapped = segments.map((seg, index) => {
-        const isTrial = planType === "trial"
-        const isPro = planType === "pro"
-        const isProPlus = planType === "pro_plus"
+        const isProPlus = hasJourneyAccess
+        const isAccessible = isProPlus
+        const isCompleted = index < progress.currentSegmentIndex && isProPlus
+        const isActive = index === progress.currentSegmentIndex && isProPlus
 
-        // 🚨 FORCE FIRST NODE ALWAYS ACCESSIBLE
-        let isAccessible = false
-
-        if (isProPlus) {
-          isAccessible = true
-        } else if (isTrial) {
-          isAccessible = index === 0
-        } else if (isPro) {
-          isAccessible = false
-        }
-
-        // 🚨 SAFETY NET — NEVER LOCK FIRST NODE
-        if (index === 0) {
-          isAccessible = true
-        }
-
-        const isCompleted = index < progress.currentSegmentIndex
-        const isActive = index === progress.currentSegmentIndex
-
-        const nodeState = {
-          locked: !isAccessible,
-          active: isAccessible && isActive,
-          complete: isAccessible && isCompleted,
-        }
-
-        const access = getSegmentAccess(planType, seg.segment)
+        const access = getSegmentAccess(planType)
         const isTodayTarget = index >= start && index < end
         let state: NodeState = "locked"
 
-        if (nodeState.complete) {
+        if (isCompleted) {
           state = "complete"
-        } else if (nodeState.active) {
+        } else if (isActive) {
           state = "active"
-        } else if (nodeState.locked) {
-          state = "locked"
         }
 
         console.log("NODE DEBUG:", {
@@ -317,15 +246,13 @@ export default function JourneyPage() {
 
       let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
-      // 🚨 HARD FALLBACK
-      if (firstActiveIndex === -1 && mapped.length > 0) {
+      if (hasJourneyAccess && firstActiveIndex === -1 && mapped.length > 0) {
         mapped[0].state = "active"
         firstActiveIndex = 0
       }
 
       setNodes(mapped)
       setActiveIndex(firstActiveIndex)
-      setCompletedToday(nextCompletedToday)
       setLoading(false)
     }
 
@@ -341,7 +268,6 @@ export default function JourneyPage() {
   }
 
   const activeNode = nodes.find(n => n.state === "active")
-  const focusedNode = nodes[activeIndex]
   const completedCount = nodes.filter(n => n.state === "complete").length
   const totalCount = nodes.length
   const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
@@ -350,7 +276,7 @@ export default function JourneyPage() {
     100,
   )
   const program = getProgramById(selectedProgram)
-  const focusedReason = focusedNode?.access.reason
+  const isProPlus = planType === "pro_plus"
   // Only show paywall if user clicks locked content
   // Do NOT block entire screen
 
@@ -482,9 +408,11 @@ export default function JourneyPage() {
                       <div
                         onClick={() => {
                           if (index === activeIndex) {
-                            if (!isLocked) {
+                            if (isProPlus && !isLocked) {
                               playSound("/sounds/tap.mp3")
                               router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                            } else {
+                              alert("Upgrade to Pro+ to start your journey")
                             }
                           } else {
                             setActiveIndex(index)
@@ -571,24 +499,6 @@ export default function JourneyPage() {
               </div>
             )}
 
-            {focusedReason === "TRIAL_LIMIT" && (
-              <div className="mt-4 text-sm text-yellow-400">
-                Trial access is limited to Genesis 1-3.
-              </div>
-            )}
-
-            {focusedReason === "PRO_REQUIRES_UPGRADE" && (
-              <div className="mt-4 text-sm text-yellow-400">
-                Pro access requires an upgrade to Pro Plus for Journey chapters.
-              </div>
-            )}
-
-            {focusedReason === "UPGRADE_REQUIRED" && (
-              <div className="mt-4 text-sm text-yellow-400">
-                Upgrade required to continue this Journey path.
-              </div>
-            )}
-
             <div className="space-y-2">
               <div className="text-sm text-gray-200">XP</div>
               <div className="text-lg font-bold">{xp}</div>
@@ -652,16 +562,25 @@ export default function JourneyPage() {
             <button
               onClick={() => {
                 if (!program) return
-                if (activeNode) {
+                if (isProPlus && activeNode) {
                   playSound("/sounds/click.mp3")
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
+                  return
                 }
+
+                alert("Upgrade to Pro+ to start your journey")
               }}
               className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!activeNode}
+              disabled={!activeNode || !isProPlus}
             >
               Continue →
             </button>
+
+            {!isProPlus && (
+              <div className="mt-4 text-center text-sm text-yellow-400">
+                Journey is available on Pro+ only. Upgrade to begin.
+              </div>
+            )}
 
           </div>
         </div>
