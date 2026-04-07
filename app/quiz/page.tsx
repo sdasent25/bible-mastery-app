@@ -409,11 +409,13 @@ export default function QuizPage() {
     markPreviewCompleted();
   }, [isPreviewMode, isProPlusUser, isProUser, previewCompletionSaved, quizCompleted]);
 
-  if (loadingPro) {
-    return <div className="p-6 text-black">Loading...</div>;
-  }
-
   const isFreeUser = !isProUser && !isProPlusUser;
+
+  useEffect(() => {
+    if (isPreviewMode && previewCompleted === true && isFreeUser) {
+      router.replace("/pricing?source=journey_pro_plus");
+    }
+  }, [isFreeUser, isPreviewMode, previewCompleted, router]);
 
   useEffect(() => {
     if (!(quizCompleted && isPreviewMode && isFreeUser)) {
@@ -428,40 +430,16 @@ export default function QuizPage() {
     return () => window.clearTimeout(timeout);
   }, [isFreeUser, isPreviewMode, quizCompleted]);
 
+  if (loadingPro) {
+    return <div className="p-6 text-black">Loading...</div>;
+  }
+
   if (isPreviewMode && isFreeUser && previewCompleted === null) {
     return null;
   }
 
   if (isPreviewMode && isFreeUser && previewCompleted === true) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-white px-4">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold mb-4">
-            Start Your Journey
-          </h2>
-
-          <p className="text-white mb-6">
-            You’ve already started your journey
-          </p>
-
-          <p className="text-white text-sm mb-4">
-            Don’t lose your progress. Keep going and build real consistency.
-          </p>
-
-          <button
-            onClick={() => router.push("/pricing?source=journey_pro_plus")}
-            className="bg-green-500 px-6 py-3 rounded-lg text-black font-bold w-full"
-          >
-            Start My Journey
-          </button>
-
-          <p className="text-xs text-yellow-400 mt-2">
-            Start today. Build your streak from day one.
-          </p>
-
-        </div>
-      </div>
-    );
+    return null;
   }
 
   if (quizCompleted && isPreviewMode && isFreeUser && !showPreviewPaywall) {
