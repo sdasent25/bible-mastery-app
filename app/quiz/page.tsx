@@ -953,7 +953,8 @@ export default function QuizPage() {
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
       <div className="relative z-10 flex-1 md:px-6 md:py-4 overflow-hidden">
-        <div className="max-w-4xl">
+        <div className="flex justify-center items-start w-full">
+        <div className="w-full max-w-2xl mx-auto">
           <div className="space-y-3 md:space-y-6">
             <div className="flex-shrink-0 space-y-2">
               <div className="flex items-center justify-between mb-4">
@@ -1178,6 +1179,7 @@ export default function QuizPage() {
             </div>
 
           </div>
+        </div>
         </div>
       </div>
 
