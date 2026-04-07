@@ -110,7 +110,7 @@ export default function OnboardingFlow() {
           <>
             <h2 className="text-2xl font-bold mb-4">Daily time?</h2>
 
-            {["5", "10", "15"].map((t) => (
+            {["15", "30", "60+"].map((t) => (
               <button
                 key={t}
                 onClick={() => {
@@ -119,7 +119,7 @@ export default function OnboardingFlow() {
                 }}
                 className="w-full mb-3 py-3 bg-[#121826] rounded-lg"
               >
-                {t} minutes
+                {t === "60+" ? "1 hour+" : `${t} minutes`}
               </button>
             ))}
           </>
