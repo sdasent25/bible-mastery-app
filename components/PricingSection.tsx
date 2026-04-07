@@ -19,7 +19,16 @@ export default function PricingSection() {
       return
     }
 
-    router.push(`/upgrade?plan=${plan}`)
+    const response = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      body: JSON.stringify({ plan }),
+    })
+
+    const data = await response.json()
+
+    if (data.url) {
+      window.location.href = data.url
+    }
   }
 
   return (
@@ -97,7 +106,7 @@ export default function PricingSection() {
           </ul>
 
           <button
-            onClick={() => handleSelectPlan("pro")}
+            onClick={() => handleSelectPlan(isFamily ? "family_pro" : "pro")}
             className="w-full py-3 rounded-lg bg-blue-600 text-white"
           >
             Start Training
@@ -132,7 +141,7 @@ export default function PricingSection() {
           </ul>
 
           <button
-            onClick={() => handleSelectPlan("pro_plus")}
+            onClick={() => handleSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")}
             className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
           >
             Continue My Journey
