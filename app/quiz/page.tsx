@@ -80,6 +80,7 @@ export default function QuizPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [previewCompletionSaved, setPreviewCompletionSaved] = useState(false);
+  const [previewCompleted, setPreviewCompleted] = useState<boolean | null>(null);
   const [questionCount, setQuestionCount] = useState<number | null>(null);
 
   const activeProgram = getProgramById(activeProgramId);
@@ -169,6 +170,31 @@ export default function QuizPage() {
     }
     checkPro();
   }, [activeProgramId, isPreviewMode, mode]);
+
+  useEffect(() => {
+    const checkPreview = async () => {
+      const supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      );
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("preview_completed")
+        .eq("id", user.id)
+        .single();
+
+      setPreviewCompleted(data?.preview_completed === true);
+    };
+
+    checkPreview();
+  }, []);
 
   useEffect(() => {
     if (!paramsInitialized || loadingPro) {
@@ -369,7 +395,7 @@ export default function QuizPage() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user) {
+      if (user && !isProUser && !isProPlusUser) {
         await supabase
           .from("profiles")
           .update({ preview_completed: true })
@@ -380,10 +406,46 @@ export default function QuizPage() {
     };
 
     markPreviewCompleted();
-  }, [isPreviewMode, previewCompletionSaved, quizCompleted]);
+  }, [isPreviewMode, isProPlusUser, isProUser, previewCompletionSaved, quizCompleted]);
 
   if (loadingPro) {
     return <div className="p-6 text-black">Loading...</div>;
+  }
+
+  const isFreeUser = !isProUser && !isProPlusUser;
+
+  if (isPreviewMode && isFreeUser && previewCompleted === null) {
+    return null;
+  }
+
+  if (isPreviewMode && isFreeUser && previewCompleted === true) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white px-4">
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-bold mb-4">
+            Start Your Journey
+          </h2>
+
+          <p className="text-white mb-6">
+            You've completed the preview. Continue your journey through Scripture.
+          </p>
+
+          <button
+            onClick={() => router.push("/pricing?source=journey_pro_plus")}
+            className="bg-green-500 px-6 py-3 rounded-lg text-black font-bold w-full"
+          >
+            Start My Journey
+          </button>
+
+          <button
+            onClick={() => router.push("/dashboard")}
+            className="mt-3 bg-neutral-700 px-6 py-3 rounded-lg text-white w-full"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!paramsInitialized) {
