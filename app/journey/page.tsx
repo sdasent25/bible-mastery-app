@@ -151,18 +151,17 @@ export default function JourneyPage() {
       const plan = await getUserPlan()
 
       if (userRes?.user) {
-        const { data: access } = await supabase
+        const { data } = await supabase
           .from("user_access")
           .select("final_plan")
-          .maybeSingle()
+          .eq("user_id", userRes.user.id)
+          .single()
 
-        console.log("FINAL PLAN:", access?.final_plan)
-
-        const nextPlan = access?.final_plan ?? "free"
+        const nextPlan = data?.final_plan ?? "free"
         setPlanType(
-          nextPlan === "pro_plus" || nextPlan === "pro"
+          nextPlan === "pro" || nextPlan === "pro_plus" || nextPlan === "free"
             ? nextPlan
-            : "free",
+            : "free"
         )
       } else {
         setPlanType("free")
@@ -196,7 +195,6 @@ export default function JourneyPage() {
         ? await getProgramProgress(selectedProgram)
         : null
 
-      // 🚨 HARD FALLBACK — NEVER ALLOW UNDEFINED
       if (!progress || progress.currentSegmentIndex === undefined) {
         progress = {
           programId: selectedProgram,
@@ -208,13 +206,12 @@ export default function JourneyPage() {
 
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
-      const hasJourneyAccess = planType === "pro_plus"
+      const isProPlus = planType === "pro_plus"
 
       const mapped = segments.map((seg, index) => {
-        const isProPlus = hasJourneyAccess
         const isAccessible = isProPlus
-        const isCompleted = index < progress.currentSegmentIndex && isProPlus
-        const isActive = index === progress.currentSegmentIndex && isProPlus
+        const isCompleted = isProPlus && index < progress.currentSegmentIndex
+        const isActive = isProPlus && index === progress.currentSegmentIndex
 
         const access = getSegmentAccess(planType)
         const isTodayTarget = index >= start && index < end
@@ -243,22 +240,19 @@ export default function JourneyPage() {
         }
       })
 
-      console.log("MAPPED NODES:", mapped)
-
-      let firstActiveIndex = mapped.findIndex((node) => node.state === "active")
-
-      if (hasJourneyAccess && firstActiveIndex === -1 && mapped.length > 0) {
-        mapped[0].state = "active"
-        firstActiveIndex = 0
-      }
+      const firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
       setNodes(mapped)
-      setActiveIndex(firstActiveIndex)
+      setActiveIndex(firstActiveIndex === -1 ? 0 : firstActiveIndex)
       setLoading(false)
     }
 
     void loadProgram()
   }, [dailyGoal, planType, selectedProgram])
+
+  useEffect(() => {
+    console.log("JOURNEY FINAL PLAN:", planType)
+  }, [planType])
 
   if (loading || !profileLoaded) {
     return (
@@ -278,8 +272,6 @@ export default function JourneyPage() {
   )
   const program = getProgramById(selectedProgram)
   const isProPlus = planType === "pro_plus"
-  // Only show paywall if user clicks locked content
-  // Do NOT block entire screen
 
   return (
     <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">

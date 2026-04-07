@@ -117,7 +117,7 @@ export default function LeaderboardPage() {
 
           <p className="text-white text-sm mb-6">
             Global leaderboard is coming soon.
-            Compete with others and track your ranking across the platform.
+            
           </p>
 
           <button
