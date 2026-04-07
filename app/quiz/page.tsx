@@ -39,6 +39,15 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
+function getQuestionSize(text: string) {
+  const length = text.length
+
+  if (length < 60) return "text-2xl"
+  if (length < 100) return "text-xl"
+  if (length < 140) return "text-lg"
+  return "text-base"
+}
+
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
@@ -926,7 +935,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col px-4 py-3 overflow-hidden">
+    <div className="h-screen md:h-auto flex flex-col justify-between px-3 py-3 md:px-6 md:py-6 overflow-hidden">
       {showXpGain && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
           <div className="animate-xp text-green-400 font-bold text-2xl">
@@ -955,7 +964,7 @@ export default function QuizPage() {
       <div className="relative z-10 flex-1 md:px-6 md:py-2 overflow-hidden">
         <div className="max-w-4xl">
           <div className="space-y-3 md:space-y-6">
-            <div className="flex-shrink-0 space-y-2">
+            <div className="flex-shrink-0 space-y-2 md:space-y-4">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
                   <button
@@ -1023,13 +1032,17 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="flex-1 flex flex-col justify-center text-center px-2">
-                <h1 className="text-2xl md:text-3xl font-bold leading-tight">
-                  {currentQuestion.question}
-                </h1>
+              <div className="flex-1 flex flex-col justify-center items-center text-center px-2">
+                <div className="max-h-[32vh] md:max-h-none flex items-center justify-center">
+                  <h1
+                    className="font-bold leading-snug text-[clamp(18px,5vw,26px)] md:text-3xl"
+                  >
+                    {currentQuestion.question}
+                  </h1>
+                </div>
 
                 {currentQuestion.reference && (
-                  <p className="text-sm text-gray-400 mt-2">
+                  <p className="text-xs md:text-sm text-gray-400 mt-2">
                     {currentQuestion.reference}
                   </p>
                 )}
@@ -1042,54 +1055,30 @@ export default function QuizPage() {
               </div>
 
               {!isAnswered && (
-                <>
-                  <p className="text-sm text-slate-300 text-center mb-2">
+                <div className="flex-shrink-0 space-y-2 pb-2">
+                  <p className="hidden md:block text-sm text-slate-300 text-center">
                     Choose an answer
                   </p>
 
-                  <div className="flex-shrink-0 space-y-3 pb-2">
-                    {currentQuestion.options.map((answer, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleAnswerSelect(index)}
-                        disabled={selectedAnswer !== null}
-                        className="
-                          relative
-                          w-full text-left
-                          py-3
-                          px-4 md:px-6
-                          text-base
-                          rounded-xl
-                          border border-white/10
-                          bg-slate-900
-                          font-medium
-                          transition-all duration-150
-                          hover:bg-slate-800
-                          hover:scale-[1.02]
-                          hover:shadow-lg
-                          shadow-md
-                          active:scale-95
-                          active:brightness-90
-                          disabled:opacity-50
-                          disabled:cursor-not-allowed
-                          button-primary
-                          focus:outline-none focus:ring-2 focus:ring-blue-500
-                          text-white
-                        "
-                        aria-label={`Answer option ${index + 1}: ${answer}`}
-                      >
-                        <div className="flex items-center justify-between gap-4">
-                          <span>
-                            <span className="font-bold text-xl mr-4">
-                              {["A", "B", "C", "D"][index]}.
-                            </span>
-                            {answer}
+                  {currentQuestion.options.map((answer, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswerSelect(index)}
+                      disabled={selectedAnswer !== null}
+                      className="w-full rounded-xl bg-blue-600 text-white font-semibold py-2.5 text-sm md:py-4 md:text-base transition active:scale-[0.97]"
+                      aria-label={`Answer option ${index + 1}: ${answer}`}
+                    >
+                      <div className="flex items-center justify-between gap-4">
+                        <span>
+                          <span className="font-bold text-xl mr-4">
+                            {["A", "B", "C", "D"][index]}.
                           </span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </>
+                          {answer}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
               )}
 
               {isAnswered && (
