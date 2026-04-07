@@ -952,7 +952,7 @@ export default function QuizPage() {
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
-      <div className="relative z-10 flex-1 md:px-6 md:py-2 overflow-hidden">
+      <div className="relative z-10 flex-1 md:px-6 md:py-4 overflow-hidden">
         <div className="max-w-4xl">
           <div className="space-y-3 md:space-y-6">
             <div className="flex-shrink-0 space-y-2">
@@ -1025,7 +1025,7 @@ export default function QuizPage() {
 
               <div className="flex-1 flex flex-col justify-center text-center px-2">
                 <div className="max-h-[30vh] overflow-hidden flex items-center justify-center text-center px-2">
-                  <h1 className="text-xl md:text-2xl font-bold leading-snug">
+                  <h1 className="text-lg md:text-2xl font-bold leading-snug">
                     {currentQuestion.question}
                   </h1>
                 </div>
@@ -1072,6 +1072,7 @@ export default function QuizPage() {
                         button-primary
                         focus:outline-none focus:ring-2 focus:ring-blue-500
                         text-white
+                        md:py-3
                       "
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
