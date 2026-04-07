@@ -8,10 +8,10 @@ import { getUserPlan } from "@/lib/userPlan"
 export default function DashboardPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const level = Math.floor(xp / 500) + 1
 
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
+  const level = Math.floor(xp / 500) + 1
   const [invite, setInvite] = useState<any>(null)
   const [plan, setPlan] = useState<string | null>(null)
   const [, setInFamily] = useState(false)
