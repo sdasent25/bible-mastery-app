@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
+import { supabase } from '@/lib/supabase';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { addXp, getXp } from '@/lib/xp';
 import { getProgramById, toQuizSegmentId } from '@/lib/programs';
@@ -81,6 +82,7 @@ export default function QuizPage() {
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [previewCompletionSaved, setPreviewCompletionSaved] = useState(false);
   const [previewCompleted, setPreviewCompleted] = useState<boolean | null>(null);
+  const [planType, setPlanType] = useState<string | null>(null);
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
   const [questionCount, setQuestionCount] = useState<number | null>(null);
 
@@ -173,28 +175,34 @@ export default function QuizPage() {
   }, [activeProgramId, isPreviewMode, mode]);
 
   useEffect(() => {
-    const checkPreview = async () => {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
-
+    const checkAccess = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (!user) return;
+      if (!user) {
+        setPreviewCompleted(false);
+        setPlanType("free");
+        return;
+      }
 
-      const { data } = await supabase
+      const { data: profile } = await supabase
         .from("profiles")
         .select("preview_completed")
         .eq("id", user.id)
         .single();
 
-      setPreviewCompleted(data?.preview_completed === true);
+      const { data: access } = await supabase
+        .from("user_access")
+        .select("final_plan")
+        .eq("user_id", user.id)
+        .single();
+
+      setPreviewCompleted(profile?.preview_completed === true);
+      setPlanType(access?.final_plan ?? "free");
     };
 
-    checkPreview();
+    checkAccess();
   }, []);
 
   useEffect(() => {
@@ -409,13 +417,13 @@ export default function QuizPage() {
     markPreviewCompleted();
   }, [isPreviewMode, isProPlusUser, isProUser, previewCompletionSaved, quizCompleted]);
 
-  const isFreeUser = !isProUser && !isProPlusUser;
-
   useEffect(() => {
-    if (isPreviewMode && previewCompleted === true && isFreeUser) {
+    if (previewCompleted === true && planType === "free") {
       router.replace("/pricing?source=journey_pro_plus");
     }
-  }, [isFreeUser, isPreviewMode, previewCompleted, router]);
+  }, [planType, previewCompleted, router]);
+
+  const isFreeUser = !isProUser && !isProPlusUser;
 
   useEffect(() => {
     if (!(quizCompleted && isPreviewMode && isFreeUser)) {
@@ -434,11 +442,11 @@ export default function QuizPage() {
     return <div className="p-6 text-black">Loading...</div>;
   }
 
-  if (isPreviewMode && isFreeUser && previewCompleted === null) {
+  if (previewCompleted === null || planType === null) {
     return null;
   }
 
-  if (isPreviewMode && isFreeUser && previewCompleted === true) {
+  if (previewCompleted === true && planType === "free") {
     return null;
   }
 
