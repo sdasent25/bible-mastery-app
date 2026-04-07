@@ -631,13 +631,6 @@ export default function QuizPage() {
     setShowRetryPrompt(false);
   };
 
-  const navItems = [
-    { label: 'Home', href: '/dashboard', active: false },
-    { label: 'Journey', href: '/journey', active: false },
-    { label: 'Training', href: '/quiz', active: true },
-    { label: 'Review', href: '/review', active: false },
-  ];
-
   const updateMastery = async () => {
     try {
       const supabase = createClient(
@@ -837,31 +830,6 @@ export default function QuizPage() {
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
-      <aside className="hidden w-72 border-r border-white/5 bg-slate-900/60 px-5 py-6 backdrop-blur lg:block">
-        <div className="sticky top-6">
-          <h2 className="text-2xl font-bold">Bible Mastery</h2>
-          <p className="mt-2 text-sm text-slate-400">Quiz navigation</p>
-
-          <div className="mt-8 space-y-3">
-            {navItems.map((item) => (
-              <button
-                key={item.label}
-                type="button"
-                onClick={() => router.push(item.href)}
-                className={[
-                  "w-full rounded-xl px-4 py-4 text-left text-base font-semibold transition-all duration-150 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed",
-                  item.active
-                    ? "border border-blue-500/30 bg-blue-600/20 text-white hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]"
-                    : "border border-white/5 bg-slate-900 text-slate-200 hover:bg-slate-800 hover:text-white"
-                ].join(" ")}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </aside>
-
       <div className="relative z-10 flex-1 px-10 py-4 md:py-8">
         <div className="max-w-4xl">
           <div className="space-y-3 md:space-y-6">
