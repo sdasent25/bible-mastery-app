@@ -1024,8 +1024,8 @@ export default function QuizPage() {
               )}
 
               <div className="flex-1 flex flex-col justify-center text-center px-2">
-                <div className="max-h-[30vh] overflow-hidden flex items-center justify-center text-center px-2">
-                  <h1 className="text-lg md:text-2xl font-bold leading-snug">
+                <div className="flex items-center justify-center text-center px-2">
+                  <h1 className="text-base md:text-2xl font-bold leading-tight text-center break-words">
                     {currentQuestion.question}
                   </h1>
                 </div>
@@ -1090,7 +1090,7 @@ export default function QuizPage() {
               )}
 
               {isAnswered && (
-                <div className="flex flex-col items-center justify-center text-center mt-6 animate-[fadeIn_0.25s_ease]">
+                <div className="flex flex-col items-center justify-center text-center mt-2 animate-[fadeIn_0.25s_ease]">
                   <div className={`text-3xl font-bold mb-4 ${isCorrectAnswer ? "text-green-400" : "text-red-400"}`}>
                     {isCorrectAnswer ? "Correct!" : "Not quite"}
                   </div>
@@ -1102,7 +1102,7 @@ export default function QuizPage() {
                     />
                   </div>
 
-                  <div className="mt-4 text-lg text-slate-300">
+                  <div className="mt-2 text-lg text-slate-300">
                     Correct Answer:
                   </div>
 
@@ -1111,7 +1111,7 @@ export default function QuizPage() {
                   </div>
 
                   {isCorrectAnswer && (
-                    <div className="text-2xl text-green-400 font-bold mt-4 animate-pop">
+                    <div className="text-2xl text-green-400 font-bold mt-2 animate-pop">
                       +10 XP
                     </div>
                   )}
@@ -1125,7 +1125,7 @@ export default function QuizPage() {
                         handleNextQuestion();
                       }}
                       className="
-                        mt-6
+                        mt-2
                         w-full
                         bg-blue-600
                         hover:bg-blue-500
@@ -1152,7 +1152,7 @@ export default function QuizPage() {
               )}
 
               {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
-                <div className={`mt-6 rounded-lg p-4 ${
+                <div className={`mt-2 rounded-lg p-4 ${
                   currentQuestion.difficulty === 'scholar'
                     ? 'border border-yellow-500 bg-slate-800 text-slate-200'
                     : 'bg-slate-800 text-slate-200'
@@ -1162,7 +1162,7 @@ export default function QuizPage() {
               )}
 
               {isAnswered && (
-                <div className={`mt-6 rounded-lg p-4 ${
+                <div className={`mt-2 rounded-lg p-4 ${
                   currentQuestion.difficulty === 'scholar'
                     ? 'border border-yellow-500 bg-slate-800 text-slate-200'
                     : 'bg-slate-800 text-slate-200'
