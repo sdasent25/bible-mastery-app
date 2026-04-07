@@ -20,8 +20,6 @@ export default function FlashcardsHome() {
         .select("final_plan")
         .single()
 
-      console.log("FINAL PLAN:", data?.final_plan)
-
       if (data?.final_plan) setPlanType(data.final_plan)
     }
 
@@ -29,6 +27,10 @@ export default function FlashcardsHome() {
   }, [])
 
   const hasAccess = planType === "pro" || planType === "pro_plus"
+
+  useEffect(() => {
+    console.log("FLASHCARD PLAN:", planType)
+  }, [planType])
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">
