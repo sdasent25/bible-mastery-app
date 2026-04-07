@@ -38,7 +38,7 @@ export default function OnboardingFlow() {
       return
     }
 
-    router.push("/home")
+    router.push("/journey")
   }
 
   return (
