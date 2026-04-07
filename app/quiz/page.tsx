@@ -926,7 +926,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white relative overflow-hidden">
+    <div className="h-screen flex flex-col justify-between px-4 py-6 overflow-hidden">
       {showXpGain && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
           <div className="animate-xp text-green-400 font-bold text-2xl">
@@ -952,7 +952,7 @@ export default function QuizPage() {
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
-      <div className="relative z-10 flex-1 px-10 py-4 md:py-8">
+      <div className="relative z-10 flex-1 md:px-6 md:py-2 overflow-hidden">
         <div className="max-w-4xl">
           <div className="space-y-3 md:space-y-6">
             <div className="flex items-center justify-between mb-4">
@@ -1030,21 +1030,23 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <h3 className="text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
-                {currentQuestion.question}
-              </h3>
+              <div className="flex-1 flex flex-col justify-center">
+                <h3 className="text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
+                  {currentQuestion.question}
+                </h3>
 
-              {currentQuestion.reference && (
-                <p className="text-base text-slate-300 text-center mb-2">
-                  {currentQuestion.reference}
-                </p>
-              )}
+                {currentQuestion.reference && (
+                  <p className="text-base text-slate-300 text-center mb-2">
+                    {currentQuestion.reference}
+                  </p>
+                )}
 
-              {isReviewMode && currentIncorrectItem && (
-                <div className="mb-4 rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
-                  You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
-                </div>
-              )}
+                {isReviewMode && currentIncorrectItem && (
+                  <div className="mb-4 rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
+                    You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
+                  </div>
+                )}
+              </div>
 
               {!isAnswered && (
                 <>
@@ -1052,7 +1054,7 @@ export default function QuizPage() {
                     Choose an answer
                   </p>
 
-                  <div className="flex flex-col gap-3 md:gap-6 max-h-none">
+                  <div className="flex flex-col gap-3">
                     {currentQuestion.options.map((answer, index) => (
                       <button
                         key={index}
@@ -1124,36 +1126,38 @@ export default function QuizPage() {
                     </div>
                   )}
 
-                  <button
-                    id="continueBtn"
-                    onClick={() => {
-                      playSound("/sounds/click.mp3");
-                      triggerHaptic("light");
-                      handleNextQuestion();
-                    }}
-                    className="
-                      mt-6
-                      w-full
-                      bg-blue-600
-                      hover:bg-blue-500
-                      text-white
-                      font-bold
-                      text-xl
-                      px-6 py-4
-                      rounded-xl
-                      shadow-md
-                      transition-all duration-150
-                      hover:scale-[1.02]
-                      hover:shadow-lg
-                      hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]
-                      active:scale-95
-                      active:brightness-90
-                      disabled:opacity-50
-                      disabled:cursor-not-allowed
-                    "
-                  >
-                    Continue →
-                  </button>
+                  <div className="pb-4 w-full">
+                    <button
+                      id="continueBtn"
+                      onClick={() => {
+                        playSound("/sounds/click.mp3");
+                        triggerHaptic("light");
+                        handleNextQuestion();
+                      }}
+                      className="
+                        mt-6
+                        w-full
+                        bg-blue-600
+                        hover:bg-blue-500
+                        text-white
+                        font-bold
+                        text-xl
+                        px-6 py-4
+                        rounded-xl
+                        shadow-md
+                        transition-all duration-150
+                        hover:scale-[1.02]
+                        hover:shadow-lg
+                        hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]
+                        active:scale-95
+                        active:brightness-90
+                        disabled:opacity-50
+                        disabled:cursor-not-allowed
+                      "
+                    >
+                      Continue →
+                    </button>
+                  </div>
                 </div>
               )}
 

@@ -300,12 +300,12 @@ export default function JourneyPage() {
   const isProPlus = planType === "pro_plus"
 
   return (
-    <div className="relative flex min-h-screen bg-[#0B0F1A] text-white">
+    <div className="h-screen flex flex-col overflow-hidden">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
-        <div className="flex justify-center mb-8">
+        <div className="flex-shrink-0 flex justify-center mb-8">
           <div className="text-center max-w-md">
             <h1 className="text-3xl md:text-5xl font-bold text-white">
               {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
@@ -351,6 +351,7 @@ export default function JourneyPage() {
           </div>
         )}
 
+        <div className="flex-1 flex flex-col justify-center">
         <div className="flex flex-col lg:flex-row gap-8 max-w-5xl mx-auto">
 
           {/* PATH */}
@@ -586,27 +587,29 @@ export default function JourneyPage() {
               </div>
             </div>
 
-            <button
-              onClick={() => {
-                if (!program) return
-                if ((isProPlus || isFree) && activeNode) {
-                  playSound("/sounds/click.mp3")
-                  if (isFree) {
-                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
+            <div className="flex-shrink-0 pb-4">
+              <button
+                onClick={() => {
+                  if (!program) return
+                  if ((isProPlus || isFree) && activeNode) {
+                    playSound("/sounds/click.mp3")
+                    if (isFree) {
+                      router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
+                      return
+                    }
+
+                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                     return
                   }
 
-                  router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
-                  return
-                }
-
-                router.push("/pricing?source=journey_locked")
-              }}
-              className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={!activeNode || (!isProPlus && !isFree)}
-            >
-              Continue →
-            </button>
+                  router.push("/pricing?source=journey_locked")
+                }}
+                className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!activeNode || (!isProPlus && !isFree)}
+              >
+                Continue →
+              </button>
+            </div>
 
             {isFree && (
               <div className="mt-4 text-center text-sm text-yellow-400">
@@ -622,6 +625,7 @@ export default function JourneyPage() {
             )}
 
           </div>
+        </div>
         </div>
         </div>
       </div>
