@@ -926,7 +926,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col justify-between px-4 py-6 overflow-hidden">
+    <div className="h-screen flex flex-col px-4 py-3 overflow-hidden">
       {showXpGain && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
           <div className="animate-xp text-green-400 font-bold text-2xl">
@@ -955,42 +955,44 @@ export default function QuizPage() {
       <div className="relative z-10 flex-1 md:px-6 md:py-2 overflow-hidden">
         <div className="max-w-4xl">
           <div className="space-y-3 md:space-y-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-4">
-                <button
-                  onClick={() => router.push('/journey')}
-                  className="
-                    rounded-xl
-                    px-3 py-3
-                    text-slate-400
-                    hover:text-white
-                    text-2xl
-                    font-bold
-                    transition-all duration-150
-                    hover:scale-[1.02]
-                    active:scale-95
-                    active:brightness-90
-                  "
-                  aria-label="Close quiz and return to journey"
-                >
-                  ✕
-                </button>
+            <div className="flex-shrink-0 space-y-2">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => router.push('/journey')}
+                    className="
+                      rounded-xl
+                      px-3 py-3
+                      text-slate-400
+                      hover:text-white
+                      text-2xl
+                      font-bold
+                      transition-all duration-150
+                      hover:scale-[1.02]
+                      active:scale-95
+                      active:brightness-90
+                    "
+                    aria-label="Close quiz and return to journey"
+                  >
+                    ✕
+                  </button>
 
-                <span className="text-sm md:text-base text-slate-300">
-                  Question {currentQuestionIndex + 1} of {totalQuestions}
-                </span>
+                  <span className="text-sm md:text-base text-slate-300">
+                    Question {currentQuestionIndex + 1} of {totalQuestions}
+                  </span>
+                </div>
+
+                <div className="text-sm md:text-base text-slate-300">
+                  XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}
+                </div>
               </div>
 
-              <div className="text-sm md:text-base text-slate-300">
-                XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}
+              <div className="h-3 rounded-full bg-slate-800">
+                <div
+                  className="transition-all duration-500 ease-out h-4 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+                  style={{ width: `${progress}%` }}
+                />
               </div>
-            </div>
-
-            <div className="h-3 rounded-full bg-slate-800">
-              <div
-                className="transition-all duration-500 ease-out h-4 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
-                style={{ width: `${progress}%` }}
-              />
             </div>
 
             <div
@@ -1021,22 +1023,13 @@ export default function QuizPage() {
                 </div>
               )}
 
-              {!isAnswered && (
-                <div className="flex justify-center mb-2 md:mb-4">
-                  <Flame
-                    state={combo >= 3 ? "super" : "idle"}
-                    size={64}
-                  />
-                </div>
-              )}
-
-              <div className="flex-1 flex flex-col justify-center">
-                <h3 className="text-5xl font-bold leading-tight text-center mb-4 md:mb-8">
+              <div className="flex-1 flex flex-col justify-center text-center px-2">
+                <h1 className="text-2xl md:text-3xl font-bold leading-tight">
                   {currentQuestion.question}
-                </h3>
+                </h1>
 
                 {currentQuestion.reference && (
-                  <p className="text-base text-slate-300 text-center mb-2">
+                  <p className="text-sm text-gray-400 mt-2">
                     {currentQuestion.reference}
                   </p>
                 )}
@@ -1054,7 +1047,7 @@ export default function QuizPage() {
                     Choose an answer
                   </p>
 
-                  <div className="flex flex-col gap-3">
+                  <div className="flex-shrink-0 space-y-3 pb-2">
                     {currentQuestion.options.map((answer, index) => (
                       <button
                         key={index}
@@ -1063,13 +1056,13 @@ export default function QuizPage() {
                         className="
                           relative
                           w-full text-left
-                          py-4 md:py-7
+                          py-3
                           px-4 md:px-6
-                          rounded-xl md:rounded-2xl
+                          text-base
+                          rounded-xl
                           border border-white/10
                           bg-slate-900
-                          text-base md:text-2xl font-medium
-                          min-h-[60px] md:min-h-[100px]
+                          font-medium
                           transition-all duration-150
                           hover:bg-slate-800
                           hover:scale-[1.02]
