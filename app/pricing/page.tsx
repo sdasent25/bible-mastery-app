@@ -1,10 +1,12 @@
 "use client"
 
 import { supabase } from "@/lib/supabase"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 
 export default function PricingPage() {
   const router = useRouter()
+  const [isFamily, setIsFamily] = useState(false)
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -26,11 +28,33 @@ export default function PricingPage() {
           Choose Your Path
         </h1>
 
+        <div className="flex justify-center mb-10">
+          <div className="bg-[#0B1220] border border-[#1F2A44] rounded-lg p-1 flex">
+            <button
+              onClick={() => setIsFamily(false)}
+              className={`px-6 py-2 rounded-lg text-sm font-semibold ${
+                !isFamily ? "bg-blue-600 text-white" : "text-white"
+              }`}
+            >
+              Individual
+            </button>
+
+            <button
+              onClick={() => setIsFamily(true)}
+              className={`px-6 py-2 rounded-lg text-sm font-semibold ${
+                isFamily ? "bg-blue-600 text-white" : "text-white"
+              }`}
+            >
+              Family
+            </button>
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6">
             <h2 className="text-xl font-bold text-white mb-4">Free</h2>
 
-            <ul className="text-sm text-gray-300 space-y-2 mb-6">
+            <ul className="text-sm text-white space-y-2 mb-6">
               <li>👁️ View full Bible journey</li>
               <li>🔒 Locked experience (preview only)</li>
               <li>🚫 No flashcards</li>
@@ -46,10 +70,20 @@ export default function PricingPage() {
           </div>
 
           <div className="bg-[#0B1220] border border-blue-500 rounded-2xl p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Pro</h2>
-            <p className="text-blue-400 font-semibold mb-4">$6.99 / month</p>
+            <h2 className="text-xl font-bold text-white mb-4">
+              Pro {isFamily && "Family"}
+            </h2>
+            <p className="text-blue-400 font-semibold mb-4">
+              {isFamily ? "$19.99 / month" : "$6.99 / month"}
+            </p>
 
-            <ul className="text-sm text-gray-300 space-y-2 mb-6">
+            {isFamily && (
+              <p className="text-sm text-white mb-4 text-center">
+                Up to 6 members included
+              </p>
+            )}
+
+            <ul className="text-sm text-white space-y-2 mb-6">
               <li>📚 Full Flashcard System</li>
               <li>🧠 Learn, Review, Add Cards</li>
               <li>🎯 Practice Weak Cards</li>
@@ -68,11 +102,17 @@ export default function PricingPage() {
 
           <div className="bg-[#0B1220] border border-green-500 rounded-2xl p-6 shadow-[0_0_30px_rgba(34,197,94,0.35)]">
             <h2 className="text-xl font-bold text-white mb-2">
-              Pro+ 🚀
+              Pro+ {isFamily && "Family"} 🚀
             </h2>
             <p className="text-green-400 font-semibold mb-4">
-              $12.99 / month
+              {isFamily ? "$29.99 / month" : "$12.99 / month"}
             </p>
+
+            {isFamily && (
+              <p className="text-sm text-white mb-4 text-center">
+                Up to 6 members included
+              </p>
+            )}
 
             <ul className="text-sm text-gray-300 space-y-2 mb-6">
               <li>🔥 Full Bible Journey (Core Experience)</li>
