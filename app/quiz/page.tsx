@@ -926,7 +926,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col px-4 py-3 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#0B0F1A] to-[#05070D]">
       {showXpGain && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
           <div className="animate-xp text-green-400 font-bold text-2xl">
@@ -997,29 +997,21 @@ export default function QuizPage() {
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-5 md:p-10 shadow-xl border border-white/5 ${
+              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-5 md:p-10 shadow-xl shadow-[0_0_40px_rgba(59,130,246,0.15)] scale-[1.02] border border-white/5 ${
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-500'
                   : ''
               }`}
             >
+              <div className="flex justify-between text-sm text-gray-300 mb-3">
+                <span>🔥 Streak: {streak}</span>
+                <span>⚡ Combo: {combo}</span>
+                <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
+              </div>
+
               {currentQuestion.difficulty === 'scholar' && (
                 <div className="mb-4 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
                   <p className="text-center text-sm font-bold tracking-wider text-yellow-400">SCHOLAR MODE</p>
-                </div>
-              )}
-
-              <div className="flex justify-center mb-3">
-                {streak > 0 && (
-                  <div className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-400/30 text-orange-400 font-bold text-base md:text-lg animate-pop">
-                    🔥 Streak {streak}
-                  </div>
-                )}
-              </div>
-
-              {combo >= 2 && (
-                <div className="text-orange-400 text-center font-bold text-xl mb-3 animate-pop">
-                  ⚡ {combo} combo!
                 </div>
               )}
 
@@ -1045,6 +1037,10 @@ export default function QuizPage() {
 
               {!isAnswered && (
                 <div className="flex-shrink-0 space-y-2">
+                  <p className="text-sm text-slate-300 text-center">
+                    Select the correct answer
+                  </p>
+
                   {currentQuestion.options.map((answer, index) => (
                     <button
                       key={index}
@@ -1063,7 +1059,7 @@ export default function QuizPage() {
                         transition-all duration-150
                         hover:bg-slate-800
                         hover:scale-[1.02]
-                        hover:shadow-lg
+                        hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]
                         shadow-md
                         active:scale-95
                         active:brightness-90
@@ -1185,28 +1181,6 @@ export default function QuizPage() {
         </div>
       </div>
 
-      <div className="w-80 p-6 hidden xl:flex flex-col gap-4 border-l border-white/5 relative z-10">
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
-          🔥 Streak: {streak}
-          <div className="mt-2 h-2 bg-slate-800 rounded-full">
-            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
-          </div>
-        </div>
-
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
-          ⚡ Combo: {combo}
-          <div className="mt-2 h-2 bg-slate-800 rounded-full">
-            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
-          </div>
-        </div>
-
-        <div className="bg-slate-900 p-4 rounded-xl border border-white/5 text-lg font-semibold">
-          🎯 Keep going to level up
-          <div className="mt-2 h-2 bg-slate-800 rounded-full">
-            <div className="h-2 bg-blue-500 rounded-full w-[60%]" />
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
