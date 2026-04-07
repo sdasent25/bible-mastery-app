@@ -11,7 +11,7 @@ export default function SegmentIntro() {
   const searchParams = useSearchParams()
   const supabase = createClient()
   const [profileLoaded, setProfileLoaded] = useState(false)
-  const [planType, setPlanType] = useState("trial")
+  const [planType, setPlanType] = useState("free")
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
@@ -39,14 +39,14 @@ export default function SegmentIntro() {
         return
       }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("plan_type")
-        .eq("id", user.id)
+      const { data: access } = await supabase
+        .from("user_access")
+        .select("final_plan")
         .maybeSingle()
 
       if (isMounted) {
-        setPlanType(profile?.plan_type ?? "trial")
+        console.log("FINAL PLAN:", access?.final_plan)
+        setPlanType(access?.final_plan ?? "free")
         setProfileLoaded(true)
       }
     }
@@ -61,20 +61,8 @@ export default function SegmentIntro() {
   useEffect(() => {
     if (!profileLoaded) return
 
-    if (planType === "trial") {
-      if (book !== "Genesis" || (chapter !== null && chapter > 3)) {
-        router.push("/upgrade")
-        return
-      }
-    }
-
-    if (planType === "pro") {
-      router.push("/upgrade")
-      return
-    }
-
-    if (planType !== "pro_plus" && planType !== "trial") {
-      router.push("/upgrade")
+    if (planType !== "pro_plus") {
+      router.push("/pricing?source=journey_locked")
       return
     }
   }, [book, chapter, planType, profileLoaded, router])

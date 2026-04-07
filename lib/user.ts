@@ -2,8 +2,8 @@ import { supabase } from './supabase'
 
 export type PlanType = 'free' | 'pro' | 'pro_plus'
 
-type ProfilePlanRow = {
-  plan_type?: PlanType | null
+type AccessPlanRow = {
+  final_plan?: PlanType | null
 }
 
 type SubscriptionStatus = {
@@ -12,8 +12,8 @@ type SubscriptionStatus = {
   isProPlus: boolean
 }
 
-function getPlanFromProfile(profile: ProfilePlanRow | null): PlanType {
-  const plan = profile?.plan_type || 'free'
+function getPlanFromAccess(access: AccessPlanRow | null): PlanType {
+  const plan = access?.final_plan || 'free'
   return plan === 'pro' || plan === 'pro_plus' ? plan : 'free'
 }
 
@@ -30,13 +30,14 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
     return { plan: 'free', isPro: false, isProPlus: false }
   }
 
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('plan_type')
-    .eq('id', user.id)
+  const { data: access } = await supabase
+    .from('user_access')
+    .select('final_plan')
     .maybeSingle()
 
-  const plan = getPlanFromProfile(profile)
+  console.log("FINAL PLAN:", access?.final_plan)
+
+  const plan = getPlanFromAccess(access)
   const { isPro, isProPlus } = getPlanFlags(plan)
 
   return { plan, isPro, isProPlus }
@@ -74,13 +75,14 @@ export async function getUser() {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return null
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('plan_type')
-      .eq('id', user.id)
+    const { data: access } = await supabase
+      .from('user_access')
+      .select('final_plan')
       .maybeSingle()
 
-    const planType = getPlanFromProfile(profile)
+    console.log("FINAL PLAN:", access?.final_plan)
+
+    const planType = getPlanFromAccess(access)
     const { isPro, isProPlus } = getPlanFlags(planType)
 
     return { isPro, isProPlus, planType }

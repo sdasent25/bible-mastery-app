@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
-import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/userPlan"
 
 export default function DashboardPage() {
@@ -12,7 +11,6 @@ export default function DashboardPage() {
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
   const [invite, setInvite] = useState<any>(null)
-  const [profile, setProfile] = useState<any>(null)
   const [plan, setPlan] = useState<string | null>(null)
   const [, setInFamily] = useState(false)
   const [dailyTarget, setDailyTarget] = useState(1)
@@ -58,6 +56,7 @@ export default function DashboardPage() {
       .select("final_plan, in_family")
       .single()
 
+    console.log("FINAL PLAN:", access?.final_plan)
     setPlan(access?.final_plan ?? null)
     setInFamily(access?.in_family === true)
 
@@ -115,28 +114,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     load()
-  }, [])
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      const profileClient = createClient()
-
-      const {
-        data: { user },
-      } = await profileClient.auth.getUser()
-
-      if (!user) return
-
-      const { data } = await profileClient
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle()
-
-      setProfile(data)
-    }
-
-    fetchProfile()
   }, [])
 
   if (loading) {
@@ -237,25 +214,18 @@ export default function DashboardPage() {
       <div className="space-y-3">
         <button
           onClick={() => {
-            if (!profile) return
-
-            if (profile.plan_type === "pro_plus") {
+            if (plan === "pro_plus") {
               router.push("/journey")
               return
             }
 
-            if (profile.plan_type === "trial") {
-              router.push("/journey")
-              return
-            }
-
-            router.push("/upgrade")
+            router.push("/pricing?source=journey_locked")
           }}
           className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
         >
           {plan === "free"
             ? "Upgrade to Pro+ to Start Journey"
-            : profile?.plan_type === "pro"
+            : plan === "pro"
             ? "Unlock Your Journey"
             : "Continue Learning"}
         </button>

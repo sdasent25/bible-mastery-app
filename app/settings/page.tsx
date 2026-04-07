@@ -18,13 +18,14 @@ export default function SettingsPage() {
         setEmail(userRes.user.email || "")
 
         const { data } = await supabase
-          .from("profiles")
-          .select("plan_type")
-          .eq("id", userRes.user.id)
+          .from("user_access")
+          .select("final_plan")
           .maybeSingle()
 
-        if (data?.plan_type) {
-          setPlan(data.plan_type)
+        console.log("FINAL PLAN:", data?.final_plan)
+
+        if (data?.final_plan) {
+          setPlan(data.final_plan)
         }
       }
 

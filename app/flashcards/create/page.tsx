@@ -29,6 +29,8 @@ export default function FlashcardsCreatePage() {
         .select("final_plan")
         .single()
 
+      console.log("FINAL PLAN:", data?.final_plan)
+
       if (data?.final_plan === "pro" || data?.final_plan === "pro_plus") {
         setHasAccess(true)
       } else {

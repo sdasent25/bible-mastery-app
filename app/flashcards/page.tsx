@@ -20,6 +20,8 @@ export default function FlashcardsHome() {
         .select("final_plan")
         .single()
 
+      console.log("FINAL PLAN:", data?.final_plan)
+
       if (data?.final_plan) setPlanType(data.final_plan)
     }
 

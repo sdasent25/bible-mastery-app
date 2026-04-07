@@ -43,6 +43,8 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         .select("final_plan")
         .single()
 
+      console.log("FINAL PLAN:", data?.final_plan)
+
       if (data?.final_plan) setPlanType(data.final_plan)
     }
 
@@ -112,6 +114,9 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     )
   }
 
+  const hasLeaderboardAccess =
+    planType === "pro" || planType === "pro_plus"
+
   return (
     <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
       <div className="flex-1 space-y-4">
@@ -131,7 +136,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           {navItem("🏠 Dashboard", "/dashboard")}
           {navItem("📖 Journey", "/journey")}
           {navItem("🧠 Flashcards", "/flashcards")}
-          {planType !== "free" ? (
+          {hasLeaderboardAccess ? (
             navItem("🏆 Leaderboard", "/leaderboard")
           ) : (
             <div

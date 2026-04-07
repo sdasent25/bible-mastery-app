@@ -151,13 +151,14 @@ export default function JourneyPage() {
       const plan = await getUserPlan()
 
       if (userRes?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("plan_type")
-          .eq("id", userRes.user.id)
+        const { data: access } = await supabase
+          .from("user_access")
+          .select("final_plan")
           .maybeSingle()
 
-        const nextPlan = profile?.plan_type ?? "free"
+        console.log("FINAL PLAN:", access?.final_plan)
+
+        const nextPlan = access?.final_plan ?? "free"
         setPlanType(
           nextPlan === "pro_plus" || nextPlan === "pro"
             ? nextPlan
