@@ -7,12 +7,13 @@ import { createFlashcard } from "@/lib/flashcards"
 
 export default function FlashcardsCreatePage() {
   const router = useRouter()
-  const [accessLoading, setAccessLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [, setPlanType] = useState("free")
   const [hasAccess, setHasAccess] = useState(false)
   const [verse, setVerse] = useState("")
   const [reference, setReference] = useState("")
   const [category, setCategory] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [submitLoading, setSubmitLoading] = useState(false)
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -30,26 +31,26 @@ export default function FlashcardsCreatePage() {
         .eq("user_id", user.id)
         .single()
 
-      const planType = data?.final_plan ?? "free"
-      const hasAccess = planType === "pro" || planType === "pro_plus"
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
 
-      console.log("FLASHCARD ROUTE PLAN:", planType)
+      console.log("FLASHCARD ROUTE PLAN:", plan)
 
-      if (hasAccess) {
-        setHasAccess(true)
-      } else {
+      const hasAccess = plan === "pro" || plan === "pro_plus"
+
+      if (!hasAccess) {
         router.push("/pricing?source=flashcards_locked")
+        return
       }
 
-      setAccessLoading(false)
+      setHasAccess(true)
+      setLoading(false)
     }
 
     void checkAccess()
   }, [router])
 
-  if (accessLoading) {
-    return <div className="text-white text-center mt-10">Loading...</div>
-  }
+  if (loading) return null
 
   if (!hasAccess) return null
 
@@ -58,7 +59,7 @@ export default function FlashcardsCreatePage() {
 
     if (!verse.trim() || !reference.trim()) return
 
-    setLoading(true)
+    setSubmitLoading(true)
 
     try {
       await createFlashcard({
@@ -73,7 +74,7 @@ export default function FlashcardsCreatePage() {
       alert("Failed to save flashcard")
     }
 
-    setLoading(false)
+    setSubmitLoading(false)
   }
 
   return (
@@ -124,10 +125,10 @@ export default function FlashcardsCreatePage() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={submitLoading}
             className="w-full bg-blue-600 hover:bg-blue-500 transition py-4 rounded-xl font-semibold"
           >
-            {loading ? "Saving..." : "Save Flashcard"}
+            {submitLoading ? "Saving..." : "Save Flashcard"}
           </button>
         </form>
       </div>

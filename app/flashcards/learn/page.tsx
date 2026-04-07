@@ -44,6 +44,7 @@ function getRandomIndices(pool: number[], count: number) {
 export default function FlashcardsLearnPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [, setPlanType] = useState("free")
   const [hasAccess, setHasAccess] = useState(false)
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
@@ -80,17 +81,19 @@ export default function FlashcardsLearnPage() {
         .eq("user_id", user.id)
         .single()
 
-      const planType = data?.final_plan ?? "free"
-      const hasAccess = planType === "pro" || planType === "pro_plus"
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
 
-      console.log("FLASHCARD ROUTE PLAN:", planType)
+      console.log("FLASHCARD ROUTE PLAN:", plan)
 
-      if (hasAccess) {
-        setHasAccess(true)
-      } else {
+      const hasAccess = plan === "pro" || plan === "pro_plus"
+
+      if (!hasAccess) {
         router.push("/pricing?source=flashcards_locked")
+        return
       }
 
+      setHasAccess(true)
       setLoading(false)
     }
 
@@ -152,9 +155,7 @@ export default function FlashcardsLearnPage() {
     setFeedback(null)
   }, [card, step, eligibleIndices, tokens.length, totalSteps])
 
-  if (loading) {
-    return <div className="text-white text-center mt-10">Loading...</div>
-  }
+  if (loading) return null
 
   if (!hasAccess) return null
 

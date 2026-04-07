@@ -15,10 +15,11 @@ type Flashcard = {
 
 export default function FlashcardsPracticePage() {
   const router = useRouter()
-  const [accessLoading, setAccessLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [, setPlanType] = useState("free")
   const [hasAccess, setHasAccess] = useState(false)
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
-  const [loading, setLoading] = useState(true)
+  const [flashcardsLoading, setFlashcardsLoading] = useState(true)
   const [messages, setMessages] = useState<Record<string, string> | null>(null)
 
   useEffect(() => {
@@ -37,25 +38,27 @@ export default function FlashcardsPracticePage() {
         .eq("user_id", user.id)
         .single()
 
-      const planType = data?.final_plan ?? "free"
-      const hasAccess = planType === "pro" || planType === "pro_plus"
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
 
-      console.log("FLASHCARD ROUTE PLAN:", planType)
+      console.log("FLASHCARD ROUTE PLAN:", plan)
 
-      if (hasAccess) {
-        setHasAccess(true)
-      } else {
+      const hasAccess = plan === "pro" || plan === "pro_plus"
+
+      if (!hasAccess) {
         router.push("/pricing?source=flashcards_locked")
+        return
       }
 
-      setAccessLoading(false)
+      setHasAccess(true)
+      setLoading(false)
     }
 
     void checkAccess()
   }, [router])
 
   async function load() {
-    setLoading(true)
+    setFlashcardsLoading(true)
 
     const locale = getLocale()
     const msgs = await getMessages(locale)
@@ -63,7 +66,7 @@ export default function FlashcardsPracticePage() {
 
     const { data: userRes } = await supabase.auth.getUser()
     if (!userRes?.user) {
-      setLoading(false)
+      setFlashcardsLoading(false)
       return
     }
 
@@ -79,7 +82,7 @@ export default function FlashcardsPracticePage() {
       setFlashcards(data || [])
     }
 
-    setLoading(false)
+    setFlashcardsLoading(false)
   }
 
   useEffect(() => {
@@ -91,9 +94,7 @@ export default function FlashcardsPracticePage() {
     void loadFlashcards()
   }, [hasAccess])
 
-  if (accessLoading) {
-    return <div className="text-white text-center mt-10">Loading...</div>
-  }
+  if (loading) return null
 
   if (!hasAccess) return null
 
@@ -123,13 +124,13 @@ export default function FlashcardsPracticePage() {
           Focus on the verses you struggled with
         </p>
 
-        {loading && (
+        {flashcardsLoading && (
           <div className="text-center text-gray-400">
             Loading...
           </div>
         )}
 
-        {!loading && flashcards.length === 0 && (
+        {!flashcardsLoading && flashcards.length === 0 && (
           <div className="text-center space-y-3 mt-10">
             <p className="text-white/80">
               No weak cards yet 🎉
@@ -141,7 +142,7 @@ export default function FlashcardsPracticePage() {
           </div>
         )}
 
-        {!loading && flashcards.length > 0 && (
+        {!flashcardsLoading && flashcards.length > 0 && (
           <FlashcardStudy flashcards={flashcards} messages={messages} />
         )}
       </div>

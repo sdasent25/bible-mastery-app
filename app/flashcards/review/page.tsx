@@ -17,6 +17,7 @@ type Flashcard = {
 export default function FlashcardsReviewPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [, setPlanType] = useState("free")
   const [hasAccess, setHasAccess] = useState(false)
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [messages, setMessages] = useState<Record<string, string> | null>(null)
@@ -37,17 +38,19 @@ export default function FlashcardsReviewPage() {
         .eq("user_id", user.id)
         .single()
 
-      const planType = data?.final_plan ?? "free"
-      const hasAccess = planType === "pro" || planType === "pro_plus"
+      const plan = data?.final_plan ?? "free"
+      setPlanType(plan)
 
-      console.log("FLASHCARD ROUTE PLAN:", planType)
+      console.log("FLASHCARD ROUTE PLAN:", plan)
 
-      if (hasAccess) {
-        setHasAccess(true)
-      } else {
+      const hasAccess = plan === "pro" || plan === "pro_plus"
+
+      if (!hasAccess) {
         router.push("/pricing?source=flashcards_locked")
+        return
       }
 
+      setHasAccess(true)
       setLoading(false)
     }
 
@@ -72,9 +75,7 @@ export default function FlashcardsReviewPage() {
     void loadFlashcards()
   }, [hasAccess])
 
-  if (loading) {
-    return <div className="text-white text-center mt-10">Loading...</div>
-  }
+  if (loading) return null
 
   if (!hasAccess) return null
 
