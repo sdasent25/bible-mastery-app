@@ -1,240 +1,105 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-
-import { generatePlan } from "@/lib/planGenerator"
-import { getUserPlan, saveUserPlan } from "@/lib/userPlan"
 import { supabase } from "@/lib/supabase"
-
-const readingOptions = [
-  { label: "90 Days (Fast)", value: 90 },
-  { label: "120 Days (Strong)", value: 120 },
-  { label: "180 Days (Balanced)", value: 180 },
-  { label: "365 Days (Steady)", value: 365 },
-]
-
-const trainingOptions = [
-  { label: "Yes", value: true },
-  { label: "No", value: false },
-]
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const [step, setStep] = useState(1)
-  const [selectedTimeline, setSelectedTimeline] = useState<number | null>(null)
-  const [trainingEnabled, setTrainingEnabled] = useState<boolean | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
 
-  const plan = useMemo(() => {
-    if (selectedTimeline === null || trainingEnabled === null) {
-      return null
-    }
+  const [name, setName] = useState("")
+  const [handle, setHandle] = useState("")
+  const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
 
-    return generatePlan(selectedTimeline, trainingEnabled)
-  }, [selectedTimeline, trainingEnabled])
+  const bannedWords = ["admin", "god", "jesus", "test"]
 
-  useEffect(() => {
-    let active = true
+  function isValidHandle(value: string) {
+    const clean = value.toLowerCase()
 
-    async function initialize() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+    if (!/^[a-z0-9_]+$/.test(clean)) return false
+    if (bannedWords.some(word => clean.includes(word))) return false
 
-      if (!user) {
-        router.replace("/login")
-        return
-      }
-
-      const existingPlan = await getUserPlan()
-      if (active && existingPlan) {
-        router.replace("/home")
-        return
-      }
-
-      if (active) {
-        setLoading(false)
-      }
-    }
-
-    void initialize()
-
-    return () => {
-      active = false
-    }
-  }, [router])
-
-  const handleStartJourney = async () => {
-    try {
-      console.log("Start Journey clicked")
-
-      if (!selectedTimeline) {
-        console.warn("No timeline selected")
-        return
-      }
-
-      const plan = generatePlan(selectedTimeline, trainingEnabled ?? false)
-
-      setSaving(true)
-      await saveUserPlan(plan)
-
-      console.log("Plan saved, redirecting...")
-
-      router.push("/journey")
-    } catch (err) {
-      console.error("Start Journey error:", err)
-      setSaving(false)
-    }
+    return true
   }
 
-  function renderStep() {
-    if (step === 1) {
-      return (
-        <>
-          <div className="space-y-3 text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#7ee69c]">
-              Step 1 of 3
-            </p>
-            <h1 className="text-3xl font-black text-white sm:text-4xl">
-              How quickly do you want to complete the Bible?
-            </h1>
-            <p className="text-base text-white">
-              Choose a pace that feels sustainable every day.
-            </p>
-          </div>
+  async function handleSubmit() {
+    setError("")
 
-          <div className="mt-8 grid gap-3">
-            {readingOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => {
-                  setSelectedTimeline(option.value)
-                  setStep(2)
-                }}
-                className="rounded-xl border border-white/10 bg-[#121826] px-5 py-5 text-left text-xl font-bold text-white shadow-[0_0_30px_rgba(34,197,94,0.08)] transition hover:border-[#22c55e]/50 hover:bg-[#162033]"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-        </>
-      )
+    if (!name || !handle) {
+      setError("Please complete all fields")
+      return
     }
 
-    if (step === 2) {
-      return (
-        <>
-          <div className="space-y-3 text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#7ee69c]">
-              Step 2 of 3
-            </p>
-            <h1 className="text-3xl font-black text-white sm:text-4xl">
-              Do you want quick training sessions during the day?
-            </h1>
-            <p className="text-base text-white">
-              These are short bursts that keep momentum high when time is tight.
-            </p>
-          </div>
-
-          <div className="mt-8 grid gap-3">
-            {trainingOptions.map((option) => (
-              <button
-                key={option.label}
-                onClick={() => {
-                  setTrainingEnabled(option.value)
-                  setStep(3)
-                }}
-                className="rounded-xl border border-white/10 bg-[#121826] px-5 py-5 text-left text-xl font-bold text-white shadow-[0_0_30px_rgba(34,197,94,0.08)] transition hover:border-[#22c55e]/50 hover:bg-[#162033]"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={() => setStep(1)}
-            className="mt-5 w-full rounded-xl border border-white/10 px-5 py-4 text-sm font-bold text-white transition hover:border-white/25"
-          >
-            Back
-          </button>
-        </>
-      )
+    if (!isValidHandle(handle)) {
+      setError("Invalid handle. Use letters, numbers, underscore only.")
+      return
     }
 
-    return (
-      <>
-        <div className="space-y-3 text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#7ee69c]">
-            Step 3 of 3
-          </p>
-          <h1 className="text-3xl font-black text-white sm:text-4xl">
-            Your daily plan is ready
-          </h1>
-          <p className="text-base text-white">
-            This keeps reading deep and training quick.
-          </p>
-        </div>
+    setLoading(true)
 
-        {plan && (
-          <div className="mt-8 space-y-4 rounded-xl border border-white/10 bg-[#121826] p-5 text-white shadow-[0_0_40px_rgba(34,197,94,0.08)]">
-            <div className="space-y-1">
-              <p className="text-lg font-bold text-white">
-                You&apos;ll complete the Bible in {plan.timelineDays} days
-              </p>
-              <p className="text-base text-white">
-                Reading about {plan.segmentsPerDay} segments per day
-              </p>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm uppercase tracking-[0.24em] text-white">Segments per day</span>
-              <span className="text-lg font-bold">{plan.segmentsPerDay}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm uppercase tracking-[0.24em] text-white">Training enabled</span>
-              <span className="text-lg font-bold">{plan.trainingEnabled ? "Yes" : "No"}</span>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <span className="text-sm uppercase tracking-[0.24em] text-white">Estimated completion</span>
-              <span className="text-lg font-bold">{plan.estimatedDays} days</span>
-            </div>
-          </div>
-        )}
+    const {
+      data: { user },
+    } = await supabase.auth.getUser()
 
-        <div className="mt-6 grid gap-3">
-          <button
-            onClick={handleStartJourney}
-            disabled={!plan || saving}
-            className="rounded-xl bg-[#22c55e] px-5 py-4 text-lg font-black text-[#07110b] shadow-[0_0_35px_rgba(34,197,94,0.28)] transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {saving ? "Saving..." : "Start My Journey"}
-          </button>
-          <button
-            onClick={() => setStep(2)}
-            disabled={saving}
-            className="rounded-xl border border-white/10 px-5 py-4 text-sm font-bold text-white transition hover:border-white/25 disabled:opacity-60"
-          >
-            Back
-          </button>
-        </div>
-      </>
-    )
-  }
+    if (!user) return
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0B0F1A] px-4 text-white">
-        Loading...
-      </div>
-    )
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({
+        display_name: name,
+        handle: handle.toLowerCase(),
+      })
+      .eq("id", user.id)
+
+    if (updateError) {
+      setError("Handle may already be taken")
+      setLoading(false)
+      return
+    }
+
+    router.push("/journey?preview=true")
   }
 
   return (
-    <main className="flex min-h-screen overflow-hidden bg-[#0B0F1A] px-4 py-6 text-white">
-      <div className="m-auto w-full max-w-xl rounded-3xl border border-white/10 bg-[#101726] p-6 shadow-[0_0_70px_rgba(34,197,94,0.08)] sm:p-8">
-        {renderStep()}
+    <div className="min-h-screen flex items-center justify-center bg-[#05070F] px-4">
+      <div className="w-full max-w-md bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 shadow-xl">
+        <h1 className="text-2xl font-bold text-white text-center mb-2">
+          Create Your Identity
+        </h1>
+
+        <p className="text-white text-sm text-center mb-6">
+          This is how you'll appear on leaderboards and challenges
+        </p>
+
+        <div className="space-y-4">
+          <input
+            placeholder="Your Name"
+            className="w-full p-3 rounded-lg bg-[#05070F] border border-[#1F2A44] text-white"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            placeholder="@handle"
+            className="w-full p-3 rounded-lg bg-[#05070F] border border-[#1F2A44] text-white"
+            value={handle}
+            onChange={(e) => setHandle(e.target.value)}
+          />
+
+          {error && (
+            <p className="text-red-400 text-sm">{error}</p>
+          )}
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold"
+          >
+            {loading ? "Saving..." : "Start Preview"}
+          </button>
+        </div>
       </div>
-    </main>
+    </div>
   )
 }
