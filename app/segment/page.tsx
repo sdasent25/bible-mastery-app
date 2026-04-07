@@ -13,10 +13,12 @@ export default function SegmentIntro() {
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [planType, setPlanType] = useState("free")
   const [previewCompleted, setPreviewCompleted] = useState(false)
+  const [questionCount, setQuestionCount] = useState<number | null>(null)
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
   const isPreview = searchParams.get("preview") === "true"
+  const isProPlus = planType === "pro_plus"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 
@@ -173,12 +175,45 @@ export default function SegmentIntro() {
             Read Scripture
           </a>
 
-          <Link
-            href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}`}
-            className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
-          >
-            Continue →
-          </Link>
+          {isProPlus && questionCount === null && (
+            <div className="bg-[#0B1220] p-6 rounded-2xl text-center space-y-4 border border-white/10">
+              <h2 className="text-xl font-bold text-white">
+                Choose Your Depth
+              </h2>
+
+              <div className="space-y-3">
+                <button
+                  onClick={() => setQuestionCount(5)}
+                  className="w-full bg-neutral-800 py-3 rounded-xl text-white"
+                >
+                  ⚡ Quick Review (5 questions)
+                </button>
+
+                <button
+                  onClick={() => setQuestionCount(9)}
+                  className="w-full bg-neutral-800 py-3 rounded-xl text-white"
+                >
+                  🎯 Standard (9 questions)
+                </button>
+
+                <button
+                  onClick={() => setQuestionCount(15)}
+                  className="w-full bg-green-500 py-3 rounded-xl text-black font-bold"
+                >
+                  🔥 Deep Study (15 questions)
+                </button>
+              </div>
+            </div>
+          )}
+
+          {(!isProPlus || questionCount !== null) && (
+            <Link
+              href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}${questionCount !== null ? `&questionCount=${questionCount}` : ""}`}
+              className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
+            >
+              Continue →
+            </Link>
+          )}
         </div>
       </div>
     </div>

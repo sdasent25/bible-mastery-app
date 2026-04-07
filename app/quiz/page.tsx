@@ -80,6 +80,7 @@ export default function QuizPage() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
   const [previewCompletionSaved, setPreviewCompletionSaved] = useState(false);
+  const [questionCount, setQuestionCount] = useState<number | null>(null);
 
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
@@ -107,8 +108,14 @@ export default function QuizPage() {
       const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
       const previewParam = params.get('preview') === 'true';
+      const questionCountParam = Number(params.get('questionCount'));
 
       setIsPreviewMode(previewParam);
+      setQuestionCount(
+        questionCountParam === 5 || questionCountParam === 9 || questionCountParam === 15
+          ? questionCountParam
+          : null
+      );
 
       if (modeParam === 'scholar') {
         setMode('scholar');
@@ -192,10 +199,16 @@ export default function QuizPage() {
           return;
         }
 
-        setQuestions((data as Question[]).map((q) => ({
+        const normalizedQuestions = (data as Question[]).map((q) => ({
           ...q,
           id: q.id
-        })));
+        }));
+
+        setQuestions(
+          questionCount !== null
+            ? normalizedQuestions.slice(0, questionCount)
+            : normalizedQuestions
+        );
       } catch (error) {
         console.error('Error loading quiz questions:', error);
         setQuestions([]);
@@ -214,6 +227,7 @@ export default function QuizPage() {
     loadingPro,
     mode,
     paramsInitialized,
+    questionCount,
     quizSeed,
     segment
   ]);
