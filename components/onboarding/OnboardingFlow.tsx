@@ -13,6 +13,7 @@ export default function OnboardingFlow() {
   const [handle, setHandle] = useState("")
   const [goal, setGoal] = useState("")
   const [time, setTime] = useState("")
+  const [isFamily, setIsFamily] = useState(false)
 
   const next = () => setStep((s) => s + 1)
 
@@ -29,6 +30,7 @@ export default function OnboardingFlow() {
       handle,
       goal,
       time_commitment: time,
+      is_family: isFamily,
     })
 
     if (!res.ok) {
@@ -124,6 +126,34 @@ export default function OnboardingFlow() {
         )}
 
         {step === 5 && (
+          <>
+            <h2 className="text-2xl font-bold mb-4">
+              Who are you training with?
+            </h2>
+
+            <button
+              onClick={() => {
+                setIsFamily(false)
+                next()
+              }}
+              className="w-full mb-3 py-3 bg-[#121826] rounded-lg"
+            >
+              Just me
+            </button>
+
+            <button
+              onClick={() => {
+                setIsFamily(true)
+                next()
+              }}
+              className="w-full mb-3 py-3 bg-[#121826] rounded-lg"
+            >
+              My family
+            </button>
+          </>
+        )}
+
+        {step === 6 && (
           <>
             <h2 className="text-2xl font-bold mb-4">Preview Mode</h2>
 
