@@ -43,8 +43,7 @@ export default function LeaderboardPage() {
     void loadPlan()
   }, [])
 
-  const hasLeaderboardAccess =
-    planType === "pro" || planType === "pro_plus"
+  const hasAccess = planType === "pro" || planType === "pro_plus"
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -97,12 +96,12 @@ export default function LeaderboardPage() {
     void loadLeaderboard()
   }, [])
 
-  if (!loading && !hasLeaderboardAccess) {
+  if (!loading && !hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center text-white">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">
-            Leaderboard is a Pro feature
+            Leaderboard is available on Pro and Pro+ plans
           </h2>
           <p className="text-white mb-6">
             Upgrade to compete and track your progress
