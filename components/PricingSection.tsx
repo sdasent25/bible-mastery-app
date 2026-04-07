@@ -24,18 +24,26 @@ export default function PricingSection() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({ plan }),
     })
 
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error("Stripe checkout failed:", errorText)
+      alert("Something went wrong. Please try again.")
       return
     }
 
     const data = await response.json()
 
-    if (data.url) {
-      window.location.href = data.url
+    if (!data.url) {
+      console.error("No checkout URL returned:", data)
+      alert("Unable to start checkout. Please try again.")
+      return
     }
+
+    window.location.href = data.url
   }
 
   const handleProPlusCheckout = async () => {
