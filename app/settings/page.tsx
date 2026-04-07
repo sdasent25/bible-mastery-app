@@ -6,27 +6,39 @@ import LanguageToggle from "@/components/LanguageToggle"
 
 export default function SettingsPage() {
   const [email, setEmail] = useState("")
-  const [plan, setPlan] = useState("Free")
+  const [plan, setPlan] = useState("Free (Individual)")
   const [sound, setSound] = useState(true)
   const [notifications, setNotifications] = useState(false)
 
   useEffect(() => {
     async function load() {
-      const { data: userRes } = await supabase.auth.getUser()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-      if (userRes?.user) {
-        setEmail(userRes.user.email || "")
+      if (user) {
+        setEmail(user.email || "")
 
         const { data } = await supabase
           .from("user_access")
-          .select("final_plan")
-          .maybeSingle()
+          .select("final_plan, in_family")
+          .eq("user_id", user.id)
+          .single()
+
+        const planLabel =
+          data?.final_plan === "pro_plus"
+            ? "Pro+"
+            : data?.final_plan === "pro"
+              ? "Pro"
+              : "Free"
+
+        const fullPlanLabel = data?.in_family
+          ? `${planLabel} (Family)`
+          : `${planLabel} (Individual)`
 
         console.log("FINAL PLAN:", data?.final_plan)
 
-        if (data?.final_plan) {
-          setPlan(data.final_plan)
-        }
+        setPlan(fullPlanLabel)
       }
 
       const savedSound = localStorage.getItem("sound") !== "off"
@@ -60,7 +72,12 @@ export default function SettingsPage() {
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-2">
         <p className="text-sm text-white/60">Account</p>
         <p className="text-white font-medium">{email}</p>
-        <p className="text-white/80 text-sm">Plan: {plan}</p>
+        <p className="text-white text-sm">
+          Plan:{" "}
+          <span className="text-green-400 font-semibold">
+            {plan}
+          </span>
+        </p>
       </div>
 
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 flex items-center justify-between">
