@@ -280,7 +280,7 @@ export default function DashboardPage() {
         )}
 
         <button
-          onClick={() => window.location.href = "/upgrade"}
+          onClick={() => window.location.href = "/pricing?source=dashboard_upgrade"}
           className="w-full bg-green-600 mt-4 py-3 rounded-lg font-bold"
         >
           Upgrade Plan (Test)
