@@ -141,7 +141,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">
-      {invite && (
+      {invite && plan === "free" && (
         <div className="bg-blue-600/10 border border-blue-500 rounded-2xl p-4 space-y-2">
           <p className="text-white font-semibold text-center">
             🎉 You&apos;ve been invited to join a family!
