@@ -145,6 +145,17 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">
+      {plan === "free" && (
+        <div className="bg-yellow-500/10 border border-yellow-500 rounded-xl p-4 text-center mb-4">
+          <p className="text-white font-semibold">
+            🔒 Preview Mode
+          </p>
+          <p className="text-white text-sm mt-1">
+            You&apos;re exploring Bible Athlete. Upgrade to unlock the full experience.
+          </p>
+        </div>
+      )}
+
       {invite && plan === "free" && !loading && (
         <div className="bg-blue-600/10 border border-blue-500 rounded-2xl p-4 space-y-2">
           <p className="text-white font-semibold text-center">
@@ -213,11 +224,13 @@ export default function DashboardPage() {
 
         <p className="text-sm text-white/70">
           {plan === "free"
-            ? "You can complete 1 segment today (Free Plan)"
+            ? "Preview the full Bible training system"
             : "Continue your daily journey"}
         </p>
         <p className="text-xs text-white/50">
-          Based on your {timelineDays}-day plan · target {dailyTarget} per day
+          {plan === "free"
+            ? "Upgrade to unlock your full journey and training"
+            : `Based on your ${timelineDays}-day plan · target ${dailyTarget} per day`}
         </p>
       </div>
 
@@ -240,10 +253,21 @@ export default function DashboardPage() {
           }}
           className="w-full bg-blue-600 py-4 rounded-xl font-semibold"
         >
-          {profile?.plan_type === "pro"
+          {plan === "free"
+            ? "Upgrade to Pro+ to Start Journey"
+            : profile?.plan_type === "pro"
             ? "Unlock Your Journey"
             : "Continue Learning"}
         </button>
+
+        {plan === "free" && (
+          <button
+            onClick={() => router.push("/pricing")}
+            className="w-full bg-green-500 py-4 rounded-xl font-bold text-black"
+          >
+            View Plans
+          </button>
+        )}
 
         {plan === "free" && (
           <div className="mt-4 text-center text-sm text-yellow-400">
@@ -260,14 +284,14 @@ export default function DashboardPage() {
 
         <button
           onClick={() => router.push("/flashcards/review")}
-          className="w-full bg-neutral-800 py-4 rounded-xl font-semibold"
+          className={`w-full bg-neutral-800 py-4 rounded-xl font-semibold ${plan === "free" ? "opacity-60" : ""}`}
         >
           {plan === "free" ? "Review Flashcards · Upgrade for full access" : "Review Flashcards"}
         </button>
 
         <button
           onClick={() => router.push("/flashcards/practice")}
-          className="w-full bg-neutral-800 py-4 rounded-xl font-semibold"
+          className={`w-full bg-neutral-800 py-4 rounded-xl font-semibold ${plan === "free" ? "opacity-60" : ""}`}
         >
           {plan === "free" ? "Practice Weak Cards · Upgrade for full access" : "Practice Weak Cards"}
         </button>
