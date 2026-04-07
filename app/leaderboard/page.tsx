@@ -2,6 +2,7 @@
 
 import { supabase } from "@/lib/supabase"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 
 type LeaderboardEntry = {
   id: string
@@ -10,9 +11,36 @@ type LeaderboardEntry = {
 }
 
 export default function LeaderboardPage() {
+  const router = useRouter()
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [hasFamily, setHasFamily] = useState(true)
+  const [planType, setPlanType] = useState("free")
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadPlan = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        setLoading(false)
+        return
+      }
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("plan_type")
+        .eq("id", user.id)
+        .single()
+
+      if (data?.plan_type) setPlanType(data.plan_type)
+      setLoading(false)
+    }
+
+    void loadPlan()
+  }, [])
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -65,6 +93,27 @@ export default function LeaderboardPage() {
     void loadLeaderboard()
   }, [])
 
+  if (!loading && planType === "free") {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">
+            Leaderboard is a Pro feature
+          </h2>
+          <p className="text-white mb-6">
+            Upgrade to compete and track your progress
+          </p>
+          <button
+            onClick={() => router.push("/upgrade")}
+            className="bg-green-500 px-6 py-3 rounded-lg text-black font-bold"
+          >
+            Upgrade Plan
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   const currentUser = leaderboard.find((user) => user.name === "You")
   const users = leaderboard
   const currentIndex = leaderboard.findIndex((user) => user.id === currentUserId)
@@ -104,8 +153,8 @@ export default function LeaderboardPage() {
       </div>
 
       <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-5 text-center">
-        <p className="text-sm text-white/60">You</p>
-        <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white/50">
+        <p className="text-sm text-white">You</p>
+        <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white">
           Weekly Score
         </p>
         <p className="mt-2 text-3xl font-bold text-white">
@@ -114,11 +163,11 @@ export default function LeaderboardPage() {
       </div>
 
       {!hasFamily ? (
-        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white/70">
+        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white">
           Create or join a family to compete
         </div>
       ) : users.length === 0 ? (
-        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white/70">
+        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white">
           Create or join a family to compete
         </div>
       ) : (

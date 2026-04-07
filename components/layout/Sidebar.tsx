@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
@@ -20,6 +20,7 @@ type SidebarProps = {
 export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
+  const [planType, setPlanType] = useState("free")
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -29,6 +30,25 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     gospels: false,
     epistles: false,
   })
+
+  useEffect(() => {
+    const loadPlan = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("plan_type")
+        .eq("id", user.id)
+        .single()
+
+      if (data?.plan_type) setPlanType(data.plan_type)
+    }
+
+    void loadPlan()
+  }, [])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -53,7 +73,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         className={`block px-4 py-3 rounded-xl transition font-medium ${
           active
             ? "bg-blue-600 text-white shadow-md"
-            : "text-white/80 hover:bg-neutral-800 hover:text-white"
+            : "text-white hover:bg-neutral-800 hover:text-white"
         }`}
       >
         {label}
@@ -63,7 +83,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   function bookItem(label: string, locked = false) {
     return (
-      <div className="flex items-center justify-between px-4 py-1.5 text-sm text-white/80 hover:text-white transition">
+      <div className="flex items-center justify-between px-4 py-1.5 text-sm text-white hover:text-white transition">
         <span>{label}</span>
         {locked && <span className="text-xs">🔒</span>}
       </div>
@@ -79,7 +99,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
       <div>
         <div
           onClick={() => toggle(key)}
-          className="cursor-pointer text-sm text-white/80"
+          className="cursor-pointer text-sm text-white"
         >
           {label}
         </div>
@@ -97,6 +117,16 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
       <div className="flex-1 space-y-4">
         <h1 className="text-xl font-bold">Bible Athlete</h1>
+        <div className="text-xs mt-2 text-white">
+          Plan:{" "}
+          <span className="font-semibold text-green-400">
+            {planType === "pro_plus"
+              ? "Pro+"
+              : planType === "pro"
+                ? "Pro"
+                : "Free"}
+          </span>
+        </div>
 
         <div className="space-y-2">
           {navItem("🏠 Dashboard", "/dashboard")}
@@ -106,7 +136,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         </div>
 
         <div className="pt-4 space-y-2">
-          <p className="text-xs text-white/60 uppercase tracking-wide">Sections</p>
+          <p className="text-xs text-white uppercase tracking-wide">Sections</p>
 
           {sectionItem("pentateuch", "Pentateuch", (
             <>
@@ -167,7 +197,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             closeMobile?.()
             router.push("/settings")
           }}
-          className="w-full text-left px-4 py-3 rounded-xl text-white/80 hover:bg-neutral-800 hover:text-white transition"
+          className="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-neutral-800 hover:text-white transition"
         >
           ⚙️ Settings
         </button>
