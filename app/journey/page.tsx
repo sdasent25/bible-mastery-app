@@ -216,7 +216,7 @@ export default function JourneyPage() {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [profile])
+  }, [profile?.last_completed_at])
 
   useEffect(() => {
     async function loadProgram() {
