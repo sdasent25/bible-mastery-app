@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Lottie from "lottie-react";
 import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
 import { supabase } from '@/lib/supabase';
@@ -19,6 +20,7 @@ import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
 import { playSound, triggerHaptic } from '@/lib/sound';
 import { getXpConfig } from '@/lib/xpEngine';
+import checkAnim from "@/public/lottie/check.json";
 import Flame from '@/components/Flame';
 
 type Question = {
@@ -653,7 +655,9 @@ export default function QuizPage() {
 
         if (isCorrect) {
           const { perQuestion } = getXpConfig(questionsPerDay);
-          playSound("/sounds/correct.mp3");
+          const audio = new Audio("/sounds/correct.mp3");
+          audio.volume = 0.3;
+          void audio.play();
           triggerHaptic("light");
           setShowResult("correct");
           setXpAmount(perQuestion);
@@ -689,7 +693,9 @@ export default function QuizPage() {
             setShowLevelUp(true);
           }
         } else {
-          playSound("/sounds/wrong.mp3");
+          const audio = new Audio("/sounds/wrong.mp3");
+          audio.volume = 0.25;
+          void audio.play();
           triggerHaptic("medium");
           setShowResult("wrong");
           setFlameState("wrong");
@@ -1106,19 +1112,33 @@ export default function QuizPage() {
               )}
 
               {isAnswered && (
-                <div className="flex flex-col items-center justify-center text-center mt-2 animate-[fadeIn_0.25s_ease]">
-                  <div className={`text-3xl font-bold mb-4 ${isCorrectAnswer ? "text-green-400" : "text-red-400"}`}>
-                    {isCorrectAnswer ? "Correct!" : "Not quite"}
-                  </div>
+                <div className="flex flex-col items-center justify-center text-center mt-1 animate-[fadeIn_0.25s_ease]">
+                  {isCorrectAnswer ? (
+                    <>
+                      <div className="w-28 mb-2">
+                        <Lottie animationData={checkAnim} loop={false} />
+                      </div>
 
-                  <div className="animate-float">
-                    <Flame
-                      state={isCorrectAnswer ? "happy" : "sad"}
-                      size={96}
-                    />
-                  </div>
+                      <h1 className="text-2xl font-bold text-green-400">
+                        Correct
+                      </h1>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-3xl font-bold mb-2 text-red-400">
+                        Not quite
+                      </div>
 
-                  <div className="mt-2 text-lg text-slate-300">
+                      <div className="animate-float">
+                        <Flame
+                          state="sad"
+                          size={96}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  <div className="mt-1 text-lg text-slate-300">
                     Correct Answer:
                   </div>
 
