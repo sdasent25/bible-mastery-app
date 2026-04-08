@@ -423,6 +423,19 @@ export default function QuizPage() {
         setProgramProgressSaved(false);
         return;
       }
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        await supabase
+          .from("profiles")
+          .update({
+            last_completed_at: new Date().toISOString(),
+          })
+          .eq("id", user.id);
+      }
     };
 
     syncProgramProgress();

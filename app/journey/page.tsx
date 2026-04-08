@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 
+import { getNextUnlockTime, isLocked } from "@/lib/dailyLock"
 import { getProgramById } from "@/lib/programs"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/userPlan"
@@ -74,6 +75,9 @@ export default function JourneyPage() {
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
   const [previewCompleted, setPreviewCompleted] = useState(false)
+  const [lockedForToday, setLockedForToday] = useState(false)
+  const [profile, setProfile] = useState<{ last_completed_at: string | null } | null>(null)
+  const [timeLeft, setTimeLeft] = useState("")
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -164,9 +168,11 @@ export default function JourneyPage() {
 
         const { data: profile } = await supabase
           .from("profiles")
-          .select("preview_completed")
+          .select("preview_completed, last_completed_at")
           .eq("id", userRes.user.id)
           .single()
+
+        const locked = isLocked(profile?.last_completed_at ?? null)
 
         const nextPlan = data?.final_plan ?? "free"
         setPlanType(
@@ -174,10 +180,14 @@ export default function JourneyPage() {
             ? nextPlan
             : "free"
         )
+        setProfile({ last_completed_at: profile?.last_completed_at ?? null })
         setPreviewCompleted(profile?.preview_completed === true)
+        setLockedForToday(locked)
       } else {
         setPlanType("free")
+        setProfile(null)
         setPreviewCompleted(false)
+        setLockedForToday(false)
       }
 
       setProfileLoaded(true)
@@ -189,6 +199,24 @@ export default function JourneyPage() {
 
     void loadAllProgress()
   }, [])
+
+  useEffect(() => {
+    if (!profile?.last_completed_at) return
+
+    const interval = setInterval(() => {
+      const next = getNextUnlockTime(profile.last_completed_at)
+      const now = new Date()
+
+      const diff = next.getTime() - now.getTime()
+
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff / (1000 * 60)) % 60)
+
+      setTimeLeft(`${hours}h ${minutes}m`)
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [profile])
 
   useEffect(() => {
     async function loadProgram() {
@@ -282,6 +310,26 @@ export default function JourneyPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0B1220] text-white">
         Loading...
+      </div>
+    )
+  }
+
+  if (lockedForToday) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center text-white px-4 text-center">
+        <h1 className="text-2xl font-bold mb-4">
+          You’re done for today 🎉
+        </h1>
+
+        <p className="text-gray-400 mb-4">
+          Come back tomorrow to continue your journey
+        </p>
+
+        {timeLeft && (
+          <p className="text-orange-400 mt-2">
+            Unlocks in {timeLeft}
+          </p>
+        )}
       </div>
     )
   }
