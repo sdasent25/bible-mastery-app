@@ -58,6 +58,7 @@ export default function QuizPage() {
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [showXpGain, setShowXpGain] = useState(false);
   const [xpAmount, setXpAmount] = useState(10);
+  const [displayXp, setDisplayXp] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
@@ -108,6 +109,29 @@ export default function QuizPage() {
     return activeProgram.segments[nextIndex];
   };
   const next = nextSegment();
+
+  useEffect(() => {
+    let start = 0;
+    const end = xpAmount;
+    const duration = 600;
+
+    if (showXpGain) {
+      const increment = end / (duration / 16);
+
+      const counter = setInterval(() => {
+        start += increment;
+
+        if (start >= end) {
+          setDisplayXp(end);
+          clearInterval(counter);
+        } else {
+          setDisplayXp(Math.floor(start));
+        }
+      }, 16);
+
+      return () => clearInterval(counter);
+    }
+  }, [xpAmount, showXpGain]);
 
   useEffect(() => {
     const initializeQuiz = async () => {
@@ -823,9 +847,9 @@ export default function QuizPage() {
 
         {showXpGain && (
           <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
-            <div className="animate-xp text-green-400 font-bold text-2xl">
-              +{xpAmount} XP
-            </div>
+            <span className="animate-xp text-xl font-bold text-green-400 animate-pulse">
+              +{displayXp} XP
+            </span>
           </div>
         )}
 
@@ -954,9 +978,9 @@ export default function QuizPage() {
     <div className="min-h-screen bg-gradient-to-b from-[#0B0F1A] to-[#05070D]">
       {showXpGain && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
-          <div className="animate-xp text-green-400 font-bold text-2xl">
-            +{xpAmount} XP
-          </div>
+          <span className="animate-xp text-xl font-bold text-green-400 animate-pulse">
+            +{displayXp} XP
+          </span>
         </div>
       )}
 
