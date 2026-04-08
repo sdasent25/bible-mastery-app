@@ -43,6 +43,13 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
+function getStreakMessage(streak: number) {
+  if (streak >= 10) return "Unstoppable 🔥";
+  if (streak >= 5) return "Strong momentum";
+  if (streak >= 3) return "You're on fire";
+  return "";
+}
+
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
@@ -903,6 +910,9 @@ export default function QuizPage() {
                 ) : (
                   <p className="text-sm text-slate-300 mt-2">Next: {next?.label}</p>
                 )}
+                <p className="text-sm text-orange-300 mt-2">
+                  🔥 Streak increased to {streak}
+                </p>
               </>
             ) : isTrainingMode ? (
               <>
@@ -1061,7 +1071,17 @@ export default function QuizPage() {
               }`}
             >
               <div className="flex justify-between text-sm text-gray-300 mb-3">
-                <span>🔥 Streak: {streak}</span>
+                <div>
+                  <p className="mt-1 text-sm text-orange-400">
+                    🔥 Streak: {streak}
+                  </p>
+
+                  {getStreakMessage(streak) && (
+                    <p className="text-xs text-orange-300 mt-1">
+                      {getStreakMessage(streak)}
+                    </p>
+                  )}
+                </div>
                 <span>⚡ Combo: {combo}</span>
                 <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
               </div>

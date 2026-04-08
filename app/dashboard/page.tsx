@@ -210,8 +210,22 @@ export default function DashboardPage() {
           <p className="text-2xl font-bold text-orange-400">
             🔥 {streak}
           </p>
+
+          {streak >= 3 && (
+            <p className="text-xs text-orange-300 mt-1">
+              Keep it going
+            </p>
+          )}
         </div>
       </div>
+
+      {streak > 0 && (
+        <div className="bg-orange-500/10 border border-orange-400 rounded-xl p-3 text-center">
+          <p className="text-orange-300 text-sm">
+            🔥 Don’t break your streak
+          </p>
+        </div>
+      )}
 
       {xp === 0 && (
         <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 text-center space-y-2">
