@@ -678,13 +678,20 @@ export default function QuizPage() {
         const previousLevel = Math.floor(previousXp / 100) + 1;
 
         if (isCorrect) {
-          const { perQuestion } = getXpConfig(questionsPerDay);
+          const { perQuestion: baseXp } = getXpConfig(questionsPerDay);
+          const nextCombo = combo + 1;
+          let comboBonus = 0;
+
+          if (nextCombo >= 3) comboBonus = 2;
+          if (nextCombo >= 5) comboBonus = 5;
+
+          const totalXp = baseXp + comboBonus;
           const audio = new Audio("/sounds/correct.mp3");
           audio.volume = 0.3;
           void audio.play();
           triggerHaptic("light");
           setShowResult("correct");
-          setXpAmount(perQuestion);
+          setXpAmount(totalXp);
           setShowXpGain(true);
           setTimeout(() => setShowXpGain(false), 800);
           setFlameState("correct");
@@ -702,7 +709,7 @@ export default function QuizPage() {
           if (user) {
             await supabase.rpc("increment_xp", {
               user_id: user.id,
-              amount: perQuestion,
+              amount: totalXp,
             });
           }
 
