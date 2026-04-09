@@ -39,15 +39,15 @@ export default function LearnMode() {
       {/* HEADER */}
       <div className="mb-6 text-center">
 
-        <div className="text-xs text-gray-400 mb-1">
+        <div className="text-sm text-gray-300 mb-1">
           Card 1 of 10
         </div>
 
-        <div className="text-sm text-gray-400">
+        <div className="text-sm text-gray-300 mb-2 text-center">
           Tap the card to reveal more words
         </div>
 
-        <div className="text-base text-blue-400 font-medium mt-2">
+        <div className="text-sm text-blue-300 mb-4 font-medium">
           {verse.ref}
         </div>
 
@@ -69,7 +69,7 @@ export default function LearnMode() {
         className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
       >
 
-        <div className="text-xs text-gray-400 mb-3 text-center">
+        <div className="text-xs text-gray-300 mb-3 text-center">
           Memorize this verse
         </div>
 
