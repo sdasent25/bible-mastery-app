@@ -91,7 +91,7 @@ export default function FlashcardsPage() {
 
       {/* CTA */}
       <div
-        onClick={handleTraining}
+        onClick={() => router.push("/flashcards/learn")}
         className="w-full max-w-xl p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 
         shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.97] 
         transition-all cursor-pointer mb-5"
