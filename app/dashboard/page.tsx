@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import GameCard from "@/components/ui/GameCard"
 import { supabase } from "@/lib/supabase"
 import { getUserPlan } from "@/lib/userPlan"
 
@@ -187,17 +188,12 @@ export default function DashboardPage() {
         Dashboard
       </h1>
 
-      <div
+      <GameCard
+        title="Start Daily Training"
+        desc="Build your memory and keep your streak alive 🔥"
         onClick={() => router.push("/flashcards/learn")}
-        className="bg-blue-600 hover:bg-blue-500 transition rounded-2xl p-6 cursor-pointer text-center"
-      >
-        <h2 className="text-xl font-semibold text-white">
-          Start Daily Training
-        </h2>
-        <p className="text-sm text-white/90 mt-1">
-          Build your memory and keep your streak alive 🔥
-        </p>
-      </div>
+        variant="primary"
+      />
 
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 flex justify-between items-center">
         <div>
