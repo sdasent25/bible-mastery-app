@@ -38,7 +38,7 @@ export default function FlashcardsHome() {
   if (planType === null) return null
 
   return (
-    <div className="min-h-screen px-4 py-8 max-w-xl mx-auto space-y-8">
+    <div className="min-h-screen px-4 py-8 max-w-xl mx-auto space-y-8 bg-black">
       <h1 className="text-3xl font-bold text-white text-center">
         Flashcards
       </h1>
@@ -51,7 +51,7 @@ export default function FlashcardsHome() {
             transition={{ type: "spring", stiffness: 250, damping: 15 }}
             onClick={() => router.push("/flashcards/review")}
             className="relative overflow-hidden cursor-pointer rounded-2xl p-6 text-center text-white shadow-2xl
-                       bg-gradient-to-r from-orange-500 via-red-500 to-pink-500"
+!bg-gradient-to-r !from-orange-500 !via-red-500 !to-pink-500"
           >
             <div className="absolute inset-0 bg-white/20 blur-2xl opacity-30" />
 
