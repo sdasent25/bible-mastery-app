@@ -5,10 +5,14 @@ import { useRouter } from "next/navigation"
 
 export default function FlashcardsPage() {
   const router = useRouter()
-  const [hovered, setHovered] = useState<string | null>(null)
 
-  const progress = 3
+  const [hovered, setHovered] = useState<string | null>(null)
+  const [progress, setProgress] = useState(3)
   const total = 10
+
+  const [xp, setXp] = useState(120)
+  const [showXP, setShowXP] = useState(false)
+
   const percent = (progress / total) * 100
 
   const trainingCards = [
@@ -32,26 +36,45 @@ export default function FlashcardsPage() {
     },
   ]
 
+  const handleTraining = () => {
+    if (progress < total) {
+      setProgress((p) => p + 1)
+      setXp((x) => x + 10)
+
+      setShowXP(true)
+      setTimeout(() => setShowXP(false), 800)
+    } else {
+      router.push("/flashcards/learn")
+    }
+  }
+
   return (
-    <div className="w-full flex flex-col items-center py-8 px-4 text-white">
+    <div className="w-full flex flex-col items-center py-8 px-4 text-white relative">
+
+      {/* XP POP */}
+      {showXP && (
+        <div className="absolute top-20 text-green-400 font-bold text-xl animate-bounce">
+          +10 XP ⚡
+        </div>
+      )}
 
       {/* Title */}
       <h1 className="text-4xl font-bold mb-2 tracking-tight">
         Flashcards
       </h1>
 
-      {/* Status Row */}
+      {/* Status */}
       <div className="w-full max-w-xl flex justify-between items-center mb-4">
-        <div className="flex items-center gap-2 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-400/30 shadow-sm">
+        <div className="flex items-center gap-2 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-400/30">
           🔥 <span className="text-sm font-medium">7 Day Streak</span>
         </div>
 
-        <div className="flex items-center gap-2 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-400/30 shadow-sm">
-          ⚡ <span className="text-sm font-medium">120 XP</span>
+        <div className="flex items-center gap-2 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-400/30">
+          ⚡ <span className="text-sm font-medium">{xp} XP</span>
         </div>
       </div>
 
-      {/* Progress Section */}
+      {/* Progress */}
       <div className="w-full max-w-xl mb-5">
         <div className="flex justify-between text-sm text-gray-400 mb-1">
           <span>Today's Training</span>
@@ -60,7 +83,7 @@ export default function FlashcardsPage() {
 
         <div className="w-full h-2.5 bg-zinc-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-700 ease-out"
+            className="h-full bg-gradient-to-r from-blue-500 to-blue-400 transition-all duration-500"
             style={{ width: `${percent}%` }}
           />
         </div>
@@ -68,16 +91,18 @@ export default function FlashcardsPage() {
 
       {/* CTA */}
       <div
-        onClick={() => router.push("/flashcards/learn")}
+        onClick={handleTraining}
         className="w-full max-w-xl p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 
         shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.97] 
         transition-all cursor-pointer mb-5"
       >
         <div className="text-2xl font-bold">
-          Continue Training
+          {progress >= total ? "Start Training" : "Continue Training"}
         </div>
         <div className="text-sm text-blue-100 mt-1">
-          Keep building your memory
+          {progress >= total
+            ? "Begin your session"
+            : "Keep building your memory"}
         </div>
       </div>
 
@@ -115,13 +140,11 @@ export default function FlashcardsPage() {
             className={`p-4 rounded-2xl border border-white/10 bg-zinc-900 transition-all cursor-pointer
             ${
               hovered === card.id
-                ? "scale-[1.02] bg-zinc-800 shadow-md shadow-black/30"
+                ? "scale-[1.02] bg-zinc-800 shadow-md"
                 : ""
             }`}
           >
-            <div className="text-base font-semibold">
-              {card.title}
-            </div>
+            <div className="text-base font-semibold">{card.title}</div>
             <div className="text-xs text-gray-400 mt-1">
               {card.description}
             </div>
