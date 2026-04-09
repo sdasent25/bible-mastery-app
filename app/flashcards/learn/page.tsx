@@ -26,34 +26,27 @@ export default function LearnMode() {
     }
   }
 
-  const maskedText = words
-    .map((word, i) => (i < visible ? word : "_____"))
-    .join(" ")
-
   return (
-    <div
-      className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-6 text-center relative"
-      onClick={reveal}
-    >
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-4 relative">
 
       {/* XP POP */}
       {showXP && (
-        <div className="absolute top-20 text-green-400 text-xl font-bold animate-bounce">
+        <div className="absolute top-20 text-green-400 text-lg font-bold animate-bounce">
           +10 XP ⚡
         </div>
       )}
 
       {/* Instruction */}
-      <div className="text-sm text-gray-400 mb-2">
-        Tap to reveal the verse step-by-step
+      <div className="text-xs text-gray-400 mb-2 text-center">
+        Tap the card to reveal the verse
       </div>
 
       {/* Reference */}
-      <div className="text-sm text-gray-500 mb-4">
+      <div className="text-xs text-gray-500 mb-4">
         {verse.ref}
       </div>
 
-      {/* Progress Bar */}
+      {/* Progress */}
       <div className="w-full max-w-md mb-6">
         <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
           <div
@@ -63,22 +56,29 @@ export default function LearnMode() {
         </div>
       </div>
 
-      {/* Card */}
-      <div className="w-full max-w-2xl p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl">
+      {/* CARD (ONLY CLICKABLE AREA) */}
+      <div
+        onClick={reveal}
+        className="w-full max-w-lg p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
+      >
 
-        <div className="text-xs text-gray-400 mb-3">
+        <div className="text-xs text-gray-400 mb-3 text-center">
           Memorize this verse
         </div>
 
-        <div className="text-3xl md:text-4xl font-semibold leading-relaxed">
-          {maskedText}
+        <div className="text-xl md:text-2xl font-semibold leading-relaxed text-center">
+          {words.map((word, i) => (
+            <span key={i} className="inline-block mx-1 my-1">
+              {i < visible ? word : "_____"}
+            </span>
+          ))}
         </div>
 
       </div>
 
-      {/* XP Total */}
+      {/* XP */}
       <div className="mt-6 text-blue-400 text-sm">
-        ⚡ {xp} XP earned
+        ⚡ {xp} XP
       </div>
 
     </div>
