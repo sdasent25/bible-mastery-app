@@ -21,6 +21,9 @@ export default function LearnMode() {
   const current = verses[index]
   const words = current.text.split(" ")
 
+  const progress = index + 1
+  const total = verses.length
+
   const reveal = () => {
     if (visible < words.length) {
       setVisible((v) => Math.min(v + 2, words.length))
@@ -65,25 +68,37 @@ export default function LearnMode() {
       className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-6 text-center"
       onClick={reveal}
     >
-      <div className="text-sm text-gray-400 mb-4">
-        {current.ref}
+      {/* Progress */}
+      <div className="absolute top-6 text-sm text-gray-400">
+        {progress} / {total}
       </div>
 
-      <div className="text-2xl font-semibold leading-relaxed max-w-xl">
-        {words.slice(0, visible).join(" ")}
+      {/* Card */}
+      <div className="w-full max-w-2xl p-8 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl">
+
+        <div className="text-sm text-gray-500 mb-4">
+          {current.ref}
+        </div>
+
+        <div className="text-3xl md:text-4xl font-semibold leading-relaxed">
+          {words.slice(0, visible).join(" ")}
+        </div>
+
       </div>
 
+      {/* Next Button */}
       {visible >= words.length && (
         <button
           onClick={(e) => {
             e.stopPropagation()
             next()
           }}
-          className="mt-8 px-6 py-3 bg-blue-500 rounded-xl"
+          className="mt-8 px-6 py-3 bg-blue-500 rounded-xl hover:scale-105 transition"
         >
-          Next
+          Next →
         </button>
       )}
+
     </div>
   )
 }
