@@ -204,7 +204,8 @@ export default function JourneyPage() {
     if (!profile?.last_completed_at) return
 
     const interval = setInterval(() => {
-      const next = getNextUnlockTime(profile.last_completed_at)
+      const baseTime = profile.last_completed_at ?? new Date().toISOString()
+      const next = getNextUnlockTime(baseTime)
       const now = new Date()
 
       const diff = next.getTime() - now.getTime()
