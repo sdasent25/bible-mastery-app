@@ -38,64 +38,60 @@ export default function FlashcardsHome() {
   if (planType === null) return null
 
   return (
-    <div className="min-h-screen px-4 py-6 max-w-xl mx-auto space-y-6">
-      
+    <div className="min-h-screen px-4 py-8 max-w-xl mx-auto space-y-8">
       <h1 className="text-3xl font-bold text-white text-center">
         Flashcards
       </h1>
 
       <div className="relative">
-
         <div className={!hasAccess ? "opacity-60 pointer-events-none" : ""}>
-
-          {/* 🔥 PRIMARY CARD */}
           <motion.div
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.03 }}
-            transition={{ type: "spring", stiffness: 300 }}
+            whileTap={{ scale: 0.94 }}
+            whileHover={{ scale: 1.04 }}
+            transition={{ type: "spring", stiffness: 250, damping: 15 }}
             onClick={() => router.push("/flashcards/review")}
-            className="cursor-pointer rounded-2xl p-6 text-center text-white shadow-xl
-                       bg-gradient-to-r from-orange-500 to-red-500"
+            className="relative overflow-hidden cursor-pointer rounded-2xl p-6 text-center text-white shadow-2xl
+                       bg-gradient-to-r from-orange-500 via-red-500 to-pink-500"
           >
-            <h2 className="text-xl font-bold">
-              Start Daily Training
-            </h2>
-            <p className="text-sm mt-2 opacity-90">
-              Review your flashcards and build memory
-            </p>
+            <div className="absolute inset-0 bg-white/20 blur-2xl opacity-30" />
+
+            <div className="relative z-10">
+              <h2 className="text-2xl font-bold">
+                Start Daily Training
+              </h2>
+              <p className="text-sm mt-2 opacity-90">
+                Review your flashcards and build memory
+              </p>
+            </div>
           </motion.div>
 
-          {/* 🔥 GRID */}
           <div className="space-y-4 mt-6">
-
-            <Card
+            <GameCard
               title="Learn"
               desc="Memorize scripture step by step"
               onClick={() => router.push("/flashcards/learn")}
             />
 
-            <Card
+            <GameCard
               title="Review Flashcards"
               desc="Go through all your flashcards"
               onClick={() => router.push("/flashcards/review")}
             />
 
-            <Card
+            <GameCard
               title="Practice Weak Cards"
               desc="Focus on the ones you struggle with"
               onClick={() => router.push("/flashcards/practice")}
             />
 
-            <Card
+            <GameCard
               title="Add Flashcard"
               desc="Add your own verses to learn"
               onClick={() => router.push("/flashcards/create")}
             />
-
           </div>
         </div>
 
-        {/* 🔒 LOCK OVERLAY */}
         {!hasAccess && (
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
@@ -127,8 +123,7 @@ export default function FlashcardsHome() {
   )
 }
 
-/* 🔥 REUSABLE CARD */
-function Card({
+function GameCard({
   title,
   desc,
   onClick,
@@ -140,15 +135,19 @@ function Card({
   return (
     <motion.div
       whileTap={{ scale: 0.96 }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: "spring", stiffness: 300 }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 250 }}
       onClick={onClick}
-      className="cursor-pointer rounded-xl p-4 border border-neutral-700
+      className="relative overflow-hidden cursor-pointer rounded-xl p-4 border border-white/10
                  bg-gradient-to-br from-neutral-900 to-neutral-800
-                 shadow-md text-white"
+                 shadow-lg hover:shadow-xl text-white"
     >
-      <h3 className="font-semibold">{title}</h3>
-      <p className="text-sm opacity-80 mt-1">{desc}</p>
+      <div className="absolute inset-0 bg-white/5 opacity-0 hover:opacity-100 transition duration-300" />
+
+      <div className="relative z-10">
+        <h3 className="font-semibold text-lg">{title}</h3>
+        <p className="text-sm opacity-80 mt-1">{desc}</p>
+      </div>
     </motion.div>
   )
 }
