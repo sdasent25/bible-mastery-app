@@ -73,12 +73,16 @@ export default function LearnMode() {
           Memorize this verse
         </div>
 
-        <div className="text-xl md:text-2xl font-semibold leading-relaxed text-center">
+        <div className="text-xl md:text-2xl font-semibold leading-relaxed text-center text-white">
 
           {words.map((word, i) => (
             <span
               key={i}
-              className="inline-block mx-1 my-1 px-1"
+              className={`inline-block mx-1 my-1 px-1 ${
+                i < visible
+                  ? "text-white"
+                  : "text-gray-500"
+              }`}
             >
               {i < visible ? word : "_____"}
             </span>
