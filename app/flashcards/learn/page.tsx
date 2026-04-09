@@ -31,22 +31,29 @@ export default function LearnMode() {
 
       {/* XP POP */}
       {showXP && (
-        <div className="absolute top-20 text-green-400 text-lg font-bold animate-bounce">
+        <div className="absolute top-16 text-green-400 text-lg font-bold animate-bounce">
           +10 XP ⚡
         </div>
       )}
 
-      {/* Instruction */}
-      <div className="text-xs text-gray-400 mb-2 text-center">
-        Tap the card to reveal the verse
+      {/* HEADER */}
+      <div className="mb-6 text-center">
+
+        <div className="text-xs text-gray-400 mb-1">
+          Card 1 of 10
+        </div>
+
+        <div className="text-sm text-gray-400">
+          Tap the card to reveal more words
+        </div>
+
+        <div className="text-base text-blue-400 font-medium mt-2">
+          {verse.ref}
+        </div>
+
       </div>
 
-      {/* Reference */}
-      <div className="text-xs text-gray-500 mb-4">
-        {verse.ref}
-      </div>
-
-      {/* Progress */}
+      {/* PROGRESS */}
       <div className="w-full max-w-md mb-6">
         <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
           <div
@@ -56,10 +63,10 @@ export default function LearnMode() {
         </div>
       </div>
 
-      {/* CARD (ONLY CLICKABLE AREA) */}
+      {/* CARD */}
       <div
         onClick={reveal}
-        className="w-full max-w-lg p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
+        className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
       >
 
         <div className="text-xs text-gray-400 mb-3 text-center">
@@ -67,18 +74,23 @@ export default function LearnMode() {
         </div>
 
         <div className="text-xl md:text-2xl font-semibold leading-relaxed text-center">
+
           {words.map((word, i) => (
-            <span key={i} className="inline-block mx-1 my-1">
+            <span
+              key={i}
+              className="inline-block mx-1 my-1 px-1"
+            >
               {i < visible ? word : "_____"}
             </span>
           ))}
+
         </div>
 
       </div>
 
       {/* XP */}
       <div className="mt-6 text-blue-400 text-sm">
-        ⚡ {xp} XP
+        ⚡ {xp} XP earned
       </div>
 
     </div>
