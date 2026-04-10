@@ -39,11 +39,11 @@ export default function LearnMode() {
       {/* HEADER */}
       <div className="mb-6 text-center">
 
-        <div className="text-sm text-gray-300 mb-1">
+        <div style={{ color: "#ffffff" }} className="text-sm mb-1 font-medium">
           Card 1 of 10
         </div>
 
-        <div className="text-sm text-gray-300 mb-2 text-center">
+        <div style={{ color: "#ffffff" }} className="text-sm">
           Tap the card to reveal more words
         </div>
 
