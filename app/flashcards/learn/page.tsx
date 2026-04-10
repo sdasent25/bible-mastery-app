@@ -20,19 +20,26 @@ export default function LearnMode() {
   const [visible, setVisible] = useState(2)
   const [xp, setXp] = useState(0)
   const [completed, setCompleted] = useState(false)
+  const [showXP, setShowXP] = useState(false)
+  const [pressed, setPressed] = useState(false)
 
   const words = verses[index].split(" ")
-
   const percent = ((index + 1) / verses.length) * 100
 
   const reveal = () => {
     if (visible < words.length) {
       setVisible((v) => Math.min(v + 2, words.length))
     }
+
+    setPressed(true)
+    setTimeout(() => setPressed(false), 120)
   }
 
   const next = () => {
     setXp((x) => x + 10)
+
+    setShowXP(true)
+    setTimeout(() => setShowXP(false), 700)
 
     if (index < verses.length - 1) {
       setIndex((i) => i + 1)
@@ -45,10 +52,15 @@ export default function LearnMode() {
   if (completed) {
     return (
       <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white text-center px-6">
-        <h1 className="text-3xl font-bold mb-4">🔥 Session Complete</h1>
 
-        <div className="text-green-400 text-xl mb-4">
+        <h1 className="text-4xl font-bold mb-4">🔥 Session Complete</h1>
+
+        <div className="text-green-400 text-2xl mb-4">
           +{xp} XP ⚡
+        </div>
+
+        <div className="text-gray-400 mb-6">
+          Amazing work. Keep your streak alive tomorrow.
         </div>
 
         <button
@@ -58,16 +70,24 @@ export default function LearnMode() {
             setXp(0)
             setCompleted(false)
           }}
-          className="px-6 py-3 bg-blue-500 rounded-xl"
+          className="px-6 py-3 bg-blue-500 rounded-xl hover:scale-105 transition"
         >
           Train Again
         </button>
+
       </div>
     )
   }
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-4">
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-4 relative">
+
+      {/* XP POP */}
+      {showXP && (
+        <div className="absolute top-16 text-green-400 text-xl font-bold animate-bounce">
+          +10 XP ⚡
+        </div>
+      )}
 
       {/* HEADER */}
       <div className="mb-6 text-center">
@@ -86,7 +106,7 @@ export default function LearnMode() {
       <div className="w-full max-w-md mb-6">
         <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500 transition-all duration-500"
+            className="h-full bg-blue-500 transition-all duration-700 ease-out"
             style={{ width: `${percent}%` }}
           />
         </div>
@@ -95,10 +115,11 @@ export default function LearnMode() {
       {/* CARD */}
       <div
         onClick={reveal}
-        className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
+        className={`w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer transition-all
+        ${pressed ? "scale-[0.97]" : "hover:scale-[1.02]"}`}
       >
 
-        <div className="text-2xl font-bold text-white text-center">
+        <div className="text-2xl md:text-3xl font-bold text-white text-center leading-relaxed">
 
           {words.map((word, i) => (
             <span
@@ -118,7 +139,7 @@ export default function LearnMode() {
       {visible >= words.length && (
         <button
           onClick={next}
-          className="mt-8 px-6 py-3 bg-blue-500 rounded-xl hover:scale-105 transition"
+          className="mt-8 px-6 py-3 bg-blue-500 rounded-xl hover:scale-105 active:scale-95 transition"
         >
           Next →
         </button>
