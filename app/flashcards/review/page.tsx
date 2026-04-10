@@ -5,13 +5,11 @@ import { useState } from "react"
 export default function ReviewMode() {
   const cards = [
     {
-      front: "Trust in the Lord with all your heart...",
-      back: "Trust in the Lord with all your heart and lean not on your own understanding",
+      text: "Trust in the Lord with all your heart and lean not on your own understanding",
       ref: "Proverbs 3:5",
     },
     {
-      front: "I can do all things...",
-      back: "I can do all things through Christ who strengthens me",
+      text: "I can do all things through Christ who strengthens me",
       ref: "Philippians 4:13",
     },
   ]
@@ -20,6 +18,12 @@ export default function ReviewMode() {
   const [flipped, setFlipped] = useState(false)
 
   const current = cards[index]
+  const words = current.text.split(" ")
+
+  // Show only first 3 words on front
+  const masked = words.map((w, i) =>
+    i < 3 ? w : "_____"
+  )
 
   const next = () => {
     setFlipped(false)
@@ -36,13 +40,19 @@ export default function ReviewMode() {
 
       {/* Header */}
       <div className="mb-6 text-center">
+
         <div style={{ color: "#ffffff" }} className="text-sm mb-1 font-medium">
           Card {index + 1} of {cards.length}
         </div>
 
         <div style={{ color: "#ffffff" }} className="text-sm">
-          Tap the card to flip
+          Try to recall the full verse before flipping
         </div>
+
+        <div className="text-blue-400 text-sm mt-2 font-medium">
+          {current.ref}
+        </div>
+
       </div>
 
       {/* Card */}
@@ -51,12 +61,18 @@ export default function ReviewMode() {
         className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer text-center transition hover:scale-[1.02]"
       >
 
-        <div className="text-xs text-gray-400 mb-2">
-          {current.ref}
-        </div>
+        <div className="text-2xl md:text-3xl font-bold text-white leading-relaxed">
 
-        <div className="text-2xl font-bold text-white leading-relaxed">
-          {flipped ? current.back : current.front}
+          {(flipped ? words : masked).map((word, i) => (
+            <span
+              key={i}
+              style={{ color: flipped ? "#ffffff" : (i < 3 ? "#ffffff" : "#6b7280") }}
+              className="inline-block mx-1 my-1"
+            >
+              {word}
+            </span>
+          ))}
+
         </div>
 
       </div>
