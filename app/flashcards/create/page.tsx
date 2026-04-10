@@ -1,137 +1,68 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
-import { createFlashcard } from "@/lib/flashcards"
 
-export default function FlashcardsCreatePage() {
+export default function CreateFlashcard() {
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [, setPlanType] = useState("free")
-  const [hasAccess, setHasAccess] = useState(false)
-  const [verse, setVerse] = useState("")
-  const [reference, setReference] = useState("")
-  const [category, setCategory] = useState("")
-  const [submitLoading, setSubmitLoading] = useState(false)
 
-  useEffect(() => {
-    const checkAccess = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) {
-        router.push("/login")
-        return
-      }
+  const [text, setText] = useState("")
+  const [ref, setRef] = useState("")
 
-      const { data } = await supabase
-        .from("user_access")
-        .select("final_plan")
-        .eq("user_id", user.id)
-        .single()
+  const handleSave = () => {
+    if (!text || !ref) return
 
-      const plan = data?.final_plan ?? "free"
-      setPlanType(plan)
+    const existing =
+      JSON.parse(localStorage.getItem("flashcards") || "[]")
 
-      console.log("FLASHCARD ROUTE PLAN:", plan)
+    const newCard = { text, ref }
 
-      const hasAccess = plan === "pro" || plan === "pro_plus"
+    localStorage.setItem(
+      "flashcards",
+      JSON.stringify([newCard, ...existing])
+    )
 
-      if (!hasAccess) {
-        router.push("/pricing?source=flashcards_locked")
-        return
-      }
+    setText("")
+    setRef("")
 
-      setHasAccess(true)
-      setLoading(false)
-    }
-
-    void checkAccess()
-  }, [router])
-
-  if (loading) return null
-
-  if (!hasAccess) return null
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-
-    if (!verse.trim() || !reference.trim()) return
-
-    setSubmitLoading(true)
-
-    try {
-      await createFlashcard({
-        verse_text: verse,
-        reference,
-        tags: category ? [category] : [],
-      })
-
-      router.push("/flashcards")
-    } catch (err) {
-      console.error(err)
-      alert("Failed to save flashcard")
-    }
-
-    setSubmitLoading(false)
+    router.push("/flashcards/library")
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
+    <div className="w-full min-h-screen bg-black text-white px-4 py-8">
+
+      <h1 className="text-3xl font-bold text-center mb-6">
+        Add Flashcard
+      </h1>
+
+      <div className="max-w-xl mx-auto flex flex-col gap-4">
+
+        {/* Verse Input */}
+        <textarea
+          placeholder="Enter scripture..."
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          className="p-4 rounded-xl bg-zinc-900 border border-white/10 text-white outline-none min-h-[120px]"
+        />
+
+        {/* Reference Input */}
+        <input
+          placeholder="Reference (e.g. Proverbs 3:5)"
+          value={ref}
+          onChange={(e) => setRef(e.target.value)}
+          className="p-4 rounded-xl bg-zinc-900 border border-white/10 text-white outline-none"
+        />
+
+        {/* Save Button */}
         <button
-          onClick={() => router.push("/flashcards")}
-          className="text-sm text-gray-300"
+          onClick={handleSave}
+          className="mt-4 py-3 bg-blue-500 rounded-xl font-semibold hover:scale-105 transition"
         >
-          ← Flashcards
+          Save Flashcard
         </button>
 
-        <div className="text-sm text-white/80">
-          Create
-        </div>
       </div>
 
-      <div className="flex-1 px-4 py-4 max-w-xl mx-auto w-full space-y-5">
-        <h1 className="text-2xl font-bold text-white text-center">
-          Add Flashcard
-        </h1>
-
-        <p className="text-center text-white/80 text-sm">
-          Add a verse you want to memorize
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <textarea
-            placeholder="Enter verse text..."
-            value={verse}
-            onChange={(e) => setVerse(e.target.value)}
-            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none text-base"
-          />
-
-          <input
-            placeholder="Reference (John 3:16)"
-            value={reference}
-            onChange={(e) => setReference(e.target.value)}
-            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none text-base"
-          />
-
-          <input
-            placeholder="Category (optional, e.g. Faith)"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full p-4 rounded-xl bg-neutral-900 text-white border border-neutral-700 focus:outline-none text-base"
-          />
-
-          <button
-            type="submit"
-            disabled={submitLoading}
-            className="w-full bg-blue-600 hover:bg-blue-500 transition py-4 rounded-xl font-semibold"
-          >
-            {submitLoading ? "Saving..." : "Save Flashcard"}
-          </button>
-        </form>
-      </div>
     </div>
   )
 }
