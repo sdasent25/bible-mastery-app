@@ -2,27 +2,33 @@
 
 import { useEffect, useState } from "react"
 
+type Flashcard = {
+  id: string
+  front: string
+  back: string
+  level: "again" | "hard" | "good" | "easy"
+}
+
 export default function PracticeMode() {
-  const [cards, setCards] = useState<
-    { text: string; ref: string; level?: string }[]
-  >([])
+  const [cards, setCards] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
 
   useEffect(() => {
-    const stored =
+    const stored: Flashcard[] =
       JSON.parse(localStorage.getItem("flashcards") || "[]")
 
     // Filter only weak cards
     const weakCards = stored.filter(
-      (card) => card.level === "again" || card.level === "hard"
+      (card: Flashcard) =>
+        card.level === "again" || card.level === "hard"
     )
 
     setCards(weakCards)
   }, [])
 
   const current = cards[index]
-  const words = current?.text.split(" ") || []
+  const words = current?.front.split(" ") || []
 
   // HARDER MASKING (only show 2 words)
   const masked = words.map((w, i) =>
@@ -30,11 +36,11 @@ export default function PracticeMode() {
   )
 
   const handleAnswer = (level: "again" | "hard" | "easy") => {
-    const stored =
+    const stored: Flashcard[] =
       JSON.parse(localStorage.getItem("flashcards") || "[]")
 
-    const updatedStored = stored.map((card: { text: string; ref: string; level?: string }) =>
-      card.text === current.text && card.ref === current.ref
+    const updatedStored = stored.map((card: Flashcard) =>
+      card.id === current.id
         ? { ...card, level }
         : card
     )
@@ -42,7 +48,7 @@ export default function PracticeMode() {
     localStorage.setItem("flashcards", JSON.stringify(updatedStored))
 
     const weakCards = updatedStored.filter(
-      (card: { text: string; ref: string; level?: string }) =>
+      (card: Flashcard) =>
         card.level === "again" || card.level === "hard"
     )
 
@@ -94,7 +100,7 @@ export default function PracticeMode() {
         </div>
 
         <div className="text-blue-400 text-sm mt-2 font-medium">
-          {current.ref}
+          {current.back}
         </div>
 
       </div>
