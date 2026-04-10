@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react"
 
 export default function ReviewMode() {
-  const [cards, setCards] = useState<{ text: string; ref: string }[]>([])
+  const [cards, setCards] = useState<
+    { text: string; ref: string; level?: string }[]
+  >([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
 
@@ -22,11 +24,38 @@ export default function ReviewMode() {
     i < 3 ? w : "_____"
   )
 
-  const next = () => {
+  const handleAnswer = (level: "again" | "hard" | "easy") => {
+    const updated = [...cards]
+
+    updated[index] = {
+      ...updated[index],
+      level,
+    }
+
+    let nextCards = [...updated]
+
+    if (level === "again") {
+      // repeat immediately
+      nextCards.splice(index + 1, 0, updated[index])
+    }
+
+    if (level === "hard") {
+      // repeat later
+      nextCards.splice(index + 2, 0, updated[index])
+    }
+
+    if (level === "easy") {
+      // push far back
+      nextCards.push(updated[index])
+    }
+
+    localStorage.setItem("flashcards", JSON.stringify(nextCards))
+
+    setCards(nextCards)
     setFlipped(false)
 
-    if (index < cards.length - 1) {
-      setIndex((i) => i + 1)
+    if (index < nextCards.length - 1) {
+      setIndex(index + 1)
     } else {
       setIndex(0)
     }
@@ -87,21 +116,21 @@ export default function ReviewMode() {
         <div className="mt-8 flex gap-4">
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("again")}
             className="px-5 py-2 bg-red-500 rounded-xl hover:scale-105 transition"
           >
             Again
           </button>
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("hard")}
             className="px-5 py-2 bg-yellow-500 rounded-xl hover:scale-105 transition"
           >
             Hard
           </button>
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("easy")}
             className="px-5 py-2 bg-green-500 rounded-xl hover:scale-105 transition"
           >
             Easy
