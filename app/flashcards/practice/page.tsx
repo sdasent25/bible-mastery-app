@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react"
 
 export default function PracticeMode() {
-  const [cards, setCards] = useState<{ text: string; ref: string }[]>([])
+  const [cards, setCards] = useState<
+    { text: string; ref: string; level?: string }[]
+  >([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
 
@@ -11,22 +13,49 @@ export default function PracticeMode() {
     const stored =
       JSON.parse(localStorage.getItem("flashcards") || "[]")
 
-    setCards(stored)
+    // Filter only weak cards
+    const weakCards = stored.filter(
+      (card) => card.level === "again" || card.level === "hard"
+    )
+
+    setCards(weakCards)
   }, [])
 
   const current = cards[index]
-  const words = current.text.split(" ")
+  const words = current?.text.split(" ") || []
 
   // HARDER MASKING (only show 2 words)
   const masked = words.map((w, i) =>
     i < 2 ? w : "_____"
   )
 
-  const next = () => {
+  const handleAnswer = (level: "again" | "hard" | "easy") => {
+    const stored =
+      JSON.parse(localStorage.getItem("flashcards") || "[]")
+
+    const updatedStored = stored.map((card: { text: string; ref: string; level?: string }) =>
+      card.text === current.text && card.ref === current.ref
+        ? { ...card, level }
+        : card
+    )
+
+    localStorage.setItem("flashcards", JSON.stringify(updatedStored))
+
+    const weakCards = updatedStored.filter(
+      (card: { text: string; ref: string; level?: string }) =>
+        card.level === "again" || card.level === "hard"
+    )
+
+    setCards(weakCards)
     setFlipped(false)
 
-    if (index < cards.length - 1) {
-      setIndex((i) => i + 1)
+    if (weakCards.length === 0) {
+      setIndex(0)
+      return
+    }
+
+    if (index < weakCards.length - 1) {
+      setIndex(index)
     } else {
       setIndex(0)
     }
@@ -34,8 +63,18 @@ export default function PracticeMode() {
 
   if (cards.length === 0) {
     return (
-      <div className="w-full h-screen flex items-center justify-center text-white bg-black">
-        No flashcards found. Add some first.
+      <div className="w-full h-screen flex flex-col items-center justify-center text-white bg-black text-center px-6">
+
+        <div className="text-2xl mb-4">🎉</div>
+
+        <div className="text-lg font-semibold mb-2">
+          No weak cards
+        </div>
+
+        <div className="text-gray-400">
+          You're doing great. Come back after more review.
+        </div>
+
       </div>
     )
   }
@@ -87,21 +126,21 @@ export default function PracticeMode() {
         <div className="mt-8 flex gap-4">
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("again")}
             className="px-5 py-2 bg-red-500 rounded-xl hover:scale-105 transition"
           >
             Again
           </button>
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("hard")}
             className="px-5 py-2 bg-yellow-500 rounded-xl hover:scale-105 transition"
           >
             Hard
           </button>
 
           <button
-            onClick={next}
+            onClick={() => handleAnswer("easy")}
             className="px-5 py-2 bg-green-500 rounded-xl hover:scale-105 transition"
           >
             Easy
