@@ -69,20 +69,19 @@ export default function LearnMode() {
         className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer active:scale-[0.98] transition"
       >
 
-        <div className="text-xs text-gray-300 mb-3 text-center">
+        <div className="text-sm text-gray-300 mb-3 text-center">
           Memorize this verse
         </div>
 
-        <div className="text-xl md:text-2xl font-semibold leading-relaxed text-center text-white">
+        <div className="text-3xl md:text-4xl font-bold leading-relaxed text-center text-white">
 
           {words.map((word, i) => (
             <span
               key={i}
-              className={`inline-block mx-1 my-1 px-1 ${
-                i < visible
-                  ? "text-white"
-                  : "text-gray-500"
-              }`}
+              style={{
+                color: i < visible ? "#ffffff" : "#6b7280"
+              }}
+              className="inline-block mx-1 my-1 px-1"
             >
               {i < visible ? word : "_____"}
             </span>
