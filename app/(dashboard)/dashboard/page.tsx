@@ -45,12 +45,12 @@ export default function DashboardPage() {
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex justify-between">
           <div>
-            <p className="text-sm text-gray-400">Level</p>
+            <p className="text-sm text-white">Level</p>
             <p className="text-lg font-semibold text-white">1</p>
           </div>
 
           <div className="text-right">
-            <p className="text-sm text-gray-400">Streak</p>
+            <p className="text-sm text-white">Streak</p>
             <p className="text-lg font-semibold text-white">🔥 0</p>
           </div>
         </div>
