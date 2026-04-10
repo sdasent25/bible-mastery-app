@@ -28,6 +28,18 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    // ✅ GET USER PLAN
+    const { data: access } = await supabase
+      .from("user_access")
+      .select("final_plan")
+      .eq("user_id", user.id)
+      .single()
+
+    let questionsPerDay = 2 // default free
+
+    if (access?.final_plan === "pro") questionsPerDay = 10
+    if (access?.final_plan === "pro_plus") questionsPerDay = 15
+
     const searchParams = req.nextUrl.searchParams
     const mode = searchParams.get("mode") || "normal"
     const isPro = searchParams.get("isPro") === "true"
@@ -103,7 +115,7 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      return NextResponse.json(allQuestions.slice(0, 15))
+      return NextResponse.json(allQuestions.slice(0, questionsPerDay))
     }
 
     let segment = searchParams.get("segment")
@@ -141,13 +153,13 @@ export async function GET(req: NextRequest) {
         chapter: c,
         isPro,
         userId: user.id,
-        limit: Math.ceil((isPro ? 10 : 2) / (end - start + 1))
+        limit: Math.ceil(questionsPerDay / (end - start + 1))
       })
 
       questions.push(...batch)
     }
 
-    questions = questions.slice(0, isPro ? 10 : 2)
+    questions = questions.slice(0, questionsPerDay)
 
     return NextResponse.json(questions)
   } catch (err) {
