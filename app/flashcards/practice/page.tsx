@@ -1,151 +1,110 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
-import { getLocale, getMessages } from "@/lib/i18n"
+import { useState } from "react"
 
-import FlashcardStudy from "@/components/flashcards/FlashcardStudy"
+export default function PracticeMode() {
+  const cards = [
+    {
+      text: "Trust in the Lord with all your heart and lean not on your own understanding",
+      ref: "Proverbs 3:5",
+    },
+    {
+      text: "I can do all things through Christ who strengthens me",
+      ref: "Philippians 4:13",
+    },
+  ]
 
-type Flashcard = {
-  id: string
-  reference: string
-  verse_text: string
-}
+  const [index, setIndex] = useState(0)
+  const [flipped, setFlipped] = useState(false)
 
-export default function FlashcardsPracticePage() {
-  const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [, setPlanType] = useState("free")
-  const [hasAccess, setHasAccess] = useState(false)
-  const [flashcards, setFlashcards] = useState<Flashcard[]>([])
-  const [flashcardsLoading, setFlashcardsLoading] = useState(true)
-  const [messages, setMessages] = useState<Record<string, string> | null>(null)
+  const current = cards[index]
+  const words = current.text.split(" ")
 
-  useEffect(() => {
-    const checkAccess = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) {
-        router.push("/login")
-        return
-      }
+  // HARDER MASKING (only show 2 words)
+  const masked = words.map((w, i) =>
+    i < 2 ? w : "_____"
+  )
 
-      const { data } = await supabase
-        .from("user_access")
-        .select("final_plan")
-        .eq("user_id", user.id)
-        .single()
+  const next = () => {
+    setFlipped(false)
 
-      const plan = data?.final_plan ?? "free"
-      setPlanType(plan)
-
-      console.log("FLASHCARD ROUTE PLAN:", plan)
-
-      const hasAccess = plan === "pro" || plan === "pro_plus"
-
-      if (!hasAccess) {
-        router.push("/pricing?source=flashcards_locked")
-        return
-      }
-
-      setHasAccess(true)
-      setLoading(false)
-    }
-
-    void checkAccess()
-  }, [router])
-
-  async function load() {
-    setFlashcardsLoading(true)
-
-    const locale = getLocale()
-    const msgs = await getMessages(locale)
-    setMessages(msgs)
-
-    const { data: userRes } = await supabase.auth.getUser()
-    if (!userRes?.user) {
-      setFlashcardsLoading(false)
-      return
-    }
-
-    const { data, error } = await supabase
-      .from("flashcards")
-      .select("*")
-      .eq("user_id", userRes.user.id)
-      .in("status", ["again", "hard"])
-
-    if (error) {
-      console.error(error)
+    if (index < cards.length - 1) {
+      setIndex((i) => i + 1)
     } else {
-      setFlashcards(data || [])
+      setIndex(0)
     }
-
-    setFlashcardsLoading(false)
   }
 
-  useEffect(() => {
-    if (!hasAccess) return
-    async function loadFlashcards() {
-      await load()
-    }
-
-    void loadFlashcards()
-  }, [hasAccess])
-
-  if (loading) return null
-
-  if (!hasAccess) return null
-
-  if (!messages) return null
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => router.push("/flashcards")}
-          className="text-sm text-gray-300"
-        >
-          ← Flashcards
-        </button>
+    <div className="w-full h-screen flex flex-col items-center justify-center bg-black text-white px-4">
 
-        <div className="text-sm text-white/80">
-          Practice
+      {/* Header */}
+      <div className="mb-6 text-center">
+
+        <div style={{ color: "#ffffff" }} className="text-sm mb-1 font-medium">
+          Practice Mode
         </div>
+
+        <div style={{ color: "#ffffff" }} className="text-sm">
+          Recall as much as you can before flipping
+        </div>
+
+        <div className="text-blue-400 text-sm mt-2 font-medium">
+          {current.ref}
+        </div>
+
       </div>
 
-      <div className="flex-1 px-4 py-4 max-w-xl mx-auto w-full space-y-4">
-        <h1 className="text-2xl font-bold text-white text-center">
-          Practice Weak Cards
-        </h1>
+      {/* Card */}
+      <div
+        onClick={() => setFlipped(!flipped)}
+        className="w-full max-w-xl p-6 rounded-2xl bg-zinc-900 border border-white/10 shadow-xl cursor-pointer text-center transition hover:scale-[1.02]"
+      >
 
-        <p className="text-center text-white/80 text-sm">
-          Focus on the verses you struggled with
-        </p>
+        <div className="text-2xl md:text-3xl font-bold text-white leading-relaxed">
 
-        {flashcardsLoading && (
-          <div className="text-center text-gray-400">
-            Loading...
-          </div>
-        )}
+          {(flipped ? words : masked).map((word, i) => (
+            <span
+              key={i}
+              style={{ color: flipped ? "#ffffff" : (i < 2 ? "#ffffff" : "#6b7280") }}
+              className="inline-block mx-1 my-1"
+            >
+              {word}
+            </span>
+          ))}
 
-        {!flashcardsLoading && flashcards.length === 0 && (
-          <div className="text-center space-y-3 mt-10">
-            <p className="text-white/80">
-              No weak cards yet 🎉
-            </p>
+        </div>
 
-            <p className="text-sm text-gray-400">
-              You&apos;re doing great — keep training!
-            </p>
-          </div>
-        )}
-
-        {!flashcardsLoading && flashcards.length > 0 && (
-          <FlashcardStudy flashcards={flashcards} messages={messages} />
-        )}
       </div>
+
+      {/* Buttons */}
+      {flipped && (
+        <div className="mt-8 flex gap-4">
+
+          <button
+            onClick={next}
+            className="px-5 py-2 bg-red-500 rounded-xl hover:scale-105 transition"
+          >
+            Again
+          </button>
+
+          <button
+            onClick={next}
+            className="px-5 py-2 bg-yellow-500 rounded-xl hover:scale-105 transition"
+          >
+            Hard
+          </button>
+
+          <button
+            onClick={next}
+            className="px-5 py-2 bg-green-500 rounded-xl hover:scale-105 transition"
+          >
+            Easy
+          </button>
+
+        </div>
+      )}
+
     </div>
   )
 }
