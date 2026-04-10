@@ -56,13 +56,13 @@ export default function DashboardPage() {
         </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-          <p className="text-sm text-gray-400 mb-2">Daily Progress</p>
+          <p className="text-sm text-white mb-2">Daily Progress</p>
 
           <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
             <div className="h-full bg-blue-500 w-[30%]" />
           </div>
 
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-white mt-2">
             Continue your daily journey
           </p>
         </div>
