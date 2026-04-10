@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 
 export default function FlashcardsPage() {
+  const supabase = createClientComponentClient()
   const router = useRouter()
 
   const [hovered, setHovered] = useState<string | null>(null)
@@ -29,26 +30,27 @@ export default function FlashcardsPage() {
   }, [])
 
   useEffect(() => {
-    const loadCurrentDay = async () => {
+    const loadProgress = async () => {
       const {
         data: { user },
       } = await supabase.auth.getUser()
 
       if (!user) {
-        setCurrentDay(1)
         return
       }
 
-      const { data: progress } = await supabase
+      const { data } = await supabase
         .from("user_progress")
         .select("current_day")
         .eq("user_id", user.id)
         .single()
 
-      setCurrentDay(progress?.current_day ?? 1)
+      if (data?.current_day) {
+        setCurrentDay(data.current_day)
+      }
     }
 
-    void loadCurrentDay()
+    void loadProgress()
   }, [])
 
   useEffect(() => {
@@ -83,10 +85,6 @@ export default function FlashcardsPage() {
       path: "/flashcards/practice",
     },
   ]
-
-  const handleTraining = () => {
-    router.push(`/mission?day=${currentDay}`)
-  }
 
   return (
     <div className="w-full flex flex-col items-center py-8 px-4 text-white relative">
@@ -131,7 +129,7 @@ export default function FlashcardsPage() {
 
       {/* CTA */}
       <div
-        onClick={handleTraining}
+        onClick={() => router.push(`/mission?day=${currentDay}`)}
         className="w-full max-w-xl p-6 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 
         shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] active:scale-[0.97] 
         transition-all cursor-pointer mb-5"
