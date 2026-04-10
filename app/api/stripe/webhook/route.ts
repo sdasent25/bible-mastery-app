@@ -38,13 +38,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing metadata" })
     }
 
-    await supabase
-      .from("user_access")
-      .upsert({
-        user_id: userId,
-        final_plan: plan,
-        in_family: plan.includes("family")
-      }, { onConflict: "user_id" })
+    if (plan === "pro" || plan === "pro_plus") {
+      // ✅ Individual plan
+      await supabase
+        .from("profiles")
+        .update({ plan_type: plan })
+        .eq("id", userId)
+    }
+
+    if (plan === "family_pro" || plan === "family_pro_plus") {
+      // ✅ Family plan
+
+      // 1. Get user's family
+      const { data: member } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", userId)
+        .eq("status", "active")
+        .maybeSingle()
+
+      if (member?.family_id) {
+        await supabase
+          .from("families")
+          .update({ plan_type: plan })
+          .eq("id", member.family_id)
+      }
+    }
   }
 
   return NextResponse.json({ received: true })
