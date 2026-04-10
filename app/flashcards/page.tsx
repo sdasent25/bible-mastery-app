@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function FlashcardsPage() {
   const router = useRouter()
 
   const [hovered, setHovered] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
+  const [currentDay, setCurrentDay] = useState(1)
   const total = 10
 
   const [xp, setXp] = useState(0)
@@ -24,6 +26,29 @@ export default function FlashcardsPage() {
     if (savedProgress) setProgress(Number(savedProgress))
     if (savedXP) setXp(Number(savedXP))
     if (savedStreak) setStreak(Number(savedStreak))
+  }, [])
+
+  useEffect(() => {
+    const loadCurrentDay = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        setCurrentDay(1)
+        return
+      }
+
+      const { data: progress } = await supabase
+        .from("user_progress")
+        .select("current_day")
+        .eq("user_id", user.id)
+        .single()
+
+      setCurrentDay(progress?.current_day ?? 1)
+    }
+
+    void loadCurrentDay()
   }, [])
 
   useEffect(() => {
@@ -128,6 +153,18 @@ export default function FlashcardsPage() {
             : "Keep building your memory"}
         </div>
       </div>
+
+      <button
+        onClick={() => router.push(`/mission?day=${currentDay}`)}
+        className="w-full max-w-xl mb-5 rounded-2xl bg-gradient-to-r from-emerald-500 to-lime-400 px-6 py-4 text-left text-black shadow-xl transition-all hover:scale-[1.02] hover:shadow-emerald-400/40 active:scale-[0.97]"
+      >
+        <div className="text-2xl font-bold">
+          Start Today&apos;s Mission
+        </div>
+        <div className="mt-1 text-sm font-medium text-black/80">
+          Jump into Day {currentDay} and keep your streak moving.
+        </div>
+      </button>
 
       {/* PRIMARY ACTIONS */}
       <div className="w-full max-w-xl grid grid-cols-2 gap-3 mb-6">
