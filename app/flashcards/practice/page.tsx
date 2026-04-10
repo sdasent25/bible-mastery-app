@@ -1,21 +1,18 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function PracticeMode() {
-  const cards = [
-    {
-      text: "Trust in the Lord with all your heart and lean not on your own understanding",
-      ref: "Proverbs 3:5",
-    },
-    {
-      text: "I can do all things through Christ who strengthens me",
-      ref: "Philippians 4:13",
-    },
-  ]
-
+  const [cards, setCards] = useState<{ text: string; ref: string }[]>([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
+
+  useEffect(() => {
+    const stored =
+      JSON.parse(localStorage.getItem("flashcards") || "[]")
+
+    setCards(stored)
+  }, [])
 
   const current = cards[index]
   const words = current.text.split(" ")
@@ -33,6 +30,14 @@ export default function PracticeMode() {
     } else {
       setIndex(0)
     }
+  }
+
+  if (cards.length === 0) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center text-white bg-black">
+        No flashcards found. Add some first.
+      </div>
+    )
   }
 
   return (

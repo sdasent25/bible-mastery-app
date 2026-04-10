@@ -1,21 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function LearnMode() {
-  const verses = [
-    "Trust in the Lord with all your heart and lean not on your own understanding",
-    "I can do all things through Christ who strengthens me",
-    "The Lord is my shepherd I shall not want",
-    "Be strong and courageous do not be afraid",
-    "Your word is a lamp to my feet and a light to my path",
-    "Cast all your anxiety on Him because He cares for you",
-    "Rejoice always pray without ceasing",
-    "Love one another as I have loved you",
-    "Seek first the kingdom of God",
-    "Walk by faith not by sight",
-  ]
-
+  const [cards, setCards] = useState<{ text: string; ref: string }[]>([])
   const [index, setIndex] = useState(0)
   const [visible, setVisible] = useState(2)
   const [xp, setXp] = useState(0)
@@ -23,8 +11,15 @@ export default function LearnMode() {
   const [showXP, setShowXP] = useState(false)
   const [pressed, setPressed] = useState(false)
 
-  const words = verses[index].split(" ")
-  const percent = ((index + 1) / verses.length) * 100
+  useEffect(() => {
+    const stored =
+      JSON.parse(localStorage.getItem("flashcards") || "[]")
+
+    setCards(stored)
+  }, [])
+
+  const words = cards[index]?.text.split(" ") || []
+  const percent = cards.length > 0 ? ((index + 1) / cards.length) * 100 : 0
 
   const reveal = () => {
     if (visible < words.length) {
@@ -41,12 +36,20 @@ export default function LearnMode() {
     setShowXP(true)
     setTimeout(() => setShowXP(false), 700)
 
-    if (index < verses.length - 1) {
+    if (index < cards.length - 1) {
       setIndex((i) => i + 1)
       setVisible(2)
     } else {
       setCompleted(true)
     }
+  }
+
+  if (cards.length === 0) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center text-white bg-black">
+        No flashcards found. Add some first.
+      </div>
+    )
   }
 
   if (completed) {
@@ -93,7 +96,7 @@ export default function LearnMode() {
       <div className="mb-6 text-center">
 
         <div style={{ color: "#ffffff" }} className="text-sm mb-1 font-medium">
-          Card {index + 1} of {verses.length}
+          Card {index + 1} of {cards.length}
         </div>
 
         <div style={{ color: "#ffffff" }} className="text-sm">
