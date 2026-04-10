@@ -1,33 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
 
 export default function DashboardPage() {
-  const [currentDay, setCurrentDay] = useState(1)
   const router = useRouter()
-
-  useEffect(() => {
-    const load = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) return
-
-      const { data } = await supabase
-        .from("user_progress")
-        .select("current_day")
-        .eq("user_id", user.id)
-        .single()
-
-      if (data?.current_day) {
-        setCurrentDay(data.current_day)
-      }
-    }
-
-    load()
-  }, [])
 
   return (
     <div className="w-full flex justify-center px-4 py-6">
@@ -37,7 +13,7 @@ export default function DashboardPage() {
         </h1>
 
         <button
-          onClick={() => router.push(`/mission?day=${currentDay}`)}
+          onClick={() => router.push("/journey")}
           className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl text-lg font-semibold transition"
         >
           Start Daily Training

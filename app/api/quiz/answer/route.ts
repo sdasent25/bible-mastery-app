@@ -1,17 +1,28 @@
 import { NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { createClient as createAdminClient } from "@supabase/supabase-js"
+
+import { createClient } from "@/lib/supabase/server"
 
 export async function POST(req: Request) {
   try {
-    const supabase = createClient(
+    const supabase = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     )
 
+    const authClient = await createClient()
     const { questionId, correct } = await req.json()
 
-    // TEMP: use your real user ID (replace if needed)
-    const userId = "3cc20757-f21c-4ba5-81ce-04c4a721f2fc"
+    const {
+      data: { user },
+      error: authError,
+    } = await authClient.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const userId = user.id
 
     const { data: existing } = await supabase
       .from("user_question_history")
@@ -20,19 +31,27 @@ export async function POST(req: Request) {
       .eq("question_id", questionId)
       .maybeSingle()
 
+    let firstTimeCorrect = false
+
     if (existing) {
+      if (!existing.correct && correct) {
+        firstTimeCorrect = true
+      }
+
       await supabase
         .from("user_question_history")
         .update({
-          correct,
+          correct: existing.correct || correct,
           times_seen: existing.times_seen + 1,
           times_correct: correct
             ? existing.times_correct + 1
             : existing.times_correct,
-          last_seen: new Date().toISOString()
+          last_seen_at: new Date().toISOString(),
         })
         .eq("id", existing.id)
     } else {
+      firstTimeCorrect = correct
+
       await supabase
         .from("user_question_history")
         .insert({
@@ -40,13 +59,18 @@ export async function POST(req: Request) {
           question_id: questionId,
           correct,
           times_seen: 1,
-          times_correct: correct ? 1 : 0
+          times_correct: correct ? 1 : 0,
+          last_seen_at: new Date().toISOString(),
         })
     }
 
-    // ===== MASTERY UPDATE =====
+    if (firstTimeCorrect) {
+      await supabase.rpc("increment_streak", { user_id: userId })
+      await supabase.rpc("increment_combo", { user_id: userId })
+    } else {
+      await supabase.rpc("reset_combo", { user_id: userId })
+    }
 
-    // derive segment from questionId using questions table
     const { data: questionRow } = await supabase
       .from("questions")
       .select("book, chapter")
@@ -58,15 +82,10 @@ export async function POST(req: Request) {
     if (questionRow) {
       const book = questionRow.book.toLowerCase()
 
-      if (questionRow.chapter >= 1 && questionRow.chapter <= 3) {
-        segment = `${book}_1_3`
-      } else if (questionRow.chapter >= 4 && questionRow.chapter <= 6) {
-        segment = `${book}_4_6`
-      } else if (questionRow.chapter >= 7 && questionRow.chapter <= 9) {
-        segment = `${book}_7_9`
-      } else if (questionRow.chapter >= 10 && questionRow.chapter <= 11) {
-        segment = `${book}_10_11`
-      }
+      if (questionRow.chapter <= 3) segment = `${book}_1_3`
+      else if (questionRow.chapter <= 6) segment = `${book}_4_6`
+      else if (questionRow.chapter <= 9) segment = `${book}_7_9`
+      else segment = `${book}_10_11`
     }
 
     const { data: mastery } = await supabase
@@ -91,7 +110,7 @@ export async function POST(req: Request) {
           total_correct: newCorrect,
           accuracy,
           mastered: accuracy >= 0.8 && newAnswered >= 5,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
         .eq("id", mastery.id)
     } else {
@@ -103,12 +122,14 @@ export async function POST(req: Request) {
           total_answered: 1,
           total_correct: correct ? 1 : 0,
           accuracy: correct ? 1 : 0,
-          mastered: false
+          mastered: false,
         })
     }
 
-    return NextResponse.json({ success: true })
-
+    return NextResponse.json({
+      success: true,
+      firstTimeCorrect,
+    })
   } catch (err) {
     console.error("SAVE ERROR:", err)
     return NextResponse.json({ error: "Failed" }, { status: 500 })
