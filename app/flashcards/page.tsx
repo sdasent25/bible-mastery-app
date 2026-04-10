@@ -1,19 +1,42 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 
 export default function FlashcardsPage() {
   const router = useRouter()
 
   const [hovered, setHovered] = useState<string | null>(null)
-  const [progress, setProgress] = useState(3)
+  const [progress, setProgress] = useState(0)
   const total = 10
 
-  const [xp, setXp] = useState(120)
+  const [xp, setXp] = useState(0)
+  const [streak, setStreak] = useState(0)
   const [showXP, setShowXP] = useState(false)
 
   const percent = (progress / total) * 100
+
+  useEffect(() => {
+    const savedProgress = localStorage.getItem("dailyProgress")
+    const savedXP = localStorage.getItem("xp")
+    const savedStreak = localStorage.getItem("streak")
+
+    if (savedProgress) setProgress(Number(savedProgress))
+    if (savedXP) setXp(Number(savedXP))
+    if (savedStreak) setStreak(Number(savedStreak))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem("dailyProgress", progress.toString())
+  }, [progress])
+
+  useEffect(() => {
+    localStorage.setItem("xp", xp.toString())
+  }, [xp])
+
+  useEffect(() => {
+    localStorage.setItem("streak", streak.toString())
+  }, [streak])
 
   const trainingCards = [
     {
@@ -66,7 +89,7 @@ export default function FlashcardsPage() {
       {/* Status */}
       <div className="w-full max-w-xl flex justify-between items-center mb-4">
         <div className="flex items-center gap-2 bg-orange-500/10 px-3 py-1 rounded-full border border-orange-400/30">
-          🔥 <span className="text-sm font-medium">7 Day Streak</span>
+          🔥 <span className="text-sm font-medium">{streak} Day Streak</span>
         </div>
 
         <div className="flex items-center gap-2 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-400/30">

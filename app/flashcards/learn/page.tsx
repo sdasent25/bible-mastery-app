@@ -33,6 +33,22 @@ export default function LearnMode() {
   const next = () => {
     setXp((x) => x + 10)
 
+    const currentXP =
+      Number(localStorage.getItem("xp") || 0)
+
+    localStorage.setItem(
+      "xp",
+      (currentXP + 10).toString()
+    )
+
+    const currentProgress =
+      Number(localStorage.getItem("dailyProgress") || 0)
+
+    localStorage.setItem(
+      "dailyProgress",
+      (currentProgress + 1).toString()
+    )
+
     setShowXP(true)
     setTimeout(() => setShowXP(false), 700)
 
