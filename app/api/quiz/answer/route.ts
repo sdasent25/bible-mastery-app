@@ -64,6 +64,50 @@ export async function POST(req: Request) {
         })
     }
 
+    // ===== DAILY XP CAP =====
+    const DAILY_XP_CAP = 120
+
+    const { data: xpData } = await supabase
+      .from("user_stats")
+      .select("daily_xp, last_xp_date")
+      .eq("user_id", userId)
+      .maybeSingle()
+
+    const today = new Date().toISOString().split("T")[0]
+
+    let dailyXp = xpData?.daily_xp || 0
+    let lastDate = xpData?.last_xp_date
+
+    if (lastDate !== today) {
+      dailyXp = 0
+    }
+
+    let xpAwarded = 0
+
+    if (firstTimeCorrect && dailyXp < DAILY_XP_CAP) {
+      xpAwarded = 10
+
+      if (dailyXp + xpAwarded > DAILY_XP_CAP) {
+        xpAwarded = DAILY_XP_CAP - dailyXp
+      }
+
+      await supabase.rpc("increment_xp", {
+        user_id: userId,
+        amount: xpAwarded,
+      })
+
+      await supabase
+        .from("user_stats")
+        .upsert(
+          {
+            user_id: userId,
+            daily_xp: dailyXp + xpAwarded,
+            last_xp_date: today,
+          },
+          { onConflict: "user_id" }
+        )
+    }
+
     if (firstTimeCorrect) {
       await supabase.rpc("increment_streak", { user_id: userId })
       await supabase.rpc("increment_combo", { user_id: userId })
@@ -129,6 +173,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       firstTimeCorrect,
+      xpAwarded,
     })
   } catch (err) {
     console.error("SAVE ERROR:", err)
