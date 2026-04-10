@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { supabase } from "@/lib/supabase"
 
 export default function FlashcardsPage() {
-  const supabase = createClientComponentClient()
   const router = useRouter()
 
   const [hovered, setHovered] = useState<string | null>(null)
