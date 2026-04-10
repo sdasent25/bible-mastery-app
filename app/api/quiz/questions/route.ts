@@ -28,17 +28,24 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    // ✅ GET USER PLAN
+    // ✅ GET USER ACCESS
     const { data: access } = await supabase
       .from("user_access")
       .select("final_plan")
       .eq("user_id", user.id)
       .single()
 
-    let questionsPerDay = 2 // default free
+    let questionsPerDay = 2 // default (Free + Pro preview)
 
-    if (access?.final_plan === "pro") questionsPerDay = 10
-    if (access?.final_plan === "pro_plus") questionsPerDay = 15
+    if (access?.final_plan === "pro_plus") {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("questions_per_day")
+        .eq("id", user.id)
+        .single()
+
+      questionsPerDay = profile?.questions_per_day ?? 10
+    }
 
     const searchParams = req.nextUrl.searchParams
     const mode = searchParams.get("mode") || "normal"
