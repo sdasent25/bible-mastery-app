@@ -1,20 +1,18 @@
 "use client"
 
+import { useEffect, useState } from "react"
+
 export default function LibraryPage() {
-  const cards = [
-    {
-      text: "Trust in the Lord with all your heart and lean not on your own understanding",
-      ref: "Proverbs 3:5",
-    },
-    {
-      text: "I can do all things through Christ who strengthens me",
-      ref: "Philippians 4:13",
-    },
-    {
-      text: "The Lord is my shepherd I shall not want",
-      ref: "Psalm 23:1",
-    },
-  ]
+  const [cards, setCards] = useState<
+    { text: string; ref: string }[]
+  >([])
+
+  useEffect(() => {
+    const stored =
+      JSON.parse(localStorage.getItem("flashcards") || "[]")
+
+    setCards(stored)
+  }, [])
 
   return (
     <div className="w-full min-h-screen bg-black text-white px-4 py-8">
@@ -23,6 +21,13 @@ export default function LibraryPage() {
       <h1 className="text-3xl font-bold text-center mb-6">
         My Flashcards
       </h1>
+
+      {/* Empty State */}
+      {cards.length === 0 && (
+        <div className="text-center text-gray-400 mt-10">
+          No flashcards yet. Add your first one!
+        </div>
+      )}
 
       {/* List */}
       <div className="max-w-xl mx-auto flex flex-col gap-4">
@@ -36,7 +41,7 @@ export default function LibraryPage() {
               {card.ref}
             </div>
 
-            <div className="text-lg font-semibold leading-relaxed">
+            <div className="text-lg font-semibold leading-relaxed text-white">
               {card.text}
             </div>
           </div>
