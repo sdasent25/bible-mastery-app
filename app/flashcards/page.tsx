@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function FlashcardsPage() {
   const router = useRouter()
@@ -15,8 +16,16 @@ export default function FlashcardsPage() {
   const [xp, setXp] = useState(0)
   const [streak, setStreak] = useState(0)
   const [showXP, setShowXP] = useState(false)
+  const [plan, setPlan] = useState("free")
+  const [loading, setLoading] = useState(true)
 
   const percent = (progress / total) * 100
+  const allowedPlans = [
+    "pro",
+    "pro_plus",
+    "family_pro",
+    "family_pro_plus",
+  ]
 
   useEffect(() => {
     const savedProgress = localStorage.getItem("dailyProgress")
@@ -26,6 +35,16 @@ export default function FlashcardsPage() {
     if (savedProgress) setProgress(Number(savedProgress))
     if (savedXP) setXp(Number(savedXP))
     if (savedStreak) setStreak(Number(savedStreak))
+  }, [])
+
+  useEffect(() => {
+    const loadPlan = async () => {
+      const currentPlan = await getUserPlan()
+      setPlan(currentPlan)
+      setLoading(false)
+    }
+
+    void loadPlan()
   }, [])
 
   useEffect(() => {
@@ -84,6 +103,34 @@ export default function FlashcardsPage() {
       path: "/flashcards/practice",
     },
   ]
+
+  if (loading) {
+    return (
+      <div className="w-full flex items-center justify-center py-16 px-4 text-white">
+        Loading...
+      </div>
+    )
+  }
+
+  if (!allowedPlans.includes(plan)) {
+    return (
+      <div className="w-full flex justify-center px-4 py-10 text-white">
+        <div className="w-full max-w-xl rounded-3xl border border-yellow-500/30 bg-zinc-950 p-8 text-center shadow-xl">
+          <div className="mb-4 text-5xl">🔒</div>
+          <h1 className="text-3xl font-bold mb-3">Flashcards Locked</h1>
+          <p className="text-zinc-300 mb-6">
+            Upgrade to Pro to unlock flashcards and start memorizing scripture.
+          </p>
+          <button
+            onClick={() => router.push("/pricing")}
+            className="inline-flex items-center justify-center rounded-xl bg-yellow-400 px-6 py-3 font-bold text-black transition hover:bg-yellow-300"
+          >
+            Upgrade Now
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full flex flex-col items-center py-8 px-4 text-white relative">
