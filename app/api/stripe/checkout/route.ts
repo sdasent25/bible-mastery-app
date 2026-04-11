@@ -1,5 +1,3 @@
-REPLACE THE ENTIRE FILE WITH THIS:
-
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
@@ -20,7 +18,6 @@ export async function POST(req: Request) {
     console.log("🔥 CHECKOUT API HIT")
 
     const { plan } = await req.json()
-    console.log("🔥 REQUEST BODY:", plan)
 
     let unitAmount = 0
     let name = ""
@@ -57,8 +54,6 @@ export async function POST(req: Request) {
 
     const stripe = getStripeClient()
 
-    console.log("🔥 CREATING STRIPE SESSION")
-
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [
@@ -76,8 +71,6 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
-
-      // TEMP STATIC USER ID (FOR TESTING ONLY)
       metadata: {
         user_id: "test_user",
         plan: plan,
@@ -93,9 +86,6 @@ export async function POST(req: Request) {
       success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
       cancel_url: `${siteUrl}/pricing?checkout=cancelled`,
     })
-
-    console.log("🔥 STRIPE SESSION CREATED:", session.id)
-    console.log("🔥 RETURNING URL:", session.url)
 
     return NextResponse.json({ url: session.url })
   } catch (error) {
