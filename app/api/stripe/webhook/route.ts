@@ -14,14 +14,23 @@ export async function POST(req: Request) {
   try {
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret)
   } catch (err) {
+    console.error("❌ Webhook signature failed", err)
     return new NextResponse("Webhook Error", { status: 400 })
   }
+
+  console.log("🔥 EVENT TYPE:", event.type)
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as Stripe.Checkout.Session
 
-    const user_id = session.metadata?.user_id
-    const plan = session.metadata?.plan
+    console.log("🔥 FULL SESSION:", session)
+
+    const metadata = session.metadata ?? {}
+    const user_id =
+      typeof metadata.user_id === "string" ? metadata.user_id : undefined
+    const plan = typeof metadata.plan === "string" ? metadata.plan : undefined
+
+    console.log("🔥 METADATA:", { user_id, plan, metadata })
 
     if (user_id && plan) {
       const supabase = createClient(
@@ -29,10 +38,19 @@ export async function POST(req: Request) {
         process.env.SUPABASE_SERVICE_ROLE_KEY!
       )
 
-      await supabase
+      const { data, error } = await supabase
         .from("profiles")
-        .update({ plan: plan })
+        .update({ plan })
         .eq("id", user_id)
+        .select()
+
+      if (error) {
+        console.error("❌ SUPABASE ERROR:", error)
+      } else {
+        console.log("✅ PLAN UPDATED:", data)
+      }
+    } else {
+      console.error("❌ MISSING METADATA")
     }
   }
 
