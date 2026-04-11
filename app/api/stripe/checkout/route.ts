@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
+import { createServerClient } from "@supabase/ssr"
+import { cookies } from "next/headers"
 
 export const dynamic = "force-dynamic"
 
@@ -16,6 +18,27 @@ function getStripeClient() {
 export async function POST(req: Request) {
   try {
     console.log("🔥 CHECKOUT API HIT")
+
+    const cookieStore = await cookies()
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get: (name) => cookieStore.get(name)?.value,
+        },
+      }
+    )
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser()
+
+    if (error || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
     const { plan } = await req.json()
 
@@ -60,29 +83,23 @@ export async function POST(req: Request) {
         {
           price_data: {
             currency: "usd",
-            product_data: {
-              name,
-            },
-            recurring: {
-              interval: "month",
-            },
+            product_data: { name },
+            recurring: { interval: "month" },
             unit_amount: unitAmount,
           },
           quantity: 1,
         },
       ],
       metadata: {
-        user_id: "test_user",
+        user_id: user.id,
         plan: plan,
       },
-
       subscription_data: {
         metadata: {
-          user_id: "test_user",
+          user_id: user.id,
           plan: plan,
         },
       },
-
       success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
       cancel_url: `${siteUrl}/pricing?checkout=cancelled`,
     })
