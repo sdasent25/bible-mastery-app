@@ -1,0 +1,363 @@
+🚀 BIBLE ATHLETE — FULL SYSTEM HANDOFF (CURRENT STATE)
+
+You are continuing development of:
+
+👉 Bible Athlete — a Duolingo-style Bible mastery platform
+
+---
+
+🧠 CORE PHILOSOPHY
+
+This is NOT a quiz app.
+
+👉 This is a learning + retention system
+
+Everything must support:
+
+* retention
+* recall
+* mastery
+* progression
+* daily habit formation
+
+---
+
+🚀 STACK
+
+* Next.js (App Router)
+* Supabase (Auth + DB)
+* Stripe (subscriptions)
+* Tailwind (UI)
+* Vercel (hosting)
+
+---
+
+⚠️ CRITICAL WORKING STYLE (MUST FOLLOW)
+
+* Provide FULL Codex prompts only (no fragments)
+* ONE SQL at a time
+* Keep responses short + actionable
+* DO NOT guess
+* ALWAYS request code BEFORE making decisions
+* If something fails twice → ASK FOR CODE
+* Mobile-first thinking
+* No over-explaining — results focused
+
+---
+
+🚨 CURRENT BLOCKER (VERY IMPORTANT)
+
+We are currently stuck on:
+
+👉 Stripe checkout → API → webhook → plan sync
+
+### What has happened:
+
+* Checkout UI loads ✅
+* Stripe session likely created ✅
+* BUT:
+
+  * No reliable API logs ❌
+  * No consistent Stripe events ❌
+  * No metadata confirmed ❌
+  * No plan update in Supabase ❌
+
+### Additional symptoms:
+
+* UI rendering glitches (screens overlapping)
+* DevTools not showing expected network calls
+* Possible caching / environment corruption
+* Possible routing mismatch (Next.js App Router issue)
+* Potential Cloudflare vs Vercel confusion
+
+---
+
+🧠 IMPORTANT DIAGNOSIS RULE
+
+👉 BEFORE ANY NEW FIX:
+
+You MUST:
+
+1. Ask to see the relevant file
+2. Confirm routing path
+3. Confirm runtime (Vercel vs Cloudflare)
+4. Confirm API route execution
+
+DO NOT assume anything.
+
+---
+
+📍 WHERE WE LEFT OFF
+
+We are performing a **full environment reset**:
+
+User is currently running:
+
+PowerShell commands:
+
+* Remove-Item -Recurse -Force .next
+* Remove-Item -Recurse -Force node_modules.cache
+* npm install
+* npm run dev
+
+Then testing:
+
+👉 `/test-checkout`
+
+This page is intended to isolate:
+
+* button click
+* API call
+* Stripe session creation
+
+---
+
+🎯 CURRENT GOAL
+
+We must prove:
+
+👉 `/api/stripe/checkout` is being hit
+
+---
+
+💡 WHAT SUCCESS LOOKS LIKE
+
+From test page:
+
+Console:
+
+* CLICKED
+* STATUS 200
+
+Network:
+
+* POST /api/stripe/checkout
+
+Stripe:
+
+* NEW event created
+
+Event:
+
+* metadata present
+
+Webhook:
+
+* updates Supabase
+
+---
+
+🚨 KNOWN RISK AREAS
+
+* App Router file placement
+* Wrong route file (not page.tsx)
+* API routes not deployed
+* Static deployment (Cloudflare issue)
+* Caching issues
+* Multiple checkout flows still active
+
+---
+
+📍 MASTER BUILD LIST (138 ITEMS — DO NOT MODIFY)
+
+CORE SYSTEM
+
+1. Fix plan sync (Stripe → Supabase)
+2. Today’s Mission system
+3. Use questions_per_day in quiz engine
+4. Difficulty mix integration
+5. Anti-exploit (no XP on retries) ✅
+6. Streak persistence
+7. Combo persistence
+8. XP normalization (~120/day cap) ✅
+9. Node completion tracking
+10. Journey progress tracking
+11. Daily lock system
+12. Countdown timer
+13. Dashboard CTA
+
+UX + POLISH
+14. Pro+ onboarding UI
+15. Celebration polish
+16. XP animation
+17. Combo feedback UI
+18. Streak reinforcement UI
+19. Lock UI polish
+20. Contextual paywalls
+21. Flashcard lock system
+22. Mobile polish
+23. Web polish
+24. Hover states
+
+SETTINGS
+25. Settings page
+26. Show plan/XP/streak
+27. Change depth
+28. Upgrade plan
+29. Downgrade plan
+30. Cancel plan
+31. Stripe portal
+32. Role permissions
+33. Leave family
+34. Account controls
+
+FAMILY SYSTEM
+35. Families table
+36. Members table
+37. Role system
+38. Member cap (6)
+
+INVITES
+39. Invite system
+40. Expiration logic
+41. Accept flow
+42. Prevent duplicates
+
+ONBOARDING
+43. Family onboarding
+44. Require identity
+
+DASHBOARD
+45. Show members
+46. Show roles
+47. Remove member
+
+LEADERBOARD
+48. Weekly leaderboard
+49. Rank by XP
+50. Weekly reset
+
+ABUSE PREVENTION
+51. 1 account/email
+52. Prevent rejoin exploit
+53. Daily XP cap
+
+BILLING
+54. Stripe checkout
+55. Plan sync reliability (CURRENT BLOCKER)
+56. Upgrade flow
+57. Downgrade flow
+58. Cancel flow
+59. Stripe portal
+60. Owner billing control
+61. Subscription state
+
+IDENTITY
+62. Name storage
+63. Handle system
+64. Unique handles
+65. Banned words
+66. Normalize handles
+67. Display identity
+
+ADMIN DASHBOARD
+68. View users
+69. View plans
+70. View XP/streak
+71. Activity tracking
+72. Upgrade users
+73. Revoke access
+74. View families
+75. Remove users
+76. Review handles
+77. Flag handles
+78. Override data
+
+FEEDBACK SYSTEM
+79. Feedback button
+80. Categories
+81. Text input
+82. Screenshot upload (later)
+83. Feedback dashboard
+84. Status tracking
+85. Assign assistant
+86. Internal notes
+
+REPORT SYSTEM
+87. Report question button
+88. Report categories
+89. Text input
+90. Store question_id
+91. Admin review
+
+NOTIFICATIONS
+92. Notification icon
+93. Updates panel
+94. Admin updates
+95. Read/unread
+96. Badge indicator
+
+USER POLLING
+97. Login survey
+98. Multiple choice
+99. Short response
+100. Word limits
+101. Admin control
+102. Store responses
+
+TEAM SYSTEM
+103. Admin roles
+104. Permissions
+105. Assign tickets
+106. Internal workflow
+
+LANDING PAGE
+107. Homepage
+108. Value proposition
+109. CTA
+
+HEADER
+110. Logo
+111. Navigation
+
+SECTIONS
+112. Hero
+113. How it works
+114. Features
+115. Testimonials
+116. Pricing preview
+
+FOOTER
+117. About
+118. Contact
+119. Terms
+120. Social
+
+MOBILE + WEB
+121. Mobile-first layouts
+122. No-scroll interactions
+123. Thumb zones
+124. Desktop spacing
+125. Typography
+126. Responsive components
+
+RETENTION
+127. Daily mission
+128. Streak pressure
+129. Countdown timers
+130. Weekly challenges
+131. Monthly challenges
+
+FUTURE
+132. Global leaderboard
+133. Notifications system
+134. Streak freeze
+135. Adaptive difficulty
+136. Analytics dashboard
+137. Feature voting system
+
+138. Update Stripe webhook URL to production domain + replace webhook secret
+
+---
+
+🚀 INSTRUCTIONS TO NEW CHAT
+
+1. DO NOT guess — ask for code first
+2. Start from current blocker (Stripe flow)
+3. Verify routing + API execution
+4. Fix test-checkout page FIRST
+5. Then proceed back to plan sync (#55)
+
+---
+
+END OF HANDOFF
