@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 type SectionKey =
   | "pentateuch"
@@ -20,8 +21,9 @@ type SidebarProps = {
 export default function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
-  const [planType, setPlanType] = useState<string | null>(null)
+  const [planType, setPlanType] = useState<string>("free")
   const [isFamily, setIsFamily] = useState(false)
+  const [isPlanLoaded, setIsPlanLoaded] = useState(false)
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -34,25 +36,32 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   useEffect(() => {
     const loadPlan = async () => {
+      const currentPlan = await getUserPlan()
+      setPlanType(currentPlan)
+
       const {
         data: { user },
       } = await supabase.auth.getUser()
-      if (!user) return
+      if (!user) {
+        setIsFamily(false)
+        setIsPlanLoaded(true)
+        return
+      }
 
       const { data } = await supabase
         .from("user_access")
-        .select("final_plan, in_family")
+        .select("in_family")
         .eq("user_id", user.id)
         .single()
 
-      setPlanType(data?.final_plan ?? "free")
       setIsFamily(data?.in_family === true)
+      setIsPlanLoaded(true)
 
-      console.log("SIDEBAR PLAN:", data?.final_plan)
+      console.log("SIDEBAR PLAN:", currentPlan)
     }
 
     void loadPlan()
-  }, [router])
+  }, [])
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -129,7 +138,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     ? `${planLabel} (Family)`
     : `${planLabel} (Individual)`
 
-  if (planType === null) {
+  if (!isPlanLoaded) {
     return null
   }
 
