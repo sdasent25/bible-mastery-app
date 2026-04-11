@@ -2,13 +2,35 @@
 
 import { useState } from "react"
 
-type PaywallProps = {
-  reason?: string | null
-  onSelectPlan: (plan: "pro" | "pro_plus" | "family_pro" | "family_pro_plus") => void
-}
-
-export default function Paywall({ onSelectPlan }: PaywallProps) {
+export default function Paywall() {
   const [isFamily, setIsFamily] = useState(false)
+
+  const handleCheckout = async (plan: "pro" | "pro_plus" | "family_pro" | "family_pro_plus") => {
+    console.log("PLAN CLICKED:", plan)
+
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan }),
+      })
+
+      console.log("RESPONSE STATUS:", res.status)
+
+      const data = await res.json()
+      console.log("RESPONSE DATA:", data)
+
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        console.error("NO URL RETURNED")
+      }
+    } catch (err) {
+      console.error("CHECKOUT ERROR:", err)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#0B0F1A] text-white px-4 py-16">
@@ -80,7 +102,7 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
             <div className="mt-6">
               <button
                 onClick={() =>
-                  onSelectPlan(isFamily ? "family_pro" : "pro")
+                  handleCheckout(isFamily ? "family_pro" : "pro")
                 }
                 className="w-full bg-gray-700 text-white hover:bg-neutral-600 transition py-2 rounded-lg font-semibold active:scale-95"
               >
@@ -122,7 +144,7 @@ export default function Paywall({ onSelectPlan }: PaywallProps) {
             <div className="mt-6">
               <button
                 onClick={() =>
-                  onSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")
+                  handleCheckout(isFamily ? "family_pro_plus" : "pro_plus")
                 }
                 className="w-full bg-green-500 hover:bg-green-400 text-black font-bold py-2 rounded-lg transition active:scale-95"
               >
