@@ -127,13 +127,18 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   }
 
   const hasLeaderboardAccess =
-    planType === "pro" || planType === "pro_plus"
+    planType === "pro_plus" || planType === "family_pro_plus"
+  const showUpgradeCta = planType === "free" || planType === "pro"
   const planLabel =
-    planType === "pro_plus"
+    planType === "family_pro_plus"
       ? "Pro+"
-      : planType === "pro"
+      : planType === "family_pro"
         ? "Pro"
-        : "Free"
+        : planType === "pro_plus"
+          ? "Pro+"
+          : planType === "pro"
+            ? "Pro"
+            : "Free"
   const fullPlanLabel = isFamily
     ? `${planLabel} (Family)`
     : `${planLabel} (Individual)`
@@ -156,16 +161,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         <div className="space-y-2">
           {navItem("🏠 Dashboard", "/dashboard")}
           {navItem("📖 Journey", "/journey")}
-          {planType === "pro" || planType === "pro_plus" ? (
-            navItem("🧠 Flashcards", "/flashcards")
-          ) : (
-            <div
-              onClick={() => router.push("/pricing?source=flashcards_locked")}
-              className="block px-4 py-3 rounded-xl text-white opacity-50 cursor-pointer"
-            >
-              🧠 Flashcards 🔒
-            </div>
-          )}
+          {navItem("🧠 Flashcards", "/flashcards")}
           {hasLeaderboardAccess ? (
             navItem("🏆 Leaderboard", "/leaderboard")
           ) : (
@@ -177,6 +173,16 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             </div>
           )}
         </div>
+
+        {showUpgradeCta && (
+          <Link
+            href="/pricing"
+            onClick={() => closeMobile?.()}
+            className="block rounded-xl bg-yellow-400 px-4 py-3 text-center font-bold text-black transition hover:bg-yellow-300"
+          >
+            Upgrade
+          </Link>
+        )}
 
         <div className="pt-4 space-y-2">
           <p className="text-xs text-white uppercase tracking-wide">Sections</p>
