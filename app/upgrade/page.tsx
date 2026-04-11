@@ -6,7 +6,7 @@ export default function UpgradePage() {
   const [isFamily, setIsFamily] = useState(false)
 
   const handleCheckout = async (plan: "pro" | "pro_plus" | "family_pro" | "family_pro_plus") => {
-    console.log("PLAN CLICKED:", plan)
+    console.log("🔥 CLICK TRIGGERED:", plan)
 
     try {
       const res = await fetch("/api/stripe/checkout", {
@@ -17,18 +17,29 @@ export default function UpgradePage() {
         body: JSON.stringify({ plan }),
       })
 
-      console.log("RESPONSE STATUS:", res.status)
+      console.log("🔥 RESPONSE STATUS:", res.status)
 
-      const data = await res.json()
-      console.log("RESPONSE DATA:", data)
+      const text = await res.text()
+      console.log("🔥 RAW RESPONSE:", text)
 
-      if (data.url) {
+      let data
+      try {
+        data = JSON.parse(text)
+      } catch (e) {
+        console.error("❌ JSON PARSE FAILED")
+      }
+
+      console.log("🔥 PARSED DATA:", data)
+
+      if (data?.url) {
+        console.log("✅ REDIRECTING TO:", data.url)
         window.location.href = data.url
       } else {
-        alert("No checkout URL returned")
+        alert("❌ No URL returned from backend")
       }
+
     } catch (err) {
-      console.error("CHECKOUT ERROR:", err)
+      console.error("❌ FETCH ERROR:", err)
       alert("Checkout failed")
     }
   }

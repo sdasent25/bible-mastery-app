@@ -16,6 +16,8 @@ function getStripeClient() {
 
 export async function POST(req: Request) {
   try {
+    console.log("🔥 CHECKOUT API HIT")
+
     const supabase = await createClient()
     const {
       data: { user },
@@ -27,6 +29,8 @@ export async function POST(req: Request) {
     }
 
     const { plan } = await req.json()
+
+    console.log("🔥 REQUEST BODY:", plan)
 
     let unitAmount = 0
     let name = ""
@@ -63,6 +67,8 @@ export async function POST(req: Request) {
 
     const stripe = getStripeClient()
 
+    console.log("🔥 CREATING STRIPE SESSION")
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [
@@ -96,6 +102,9 @@ export async function POST(req: Request) {
       success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
       cancel_url: `${siteUrl}/pricing?checkout=cancelled`,
     })
+
+    console.log("🔥 STRIPE SESSION CREATED:", session.id)
+    console.log("🔥 RETURNING URL:", session.url)
 
     return NextResponse.json({ url: session.url })
   } catch (error) {
