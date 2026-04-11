@@ -44,7 +44,7 @@ export default function PricingSection() {
       return
     }
 
-    window.location.href = data.url
+    window.location.href = "/upgrade"
   }
 
   const handleProPlusCheckout = async () => {

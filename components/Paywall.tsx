@@ -23,7 +23,7 @@ export default function Paywall() {
       console.log("RESPONSE DATA:", data)
 
       if (data.url) {
-        window.location.href = data.url
+        window.location.href = "/upgrade"
       } else {
         console.error("NO URL RETURNED")
       }
