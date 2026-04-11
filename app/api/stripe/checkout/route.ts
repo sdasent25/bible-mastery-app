@@ -81,18 +81,16 @@ export async function POST(req: Request) {
         },
       ],
 
-      // ✅ FORCE METADATA HERE
       metadata: {
         user_id: user.id,
-        plan: plan
+        plan: plan,
       },
 
-      // ✅ ALSO ADD HERE (IMPORTANT)
       subscription_data: {
         metadata: {
           user_id: user.id,
-          plan: plan
-        }
+          plan: plan,
+        },
       },
 
       success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
