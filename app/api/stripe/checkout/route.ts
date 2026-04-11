@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
+import { createClient } from "@/lib/supabase/server"
 
 export const dynamic = "force-dynamic"
 
@@ -15,6 +16,16 @@ function getStripeClient() {
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient()
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser()
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
     const { plan } = await req.json()
 
     let unitAmount = 0
@@ -69,6 +80,21 @@ export async function POST(req: Request) {
           quantity: 1,
         },
       ],
+
+      // ✅ FORCE METADATA HERE
+      metadata: {
+        user_id: user.id,
+        plan: plan
+      },
+
+      // ✅ ALSO ADD HERE (IMPORTANT)
+      subscription_data: {
+        metadata: {
+          user_id: user.id,
+          plan: plan
+        }
+      },
+
       success_url: `${siteUrl}/dashboard?upgrade=${plan}`,
       cancel_url: `${siteUrl}/pricing?checkout=cancelled`,
     })
