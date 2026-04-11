@@ -8,6 +8,9 @@ export default function UpgradePage() {
       onSelectPlan={(plan: string) => {
         fetch("/api/stripe/checkout", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({ plan }),
         })
           .then((res) => res.json())
