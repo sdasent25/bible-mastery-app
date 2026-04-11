@@ -1,6 +1,7 @@
+REPLACE THE ENTIRE FILE WITH THIS:
+
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
-import { createClient } from "@/lib/supabase/server"
 
 export const dynamic = "force-dynamic"
 
@@ -18,18 +19,7 @@ export async function POST(req: Request) {
   try {
     console.log("🔥 CHECKOUT API HIT")
 
-    const supabase = await createClient()
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     const { plan } = await req.json()
-
     console.log("🔥 REQUEST BODY:", plan)
 
     let unitAmount = 0
@@ -87,14 +77,15 @@ export async function POST(req: Request) {
         },
       ],
 
+      // TEMP STATIC USER ID (FOR TESTING ONLY)
       metadata: {
-        user_id: user.id,
+        user_id: "test_user",
         plan: plan,
       },
 
       subscription_data: {
         metadata: {
-          user_id: user.id,
+          user_id: "test_user",
           plan: plan,
         },
       },
