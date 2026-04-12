@@ -65,12 +65,38 @@ export default function DashboardPage() {
 
     const supabase = createClient()
     const token = crypto.randomUUID()
+    const expires_at = new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString()
 
-    const { error } = await supabase.from("family_invites").insert({
-      family_id: familyId,
-      email,
-      token,
-    })
+    const { data: existing } = await supabase
+      .from("family_invites")
+      .select("*")
+      .eq("family_id", familyId)
+      .eq("email", email)
+      .eq("status", "pending")
+      .maybeSingle()
+
+    let error = null
+
+    if (existing) {
+      const res = await supabase
+        .from("family_invites")
+        .update({
+          token,
+          expires_at,
+        })
+        .eq("id", existing.id)
+
+      error = res.error
+    } else {
+      const res = await supabase.from("family_invites").insert({
+        family_id: familyId,
+        email,
+        token,
+        expires_at,
+      })
+
+      error = res.error
+    }
 
     if (error) {
       setMessage("Error sending invite")
