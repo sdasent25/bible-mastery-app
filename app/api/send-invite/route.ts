@@ -1,42 +1,31 @@
 import { NextResponse } from "next/server"
+import { Resend } from "resend"
 
-export const runtime = "nodejs"
-export const dynamic = "force-dynamic"
+const resend = new Resend(process.env.RESEND_API_KEY!)
 
 export async function POST(req: Request) {
   try {
-    const key = process.env.RESEND_API_KEY
+    const { email, token } = await req.json()
 
-    console.log("RAW ENV VALUE:", key)
-    console.log("TYPE:", typeof key)
+    const inviteLink = `${process.env.NEXT_PUBLIC_SITE_URL}/invite?token=${token}`
 
-    if (!key) {
-      return NextResponse.json(
-        { error: "ENV NOT FOUND" },
-        { status: 500 },
-      )
-    }
-
-    const { Resend } = await import("resend")
-    const resend = new Resend(key)
-
-    const body = await req.json()
-    const { email, inviteLink } = body
-
-    const response = await resend.emails.send({
-      from: "onboarding@resend.dev",
+    await resend.emails.send({
+      from: "Bible Athlete <onboarding@resend.dev>",
       to: email,
-      subject: "You're invited to Bible Athlete",
-      html: `<a href="${inviteLink}">Join Family</a>`,
+      subject: "You're invited to join a family on Bible Athlete",
+      html: `
+        <h2>You’ve been invited!</h2>
+        <p>Join your family and start learning together.</p>
+        <a href="${inviteLink}" style="padding:12px 20px;background:#00ff99;color:black;border-radius:8px;text-decoration:none;">
+          Accept Invite
+        </a>
+        <p>This link expires in 48 hours.</p>
+      `,
     })
 
-    return NextResponse.json({ success: true, response })
-  } catch (error: any) {
+    return NextResponse.json({ success: true })
+  } catch (error) {
     console.error("EMAIL ERROR:", error)
-
-    return NextResponse.json(
-      { error: error.message },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: "Email failed" }, { status: 500 })
   }
 }
