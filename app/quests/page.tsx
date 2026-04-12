@@ -1,0 +1,78 @@
+"use client"
+
+import Link from "next/link"
+
+function QuestCard({
+  title,
+  href,
+  accentClass,
+  imageLabel,
+}: {
+  title: string
+  href: string
+  accentClass: string
+  imageLabel: string
+}) {
+  return (
+    <Link
+      href={href}
+      className="block w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-lg transition active:scale-[0.99]"
+    >
+      <div
+        className={`flex h-52 w-full items-center justify-center bg-gradient-to-br ${accentClass} px-6 text-center`}
+      >
+        <div className="rounded-2xl border border-white/20 bg-black/20 px-6 py-4">
+          <div className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
+            Image
+          </div>
+          <div className="mt-2 text-2xl font-bold text-white">
+            {imageLabel}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between px-5 py-4">
+        <div className="text-lg font-bold text-white">{title}</div>
+        <div className="rounded-full border border-white/15 px-3 py-1 text-sm text-zinc-200">
+          Open
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+export default function QuestsPage() {
+  return (
+    <div className="w-full px-4 py-6">
+      <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
+        <div className="mb-2">
+          <h1 className="text-3xl font-bold text-white">Quests</h1>
+          <p className="mt-2 text-sm text-zinc-400">
+            Choose a quest and start training.
+          </p>
+        </div>
+
+        <QuestCard
+          title="Characters"
+          href="/quests/characters"
+          accentClass="from-emerald-700 via-emerald-600 to-teal-500"
+          imageLabel="Heroes"
+        />
+
+        <QuestCard
+          title="Who Said It"
+          href="/quests/who-said-it"
+          accentClass="from-sky-700 via-blue-600 to-cyan-500"
+          imageLabel="Voices"
+        />
+
+        <QuestCard
+          title="Books of the Bible"
+          href="/quests/books"
+          accentClass="from-amber-700 via-orange-600 to-yellow-500"
+          imageLabel="Scrolls"
+        />
+      </div>
+    </div>
+  )
+}

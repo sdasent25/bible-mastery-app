@@ -162,6 +162,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           {navItem("🏠 Dashboard", "/dashboard")}
           {navItem("📖 Journey", "/journey")}
           {navItem("🧠 Flashcards", "/flashcards")}
+          {navItem("🗺️ Quests", "/quests")}
           {hasLeaderboardAccess ? (
             navItem("🏆 Leaderboard", "/leaderboard")
           ) : (
