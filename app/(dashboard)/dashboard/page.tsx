@@ -3,15 +3,52 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { createClient } from "@/lib/supabase/client"
 
 export default function DashboardPage() {
   const router = useRouter()
   const [plan, setPlan] = useState("free")
+  const [memberCount, setMemberCount] = useState<number | null>(null)
+  const [memberLimit, setMemberLimit] = useState<number | null>(null)
 
   useEffect(() => {
     const run = async () => {
+      const supabase = createClient()
       const currentPlan = await getUserPlan()
       setPlan(currentPlan)
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) return
+
+      const { data: membership } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", user.id)
+        .is("removed_at", null)
+        .maybeSingle()
+
+      if (!membership?.family_id) return
+
+      const familyId = membership.family_id
+
+      const [{ count }, { data: family }] = await Promise.all([
+        supabase
+          .from("family_members")
+          .select("*", { count: "exact", head: true })
+          .eq("family_id", familyId)
+          .is("removed_at", null),
+        supabase
+          .from("families")
+          .select("member_limit")
+          .eq("id", familyId)
+          .maybeSingle(),
+      ])
+
+      setMemberCount(count || 0)
+      setMemberLimit(family?.member_limit || 4)
     }
 
     run()
@@ -41,6 +78,20 @@ export default function DashboardPage() {
         {plan === "pro_plus" && (
           <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-300">
             Pro+ Plan - Unlimited Access
+          </div>
+        )}
+
+        {memberCount !== null && memberLimit !== null && (
+          <div className="rounded-2xl border border-cyan-400/25 bg-cyan-400/10 px-5 py-6 text-center">
+            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200">
+              Family Usage
+            </p>
+            <p className="mt-3 text-3xl font-black text-white">
+              {memberCount} / {memberLimit}
+            </p>
+            <p className="mt-2 text-sm text-cyan-100">
+              Members used
+            </p>
           </div>
         )}
 
