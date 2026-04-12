@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
+import { sendInviteEmail } from "@/lib/email"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -74,9 +75,15 @@ export default function DashboardPage() {
 
     if (error) {
       setMessage("Error sending invite")
-    } else {
+      return
+    }
+
+    try {
+      await sendInviteEmail(email, token)
       setMessage("Invite sent successfully")
       setEmail("")
+    } catch {
+      setMessage("Invite saved but email failed")
     }
   }
 
