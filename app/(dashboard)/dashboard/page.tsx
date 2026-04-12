@@ -54,6 +54,11 @@ export default function DashboardPage() {
     run()
   }, [])
 
+  const isFamilyFull =
+    memberCount !== null &&
+    memberLimit !== null &&
+    memberCount >= memberLimit
+
   return (
     <div className="w-full flex justify-center px-4 py-6">
       <div className="w-full max-w-md flex flex-col gap-6">
@@ -82,17 +87,37 @@ export default function DashboardPage() {
         )}
 
         {memberCount !== null && memberLimit !== null && (
-          <div className="rounded-2xl border border-cyan-400/25 bg-cyan-400/10 px-5 py-6 text-center">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200">
-              Family Usage
-            </p>
-            <p className="mt-3 text-3xl font-black text-white">
-              {memberCount} / {memberLimit}
-            </p>
-            <p className="mt-2 text-sm text-cyan-100">
-              Members used
-            </p>
-          </div>
+          isFamilyFull ? (
+            <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 px-5 py-6 text-center">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-200">
+                Family is Full
+              </p>
+              <p className="mt-3 text-2xl font-black text-white">
+                {memberCount} / {memberLimit} members used
+              </p>
+              <p className="mt-2 text-sm text-amber-100">
+                You’ve reached your family member limit.
+              </p>
+              <button
+                onClick={() => router.push("/pricing")}
+                className="mt-4 inline-flex items-center justify-center rounded-xl bg-amber-300 px-4 py-3 text-sm font-black text-black transition hover:bg-amber-200"
+              >
+                Upgrade to Add More Members
+              </button>
+            </div>
+          ) : (
+            <div className="rounded-2xl border border-cyan-400/25 bg-cyan-400/10 px-5 py-6 text-center">
+              <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200">
+                Family Usage
+              </p>
+              <p className="mt-3 text-3xl font-black text-white">
+                {memberCount} / {memberLimit}
+              </p>
+              <p className="mt-2 text-sm text-cyan-100">
+                Members used
+              </p>
+            </div>
+          )
         )}
 
         <button
