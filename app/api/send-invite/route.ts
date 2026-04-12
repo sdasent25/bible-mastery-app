@@ -15,10 +15,26 @@ export async function POST(req: Request) {
       subject: "You're invited to join a family on Bible Athlete",
       html: `
         <h2>You’ve been invited!</h2>
-        <p>Join your family and start learning together.</p>
-        <a href="${inviteLink}" style="padding:12px 20px;background:#00ff99;color:black;border-radius:8px;text-decoration:none;">
+        <p>Click below to join your family:</p>
+
+        <a href="${inviteLink}" style="
+          display:inline-block;
+          padding:12px 20px;
+          background:#00ff99;
+          color:black;
+          border-radius:8px;
+          text-decoration:none;
+          font-weight:bold;
+        ">
           Accept Invite
         </a>
+
+        <p style="margin-top:20px;">
+          Or paste this link into your browser:
+        </p>
+
+        <p>${inviteLink}</p>
+
         <p>This link expires in 48 hours.</p>
       `,
     })
