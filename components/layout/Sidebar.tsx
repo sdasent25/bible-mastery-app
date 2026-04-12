@@ -128,7 +128,8 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   const hasLeaderboardAccess =
     planType === "pro_plus" || planType === "family_pro_plus"
-  const showUpgradeCta = planType === "free" || planType === "pro"
+  const showUpgradeCta =
+    planType === "free" || planType === "pro" || planType === "family_pro"
   const planLabel =
     planType === "family_pro_plus"
       ? "Pro+"
@@ -181,7 +182,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             onClick={() => closeMobile?.()}
             className="block rounded-xl bg-yellow-400 px-4 py-3 text-center font-bold text-black transition hover:bg-yellow-300"
           >
-            Upgrade
+            Upgrade to Pro+
           </Link>
         )}
 

@@ -1,6 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+import Paywall from "@/components/Paywall"
 
 function QuestCard({
   title,
@@ -42,6 +45,50 @@ function QuestCard({
 }
 
 export default function QuestsPage() {
+  const [plan, setPlan] = useState("free")
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const run = async () => {
+      const supabase = createClient()
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        setLoading(false)
+        return
+      }
+
+      const { data } = await supabase
+        .from("profiles")
+        .select("plan")
+        .eq("id", user.id)
+        .single()
+
+      setPlan(data?.plan || "free")
+      setLoading(false)
+    }
+
+    run()
+  }, [])
+
+  const allowedPlans = ["pro_plus", "family_pro_plus"]
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
+  if (!allowedPlans.includes(plan)) {
+    return (
+      <Paywall
+        title="🔒 Quests Locked"
+        message="Upgrade to Pro+ to unlock advanced quests and deep learning systems."
+      />
+    )
+  }
+
   return (
     <div className="w-full px-4 py-6">
       <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
