@@ -11,13 +11,13 @@ type PlanId =
   | "pro_plus"
   | "family_pro_plus"
 
+type CheckoutPlan = "pro" | "pro_plus" | "family_pro" | "family_pro_plus"
+
 export default function UpgradePage() {
   const [isFamily, setIsFamily] = useState(false)
   const [plan, setPlan] = useState<PlanId>("free")
 
-  const handleCheckout = async (plan: "pro" | "pro_plus" | "family_pro" | "family_pro_plus") => {
-    console.log("🔥 CLICK TRIGGERED:", plan)
-
+  const handleCheckout = async (plan: CheckoutPlan) => {
     try {
       const res = await fetch("/api/stripe/checkout", {
         method: "POST",
@@ -27,29 +27,14 @@ export default function UpgradePage() {
         body: JSON.stringify({ plan }),
       })
 
-      console.log("🔥 RESPONSE STATUS:", res.status)
+      const data = await res.json()
 
-      const text = await res.text()
-      console.log("🔥 RAW RESPONSE:", text)
-
-      let data
-      try {
-        data = JSON.parse(text)
-      } catch (e) {
-        console.error("❌ JSON PARSE FAILED")
-      }
-
-      console.log("🔥 PARSED DATA:", data)
-
-      if (data?.url) {
-        console.log("✅ REDIRECTING TO:", data.url)
+      if (data.url) {
         window.location.href = data.url
       } else {
-        alert("❌ No URL returned from backend")
+        alert("Checkout failed")
       }
-
-    } catch (err) {
-      console.error("❌ FETCH ERROR:", err)
+    } catch {
       alert("Checkout failed")
     }
   }
@@ -103,9 +88,7 @@ export default function UpgradePage() {
           <button
             onClick={() => setIsFamily(false)}
             className={`flex-1 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
-              !isFamily
-                ? "bg-cyan-400 text-black"
-                : "text-zinc-300"
+              !isFamily ? "bg-cyan-400 text-black" : "text-zinc-300"
             }`}
           >
             Individual
@@ -114,9 +97,7 @@ export default function UpgradePage() {
           <button
             onClick={() => setIsFamily(true)}
             className={`flex-1 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
-              isFamily
-                ? "bg-cyan-400 text-black"
-                : "text-zinc-300"
+              isFamily ? "bg-cyan-400 text-black" : "text-zinc-300"
             }`}
           >
             Family

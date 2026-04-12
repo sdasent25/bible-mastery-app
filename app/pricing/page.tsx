@@ -2,8 +2,32 @@
 
 import { useState } from "react"
 
+type CheckoutPlan = "pro" | "pro_plus" | "family_pro" | "family_pro_plus"
+
 export default function PricingPage() {
   const [mode, setMode] = useState("individual")
+
+  const handleCheckout = async (plan: CheckoutPlan) => {
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ plan }),
+      })
+
+      const data = await res.json()
+
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert("Checkout failed")
+      }
+    } catch {
+      alert("Checkout failed")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#0d4f62_0%,_#0a1020_38%,_#04070f_100%)] px-4 py-6 text-white">
@@ -80,12 +104,12 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <a
-              href={`/test-checkout?plan=${mode === "individual" ? "pro" : "family_pro"}`}
-              className="mt-6 block rounded-2xl bg-emerald-400 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+            <button
+              onClick={() => handleCheckout(mode === "individual" ? "pro" : "family_pro")}
+              className="mt-6 block w-full rounded-2xl bg-emerald-400 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
             >
               Upgrade to Pro
-            </a>
+            </button>
           </div>
 
           <div className="rounded-[28px] border border-amber-300/35 bg-amber-300/10 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
@@ -128,12 +152,12 @@ export default function PricingPage() {
               ))}
             </div>
 
-            <a
-              href={`/test-checkout?plan=${mode === "individual" ? "pro_plus" : "family_pro_plus"}`}
-              className="mt-6 block rounded-2xl bg-amber-300 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+            <button
+              onClick={() => handleCheckout(mode === "individual" ? "pro_plus" : "family_pro_plus")}
+              className="mt-6 block w-full rounded-2xl bg-amber-300 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
             >
               Upgrade to Pro+
-            </a>
+            </button>
           </div>
         </div>
       </div>
