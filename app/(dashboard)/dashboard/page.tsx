@@ -10,6 +10,10 @@ export default function DashboardPage() {
   const [plan, setPlan] = useState("free")
   const [memberCount, setMemberCount] = useState<number | null>(null)
   const [memberLimit, setMemberLimit] = useState<number | null>(null)
+  const [familyId, setFamilyId] = useState<string | null>(null)
+  const [isOwner, setIsOwner] = useState(false)
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
 
   useEffect(() => {
     const run = async () => {
@@ -25,7 +29,7 @@ export default function DashboardPage() {
 
       const { data: membership } = await supabase
         .from("family_members")
-        .select("family_id")
+        .select("family_id, role")
         .eq("user_id", user.id)
         .is("removed_at", null)
         .maybeSingle()
@@ -33,6 +37,8 @@ export default function DashboardPage() {
       if (!membership?.family_id) return
 
       const familyId = membership.family_id
+      setFamilyId(familyId)
+      setIsOwner(membership.role === "owner")
 
       const [{ count }, { data: family }] = await Promise.all([
         supabase
@@ -53,6 +59,26 @@ export default function DashboardPage() {
 
     run()
   }, [])
+
+  const handleInvite = async () => {
+    if (!email || !familyId) return
+
+    const supabase = createClient()
+    const token = crypto.randomUUID()
+
+    const { error } = await supabase.from("family_invites").insert({
+      family_id: familyId,
+      email,
+      token,
+    })
+
+    if (error) {
+      setMessage("Error sending invite")
+    } else {
+      setMessage("Invite sent successfully")
+      setEmail("")
+    }
+  }
 
   const isFamilyFull =
     memberCount !== null &&
@@ -150,6 +176,37 @@ export default function DashboardPage() {
             Continue your daily journey
           </p>
         </div>
+
+        {isOwner && (
+          <div className="rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-5">
+            <h3 className="text-lg font-bold text-white text-center">
+              Invite Family Member
+            </h3>
+
+            <div className="mt-4 flex flex-col gap-3">
+              <input
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-zinc-400 outline-none"
+              />
+
+              <button
+                onClick={handleInvite}
+                className="w-full rounded-xl bg-emerald-300 px-4 py-3 text-sm font-black text-black transition hover:bg-emerald-200"
+              >
+                Send Invite
+              </button>
+            </div>
+
+            {message && (
+              <p className="mt-3 text-center text-sm text-emerald-100">
+                {message}
+              </p>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
