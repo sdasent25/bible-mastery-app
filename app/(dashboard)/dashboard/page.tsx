@@ -5,15 +5,26 @@ import { useRouter } from "next/navigation"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
 
+type FamilyMember = {
+  id: string
+  user_id: string
+  role: string
+}
+
 export default function DashboardPage() {
   const router = useRouter()
   const [plan, setPlan] = useState("free")
   const [memberCount, setMemberCount] = useState<number | null>(null)
   const [memberLimit, setMemberLimit] = useState<number | null>(null)
+  const [members, setMembers] = useState<FamilyMember[]>([])
   const [familyId, setFamilyId] = useState<string | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
+  const [membershipId, setMembershipId] = useState<string | null>(null)
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
+  const [removingMemberId, setRemovingMemberId] = useState<string | null>(null)
+  const [isLeavingFamily, setIsLeavingFamily] = useState(false)
 
   useEffect(() => {
     const run = async () => {
@@ -27,34 +38,44 @@ export default function DashboardPage() {
 
       if (!user) return
 
+      setUserId(user.id)
+
       const { data: membership } = await supabase
         .from("family_members")
-        .select("family_id, role")
+        .select("id, family_id, role")
         .eq("user_id", user.id)
         .is("removed_at", null)
         .maybeSingle()
 
       if (!membership?.family_id) return
 
-      const familyId = membership.family_id
-      setFamilyId(familyId)
+      const nextFamilyId = membership.family_id
+      setMembershipId(membership.id)
+      setFamilyId(nextFamilyId)
       setIsOwner(membership.role === "owner")
 
-      const [{ count }, { data: family }] = await Promise.all([
+      const [{ count }, { data: family }, { data: familyMembers }] = await Promise.all([
         supabase
           .from("family_members")
           .select("*", { count: "exact", head: true })
-          .eq("family_id", familyId)
+          .eq("family_id", nextFamilyId)
           .is("removed_at", null),
         supabase
           .from("families")
           .select("member_limit")
-          .eq("id", familyId)
+          .eq("id", nextFamilyId)
           .maybeSingle(),
+        supabase
+          .from("family_members")
+          .select("id, user_id, role")
+          .eq("family_id", nextFamilyId)
+          .is("removed_at", null)
+          .order("role", { ascending: true }),
       ])
 
       setMemberCount(count || 0)
       setMemberLimit(family?.member_limit || 4)
+      setMembers(familyMembers || [])
     }
 
     run()
@@ -117,6 +138,61 @@ export default function DashboardPage() {
     } else {
       setMessage("Invite saved but email failed")
     }
+  }
+
+  const removeMember = async (memberId: string, memberUserId: string) => {
+    if (!familyId || !isOwner || memberUserId === userId) return
+
+    const supabase = createClient()
+    setRemovingMemberId(memberId)
+    setMessage("")
+
+    const { error } = await supabase
+      .from("family_members")
+      .update({ removed_at: new Date().toISOString() })
+      .eq("id", memberId)
+      .eq("family_id", familyId)
+      .is("removed_at", null)
+
+    if (error) {
+      setMessage("Error removing member")
+      setRemovingMemberId(null)
+      return
+    }
+
+    setMembers((prev) => prev.filter((member) => member.id !== memberId))
+    setMemberCount((prev) => (prev !== null ? Math.max(prev - 1, 0) : prev))
+    setRemovingMemberId(null)
+    setMessage("Member removed successfully")
+  }
+
+  const leaveFamily = async () => {
+    if (!membershipId || isOwner) return
+
+    const supabase = createClient()
+    setIsLeavingFamily(true)
+    setMessage("")
+
+    const { error } = await supabase
+      .from("family_members")
+      .update({ removed_at: new Date().toISOString() })
+      .eq("id", membershipId)
+      .is("removed_at", null)
+
+    if (error) {
+      setMessage("Error leaving family")
+      setIsLeavingFamily(false)
+      return
+    }
+
+    setMembers([])
+    setMemberCount(0)
+    setMemberLimit(null)
+    setFamilyId(null)
+    setMembershipId(null)
+    setIsOwner(false)
+    router.refresh()
+    router.push("/family")
   }
 
   const isFamilyFull =
@@ -185,12 +261,65 @@ export default function DashboardPage() {
           )
         )}
 
+        {members.length > 0 && (
+          <div className="rounded-2xl border border-white/10 bg-zinc-900 p-5">
+            <h3 className="text-lg font-bold text-white">
+              Family Members
+            </h3>
+
+            <div className="mt-4 flex flex-col gap-3">
+              {members.map((member) => {
+                const isCurrentUser = member.user_id === userId
+                const canRemove = isOwner && !isCurrentUser
+                const isRemoving = removingMemberId === member.id
+
+                return (
+                  <div
+                    key={member.id}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-black/30 px-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-white">
+                        {member.user_id}
+                      </p>
+                      <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
+                        {member.role}
+                        {isCurrentUser ? " • You" : ""}
+                      </p>
+                    </div>
+
+                    {canRemove && (
+                      <button
+                        onClick={() => removeMember(member.id, member.user_id)}
+                        disabled={isRemoving}
+                        className="rounded-xl bg-red-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {isRemoving ? "Removing..." : "Remove"}
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
         <button
           onClick={() => router.push("/journey")}
           className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl text-lg font-semibold transition"
         >
           Start Daily Training
         </button>
+
+        {!isOwner && membershipId && (
+          <button
+            onClick={leaveFamily}
+            disabled={isLeavingFamily}
+            className="w-full rounded-xl bg-orange-400 px-4 py-3 text-sm font-black text-black transition hover:bg-orange-300 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isLeavingFamily ? "Leaving Family..." : "Leave Family"}
+          </button>
+        )}
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex justify-between">
           <div>
