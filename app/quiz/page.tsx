@@ -306,7 +306,23 @@ export default function QuizPage() {
     segment
   ]);
 
-  const activeQuestions = isReviewMode ? reviewQuestions : isWeaknessMode ? weakQuestions : questions;
+  const baseQuestions = isReviewMode
+    ? reviewQuestions
+    : isWeaknessMode
+    ? weakQuestions
+    : questions;
+
+  let maxQuestions = 2;
+
+  if (planType === "pro" || planType === "family_pro") {
+    maxQuestions = 7;
+  }
+
+  if (planType === "pro_plus" || planType === "family_pro_plus") {
+    maxQuestions = questionsPerDay || 10;
+  }
+
+  const activeQuestions = baseQuestions.slice(0, maxQuestions);
   const totalQuestions = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
