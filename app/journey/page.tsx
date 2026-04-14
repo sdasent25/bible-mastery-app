@@ -298,6 +298,7 @@ export default function JourneyPage() {
   const isFree = planType === "free" && !previewCompleted
   const isPro = planType === "pro"
   const isProPlus = planType === "pro_plus"
+  const hasJourneyAccess = isPro || isProPlus
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -591,7 +592,7 @@ export default function JourneyPage() {
               <button
                 onClick={() => {
                   if (!program) return
-                  if ((isProPlus || isFree) && activeNode) {
+                  if ((hasJourneyAccess || isFree) && activeNode) {
                     playSound("/sounds/click.mp3")
                     if (isFree) {
                       router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
@@ -605,7 +606,7 @@ export default function JourneyPage() {
                   router.push("/pricing?source=journey_locked")
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode || (!isProPlus && !isFree)}
+                disabled={!activeNode || (!hasJourneyAccess && !isFree)}
               >
                 Continue →
               </button>
@@ -615,12 +616,6 @@ export default function JourneyPage() {
               <div className="mt-4 text-center text-sm text-yellow-400">
                 Preview mode: Complete this first segment to explore.
                 Upgrade to unlock your full journey.
-              </div>
-            )}
-
-            {isPro && (
-              <div className="mt-4 text-center text-sm text-yellow-400">
-                Journey is available on Pro+ only. Upgrade to begin.
               </div>
             )}
 
