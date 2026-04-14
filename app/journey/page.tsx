@@ -169,11 +169,13 @@ export default function JourneyPage() {
           .single()
 
         const nextPlan = data?.final_plan ?? "free"
+        console.log("RAW FINAL PLAN FROM DB:", data?.final_plan)
         setPlanType(
           nextPlan === "pro" || nextPlan === "pro_plus" || nextPlan === "free"
             ? nextPlan
             : "free"
         )
+        console.log("SET PLAN TYPE:", nextPlan)
         setPreviewCompleted(profile?.preview_completed === true)
       } else {
         setPlanType("free")
@@ -276,6 +278,10 @@ export default function JourneyPage() {
 
   useEffect(() => {
     console.log("JOURNEY FINAL PLAN:", planType)
+  }, [planType])
+
+  useEffect(() => {
+    console.log("FINAL PLAN STATE:", planType)
   }, [planType])
 
   if (loading || !profileLoaded) {
