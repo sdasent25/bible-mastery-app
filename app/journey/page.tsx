@@ -225,9 +225,9 @@ export default function JourneyPage() {
       const isProPlus = planType === "pro_plus"
 
       const mapped = segments.map((seg, index) => {
-        let isAccessible = false
+      let isAccessible = false
 
-        if (isProPlus) {
+        if (hasJourneyAccess) {
           isAccessible = true
         } else if (isFree && index === 0) {
           isAccessible = true
