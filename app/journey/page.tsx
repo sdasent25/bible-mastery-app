@@ -193,6 +193,8 @@ export default function JourneyPage() {
   }, [])
 
   useEffect(() => {
+    if (!profileLoaded) return
+
     async function loadProgram() {
       const program = getProgramById(selectedProgram)
       let segments = []
