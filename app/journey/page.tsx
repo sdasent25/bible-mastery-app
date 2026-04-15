@@ -229,7 +229,7 @@ export default function JourneyPage() {
       const mapped = segments.map((seg, index) => {
       let isAccessible = false
 
-        if (hasJourneyAccess) {
+        if (planType === "pro" || planType === "pro_plus") {
           isAccessible = true
         } else if (isFree && index === 0) {
           isAccessible = true
