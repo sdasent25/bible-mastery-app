@@ -6,7 +6,7 @@ import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
 import { getProgramProgress } from "@/lib/programProgress"
-import { getUserPlan } from "@/lib/userPlan"
+import { getUserPlan } from "@/lib/getUserPlan"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
@@ -158,7 +158,7 @@ export default function JourneyPage() {
       const xpVal = await getXp()
       const incorrect = getIncorrectQuestions()
       const { data: userRes } = await supabase.auth.getUser()
-      const plan = await getUserPlan()
+      const currentPlan = await getUserPlan()
 
       if (userRes?.user) {
         const { data: profile } = await supabase
@@ -167,7 +167,7 @@ export default function JourneyPage() {
           .eq("id", userRes.user.id)
           .single()
 
-        const nextPlan = plan ?? "free"
+        const nextPlan = currentPlan ?? "free"
         setPlanType(nextPlan as JourneyPlanType)
         console.log("SET PLAN TYPE:", nextPlan)
         setPreviewCompleted(profile?.preview_completed === true)
@@ -180,7 +180,7 @@ export default function JourneyPage() {
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
-      setDailyGoal(plan?.segmentsPerDay ?? 2)
+      setDailyGoal(2)
     }
 
     void loadAllProgress()
