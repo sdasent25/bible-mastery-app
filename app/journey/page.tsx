@@ -13,7 +13,12 @@ import { playSound } from "@/lib/sound"
 import { supabase } from "@/lib/supabase"
 
 type NodeState = "complete" | "active" | "locked"
-type JourneyPlanType = "free" | "pro" | "pro_plus"
+type JourneyPlanType =
+  | "free"
+  | "pro"
+  | "pro_plus"
+  | "family_pro"
+  | "family_pro_plus"
 type JourneyLockReason = "UPGRADE_REQUIRED" | null
 
 type JourneyAccessResult = {
