@@ -229,7 +229,12 @@ export default function JourneyPage() {
       const mapped = segments.map((seg, index) => {
       let isAccessible = false
 
-        if (planType === "pro" || planType === "pro_plus") {
+        if (
+          planType === "pro" ||
+          planType === "pro_plus" ||
+          planType === "family_pro" ||
+          planType === "family_pro_plus"
+        ) {
           isAccessible = true
         } else if (isFree && index === 0) {
           isAccessible = true
@@ -304,8 +309,8 @@ export default function JourneyPage() {
   )
   const program = getProgramById(selectedProgram)
   const isFree = planType === "free" && !previewCompleted
-  const isPro = planType === "pro"
-  const isProPlus = planType === "pro_plus"
+  const isPro = planType === "pro" || planType === "family_pro"
+  const isProPlus = planType === "pro_plus" || planType === "family_pro_plus"
   const hasJourneyAccess = isPro || isProPlus
 
   return (
