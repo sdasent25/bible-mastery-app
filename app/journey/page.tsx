@@ -161,25 +161,14 @@ export default function JourneyPage() {
       const plan = await getUserPlan()
 
       if (userRes?.user) {
-        const { data } = await supabase
-          .from("user_access")
-          .select("final_plan")
-          .eq("user_id", userRes.user.id)
-          .single()
-
         const { data: profile } = await supabase
           .from("profiles")
           .select("preview_completed")
           .eq("id", userRes.user.id)
           .single()
 
-        const nextPlan = data?.final_plan ?? "free"
-        console.log("RAW FINAL PLAN FROM DB:", data?.final_plan)
-        setPlanType(
-          nextPlan === "pro" || nextPlan === "pro_plus" || nextPlan === "free"
-            ? nextPlan
-            : "free"
-        )
+        const nextPlan = plan ?? "free"
+        setPlanType(nextPlan as JourneyPlanType)
         console.log("SET PLAN TYPE:", nextPlan)
         setPreviewCompleted(profile?.preview_completed === true)
       } else {
