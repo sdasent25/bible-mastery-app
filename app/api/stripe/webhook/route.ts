@@ -13,26 +13,43 @@ export async function POST(req: Request) {
   if (event.type === "checkout.session.completed") {
     const session = event.data.object
 
-    const user_id = session.metadata?.user_id
+    const userId = session.metadata?.user_id
     const plan = session.metadata?.plan
 
-    console.log("🔥 METADATA:", { user_id, plan })
+    console.log("🔥 METADATA:", { userId, plan })
 
-    if (user_id && plan) {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      )
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
 
-      const { error } = await supabase
+    if (!userId || !plan) {
+      console.error("Missing metadata", { userId, plan })
+      return NextResponse.json({ error: "Missing metadata" })
+    }
+
+    // Individual plans
+    if (plan === "pro" || plan === "pro_plus") {
+      await supabase
         .from("profiles")
-        .update({ plan: plan })
-        .eq("id", user_id)
+        .update({ plan_type: plan })
+        .eq("id", userId)
+    }
 
-      if (error) {
-        console.error("❌ SUPABASE ERROR:", error)
-      } else {
-        console.log("✅ PLAN UPDATED")
+    // Family plans
+    if (plan === "family_pro" || plan === "family_pro_plus") {
+      const { data: member } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", userId)
+        .eq("status", "active")
+        .maybeSingle()
+
+      if (member?.family_id) {
+        await supabase
+          .from("families")
+          .update({ plan_type: plan })
+          .eq("id", member.family_id)
       }
     }
   }
