@@ -11,9 +11,9 @@ export async function getUserPlan() {
 
   const { data } = await supabase
     .from("profiles")
-    .select("plan")
+    .select("plan_type")
     .eq("id", user.id)
     .single()
 
-  return data?.plan || "free"
+  return data?.plan_type || "free"
 }
