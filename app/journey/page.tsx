@@ -611,18 +611,23 @@ export default function JourneyPage() {
             <div className="flex-shrink-0 pb-4">
               <button
                 onClick={() => {
-                  if (!program) return
-                  if (hasJourneyAccess && activeNode) {
-                    playSound("/sounds/click.mp3")
-                    if (isFree) {
-                      router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
-                      return
-                    }
+                  if (!program || !activeNode) return
 
+                  playSound("/sounds/click.mp3")
+
+                  // Free -> preview only
+                  if (isFree) {
+                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
+                    return
+                  }
+
+                  // Paid plans -> full access
+                  if (hasJourneyAccess) {
                     router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                     return
                   }
 
+                  // Fallback (should not happen)
                   router.push("/pricing?source=journey_locked")
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
