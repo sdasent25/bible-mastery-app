@@ -217,11 +217,12 @@ export default function JourneyPage() {
 
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
-      const isFree = planType === "free" && !previewCompleted
+      const isFree = planType === "free"
       const isPro =
         planType === "pro" || planType === "family_pro"
       const isProPlus =
         planType === "pro_plus" || planType === "family_pro_plus"
+      const hasPaidAccess = isPro || isProPlus
       const ACCESS = {
         journey: isPro || isProPlus,
         preview: isFree,
@@ -236,9 +237,10 @@ export default function JourneyPage() {
           isAccessible = true
         }
 
-        const isCompleted = isProPlus && index < progress.currentSegmentIndex
+        const isCompleted =
+          hasPaidAccess && index < progress.currentSegmentIndex
         const isActive =
-          (isProPlus && index === progress.currentSegmentIndex) ||
+          (hasPaidAccess && index === progress.currentSegmentIndex) ||
           (isFree && index === 0)
 
         const access = getSegmentAccess(planType, isAccessible)
@@ -304,7 +306,7 @@ export default function JourneyPage() {
     100,
   )
   const program = getProgramById(selectedProgram)
-  const isFree = planType === "free" && !previewCompleted
+  const isFree = planType === "free"
   const isPro =
     planType === "pro" || planType === "family_pro"
   const isProPlus =
