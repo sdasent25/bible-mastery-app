@@ -615,23 +615,17 @@ export default function JourneyPage() {
 
                   playSound("/sounds/click.mp3")
 
-                  // Free -> preview only
-                  if (isFree) {
+                  // FREE -> preview only
+                  if (planType === "free") {
                     router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
                     return
                   }
 
-                  // Paid plans -> full access
-                  if (hasJourneyAccess) {
-                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
-                    return
-                  }
-
-                  // Fallback (should not happen)
-                  router.push("/pricing?source=journey_locked")
+                  // ALL PAID PLANS -> full access
+                  router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode || (!hasJourneyAccess && !isFree)}
+                disabled={!activeNode}
               >
                 Continue →
               </button>
