@@ -73,7 +73,7 @@ export default function JourneyPage() {
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [nodes, setNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
-  const [planType, setPlanType] = useState<JourneyPlanType>("free")
+  const [planType, setPlanType] = useState<JourneyPlanType | null>(null)
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
   const [dailyGoal, setDailyGoal] = useState(1)
@@ -187,7 +187,7 @@ export default function JourneyPage() {
   }, [])
 
   useEffect(() => {
-    if (!profileLoaded) return
+    if (!profileLoaded || planType === null) return
 
     async function loadProgram() {
       const program = getProgramById(selectedProgram)
@@ -289,7 +289,7 @@ export default function JourneyPage() {
     console.log("FINAL PLAN STATE:", planType)
   }, [planType])
 
-  if (loading || !profileLoaded) {
+  if (loading || !profileLoaded || planType === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0B1220] text-white">
         Loading...
@@ -609,7 +609,7 @@ export default function JourneyPage() {
               <button
                 onClick={() => {
                   if (!program) return
-                  if ((hasJourneyAccess || isFree) && activeNode) {
+                  if (hasJourneyAccess && activeNode) {
                     playSound("/sounds/click.mp3")
                     if (isFree) {
                       router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
