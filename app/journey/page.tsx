@@ -218,19 +218,21 @@ export default function JourneyPage() {
       const start = progress.currentSegmentIndex
       const end = start + dailyGoal
       const isFree = planType === "free" && !previewCompleted
-      const isProPlus = planType === "pro_plus"
+      const isPro =
+        planType === "pro" || planType === "family_pro"
+      const isProPlus =
+        planType === "pro_plus" || planType === "family_pro_plus"
+      const ACCESS = {
+        journey: isPro || isProPlus,
+        preview: isFree,
+      }
 
       const mapped = segments.map((seg, index) => {
       let isAccessible = false
 
-        if (
-          planType === "pro" ||
-          planType === "pro_plus" ||
-          planType === "family_pro" ||
-          planType === "family_pro_plus"
-        ) {
+        if (ACCESS.journey) {
           isAccessible = true
-        } else if (isFree && index === 0) {
+        } else if (ACCESS.preview && index === 0) {
           isAccessible = true
         }
 
@@ -303,8 +305,14 @@ export default function JourneyPage() {
   )
   const program = getProgramById(selectedProgram)
   const isFree = planType === "free" && !previewCompleted
-  const isPro = planType === "pro" || planType === "family_pro"
-  const isProPlus = planType === "pro_plus" || planType === "family_pro_plus"
+  const isPro =
+    planType === "pro" || planType === "family_pro"
+  const isProPlus =
+    planType === "pro_plus" || planType === "family_pro_plus"
+  const ACCESS = {
+    journey: isPro || isProPlus,
+    preview: isFree,
+  }
   const hasJourneyAccess = isPro || isProPlus
 
   return (
