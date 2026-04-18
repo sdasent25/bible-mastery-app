@@ -243,7 +243,10 @@ export default function JourneyPage() {
           (hasPaidAccess && index === progress.currentSegmentIndex) ||
           (isFree && index === 0)
 
-        const access = getSegmentAccess(planType, isAccessible)
+        const access = getSegmentAccess(
+          (planType ?? "free") as JourneyPlanType,
+          isAccessible
+        )
         const isTodayTarget = index >= start && index < end
         let state: NodeState = "locked"
 
