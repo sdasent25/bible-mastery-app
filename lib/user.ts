@@ -33,7 +33,8 @@ export async function getSubscriptionStatus(): Promise<SubscriptionStatus> {
   const { data: access } = await supabase
     .from('user_access')
     .select('final_plan')
-    .maybeSingle()
+    .eq('user_id', user.id)
+    .single()
 
   console.log("FINAL PLAN:", access?.final_plan)
 
