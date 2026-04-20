@@ -80,7 +80,13 @@ export default function SegmentIntro() {
 
     const isAllowedPreview = planType === "free" && isPreview && segment === "genesis-1-3"
 
-    if (planType !== "pro_plus" && !isAllowedPreview) {
+    const hasFullAccess =
+      planType === "pro" ||
+      planType === "pro_plus" ||
+      planType === "family_pro" ||
+      planType === "family_pro_plus"
+
+    if (!hasFullAccess && !isAllowedPreview) {
       router.push("/pricing?source=journey_locked")
       return
     }
