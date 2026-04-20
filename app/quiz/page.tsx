@@ -313,8 +313,13 @@ export default function QuizPage() {
     : questions;
 
   let maxQuestions = 2;
+  const isPro =
+    planType === "pro" ||
+    planType === "pro_plus" ||
+    planType === "family_pro" ||
+    planType === "family_pro_plus";
 
-  if (planType === "pro" || planType === "family_pro") {
+  if (isPro) {
     maxQuestions = 7;
   }
 
