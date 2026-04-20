@@ -50,6 +50,20 @@ function getStreakMessage(streak: number) {
   return "";
 }
 
+function getQuestionCount(planType: string, selectedDepth?: number) {
+  if (planType === "free") return 2
+
+  if (planType === "pro" || planType === "family_pro") {
+    return 7
+  }
+
+  if (planType === "pro_plus" || planType === "family_pro_plus") {
+    return selectedDepth || 10
+  }
+
+  return 2
+}
+
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
@@ -278,11 +292,7 @@ export default function QuizPage() {
           id: q.id
         }));
 
-        setQuestions(
-          questionCount !== null
-            ? normalizedQuestions.slice(0, questionCount)
-            : normalizedQuestions
-        );
+        setQuestions(normalizedQuestions);
       } catch (error) {
         console.error('Error loading quiz questions:', error);
         setQuestions([]);
@@ -311,27 +321,13 @@ export default function QuizPage() {
     : isWeaknessMode
     ? weakQuestions
     : questions;
-
-  let maxQuestions = 2;
-  const isPro =
-    planType === "pro" ||
-    planType === "pro_plus" ||
-    planType === "family_pro" ||
-    planType === "family_pro_plus";
-
-  if (isPro) {
-    maxQuestions = 7;
-  }
-
-  if (planType === "pro_plus" || planType === "family_pro_plus") {
-    maxQuestions = questionsPerDay || 10;
-  }
-
-  const activeQuestions = baseQuestions.slice(0, maxQuestions);
-  const totalQuestions = activeQuestions.length;
+  const depth = questionCount ?? undefined;
+  const totalQuestions = getQuestionCount(planType ?? "free", depth);
+  const activeQuestions = baseQuestions.slice(0, totalQuestions);
+  const availableQuestionCount = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
-  const percentageScore = totalQuestions > 0 ? (score / totalQuestions) * 100 : 0;
+  const percentageScore = availableQuestionCount > 0 ? (score / availableQuestionCount) * 100 : 0;
   let percentile = 50;
   let percentileEmoji = '📖';
 
@@ -666,7 +662,7 @@ export default function QuizPage() {
     );
   }
 
-  const progress = ((currentQuestionIndex + 1) / totalQuestions) * 100;
+  const progress = ((currentQuestionIndex + 1) / availableQuestionCount) * 100;
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
   const isAnswered = selectedAnswer !== null;
   const isCorrectAnswer = selectedAnswer === currentQuestion.correctIndex;
@@ -780,7 +776,7 @@ export default function QuizPage() {
     setShowCelebration(false);
     setFlameState("idle");
 
-    if (currentQuestionIndex < totalQuestions - 1) {
+    if (currentQuestionIndex < availableQuestionCount - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setSelectedAnswer(null);
       setShowRetryPrompt(false);
