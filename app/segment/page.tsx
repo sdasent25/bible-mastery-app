@@ -196,10 +196,10 @@ export default function SegmentIntro() {
                 </button>
 
                 <button
-                  onClick={() => setQuestionCount(9)}
+                  onClick={() => setQuestionCount(10)}
                   className="w-full bg-neutral-800 py-3 rounded-xl text-white"
                 >
-                  🎯 Standard (9 questions)
+                  🎯 Standard (10 questions)
                 </button>
 
                 <button
@@ -214,7 +214,7 @@ export default function SegmentIntro() {
 
           {(!isProPlus || questionCount !== null) && (
             <Link
-              href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}${questionCount !== null ? `&questionCount=${questionCount}` : ""}`}
+              href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}${questionCount !== null ? `&depth=${questionCount}` : ""}`}
               className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
             >
               Continue →
