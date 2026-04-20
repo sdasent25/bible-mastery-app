@@ -9,11 +9,14 @@ export async function getUserPlan() {
 
   if (!user) return "free"
 
-  const { data } = await supabase
-    .from("profiles")
-    .select("plan_type")
-    .eq("id", user.id)
+  // Use user_access view as the source of truth for final plan resolution.
+  const { data, error } = await supabase
+    .from("user_access")
+    .select("final_plan")
+    .eq("user_id", user.id)
     .single()
 
-  return data?.plan_type || "free"
+  if (error || !data) return "free"
+
+  return data.final_plan || "free"
 }
