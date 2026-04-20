@@ -1,6 +1,7 @@
 import { supabase } from "./supabase"
 
 const MAX_XP_PER_EVENT = 50
+const DAILY_XP_CAP = 120
 const ALLOWED_XP_SOURCES = new Set([
   "quiz",
   "quiz_answer",
@@ -17,6 +18,41 @@ const ALLOWED_XP_SOURCES = new Set([
   "recall",
   "unknown",
 ])
+
+async function getTodayXp(userId: string) {
+  const today = new Date().toISOString().split("T")[0]
+
+  const { data } = await supabase
+    .from("daily_xp")
+    .select("xp")
+    .eq("user_id", userId)
+    .eq("date", today)
+    .maybeSingle()
+
+  return data?.xp || 0
+}
+
+async function addDailyXp(userId: string, amount: number) {
+  const today = new Date().toISOString().split("T")[0]
+
+  const { data: existing } = await supabase
+    .from("daily_xp")
+    .select("xp")
+    .eq("user_id", userId)
+    .eq("date", today)
+    .maybeSingle()
+
+  const next = (existing?.xp || 0) + amount
+
+  await supabase.from("daily_xp").upsert(
+    {
+      user_id: userId,
+      date: today,
+      xp: next,
+    },
+    { onConflict: "user_id,date" }
+  )
+}
 
 function getTodayDate() {
   return new Date().toISOString().split("T")[0]
@@ -137,7 +173,18 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
       newStreak = 1
     }
 
-    const updated = currentXp + normalizedAmount
+    const todayXp = await getTodayXp(user.id)
+
+    if (todayXp >= DAILY_XP_CAP) {
+      return currentXp
+    }
+
+    const allowedAmount = Math.min(
+      normalizedAmount,
+      DAILY_XP_CAP - todayXp
+    )
+
+    const updated = currentXp + allowedAmount
 
     const { error: updateError } = await supabase
       .from("profiles")
@@ -149,6 +196,8 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
       })
 
     if (updateError) throw updateError
+
+    await addDailyXp(user.id, allowedAmount)
 
     syncLocalStreak(newStreak, today)
 
