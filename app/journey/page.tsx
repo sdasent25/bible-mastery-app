@@ -319,6 +319,7 @@ export default function JourneyPage() {
     preview: isFree,
   }
   const hasJourneyAccess = isPro || isProPlus
+  const isPlanReady = planType !== null
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -611,7 +612,7 @@ export default function JourneyPage() {
             <div className="flex-shrink-0 pb-4">
               <button
                 onClick={() => {
-                  if (!program || !activeNode) return
+                  if (!program || !activeNode || !isPlanReady) return
 
                   playSound("/sounds/click.mp3")
 
@@ -625,7 +626,7 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode}
+                disabled={!activeNode || !isPlanReady}
               >
                 Continue →
               </button>
