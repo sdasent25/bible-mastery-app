@@ -35,9 +35,19 @@ export async function GET(req: NextRequest) {
       .eq("user_id", user.id)
       .single()
 
-    let questionsPerDay = 2 // default (Free + Pro preview)
+    let questionsPerDay = 2 // default (free)
 
-    if (access?.final_plan === "pro_plus") {
+    if (
+      access?.final_plan === "pro" ||
+      access?.final_plan === "family_pro"
+    ) {
+      questionsPerDay = 7
+    }
+
+    if (
+      access?.final_plan === "pro_plus" ||
+      access?.final_plan === "family_pro_plus"
+    ) {
       const { data: profile } = await supabase
         .from("profiles")
         .select("questions_per_day")
