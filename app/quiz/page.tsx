@@ -770,24 +770,29 @@ export default function QuizPage() {
     }
   };
 
+  const completeQuiz = () => {
+    setQuizCompleted(true);
+    setShowCelebration(true);
+    setTimeout(() => setShowCelebration(false), 1200);
+    if (!isReviewMode && !isTrainingMode) {
+      updateMastery();
+    }
+  };
+
   const handleNextQuestion = () => {
     setShowResult(null);
     setShowXpGain(false);
     setShowCelebration(false);
     setFlameState("idle");
 
-    if (currentQuestionIndex < availableQuestionCount - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setSelectedAnswer(null);
-      setShowRetryPrompt(false);
-    } else {
-      setQuizCompleted(true);
-      setShowCelebration(true);
-      setTimeout(() => setShowCelebration(false), 1200);
-      if (!isReviewMode && !isTrainingMode) {
-        updateMastery();
-      }
+    if (currentQuestionIndex >= totalQuestions - 1) {
+      completeQuiz()
+      return;
     }
+
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setSelectedAnswer(null);
+    setShowRetryPrompt(false);
   };
 
   const resetQuiz = () => {
