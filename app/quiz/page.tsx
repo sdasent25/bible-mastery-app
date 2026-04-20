@@ -785,12 +785,14 @@ export default function QuizPage() {
     setShowCelebration(false);
     setFlameState("idle");
 
-    if (currentQuestionIndex >= totalQuestions - 1) {
+    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1
+
+    if (isLastQuestion) {
       completeQuiz()
       return;
     }
 
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setCurrentQuestionIndex(prev => prev + 1);
     setSelectedAnswer(null);
     setShowRetryPrompt(false);
   };
