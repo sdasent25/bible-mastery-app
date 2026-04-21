@@ -162,12 +162,13 @@ export default function QuizPage() {
       const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
       const previewParam = params.get('preview') === 'true';
-      const questionCountParam = Number(params.get('questionCount'));
+      const depthParam = params.get("depth")
+      const depth = depthParam ? parseInt(depthParam) : null
 
       setIsPreviewMode(previewParam);
       setQuestionCount(
-        questionCountParam === 5 || questionCountParam === 9 || questionCountParam === 15
-          ? questionCountParam
+        depth === 5 || depth === 10 || depth === 15
+          ? depth
           : null
       );
 
@@ -321,8 +322,7 @@ export default function QuizPage() {
     : isWeaknessMode
     ? weakQuestions
     : questions;
-  const depth = questionCount ?? undefined;
-  const totalQuestions = getQuestionCount(planType ?? "free", depth);
+  const totalQuestions = getQuestionCount(planType ?? "free", questionCount ?? undefined);
   const activeQuestions = baseQuestions.slice(0, totalQuestions);
   const availableQuestionCount = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
