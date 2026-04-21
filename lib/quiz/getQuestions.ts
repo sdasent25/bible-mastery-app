@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/server"
 type GetQuestionsParams = {
   book?: string
   chapter?: number
+  startChapter?: number
+  endChapter?: number
   day?: number
   isPro: boolean
   userId: string
@@ -34,6 +36,8 @@ type QuestionHistoryRow = {
 export async function getQuestions({
   book,
   chapter,
+  startChapter,
+  endChapter,
   day,
   isPro,
   userId,
@@ -80,6 +84,8 @@ export async function getQuestions({
       supabase,
       book,
       chapter,
+      startChapter,
+      endChapter,
       day,
       difficulty,
       count,
@@ -94,6 +100,8 @@ export async function getQuestions({
             supabase,
             book,
             chapter,
+            startChapter,
+            endChapter,
             day,
             difficulty,
             count,
@@ -176,6 +184,8 @@ async function fetchQuestionsByDifficulty({
   supabase,
   book,
   chapter,
+  startChapter,
+  endChapter,
   day,
   difficulty,
   count,
@@ -185,6 +195,8 @@ async function fetchQuestionsByDifficulty({
   supabase: Awaited<ReturnType<typeof createClient>>
   book?: string
   chapter?: number
+  startChapter?: number
+  endChapter?: number
   day?: number
   difficulty: string
   count: number
@@ -194,6 +206,8 @@ async function fetchQuestionsByDifficulty({
   let query = supabase
     .from("questions")
     .select("*")
+
+  query = query
     .eq("difficulty", difficulty)
     .limit(count)
 
@@ -204,8 +218,14 @@ async function fetchQuestionsByDifficulty({
       query = query.eq("book", book)
     }
 
-    if (typeof chapter === "number") {
+    if (chapter) {
       query = query.eq("chapter", chapter)
+    }
+
+    if (startChapter && endChapter) {
+      query = query
+        .gte("chapter", startChapter)
+        .lte("chapter", endChapter)
     }
   }
 
