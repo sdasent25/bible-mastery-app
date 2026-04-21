@@ -165,21 +165,14 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Invalid segment" }, { status: 400 })
     }
 
-    let questions = []
-
-    for (let c = start; c <= end; c++) {
-      const batch = await getQuestions({
-        book,
-        chapter: c,
-        isPro,
-        userId: user.id,
-        limit: Math.ceil(questionCount / (end - start + 1))
-      })
-
-      questions.push(...batch)
-    }
-
-    questions = questions.slice(0, questionCount)
+    const questions = await getQuestions({
+      book,
+      startChapter: start,
+      endChapter: end,
+      isPro,
+      userId: user.id,
+      limit: questionCount
+    })
 
     return NextResponse.json(questions)
   } catch (err) {

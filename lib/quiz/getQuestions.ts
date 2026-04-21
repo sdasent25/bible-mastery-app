@@ -73,7 +73,7 @@ export async function getQuestions({
   }
 
   // 🧠 STEP 2 — Fetch questions by difficulty
-  const allQuestions: QuestionRow[] = []
+  const fetchedQuestions: QuestionRow[] = []
 
   for (const [difficulty, count] of Object.entries(difficultyMap)) {
     const filteredQuestions = await fetchQuestionsByDifficulty({
@@ -102,15 +102,15 @@ export async function getQuestions({
           })
 
     if (questionsForDifficulty.length > 0) {
-      // randomize + take needed count
+      // randomize results returned for this difficulty bucket
       const shuffled = shuffleArray(questionsForDifficulty)
-      allQuestions.push(...shuffled.slice(0, count))
+      fetchedQuestions.push(...shuffled)
     }
   }
 
   // 🚫 STEP 3 — Ensure no duplicates
   const uniqueMap = new Map<string, QuestionRow>()
-  for (const q of allQuestions) {
+  for (const q of fetchedQuestions) {
     uniqueMap.set(q.id, q)
   }
 
@@ -144,12 +144,10 @@ export async function getQuestions({
 
   scored.sort((a, b) => b.score - a.score)
 
-  const finalQuestions = shuffleArray(scored)
+  const combinedQuestions = shuffleArray(scored).map(formatQuestion)
+  const finalQuestions = combinedQuestions.slice(0, limit)
 
-  // 🔀 STEP 5 — Shuffle answer choices
-  const formatted = finalQuestions.map(formatQuestion)
-
-  return formatted
+  return finalQuestions
 }
 
 //
