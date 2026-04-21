@@ -2,51 +2,35 @@ import { createClient } from "@/lib/supabase/server"
 
 type GetQuestionsParams = {
   book: string
-  chapter?: number
-  startChapter?: number
-  endChapter?: number
-  userId: string
+  startChapter: number
+  endChapter: number
   limit: number
 }
 
 export async function getQuestions({
   book,
-  chapter,
   startChapter,
   endChapter,
-  userId,
   limit
 }: GetQuestionsParams) {
   const supabase = await createClient()
 
-  let query = supabase
+  const { data, error } = await supabase
     .from("questions")
     .select("*")
     .eq("book", book)
-
-  // ✅ Handle single chapter
-  if (chapter !== undefined) {
-    query = query.eq("chapter", chapter)
-  }
-
-  // ✅ Handle chapter range
-  if (startChapter !== undefined && endChapter !== undefined) {
-    query = query
-      .gte("chapter", startChapter)
-      .lte("chapter", endChapter)
-  }
-
-  // ✅ OVERFETCH to survive filtering
-  const { data, error } = await query.limit(limit * 4)
+    .gte("chapter", startChapter)
+    .lte("chapter", endChapter)
+    .limit(limit * 4) // 🔥 OVERFETCH
 
   if (error || !data) {
     console.error("Error fetching questions:", error)
     return []
   }
 
-  // ✅ Shuffle results
-  const shuffled = data.sort(() => 0.5 - Math.random())
+  // Shuffle
+  const shuffled = data.sort(() => Math.random() - 0.5)
 
-  // ✅ Return EXACT number requested
+  // Return EXACT amount
   return shuffled.slice(0, limit)
 }
