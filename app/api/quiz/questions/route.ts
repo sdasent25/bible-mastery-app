@@ -35,29 +35,32 @@ export async function GET(req: NextRequest) {
       .eq("user_id", user.id)
       .single()
 
-    let questionsPerDay = 2 // default (free)
+    // ✅ READ DEPTH FROM URL
+    const searchParams = req.nextUrl.searchParams
+    const depthParam = searchParams.get("depth")
+    const depth = depthParam ? parseInt(depthParam) : null
+
+    // ✅ DETERMINE QUESTION COUNT (SINGLE SOURCE OF TRUTH)
+    let questionCount = 2 // free default
 
     if (
       access?.final_plan === "pro" ||
       access?.final_plan === "family_pro"
     ) {
-      questionsPerDay = 7
+      questionCount = 7
     }
 
     if (
       access?.final_plan === "pro_plus" ||
       access?.final_plan === "family_pro_plus"
     ) {
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("questions_per_day")
-        .eq("id", user.id)
-        .single()
-
-      questionsPerDay = profile?.questions_per_day ?? 10
+      if (depth && [5, 10, 15].includes(depth)) {
+        questionCount = depth
+      } else {
+        questionCount = 10 // safe fallback
+      }
     }
 
-    const searchParams = req.nextUrl.searchParams
     const mode = searchParams.get("mode") || "normal"
     const isPro = searchParams.get("isPro") === "true"
 
@@ -132,7 +135,7 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      return NextResponse.json(allQuestions.slice(0, questionsPerDay))
+      return NextResponse.json(allQuestions.slice(0, questionCount))
     }
 
     let segment = searchParams.get("segment")
@@ -170,13 +173,13 @@ export async function GET(req: NextRequest) {
         chapter: c,
         isPro,
         userId: user.id,
-        limit: Math.ceil(questionsPerDay / (end - start + 1))
+        limit: Math.ceil(questionCount / (end - start + 1))
       })
 
       questions.push(...batch)
     }
 
-    questions = questions.slice(0, questionsPerDay)
+    questions = questions.slice(0, questionCount)
 
     return NextResponse.json(questions)
   } catch (err) {
