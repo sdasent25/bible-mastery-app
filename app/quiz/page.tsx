@@ -627,8 +627,12 @@ export default function QuizPage() {
     );
   }
 
-  if (!questions || questions.length === 0) {
+  if (!questions) {
     return <div>Loading questions...</div>;
+  }
+
+  if (questions.length === 0) {
+    return <div>No questions available for this segment.</div>;
   }
 
   if (activeQuestions.length === 0) {
