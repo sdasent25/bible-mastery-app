@@ -38,124 +38,40 @@ export async function getQuestions({
   chapter,
   startChapter,
   endChapter,
-  day,
-  isPro,
   userId,
-  limit = 10
-}: GetQuestionsParams) {
-  const supabase = await createClient()
-  const { data: historyData, error: historyError } = await supabase
-    .from("user_question_history")
-    .select("question_id, times_seen, times_correct, last_seen_at")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(50)
+  limit
+}) {
+  const supabase = createClient()
 
-  if (historyError) {
-    console.error("HISTORY ERROR:", historyError)
+  let query = supabase
+    .from("questions")
+    .select("*")
+    .eq("book", book)
+
+  // ✅ handle chapter or range
+  if (chapter) {
+    query = query.eq("chapter", chapter)
   }
 
-  const historyMap = new Map()
-
-  historyData?.forEach((item) => {
-    historyMap.set(item.question_id, item)
-  })
-
-  const seenQuestionIds: string[] =
-    historyData
-      ?.map((row: QuestionHistoryRow) => row.question_id)
-      .filter((questionId): questionId is string => Boolean(questionId)) ?? []
-
-  // 🎯 STEP 1 — Determine difficulty distribution
-  const easyCount = Math.ceil(limit * 0.2)
-  const mediumCount = Math.ceil(limit * 0.5)
-  const hardCount = limit - easyCount - mediumCount
-  const difficultyMap: Record<string, number> = {
-    easy: easyCount,
-    medium: mediumCount,
-    hard: hardCount
+  if (startChapter && endChapter) {
+    query = query
+      .gte("chapter", startChapter)
+      .lte("chapter", endChapter)
   }
 
-  // 🧠 STEP 2 — Fetch questions by difficulty
-  const fetchedQuestions: QuestionRow[] = []
+  // ✅ OVERFETCH (important)
+  const { data: questions, error } = await query.limit(limit * 4)
 
-  for (const [difficulty, count] of Object.entries(difficultyMap)) {
-    const filteredQuestions = await fetchQuestionsByDifficulty({
-      supabase,
-      book,
-      chapter,
-      startChapter,
-      endChapter,
-      day,
-      difficulty,
-      count,
-      seenQuestionIds,
-      applySeenFilter: seenQuestionIds.length > 0
-    })
-
-    const questionsForDifficulty =
-      filteredQuestions.length >= count
-        ? filteredQuestions
-        : await fetchQuestionsByDifficulty({
-            supabase,
-            book,
-            chapter,
-            startChapter,
-            endChapter,
-            day,
-            difficulty,
-            count,
-            seenQuestionIds,
-            applySeenFilter: false
-          })
-
-    if (questionsForDifficulty.length > 0) {
-      // randomize results returned for this difficulty bucket
-      const shuffled = shuffleArray(questionsForDifficulty)
-      fetchedQuestions.push(...shuffled)
-    }
+  if (error || !questions) {
+    console.error("Error fetching questions:", error)
+    return []
   }
 
-  // 🚫 STEP 3 — Ensure no duplicates
-  const uniqueMap = new Map<string, QuestionRow>()
-  for (const q of fetchedQuestions) {
-    uniqueMap.set(q.id, q)
-  }
+  // ✅ OPTIONAL: shuffle to avoid clustering
+  const shuffled = questions.sort(() => 0.5 - Math.random())
 
-  const uniqueQuestions = Array.from(uniqueMap.values())
-
-  // 🎯 STEP 4 — Prioritize unseen and weaker questions
-  const scored = uniqueQuestions.map((q) => {
-    const history = historyMap.get(q.id) as QuestionHistoryRow | undefined
-
-    if (!history) {
-      return { ...q, score: 1000 }
-    }
-
-    const timesSeen = history.times_seen ?? 0
-    const timesCorrect = history.times_correct ?? 0
-    const accuracy = timesSeen > 0 ? timesCorrect / timesSeen : 0
-    const weaknessScore = (1 - accuracy) * 500
-    const repetitionPenalty = timesSeen * -5
-    const recencyBonus = history.last_seen_at
-      ? Math.max(
-          0,
-          50 - (Date.now() - new Date(history.last_seen_at).getTime()) / 1000000
-        )
-      : 0
-
-    return {
-      ...q,
-      score: weaknessScore + repetitionPenalty + recencyBonus
-    }
-  })
-
-  scored.sort((a, b) => b.score - a.score)
-
-  const combinedQuestions = shuffleArray(scored).map(formatQuestion)
-  const finalQuestions = combinedQuestions.slice(0, limit)
-
-  return finalQuestions
+  // ✅ RETURN EXACT COUNT
+  return shuffled.slice(0, limit)
 }
 
 //
