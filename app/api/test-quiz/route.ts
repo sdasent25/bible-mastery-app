@@ -6,8 +6,8 @@ export async function GET() {
     const questions = await getQuestions({
       book: "Matthew",
       chapter: 5,
-      isPro: true,
-      userId: "test-user-id"
+      userId: "test-user-id",
+      limit: 10
     })
 
     return NextResponse.json(questions)
