@@ -3,14 +3,12 @@
 import { createClient } from "@/lib/supabase/server"
 
 type GetQuestionsParams = {
-  book?: string
+  book: any
   chapter?: number
   startChapter?: number
   endChapter?: number
-  day?: number
-  isPro: boolean
-  userId: string
-  limit?: number
+  userId: any
+  limit: number
 }
 
 type QuestionRow = {
