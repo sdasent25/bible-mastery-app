@@ -121,7 +121,6 @@ export async function GET(req: NextRequest) {
           book: book.charAt(0).toUpperCase() + book.slice(1),
           startChapter: Number(start),
           endChapter: Number(end),
-          userId: user.id,
           limit: questionCount
         })
 
@@ -162,7 +161,6 @@ export async function GET(req: NextRequest) {
       book,
       startChapter: start,
       endChapter: end,
-      userId: user.id,
       limit: questionCount
     })
 
