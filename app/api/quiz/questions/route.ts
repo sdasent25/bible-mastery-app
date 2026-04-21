@@ -117,20 +117,15 @@ export async function GET(req: NextRequest) {
 
       for (const segmentId of sortedSegments) {
         const [book, start, end] = segmentId.split("_")
-        const segmentMastery = masteryData?.find((m) => m.segment === segmentId)
-        const segmentLimit =
-          segmentMastery && segmentMastery.accuracy >= 0.8 ? 2 : 5
+        const questions = await getQuestions({
+          book: book.charAt(0).toUpperCase() + book.slice(1),
+          startChapter: Number(start),
+          endChapter: Number(end),
+          userId: user.id,
+          limit: questionCount
+        })
 
-        for (let c = Number(start); c <= Number(end); c++) {
-          const batch = await getQuestions({
-            book: book.charAt(0).toUpperCase() + book.slice(1),
-            chapter: c,
-            userId: user.id,
-            limit: segmentLimit
-          })
-
-          allQuestions.push(...batch)
-        }
+        allQuestions.push(...questions)
       }
 
       return NextResponse.json(allQuestions.slice(0, questionCount))
