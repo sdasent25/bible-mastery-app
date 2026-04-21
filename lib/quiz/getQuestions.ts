@@ -63,16 +63,13 @@ export async function getQuestions({
       .filter((questionId): questionId is string => Boolean(questionId)) ?? []
 
   // 🎯 STEP 1 — Determine difficulty distribution
-  let difficultyMap: Record<string, number>
-
-  if (!isPro) {
-    difficultyMap = { easy: limit }
-  } else {
-    difficultyMap = {
-      easy: 2,
-      medium: 4,
-      hard: 4
-    }
+  const easyCount = Math.ceil(limit * 0.2)
+  const mediumCount = Math.ceil(limit * 0.5)
+  const hardCount = limit - easyCount - mediumCount
+  const difficultyMap: Record<string, number> = {
+    easy: easyCount,
+    medium: mediumCount,
+    hard: hardCount
   }
 
   // 🧠 STEP 2 — Fetch questions by difficulty
@@ -147,7 +144,7 @@ export async function getQuestions({
 
   scored.sort((a, b) => b.score - a.score)
 
-  const finalQuestions = shuffleArray(scored.slice(0, limit))
+  const finalQuestions = shuffleArray(scored)
 
   // 🔀 STEP 5 — Shuffle answer choices
   const formatted = finalQuestions.map(formatQuestion)
@@ -200,7 +197,7 @@ async function fetchQuestionsByDifficulty({
     .from("questions")
     .select("*")
     .eq("difficulty", difficulty)
-    .limit(count * 3)
+    .limit(count)
 
   if (typeof day === "number") {
     query = query.eq("day", day)
