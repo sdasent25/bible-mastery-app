@@ -642,14 +642,8 @@ export default function QuizPage() {
     );
   }
 
-  if (questions.length === 0) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <div className="text-center">
-          <p className="text-lg text-slate-300">No questions available for this segment yet</p>
-        </div>
-      </div>
-    );
+  if (!questions || questions.length === 0) {
+    return <div>Loading questions...</div>;
   }
 
   if (activeQuestions.length === 0) {
@@ -660,6 +654,10 @@ export default function QuizPage() {
         </div>
       </div>
     );
+  }
+
+  if (!currentQuestion) {
+    return <div>Loading next question...</div>;
   }
 
   const progress = ((currentQuestionIndex + 1) / availableQuestionCount) * 100;
