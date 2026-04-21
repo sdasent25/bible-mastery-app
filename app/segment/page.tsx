@@ -18,7 +18,9 @@ export default function SegmentIntro() {
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
   const isPreview = searchParams.get("preview") === "true"
-  const isProPlus = planType === "pro_plus"
+  const isProPlus =
+    planType === "pro_plus" ||
+    planType === "family_pro_plus"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 

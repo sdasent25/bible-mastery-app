@@ -1,6 +1,11 @@
 import { supabase } from './supabase'
 
-export type PlanType = 'free' | 'pro' | 'pro_plus'
+export type PlanType =
+  | "free"
+  | "pro"
+  | "pro_plus"
+  | "family_pro"
+  | "family_pro_plus"
 
 type AccessPlanRow = {
   final_plan?: PlanType | null
@@ -14,12 +19,21 @@ type SubscriptionStatus = {
 
 function getPlanFromAccess(access: AccessPlanRow | null): PlanType {
   const plan = access?.final_plan || 'free'
-  return plan === 'pro' || plan === 'pro_plus' ? plan : 'free'
+  return plan === "pro" ||
+    plan === "pro_plus" ||
+    plan === "family_pro" ||
+    plan === "family_pro_plus"
+    ? plan
+    : "free"
 }
 
 export function getPlanFlags(plan: PlanType): Pick<SubscriptionStatus, 'isPro' | 'isProPlus'> {
-  const isPro = plan === 'pro' || plan === 'pro_plus'
-  const isProPlus = plan === 'pro_plus'
+  const isPro =
+    plan === 'pro' ||
+    plan === 'pro_plus' ||
+    plan === 'family_pro' ||
+    plan === 'family_pro_plus'
+  const isProPlus = plan === 'pro_plus' || plan === 'family_pro_plus'
 
   return { isPro, isProPlus }
 }

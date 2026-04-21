@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { getQuestions } from "@/lib/quiz/getQuestions"
+import { getQuestionCount } from "@/lib/quiz/getQuestionCount"
 import { segments } from "@/lib/questions"
 
 export const dynamic = "force-dynamic"
@@ -40,26 +41,10 @@ export async function GET(req: NextRequest) {
     const depthParam = searchParams.get("depth")
     const depth = depthParam ? parseInt(depthParam) : null
 
-    // ✅ DETERMINE QUESTION COUNT (SINGLE SOURCE OF TRUTH)
-    let questionCount = 2 // free default
-
-    if (
-      access?.final_plan === "pro" ||
-      access?.final_plan === "family_pro"
-    ) {
-      questionCount = 7
-    }
-
-    if (
-      access?.final_plan === "pro_plus" ||
-      access?.final_plan === "family_pro_plus"
-    ) {
-      if (depth && [5, 10, 15].includes(depth)) {
-        questionCount = depth
-      } else {
-        questionCount = 10 // safe fallback
-      }
-    }
+    const questionCount = getQuestionCount(
+      access?.final_plan,
+      depth || undefined
+    )
 
     const mode = searchParams.get("mode") || "normal"
 

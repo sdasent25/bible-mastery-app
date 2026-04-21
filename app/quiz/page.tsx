@@ -50,20 +50,6 @@ function getStreakMessage(streak: number) {
   return "";
 }
 
-function getQuestionCount(planType: string, selectedDepth?: number) {
-  if (planType === "free") return 2
-
-  if (planType === "pro" || planType === "family_pro") {
-    return 7
-  }
-
-  if (planType === "pro_plus" || planType === "family_pro_plus") {
-    return selectedDepth || 10
-  }
-
-  return 2
-}
-
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
@@ -110,7 +96,7 @@ export default function QuizPage() {
   const [previewCompleted, setPreviewCompleted] = useState<boolean | null>(null);
   const [planType, setPlanType] = useState<string | null>(null);
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
-  const [questionCount, setQuestionCount] = useState<number | null>(null);
+  const [depth, setDepth] = useState<number | null>(null);
   const [questionsPerDay, setQuestionsPerDay] = useState(10);
 
   const activeProgram = getProgramById(activeProgramId);
@@ -166,7 +152,7 @@ export default function QuizPage() {
       const depth = depthParam ? parseInt(depthParam) : null
 
       setIsPreviewMode(previewParam);
-      setQuestionCount(
+      setDepth(
         depth === 5 || depth === 10 || depth === 15
           ? depth
           : null
@@ -274,7 +260,7 @@ export default function QuizPage() {
             : segment;
 
         const response = await fetch(
-          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
+          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${depth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
           {
             credentials: 'include'
           }
@@ -312,7 +298,7 @@ export default function QuizPage() {
     loadingPro,
     mode,
     paramsInitialized,
-    questionCount,
+    depth,
     quizSeed,
     segment
   ]);
@@ -322,8 +308,7 @@ export default function QuizPage() {
     : isWeaknessMode
     ? weakQuestions
     : questions;
-  const totalQuestions = getQuestionCount(planType ?? "free", questionCount ?? undefined);
-  const activeQuestions = baseQuestions.slice(0, totalQuestions);
+  const activeQuestions = baseQuestions;
   const availableQuestionCount = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
 
@@ -783,7 +768,7 @@ export default function QuizPage() {
     setShowCelebration(false);
     setFlameState("idle");
 
-    const isLastQuestion = currentQuestionIndex >= totalQuestions - 1
+    const isLastQuestion = currentQuestionIndex >= availableQuestionCount - 1
 
     if (isLastQuestion) {
       completeQuiz()
@@ -1067,7 +1052,7 @@ export default function QuizPage() {
                   </button>
 
                   <span className="text-sm md:text-base text-slate-300">
-                    Question {currentQuestionIndex + 1} of {totalQuestions}
+                    Question {currentQuestionIndex + 1} of {availableQuestionCount}
                   </span>
                 </div>
 
