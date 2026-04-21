@@ -31,6 +31,28 @@ export async function getQuestions({
   // Shuffle
   const shuffled = data.sort(() => Math.random() - 0.5)
 
+  const normalized = shuffled.map((q) => {
+    const options = [
+      q.option_a,
+      q.option_b,
+      q.option_c,
+      q.option_d
+    ]
+
+    const correctIndex =
+      q.correct_answer === "A" ? 0 :
+      q.correct_answer === "B" ? 1 :
+      q.correct_answer === "C" ? 2 :
+      q.correct_answer === "D" ? 3 :
+      0
+
+    return {
+      ...q,
+      options,
+      correctIndex
+    }
+  })
+
   // Return EXACT amount
-  return shuffled.slice(0, limit)
+  return normalized.slice(0, limit)
 }
