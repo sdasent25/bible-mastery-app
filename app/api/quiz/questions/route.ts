@@ -62,7 +62,6 @@ export async function GET(req: NextRequest) {
     }
 
     const mode = searchParams.get("mode") || "normal"
-    const isPro = searchParams.get("isPro") === "true"
 
     const { data: historyCheck } = await supabase
       .from("user_question_history")
@@ -126,7 +125,6 @@ export async function GET(req: NextRequest) {
           const batch = await getQuestions({
             book: book.charAt(0).toUpperCase() + book.slice(1),
             chapter: c,
-            isPro: true,
             userId: user.id,
             limit: segmentLimit
           })
@@ -169,7 +167,6 @@ export async function GET(req: NextRequest) {
       book,
       startChapter: start,
       endChapter: end,
-      isPro,
       userId: user.id,
       limit: questionCount
     })
