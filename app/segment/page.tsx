@@ -14,6 +14,7 @@ export default function SegmentIntro() {
   const [planType, setPlanType] = useState("free")
   const [previewCompleted, setPreviewCompleted] = useState(false)
   const [questionCount, setQuestionCount] = useState<number | null>(null)
+  const [availableCount, setAvailableCount] = useState<number | null>(null)
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
@@ -93,6 +94,16 @@ export default function SegmentIntro() {
       return
     }
   }, [book, chapter, isPreview, planType, previewCompleted, profileLoaded, router, segment])
+
+  useEffect(() => {
+    if (!segment) return
+
+    fetch(`/api/quiz/question-count?segment=${segment}`)
+      .then(res => res.json())
+      .then(data => {
+        setAvailableCount(data.count || 0)
+      })
+  }, [segment])
 
   if (!profileLoaded) {
     return (
@@ -192,6 +203,7 @@ export default function SegmentIntro() {
               <div className="space-y-3">
                 <button
                   onClick={() => setQuestionCount(5)}
+                  disabled={availableCount !== null && availableCount < 5}
                   className="w-full bg-neutral-800 py-3 rounded-xl text-white"
                 >
                   ⚡ Quick Review (5 questions)
@@ -199,6 +211,7 @@ export default function SegmentIntro() {
 
                 <button
                   onClick={() => setQuestionCount(10)}
+                  disabled={availableCount !== null && availableCount < 10}
                   className="w-full bg-neutral-800 py-3 rounded-xl text-white"
                 >
                   🎯 Standard (10 questions)
@@ -206,9 +219,10 @@ export default function SegmentIntro() {
 
                 <button
                   onClick={() => setQuestionCount(15)}
+                  disabled={availableCount !== null && availableCount < 5}
                   className="w-full bg-green-500 py-3 rounded-xl text-black font-bold"
                 >
-                  🔥 Deep Study (15 questions)
+                  🔥 Deep Study ({availableCount ? Math.min(15, availableCount) : "..."} available)
                 </button>
               </div>
             </div>

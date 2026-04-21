@@ -23,10 +23,14 @@ export async function getQuestions({
     .lte("chapter", endChapter)
     .limit(limit * 4) // 🔥 OVERFETCH
 
+  const availableCount = data?.length || 0
+
   if (error || !data) {
     console.error("Error fetching questions:", error)
     return []
   }
+
+  console.log("Requested:", limit, "Available:", availableCount)
 
   // Shuffle
   const shuffled = data.sort(() => Math.random() - 0.5)
@@ -53,6 +57,8 @@ export async function getQuestions({
     }
   })
 
+  const finalLimit = Math.min(limit, availableCount)
+
   // Return EXACT amount
-  return normalized.slice(0, limit)
+  return normalized.slice(0, finalLimit)
 }
