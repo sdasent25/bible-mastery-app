@@ -6,6 +6,7 @@ import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
 import { nodes } from "@/lib/nodes"
+import { createClient } from "@/lib/supabase/client"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { getXp } from "@/lib/xp"
@@ -81,6 +82,8 @@ export default function JourneyPage() {
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
   const [previewCompleted, setPreviewCompleted] = useState(false)
+  const [masteryData, setMasteryData] = useState<any[]>([])
+  const [lastCompletedDate, setLastCompletedDate] = useState<string | null>(null)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -136,6 +139,33 @@ export default function JourneyPage() {
     void loadDailyProgress()
   }, [])
 
+  useEffect(() => {
+    const loadProgress = async () => {
+      const supabase = createClient()
+
+      const { data: userData } = await supabase.auth.getUser()
+      const user = userData?.user
+
+      if (!user) return
+
+      const { data: mastery } = await supabase
+        .from("user_segment_mastery")
+        .select("segment, mastered")
+        .eq("user_id", user.id)
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("last_completed_date")
+        .eq("id", user.id)
+        .single()
+
+      setMasteryData(mastery || [])
+      setLastCompletedDate(profile?.last_completed_date || null)
+    }
+
+    void loadProgress()
+  }, [])
+
   const handleTrainWeak = () => {
     router.push("/quiz?mode=training")
   }
@@ -158,6 +188,33 @@ export default function JourneyPage() {
       setSelectedSegment(journeyNodes[nextIndex]?.segment)
     }
   }
+
+  const masteredSet = new Set(
+    masteryData
+      .filter(m => m.mastered)
+      .map(m => m.segment)
+  )
+
+  let unlockIndex = 0
+
+  for (let i = 0; i < nodes.length; i++) {
+    if (masteredSet.has(nodes[i].id)) {
+      unlockIndex = i + 1
+    } else {
+      break
+    }
+  }
+
+  const today = new Date().toISOString().split("T")[0]
+
+  const alreadyCompletedToday =
+    lastCompletedDate === today
+
+  if (alreadyCompletedToday) {
+    unlockIndex = Math.max(0, unlockIndex - 1)
+  }
+
+  // TODO: update last_completed_date after quiz completion
 
   useEffect(() => {
     async function loadAllProgress() {
@@ -208,52 +265,6 @@ export default function JourneyPage() {
           bonusAwarded: false,
         }
       }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      const { data: masteryData } = user
-        ? await supabase
-          .from("user_segment_mastery")
-          .select("segment, mastered")
-          .eq("user_id", user.id)
-        : { data: null }
-
-      const masteredSet = new Set(
-        (masteryData || [])
-          .filter(m => m.mastered)
-          .map(m => m.segment)
-      )
-
-      let unlockIndex = 0
-
-      for (let i = 0; i < nodes.length; i++) {
-        if (masteredSet.has(nodes[i].id)) {
-          unlockIndex = i + 1
-        } else {
-          break
-        }
-      }
-
-      const { data: completionProfile } = user
-        ? await supabase
-          .from("profiles")
-          .select("last_completed_date")
-          .eq("id", user.id)
-          .single()
-        : { data: null }
-
-      const today = new Date().toISOString().split("T")[0]
-
-      const alreadyCompletedToday =
-        completionProfile?.last_completed_date === today
-
-      if (alreadyCompletedToday) {
-        unlockIndex = Math.max(0, unlockIndex - 1)
-      }
-
-      // TODO: update last_completed_date after quiz completion
 
       const start = unlockIndex
       const end = start + dailyGoal
@@ -327,7 +338,7 @@ export default function JourneyPage() {
     }
 
     void loadProgram()
-  }, [dailyGoal, planType, previewCompleted, selectedProgram])
+  }, [dailyGoal, planType, previewCompleted, selectedProgram, unlockIndex, masteryData])
 
   useEffect(() => {
     console.log("JOURNEY FINAL PLAN:", planType)
