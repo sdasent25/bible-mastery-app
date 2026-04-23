@@ -365,7 +365,7 @@ export const nodes: Node[] = [
   { id: "2_peter_1_3", book: "2 Peter", startChapter: 1, endChapter: 3, day: 355, label: "2 Peter 1–3" },
   { id: "1_john_1_3", book: "1 John", startChapter: 1, endChapter: 3, day: 356, label: "1 John 1–3" },
   { id: "1_john_4_5", book: "1 John", startChapter: 4, endChapter: 5, day: 357, label: "1 John 4–5" },
-  { id: "2_john_1_1", book: "2 John", startChapter: 1, endChapter: 1, day: 358, label: "2 John 1, 3 John 1, Jude 1" },
+  { id: "jude_1_1", book: "Jude", startChapter: 1, endChapter: 1, day: 358, label: "2 John, 3 John, Jude" },
   { id: "revelation_1_3", book: "Revelation", startChapter: 1, endChapter: 3, day: 359, label: "Revelation 1–3" },
   { id: "revelation_4_6", book: "Revelation", startChapter: 4, endChapter: 6, day: 360, label: "Revelation 4–6" },
   { id: "revelation_7_9", book: "Revelation", startChapter: 7, endChapter: 9, day: 361, label: "Revelation 7–9" },
@@ -399,14 +399,14 @@ export function parseNodeId(id: string) {
 
   if (parts.length < 3) return null
 
-  const startChapter = Number(parts.slice().reverse()[1])
-  const endChapter = Number(parts.slice().reverse()[0])
-  const bookSlug = parts.slice(0, parts.length + ~1).join("_")
+  const book = parts.slice(0, parts.length - 2).join("_")
+  const startChapter = Number(parts[parts.length - 2])
+  const endChapter = Number(parts[parts.length - 1])
 
-  if (!bookSlug || Number.isNaN(startChapter) || Number.isNaN(endChapter)) return null
+  if (!book || Number.isNaN(startChapter) || Number.isNaN(endChapter)) return null
 
   return {
-    book: bookSlugToName[bookSlug] || bookSlug.charAt(0).toUpperCase() + bookSlug.slice(1),
+    book: book.charAt(0).toUpperCase() + book.slice(1),
     startChapter,
     endChapter
   }
