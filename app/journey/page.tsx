@@ -325,7 +325,7 @@ export default function JourneyPage() {
   const isPlanReady = planType !== null
 
   return (
-    <div className="h-screen flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="relative flex-1 px-4 py-6 md:px-8">
@@ -376,11 +376,10 @@ export default function JourneyPage() {
           </div>
         )}
 
-        <div className="flex-1 flex flex-col justify-center">
-        <div className="flex flex-col lg:flex-row gap-8 max-w-5xl mx-auto">
+        <div className="flex w-full flex-col lg:flex-row justify-center gap-12 px-8">
 
           {/* PATH */}
-          <div className="flex-1 relative">
+          <div className="mt-16 flex flex-col items-center justify-center flex-1 max-w-4xl">
             <div className="hidden md:flex justify-between mb-4">
               <button
                 onClick={() => {
@@ -409,9 +408,7 @@ export default function JourneyPage() {
 
             <div
               className="
-                relative flex items-center justify-center
-                h-[480px] md:h-[520px]
-                overflow-hidden
+                flex items-center justify-center gap-6 relative
                 touch-pan-x
               "
               onMouseDown={handleStart}
@@ -426,24 +423,13 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const isAccessible = node.isAccessible
-                const translateX = offset * 160
-                const scale = isActive ? 1.08 : 0.85
-                const zIndex = 100 - Math.abs(offset)
 
                 return (
                   <div
                     key={index}
-                    className="absolute transition-all duration-300"
-                    style={{
-                      transform: `
-                        translateX(${translateX}px)
-                        translateY(${isActive ? "-10px" : "0px"})
-                        scale(${scale})
-                      `,
-                      willChange: "transform",
-                      zIndex,
-                      opacity: Math.abs(offset) > 2 ? 0 : Math.abs(offset) > 0 ? 0.85 : 1,
-                    }}
+                    className={`transition-all duration-300 ${
+                      isActive ? "scale-125 z-20" : "scale-95 opacity-60"
+                    }`}
                   >
                     <div className="relative flex flex-col items-center">
                       {node.isTodayTarget && !isLocked && (
@@ -482,7 +468,7 @@ export default function JourneyPage() {
                           }
                         }}
                         className={`
-                          relative w-56 md:w-64 h-72 md:h-80
+                          relative min-w-[320px] max-w-[320px] h-72 md:h-80
                           rounded-2xl overflow-hidden
                           cursor-pointer
                           border
@@ -528,6 +514,7 @@ export default function JourneyPage() {
           </div>
 
           {/* RIGHT PANEL */}
+          <div className="w-[320px] flex-shrink-0">
           <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
@@ -642,7 +629,7 @@ export default function JourneyPage() {
             )}
 
           </div>
-        </div>
+          </div>
         </div>
         </div>
       </div>
