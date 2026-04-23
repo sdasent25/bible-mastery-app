@@ -209,7 +209,53 @@ export default function JourneyPage() {
         }
       }
 
-      const start = progress.currentSegmentIndex
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      const { data: masteryData } = user
+        ? await supabase
+          .from("user_segment_mastery")
+          .select("segment, mastered")
+          .eq("user_id", user.id)
+        : { data: null }
+
+      const masteredSet = new Set(
+        (masteryData || [])
+          .filter(m => m.mastered)
+          .map(m => m.segment)
+      )
+
+      let unlockIndex = 0
+
+      for (let i = 0; i < nodes.length; i++) {
+        if (masteredSet.has(nodes[i].id)) {
+          unlockIndex = i + 1
+        } else {
+          break
+        }
+      }
+
+      const { data: completionProfile } = user
+        ? await supabase
+          .from("profiles")
+          .select("last_completed_date")
+          .eq("id", user.id)
+          .single()
+        : { data: null }
+
+      const today = new Date().toISOString().split("T")[0]
+
+      const alreadyCompletedToday =
+        completionProfile?.last_completed_date === today
+
+      if (alreadyCompletedToday) {
+        unlockIndex = Math.max(0, unlockIndex - 1)
+      }
+
+      // TODO: update last_completed_date after quiz completion
+
+      const start = unlockIndex
       const end = start + dailyGoal
       const isFree = planType === "free"
       const isPro =
@@ -224,18 +270,19 @@ export default function JourneyPage() {
 
       const mapped = segments.map((seg, index) => {
         const segmentId = seg.id
+        const isLocked = index > unlockIndex
         let isAccessible = false
 
-        if (ACCESS.journey) {
+        if (ACCESS.journey && !isLocked) {
           isAccessible = true
         } else if (ACCESS.preview && index === 0) {
           isAccessible = true
         }
 
         const isCompleted =
-          hasPaidAccess && index < progress.currentSegmentIndex
+          hasPaidAccess && masteredSet.has(segmentId)
         const isActive =
-          (hasPaidAccess && index === progress.currentSegmentIndex) ||
+          (hasPaidAccess && index === unlockIndex) ||
           (isFree && index === 0)
 
         const access = getSegmentAccess(
@@ -256,6 +303,7 @@ export default function JourneyPage() {
           label: seg.label,
           planType,
           currentSegmentIndex: progress.currentSegmentIndex,
+          unlockIndex,
           isAccessible,
         })
 
@@ -441,13 +489,15 @@ export default function JourneyPage() {
                       )}
 
                       {isLocked && (
-                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/25 rounded-2xl">
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
                           <span className="text-xl">🔒</span>
                         </div>
                       )}
 
                       <div
                         onClick={() => {
+                          if (isLocked) return
+
                           if (index === activeIndex) {
                             if (!isAccessible) {
                               router.push("/pricing?source=journey_locked")
