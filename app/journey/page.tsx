@@ -140,16 +140,6 @@ export default function JourneyPage() {
     router.push("/quiz?mode=training")
   }
 
-  useEffect(() => {
-    const container = document.querySelector(".node-scroll")
-    if (container) {
-      container.scrollTo({
-        left: container.scrollWidth / 2,
-        behavior: "smooth"
-      })
-    }
-  }, [selectedSegment])
-
   const handleStart = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     startX.current = "touches" in event ? event.touches[0].clientX : event.clientX
   }
@@ -535,38 +525,6 @@ export default function JourneyPage() {
               })}
             </div>
 
-            <div className="node-scroll flex gap-4 overflow-x-auto px-4">
-              {visibleNodes.map((node) => {
-                const isActive = node.segment === selectedSegment
-                const nodeDay = nodes.find((canonicalNode) => canonicalNode.id === node.segment)?.day
-
-                return (
-                  <div
-                    key={node.segment}
-                    onClick={() => {
-                      const nextIndex = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
-                      setSelectedSegment(node.segment)
-                      if (nextIndex !== -1) {
-                        setActiveIndex(nextIndex)
-                      }
-                    }}
-                    className={`min-w-[260px] rounded-2xl p-4 transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-blue-600 scale-105 shadow-lg"
-                        : "bg-gray-800 opacity-70"
-                    }`}
-                  >
-                    <div className="text-lg font-semibold text-white">
-                      {node.label}
-                    </div>
-
-                    <div className="text-sm text-gray-300 mt-1">
-                      Day {nodeDay}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
           </div>
 
           {/* RIGHT PANEL */}

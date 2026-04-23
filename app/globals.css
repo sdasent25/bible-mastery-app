@@ -30,6 +30,15 @@ body {
   letter-spacing: 0.2px;
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 h1 {
   font-size: 3rem;
   font-weight: 700;
