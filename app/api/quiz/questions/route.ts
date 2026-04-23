@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { getQuestions } from "@/lib/quiz/getQuestions"
-import { getQuestionCount } from "@/lib/quiz/getQuestionCount"
+import { segments } from "@/lib/questions"
 
 export const dynamic = "force-dynamic"
 
@@ -40,10 +40,26 @@ export async function GET(req: NextRequest) {
     const depthParam = searchParams.get("depth")
     const depth = depthParam ? parseInt(depthParam) : null
 
-    const questionCount = getQuestionCount(
-      access?.final_plan,
-      depth || undefined
-    )
+    // ✅ DETERMINE QUESTION COUNT (SINGLE SOURCE OF TRUTH)
+    let questionCount = 2 // free default
+
+    if (
+      access?.final_plan === "pro" ||
+      access?.final_plan === "family_pro"
+    ) {
+      questionCount = 7
+    }
+
+    if (
+      access?.final_plan === "pro_plus" ||
+      access?.final_plan === "family_pro_plus"
+    ) {
+      if (depth && [5, 10, 15].includes(depth)) {
+        questionCount = depth
+      } else {
+        questionCount = 10 // safe fallback
+      }
+    }
 
     const mode = searchParams.get("mode") || "normal"
 
@@ -60,27 +76,52 @@ export async function GET(req: NextRequest) {
       )
     }
 
+    const { data: masteryData } = await supabase
+      .from("user_segment_mastery")
+      .select("*")
+      .eq("user_id", user.id)
+
+    const masteredSet = new Set(
+      (masteryData || [])
+        .filter((m) => m.mastered)
+        .map((m) => m.segment)
+    )
+
+    let unlockIndex = 0
+
+    for (let i = 0; i < segments.length; i++) {
+      if (masteredSet.has(segments[i])) {
+        unlockIndex = i + 1
+      } else {
+        break
+      }
+    }
+
     if (mode === "scholar") {
       const { data: masteryData } = await supabase
         .from("user_segment_mastery")
         .select("*")
         .eq("user_id", user.id)
 
-      const sortedSegments = [...(masteryData || [])].sort((a, b) => {
-        const aScore = a ? a.accuracy : 0
-        const bScore = b ? b.accuracy : 0
+      const sortedSegments = [...segments].sort((a, b) => {
+        const aData = masteryData?.find(m => m.segment === a)
+        const bData = masteryData?.find(m => m.segment === b)
+
+        const aScore = aData ? aData.accuracy : 0
+        const bScore = bData ? bData.accuracy : 0
 
         return aScore - bScore // lowest accuracy first
       })
 
       let allQuestions = []
 
-      for (const { segment: segmentId } of sortedSegments) {
+      for (const segmentId of sortedSegments) {
         const [book, start, end] = segmentId.split("_")
         const questions = await getQuestions({
           book: book.charAt(0).toUpperCase() + book.slice(1),
           startChapter: Number(start),
           endChapter: Number(end),
+          userId: user.id,
           limit: questionCount
         })
 
@@ -96,20 +137,32 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing segment" }, { status: 400 })
     }
 
-    // TEMP: allow segment access if requested
-    // (real progression will be handled elsewhere)
-    const requestedIndex = 0 // bypass strict index logic
+    if (!segments.includes(segment)) {
+      return NextResponse.json({ error: "Invalid segment" }, { status: 400 })
+    }
 
-    const parsed = parseSegment(segment)
+    const requestedIndex = segments.indexOf(segment)
 
-    if (!parsed.book || Number.isNaN(parsed.start) || Number.isNaN(parsed.end)) {
-      return NextResponse.json({ error: "Invalid segment format" }, { status: 400 })
+    if (requestedIndex === 0) {
+      // always allowed
+    } else if (requestedIndex > unlockIndex) {
+      return NextResponse.json(
+        { error: "Segment locked" },
+        { status: 403 }
+      )
+    }
+
+    const { book, start, end } = parseSegment(segment)
+
+    if (!book || Number.isNaN(start) || Number.isNaN(end)) {
+      return NextResponse.json({ error: "Invalid segment" }, { status: 400 })
     }
 
     const questions = await getQuestions({
-      book: parsed.book,
-      startChapter: parsed.start,
-      endChapter: parsed.end,
+      book,
+      startChapter: start,
+      endChapter: end,
+      userId: user.id,
       limit: questionCount
     })
 

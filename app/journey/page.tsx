@@ -74,6 +74,7 @@ export default function JourneyPage() {
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
+  const [selectedSegment, setSelectedSegment] = useState(nodes[0]?.id)
   const [planType, setPlanType] = useState<JourneyPlanType | null>(null)
   const [xp, setXp] = useState(0)
   const [weakCount, setWeakCount] = useState(0)
@@ -139,6 +140,16 @@ export default function JourneyPage() {
     router.push("/quiz?mode=training")
   }
 
+  useEffect(() => {
+    const container = document.querySelector(".node-scroll")
+    if (container) {
+      container.scrollTo({
+        left: container.scrollWidth / 2,
+        behavior: "smooth"
+      })
+    }
+  }, [selectedSegment])
+
   const handleStart = (event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     startX.current = "touches" in event ? event.touches[0].clientX : event.clientX
   }
@@ -148,9 +159,13 @@ export default function JourneyPage() {
     const diff = startX.current - endX
 
     if (diff > 50 && activeIndex < journeyNodes.length - 1) {
-      setActiveIndex(activeIndex + 1)
+      const nextIndex = activeIndex + 1
+      setActiveIndex(nextIndex)
+      setSelectedSegment(journeyNodes[nextIndex]?.segment)
     } else if (diff < -50 && activeIndex > 0) {
-      setActiveIndex(activeIndex - 1)
+      const nextIndex = activeIndex - 1
+      setActiveIndex(nextIndex)
+      setSelectedSegment(journeyNodes[nextIndex]?.segment)
     }
   }
 
@@ -267,7 +282,9 @@ export default function JourneyPage() {
       const firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
       setJourneyNodes(mapped)
-      setActiveIndex(firstActiveIndex === -1 ? 0 : firstActiveIndex)
+      const nextActiveIndex = firstActiveIndex === -1 ? 0 : firstActiveIndex
+      setActiveIndex(nextActiveIndex)
+      setSelectedSegment(mapped[nextActiveIndex]?.segment)
       setLoading(false)
     }
 
@@ -291,6 +308,12 @@ export default function JourneyPage() {
   }
 
   const activeNode = journeyNodes.find(n => n.state === "active")
+  const currentIndex = journeyNodes.findIndex(n => n.segment === selectedSegment)
+  const safeCurrentIndex = currentIndex === -1 ? activeIndex : currentIndex
+  const visibleNodes = journeyNodes.slice(
+    Math.max(0, safeCurrentIndex - 2),
+    safeCurrentIndex + 3
+  )
   const completedCount = journeyNodes.filter(n => n.state === "complete").length
   const totalCount = journeyNodes.length
   const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
@@ -370,16 +393,24 @@ export default function JourneyPage() {
           <div className="flex-1 relative">
             <div className="hidden md:flex justify-between mb-4">
               <button
-                onClick={() => activeIndex > 0 && setActiveIndex(activeIndex - 1)}
+                onClick={() => {
+                  if (activeIndex <= 0) return
+                  const nextIndex = activeIndex - 1
+                  setActiveIndex(nextIndex)
+                  setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                }}
                 className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 ←
               </button>
 
               <button
-                onClick={() =>
-                  activeIndex < journeyNodes.length - 1 && setActiveIndex(activeIndex + 1)
-                }
+                onClick={() => {
+                  if (activeIndex >= journeyNodes.length - 1) return
+                  const nextIndex = activeIndex + 1
+                  setActiveIndex(nextIndex)
+                  setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                }}
                 className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
                 →
@@ -399,7 +430,8 @@ export default function JourneyPage() {
               onTouchMove={(e) => e.stopPropagation()}
               onTouchEnd={handleEnd}
             >
-              {journeyNodes.map((node, index) => {
+              {visibleNodes.map((node) => {
+                const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                 const offset = index - activeIndex
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
@@ -456,6 +488,7 @@ export default function JourneyPage() {
                             router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                           } else {
                             setActiveIndex(index)
+                            setSelectedSegment(node.segment)
                           }
                         }}
                         className={`
@@ -502,16 +535,37 @@ export default function JourneyPage() {
               })}
             </div>
 
-            <div className="flex justify-center mt-6 gap-2">
-              {journeyNodes.map((_, i) => (
-                <div
-                  key={i}
-                  className={`
-                    w-2.5 h-2.5 rounded-full transition-all
-                    ${i === activeIndex ? "bg-green-400 scale-125" : "bg-gray-600"}
-                  `}
-                />
-              ))}
+            <div className="node-scroll flex gap-4 overflow-x-auto px-4">
+              {visibleNodes.map((node) => {
+                const isActive = node.segment === selectedSegment
+                const nodeDay = nodes.find((canonicalNode) => canonicalNode.id === node.segment)?.day
+
+                return (
+                  <div
+                    key={node.segment}
+                    onClick={() => {
+                      const nextIndex = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
+                      setSelectedSegment(node.segment)
+                      if (nextIndex !== -1) {
+                        setActiveIndex(nextIndex)
+                      }
+                    }}
+                    className={`min-w-[260px] rounded-2xl p-4 transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-blue-600 scale-105 shadow-lg"
+                        : "bg-gray-800 opacity-70"
+                    }`}
+                  >
+                    <div className="text-lg font-semibold text-white">
+                      {node.label}
+                    </div>
+
+                    <div className="text-sm text-gray-300 mt-1">
+                      Day {nodeDay}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
 
