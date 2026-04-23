@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
+import { nodes } from "@/lib/nodes"
 import { getProgramProgress } from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { getXp } from "@/lib/xp"
@@ -71,7 +72,7 @@ export default function JourneyPage() {
 
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
-  const [nodes, setNodes] = useState<JourneyNode[]>([])
+  const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const [planType, setPlanType] = useState<JourneyPlanType | null>(null)
   const [xp, setXp] = useState(0)
@@ -146,7 +147,7 @@ export default function JourneyPage() {
     const endX = "changedTouches" in event ? event.changedTouches[0].clientX : event.clientX
     const diff = startX.current - endX
 
-    if (diff > 50 && activeIndex < nodes.length - 1) {
+    if (diff > 50 && activeIndex < journeyNodes.length - 1) {
       setActiveIndex(activeIndex + 1)
     } else if (diff < -50 && activeIndex > 0) {
       setActiveIndex(activeIndex - 1)
@@ -190,21 +191,9 @@ export default function JourneyPage() {
     if (!profileLoaded || planType === null) return
 
     async function loadProgram() {
-      const program = getProgramById(selectedProgram)
-      let segments = []
+      const segments = nodes
 
-      if (program) {
-        segments = program.segments
-      } else {
-        segments = Array.from({ length: 10 }).map((_, i) => ({
-          label: `${selectedProgram} ${i * 3 + 1}–${i * 3 + 3}`,
-          segment: `${selectedProgram.toLowerCase()}-${i}`,
-        }))
-      }
-
-      let progress = program
-        ? await getProgramProgress(selectedProgram)
-        : null
+      let progress = await getProgramProgress(selectedProgram)
 
       if (!progress || progress.currentSegmentIndex === undefined) {
         progress = {
@@ -229,7 +218,8 @@ export default function JourneyPage() {
       }
 
       const mapped = segments.map((seg, index) => {
-      let isAccessible = false
+        const segmentId = seg.id
+        let isAccessible = false
 
         if (ACCESS.journey) {
           isAccessible = true
@@ -266,7 +256,7 @@ export default function JourneyPage() {
 
         return {
           label: seg.label,
-          segment: seg.segment,
+          segment: segmentId,
           state,
           access,
           isAccessible,
@@ -276,7 +266,7 @@ export default function JourneyPage() {
 
       const firstActiveIndex = mapped.findIndex((node) => node.state === "active")
 
-      setNodes(mapped)
+      setJourneyNodes(mapped)
       setActiveIndex(firstActiveIndex === -1 ? 0 : firstActiveIndex)
       setLoading(false)
     }
@@ -300,9 +290,9 @@ export default function JourneyPage() {
     )
   }
 
-  const activeNode = nodes.find(n => n.state === "active")
-  const completedCount = nodes.filter(n => n.state === "complete").length
-  const totalCount = nodes.length
+  const activeNode = journeyNodes.find(n => n.state === "active")
+  const completedCount = journeyNodes.filter(n => n.state === "complete").length
+  const totalCount = journeyNodes.length
   const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
   const progressPercent = Math.min(
     (dailyProgress / dailyGoal) * 100,
@@ -388,7 +378,7 @@ export default function JourneyPage() {
 
               <button
                 onClick={() =>
-                  activeIndex < nodes.length - 1 && setActiveIndex(activeIndex + 1)
+                  activeIndex < journeyNodes.length - 1 && setActiveIndex(activeIndex + 1)
                 }
                 className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
               >
@@ -409,7 +399,7 @@ export default function JourneyPage() {
               onTouchMove={(e) => e.stopPropagation()}
               onTouchEnd={handleEnd}
             >
-              {nodes.map((node, index) => {
+              {journeyNodes.map((node, index) => {
                 const offset = index - activeIndex
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
@@ -513,7 +503,7 @@ export default function JourneyPage() {
             </div>
 
             <div className="flex justify-center mt-6 gap-2">
-              {nodes.map((_, i) => (
+              {journeyNodes.map((_, i) => (
                 <div
                   key={i}
                   className={`
