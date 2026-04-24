@@ -252,8 +252,13 @@ export default function QuizPage() {
     checkAccess();
   }, []);
 
+  const resolvedSegment =
+    paramsInitialized && !loadingPro
+      ? selectedSegmentParam || segment
+      : null;
+
   useEffect(() => {
-    if (!paramsInitialized || loadingPro) {
+    if (!resolvedSegment) {
       return;
     }
 
@@ -261,9 +266,6 @@ export default function QuizPage() {
       setLoadingQuestions(true);
 
       try {
-        const fallbackSegment = segment;
-        const resolvedSegment = selectedSegmentParam || fallbackSegment;
-
         const response = await fetch(
           `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${depth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
           {
@@ -294,20 +296,7 @@ export default function QuizPage() {
     };
 
     loadQuestions();
-  }, [
-    activeProgram,
-    activeProgramSegmentIndex,
-    isProgramMode,
-    isProPlusUser,
-    isProUser,
-    loadingPro,
-    mode,
-    paramsInitialized,
-    depth,
-    quizSeed,
-    selectedSegmentParam,
-    segment
-  ]);
+  }, [resolvedSegment]);
 
   const baseQuestions = isReviewMode
     ? reviewQuestions
