@@ -1,23 +1,15 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { getQuestions } from "@/lib/quiz/getQuestions"
-import { segments } from "@/lib/questions"
+import { getAllNodes, getNodeById, parseNodeId } from "@/lib/nodes"
 
 export const dynamic = "force-dynamic"
-
-function parseSegment(segment: string) {
-  const [book, start, end] = segment.split("_")
-
-  return {
-    book: book.charAt(0).toUpperCase() + book.slice(1),
-    start: Number(start),
-    end: Number(end)
-  }
-}
 
 export async function GET(req: NextRequest) {
   try {
     const supabase = await createClient()
+    const allNodes = getAllNodes()
+    const nodeIds = allNodes.map((node) => node.id)
 
     const {
       data: { user },
@@ -89,8 +81,8 @@ export async function GET(req: NextRequest) {
 
     let unlockIndex = 0
 
-    for (let i = 0; i < segments.length; i++) {
-      if (masteredSet.has(segments[i])) {
+    for (let i = 0; i < nodeIds.length; i++) {
+      if (masteredSet.has(nodeIds[i])) {
         unlockIndex = i + 1
       } else {
         break
@@ -103,9 +95,9 @@ export async function GET(req: NextRequest) {
         .select("*")
         .eq("user_id", user.id)
 
-      const sortedSegments = [...segments].sort((a, b) => {
-        const aData = masteryData?.find(m => m.segment === a)
-        const bData = masteryData?.find(m => m.segment === b)
+      const sortedNodes = [...allNodes].sort((a, b) => {
+        const aData = masteryData?.find(m => m.segment === a.id)
+        const bData = masteryData?.find(m => m.segment === b.id)
 
         const aScore = aData ? aData.accuracy : 0
         const bScore = bData ? bData.accuracy : 0
@@ -115,12 +107,11 @@ export async function GET(req: NextRequest) {
 
       let allQuestions = []
 
-      for (const segmentId of sortedSegments) {
-        const [book, start, end] = segmentId.split("_")
+      for (const node of sortedNodes) {
         const questions = await getQuestions({
-          book: book.charAt(0).toUpperCase() + book.slice(1),
-          startChapter: Number(start),
-          endChapter: Number(end),
+          book: node.book,
+          startChapter: node.startChapter,
+          endChapter: node.endChapter,
           limit: questionCount
         })
 
@@ -136,11 +127,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Missing segment" }, { status: 400 })
     }
 
-    if (!segments.includes(segment)) {
+    const parsed = parseNodeId(segment)
+
+    if (!parsed) {
       return NextResponse.json({ error: "Invalid segment" }, { status: 400 })
     }
 
-    const requestedIndex = segments.indexOf(segment)
+    const requestedNode = getNodeById(segment)
+    const requestedIndex = requestedNode
+      ? nodeIds.indexOf(requestedNode.id)
+      : -1
 
     if (requestedIndex === 0) {
       // always allowed
@@ -151,16 +147,12 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    const { book, start, end } = parseSegment(segment)
-
-    if (!book || Number.isNaN(start) || Number.isNaN(end)) {
-      return NextResponse.json({ error: "Invalid segment" }, { status: 400 })
-    }
+    const { book, startChapter, endChapter } = parsed
 
     const questions = await getQuestions({
       book,
-      startChapter: start,
-      endChapter: end,
+      startChapter,
+      endChapter,
       limit: questionCount
     })
 
