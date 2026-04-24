@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     )
 
     const authClient = await createClient()
-    const { questionId, correct } = await req.json()
+    const { questionId, correct, segmentId } = await req.json()
 
     const {
       data: { user },
@@ -115,22 +115,7 @@ export async function POST(req: Request) {
       await supabase.rpc("reset_combo", { user_id: userId })
     }
 
-    const { data: questionRow } = await supabase
-      .from("questions")
-      .select("book, chapter")
-      .eq("id", questionId)
-      .single()
-
-    let segment = "genesis_1_3"
-
-    if (questionRow) {
-      const book = questionRow.book.toLowerCase()
-
-      if (questionRow.chapter <= 3) segment = `${book}_1_3`
-      else if (questionRow.chapter <= 6) segment = `${book}_4_6`
-      else if (questionRow.chapter <= 9) segment = `${book}_7_9`
-      else segment = `${book}_10_11`
-    }
+    const segment = segmentId
 
     const { data: mastery } = await supabase
       .from("user_segment_mastery")
@@ -168,6 +153,15 @@ export async function POST(req: Request) {
           accuracy: correct ? 1 : 0,
           mastered: false,
         })
+    }
+
+    if (correct) {
+      await supabase
+        .from("profiles")
+        .update({
+          last_completed_date: new Date().toISOString().split("T")[0],
+        })
+        .eq("id", userId)
     }
 
     return NextResponse.json({
