@@ -53,6 +53,7 @@ function getStreakMessage(streak: number) {
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis_1_3');
+  const [selectedSegmentParam, setSelectedSegmentParam] = useState<string | null>(null);
   const [paramsInitialized, setParamsInitialized] = useState(false);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -144,13 +145,15 @@ export default function QuizPage() {
     const initializeQuiz = async () => {
       const search = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(search);
-      const segmentParam = params.get('segment') || 'genesis_1_3';
+      const segmentParam = params.get('segment');
+      const fallbackSegment = 'genesis_1_3';
       const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
       const previewParam = params.get('preview') === 'true';
       const depthParam = params.get("depth")
       const depth = depthParam ? parseInt(depthParam) : null
 
+      setSelectedSegmentParam(segmentParam);
       setIsPreviewMode(previewParam);
       setDepth(
         depth === 5 || depth === 10 || depth === 15
@@ -175,9 +178,13 @@ export default function QuizPage() {
 
         setActiveProgramId(matchedProgram.id);
         setActiveProgramSegmentIndex(safeIndex);
-        setSegment(toQuizSegmentId(matchedProgram.segments[safeIndex].segment));
+        if (!segmentParam) {
+          setSegment(toQuizSegmentId(matchedProgram.segments[safeIndex].segment));
+        } else {
+          setSegment(segmentParam);
+        }
       } else {
-        setSegment(segmentParam);
+        setSegment(segmentParam || fallbackSegment);
       }
 
       const completed = await hasCompletedToday();
@@ -254,10 +261,8 @@ export default function QuizPage() {
       setLoadingQuestions(true);
 
       try {
-        const resolvedSegment =
-          isProgramMode && activeProgram && activeProgramSegmentIndex !== null
-            ? toQuizSegmentId(activeProgram.segments[activeProgramSegmentIndex].segment)
-            : segment;
+        const fallbackSegment = segment;
+        const resolvedSegment = selectedSegmentParam || fallbackSegment;
 
         const response = await fetch(
           `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${depth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
@@ -300,6 +305,7 @@ export default function QuizPage() {
     paramsInitialized,
     depth,
     quizSeed,
+    selectedSegmentParam,
     segment
   ]);
 
