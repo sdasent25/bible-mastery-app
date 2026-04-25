@@ -2,20 +2,38 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { updateFlashcardStatus } from "@/lib/flashcards"
+import { updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
 export default function FlashcardStudy({
   flashcards,
   messages,
 }: {
-  flashcards: Array<{ id: string; reference: string; verse_text: string }>
+  flashcards: Array<{
+    id: string
+    reference: string
+    verse_text: string
+    due_date?: string | null
+    ease_factor?: number | null
+    interval?: number | null
+    repetitions?: number | null
+    lapses?: number | null
+  }>
   messages: Record<string, string>
 }) {
   const router = useRouter()
   const SESSION_SIZE = 10
 
-  const [session, setSession] = useState<Array<{ id: string; reference: string; verse_text: string }>>([])
+  const [session, setSession] = useState<Array<{
+    id: string
+    reference: string
+    verse_text: string
+    due_date?: string | null
+    ease_factor?: number | null
+    interval?: number | null
+    repetitions?: number | null
+    lapses?: number | null
+  }>>([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [complete, setComplete] = useState(false)
@@ -34,8 +52,13 @@ export default function FlashcardStudy({
 
   useEffect(() => {
     if (flashcards.length) {
-      const shuffled = [...flashcards].sort(() => 0.5 - Math.random())
-      setSession(shuffled.slice(0, SESSION_SIZE))
+      const prioritized = [...flashcards].sort((a, b) => {
+        if (!a.due_date) return -1
+        if (!b.due_date) return 1
+        return new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
+      })
+
+      setSession(prioritized.slice(0, SESSION_SIZE))
       setIndex(0)
       setComplete(false)
     } else {
@@ -87,7 +110,16 @@ export default function FlashcardStudy({
     )
   }
 
-  function nextCard(newSession: Array<{ id: string; reference: string; verse_text: string }>) {
+  function nextCard(newSession: Array<{
+    id: string
+    reference: string
+    verse_text: string
+    due_date?: string | null
+    ease_factor?: number | null
+    interval?: number | null
+    repetitions?: number | null
+    lapses?: number | null
+  }>) {
     if (newSession.length === 0) {
       setComplete(true)
       return
@@ -126,7 +158,7 @@ export default function FlashcardStudy({
       correctSound.current?.play().catch(() => {})
     }
 
-    updateFlashcardStatus(card.id, type).catch(console.error)
+    updateFlashcardProgress(card, type).catch(console.error)
 
     if (xpToAdd > 0) {
       setXpPop(`+${xpToAdd} XP`)
