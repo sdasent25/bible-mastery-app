@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { getFlashcards, type Flashcard } from '@/lib/flashcards'
+import { getFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
@@ -94,6 +94,7 @@ export default function FillInTheBlankPage() {
   const [totalXp, setTotalXp] = useState(0)
   const [completedCount, setCompletedCount] = useState(0)
   const [hasAwardedXpForCurrent, setHasAwardedXpForCurrent] = useState(false)
+  const [hasUpdatedProgressForCurrent, setHasUpdatedProgressForCurrent] = useState(false)
 
   useEffect(() => {
     async function initialize() {
@@ -146,7 +147,7 @@ export default function FillInTheBlankPage() {
   }
 
   async function handleCheckAnswers() {
-    if (!round) {
+    if (!round || checked) {
       return
     }
 
@@ -168,6 +169,20 @@ export default function FillInTheBlankPage() {
     })
     setFeedbackTone(isCorrect ? 'correct' : 'incorrect')
     setFeedbackMessage(isCorrect ? 'Nice work! 🎉' : 'Almost there 💪')
+
+    if (currentCard && !hasUpdatedProgressForCurrent) {
+      const updatedCard = await updateFlashcardProgress(
+        currentCard,
+        isCorrect ? 'easy' : 'again'
+      )
+
+      setFlashcards((currentFlashcards) =>
+        currentFlashcards.map((flashcard) =>
+          flashcard.id === updatedCard.id ? updatedCard : flashcard
+        )
+      )
+      setHasUpdatedProgressForCurrent(true)
+    }
 
     if (isCorrect && !hasAwardedXpForCurrent) {
       const nextTotalXp = await addXp(CORRECT_XP)
@@ -191,6 +206,7 @@ export default function FillInTheBlankPage() {
     setChecked(false)
     setFeedbackTone('idle')
     setFeedbackMessage('')
+    setHasUpdatedProgressForCurrent(false)
   }
 
   function handleNextVerse() {
@@ -207,6 +223,7 @@ export default function FillInTheBlankPage() {
     setFeedbackTone('idle')
     setFeedbackMessage('')
     setHasAwardedXpForCurrent(false)
+    setHasUpdatedProgressForCurrent(false)
   }
 
   const panelClasses = useMemo(() => {

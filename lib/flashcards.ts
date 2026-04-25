@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase"
 export type Flashcard = {
   id: string
   verse: string
+  verse_text?: string
   reference: string
   status: "new" | "learning" | "mastered"
   createdAt: string | null
@@ -56,7 +57,19 @@ export async function getFlashcards() {
 
   if (error) throw error
 
-  return data || []
+  return (data || []).map((card) => ({
+    id: card.id,
+    verse: card.verse_text,
+    verse_text: card.verse_text,
+    reference: card.reference,
+    status: card.status ?? "new",
+    createdAt: card.created_at,
+    due_date: card.due_date,
+    ease_factor: card.ease_factor,
+    interval: card.interval,
+    repetitions: card.repetitions,
+    lapses: card.lapses,
+  })) satisfies Flashcard[]
 }
 
 export async function updateFlashcardProgress(
@@ -134,6 +147,7 @@ export async function updateFlashcardProgress(
   return {
     id: data.id,
     verse: data.verse_text,
+    verse_text: data.verse_text,
     reference: data.reference,
     status: nextStatus,
     createdAt: data.created_at,

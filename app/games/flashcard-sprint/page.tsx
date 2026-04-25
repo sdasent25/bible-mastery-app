@@ -2,34 +2,12 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { getFlashcards, type Flashcard, updateFlashcardStatus } from '@/lib/flashcards'
+import { getFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
 const SESSION_LENGTH = 10
 const CORRECT_XP = 5
-
-const statusPriority: Record<Flashcard['status'], number> = {
-  learning: 0,
-  new: 1,
-  mastered: 2
-}
-
-function getNextStatus(currentStatus: Flashcard['status'], result: 'correct' | 'review'): Flashcard['status'] {
-  if (result === 'review') {
-    return 'learning'
-  }
-
-  if (currentStatus === 'new') {
-    return 'learning'
-  }
-
-  if (currentStatus === 'learning') {
-    return 'mastered'
-  }
-
-  return 'mastered'
-}
 
 function formatStatusLabel(status: Flashcard['status']) {
   if (status === 'mastered') {
@@ -45,9 +23,11 @@ function formatStatusLabel(status: Flashcard['status']) {
 
 function buildSprintDeck(cards: Flashcard[]) {
   const ordered = [...cards].sort((left, right) => {
-    const priorityDifference = statusPriority[left.status] - statusPriority[right.status]
-    if (priorityDifference !== 0) {
-      return priorityDifference
+    const leftDue = left.due_date ? new Date(left.due_date).getTime() : Number.MIN_SAFE_INTEGER
+    const rightDue = right.due_date ? new Date(right.due_date).getTime() : Number.MIN_SAFE_INTEGER
+
+    if (leftDue !== rightDue) {
+      return leftDue - rightDue
     }
 
     return left.createdAt?.localeCompare(right.createdAt || '') || 0
@@ -152,8 +132,10 @@ export default function FlashcardSprintPage() {
     }
 
     setIsAnswering(true)
-    const nextStatus = getNextStatus(currentCard.status, result)
-    const updatedCard = await updateFlashcardStatus(currentCard.id, nextStatus)
+    const updatedCard = await updateFlashcardProgress(
+      currentCard,
+      result === 'correct' ? 'easy' : 'again'
+    )
 
     let nextTotalXp = totalXp
     let xpEarned = 0
