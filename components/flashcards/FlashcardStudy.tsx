@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { updateFlashcardProgress } from "@/lib/flashcards"
+import { prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
 export default function FlashcardStudy({
@@ -52,13 +52,7 @@ export default function FlashcardStudy({
 
   useEffect(() => {
     if (flashcards.length) {
-      const prioritized = [...flashcards].sort((a, b) => {
-        if (!a.due_date) return -1
-        if (!b.due_date) return 1
-        return new Date(a.due_date).getTime() - new Date(b.due_date).getTime()
-      })
-
-      setSession(prioritized.slice(0, SESSION_SIZE))
+      setSession(prioritizeFlashcards(flashcards).slice(0, SESSION_SIZE))
       setIndex(0)
       setComplete(false)
     } else {
@@ -158,7 +152,7 @@ export default function FlashcardStudy({
       correctSound.current?.play().catch(() => {})
     }
 
-    updateFlashcardProgress(card, type).catch(console.error)
+    await updateFlashcardProgress(card, type).catch(console.error)
 
     if (xpToAdd > 0) {
       setXpPop(`+${xpToAdd} XP`)

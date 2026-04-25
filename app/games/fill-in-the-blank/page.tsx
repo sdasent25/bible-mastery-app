@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { getFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
+import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
@@ -65,9 +65,7 @@ function buildPuzzle(verse: string): VersePuzzle {
 }
 
 function orderFlashcards(cards: Flashcard[]) {
-  return [...cards].sort((left, right) => {
-    return left.createdAt?.localeCompare(right.createdAt || '') || 0
-  })
+  return prioritizeFlashcards(cards)
 }
 
 function createRound(card: Flashcard): RoundState {

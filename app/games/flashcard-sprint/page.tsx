@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { getFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
+import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
@@ -22,16 +22,7 @@ function formatStatusLabel(status: Flashcard['status']) {
 }
 
 function buildSprintDeck(cards: Flashcard[]) {
-  const ordered = [...cards].sort((left, right) => {
-    const leftDue = left.due_date ? new Date(left.due_date).getTime() : Number.MIN_SAFE_INTEGER
-    const rightDue = right.due_date ? new Date(right.due_date).getTime() : Number.MIN_SAFE_INTEGER
-
-    if (leftDue !== rightDue) {
-      return leftDue - rightDue
-    }
-
-    return left.createdAt?.localeCompare(right.createdAt || '') || 0
-  })
+  const ordered = prioritizeFlashcards(cards)
 
   if (ordered.length <= SESSION_LENGTH) {
     return ordered

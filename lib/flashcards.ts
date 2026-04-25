@@ -2,16 +2,21 @@ import { supabase } from "@/lib/supabase"
 
 export type Flashcard = {
   id: string
+  user_id?: string
   verse: string
   verse_text?: string
   reference: string
   status: "new" | "learning" | "mastered"
+  tags?: string[]
   createdAt: string | null
+  created_at?: string | null
+  updated_at?: string | null
   due_date?: string | null
   ease_factor?: number | null
   interval?: number | null
   repetitions?: number | null
   lapses?: number | null
+  last_reviewed?: string | null
 }
 
 function mapStudyResultToStatus(status: "new" | "learning" | "mastered" | "again" | "hard" | "easy") {
@@ -51,7 +56,7 @@ export async function getFlashcards() {
 
   const { data, error } = await supabase
     .from("flashcards")
-    .select("*")
+    .select("id, user_id, verse_text, reference, status, tags, created_at, updated_at, ease_factor, interval, due_date, repetitions, lapses, last_reviewed")
     .eq("user_id", userRes.user.id)
     .order("created_at", { ascending: false })
 
@@ -59,17 +64,64 @@ export async function getFlashcards() {
 
   return (data || []).map((card) => ({
     id: card.id,
+    user_id: card.user_id,
     verse: card.verse_text,
     verse_text: card.verse_text,
     reference: card.reference,
     status: card.status ?? "new",
+    tags: card.tags ?? [],
     createdAt: card.created_at,
+    created_at: card.created_at,
+    updated_at: card.updated_at,
     due_date: card.due_date,
     ease_factor: card.ease_factor,
     interval: card.interval,
     repetitions: card.repetitions,
     lapses: card.lapses,
+    last_reviewed: card.last_reviewed,
   })) satisfies Flashcard[]
+}
+
+function isDueCard(card: Pick<Flashcard, "due_date">) {
+  if (!card.due_date) {
+    return true
+  }
+
+  return new Date(card.due_date).getTime() <= Date.now()
+}
+
+function getPriorityBucket(card: Flashcard) {
+  if (isDueCard(card)) return 0
+  if ((card.lapses ?? 0) > 0) return 1
+  if (card.status === "learning") return 2
+  if (card.status === "new") return 3
+  return 4
+}
+
+export function prioritizeFlashcards(cards: Flashcard[]) {
+  return [...cards].sort((left, right) => {
+    const bucketDifference = getPriorityBucket(left) - getPriorityBucket(right)
+
+    if (bucketDifference !== 0) {
+      return bucketDifference
+    }
+
+    const leftDue = left.due_date ? new Date(left.due_date).getTime() : Number.MIN_SAFE_INTEGER
+    const rightDue = right.due_date ? new Date(right.due_date).getTime() : Number.MIN_SAFE_INTEGER
+
+    if (leftDue !== rightDue) {
+      return leftDue - rightDue
+    }
+
+    const leftLapses = left.lapses ?? 0
+    const rightLapses = right.lapses ?? 0
+
+    if (leftLapses !== rightLapses) {
+      return rightLapses - leftLapses
+    }
+
+    return (left.createdAt ?? "").localeCompare(right.createdAt ?? "")
+  })
 }
 
 export async function updateFlashcardProgress(
@@ -139,23 +191,28 @@ export async function updateFlashcardProgress(
     })
     .eq("id", card.id)
     .eq("user_id", userRes.user.id)
-    .select("id, verse_text, reference, status, created_at, due_date, ease_factor, interval, repetitions, lapses")
+    .select("id, user_id, verse_text, reference, status, tags, created_at, updated_at, due_date, ease_factor, interval, repetitions, lapses, last_reviewed")
     .single()
 
   if (error) throw error
 
   return {
     id: data.id,
+    user_id: data.user_id,
     verse: data.verse_text,
     verse_text: data.verse_text,
     reference: data.reference,
     status: nextStatus,
+    tags: data.tags ?? [],
     createdAt: data.created_at,
+    created_at: data.created_at,
+    updated_at: data.updated_at,
     due_date: data.due_date,
     ease_factor: data.ease_factor,
     interval: data.interval,
     repetitions: data.repetitions,
     lapses: data.lapses,
+    last_reviewed: data.last_reviewed,
   } satisfies Flashcard
 }
 

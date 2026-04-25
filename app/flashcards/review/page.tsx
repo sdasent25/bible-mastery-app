@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 
-import { getFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
 
 export default function ReviewMode() {
   const [cards, setCards] = useState<Flashcard[]>([])
@@ -27,7 +27,15 @@ export default function ReviewMode() {
   }, [])
 
   const weakCards = useMemo(
-    () => cards.filter((card) => (card.lapses ?? 0) > 0 || (card.interval ?? 1) <= 2),
+    () =>
+      prioritizeFlashcards(
+        cards.filter(
+          (card) =>
+            (card.lapses ?? 0) > 0 ||
+            (card.interval ?? 1) <= 2 ||
+            card.status === "learning"
+        )
+      ),
     [cards]
   )
 
