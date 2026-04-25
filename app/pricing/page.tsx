@@ -81,7 +81,7 @@ export default function PricingPage() {
               <div className="text-xs font-black uppercase tracking-[0.24em] text-emerald-200">
                 Pro
               </div>
-              <h2 className="mt-2 text-3xl font-black text-white">Build consistency faster</h2>
+              <h2 className="mt-2 text-3xl font-black text-white">Build consistency in your walk with God</h2>
 
               {isFamily ? (
                 <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/25 p-4">
@@ -100,17 +100,17 @@ export default function PricingPage() {
               )}
 
               <p className="mt-4 text-sm leading-6 text-zinc-100">
-                More reps, more journey depth, and flashcards unlocked.
+                Build consistency in your walk with God.
               </p>
             </div>
 
             <div className="space-y-3">
               {[
-                "7 questions per node",
-                "Easy + Medium",
-                "Flashcards",
-                "Full journey",
-                isFamily ? "Shared family leaderboard" : "Progressive learning flow",
+                "Full Bible Journey",
+                "10 questions per day",
+                "Flashcards for memorization",
+                "XP, streaks, and progress tracking",
+                isFamily ? "Shared family leaderboard" : "Daily training momentum",
               ].map((feature) => (
                 <div
                   key={feature}
@@ -135,7 +135,7 @@ export default function PricingPage() {
                 <div className="text-xs font-black uppercase tracking-[0.24em] text-amber-100">
                   Pro+
                 </div>
-                <h2 className="mt-2 text-3xl font-black text-white">Train at the highest level</h2>
+                <h2 className="mt-2 text-3xl font-black text-white">Master Scripture with a deeper training system</h2>
               </div>
 
               <div className="rounded-full bg-amber-300 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black">
@@ -159,20 +159,17 @@ export default function PricingPage() {
               </div>
             )}
 
-            <p className="mb-5 text-sm leading-6 text-zinc-100">
-              Everything in Pro plus elite study tools, quests, and advanced systems.
-            </p>
+              <p className="mb-5 text-sm leading-6 text-zinc-100">
+                Master Scripture with a deeper training system.
+              </p>
 
             <div className="space-y-3">
               {[
-                "15 questions per node",
-                "All difficulties",
-                "Flashcards",
-                "Quests",
-                "Scholar Mode",
-                "Advanced training",
-                "Global leaderboard (coming soon)",
                 "Everything in Pro",
+                "Choose your daily depth (5 / 10 / 15)",
+                "Quests (Who said it, Characters, Books)",
+                "Scholar Mode for advanced recall",
+                "Global leaderboard (coming soon)",
               ].map((feature) => (
                 <div
                   key={feature}

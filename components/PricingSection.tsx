@@ -103,7 +103,7 @@ export default function PricingSection() {
             Pro+ {isFamily && "Family"} 🚀
           </h2>
           <p className="text-sm text-green-300 mb-2">
-            The complete Bible Athlete experience
+            Master Scripture with a deeper training system
           </p>
           <p className="text-green-400 font-semibold mb-4">
             {isFamily ? "$29.99 / month" : "$12.99 / month"}
@@ -111,7 +111,7 @@ export default function PricingSection() {
 
           {isFamily && (
             <p className="text-sm text-white mb-4 text-center">
-              Up to 6 members included
+              Up to 4 members included
             </p>
           )}
 
@@ -122,12 +122,10 @@ export default function PricingSection() {
           </div>
 
           <ul className="text-white text-sm space-y-2 mb-6">
-            <li>🔥 Full Bible Journey (Core Experience)</li>
-            <li>⚡ Unlimited Training</li>
-            <li>🧠 Scholar Mode (review past content)</li>
-            <li>🎯 Deep Retention System</li>
-            <li>🏆 Leaderboard Access</li>
             <li>✅ Everything in Pro</li>
+            <li>🗓️ Choose your daily depth (5 / 10 / 15)</li>
+            <li>🧭 Quests (Who said it, Characters, Books)</li>
+            <li>🧠 Scholar Mode for advanced recall</li>
           </ul>
 
           <p className="text-xs text-green-400 mb-2">
@@ -144,7 +142,7 @@ export default function PricingSection() {
           </button>
 
           <p className="text-xs text-green-400 text-center mt-2">
-            Most users choose this to stay consistent
+            Built for deeper daily training
           </p>
         </div>
 
@@ -157,23 +155,24 @@ export default function PricingSection() {
           <h2 className="text-xl font-bold text-white mb-4">
             Pro {isFamily && "Family"}
           </h2>
+          <p className="text-sm text-blue-300 mb-2">
+            Build consistency in your walk with God
+          </p>
           <p className="text-blue-400 font-semibold mb-4">
             {isFamily ? "$19.99 / month" : "$6.99 / month"}
           </p>
 
           {isFamily && (
             <p className="text-sm text-white mb-4 text-center">
-              Up to 6 members included
+              Up to 4 members included
             </p>
           )}
 
           <ul className="text-sm text-white space-y-2 mb-6">
-            <li>📚 Full Flashcard System</li>
-            <li>🧠 Learn, Review, Add Cards</li>
-            <li>🎯 Practice Weak Cards</li>
-            <li>🔥 XP + Streak System</li>
-            <li>🏆 Leaderboard Access</li>
-            <li className="text-yellow-300">🔒 Full Journey available in Pro+</li>
+            <li>📖 Full Bible Journey</li>
+            <li>🗓️ 10 questions per day</li>
+            <li>📚 Flashcards for memorization</li>
+            <li>🔥 XP, streaks, and progress tracking</li>
           </ul>
 
           <button
