@@ -38,7 +38,7 @@ export default function PricingPage() {
               Unlock deeper learning with a plan built for your pace
             </h1>
 
-            <p className="mt-4 text-sm leading-6 text-zinc-200 sm:text-lg sm:leading-8">
+            <p className="mt-4 text-sm leading-6 text-gray-200 sm:text-lg sm:leading-8">
               Move from consistent daily practice to advanced training, quests, and stronger long-term retention.
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function PricingPage() {
             <div className="text-xs font-black uppercase tracking-[0.2em] text-amber-100">
               Family Access
             </div>
-            <p className="mt-2 text-sm font-semibold leading-6 text-white sm:text-base">
+              <p className="mt-2 text-sm font-semibold leading-6 text-gray-200 sm:text-base">
               One plan covers up to 4 members and saves more than paying for separate individual subscriptions.
             </p>
           </div>
@@ -85,9 +85,9 @@ export default function PricingPage() {
 
               {isFamily ? (
                 <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/25 p-4">
-                  <div className="text-sm font-semibold text-zinc-200">Up to 4 members</div>
+                  <div className="text-sm font-semibold text-gray-200">Up to 4 members</div>
                   <div className="mt-3 text-4xl font-black text-emerald-300">$19.99</div>
-                  <div className="mt-1 text-sm font-medium text-zinc-100">per month</div>
+                  <div className="mt-1 text-sm font-medium text-gray-200">per month</div>
                   <div className="mt-3 inline-flex rounded-full bg-emerald-300 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-black">
                     Save over 28% vs 4 individual plans
                   </div>
@@ -95,11 +95,11 @@ export default function PricingPage() {
               ) : (
                 <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4">
                   <div className="text-4xl font-black text-white">$6.99</div>
-                  <div className="mt-1 text-sm font-medium text-zinc-200">per month</div>
+                  <div className="mt-1 text-sm font-medium text-gray-200">per month</div>
                 </div>
               )}
 
-              <p className="mt-4 text-sm leading-6 text-zinc-100">
+              <p className="mt-4 text-sm leading-6 text-gray-200">
                 Build consistency in your walk with God.
               </p>
             </div>
@@ -114,7 +114,7 @@ export default function PricingPage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-zinc-100"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-gray-200"
                 >
                   {feature}
                 </div>
@@ -145,9 +145,9 @@ export default function PricingPage() {
 
             {isFamily ? (
               <div className="mb-5 rounded-2xl border border-amber-300/25 bg-black/25 p-4">
-                <div className="text-sm font-semibold text-zinc-100">Up to 4 members</div>
+                <div className="text-sm font-semibold text-gray-200">Up to 4 members</div>
                 <div className="mt-3 text-4xl font-black text-amber-300">$29.99</div>
-                <div className="mt-1 text-sm font-medium text-zinc-100">per month</div>
+                <div className="mt-1 text-sm font-medium text-gray-200">per month</div>
                 <div className="mt-3 inline-flex rounded-full bg-amber-300 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-black">
                   Save over 42% vs 4 individual plans
                 </div>
@@ -155,11 +155,11 @@ export default function PricingPage() {
             ) : (
               <div className="mb-5 rounded-2xl border border-white/10 bg-black/25 p-4">
                 <div className="text-4xl font-black text-white">$12.99</div>
-                <div className="mt-1 text-sm font-medium text-zinc-200">per month</div>
+                <div className="mt-1 text-sm font-medium text-gray-200">per month</div>
               </div>
             )}
 
-              <p className="mb-5 text-sm leading-6 text-zinc-100">
+              <p className="mb-5 text-sm leading-6 text-gray-200">
                 Master Scripture with a deeper training system.
               </p>
 
@@ -173,7 +173,7 @@ export default function PricingPage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-zinc-100"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-gray-200"
                 >
                   {feature}
                 </div>

@@ -102,10 +102,10 @@ export default function PricingSection() {
           <h2 className="text-xl font-bold text-white mb-2">
             Pro+ {isFamily && "Family"} 🚀
           </h2>
-          <p className="text-sm text-green-300 mb-2">
+          <p className="text-sm text-gray-200 mb-2">
             Master Scripture with a deeper training system
           </p>
-          <p className="text-green-400 font-semibold mb-4">
+          <p className="text-gray-200 font-semibold mb-4">
             {isFamily ? "$29.99 / month" : "$12.99 / month"}
           </p>
 
@@ -121,14 +121,14 @@ export default function PricingSection() {
             <p>• Stay consistent long-term</p>
           </div>
 
-          <ul className="text-white text-sm space-y-2 mb-6">
+          <ul className="text-gray-200 text-sm space-y-2 mb-6">
             <li>✅ Everything in Pro</li>
             <li>🗓️ Choose your daily depth (5 / 10 / 15)</li>
             <li>🧭 Quests (Who said it, Characters, Books)</li>
             <li>🧠 Scholar Mode for advanced recall</li>
           </ul>
 
-          <p className="text-xs text-green-400 mb-2">
+          <p className="text-xs text-gray-300 mb-2">
             Start in under 2 minutes
           </p>
 
@@ -141,7 +141,7 @@ export default function PricingSection() {
             Start My Full Journey
           </button>
 
-          <p className="text-xs text-green-400 text-center mt-2">
+          <p className="text-xs text-gray-300 text-center mt-2">
             Built for deeper daily training
           </p>
         </div>
@@ -155,10 +155,10 @@ export default function PricingSection() {
           <h2 className="text-xl font-bold text-white mb-4">
             Pro {isFamily && "Family"}
           </h2>
-          <p className="text-sm text-blue-300 mb-2">
+          <p className="text-sm text-gray-200 mb-2">
             Build consistency in your walk with God
           </p>
-          <p className="text-blue-400 font-semibold mb-4">
+          <p className="text-gray-200 font-semibold mb-4">
             {isFamily ? "$19.99 / month" : "$6.99 / month"}
           </p>
 
@@ -168,7 +168,7 @@ export default function PricingSection() {
             </p>
           )}
 
-          <ul className="text-sm text-white space-y-2 mb-6">
+          <ul className="text-sm text-gray-200 space-y-2 mb-6">
             <li>📖 Full Bible Journey</li>
             <li>🗓️ 10 questions per day</li>
             <li>📚 Flashcards for memorization</li>
@@ -182,7 +182,7 @@ export default function PricingSection() {
             Start Training
           </button>
 
-          <p className="text-xs text-gray-400 mt-4 text-center">
+          <p className="text-xs text-gray-300 mt-4 text-center">
             Best for quick daily practice
           </p>
         </div>
@@ -190,7 +190,7 @@ export default function PricingSection() {
         <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 transition-all duration-200 active:scale-[0.97] cursor-pointer">
           <h2 className="text-xl font-bold text-white mb-4">Free</h2>
 
-          <ul className="text-sm text-white space-y-2 mb-6">
+          <ul className="text-sm text-gray-200 space-y-2 mb-6">
             <li>👁️ View full Bible journey</li>
             <li>🔒 Locked experience (preview only)</li>
             <li>🚫 No flashcards</li>
