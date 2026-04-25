@@ -38,7 +38,7 @@ export default function FlashcardSprintPage() {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [sessionCards, setSessionCards] = useState<Flashcard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [showAnswer, setShowAnswer] = useState(false)
+  const [revealed, setRevealed] = useState(false)
   const [correctCount, setCorrectCount] = useState(0)
   const [sessionXp, setSessionXp] = useState(0)
   const [totalXp, setTotalXp] = useState(0)
@@ -104,7 +104,7 @@ export default function FlashcardSprintPage() {
   function resetSession(nextCards = flashcards) {
     setSessionCards(buildSprintDeck(nextCards))
     setCurrentIndex(0)
-    setShowAnswer(false)
+    setRevealed(false)
     setCorrectCount(0)
     setSessionXp(0)
     setElapsedSeconds(0)
@@ -113,12 +113,8 @@ export default function FlashcardSprintPage() {
     setIsAnswering(false)
   }
 
-  function handleShowAnswer() {
-    setShowAnswer(true)
-  }
-
   async function handleAnswer(result: 'correct' | 'review') {
-    if (!currentCard || isAnswering) {
+    if (!currentCard || isAnswering || !revealed) {
       return
     }
 
@@ -160,7 +156,7 @@ export default function FlashcardSprintPage() {
 
     window.setTimeout(() => {
       setCurrentIndex((index) => index + 1)
-      setShowAnswer(false)
+      setRevealed(false)
       setFeedbackTone('idle')
       setFeedbackMessage('')
       setIsAnswering(false)
@@ -350,7 +346,7 @@ export default function FlashcardSprintPage() {
 
               <div className="mt-10 min-h-56">
                 <p className="text-center text-2xl font-extrabold leading-relaxed text-slate-950 md:text-3xl">
-                  {showAnswer ? currentCard.reference : currentCard.verse}
+                  {revealed ? currentCard.reference : currentCard.verse}
                 </p>
               </div>
 
@@ -370,15 +366,17 @@ export default function FlashcardSprintPage() {
             </div>
 
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {!showAnswer ? (
+              {!revealed && (
                 <button
                   type="button"
-                  onClick={handleShowAnswer}
+                  onClick={() => setRevealed(true)}
                   className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
                 >
                   Show Answer
                 </button>
-              ) : (
+              )}
+
+              {revealed && (
                 <>
                   <button
                     type="button"
