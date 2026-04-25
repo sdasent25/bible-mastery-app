@@ -91,44 +91,45 @@ export default function PricingSection() {
         <div
           id="pro-plus"
           onClick={() => setSelectedPlan("pro_plus")}
-          className={`relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 text-white shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+          className={`relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 text-white opacity-100 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
             selectedPlan === "pro_plus" ? "scale-[1.04] ring-2 ring-green-400" : ""
           }`}
         >
+          <div className="text-white">
           <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
             RECOMMENDED
           </div>
 
-          <h2 className="text-xl font-bold text-white mb-2">
+          <h2 className="text-xl font-bold !text-white mb-2">
             Pro+ {isFamily && "Family"} 🚀
           </h2>
-          <p className="text-sm text-gray-200 mb-2">
+          <p className="text-sm !text-white mb-2">
             Master Scripture with a deeper training system
           </p>
-          <p className="text-white font-semibold mb-4">
+          <p className="!text-white font-semibold mb-4">
             {isFamily ? "$29.99 / month" : "$12.99 / month"}
           </p>
 
           {isFamily && (
-            <p className="text-sm text-white mb-4 text-center">
+            <p className="text-sm !text-white mb-4 text-center">
               Up to 4 members included
             </p>
           )}
 
-          <div className="text-sm text-white mt-3 mb-4">
+          <div className="text-sm !text-white mt-3 mb-4">
             <p>• Build discipline</p>
             <p>• Master scripture</p>
             <p>• Stay consistent long-term</p>
           </div>
 
-          <ul className="text-white text-sm space-y-2 mb-6">
+          <ul className="!text-white text-sm space-y-2 mb-6">
             <li>✅ Everything in Pro</li>
             <li>🗓️ Choose your daily depth (5 / 10 / 15)</li>
             <li>🧭 Quests (Who said it, Characters, Books)</li>
             <li>🧠 Scholar Mode for advanced recall</li>
           </ul>
 
-          <p className="text-xs text-gray-300 mb-2">
+          <p className="text-xs !text-white mb-2">
             Start in under 2 minutes
           </p>
 
@@ -136,39 +137,41 @@ export default function PricingSection() {
             onClick={handleProPlusCheckout}
             onMouseDown={(e) => e.currentTarget.classList.add("scale-95")}
             onMouseUp={(e) => e.currentTarget.classList.remove("scale-95")}
-            className="w-full py-3 rounded-lg bg-green-500 text-black font-bold animate-pulse"
+            className="w-full py-3 rounded-lg bg-green-500 text-white font-bold animate-pulse"
           >
             Start My Full Journey
           </button>
 
-          <p className="text-xs text-gray-300 text-center mt-2">
+          <p className="text-xs !text-white text-center mt-2">
             Built for deeper daily training
           </p>
+          </div>
         </div>
 
         <div
           onClick={() => setSelectedPlan("pro")}
-          className={`bg-[#0B1220] border border-blue-500 rounded-2xl p-6 text-white transition-all duration-200 active:scale-[0.97] cursor-pointer ${
+          className={`bg-[#0B1220] border border-blue-500 rounded-2xl p-6 text-white opacity-100 transition-all duration-200 active:scale-[0.97] cursor-pointer ${
             selectedPlan === "pro" ? "border-blue-400 scale-[1.02]" : ""
           }`}
         >
-          <h2 className="text-xl font-bold text-white mb-4">
+          <div className="text-white">
+          <h2 className="text-xl font-bold !text-white mb-4">
             Pro {isFamily && "Family"}
           </h2>
-          <p className="text-sm text-gray-200 mb-2">
+          <p className="text-sm !text-white mb-2">
             Build consistency in your walk with God
           </p>
-          <p className="text-white font-semibold mb-4">
+          <p className="!text-white font-semibold mb-4">
             {isFamily ? "$19.99 / month" : "$6.99 / month"}
           </p>
 
           {isFamily && (
-            <p className="text-sm text-white mb-4 text-center">
+            <p className="text-sm !text-white mb-4 text-center">
               Up to 4 members included
             </p>
           )}
 
-          <ul className="text-sm text-white space-y-2 mb-6">
+          <ul className="text-sm !text-white space-y-2 mb-6">
             <li>📖 Full Bible Journey</li>
             <li>🗓️ 10 questions per day</li>
             <li>📚 Flashcards for memorization</li>
@@ -182,15 +185,17 @@ export default function PricingSection() {
             Start Training
           </button>
 
-          <p className="text-xs text-gray-300 mt-4 text-center">
+          <p className="text-xs !text-white mt-4 text-center">
             Best for quick daily practice
           </p>
+          </div>
         </div>
 
-        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 text-white transition-all duration-200 active:scale-[0.97] cursor-pointer">
-          <h2 className="text-xl font-bold text-white mb-4">Free</h2>
+        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 text-white opacity-100 transition-all duration-200 active:scale-[0.97] cursor-pointer">
+          <div className="text-white">
+          <h2 className="text-xl font-bold !text-white mb-4">Free</h2>
 
-          <ul className="text-sm text-white space-y-2 mb-6">
+          <ul className="text-sm !text-white space-y-2 mb-6">
             <li>👁️ View full Bible journey</li>
             <li>🔒 Locked experience (preview only)</li>
             <li>🚫 No flashcards</li>
@@ -203,6 +208,7 @@ export default function PricingSection() {
           >
             Get Started
           </button>
+          </div>
         </div>
       </div>
       </div>

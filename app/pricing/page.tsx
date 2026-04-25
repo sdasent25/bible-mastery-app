@@ -76,30 +76,31 @@ export default function PricingPage() {
         ) : null}
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="rounded-[28px] border border-emerald-300/25 bg-emerald-400/10 p-5 text-white shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-6">
+          <div className="rounded-[28px] border border-emerald-300/25 bg-emerald-400/10 p-5 text-white opacity-100 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-6">
+            <div className="text-white">
             <div className="mb-5">
               <div className="text-xs font-black uppercase tracking-[0.24em] text-emerald-200">
                 Pro
               </div>
-              <h2 className="mt-2 text-3xl font-black text-white">Build consistency in your walk with God</h2>
+              <h2 className="mt-2 text-3xl font-black !text-white">Build consistency in your walk with God</h2>
 
               {isFamily ? (
                 <div className="mt-4 rounded-2xl border border-emerald-300/20 bg-black/25 p-4">
-                  <div className="text-sm font-semibold text-white">Up to 4 members</div>
+                  <div className="text-sm font-semibold !text-white">Up to 4 members</div>
                   <div className="mt-3 text-4xl font-black text-emerald-300">$19.99</div>
-                  <div className="mt-1 text-sm font-medium text-white">per month</div>
+                  <div className="mt-1 text-sm font-medium !text-white">per month</div>
                   <div className="mt-3 inline-flex rounded-full bg-emerald-300 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-black">
                     Save over 28% vs 4 individual plans
                   </div>
                 </div>
               ) : (
                 <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4">
-                  <div className="text-4xl font-black text-white">$6.99</div>
-                  <div className="mt-1 text-sm font-medium text-white">per month</div>
+                  <div className="text-4xl font-black !text-white">$6.99</div>
+                  <div className="mt-1 text-sm font-medium !text-white">per month</div>
                 </div>
               )}
 
-              <p className="mt-4 text-sm leading-6 text-gray-200">
+              <p className="mt-4 text-sm leading-6 !text-white">
                 Build consistency in your walk with God.
               </p>
             </div>
@@ -114,7 +115,7 @@ export default function PricingPage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-white"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium !text-white"
                 >
                   {feature}
                 </div>
@@ -123,19 +124,21 @@ export default function PricingPage() {
 
             <button
               onClick={() => handleCheckout(isFamily ? "family_pro" : "pro")}
-              className="mt-6 block w-full rounded-2xl bg-emerald-300 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+              className="mt-6 block w-full rounded-2xl bg-emerald-300 px-4 py-4 text-center text-base font-black text-white transition active:scale-[0.99]"
             >
               {isFamily ? "Start Family Pro" : "Upgrade to Pro"}
             </button>
+            </div>
           </div>
 
-          <div className="rounded-[28px] border border-amber-300/40 bg-amber-300/10 p-5 text-white shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-6">
+          <div className="rounded-[28px] border border-amber-300/40 bg-amber-300/10 p-5 text-white opacity-100 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-6">
+            <div className="text-white">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.24em] text-amber-100">
                   Pro+
                 </div>
-                <h2 className="mt-2 text-3xl font-black text-white">Master Scripture with a deeper training system</h2>
+                <h2 className="mt-2 text-3xl font-black !text-white">Master Scripture with a deeper training system</h2>
               </div>
 
               <div className="rounded-full bg-amber-300 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black">
@@ -145,21 +148,21 @@ export default function PricingPage() {
 
             {isFamily ? (
               <div className="mb-5 rounded-2xl border border-amber-300/25 bg-black/25 p-4">
-                <div className="text-sm font-semibold text-white">Up to 4 members</div>
+                <div className="text-sm font-semibold !text-white">Up to 4 members</div>
                 <div className="mt-3 text-4xl font-black text-amber-300">$29.99</div>
-                <div className="mt-1 text-sm font-medium text-white">per month</div>
+                <div className="mt-1 text-sm font-medium !text-white">per month</div>
                 <div className="mt-3 inline-flex rounded-full bg-amber-300 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-black">
                   Save over 42% vs 4 individual plans
                 </div>
               </div>
             ) : (
               <div className="mb-5 rounded-2xl border border-white/10 bg-black/25 p-4">
-                <div className="text-4xl font-black text-white">$12.99</div>
-                <div className="mt-1 text-sm font-medium text-white">per month</div>
+                <div className="text-4xl font-black !text-white">$12.99</div>
+                <div className="mt-1 text-sm font-medium !text-white">per month</div>
               </div>
             )}
 
-              <p className="mb-5 text-sm leading-6 text-gray-200">
+              <p className="mb-5 text-sm leading-6 !text-white">
                 Master Scripture with a deeper training system.
               </p>
 
@@ -173,7 +176,7 @@ export default function PricingPage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium text-white"
+                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm font-medium !text-white"
                 >
                   {feature}
                 </div>
@@ -182,10 +185,11 @@ export default function PricingPage() {
 
             <button
               onClick={() => handleCheckout(isFamily ? "family_pro_plus" : "pro_plus")}
-              className="mt-6 block w-full rounded-2xl bg-amber-300 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+              className="mt-6 block w-full rounded-2xl bg-amber-300 px-4 py-4 text-center text-base font-black text-white transition active:scale-[0.99]"
             >
               {isFamily ? "Start Family Pro+" : "Upgrade to Pro+"}
             </button>
+            </div>
           </div>
         </div>
       </div>
