@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { createFlashcard } from "@/lib/flashcards"
 
 export default function CreateFlashcard() {
   const router = useRouter()
@@ -9,23 +10,19 @@ export default function CreateFlashcard() {
   const [text, setText] = useState("")
   const [ref, setRef] = useState("")
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!text || !ref) return
 
-    const existing =
-      JSON.parse(localStorage.getItem("flashcards") || "[]")
-
-    const newCard = { text, ref }
-
-    localStorage.setItem(
-      "flashcards",
-      JSON.stringify([newCard, ...existing])
-    )
+    await createFlashcard({
+      verse_text: text,
+      reference: ref,
+      tags: [],
+    })
 
     setText("")
     setRef("")
 
-    router.push("/flashcards/library")
+    router.push("/flashcards")
   }
 
   return (

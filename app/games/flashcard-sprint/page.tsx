@@ -209,10 +209,10 @@ export default function FlashcardSprintPage() {
               Upgrade to Pro+
             </Link>
             <Link
-              href="/games"
+              href="/flashcards"
               className="w-full rounded-xl border border-gray-300 px-5 py-3 text-center font-semibold text-gray-900 transition hover:bg-gray-100"
             >
-              Back to Games
+              Back to Flashcards
             </Link>
           </div>
         </div>
@@ -243,10 +243,10 @@ export default function FlashcardSprintPage() {
               Open Flashcards
             </Link>
             <Link
-              href="/games"
+              href="/flashcards"
               className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-white transition hover:bg-slate-800"
             >
-              Back to Games
+              Back to Flashcards
             </Link>
           </div>
         </div>
@@ -288,10 +288,10 @@ export default function FlashcardSprintPage() {
               Play Again
             </button>
             <Link
-              href="/games"
+              href="/flashcards"
               className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-white transition hover:bg-slate-800"
             >
-              Back to Games
+              Back to Flashcards
             </Link>
           </div>
         </div>
@@ -403,8 +403,8 @@ export default function FlashcardSprintPage() {
         )}
 
         <div className="text-center">
-          <Link href="/games" className="text-sm font-semibold text-slate-300 transition hover:text-white">
-            Back to Games
+          <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
+            Back to Flashcards
           </Link>
         </div>
       </div>
