@@ -2,13 +2,20 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import GameHeader from '@/components/GameHeader'
 import InstructionModal from '@/components/InstructionModal'
+import LockedOverlay from '@/components/LockedOverlay'
 import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
-import { getSubscriptionStatus } from '@/lib/user'
+import { type PlanType, getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
 const SESSION_LENGTH = 10
 const CORRECT_XP = 5
+const PREVIEW_SPRINT_CARD = {
+  status: 'learning' as Flashcard['status'],
+  verse: 'For God so loved the world, that he gave his only Son...',
+  reference: 'John 3:16',
+}
 
 function formatStatusLabel(status: Flashcard['status']) {
   if (status === 'mastered') {
@@ -35,7 +42,7 @@ function buildSprintDeck(cards: Flashcard[]) {
 export default function FlashcardSprintPage() {
   const [loadingPlan, setLoadingPlan] = useState(true)
   const [loadingData, setLoadingData] = useState(false)
-  const [isProPlusUser, setIsProPlusUser] = useState(false)
+  const [plan, setPlan] = useState<PlanType>('free')
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [sessionCards, setSessionCards] = useState<Flashcard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -50,8 +57,8 @@ export default function FlashcardSprintPage() {
 
   useEffect(() => {
     async function initialize() {
-      const { isProPlus } = await getSubscriptionStatus()
-      setIsProPlusUser(isProPlus)
+      const { plan, isProPlus } = await getSubscriptionStatus()
+      setPlan(plan)
       setLoadingPlan(false)
 
       if (!isProPlus) {
@@ -77,6 +84,7 @@ export default function FlashcardSprintPage() {
   const currentCard = sessionFinished ? null : sessionCards[currentIndex] || null
   const progressCount = Math.min(currentIndex + (currentCard ? 1 : 0), sessionCards.length)
   const progressPercent = sessionCards.length > 0 ? (currentIndex / sessionCards.length) * 100 : 0
+  const isLocked = plan !== 'pro_plus' && plan !== 'family_pro_plus'
 
   useEffect(() => {
     if (loadingData || sessionCards.length === 0 || sessionFinished) {
@@ -186,41 +194,6 @@ export default function FlashcardSprintPage() {
     )
   }
 
-  if (!isProPlusUser) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-6 md:py-12">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-3xl text-white">
-            🔒
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-            Flashcard Sprint
-          </h1>
-          <p className="mt-2 text-base text-gray-600">
-            How fast can you recall?
-          </p>
-          <p className="mt-6 text-lg font-semibold text-gray-900">
-            Unlock Game Training with Pro+
-          </p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-            <Link
-              href="/pricing?source=link_upgrade"
-              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-center font-semibold text-white transition hover:bg-black"
-            >
-              Upgrade to Pro+
-            </Link>
-            <Link
-              href="/flashcards"
-              className="w-full rounded-xl border border-gray-300 px-5 py-3 text-center font-semibold text-gray-900 transition hover:bg-gray-100"
-            >
-              Back to Flashcards
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (loadingData) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
@@ -229,7 +202,7 @@ export default function FlashcardSprintPage() {
     )
   }
 
-  if (flashcards.length === 0) {
+  if (!isLocked && flashcards.length === 0) {
     return (
       <div className="min-h-screen bg-slate-950 px-4 py-8 md:px-6 md:py-12">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-slate-800 bg-slate-900 p-8 text-center text-white shadow-2xl">
@@ -312,30 +285,29 @@ export default function FlashcardSprintPage() {
         ]}
       />
 
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
-        <div className="mx-auto max-w-5xl space-y-8">
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
+        <div className={`mx-auto max-w-5xl space-y-8 ${isLocked ? 'pointer-events-none opacity-40' : ''}`}>
           <header className="text-center text-white">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">Game Training</p>
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Flashcard Sprint</h1>
             <p className="mt-3 text-base text-slate-300 md:text-lg">How fast can you recall?</p>
           </header>
 
-          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
+          <GameHeader
+            progress={isLocked ? 1 : currentIndex + 1}
+            total={isLocked ? SESSION_LENGTH : sessionCards.length}
+            sessionXp={sessionXp}
+            totalXp={totalXp}
+          />
+
+          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-2">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Timer</p>
               <p className="mt-2 text-2xl font-bold">{formatElapsed(elapsedSeconds)}</p>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Progress</p>
-              <p className="mt-2 text-2xl font-bold">{currentIndex + 1} / {sessionCards.length}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Correct</p>
               <p className="mt-2 text-2xl font-bold text-emerald-300">{correctCount}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
-              <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
             </div>
           </section>
 
@@ -346,23 +318,25 @@ export default function FlashcardSprintPage() {
             />
           </div>
 
-          {currentCard && (
+          {(currentCard || isLocked) && (
             <section className="mx-auto max-w-3xl">
               <div
                 className={`rounded-[2rem] border border-white/10 p-6 text-slate-950 shadow-2xl transition-all duration-300 md:p-8 ${cardClasses}`}
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                    {formatStatusLabel(currentCard.status)}
+                    {formatStatusLabel((currentCard ?? PREVIEW_SPRINT_CARD).status)}
                   </span>
                   <span className="text-sm font-semibold text-slate-600">
-                    Card {progressCount} of {sessionCards.length}
+                    Card {isLocked ? 1 : progressCount} of {isLocked ? SESSION_LENGTH : sessionCards.length}
                   </span>
                 </div>
 
                 <div className="mt-10 min-h-56">
                   <p className="text-center text-2xl font-extrabold leading-relaxed text-slate-950 md:text-3xl">
-                    {revealed ? currentCard.reference : currentCard.verse}
+                    {revealed
+                      ? (currentCard ?? PREVIEW_SPRINT_CARD).reference
+                      : (currentCard ?? PREVIEW_SPRINT_CARD).verse}
                   </p>
                 </div>
 
@@ -422,6 +396,13 @@ export default function FlashcardSprintPage() {
             </Link>
           </div>
         </div>
+
+        {isLocked && (
+          <LockedOverlay
+            title="Pro+ Required"
+            message="Unlock advanced training modes and master Scripture."
+          />
+        )}
       </div>
     </>
   )

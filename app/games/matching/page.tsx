@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import GameHeader from "@/components/GameHeader"
 import InstructionModal from "@/components/InstructionModal"
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
-import { addXp } from "@/lib/xp"
+import { addXp, getXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
   return [...arr].sort(() => Math.random() - 0.5)
@@ -18,11 +19,16 @@ export default function MatchingGamePage() {
   const [matched, setMatched] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [checking, setChecking] = useState(false)
+  const [sessionXp, setSessionXp] = useState(0)
+  const [totalXp, setTotalXp] = useState(0)
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getFlashcards()
+        const [data, xp] = await Promise.all([
+          getFlashcards(),
+          getXp(),
+        ])
         const ordered = prioritizeFlashcards(data)
         const difficulty = ordered[0] ? getDifficulty(ordered[0]) : "medium"
         const pairCount = difficulty === "easy" ? 3 : difficulty === "hard" ? 5 : 4
@@ -31,6 +37,7 @@ export default function MatchingGamePage() {
         setCards(sample)
         setLeft(sample)
         setRight(shuffle(sample))
+        setTotalXp(xp)
       } catch (error) {
         console.error("Failed to load flashcards", error)
         setCards([])
@@ -57,11 +64,16 @@ export default function MatchingGamePage() {
 
         await updateFlashcardProgress(leftCard, "easy")
 
-        await addXp({
+        const xpResult = await addXp({
           amount: 3,
           source: "matching",
           cardId: leftCard.id,
         })
+
+        if (xpResult.success) {
+          setSessionXp((currentXp) => currentXp + 3)
+          setTotalXp(xpResult.xp)
+        }
       }
     } catch (error) {
       console.error("Failed to process match", error)
@@ -108,6 +120,8 @@ export default function MatchingGamePage() {
   const visibleLeft = left.filter((card) => !matched.includes(card.id))
   const visibleRight = right.filter((card) => !matched.includes(card.id))
   const isComplete = matched.length === cards.length
+  const progress = matched.length
+  const total = cards.length
 
   return (
     <>
@@ -136,6 +150,13 @@ export default function MatchingGamePage() {
         <p className="text-sm text-gray-300 mb-6">
           Match each verse with its reference.
         </p>
+
+        <GameHeader
+          progress={progress}
+          total={total}
+          sessionXp={sessionXp}
+          totalXp={totalXp}
+        />
 
         {!!cards.length && (
           <div className="mb-4 inline-flex rounded-full bg-gray-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-300">

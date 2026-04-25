@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import GameHeader from "@/components/GameHeader"
 import InstructionModal from "@/components/InstructionModal"
 import { getDifficulty, getFlashcards, type Flashcard, prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
-import { addXp } from "@/lib/xp"
+import { addXp, getXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
   return [...arr].sort(() => Math.random() - 0.5)
@@ -65,15 +66,23 @@ export default function BuildTheVersePage() {
   const [wasCorrect, setWasCorrect] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const [awarded, setAwarded] = useState(false)
+  const [sessionXp, setSessionXp] = useState(0)
+  const [totalXp, setTotalXp] = useState(0)
+  const [initialTotal, setInitialTotal] = useState(0)
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getFlashcards()
+        const [data, xp] = await Promise.all([
+          getFlashcards(),
+          getXp(),
+        ])
         const sorted = prioritizeFlashcards(data)
 
         const sample = sorted.slice(0, 5)
         setCards(sample)
+        setInitialTotal(sample.length)
+        setTotalXp(xp)
       } catch (error) {
         console.error("Failed to load flashcards", error)
         setCards([])
@@ -151,11 +160,16 @@ export default function BuildTheVersePage() {
     if (!awarded) {
       if (isCorrect) {
         await updateFlashcardProgress(current, "easy")
-        await addXp({
+        const xpResult = await addXp({
           amount: 6,
           source: "build_verse",
           cardId: current.id,
         })
+
+        if (xpResult.success) {
+          setSessionXp((currentXp) => currentXp + 6)
+          setTotalXp(xpResult.xp)
+        }
       } else {
         await updateFlashcardProgress(current, "again")
       }
@@ -167,6 +181,9 @@ export default function BuildTheVersePage() {
     setWasCorrect(null)
     setCards((prev) => prev.slice(1))
   }
+
+  const progress = initialTotal > 0 ? initialTotal - cards.length + 1 : 0
+  const total = initialTotal || cards.length
 
   if (loading) {
     return <div className="p-6 text-white">Loading...</div>
@@ -206,9 +223,13 @@ export default function BuildTheVersePage() {
           Build the Verse
         </h1>
 
-        <div className="text-sm text-blue-400 mb-4">
-          {current.reference}
-        </div>
+        <GameHeader
+          reference={current.reference}
+          progress={progress}
+          total={total}
+          sessionXp={sessionXp}
+          totalXp={totalXp}
+        />
 
         <div className="bg-gray-800 rounded-2xl p-6 mb-6 min-h-[120px]">
           <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">

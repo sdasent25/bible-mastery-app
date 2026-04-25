@@ -2,12 +2,19 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import GameHeader from '@/components/GameHeader'
 import InstructionModal from '@/components/InstructionModal'
+import LockedOverlay from '@/components/LockedOverlay'
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
-import { getSubscriptionStatus } from '@/lib/user'
+import { type PlanType, getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
 const CORRECT_XP = 5
+const PREVIEW_FILL_TOKENS = ['Trust', 'in', 'the', 'Lord', 'with', 'all', 'your', 'heart']
+const PREVIEW_BLANKS = [
+  { tokenIndex: 3, answer: 'Lord', hint: 'L___' },
+  { tokenIndex: 7, answer: 'heart', hint: 'H____' },
+]
 
 type PuzzleBlank = {
   tokenIndex: number
@@ -92,7 +99,7 @@ function createRound(card: Flashcard): RoundState {
 export default function FillInTheBlankPage() {
   const [loadingPlan, setLoadingPlan] = useState(true)
   const [loadingData, setLoadingData] = useState(false)
-  const [isProPlusUser, setIsProPlusUser] = useState(false)
+  const [plan, setPlan] = useState<PlanType>('free')
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [round, setRound] = useState<RoundState | null>(null)
@@ -107,8 +114,8 @@ export default function FillInTheBlankPage() {
 
   useEffect(() => {
     async function initialize() {
-      const { isProPlus } = await getSubscriptionStatus()
-      setIsProPlusUser(isProPlus)
+      const { plan, isProPlus } = await getSubscriptionStatus()
+      setPlan(plan)
       setLoadingPlan(false)
 
       if (!isProPlus) {
@@ -137,6 +144,7 @@ export default function FillInTheBlankPage() {
   const currentCard = orderedFlashcards.length > 0
     ? orderedFlashcards[currentIndex % orderedFlashcards.length]
     : null
+  const isLocked = plan !== 'pro_plus' && plan !== 'family_pro_plus'
 
   const blankIndexMap = useMemo(() => {
     return new Map(round?.puzzle.blanks.map((blank, index) => [blank.tokenIndex, index]) || [])
@@ -263,41 +271,6 @@ export default function FillInTheBlankPage() {
     )
   }
 
-  if (!isProPlusUser) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8 md:px-6 md:py-12">
-        <div className="mx-auto flex w-full max-w-2xl flex-col items-center rounded-3xl bg-white p-8 text-center shadow-lg">
-          <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-900 text-3xl text-white">
-            🔒
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-            Fill-in-the-Blank
-          </h1>
-          <p className="mt-2 text-base text-gray-600">
-            Complete missing words from your verses
-          </p>
-          <p className="mt-6 text-lg font-semibold text-gray-900">
-            Unlock Game Training with Pro+
-          </p>
-          <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
-            <Link
-              href="/pricing?source=link_upgrade"
-              className="w-full rounded-xl bg-slate-900 px-5 py-3 text-center font-semibold text-white transition hover:bg-black"
-            >
-              Upgrade to Pro+
-            </Link>
-            <Link
-              href="/flashcards"
-              className="w-full rounded-xl border border-gray-300 px-5 py-3 text-center font-semibold text-gray-900 transition hover:bg-gray-100"
-            >
-              Back to Flashcards
-            </Link>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   if (loadingData) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
@@ -306,7 +279,7 @@ export default function FillInTheBlankPage() {
     )
   }
 
-  if (orderedFlashcards.length === 0) {
+  if (!isLocked && orderedFlashcards.length === 0) {
     return (
       <div className="min-h-screen bg-slate-950 px-4 py-8 md:px-6 md:py-12">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-slate-800 bg-slate-900 p-8 text-center text-white shadow-2xl">
@@ -344,32 +317,21 @@ export default function FillInTheBlankPage() {
         ]}
       />
 
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1f2937,_#020617_62%)] px-4 py-8 md:px-6 md:py-10">
-        <div className="mx-auto max-w-5xl space-y-8">
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_top,_#1f2937,_#020617_62%)] px-4 py-8 md:px-6 md:py-10">
+        <div className={`mx-auto max-w-5xl space-y-8 ${isLocked ? 'pointer-events-none opacity-40' : ''}`}>
           <header className="text-center text-white">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">Game Training</p>
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Fill-in-the-Blank</h1>
             <p className="mt-3 text-base text-slate-300 md:text-lg">Complete the missing words from memory</p>
           </header>
 
-          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Reference</p>
-              <p className="mt-2 text-lg font-bold">{currentCard?.reference}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Completed</p>
-              <p className="mt-2 text-2xl font-bold text-emerald-300">{completedCount}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Session XP</p>
-              <p className="mt-2 text-2xl font-bold text-amber-300">+{sessionXp}</p>
-            </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
-              <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
-            </div>
-          </section>
+          <GameHeader
+            reference={currentCard?.reference ?? 'Proverbs 3:5'}
+            progress={completedCount}
+            total={isLocked ? 5 : flashcards.length}
+            sessionXp={sessionXp}
+            totalXp={totalXp}
+          />
 
           <section className="mx-auto max-w-4xl">
             <div className={`rounded-[2rem] border border-white/10 p-6 shadow-2xl transition-all duration-300 md:p-8 ${panelClasses}`}>
@@ -379,19 +341,21 @@ export default function FillInTheBlankPage() {
                 </span>
                 <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
                   <span className="rounded-full bg-slate-200 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-700">
-                    {currentCard ? getDifficulty(currentCard) : 'medium'}
+                    {currentCard ? getDifficulty(currentCard) : 'easy'}
                   </span>
                   <span>
-                  Card {(currentIndex % orderedFlashcards.length) + 1} of {orderedFlashcards.length}
+                  Card {isLocked ? 1 : (currentIndex % orderedFlashcards.length) + 1} of {isLocked ? 5 : orderedFlashcards.length}
                   </span>
                 </div>
               </div>
 
               <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 text-center text-xl font-bold leading-relaxed text-slate-950 md:text-2xl">
-                {round?.puzzle.tokens.map((token, tokenIndex) => {
-                  const blankIndex = blankIndexMap.get(tokenIndex)
+                {(isLocked ? PREVIEW_FILL_TOKENS : round?.puzzle.tokens || []).map((token, tokenIndex) => {
+                  const blankIndex = isLocked
+                    ? PREVIEW_BLANKS.findIndex((blank) => blank.tokenIndex === tokenIndex)
+                    : blankIndexMap.get(tokenIndex) ?? -1
 
-                  if (blankIndex === undefined) {
+                  if (blankIndex === -1) {
                     return (
                       <span key={`${token}-${tokenIndex}`} className="px-1">
                         {token}
@@ -399,7 +363,7 @@ export default function FillInTheBlankPage() {
                     )
                   }
 
-                  const isCorrect = round.blankResults[blankIndex]
+                  const isCorrect = isLocked ? false : round?.blankResults[blankIndex]
                   const inputClasses = checked
                     ? isCorrect
                       ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
@@ -409,16 +373,16 @@ export default function FillInTheBlankPage() {
                   return (
                     <span key={`blank-${tokenIndex}`} className="flex flex-col items-center gap-2">
                       <input
-                        type="text"
-                        value={round.answers[blankIndex] || ''}
-                        onChange={(event) => handleAnswerChange(blankIndex, event.target.value)}
-                        disabled={checked && round.blankResults.every(Boolean)}
-                        placeholder={round.puzzle.blanks[blankIndex].hint}
-                        className={`w-28 rounded-xl border px-3 py-2 text-center text-base font-semibold outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500 ${inputClasses}`}
-                      />
-                      {checked && !isCorrect && (
+                      type="text"
+                      value={isLocked ? '' : round?.answers[blankIndex] || ''}
+                      onChange={(event) => handleAnswerChange(blankIndex, event.target.value)}
+                      disabled={isLocked || (checked && !!round?.blankResults.every(Boolean))}
+                      placeholder={isLocked ? PREVIEW_BLANKS[blankIndex].hint : round?.puzzle.blanks[blankIndex].hint}
+                      className={`w-28 rounded-xl border px-3 py-2 text-center text-base font-semibold outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500 ${inputClasses}`}
+                    />
+                      {checked && !isCorrect && !isLocked && (
                         <span className="text-xs font-semibold text-rose-700">
-                          {round.puzzle.blanks[blankIndex].answer}
+                          {round?.puzzle.blanks[blankIndex].answer}
                         </span>
                       )}
                     </span>
@@ -486,6 +450,13 @@ export default function FillInTheBlankPage() {
             </Link>
           </div>
         </div>
+
+        {isLocked && (
+          <LockedOverlay
+            title="Pro+ Required"
+            message="Unlock advanced training modes and master Scripture."
+          />
+        )}
       </div>
     </>
   )
