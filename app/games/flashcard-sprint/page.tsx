@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import InstructionModal from '@/components/InstructionModal'
 import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
@@ -300,116 +301,128 @@ export default function FlashcardSprintPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
-      <div className="mx-auto max-w-5xl space-y-8">
-        <header className="text-center text-white">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">Game Training</p>
-          <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Flashcard Sprint</h1>
-          <p className="mt-3 text-base text-slate-300 md:text-lg">How fast can you recall?</p>
-        </header>
+    <>
+      <InstructionModal
+        title="Sprint Mode"
+        storageKey="sprintSeen"
+        steps={[
+          "Quick recall training",
+          "Reveal answer before responding",
+          "No XP in this mode",
+        ]}
+      />
 
-        <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Timer</p>
-            <p className="mt-2 text-2xl font-bold">{formatElapsed(elapsedSeconds)}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Progress</p>
-            <p className="mt-2 text-2xl font-bold">{currentIndex + 1} / {sessionCards.length}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Correct</p>
-            <p className="mt-2 text-2xl font-bold text-emerald-300">{correctCount}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
-            <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
-          </div>
-        </section>
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <header className="text-center text-white">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">Game Training</p>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Flashcard Sprint</h1>
+            <p className="mt-3 text-base text-slate-300 md:text-lg">How fast can you recall?</p>
+          </header>
 
-        <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full bg-amber-400 transition-all duration-300"
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
-
-        {currentCard && (
-          <section className="mx-auto max-w-3xl">
-            <div
-              className={`rounded-[2rem] border border-white/10 p-6 text-slate-950 shadow-2xl transition-all duration-300 md:p-8 ${cardClasses}`}
-            >
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                  {formatStatusLabel(currentCard.status)}
-                </span>
-                <span className="text-sm font-semibold text-slate-600">
-                  Card {progressCount} of {sessionCards.length}
-                </span>
-              </div>
-
-              <div className="mt-10 min-h-56">
-                <p className="text-center text-2xl font-extrabold leading-relaxed text-slate-950 md:text-3xl">
-                  {revealed ? currentCard.reference : currentCard.verse}
-                </p>
-              </div>
-
-              <div className="mt-6 flex min-h-8 items-center justify-center">
-                <p
-                  className={`text-center text-base font-semibold transition-all duration-200 ${
-                    feedbackTone === 'correct'
-                      ? 'text-emerald-700 opacity-100'
-                      : feedbackTone === 'incorrect'
-                        ? 'text-rose-700 opacity-100'
-                        : 'opacity-0'
-                  }`}
-                >
-                  {feedbackMessage || 'Ready'}
-                </p>
-              </div>
+          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Timer</p>
+              <p className="mt-2 text-2xl font-bold">{formatElapsed(elapsedSeconds)}</p>
             </div>
-
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {!revealed && (
-                <button
-                  type="button"
-                  onClick={() => setRevealed(true)}
-                  className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
-                >
-                  Show Answer
-                </button>
-              )}
-
-              {revealed && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => handleAnswer('correct')}
-                    disabled={isAnswering}
-                    className="rounded-xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-300"
-                  >
-                    {isAnswering ? 'Saving...' : 'Got it right'}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleAnswer('review')}
-                    disabled={isAnswering}
-                    className="rounded-xl bg-rose-500 px-5 py-4 font-semibold text-white transition hover:bg-rose-400 disabled:cursor-not-allowed disabled:bg-rose-300"
-                  >
-                    {isAnswering ? 'Saving...' : 'Need to review'}
-                  </button>
-                </>
-              )}
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Progress</p>
+              <p className="mt-2 text-2xl font-bold">{currentIndex + 1} / {sessionCards.length}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Correct</p>
+              <p className="mt-2 text-2xl font-bold text-emerald-300">{correctCount}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
+              <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
             </div>
           </section>
-        )}
 
-        <div className="text-center">
-          <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
-            Back to Flashcards
-          </Link>
+          <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-amber-400 transition-all duration-300"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          {currentCard && (
+            <section className="mx-auto max-w-3xl">
+              <div
+                className={`rounded-[2rem] border border-white/10 p-6 text-slate-950 shadow-2xl transition-all duration-300 md:p-8 ${cardClasses}`}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
+                    {formatStatusLabel(currentCard.status)}
+                  </span>
+                  <span className="text-sm font-semibold text-slate-600">
+                    Card {progressCount} of {sessionCards.length}
+                  </span>
+                </div>
+
+                <div className="mt-10 min-h-56">
+                  <p className="text-center text-2xl font-extrabold leading-relaxed text-slate-950 md:text-3xl">
+                    {revealed ? currentCard.reference : currentCard.verse}
+                  </p>
+                </div>
+
+                <div className="mt-6 flex min-h-8 items-center justify-center">
+                  <p
+                    className={`text-center text-base font-semibold transition-all duration-200 ${
+                      feedbackTone === 'correct'
+                        ? 'text-emerald-700 opacity-100'
+                        : feedbackTone === 'incorrect'
+                          ? 'text-rose-700 opacity-100'
+                          : 'opacity-0'
+                    }`}
+                  >
+                    {feedbackMessage || 'Ready'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {!revealed && (
+                  <button
+                    type="button"
+                    onClick={() => setRevealed(true)}
+                    className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
+                  >
+                    Show Answer
+                  </button>
+                )}
+
+                {revealed && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleAnswer('correct')}
+                      disabled={isAnswering}
+                      className="rounded-xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-300"
+                    >
+                      {isAnswering ? 'Saving...' : 'Got it right'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleAnswer('review')}
+                      disabled={isAnswering}
+                      className="rounded-xl bg-rose-500 px-5 py-4 font-semibold text-white transition hover:bg-rose-400 disabled:cursor-not-allowed disabled:bg-rose-300"
+                    >
+                      {isAnswering ? 'Saving...' : 'Need to review'}
+                    </button>
+                  </>
+                )}
+              </div>
+            </section>
+          )}
+
+          <div className="text-center">
+            <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
+              Back to Flashcards
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import InstructionModal from "@/components/InstructionModal"
 import { getDifficulty, getFlashcards, type Flashcard, prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
@@ -181,116 +182,129 @@ export default function BuildTheVersePage() {
   }
 
   return (
-    <div className="p-6 text-white max-w-3xl mx-auto">
-      <button
-        onClick={() => window.location.href = "/flashcards"}
-        className="mb-4 text-sm text-gray-300"
-      >
-        ← Back
-      </button>
+    <>
+      <InstructionModal
+        title="Build the Verse"
+        storageKey="buildVerseSeen"
+        steps={[
+          "Rebuild the verse in the correct order",
+          "Tap words to place them",
+          "Tap again to remove",
+          "XP only for correct answers",
+        ]}
+      />
 
-      <h1 className="text-2xl font-bold mb-2">
-        Build the Verse
-      </h1>
-
-      <div className="text-sm text-blue-400 mb-4">
-        {current.reference}
-      </div>
-
-      <div className="bg-gray-800 rounded-2xl p-6 mb-6 min-h-[120px]">
-        <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
-          {getDifficulty(current)} mode
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          {tokens.map((token, tokenIndex) => {
-            const answerIndex = hiddenIndexMap.get(tokenIndex)
-
-            if (answerIndex === undefined) {
-              return (
-                <span
-                  key={`${token}-${tokenIndex}`}
-                  className="rounded bg-gray-700 px-3 py-1 text-gray-200"
-                >
-                  {token}
-                </span>
-              )
-            }
-
-            const selectedWord = answer[answerIndex]
-
-            if (!selectedWord) {
-              return (
-                <button
-                  key={`blank-${tokenIndex}`}
-                  type="button"
-                  disabled
-                  className="min-w-[64px] rounded border border-dashed border-gray-500 px-3 py-1 text-gray-400"
-                >
-                  __
-                </button>
-              )
-            }
-
-            return (
-              <button
-                key={`${selectedWord.idx}-${answerIndex}`}
-                onClick={() => removeWord(answerIndex)}
-                className="bg-blue-500 px-3 py-1 rounded"
-              >
-                {selectedWord.word}
-              </button>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-2 mb-6">
-        {availableBank.map((w) => (
-          <button
-            key={w.idx}
-            onClick={() => addWord(w.word, w.idx)}
-            className="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600"
-          >
-            {w.word}
-          </button>
-        ))}
-      </div>
-
-      {!checked ? (
+      <div className="p-6 text-white max-w-3xl mx-auto">
         <button
-          onClick={checkAnswer}
-          className="bg-green-600 px-4 py-2 rounded"
+          onClick={() => window.location.href = "/flashcards"}
+          className="mb-4 text-sm text-gray-300"
         >
-          Check
+          ← Back
         </button>
-      ) : (
-        <div className="space-y-3">
-          {wasCorrect ? (
-            <div className="text-green-400 font-semibold">
-              Correct!
-            </div>
-          ) : (
-            <div className="text-red-400 font-semibold">
-              Not quite — try again
-            </div>
-          )}
 
-          <div>
-            <div className="text-sm text-gray-400">Correct answer:</div>
-            <div className="mt-1 text-gray-200">
-              {tokens.join(" ")}
-            </div>
+        <h1 className="text-2xl font-bold mb-2">
+          Build the Verse
+        </h1>
+
+        <div className="text-sm text-blue-400 mb-4">
+          {current.reference}
+        </div>
+
+        <div className="bg-gray-800 rounded-2xl p-6 mb-6 min-h-[120px]">
+          <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+            {getDifficulty(current)} mode
           </div>
 
-          <button
-            onClick={nextCard}
-            className="bg-blue-600 px-4 py-2 rounded"
-          >
-            Next
-          </button>
+          <div className="flex flex-wrap gap-2">
+            {tokens.map((token, tokenIndex) => {
+              const answerIndex = hiddenIndexMap.get(tokenIndex)
+
+              if (answerIndex === undefined) {
+                return (
+                  <span
+                    key={`${token}-${tokenIndex}`}
+                    className="rounded bg-gray-700 px-3 py-1 text-gray-200"
+                  >
+                    {token}
+                  </span>
+                )
+              }
+
+              const selectedWord = answer[answerIndex]
+
+              if (!selectedWord) {
+                return (
+                  <button
+                    key={`blank-${tokenIndex}`}
+                    type="button"
+                    disabled
+                    className="min-w-[64px] rounded border border-dashed border-gray-500 px-3 py-1 text-gray-400"
+                  >
+                    __
+                  </button>
+                )
+              }
+
+              return (
+                <button
+                  key={`${selectedWord.idx}-${answerIndex}`}
+                  onClick={() => removeWord(answerIndex)}
+                  className="bg-blue-500 px-3 py-1 rounded"
+                >
+                  {selectedWord.word}
+                </button>
+              )
+            })}
+          </div>
         </div>
-      )}
-    </div>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {availableBank.map((w) => (
+            <button
+              key={w.idx}
+              onClick={() => addWord(w.word, w.idx)}
+              className="bg-gray-700 px-3 py-1 rounded hover:bg-gray-600"
+            >
+              {w.word}
+            </button>
+          ))}
+        </div>
+
+        {!checked ? (
+          <button
+            onClick={checkAnswer}
+            className="bg-green-600 px-4 py-2 rounded"
+          >
+            Check
+          </button>
+        ) : (
+          <div className="space-y-3">
+            {wasCorrect ? (
+              <div className="text-green-400 font-semibold">
+                Correct!
+              </div>
+            ) : (
+              <div className="text-red-400 font-semibold">
+                Not quite — try again
+              </div>
+            )}
+
+            <div>
+              <div className="text-sm text-gray-400">Correct answer:</div>
+              <div className="mt-1 text-gray-200">
+                {tokens.join(" ")}
+              </div>
+            </div>
+
+            <button
+              onClick={nextCard}
+              className="bg-blue-600 px-4 py-2 rounded"
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </>
   )
 }

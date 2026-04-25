@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import InstructionModal from '@/components/InstructionModal'
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
@@ -332,148 +333,160 @@ export default function FillInTheBlankPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1f2937,_#020617_62%)] px-4 py-8 md:px-6 md:py-10">
-      <div className="mx-auto max-w-5xl space-y-8">
-        <header className="text-center text-white">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">Game Training</p>
-          <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Fill-in-the-Blank</h1>
-          <p className="mt-3 text-base text-slate-300 md:text-lg">Complete the missing words from memory</p>
-        </header>
+    <>
+      <InstructionModal
+        title="Fill in the Blank"
+        storageKey="fillBlankSeen"
+        steps={[
+          "Fill in missing words",
+          "Choose the correct answers",
+          "Complete all blanks to earn XP",
+        ]}
+      />
 
-        <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Reference</p>
-            <p className="mt-2 text-lg font-bold">{currentCard?.reference}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Completed</p>
-            <p className="mt-2 text-2xl font-bold text-emerald-300">{completedCount}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Session XP</p>
-            <p className="mt-2 text-2xl font-bold text-amber-300">+{sessionXp}</p>
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
-            <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
-          </div>
-        </section>
+      <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1f2937,_#020617_62%)] px-4 py-8 md:px-6 md:py-10">
+        <div className="mx-auto max-w-5xl space-y-8">
+          <header className="text-center text-white">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-sky-300">Game Training</p>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Fill-in-the-Blank</h1>
+            <p className="mt-3 text-base text-slate-300 md:text-lg">Complete the missing words from memory</p>
+          </header>
 
-        <section className="mx-auto max-w-4xl">
-          <div className={`rounded-[2rem] border border-white/10 p-6 shadow-2xl transition-all duration-300 md:p-8 ${panelClasses}`}>
-            <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                Verse Challenge
-              </span>
-              <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
-                <span className="rounded-full bg-slate-200 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-700">
-                  {currentCard ? getDifficulty(currentCard) : 'medium'}
-                </span>
-                <span>
-                Card {(currentIndex % orderedFlashcards.length) + 1} of {orderedFlashcards.length}
-                </span>
-              </div>
+          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Reference</p>
+              <p className="mt-2 text-lg font-bold">{currentCard?.reference}</p>
             </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Completed</p>
+              <p className="mt-2 text-2xl font-bold text-emerald-300">{completedCount}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Session XP</p>
+              <p className="mt-2 text-2xl font-bold text-amber-300">+{sessionXp}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Total</p>
+              <p className="mt-2 text-2xl font-bold text-amber-300">{totalXp}</p>
+            </div>
+          </section>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 text-center text-xl font-bold leading-relaxed text-slate-950 md:text-2xl">
-              {round?.puzzle.tokens.map((token, tokenIndex) => {
-                const blankIndex = blankIndexMap.get(tokenIndex)
-
-                if (blankIndex === undefined) {
-                  return (
-                    <span key={`${token}-${tokenIndex}`} className="px-1">
-                      {token}
-                    </span>
-                  )
-                }
-
-                const isCorrect = round.blankResults[blankIndex]
-                const inputClasses = checked
-                  ? isCorrect
-                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                    : 'border-rose-500 bg-rose-50 text-rose-700'
-                  : 'border-slate-300 bg-white text-slate-950'
-
-                return (
-                  <span key={`blank-${tokenIndex}`} className="flex flex-col items-center gap-2">
-                    <input
-                      type="text"
-                      value={round.answers[blankIndex] || ''}
-                      onChange={(event) => handleAnswerChange(blankIndex, event.target.value)}
-                      disabled={checked && round.blankResults.every(Boolean)}
-                      placeholder={round.puzzle.blanks[blankIndex].hint}
-                      className={`w-28 rounded-xl border px-3 py-2 text-center text-base font-semibold outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500 ${inputClasses}`}
-                    />
-                    {checked && !isCorrect && (
-                      <span className="text-xs font-semibold text-rose-700">
-                        {round.puzzle.blanks[blankIndex].answer}
-                      </span>
-                    )}
+          <section className="mx-auto max-w-4xl">
+            <div className={`rounded-[2rem] border border-white/10 p-6 shadow-2xl transition-all duration-300 md:p-8 ${panelClasses}`}>
+              <div className="flex items-center justify-between gap-3">
+                <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
+                  Verse Challenge
+                </span>
+                <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
+                  <span className="rounded-full bg-slate-200 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-700">
+                    {currentCard ? getDifficulty(currentCard) : 'medium'}
                   </span>
-                )
-              })}
-            </div>
-
-            <div className="mt-6 min-h-7 text-center">
-              <p
-                className={`text-base font-semibold transition-all duration-200 ${
-                  feedbackTone === 'correct'
-                    ? 'text-emerald-700 opacity-100'
-                    : feedbackTone === 'incorrect'
-                      ? 'text-rose-700 opacity-100'
-                      : 'opacity-0'
-                }`}
-              >
-                {feedbackMessage || 'Ready'}
-              </p>
-            </div>
-
-            {checked && round && round.blankResults.some((result) => !result) && (
-              <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4">
-                <p className="text-sm font-semibold text-rose-800">Correct answers</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {round.puzzle.blanks.map((blank, index) => (
-                    <span key={`${blank.answer}-${index}`} className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-rose-700">
-                      {blank.answer}
-                    </span>
-                  ))}
+                  <span>
+                  Card {(currentIndex % orderedFlashcards.length) + 1} of {orderedFlashcards.length}
+                  </span>
                 </div>
               </div>
-            )}
-          </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <button
-              type="button"
-              onClick={handleCheckAnswers}
-              disabled={round ? round.answers.some((answer) => !answer.trim()) : true}
-              className="rounded-xl bg-sky-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-sky-200 disabled:text-slate-500"
-            >
-              Check Answers
-            </button>
-            <button
-              type="button"
-              onClick={handleTryAgain}
-              className="rounded-xl border border-white/20 bg-white/5 px-5 py-4 font-semibold text-white transition hover:bg-white/10"
-            >
-              Try Again
-            </button>
-            <button
-              type="button"
-              onClick={handleNextVerse}
-              className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
-            >
-              Next Verse
-            </button>
-          </div>
-        </section>
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 text-center text-xl font-bold leading-relaxed text-slate-950 md:text-2xl">
+                {round?.puzzle.tokens.map((token, tokenIndex) => {
+                  const blankIndex = blankIndexMap.get(tokenIndex)
 
-        <div className="text-center">
-          <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
-            Back to Flashcards
-          </Link>
+                  if (blankIndex === undefined) {
+                    return (
+                      <span key={`${token}-${tokenIndex}`} className="px-1">
+                        {token}
+                      </span>
+                    )
+                  }
+
+                  const isCorrect = round.blankResults[blankIndex]
+                  const inputClasses = checked
+                    ? isCorrect
+                      ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                      : 'border-rose-500 bg-rose-50 text-rose-700'
+                    : 'border-slate-300 bg-white text-slate-950'
+
+                  return (
+                    <span key={`blank-${tokenIndex}`} className="flex flex-col items-center gap-2">
+                      <input
+                        type="text"
+                        value={round.answers[blankIndex] || ''}
+                        onChange={(event) => handleAnswerChange(blankIndex, event.target.value)}
+                        disabled={checked && round.blankResults.every(Boolean)}
+                        placeholder={round.puzzle.blanks[blankIndex].hint}
+                        className={`w-28 rounded-xl border px-3 py-2 text-center text-base font-semibold outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500 ${inputClasses}`}
+                      />
+                      {checked && !isCorrect && (
+                        <span className="text-xs font-semibold text-rose-700">
+                          {round.puzzle.blanks[blankIndex].answer}
+                        </span>
+                      )}
+                    </span>
+                  )
+                })}
+              </div>
+
+              <div className="mt-6 min-h-7 text-center">
+                <p
+                  className={`text-base font-semibold transition-all duration-200 ${
+                    feedbackTone === 'correct'
+                      ? 'text-emerald-700 opacity-100'
+                      : feedbackTone === 'incorrect'
+                        ? 'text-rose-700 opacity-100'
+                        : 'opacity-0'
+                  }`}
+                >
+                  {feedbackMessage || 'Ready'}
+                </p>
+              </div>
+
+              {checked && round && round.blankResults.some((result) => !result) && (
+                <div className="mt-6 rounded-2xl border border-rose-200 bg-rose-50 p-4">
+                  <p className="text-sm font-semibold text-rose-800">Correct answers</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {round.puzzle.blanks.map((blank, index) => (
+                      <span key={`${blank.answer}-${index}`} className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-rose-700">
+                        {blank.answer}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <button
+                type="button"
+                onClick={handleCheckAnswers}
+                disabled={round ? round.answers.some((answer) => !answer.trim()) : true}
+                className="rounded-xl bg-sky-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:bg-sky-200 disabled:text-slate-500"
+              >
+                Check Answers
+              </button>
+              <button
+                type="button"
+                onClick={handleTryAgain}
+                className="rounded-xl border border-white/20 bg-white/5 px-5 py-4 font-semibold text-white transition hover:bg-white/10"
+              >
+                Try Again
+              </button>
+              <button
+                type="button"
+                onClick={handleNextVerse}
+                className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
+              >
+                Next Verse
+              </button>
+            </div>
+          </section>
+
+          <div className="text-center">
+            <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
+              Back to Flashcards
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

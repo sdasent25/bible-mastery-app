@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import InstructionModal from "@/components/InstructionModal"
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
@@ -109,80 +110,92 @@ export default function MatchingGamePage() {
   const isComplete = matched.length === cards.length
 
   return (
-    <div className="p-4 md:p-6 text-white max-w-5xl mx-auto">
-      <button
-        onClick={() => window.location.href = "/flashcards"}
-        className="mb-4 text-sm text-gray-300"
-      >
-        ← Back
-      </button>
+    <>
+      <InstructionModal
+        title="Matching"
+        storageKey="matchingSeen"
+        steps={[
+          "Match verses to references",
+          "Tap one from each side",
+          "XP only for correct matches",
+        ]}
+      />
 
-      <h1 className="text-3xl font-bold mb-2">
-        Matching Game
-      </h1>
+      <div className="p-4 md:p-6 text-white max-w-5xl mx-auto">
+        <button
+          onClick={() => window.location.href = "/flashcards"}
+          className="mb-4 text-sm text-gray-300"
+        >
+          ← Back
+        </button>
 
-      <p className="text-sm text-gray-300 mb-6">
-        Match each verse with its reference.
-      </p>
+        <h1 className="text-3xl font-bold mb-2">
+          Matching Game
+        </h1>
 
-      {!!cards.length && (
-        <div className="mb-4 inline-flex rounded-full bg-gray-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-300">
-          {getDifficulty(cards[0])} mode
-        </div>
-      )}
+        <p className="text-sm text-gray-300 mb-6">
+          Match each verse with its reference.
+        </p>
 
-      {isComplete ? (
-        <div className="bg-gray-800 rounded-2xl p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-2">
-            All Matched
-          </h2>
-          <p className="text-gray-300">
-            Great job. You matched every card.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-3">
-            {visibleLeft.map((card) => (
-              <button
-                key={card.id}
-                type="button"
-                onClick={() => setSelectedLeft(card)}
-                disabled={checking}
-                className={`w-full rounded-2xl p-4 text-left transition border ${
-                  selectedLeft?.id === card.id
-                    ? "bg-blue-600 border-blue-400"
-                    : "bg-gray-800 border-gray-700 hover:bg-gray-700"
-                } ${checking ? "opacity-70" : ""}`}
-              >
-                <div className="text-base leading-relaxed">
-                  {card.verse_text}
-                </div>
-              </button>
-            ))}
+        {!!cards.length && (
+          <div className="mb-4 inline-flex rounded-full bg-gray-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-300">
+            {getDifficulty(cards[0])} mode
           </div>
+        )}
 
-          <div className="space-y-3">
-            {visibleRight.map((card) => (
-              <button
-                key={card.id}
-                type="button"
-                onClick={() => setSelectedRight(card)}
-                disabled={checking}
-                className={`w-full rounded-2xl p-4 text-left transition border ${
-                  selectedRight?.id === card.id
-                    ? "bg-green-600 border-green-400"
-                    : "bg-gray-800 border-gray-700 hover:bg-gray-700"
-                } ${checking ? "opacity-70" : ""}`}
-              >
-                <div className="text-base font-medium">
-                  {card.reference}
-                </div>
-              </button>
-            ))}
+        {isComplete ? (
+          <div className="bg-gray-800 rounded-2xl p-6 text-center">
+            <h2 className="text-2xl font-semibold mb-2">
+              All Matched
+            </h2>
+            <p className="text-gray-300">
+              Great job. You matched every card.
+            </p>
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              {visibleLeft.map((card) => (
+                <button
+                  key={card.id}
+                  type="button"
+                  onClick={() => setSelectedLeft(card)}
+                  disabled={checking}
+                  className={`w-full rounded-2xl p-4 text-left transition border ${
+                    selectedLeft?.id === card.id
+                      ? "bg-blue-600 border-blue-400"
+                      : "bg-gray-800 border-gray-700 hover:bg-gray-700"
+                  } ${checking ? "opacity-70" : ""}`}
+                >
+                  <div className="text-base leading-relaxed">
+                    {card.verse_text}
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            <div className="space-y-3">
+              {visibleRight.map((card) => (
+                <button
+                  key={card.id}
+                  type="button"
+                  onClick={() => setSelectedRight(card)}
+                  disabled={checking}
+                  className={`w-full rounded-2xl p-4 text-left transition border ${
+                    selectedRight?.id === card.id
+                      ? "bg-green-600 border-green-400"
+                      : "bg-gray-800 border-gray-700 hover:bg-gray-700"
+                  } ${checking ? "opacity-70" : ""}`}
+                >
+                  <div className="text-base font-medium">
+                    {card.reference}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   )
 }
