@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { getFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import { getDifficulty, getFlashcards, type Flashcard, prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
@@ -21,10 +21,43 @@ type AnswerToken = {
   idx: number
 }
 
+function getHiddenIndexes(tokens: string[], difficulty: "easy" | "medium" | "hard") {
+  const allIndexes = tokens.map((_, index) => index)
+  const eligibleIndexes = tokens
+    .map((word, index) => ({ word, index }))
+    .filter(({ word }) => normalizeWord(word).length >= 4)
+    .sort((left, right) => normalizeWord(right.word).length - normalizeWord(left.word).length)
+    .map(({ index }) => index)
+
+  if (difficulty === "hard") {
+    return allIndexes
+  }
+
+  if (difficulty === "medium") {
+    const targetCount = Math.max(1, Math.ceil(tokens.length / 2))
+    const pool = eligibleIndexes.length > 0 ? eligibleIndexes : allIndexes
+
+    return shuffle(pool)
+      .slice(0, Math.min(targetCount, pool.length))
+      .sort((left, right) => left - right)
+  }
+
+  const targetCount = Math.min(
+    3,
+    Math.max(1, Math.ceil(tokens.length / 6))
+  )
+  const pool = eligibleIndexes.length > 0 ? eligibleIndexes : allIndexes
+
+  return pool
+    .slice(0, Math.min(targetCount, pool.length))
+    .sort((left, right) => left - right)
+}
+
 export default function BuildTheVersePage() {
   const [cards, setCards] = useState<Flashcard[]>([])
   const [current, setCurrent] = useState<Flashcard | null>(null)
   const [tokens, setTokens] = useState<string[]>([])
+  const [hiddenIndexes, setHiddenIndexes] = useState<number[]>([])
   const [bank, setBank] = useState<AnswerToken[]>([])
   const [answer, setAnswer] = useState<AnswerToken[]>([])
   const [checked, setChecked] = useState(false)
@@ -36,12 +69,7 @@ export default function BuildTheVersePage() {
     const load = async () => {
       try {
         const data = await getFlashcards()
-
-        const sorted = [...data].sort((a, b) => {
-          const da = a.due_date ? new Date(a.due_date).getTime() : new Date(0).getTime()
-          const db = b.due_date ? new Date(b.due_date).getTime() : new Date(0).getTime()
-          return da - db
-        })
+        const sorted = prioritizeFlashcards(data)
 
         const sample = sorted.slice(0, 5)
         setCards(sample)
@@ -61,10 +89,13 @@ export default function BuildTheVersePage() {
 
     const card = cards[0]
     const t = tokenize(card.verse_text || "")
+    const difficulty = getDifficulty(card)
+    const nextHiddenIndexes = getHiddenIndexes(t, difficulty)
 
     setCurrent(card)
     setTokens(t)
-    setBank(shuffle(t.map((word, idx) => ({ word, idx }))))
+    setHiddenIndexes(nextHiddenIndexes)
+    setBank(shuffle(nextHiddenIndexes.map((idx) => ({ word: t[idx], idx }))))
     setAnswer([])
     setChecked(false)
     setWasCorrect(null)
@@ -75,6 +106,10 @@ export default function BuildTheVersePage() {
     const used = new Set(answer.map((item) => item.idx))
     return bank.filter((item) => !used.has(item.idx))
   }, [answer, bank])
+
+  const hiddenIndexMap = useMemo(() => {
+    return new Map(hiddenIndexes.map((tokenIndex, index) => [tokenIndex, index]))
+  }, [hiddenIndexes])
 
   function addWord(word: string, idx: number) {
     if (checked) return
@@ -93,9 +128,17 @@ export default function BuildTheVersePage() {
       w.toLowerCase().replace(/[^\w']/g, "")
     )
 
-    const userWords = answer.map((a) =>
-      a.word.toLowerCase().replace(/[^\w']/g, "")
-    )
+    const userWords = tokens.map((word, index) => {
+      const answerIndex = hiddenIndexMap.get(index)
+
+      if (answerIndex === undefined) {
+        return word.toLowerCase().replace(/[^\w']/g, "")
+      }
+
+      return (answer[answerIndex]?.word || "")
+        .toLowerCase()
+        .replace(/[^\w']/g, "")
+    })
 
     const isCorrect =
       correctWords.length === userWords.length &&
@@ -155,16 +198,50 @@ export default function BuildTheVersePage() {
       </div>
 
       <div className="bg-gray-800 rounded-2xl p-6 mb-6 min-h-[120px]">
+        <div className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+          {getDifficulty(current)} mode
+        </div>
+
         <div className="flex flex-wrap gap-2">
-          {answer.map((a, i) => (
-            <button
-              key={`${a.idx}-${i}`}
-              onClick={() => removeWord(i)}
-              className="bg-blue-500 px-3 py-1 rounded"
-            >
-              {a.word}
-            </button>
-          ))}
+          {tokens.map((token, tokenIndex) => {
+            const answerIndex = hiddenIndexMap.get(tokenIndex)
+
+            if (answerIndex === undefined) {
+              return (
+                <span
+                  key={`${token}-${tokenIndex}`}
+                  className="rounded bg-gray-700 px-3 py-1 text-gray-200"
+                >
+                  {token}
+                </span>
+              )
+            }
+
+            const selectedWord = answer[answerIndex]
+
+            if (!selectedWord) {
+              return (
+                <button
+                  key={`blank-${tokenIndex}`}
+                  type="button"
+                  disabled
+                  className="min-w-[64px] rounded border border-dashed border-gray-500 px-3 py-1 text-gray-400"
+                >
+                  __
+                </button>
+              )
+            }
+
+            return (
+              <button
+                key={`${selectedWord.idx}-${answerIndex}`}
+                onClick={() => removeWord(answerIndex)}
+                className="bg-blue-500 px-3 py-1 rounded"
+              >
+                {selectedWord.word}
+              </button>
+            )
+          })}
         </div>
       </div>
 

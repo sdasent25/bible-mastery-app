@@ -19,6 +19,12 @@ export type Flashcard = {
   last_reviewed?: string | null
 }
 
+export function getDifficulty(card: Pick<Flashcard, "lapses" | "interval">) {
+  if ((card.lapses ?? 0) > 0 || (card.interval ?? 0) <= 2) return "easy" as const
+  if ((card.interval ?? 0) <= 7) return "medium" as const
+  return "hard" as const
+}
+
 function mapStudyResultToStatus(status: "new" | "learning" | "mastered" | "again" | "hard" | "easy") {
   if (status === "again") return "new"
   if (status === "hard") return "learning"

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
@@ -22,7 +22,10 @@ export default function MatchingGamePage() {
     const load = async () => {
       try {
         const data = await getFlashcards()
-        const sample = data.slice(0, 5)
+        const ordered = prioritizeFlashcards(data)
+        const difficulty = ordered[0] ? getDifficulty(ordered[0]) : "medium"
+        const pairCount = difficulty === "easy" ? 3 : difficulty === "hard" ? 5 : 4
+        const sample = ordered.slice(0, pairCount)
 
         setCards(sample)
         setLeft(sample)
@@ -121,6 +124,12 @@ export default function MatchingGamePage() {
       <p className="text-sm text-gray-300 mb-6">
         Match each verse with its reference.
       </p>
+
+      {!!cards.length && (
+        <div className="mb-4 inline-flex rounded-full bg-gray-800 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-gray-300">
+          {getDifficulty(cards[0])} mode
+        </div>
+      )}
 
       {isComplete ? (
         <div className="bg-gray-800 rounded-2xl p-6 text-center">

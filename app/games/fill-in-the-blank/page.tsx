@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
+import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
 
@@ -11,6 +11,7 @@ const CORRECT_XP = 5
 type PuzzleBlank = {
   tokenIndex: number
   answer: string
+  hint: string
 }
 
 type VersePuzzle = {
@@ -39,17 +40,21 @@ function shuffle<T>(items: T[]) {
   return next
 }
 
-function buildPuzzle(verse: string): VersePuzzle {
+function buildPuzzle(verse: string, difficulty: 'easy' | 'medium' | 'hard'): VersePuzzle {
   const tokens = verse.trim().split(/\s+/).filter(Boolean)
   const eligibleIndexes = tokens
     .map((token, index) => ({ token, index }))
     .filter(({ token }) => normalizeWord(token).length >= 3)
     .map(({ index }) => index)
 
-  const blankCount = Math.min(
-    4,
-    Math.max(2, Math.min(eligibleIndexes.length, Math.floor(tokens.length / 4) || 2))
-  )
+  const blankCount = difficulty === 'easy'
+    ? Math.min(2, Math.max(1, Math.min(eligibleIndexes.length, Math.floor(tokens.length / 6) || 1)))
+    : difficulty === 'hard'
+      ? Math.min(6, Math.max(3, Math.min(eligibleIndexes.length, Math.ceil(tokens.length / 3) || 3)))
+      : Math.min(
+          4,
+          Math.max(2, Math.min(eligibleIndexes.length, Math.floor(tokens.length / 4) || 2))
+        )
 
   const chosenIndexes = (eligibleIndexes.length > 0 ? shuffle(eligibleIndexes) : tokens.map((_, index) => index))
     .slice(0, Math.min(blankCount, tokens.length))
@@ -59,7 +64,12 @@ function buildPuzzle(verse: string): VersePuzzle {
     tokens,
     blanks: chosenIndexes.map((tokenIndex) => ({
       tokenIndex,
-      answer: tokens[tokenIndex]
+      answer: tokens[tokenIndex],
+      hint: difficulty === 'easy'
+        ? `${normalizeWord(tokens[tokenIndex]).charAt(0).toUpperCase()}${'_'.repeat(Math.max(normalizeWord(tokens[tokenIndex]).length - 1, 0))}`
+        : difficulty === 'medium'
+          ? `${'_'.repeat(Math.max(normalizeWord(tokens[tokenIndex]).length, 1))}`
+          : ''
     }))
   }
 }
@@ -69,7 +79,7 @@ function orderFlashcards(cards: Flashcard[]) {
 }
 
 function createRound(card: Flashcard): RoundState {
-  const puzzle = buildPuzzle(card.verse)
+  const puzzle = buildPuzzle(card.verse, getDifficulty(card))
 
   return {
     puzzle,
@@ -355,9 +365,14 @@ export default function FillInTheBlankPage() {
               <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white">
                 Verse Challenge
               </span>
-              <span className="text-sm font-semibold text-slate-600">
+              <div className="flex items-center gap-3 text-sm font-semibold text-slate-600">
+                <span className="rounded-full bg-slate-200 px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-700">
+                  {currentCard ? getDifficulty(currentCard) : 'medium'}
+                </span>
+                <span>
                 Card {(currentIndex % orderedFlashcards.length) + 1} of {orderedFlashcards.length}
-              </span>
+                </span>
+              </div>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-4 text-center text-xl font-bold leading-relaxed text-slate-950 md:text-2xl">
@@ -386,6 +401,7 @@ export default function FillInTheBlankPage() {
                       value={round.answers[blankIndex] || ''}
                       onChange={(event) => handleAnswerChange(blankIndex, event.target.value)}
                       disabled={checked && round.blankResults.every(Boolean)}
+                      placeholder={round.puzzle.blanks[blankIndex].hint}
                       className={`w-28 rounded-xl border px-3 py-2 text-center text-base font-semibold outline-none transition focus:border-sky-500 focus:ring-2 focus:ring-sky-500 ${inputClasses}`}
                     />
                     {checked && !isCorrect && (
