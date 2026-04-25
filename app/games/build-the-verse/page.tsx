@@ -28,6 +28,7 @@ export default function BuildTheVersePage() {
   const [bank, setBank] = useState<AnswerToken[]>([])
   const [answer, setAnswer] = useState<AnswerToken[]>([])
   const [checked, setChecked] = useState(false)
+  const [wasCorrect, setWasCorrect] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const [awarded, setAwarded] = useState(false)
 
@@ -66,6 +67,7 @@ export default function BuildTheVersePage() {
     setBank(shuffle(t.map((word, idx) => ({ word, idx }))))
     setAnswer([])
     setChecked(false)
+    setWasCorrect(null)
     setAwarded(false)
   }, [cards])
 
@@ -87,14 +89,20 @@ export default function BuildTheVersePage() {
   async function checkAnswer() {
     if (!current) return
 
-    const correct = tokens.map(normalizeWord)
-    const user = answer.map((a) => normalizeWord(a.word))
+    const correctWords = tokens.map((w) =>
+      w.toLowerCase().replace(/[^\w']/g, "")
+    )
+
+    const userWords = answer.map((a) =>
+      a.word.toLowerCase().replace(/[^\w']/g, "")
+    )
 
     const isCorrect =
-      correct.length === user.length &&
-      correct.every((w, i) => w === user[i])
+      correctWords.length === userWords.length &&
+      correctWords.every((word, index) => word === userWords[index])
 
     setChecked(true)
+    setWasCorrect(isCorrect)
 
     if (!awarded) {
       if (isCorrect) {
@@ -112,6 +120,7 @@ export default function BuildTheVersePage() {
   }
 
   function nextCard() {
+    setWasCorrect(null)
     setCards((prev) => prev.slice(1))
   }
 
@@ -180,9 +189,19 @@ export default function BuildTheVersePage() {
         </button>
       ) : (
         <div className="space-y-3">
+          {wasCorrect ? (
+            <div className="text-green-400 font-semibold">
+              Correct!
+            </div>
+          ) : (
+            <div className="text-red-400 font-semibold">
+              Not quite — try again
+            </div>
+          )}
+
           <div>
-            Correct:
-            <div className="mt-2 text-gray-300">
+            <div className="text-sm text-gray-400">Correct answer:</div>
+            <div className="mt-1 text-gray-200">
               {tokens.join(" ")}
             </div>
           </div>
