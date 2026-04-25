@@ -103,6 +103,16 @@ export default function FlashcardsPage() {
 
         <div
           className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
+          onClick={() => window.location.href = "/games/build-the-verse"}
+        >
+          <h3 className="font-semibold">🧠 Build the Verse</h3>
+          <p className="text-sm text-gray-300">
+            Reconstruct verses from memory
+          </p>
+        </div>
+
+        <div
+          className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
           onClick={() => window.location.href = "/games/matching"}
         >
           <h3 className="font-semibold">🧩 Matching</h3>
