@@ -51,7 +51,7 @@ export default function ProPlusOnboarding() {
           </button>
         ))}
 
-        <p className="text-xs text-gray-400 mb-4">
+        <p className="text-xs text-gray-200 mb-4">
           You can change this anytime in Settings
         </p>
 

@@ -13,7 +13,7 @@ const iconMap = {
 }
 
 const labelStyles = {
-  locked: "text-slate-500 dark:text-slate-400",
+  locked: "text-gray-200 dark:text-gray-200",
   available: "text-slate-700 dark:text-slate-200",
   complete: "text-slate-700 dark:text-slate-200"
 } as const
@@ -38,7 +38,7 @@ export default function JourneyNode({
             ? "bg-gradient-to-br from-blue-400 to-blue-600 shadow-xl shadow-[0_10px_0_rgba(0,0,0,0.35)] ring-4 ring-blue-400/40 ring-green-400/60 animate-pulse animate-[unlockPop_0.4s_ease] hover:scale-110 active:scale-95"
             : "",
           status === "locked"
-            ? "bg-slate-700 shadow-inner shadow-[0_10px_0_rgba(0,0,0,0.35)] opacity-50"
+            ? "bg-slate-700 shadow-inner shadow-[0_10px_0_rgba(0,0,0,0.35)]"
             : ""
         ].join(" ")}
       >

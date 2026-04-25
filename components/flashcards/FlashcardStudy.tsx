@@ -80,7 +80,7 @@ export default function FlashcardStudy({
 
   if (!session.length && !complete) {
     return (
-      <div className="text-center text-gray-400">
+      <div className="text-center text-gray-200">
         {messages.no_flashcards}
       </div>
     )
@@ -183,7 +183,7 @@ export default function FlashcardStudy({
           ← Dashboard
         </button>
 
-        <div className="text-sm text-gray-400">
+        <div className="text-sm text-gray-300">
           {session.length} left
         </div>
       </div>
@@ -203,7 +203,7 @@ export default function FlashcardStudy({
           <div
             className={`relative w-full min-h-[260px] transition-transform duration-500 transform-style preserve-3d ${
               flipped ? "rotate-y-180" : ""
-            } ${animating ? "scale-95 opacity-70" : ""}`}
+            } ${animating ? "scale-95" : ""}`}
           >
             <div className="absolute w-full h-full backface-hidden p-6 rounded-2xl bg-neutral-900 text-white flex items-center justify-center text-center border border-neutral-700 text-lg leading-relaxed">
               {card.verse_text}

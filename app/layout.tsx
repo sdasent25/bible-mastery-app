@@ -110,7 +110,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col items-center justify-center">
-          <div className="text-gray-600">Loading...</div>
+          <div className="text-gray-200">Loading...</div>
         </body>
       </html>
     );
@@ -129,7 +129,7 @@ export default function RootLayout({
         {isPublicRoute ? (
           <>
             {children}
-            <footer className="border-t border-white/10 bg-[#050816] px-6 py-8 text-center text-sm text-white/80">
+            <footer className="border-t border-white/10 bg-[#050816] px-6 py-8 text-center text-sm text-gray-200">
               <p>
                 © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
               </p>
@@ -138,7 +138,7 @@ export default function RootLayout({
         ) : (
           <>
             <AppLayout>{children}</AppLayout>
-            <footer className="mt-10 pb-6 text-center text-sm text-white/70">
+            <footer className="mt-10 pb-6 text-center text-sm text-gray-300">
               <p>
                 © Bible Athlete • <a href="/terms" className="hover:underline">Terms</a> • <a href="/privacy" className="hover:underline">Privacy</a>
               </p>

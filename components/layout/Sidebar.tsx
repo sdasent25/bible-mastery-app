@@ -169,7 +169,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           ) : (
             <div
               onClick={() => router.push("/pricing?source=leaderboard_locked")}
-              className="block px-4 py-3 rounded-xl text-white opacity-50 cursor-pointer"
+              className="block px-4 py-3 rounded-xl text-gray-200 cursor-pointer"
             >
               🏆 Leaderboard 🔒
             </div>

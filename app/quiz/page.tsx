@@ -547,7 +547,7 @@ export default function QuizPage() {
           <p className="text-center text-slate-300 mb-2">
             Great work! Keep building your mastery by reviewing what you missed.
           </p>
-          <p className="text-center text-slate-400 text-sm mb-6">
+          <p className="text-center text-gray-200 text-sm mb-6">
             New questions unlock tomorrow 🔥
           </p>
           <div className="space-y-3">
@@ -1039,7 +1039,7 @@ export default function QuizPage() {
                     className="
                       rounded-xl
                       px-3 py-3
-                      text-slate-400
+                      text-gray-200
                       hover:text-white
                       text-2xl
                       font-bold
@@ -1109,7 +1109,7 @@ export default function QuizPage() {
                 </div>
 
                 {currentQuestion.reference && (
-                  <p className="text-sm text-gray-400 mt-2">
+                  <p className="text-sm text-gray-200 mt-2">
                     {currentQuestion.reference}
                   </p>
                 )}

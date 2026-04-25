@@ -58,14 +58,15 @@ p {
   font-size: 1.1rem;
 }
 
-/* 🔥 HARD OVERRIDE FOR TAILWIND TEXT COLORS */
-[class*="text-gray-"] {
-  color: #111827 !important;
+/* readability overrides for dark surfaces */
+[class*="text-gray-400"],
+[class*="text-gray-500"],
+[class*="text-slate-400"] {
+  color: rgb(229 231 235) !important;
 }
 
-/* ensure readability for cards */
-.bg-white {
-  color: #111827 !important;
+[class*="text-gray-300"] {
+  color: rgb(209 213 219) !important;
 }
 
 .section {

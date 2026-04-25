@@ -88,7 +88,7 @@ export default function JourneyPath() {
               node.status === "complete"
                 ? "before:absolute before:left-1/2 before:top-1/2 before:h-24 before:w-[3px] before:-translate-x-1/2 before:-translate-y-1/2 before:bg-blue-300/50"
                 : node.status === "locked"
-                  ? "opacity-70"
+                  ? ""
                   : ""
 
             return (

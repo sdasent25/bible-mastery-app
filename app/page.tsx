@@ -135,7 +135,7 @@ export default function LandingPage() {
 
               <button
                 onClick={() => router.push("/pricing")}
-                className="mt-2 text-sm text-gray-400 underline transition-colors hover:text-white"
+                className="mt-2 text-sm text-gray-200 underline transition-colors hover:text-white"
               >
                 View Plans
               </button>
