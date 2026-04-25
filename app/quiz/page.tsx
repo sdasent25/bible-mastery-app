@@ -14,7 +14,8 @@ import {
   getProgramProgress,
   getResumeSegmentIndex,
 } from '@/lib/programProgress';
-import { getUserPlan } from '@/lib/userPlan';
+import { getUserPlan as getTrainingPlan } from '@/lib/userPlan';
+import { getUserPlan } from '@/lib/getUserPlan';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
@@ -97,7 +98,7 @@ export default function QuizPage() {
   const [previewCompleted, setPreviewCompleted] = useState<boolean | null>(null);
   const [planType, setPlanType] = useState<string | null>(null);
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
-  const [depth, setDepth] = useState<number | null>(null);
+  const [safeDepth, setSafeDepth] = useState<number | null>(null);
   const [questionsPerDay, setQuestionsPerDay] = useState(10);
 
   const activeProgram = getProgramById(activeProgramId);
@@ -151,13 +152,19 @@ export default function QuizPage() {
       const modeParam = params.get('mode') as 'scholar' | null;
       const previewParam = params.get('preview') === 'true';
       const depthParam = params.get("depth")
-      const depth = depthParam ? parseInt(depthParam) : null
+      const parsedDepth = depthParam ? parseInt(depthParam) : null
+      const plan = await getUserPlan()
+      let safeDepth = parsedDepth
+
+      if (plan === "pro" || plan === "family_pro") {
+        safeDepth = null
+      }
 
       setSelectedSegmentParam(segmentParam);
       setIsPreviewMode(previewParam);
-      setDepth(
-        depth === 5 || depth === 10 || depth === 15
-          ? depth
+      setSafeDepth(
+        safeDepth === 5 || safeDepth === 10 || safeDepth === 15
+          ? safeDepth
           : null
       );
 
@@ -193,7 +200,7 @@ export default function QuizPage() {
       const storedXp = await getXp();
       setTotalXp(storedXp);
 
-      const userPlan = await getUserPlan();
+      const userPlan = await getTrainingPlan();
       setQuestionsPerDay(userPlan?.segmentsPerDay ?? 10);
 
       setParamsInitialized(true);
@@ -239,14 +246,10 @@ export default function QuizPage() {
         .eq("id", user.id)
         .single();
 
-      const { data: access } = await supabase
-        .from("user_access")
-        .select("final_plan")
-        .eq("user_id", user.id)
-        .single();
+      const plan = await getUserPlan();
 
       setPreviewCompleted(profile?.preview_completed === true);
-      setPlanType(access?.final_plan ?? "free");
+      setPlanType(plan);
     };
 
     checkAccess();
@@ -267,7 +270,7 @@ export default function QuizPage() {
 
       try {
         const response = await fetch(
-          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${depth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
+          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${safeDepth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
           {
             credentials: 'include'
           }

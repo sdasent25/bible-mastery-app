@@ -5,6 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function SegmentIntro() {
   const router = useRouter()
@@ -46,21 +47,17 @@ export default function SegmentIntro() {
         return
       }
 
-      const { data: access } = await supabase
-        .from("user_access")
-        .select("final_plan")
-        .eq("user_id", user.id)
-        .maybeSingle()
-
       const { data: profile } = await supabase
         .from("profiles")
         .select("preview_completed")
         .eq("id", user.id)
         .single()
 
+      const plan = await getUserPlan()
+
       if (isMounted) {
-        console.log("FINAL PLAN:", access?.final_plan)
-        setPlanType(access?.final_plan ?? "free")
+        console.log("FINAL PLAN:", plan)
+        setPlanType(plan)
         setPreviewCompleted(profile?.preview_completed === true)
         setProfileLoaded(true)
       }
