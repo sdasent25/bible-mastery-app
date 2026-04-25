@@ -44,7 +44,7 @@ export default function FlashcardsPage() {
         Flashcard Training
       </h1>
 
-      <div className="grid gap-4 mb-6">
+      <div className="mb-6">
         <div
           className="bg-blue-600 rounded-2xl p-6 cursor-pointer hover:scale-105 transition"
           onClick={() => window.location.href = "/games/flashcard-sprint"}
@@ -56,31 +56,31 @@ export default function FlashcardsPage() {
             Train your memory and build recall
           </p>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div
-            className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
-            onClick={() => window.location.href = "/flashcards/list"}
-          >
-            <h3 className="font-semibold">
-              📚 My Cards
-            </h3>
-            <p className="text-sm text-gray-300">
-              View and manage your flashcards
-            </p>
-          </div>
+      <div className="mb-3 text-gray-300 text-sm uppercase tracking-wide">
+        Training
+      </div>
 
-          <div
-            className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
-            onClick={() => window.location.href = "/flashcards/create"}
-          >
-            <h3 className="font-semibold">
-              ➕ Create Cards
-            </h3>
-            <p className="text-sm text-gray-300">
-              Add your own verses to train
-            </p>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div
+          className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
+          onClick={() => window.location.href = "/flashcards/review"}
+        >
+          <h3 className="font-semibold">🧠 Weak Cards</h3>
+          <p className="text-sm text-gray-300">
+            Focus on what you struggle with
+          </p>
+        </div>
+
+        <div
+          className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
+          onClick={() => window.location.href = "/games/flashcard-sprint"}
+        >
+          <h3 className="font-semibold">⚡ Sprint Mode</h3>
+          <p className="text-sm text-gray-300">
+            Fast-paced recall training (no XP)
+          </p>
         </div>
       </div>
 
@@ -103,27 +103,39 @@ export default function FlashcardsPage() {
 
         <div
           className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
-          onClick={() => window.location.href = "/games/flashcard-sprint"}
+          onClick={() => window.location.href = "/games/matching"}
         >
-          <h3 className="font-semibold">
-            ⚡ Sprint Mode
-          </h3>
+          <h3 className="font-semibold">🧩 Matching</h3>
           <p className="text-sm text-gray-300">
-            Fast-paced recall training (no XP)
+            Match verses to references
           </p>
         </div>
       </div>
 
-      <div
-        className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
-        onClick={() => window.location.href = "/flashcards/review"}
-      >
-        <h3 className="font-semibold">
-          🧠 Weak Cards
-        </h3>
-        <p className="text-sm text-gray-300">
-          Focus on what you struggle with
-        </p>
+      <div className="mb-3 text-gray-300 text-sm uppercase tracking-wide">
+        Manage
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
+          onClick={() => window.location.href = "/flashcards/list"}
+        >
+          <h3 className="font-semibold">📚 My Cards</h3>
+          <p className="text-sm text-gray-300">
+            View and manage your flashcards
+          </p>
+        </div>
+
+        <div
+          className="bg-gray-800 rounded-2xl p-5 cursor-pointer hover:bg-gray-700 transition"
+          onClick={() => window.location.href = "/flashcards/create"}
+        >
+          <h3 className="font-semibold">➕ Create Cards</h3>
+          <p className="text-sm text-gray-300">
+            Add your own verses to train
+          </p>
+        </div>
       </div>
     </div>
   )
