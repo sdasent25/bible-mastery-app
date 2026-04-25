@@ -10,7 +10,9 @@ const ALLOWED_XP_SOURCES = new Set([
   "flashcards",
   "flashcard_study",
   "flashcard_sprint",
+  "build_verse",
   "fill_in_the_blank",
+  "matching",
   "game",
   "side_quest",
   "daily",
@@ -134,6 +136,7 @@ type AddXpParams = {
   amount: number
   source?: string
   cardId?: string
+  isFirstAttempt?: boolean
 }
 
 type AddXpResult = {
@@ -146,6 +149,7 @@ export async function addXp({
   amount,
   source = "unknown",
   cardId,
+  isFirstAttempt = false,
 }: AddXpParams): Promise<AddXpResult> {
   if (
     typeof amount !== "number" ||
@@ -191,10 +195,10 @@ export async function addXp({
 
     const { data: card, error: cardError } = await supabase
       .from("flashcards")
-      .select("last_reviewed")
+      .select("last_reviewed, repetitions")
       .eq("id", cardId)
       .eq("user_id", user.id)
-      .maybeSingle<{ last_reviewed: string | null }>()
+      .maybeSingle<{ last_reviewed: string | null; repetitions: number | null }>()
 
     if (cardError) throw cardError
 
@@ -215,6 +219,22 @@ export async function addXp({
           xp: currentXp,
           reason: "already_awarded_today",
         }
+      }
+    }
+
+    if (!isFirstAttempt) {
+      return {
+        success: false,
+        xp: currentXp,
+        reason: "not_first_attempt",
+      }
+    }
+
+    if ((card?.repetitions || 0) < 1) {
+      return {
+        success: false,
+        xp: currentXp,
+        reason: "new_card_probation",
       }
     }
 

@@ -13,6 +13,7 @@ export default function MatchGame() {
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
   const [doubleXP, setDoubleXP] = useState(false)
+  const [answeredCards, setAnsweredCards] = useState<string[]>([])
   const [result, setResult] = useState<'correct' | 'wrong' | null>(null)
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function MatchGame() {
     if (!selectedVerse) return
 
     const correct = pairs.find(p => p.verse === selectedVerse)
+    const isFirstAttempt = correct ? !answeredCards.includes(correct.id) : false
 
     if (correct?.reference === reference) {
       setScore(s => s + (doubleXP ? 2 : 1))
@@ -45,10 +47,15 @@ export default function MatchGame() {
         amount: doubleXP ? 20 : 10,
         source: 'flashcards',
         cardId: correct.id,
+        isFirstAttempt,
       })
+      setAnsweredCards((prev) => (prev.includes(correct.id) ? prev : [...prev, correct.id]))
       setPairs(prev => prev.filter(p => p.verse !== selectedVerse))
       setResult('correct')
     } else {
+      if (correct) {
+        setAnsweredCards((prev) => (prev.includes(correct.id) ? prev : [...prev, correct.id]))
+      }
       setStreak(0)
       setResult('wrong')
     }

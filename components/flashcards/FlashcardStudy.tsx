@@ -20,6 +20,7 @@ export default function FlashcardStudy({
   const [flipped, setFlipped] = useState(false)
   const [complete, setComplete] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const [hasAnswered, setHasAnswered] = useState(false)
   const [xpPop, setXpPop] = useState<string | null>(null)
 
   const tapSound = useRef<HTMLAudioElement | null>(null)
@@ -105,6 +106,8 @@ export default function FlashcardStudy({
     let newSession = [...session]
     let xpToAdd = 0
     let xpAwarded = false
+    const isFirstAttempt = !hasAnswered
+    setHasAnswered(true)
 
     if (type === "again") {
       const current = newSession.splice(index, 1)[0]
@@ -131,6 +134,7 @@ export default function FlashcardStudy({
         amount: xpToAdd,
         source: "flashcards",
         cardId: card.id,
+        isFirstAttempt,
       }).catch(console.error)
 
       xpAwarded = Boolean(xpResult?.success)
@@ -146,6 +150,7 @@ export default function FlashcardStudy({
     setTimeout(() => {
       setSession(newSession)
       setAnimating(false)
+      setHasAnswered(false)
       nextCard(newSession)
     }, 150)
   }

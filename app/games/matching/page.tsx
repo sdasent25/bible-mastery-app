@@ -17,6 +17,7 @@ export default function MatchingGamePage() {
   const [selectedLeft, setSelectedLeft] = useState<Flashcard | null>(null)
   const [selectedRight, setSelectedRight] = useState<Flashcard | null>(null)
   const [matched, setMatched] = useState<string[]>([])
+  const [answeredCards, setAnsweredCards] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [checking, setChecking] = useState(false)
   const [sessionXp, setSessionXp] = useState(0)
@@ -59,22 +60,29 @@ export default function MatchingGamePage() {
     setChecking(true)
 
     try {
+      const isFirstAttempt = !answeredCards.includes(leftCard.id)
+
       if (leftCard.id === rightCard.id) {
         setMatched((prev) => [...prev, leftCard.id])
-
-        await updateFlashcardProgress(leftCard, "easy")
 
         const xpResult = await addXp({
           amount: 3,
           source: "matching",
           cardId: leftCard.id,
+          isFirstAttempt,
         })
 
         if (xpResult.success) {
           setSessionXp((currentXp) => currentXp + 3)
           setTotalXp(xpResult.xp)
         }
+
+        await updateFlashcardProgress(leftCard, "easy")
       }
+
+      setAnsweredCards((prev) =>
+        prev.includes(leftCard.id) ? prev : [...prev, leftCard.id]
+      )
     } catch (error) {
       console.error("Failed to process match", error)
     } finally {

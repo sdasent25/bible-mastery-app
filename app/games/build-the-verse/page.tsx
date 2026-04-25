@@ -66,6 +66,7 @@ export default function BuildTheVersePage() {
   const [wasCorrect, setWasCorrect] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(true)
   const [awarded, setAwarded] = useState(false)
+  const [hasAnswered, setHasAnswered] = useState(false)
   const [sessionXp, setSessionXp] = useState(0)
   const [totalXp, setTotalXp] = useState(0)
   const [initialTotal, setInitialTotal] = useState(0)
@@ -110,6 +111,7 @@ export default function BuildTheVersePage() {
     setChecked(false)
     setWasCorrect(null)
     setAwarded(false)
+    setHasAnswered(false)
   }, [cards])
 
   const availableBank = useMemo(() => {
@@ -153,23 +155,27 @@ export default function BuildTheVersePage() {
     const isCorrect =
       correctWords.length === userWords.length &&
       correctWords.every((word, index) => word === userWords[index])
+    const isFirstAttempt = !hasAnswered
 
     setChecked(true)
     setWasCorrect(isCorrect)
+    setHasAnswered(true)
 
     if (!awarded) {
       if (isCorrect) {
-        await updateFlashcardProgress(current, "easy")
         const xpResult = await addXp({
           amount: 6,
           source: "build_verse",
           cardId: current.id,
+          isFirstAttempt,
         })
 
         if (xpResult.success) {
           setSessionXp((currentXp) => currentXp + 6)
           setTotalXp(xpResult.xp)
         }
+
+        await updateFlashcardProgress(current, "easy")
       } else {
         await updateFlashcardProgress(current, "again")
       }
@@ -179,6 +185,7 @@ export default function BuildTheVersePage() {
 
   function nextCard() {
     setWasCorrect(null)
+    setHasAnswered(false)
     setCards((prev) => prev.slice(1))
   }
 

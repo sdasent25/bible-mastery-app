@@ -28,6 +28,7 @@ export default function FillGame() {
   const [question, setQuestion] = useState<Question | null>(null)
   const [answers, setAnswers] = useState<Record<number, string>>({})
   const [showResult, setShowResult] = useState(false)
+  const [hasAnswered, setHasAnswered] = useState(false)
   const [wordResults, setWordResults] = useState<Record<number, boolean>>({})
 
   const [missedWords, setMissedWords] = useState<string[]>([])
@@ -107,6 +108,8 @@ export default function FillGame() {
     setWordResults(results)
 
     const isPerfect = correct === question.hiddenIndexes.length
+    const isFirstAttempt = !hasAnswered
+    setHasAnswered(true)
 
     if (isPerfect) {
       const xpGain = doubleXP ? 20 : 10
@@ -118,6 +121,7 @@ export default function FillGame() {
         amount: xpGain,
         source: 'flashcards',
         cardId: question.cardId,
+        isFirstAttempt,
       })
 
       if (xpResult.success) {
@@ -157,6 +161,7 @@ export default function FillGame() {
     }
 
     setRound((r) => r + 1)
+    setHasAnswered(false)
     generateQuestion(cards)
   }
 

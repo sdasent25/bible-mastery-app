@@ -54,6 +54,7 @@ export default function FlashcardSprintPage() {
   const [feedbackTone, setFeedbackTone] = useState<'idle' | 'correct' | 'incorrect'>('idle')
   const [feedbackMessage, setFeedbackMessage] = useState('')
   const [isAnswering, setIsAnswering] = useState(false)
+  const [hasAnswered, setHasAnswered] = useState(false)
 
   useEffect(() => {
     async function initialize() {
@@ -120,6 +121,7 @@ export default function FlashcardSprintPage() {
     setFeedbackTone('idle')
     setFeedbackMessage('')
     setIsAnswering(false)
+    setHasAnswered(false)
   }
 
   async function handleAnswer(result: 'correct' | 'review') {
@@ -129,6 +131,8 @@ export default function FlashcardSprintPage() {
 
     setIsAnswering(true)
     let nextTotalXp = totalXp
+    const isFirstAttempt = !hasAnswered
+    setHasAnswered(true)
 
     if (result === 'correct') {
       setCorrectCount((count) => count + 1)
@@ -137,6 +141,7 @@ export default function FlashcardSprintPage() {
         amount: CORRECT_XP,
         source: 'flashcards',
         cardId: currentCard.id,
+        isFirstAttempt,
       })
 
       if (xpResult.success) {
@@ -177,6 +182,7 @@ export default function FlashcardSprintPage() {
       setFeedbackTone('idle')
       setFeedbackMessage('')
       setIsAnswering(false)
+      setHasAnswered(false)
     }, 420)
   }
 

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
     }
 
-    const result = await addXp({ amount, source, cardId })
+    const result = await addXp({ amount, source, cardId, isFirstAttempt: true })
 
     return NextResponse.json(result)
   } catch (err) {

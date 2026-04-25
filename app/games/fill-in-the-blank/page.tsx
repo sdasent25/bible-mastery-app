@@ -109,6 +109,7 @@ export default function FillInTheBlankPage() {
   const [sessionXp, setSessionXp] = useState(0)
   const [totalXp, setTotalXp] = useState(0)
   const [completedCount, setCompletedCount] = useState(0)
+  const [hasAnswered, setHasAnswered] = useState(false)
   const [hasAwardedXpForCurrent, setHasAwardedXpForCurrent] = useState(false)
   const [hasUpdatedProgressForCurrent, setHasUpdatedProgressForCurrent] = useState(false)
 
@@ -172,8 +173,10 @@ export default function FillInTheBlankPage() {
       return normalizeWord(round.answers[index] || '') === normalizeWord(blank.answer)
     })
     const isCorrect = results.every(Boolean)
+    const isFirstAttempt = !hasAnswered
 
     setChecked(true)
+    setHasAnswered(true)
     setRound((currentRound) => {
       if (!currentRound) {
         return currentRound
@@ -190,8 +193,9 @@ export default function FillInTheBlankPage() {
     if (isCorrect && currentCard && !hasAwardedXpForCurrent) {
       const xpResult = await addXp({
         amount: CORRECT_XP,
-        source: 'flashcards',
+        source: 'fill_in_the_blank',
         cardId: currentCard.id,
+        isFirstAttempt,
       })
 
       if (xpResult.success) {
@@ -247,6 +251,7 @@ export default function FillInTheBlankPage() {
     setChecked(false)
     setFeedbackTone('idle')
     setFeedbackMessage('')
+    setHasAnswered(false)
     setHasAwardedXpForCurrent(false)
     setHasUpdatedProgressForCurrent(false)
   }

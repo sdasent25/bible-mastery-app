@@ -38,6 +38,12 @@ export default function InstructionModal({
           ))}
         </ul>
 
+        <div className="mb-6 rounded-xl border border-gray-800 bg-gray-950/70 p-4 text-sm text-gray-300">
+          <div className="mb-2 font-semibold text-white">For best results:</div>
+          <div>XP is earned only on your first correct attempt</div>
+          <div>Repeats and guesses do not earn XP</div>
+        </div>
+
         <div className="flex items-center justify-between gap-3">
           <button
             onClick={() => {
