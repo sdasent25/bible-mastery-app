@@ -62,14 +62,20 @@ export async function getFlashcards() {
 
   if (error) throw error
 
-  return (data || []).map((card) => ({
-    ...card,
-    verse: card.verse_text || "",
-    verse_text: card.verse_text || "",
-    status: card.status ?? "new",
-    tags: card.tags ?? [],
-    createdAt: card.created_at,
-  })) satisfies Flashcard[]
+  return (data || []).map((card) => {
+    const normalizedCard = {
+      ...card,
+      verse_text: card.verse_text || "",
+    }
+
+    return {
+      ...normalizedCard,
+      verse: normalizedCard.verse_text,
+      status: normalizedCard.status ?? "new",
+      tags: normalizedCard.tags ?? [],
+      createdAt: normalizedCard.created_at,
+    }
+  }) satisfies Flashcard[]
 }
 
 function isDueCard(card: Pick<Flashcard, "due_date">) {
