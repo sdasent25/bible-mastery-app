@@ -1,8 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
 import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function FlashcardsPage() {
   const [plan, setPlan] = useState("free")
@@ -10,24 +10,8 @@ export default function FlashcardsPage() {
 
   useEffect(() => {
     const run = async () => {
-      const supabase = createClient()
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        setLoading(false)
-        return
-      }
-
-      const { data } = await supabase
-        .from("profiles")
-        .select("plan")
-        .eq("id", user.id)
-        .single()
-
-      setPlan(data?.plan || "free")
+      const plan = await getUserPlan()
+      setPlan(plan)
       setLoading(false)
     }
 

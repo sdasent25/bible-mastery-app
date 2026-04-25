@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 type PlanId =
   | "free"
@@ -41,20 +41,8 @@ export default function UpgradePage() {
 
   useEffect(() => {
     const run = async () => {
-      const supabase = createClient()
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) return
-
-      const { data } = await supabase
-        .from("profiles")
-        .select("plan")
-        .eq("id", user.id)
-        .single()
-
-      setPlan((data?.plan as PlanId) || "free")
+      const plan = await getUserPlan()
+      setPlan(plan as PlanId)
     }
 
     run()

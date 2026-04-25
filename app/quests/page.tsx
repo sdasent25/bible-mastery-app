@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
 import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 function QuestCard({
   title,
@@ -50,24 +50,8 @@ export default function QuestsPage() {
 
   useEffect(() => {
     const run = async () => {
-      const supabase = createClient()
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (!user) {
-        setLoading(false)
-        return
-      }
-
-      const { data } = await supabase
-        .from("profiles")
-        .select("plan")
-        .eq("id", user.id)
-        .single()
-
-      setPlan(data?.plan || "free")
+      const plan = await getUserPlan()
+      setPlan(plan)
       setLoading(false)
     }
 
