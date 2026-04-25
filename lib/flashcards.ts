@@ -4,7 +4,7 @@ export type Flashcard = {
   id: string
   user_id?: string
   verse: string
-  verse_text?: string
+  verse_text: string
   reference: string
   status: "new" | "learning" | "mastered"
   tags?: string[]
@@ -63,22 +63,12 @@ export async function getFlashcards() {
   if (error) throw error
 
   return (data || []).map((card) => ({
-    id: card.id,
-    user_id: card.user_id,
-    verse: card.verse_text,
-    verse_text: card.verse_text,
-    reference: card.reference,
+    ...card,
+    verse: card.verse_text || "",
+    verse_text: card.verse_text || "",
     status: card.status ?? "new",
     tags: card.tags ?? [],
     createdAt: card.created_at,
-    created_at: card.created_at,
-    updated_at: card.updated_at,
-    due_date: card.due_date,
-    ease_factor: card.ease_factor,
-    interval: card.interval,
-    repetitions: card.repetitions,
-    lapses: card.lapses,
-    last_reviewed: card.last_reviewed,
   })) satisfies Flashcard[]
 }
 
@@ -200,7 +190,7 @@ export async function updateFlashcardProgress(
     id: data.id,
     user_id: data.user_id,
     verse: data.verse_text,
-    verse_text: data.verse_text,
+    verse_text: data.verse_text || "",
     reference: data.reference,
     status: nextStatus,
     tags: data.tags ?? [],

@@ -2,38 +2,20 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
+import { prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
 export default function FlashcardStudy({
   flashcards,
   messages,
 }: {
-  flashcards: Array<{
-    id: string
-    reference: string
-    verse_text: string
-    due_date?: string | null
-    ease_factor?: number | null
-    interval?: number | null
-    repetitions?: number | null
-    lapses?: number | null
-  }>
+  flashcards: Flashcard[]
   messages: Record<string, string>
 }) {
   const router = useRouter()
   const SESSION_SIZE = 10
 
-  const [session, setSession] = useState<Array<{
-    id: string
-    reference: string
-    verse_text: string
-    due_date?: string | null
-    ease_factor?: number | null
-    interval?: number | null
-    repetitions?: number | null
-    lapses?: number | null
-  }>>([])
+  const [session, setSession] = useState<Flashcard[]>([])
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [complete, setComplete] = useState(false)
@@ -104,16 +86,7 @@ export default function FlashcardStudy({
     )
   }
 
-  function nextCard(newSession: Array<{
-    id: string
-    reference: string
-    verse_text: string
-    due_date?: string | null
-    ease_factor?: number | null
-    interval?: number | null
-    repetitions?: number | null
-    lapses?: number | null
-  }>) {
+  function nextCard(newSession: Flashcard[]) {
     if (newSession.length === 0) {
       setComplete(true)
       return
