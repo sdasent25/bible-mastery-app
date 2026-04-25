@@ -119,26 +119,34 @@ export default function FlashcardSprintPage() {
     }
 
     setIsAnswering(true)
-    const updatedCard = await updateFlashcardProgress(
-      currentCard,
-      result === 'correct' ? 'easy' : 'again'
-    )
-
     let nextTotalXp = totalXp
-    let xpEarned = 0
 
     if (result === 'correct') {
-      nextTotalXp = await addXp(CORRECT_XP)
-      xpEarned = CORRECT_XP
       setCorrectCount((count) => count + 1)
-      setSessionXp((currentXp) => currentXp + CORRECT_XP)
-      setTotalXp(nextTotalXp)
+
+      const xpResult = await addXp({
+        amount: CORRECT_XP,
+        source: 'flashcards',
+        cardId: currentCard.id,
+      })
+
+      if (xpResult.success) {
+        nextTotalXp = xpResult.xp
+        setSessionXp((currentXp) => currentXp + CORRECT_XP)
+        setTotalXp(xpResult.xp)
+      }
+
       setFeedbackTone('correct')
       setFeedbackMessage('Nice! +XP 🎉')
     } else {
       setFeedbackTone('incorrect')
       setFeedbackMessage('Keep going 💪')
     }
+
+    const updatedCard = await updateFlashcardProgress(
+      currentCard,
+      result === 'correct' ? 'easy' : 'again'
+    )
 
     let nextFlashcards = flashcards
     let nextSessionCards = sessionCards
@@ -160,10 +168,6 @@ export default function FlashcardSprintPage() {
       setFeedbackTone('idle')
       setFeedbackMessage('')
       setIsAnswering(false)
-
-      if (!updatedCard && xpEarned === 0) {
-        return
-      }
     }, 420)
   }
 

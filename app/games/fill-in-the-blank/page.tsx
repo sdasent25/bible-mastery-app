@@ -168,6 +168,22 @@ export default function FillInTheBlankPage() {
     setFeedbackTone(isCorrect ? 'correct' : 'incorrect')
     setFeedbackMessage(isCorrect ? 'Nice work! 🎉' : 'Almost there 💪')
 
+    if (isCorrect && currentCard && !hasAwardedXpForCurrent) {
+      const xpResult = await addXp({
+        amount: CORRECT_XP,
+        source: 'flashcards',
+        cardId: currentCard.id,
+      })
+
+      if (xpResult.success) {
+        setSessionXp((currentXp) => currentXp + CORRECT_XP)
+        setTotalXp(xpResult.xp)
+        setCompletedCount((count) => count + 1)
+      }
+
+      setHasAwardedXpForCurrent(true)
+    }
+
     if (currentCard && !hasUpdatedProgressForCurrent) {
       const updatedCard = await updateFlashcardProgress(
         currentCard,
@@ -180,14 +196,6 @@ export default function FillInTheBlankPage() {
         )
       )
       setHasUpdatedProgressForCurrent(true)
-    }
-
-    if (isCorrect && !hasAwardedXpForCurrent) {
-      const nextTotalXp = await addXp(CORRECT_XP)
-      setSessionXp((currentXp) => currentXp + CORRECT_XP)
-      setTotalXp(nextTotalXp)
-      setCompletedCount((count) => count + 1)
-      setHasAwardedXpForCurrent(true)
     }
   }
 

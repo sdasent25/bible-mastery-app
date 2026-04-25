@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
 import { getSubscriptionStatus } from '@/lib/user'
+import { addXp, getXp } from '@/lib/xp'
 import { updateDailyProgress } from '@/lib/daily'
 import { unlockAchievement } from '@/lib/achievements'
 import { saveSession } from '@/lib/resume'
-import { updateStats } from '@/lib/stats'
 
 type Question = {
+  cardId: string
   words: string[]
   hiddenIndexes: number[]
 }
@@ -21,7 +22,7 @@ export default function FillGame() {
   const [round, setRound] = useState(1)
   const [score, setScore] = useState(0)
   const [streak, setStreak] = useState(0)
-  const [xp, setXp] = useState(0)
+  const [totalXp, setTotalXp] = useState(0)
   const [doubleXP, setDoubleXP] = useState(false)
 
   const [question, setQuestion] = useState<Question | null>(null)
@@ -35,8 +36,12 @@ export default function FillGame() {
   useEffect(() => {
     async function init() {
       await getSubscriptionStatus()
-      const data = await getFlashcards()
+      const [data, xp] = await Promise.all([
+        getFlashcards(),
+        getXp(),
+      ])
       setCards(data)
+      setTotalXp(xp)
       setLoading(false)
     }
     init()
@@ -60,7 +65,7 @@ export default function FillGame() {
       if (!hiddenIndexes.includes(i)) hiddenIndexes.push(i)
     }
 
-    setQuestion({ words, hiddenIndexes })
+    setQuestion({ cardId: card.id, words, hiddenIndexes })
     setAnswers({})
     setShowResult(false)
     setWordResults({})
@@ -73,13 +78,12 @@ export default function FillGame() {
     setRound(1)
     setScore(0)
     setStreak(0)
-    setXp(0)
     setSessionMissed([])
 
     generateQuestion(cards)
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!question) return
 
     let correct = 0
@@ -106,15 +110,21 @@ export default function FillGame() {
 
     if (isPerfect) {
       const xpGain = doubleXP ? 20 : 10
-      const nextXp = xp + xpGain
-      const nextStreak = streak + 1
 
       setScore((s) => s + 1)
       setStreak((s) => s + 1)
-      setXp((x) => x + xpGain)
-      updateStats(10)
 
-      if (xp >= 50) {
+      const xpResult = await addXp({
+        amount: xpGain,
+        source: 'flashcards',
+        cardId: question.cardId,
+      })
+
+      if (xpResult.success) {
+        setTotalXp(xpResult.xp)
+      }
+
+      if (totalXp >= 50) {
         unlockAchievement('XP Starter', '⚡')
       }
 
@@ -199,7 +209,7 @@ export default function FillGame() {
 
         <div className="flex justify-between mb-6 font-bold text-gray-900">
           <div>Q {round}/10</div>
-          <div className="text-blue-600">XP {xp}</div>
+          <div className="text-blue-600">XP {totalXp}</div>
           <div className="bg-purple-100 px-4 py-2 rounded-full font-bold text-purple-700 shadow">
             {doubleXP ? '⚡ 2x XP' : 'XP Normal'}
           </div>

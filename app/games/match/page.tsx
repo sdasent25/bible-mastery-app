@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { getFlashcards, type Flashcard } from '@/lib/flashcards'
+import { addXp } from '@/lib/xp'
 import { updateDailyProgress } from '@/lib/daily'
 import { saveSession } from '@/lib/resume'
-import { updateStats } from '@/lib/stats'
 
 export default function MatchGame() {
   const [cards, setCards] = useState<Flashcard[]>([])
@@ -27,7 +27,7 @@ export default function MatchGame() {
     load()
   }, [])
 
-  function handleMatch(reference: string) {
+  async function handleMatch(reference: string) {
     if (!selectedVerse) return
 
     const correct = pairs.find(p => p.verse === selectedVerse)
@@ -41,7 +41,11 @@ export default function MatchGame() {
       })
       setStreak(s => s + 1)
       updateDailyProgress()
-      updateStats(10)
+      await addXp({
+        amount: doubleXP ? 20 : 10,
+        source: 'flashcards',
+        cardId: correct.id,
+      })
       setPairs(prev => prev.filter(p => p.verse !== selectedVerse))
       setResult('correct')
     } else {

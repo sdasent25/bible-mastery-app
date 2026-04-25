@@ -104,6 +104,7 @@ export default function FlashcardStudy({
     setAnimating(true)
     let newSession = [...session]
     let xpToAdd = 0
+    let xpAwarded = false
 
     if (type === "again") {
       const current = newSession.splice(index, 1)[0]
@@ -125,12 +126,21 @@ export default function FlashcardStudy({
       correctSound.current?.play().catch(() => {})
     }
 
+    if (xpToAdd > 0) {
+      const xpResult = await addXp({
+        amount: xpToAdd,
+        source: "flashcards",
+        cardId: card.id,
+      }).catch(console.error)
+
+      xpAwarded = Boolean(xpResult?.success)
+    }
+
     await updateFlashcardProgress(card, type).catch(console.error)
 
-    if (xpToAdd > 0) {
+    if (xpAwarded) {
       setXpPop(`+${xpToAdd} XP`)
       setTimeout(() => setXpPop(null), 800)
-      addXp(xpToAdd, "flashcards").catch(console.error)
     }
 
     setTimeout(() => {

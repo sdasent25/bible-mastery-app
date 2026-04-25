@@ -130,14 +130,42 @@ export async function getXp(): Promise<number> {
   }
 }
 
-export async function addXp(amount: number, source = "unknown"): Promise<number> {
+type AddXpParams = {
+  amount: number
+  source?: string
+  cardId?: string
+}
+
+type AddXpResult = {
+  success: boolean
+  xp: number
+  reason?: string
+}
+
+export async function addXp({
+  amount,
+  source = "unknown",
+  cardId,
+}: AddXpParams): Promise<AddXpResult> {
   if (
     typeof amount !== "number" ||
     Number.isNaN(amount) ||
     !Number.isFinite(amount) ||
     amount <= 0
   ) {
-    return await getXp()
+    return {
+      success: false,
+      xp: await getXp(),
+      reason: "invalid_amount",
+    }
+  }
+
+  if (!cardId) {
+    return {
+      success: false,
+      xp: await getXp(),
+      reason: "no_card_id",
+    }
   }
 
   const normalizedAmount = Math.min(Math.floor(amount), MAX_XP_PER_EVENT)
@@ -145,7 +173,13 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
 
   try {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return 0
+    if (!user) {
+      return {
+        success: false,
+        xp: 0,
+        reason: "not_authenticated",
+      }
+    }
 
     const { data: profile, error: fetchError } = await supabase
       .from("profiles")
@@ -155,11 +189,34 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
 
     if (fetchError) throw fetchError
 
+    const { data: card, error: cardError } = await supabase
+      .from("flashcards")
+      .select("last_reviewed")
+      .eq("id", cardId)
+      .eq("user_id", user.id)
+      .maybeSingle<{ last_reviewed: string | null }>()
+
+    if (cardError) throw cardError
+
     const currentXp = profile?.xp || 0
     const currentStreak = profile?.streak || 0
     const lastDate = profile?.last_active_date
     const today = getTodayDate()
     const yesterday = getYesterdayDate()
+
+    if (card?.last_reviewed) {
+      const lastAwardDate = new Date(card.last_reviewed)
+        .toISOString()
+        .split("T")[0]
+
+      if (lastAwardDate === today) {
+        return {
+          success: false,
+          xp: currentXp,
+          reason: "already_awarded_today",
+        }
+      }
+    }
 
     let newStreak = currentStreak
 
@@ -176,7 +233,11 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
     const todayXp = await getTodayXp(user.id)
 
     if (todayXp >= DAILY_XP_CAP) {
-      return currentXp
+      return {
+        success: false,
+        xp: currentXp,
+        reason: "daily_cap_reached",
+      }
     }
 
     const allowedAmount = Math.min(
@@ -203,6 +264,14 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
 
     await addWeeklyXp(user.id, normalizedAmount)
 
+    await supabase
+      .from("flashcards")
+      .update({
+        last_reviewed: new Date().toISOString(),
+      })
+      .eq("id", cardId)
+      .eq("user_id", user.id)
+
     console.info("XP awarded", {
       userId: user.id,
       source: normalizedSource,
@@ -210,9 +279,16 @@ export async function addXp(amount: number, source = "unknown"): Promise<number>
       streak: newStreak,
     })
 
-    return updated
+    return {
+      success: true,
+      xp: updated,
+    }
   } catch (error) {
     console.error("Error adding XP:", error)
-    return await getXp()
+    return {
+      success: false,
+      xp: await getXp(),
+      reason: "error",
+    }
   }
 }

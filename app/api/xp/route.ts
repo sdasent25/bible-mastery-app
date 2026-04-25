@@ -3,15 +3,15 @@ import { addXp } from "@/lib/xp"
 
 export async function POST(req: Request) {
   try {
-    const { amount, source } = await req.json()
+    const { amount, source, cardId } = await req.json()
 
     if (!amount || !source) {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 })
     }
 
-    const xp = await addXp(amount, source)
+    const result = await addXp({ amount, source, cardId })
 
-    return NextResponse.json({ xp })
+    return NextResponse.json(result)
   } catch (err) {
     console.error(err)
     return NextResponse.json({ error: "Failed to add XP" }, { status: 500 })
