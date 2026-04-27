@@ -51,7 +51,9 @@ async function upload() {
           theme: b.theme,
         }))
 
-        await supabase.from("books").insert(mapped)
+        await supabase.from("books").upsert(mapped, {
+          onConflict: "book",
+        })
       }
     }
   }
@@ -90,7 +92,7 @@ async function upload() {
     }
 
     const { error } = fileName === "books.json"
-      ? await supabase.from("books").insert(
+      ? await supabase.from("books").upsert(
           data.map(b => ({
             book: b.book,
             book_order: b.order,
@@ -98,8 +100,14 @@ async function upload() {
             category: b.category,
             theme: b.theme,
           }))
+          ,
+          {
+            onConflict: "book",
+          }
         )
-      : await supabase.from("quest_questions").insert(data)
+      : await supabase.from("quest_questions").upsert(data, {
+          onConflict: "question,option_a,option_b,option_c,option_d,correct_answer",
+        })
 
     if (error) {
       console.error("Error inserting:", error.message)
