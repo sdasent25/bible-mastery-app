@@ -10,8 +10,8 @@ export default function LockedOverlay({
   message,
 }: LockedOverlayProps) {
   return (
-    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-      <div className="max-w-sm rounded-2xl bg-gray-900 p-6 text-center">
+    <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-md">
+      <div className="max-w-sm rounded-2xl border border-gray-700 bg-gray-900 p-6 text-center">
         <div className="mb-2 text-3xl">🔒</div>
 
         <h2 className="mb-2 text-xl font-semibold text-white">
@@ -26,7 +26,7 @@ export default function LockedOverlay({
           onClick={() => {
             window.location.href = "/pricing"
           }}
-          className="rounded bg-yellow-500 px-4 py-2 text-black"
+          className="rounded bg-yellow-500 px-4 py-2 text-black transition hover:bg-yellow-400"
         >
           Upgrade
         </button>

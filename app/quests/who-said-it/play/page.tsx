@@ -93,13 +93,13 @@ export default function WhoSaidItPlay() {
   }
 
   if (loading) {
-    return <div className="p-6 text-white">Loading...</div>
+    return <div className="p-6 md:p-10 text-white max-w-lg mx-auto">Loading...</div>
   }
 
   if (!current) {
     return (
-      <div className="p-6 text-white text-center">
-        <h1 className="text-3xl font-bold mb-2">
+      <div className="p-6 md:p-10 text-white max-w-lg mx-auto text-center">
+        <h1 className="text-3xl md:text-4xl font-bold mb-6">
           Quest Complete 🎉
         </h1>
 
@@ -111,17 +111,17 @@ export default function WhoSaidItPlay() {
           Great work. Keep building your recall.
         </p>
 
-        <div className="flex gap-3 justify-center">
+        <div className="mt-4 flex gap-3 justify-center">
           <button
             onClick={() => window.location.reload()}
-            className="bg-blue-600 px-4 py-2 rounded"
+            className="bg-blue-600 px-4 py-2 rounded transition transform active:scale-95"
           >
             Replay
           </button>
 
           <button
             onClick={() => window.location.href = "/quests"}
-            className="bg-gray-700 px-4 py-2 rounded"
+            className="bg-gray-700 px-4 py-2 rounded transition transform active:scale-95"
           >
             Back to Quests
           </button>
@@ -131,18 +131,27 @@ export default function WhoSaidItPlay() {
   }
 
   return (
-    <div className="p-6 text-white max-w-3xl mx-auto">
+    <div className="p-6 md:p-10 text-white max-w-lg mx-auto">
 
       <button
         onClick={() => window.location.href = "/quests"}
-        className="mb-4 text-sm text-gray-300"
+        className="mb-4 text-sm text-gray-300 transition transform active:scale-95"
       >
         ← Back
       </button>
 
-      <h1 className="text-2xl font-bold mb-2">
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">
         Who Said It
       </h1>
+
+      <div className="w-full bg-gray-800 h-2 rounded mb-4">
+        <div
+          className="bg-blue-500 h-2 rounded"
+          style={{
+            width: `${((currentIndex + 1) / questions.length) * 100}%`,
+          }}
+        />
+      </div>
 
       <GameHeader
         reference={current.reference || undefined}
@@ -161,12 +170,12 @@ export default function WhoSaidItPlay() {
           <button
             key={letter}
             onClick={() => void handleAnswer(letter)}
-            className={`p-4 rounded-lg text-left ${
+            className={`p-4 rounded-lg text-left transition transform active:scale-95 ${
               selected === letter
                 ? correct
-                  ? "bg-green-600"
-                  : "bg-red-600"
-                : "bg-gray-700 hover:bg-gray-600"
+                  ? "bg-green-600 animate-pulse"
+                  : "bg-red-600 animate-shake"
+                : "bg-gray-700 hover:bg-gray-600 hover:scale-105"
             }`}
           >
             {current[`option_${letter.toLowerCase()}` as keyof Question]}
@@ -177,7 +186,7 @@ export default function WhoSaidItPlay() {
       {correct !== null && (
         <button
           onClick={next}
-          className="mt-6 bg-blue-600 px-4 py-2 rounded"
+          className="mt-6 bg-blue-600 px-4 py-2 rounded transition transform active:scale-95"
         >
           Next
         </button>

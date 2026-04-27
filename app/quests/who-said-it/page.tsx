@@ -69,15 +69,15 @@ export default function WhoSaidItPage() {
   }
 
   return (
-    <div className="p-6 text-white max-w-md mx-auto">
+    <div className="p-6 md:p-10 text-white max-w-lg mx-auto">
       <button
         onClick={() => router.push("/quests")}
-        className="mb-4 text-sm text-gray-300"
+        className="mb-4 text-sm text-gray-300 transition transform active:scale-95"
       >
         ← Back
       </button>
 
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-3xl md:text-4xl font-bold mb-6">
         Who Said It
       </h1>
 
@@ -105,7 +105,7 @@ export default function WhoSaidItPage() {
                       router.push(`/quests/who-said-it/play?book=${book.key}`)
                     }}
                     className={`
-                      absolute inset-0 flex items-center justify-center text-center cursor-pointer
+                      absolute inset-0 flex items-center justify-center text-center cursor-pointer transition transform active:scale-95
                       ${unlocked ? "hover:scale-105" : "opacity-50 pointer-events-none"}
                     `}
                   >
