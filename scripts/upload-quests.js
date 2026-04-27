@@ -31,11 +31,40 @@ function getAllJsonFiles(dir) {
 }
 
 async function upload() {
+  const rootFiles = fs.readdirSync(baseDir)
+
+  for (const file of rootFiles) {
+    const fullPath = path.join(baseDir, file)
+
+    if (fs.statSync(fullPath).isFile() && file.endsWith(".json")) {
+      const raw = fs.readFileSync(fullPath, "utf-8").trim()
+      if (!raw) continue
+
+      const data = JSON.parse(raw)
+
+      if (file === "books.json") {
+        const mapped = data.map(b => ({
+          book: b.book,
+          book_order: b.order,
+          testament: b.testament,
+          category: b.category,
+          theme: b.theme,
+        }))
+
+        await supabase.from("books").insert(mapped)
+      }
+    }
+  }
+
   const files = getAllJsonFiles(baseDir)
 
   console.log(`Found ${files.length} files`)
 
   for (const file of files) {
+    if (path.dirname(file) === baseDir) {
+      continue
+    }
+
     console.log(`Uploading: ${file}`)
     const fileName = path.basename(file)
 
@@ -61,7 +90,15 @@ async function upload() {
     }
 
     const { error } = fileName === "books.json"
-      ? await supabase.from("books").insert(data)
+      ? await supabase.from("books").insert(
+          data.map(b => ({
+            book: b.book,
+            book_order: b.order,
+            testament: b.testament,
+            category: b.category,
+            theme: b.theme,
+          }))
+        )
       : await supabase.from("quest_questions").insert(data)
 
     if (error) {
