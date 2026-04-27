@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { createClient } from "@/lib/supabase/client"
+
+const supabase = createClient()
 
 function QuestCard({
   title,
@@ -27,13 +30,17 @@ function QuestCard({
   return (
     <Link
       href={href}
+      onClick={(event) => {
+        if (locked) {
+          event.preventDefault()
+        }
+      }}
       className={`block w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-lg transition active:scale-[0.99] ${locked ? "opacity-50 pointer-events-none relative" : ""}`}
     >
       {locked && (
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50 px-6 text-center">
-          <div className="text-3xl">🔒</div>
-          <div className="mt-3 text-sm font-semibold text-white">
-            Unlock by completing Genesis
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="text-center text-white">
+            🔒 Complete Genesis in Journey to unlock
           </div>
         </div>
       )}
@@ -79,6 +86,7 @@ function QuestCard({
 export default function QuestsPage() {
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
+  const [genesisComplete, setGenesisComplete] = useState(false)
 
   useEffect(() => {
     const run = async () => {
@@ -88,6 +96,28 @@ export default function QuestsPage() {
     }
 
     run()
+  }, [])
+
+  useEffect(() => {
+    const load = async () => {
+      const { data } = await supabase
+        .from("user_segment_mastery")
+        .select("segment, mastered")
+
+      if (!data) return
+
+      const genesisSegments = data.filter((d) =>
+        d.segment.startsWith("genesis")
+      )
+
+      const allComplete =
+        genesisSegments.length > 0 &&
+        genesisSegments.every((s) => s.mastered)
+
+      setGenesisComplete(allComplete)
+    }
+
+    void load()
   }, [])
 
   const allowedPlans = ["pro_plus", "family_pro_plus"]
@@ -129,6 +159,7 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
+          locked={!genesisComplete}
           progress={0}
           total={10}
         />
