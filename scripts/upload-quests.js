@@ -1,4 +1,6 @@
-import 'dotenv/config'
+import dotenv from "dotenv"
+dotenv.config({ path: ".env.local" })
+
 import fs from "fs"
 import path from "path"
 import { createClient } from "@supabase/supabase-js"
@@ -8,19 +10,20 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 )
 
-// 🔁 RECURSIVE FILE LOADER
+const baseDir = path.join(process.cwd(), "data/quests")
+
 function getAllJsonFiles(dir) {
   let results = []
-  const list = fs.readdirSync(dir)
+  const files = fs.readdirSync(dir)
 
-  list.forEach(file => {
-    const filePath = path.join(dir, file)
-    const stat = fs.statSync(filePath)
+  files.forEach(file => {
+    const fullPath = path.join(dir, file)
+    const stat = fs.statSync(fullPath)
 
-    if (stat && stat.isDirectory()) {
-      results = results.concat(getAllJsonFiles(filePath))
+    if (stat.isDirectory()) {
+      results = results.concat(getAllJsonFiles(fullPath))
     } else if (file.endsWith(".json")) {
-      results.push(filePath)
+      results.push(fullPath)
     }
   })
 
@@ -28,7 +31,6 @@ function getAllJsonFiles(dir) {
 }
 
 async function upload() {
-  const baseDir = path.join(process.cwd(), "data/quests")
   const files = getAllJsonFiles(baseDir)
 
   console.log(`Found ${files.length} files`)
@@ -36,15 +38,33 @@ async function upload() {
   for (const file of files) {
     console.log(`Uploading: ${file}`)
 
-    const raw = fs.readFileSync(file)
-    const data = JSON.parse(raw)
+    let data
+
+    try {
+      const raw = fs.readFileSync(file, "utf-8").trim()
+
+      if (!raw) {
+        console.warn(`Skipping empty file: ${file}`)
+        continue
+      }
+
+      data = JSON.parse(raw)
+    } catch (err) {
+      console.error(`Invalid JSON in: ${file}`)
+      continue
+    }
+
+    if (!Array.isArray(data)) {
+      console.error(`File must contain array: ${file}`)
+      continue
+    }
 
     const { error } = await supabase
       .from("quest_questions")
       .insert(data)
 
     if (error) {
-      console.error("❌ Error:", error)
+      console.error("Error inserting:", error.message)
     } else {
       console.log("✅ Uploaded")
     }

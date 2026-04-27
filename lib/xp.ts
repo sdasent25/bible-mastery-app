@@ -18,7 +18,13 @@ const ALLOWED_XP_SOURCES = new Set([
   "daily",
   "bonus",
   "recall",
+  "who_said_it",
   "unknown",
+])
+
+const QUEST_XP_SOURCES = new Set([
+  "side_quest",
+  "who_said_it",
 ])
 
 async function getTodayXp(userId: string) {
@@ -193,20 +199,25 @@ export async function addXp({
 
     if (fetchError) throw fetchError
 
-    const { data: card, error: cardError } = await supabase
-      .from("flashcards")
-      .select("last_reviewed, repetitions")
-      .eq("id", cardId)
-      .eq("user_id", user.id)
-      .maybeSingle<{ last_reviewed: string | null; repetitions: number | null }>()
-
-    if (cardError) throw cardError
-
     const currentXp = profile?.xp || 0
     const currentStreak = profile?.streak || 0
     const lastDate = profile?.last_active_date
     const today = getTodayDate()
     const yesterday = getYesterdayDate()
+    const isQuestXpSource = QUEST_XP_SOURCES.has(normalizedSource)
+    let card: { last_reviewed: string | null; repetitions: number | null } | null = null
+
+    if (!isQuestXpSource) {
+      const { data: flashcard, error: cardError } = await supabase
+        .from("flashcards")
+        .select("last_reviewed, repetitions")
+        .eq("id", cardId)
+        .eq("user_id", user.id)
+        .maybeSingle<{ last_reviewed: string | null; repetitions: number | null }>()
+
+      if (cardError) throw cardError
+      card = flashcard
+    }
 
     if (card?.last_reviewed) {
       const lastAwardDate = new Date(card.last_reviewed)
@@ -230,7 +241,7 @@ export async function addXp({
       }
     }
 
-    if ((card?.repetitions || 0) < 1) {
+    if (!isQuestXpSource && (card?.repetitions || 0) < 1) {
       return {
         success: false,
         xp: currentXp,
@@ -284,13 +295,15 @@ export async function addXp({
 
     await addWeeklyXp(user.id, normalizedAmount)
 
-    await supabase
-      .from("flashcards")
-      .update({
-        last_reviewed: new Date().toISOString(),
-      })
-      .eq("id", cardId)
-      .eq("user_id", user.id)
+    if (!isQuestXpSource) {
+      await supabase
+        .from("flashcards")
+        .update({
+          last_reviewed: new Date().toISOString(),
+        })
+        .eq("id", cardId)
+        .eq("user_id", user.id)
+    }
 
     console.info("XP awarded", {
       userId: user.id,
