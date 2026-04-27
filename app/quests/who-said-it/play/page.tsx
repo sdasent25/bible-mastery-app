@@ -21,7 +21,7 @@ type Question = {
 
 export default function WhoSaidItPlay() {
   const searchParams = useSearchParams()
-  const setType = searchParams.get("set")
+  const book = searchParams.get("book")
   const [questions, setQuestions] = useState<Question[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -35,16 +35,17 @@ export default function WhoSaidItPlay() {
       let query = supabase
         .from("quest_questions")
         .select("*")
+        .eq("type", "who_said_it")
 
-      if (setType === "ot") {
-        query = query.like("type", "who_said_it_ot%")
-      } else if (setType === "nt") {
-        query = query.like("type", "who_said_it_nt%")
-      } else {
-        query = query.like("type", "who_said_it%")
+      if (book) {
+        query = query.contains("tags", [book])
       }
 
       const { data } = await query.limit(10)
+
+      if (!data || data.length === 0) {
+        console.error("No questions found for book:", book)
+      }
 
       setQuestions((data as Question[]) || [])
 
@@ -55,7 +56,7 @@ export default function WhoSaidItPlay() {
     }
 
     void load()
-  }, [setType])
+  }, [book])
 
   const current = questions[currentIndex]
 
