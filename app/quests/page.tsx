@@ -150,6 +150,7 @@ export default function QuestsPage() {
           href="/quests/characters"
           accentClass="from-emerald-700 via-emerald-600 to-teal-500"
           imageLabel="Heroes"
+          locked={false}
           progress={3}
           total={10}
         />
@@ -169,7 +170,7 @@ export default function QuestsPage() {
           href="/quests/books"
           accentClass="from-amber-700 via-orange-600 to-yellow-500"
           imageLabel="Scrolls"
-          locked
+          locked={false}
           progress={0}
           total={10}
         />
