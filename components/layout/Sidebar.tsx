@@ -24,6 +24,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const [planType, setPlanType] = useState<string>("free")
   const [isFamily, setIsFamily] = useState(false)
   const [isPlanLoaded, setIsPlanLoaded] = useState(false)
+  const hasAvailableQuests = true
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
     pentateuch: true,
@@ -143,6 +144,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const fullPlanLabel = isFamily
     ? `${planLabel} (Family)`
     : `${planLabel} (Individual)`
+  const questsActive = pathname.startsWith("/quests")
 
   if (!isPlanLoaded) {
     return null
@@ -163,7 +165,22 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           {navItem("🏠 Dashboard", "/dashboard")}
           {navItem("📖 Journey", "/journey")}
           {navItem("🧠 Flashcards", "/flashcards")}
-          {navItem("🗺️ Quests", "/quests")}
+          <Link
+            href="/quests"
+            onClick={() => closeMobile?.()}
+            className={`flex items-center px-4 py-3 rounded-xl transition font-medium ${
+              questsActive
+                ? "bg-blue-600 text-white shadow-md"
+                : "text-white hover:bg-neutral-800 hover:text-white"
+            }`}
+          >
+            <span>🗺️ Quests</span>
+            {hasAvailableQuests && (
+              <span className="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                1
+              </span>
+            )}
+          </Link>
           {hasLeaderboardAccess ? (
             navItem("🏆 Leaderboard", "/leaderboard")
           ) : (

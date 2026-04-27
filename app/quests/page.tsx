@@ -10,17 +10,34 @@ function QuestCard({
   href,
   accentClass,
   imageLabel,
+  locked = false,
+  progress = 0,
+  total = 0,
 }: {
   title: string
   href: string
   accentClass: string
   imageLabel: string
+  locked?: boolean
+  progress?: number
+  total?: number
 }) {
+  const progressPercent = total > 0 ? Math.min((progress / total) * 100, 100) : 0
+
   return (
     <Link
       href={href}
-      className="block w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-lg transition active:scale-[0.99]"
+      className={`block w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-lg transition active:scale-[0.99] ${locked ? "opacity-50 pointer-events-none relative" : ""}`}
     >
+      {locked && (
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/50 px-6 text-center">
+          <div className="text-3xl">🔒</div>
+          <div className="mt-3 text-sm font-semibold text-white">
+            Unlock by completing Genesis
+          </div>
+        </div>
+      )}
+
       <div
         className={`flex h-52 w-full items-center justify-center bg-gradient-to-br ${accentClass} px-6 text-center`}
       >
@@ -35,9 +52,24 @@ function QuestCard({
       </div>
 
       <div className="flex items-center justify-between px-5 py-4">
-        <div className="text-lg font-bold text-white">{title}</div>
+        <div>
+          <div className="text-lg font-bold text-white">{title}</div>
+          {!locked && (
+            <>
+              <div className="mt-3 h-2 w-44 overflow-hidden rounded-full bg-white/10">
+                <div
+                  className="h-full rounded-full bg-green-400 transition-all"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+              <div className="mt-2 text-sm text-zinc-300">
+                {progress} / {total} completed
+              </div>
+            </>
+          )}
+        </div>
         <div className="rounded-full border border-white/15 px-3 py-1 text-sm text-zinc-200">
-          Open
+          {locked ? "Locked" : "Open"}
         </div>
       </div>
     </Link>
@@ -88,6 +120,8 @@ export default function QuestsPage() {
           href="/quests/characters"
           accentClass="from-emerald-700 via-emerald-600 to-teal-500"
           imageLabel="Heroes"
+          progress={3}
+          total={10}
         />
 
         <QuestCard
@@ -95,6 +129,8 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
+          progress={0}
+          total={10}
         />
 
         <QuestCard
@@ -102,6 +138,9 @@ export default function QuestsPage() {
           href="/quests/books"
           accentClass="from-amber-700 via-orange-600 to-yellow-500"
           imageLabel="Scrolls"
+          locked
+          progress={0}
+          total={10}
         />
       </div>
     </div>
