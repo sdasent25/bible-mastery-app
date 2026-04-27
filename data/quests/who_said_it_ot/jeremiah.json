@@ -1,0 +1,98 @@
+[
+{
+"type": "who_said_it",
+"question": "Who said he was too young when called to deliver God’s message?",
+"option_a": "Isaiah",
+"option_b": "Jeremiah",
+"option_c": "Ezekiel",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Jeremiah 1:6",
+"tags": ["old_testament", "jeremiah", "jeremiah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who reassured the prophet not to be afraid because he would be protected?",
+"option_a": "Jeremiah",
+"option_b": "The king",
+"option_c": "God",
+"option_d": "Baruch",
+"correct_answer": "C",
+"reference": "Jeremiah 1:8",
+"tags": ["old_testament", "jeremiah", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who delivered messages warning the people to turn from wrongdoing?",
+"option_a": "Jeremiah",
+"option_b": "Isaiah",
+"option_c": "Daniel",
+"option_d": "Ezekiel",
+"correct_answer": "A",
+"reference": "Jeremiah 7:3",
+"tags": ["old_testament", "jeremiah", "jeremiah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who rejected warnings and continued in harmful practices despite being warned?",
+"option_a": "The prophets",
+"option_b": "The people",
+"option_c": "The angels",
+"option_d": "The priests",
+"correct_answer": "B",
+"reference": "Jeremiah 7:24",
+"tags": ["old_testament", "jeremiah", "people"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who wrote down the messages given by the prophet at his direction?",
+"option_a": "Ezra",
+"option_b": "Baruch",
+"option_c": "Daniel",
+"option_d": "Nehemiah",
+"correct_answer": "B",
+"reference": "Jeremiah 36:4",
+"tags": ["old_testament", "jeremiah", "baruch"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who burned the written scroll after hearing its contents read aloud?",
+"option_a": "Jehoiakim",
+"option_b": "Zedekiah",
+"option_c": "Nebuchadnezzar",
+"option_d": "Baruch",
+"correct_answer": "A",
+"reference": "Jeremiah 36:23",
+"tags": ["old_testament", "jeremiah", "jehoiakim"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who was imprisoned for delivering messages that people did not want to hear?",
+"option_a": "Isaiah",
+"option_b": "Jeremiah",
+"option_c": "Daniel",
+"option_d": "Ezekiel",
+"correct_answer": "B",
+"reference": "Jeremiah 37:15",
+"tags": ["old_testament", "jeremiah", "jeremiah"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who promised restoration and a hopeful future despite coming judgment?",
+"option_a": "Jeremiah",
+"option_b": "Isaiah",
+"option_c": "Daniel",
+"option_d": "Ezekiel",
+"correct_answer": "A",
+"reference": "Jeremiah 29:11",
+"tags": ["old_testament", "jeremiah", "jeremiah"],
+"difficulty": "hard"
+}
+]

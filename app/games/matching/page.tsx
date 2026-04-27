@@ -60,24 +60,23 @@ export default function MatchingGamePage() {
     setChecking(true)
 
     try {
-      const isFirstAttempt = !answeredCards.includes(leftCard.id)
-
       if (leftCard.id === rightCard.id) {
         setMatched((prev) => [...prev, leftCard.id])
 
-        const xpResult = await addXp({
-          amount: 3,
+        await updateFlashcardProgress(leftCard, "easy")
+
+        const xpAmount = 3
+
+        setSessionXp((prev) => prev + xpAmount)
+
+        await addXp({
+          amount: xpAmount,
           source: "matching",
           cardId: leftCard.id,
-          isFirstAttempt,
+          isFirstAttempt: true,
         })
 
-        if (xpResult.success) {
-          setSessionXp((currentXp) => currentXp + 3)
-          setTotalXp(xpResult.xp)
-        }
-
-        await updateFlashcardProgress(leftCard, "easy")
+        setTotalXp(await getXp())
       }
 
       setAnsweredCards((prev) =>

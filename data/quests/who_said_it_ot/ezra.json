@@ -1,0 +1,98 @@
+[
+{
+"type": "who_said_it",
+"question": "Who was sent to teach the law to the people after returning from exile?",
+"option_a": "Nehemiah",
+"option_b": "Ezra",
+"option_c": "Daniel",
+"option_d": "Zerubbabel",
+"correct_answer": "B",
+"reference": "Ezra 7:10",
+"tags": ["old_testament", "ezra", "ezra"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who allowed the people to return and rebuild the temple?",
+"option_a": "Nebuchadnezzar",
+"option_b": "Darius",
+"option_c": "Cyrus",
+"option_d": "Artaxerxes",
+"correct_answer": "C",
+"reference": "Ezra 1:2-3",
+"tags": ["old_testament", "ezra", "cyrus"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who helped lead the first group of people back to rebuild the temple?",
+"option_a": "Ezra",
+"option_b": "Nehemiah",
+"option_c": "Zerubbabel",
+"option_d": "Daniel",
+"correct_answer": "C",
+"reference": "Ezra 2:2",
+"tags": ["old_testament", "ezra", "zerubbabel"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who opposed the rebuilding of the temple and tried to stop the work?",
+"option_a": "The returning exiles",
+"option_b": "The surrounding enemies",
+"option_c": "The priests",
+"option_d": "The Levites",
+"correct_answer": "B",
+"reference": "Ezra 4:4-5",
+"tags": ["old_testament", "ezra", "enemies"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who encouraged the people to continue rebuilding after the work had stopped?",
+"option_a": "Ezra",
+"option_b": "Haggai and Zechariah",
+"option_c": "Nehemiah",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Ezra 5:1-2",
+"tags": ["old_testament", "ezra", "prophets"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who confirmed that the rebuilding should continue after reviewing records?",
+"option_a": "Cyrus",
+"option_b": "Darius",
+"option_c": "Artaxerxes",
+"option_d": "Nebuchadnezzar",
+"correct_answer": "B",
+"reference": "Ezra 6:1-6",
+"tags": ["old_testament", "ezra", "darius"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who led the people in confession and prayer over their wrongdoing?",
+"option_a": "Nehemiah",
+"option_b": "Ezra",
+"option_c": "Daniel",
+"option_d": "Zerubbabel",
+"correct_answer": "B",
+"reference": "Ezra 9:5-6",
+"tags": ["old_testament", "ezra", "ezra"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who called the people to separate from practices that were leading them away from obedience?",
+"option_a": "Ezra",
+"option_b": "Nehemiah",
+"option_c": "Daniel",
+"option_d": "Zerubbabel",
+"correct_answer": "A",
+"reference": "Ezra 10:10-11",
+"tags": ["old_testament", "ezra", "ezra"],
+"difficulty": "hard"
+}
+]

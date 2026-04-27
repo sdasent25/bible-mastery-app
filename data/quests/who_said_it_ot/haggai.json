@@ -1,0 +1,62 @@
+[
+{
+"type": "who_said_it",
+"question": "Who urged the people to rebuild the temple instead of focusing only on their own homes?",
+"option_a": "Zechariah",
+"option_b": "Haggai",
+"option_c": "Ezra",
+"option_d": "Nehemiah",
+"correct_answer": "B",
+"reference": "Haggai 1:4",
+"tags": ["old_testament", "haggai", "haggai"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who said that the people's efforts were not succeeding because they had neglected God's house?",
+"option_a": "Haggai",
+"option_b": "Ezra",
+"option_c": "God",
+"option_d": "Zerubbabel",
+"correct_answer": "C",
+"reference": "Haggai 1:9",
+"tags": ["old_testament", "haggai", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who led the people to respond and begin rebuilding after hearing the message?",
+"option_a": "Nehemiah",
+"option_b": "Zerubbabel and Joshua",
+"option_c": "Ezra",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Haggai 1:12",
+"tags": ["old_testament", "haggai", "zerubbabel"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who encouraged the leaders and people to be strong and continue the work?",
+"option_a": "Ezra",
+"option_b": "Haggai",
+"option_c": "Nehemiah",
+"option_d": "Zechariah",
+"correct_answer": "B",
+"reference": "Haggai 2:4",
+"tags": ["old_testament", "haggai", "haggai"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who promised that the future glory of the temple would be greater than the former?",
+"option_a": "Haggai",
+"option_b": "Zerubbabel",
+"option_c": "Joshua",
+"option_d": "God",
+"correct_answer": "D",
+"reference": "Haggai 2:9",
+"tags": ["old_testament", "haggai", "god"],
+"difficulty": "hard"
+}
+]

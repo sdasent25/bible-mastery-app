@@ -1,0 +1,122 @@
+[
+{
+"type": "who_said_it",
+"question": "Who told Jonah to go and warn a great city about its wrongdoing?",
+"option_a": "Elijah",
+"option_b": "Jonah",
+"option_c": "God",
+"option_d": "Isaiah",
+"correct_answer": "C",
+"reference": "Jonah 1:1-2",
+"tags": ["old_testament", "jonah", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who chose to flee in the opposite direction instead of obeying the command?",
+"option_a": "Jonah",
+"option_b": "Elijah",
+"option_c": "Moses",
+"option_d": "David",
+"correct_answer": "A",
+"reference": "Jonah 1:3",
+"tags": ["old_testament", "jonah", "jonah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who questioned the crew about why a storm had come upon them?",
+"option_a": "The king",
+"option_b": "The sailors",
+"option_c": "Jonah",
+"option_d": "The prophet",
+"correct_answer": "B",
+"reference": "Jonah 1:6-7",
+"tags": ["old_testament", "jonah", "sailors"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who admitted responsibility for the storm and suggested being thrown into the sea?",
+"option_a": "The captain",
+"option_b": "The sailors",
+"option_c": "Jonah",
+"option_d": "God",
+"correct_answer": "C",
+"reference": "Jonah 1:12",
+"tags": ["old_testament", "jonah", "jonah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who prayed for mercy before throwing Jonah into the sea?",
+"option_a": "The sailors",
+"option_b": "Jonah",
+"option_c": "The king",
+"option_d": "The prophet",
+"correct_answer": "A",
+"reference": "Jonah 1:14",
+"tags": ["old_testament", "jonah", "sailors"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who prayed from inside a great fish after being swallowed?",
+"option_a": "Elijah",
+"option_b": "Jonah",
+"option_c": "David",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Jonah 2:1",
+"tags": ["old_testament", "jonah", "jonah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who commanded the fish to release Jonah onto dry land?",
+"option_a": "Jonah",
+"option_b": "The sailors",
+"option_c": "God",
+"option_d": "The king",
+"correct_answer": "C",
+"reference": "Jonah 2:10",
+"tags": ["old_testament", "jonah", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who declared a fast and called for repentance after hearing Jonah’s warning?",
+"option_a": "The sailors",
+"option_b": "Jonah",
+"option_c": "The king of Nineveh",
+"option_d": "The prophet",
+"correct_answer": "C",
+"reference": "Jonah 3:6-7",
+"tags": ["old_testament", "jonah", "king_of_nineveh"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who became angry when the city was spared instead of destroyed?",
+"option_a": "The king",
+"option_b": "Jonah",
+"option_c": "The sailors",
+"option_d": "Elijah",
+"correct_answer": "B",
+"reference": "Jonah 4:1",
+"tags": ["old_testament", "jonah", "jonah"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who explained that compassion was the reason for sparing the city?",
+"option_a": "Jonah",
+"option_b": "The king",
+"option_c": "The sailors",
+"option_d": "God",
+"correct_answer": "D",
+"reference": "Jonah 4:10-11",
+"tags": ["old_testament", "jonah", "god"],
+"difficulty": "hard"
+}
+]

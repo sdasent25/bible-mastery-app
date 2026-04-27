@@ -1,0 +1,74 @@
+[
+{
+"type": "who_said_it",
+"question": "Who called the people to return so that God would return to them?",
+"option_a": "Haggai",
+"option_b": "Zechariah",
+"option_c": "Ezra",
+"option_d": "Nehemiah",
+"correct_answer": "B",
+"reference": "Zechariah 1:3",
+"tags": ["old_testament", "zechariah", "zechariah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who reminded the people that their ancestors did not listen to earlier warnings?",
+"option_a": "Zechariah",
+"option_b": "Ezra",
+"option_c": "God",
+"option_d": "Haggai",
+"correct_answer": "C",
+"reference": "Zechariah 1:4",
+"tags": ["old_testament", "zechariah", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who asked questions about the visions he was seeing and sought understanding?",
+"option_a": "Daniel",
+"option_b": "Zechariah",
+"option_c": "Isaiah",
+"option_d": "Jeremiah",
+"correct_answer": "B",
+"reference": "Zechariah 1:9",
+"tags": ["old_testament", "zechariah", "zechariah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who explained the meaning of the visions to the prophet?",
+"option_a": "God",
+"option_b": "An angel",
+"option_c": "Haggai",
+"option_d": "Ezra",
+"correct_answer": "B",
+"reference": "Zechariah 1:9",
+"tags": ["old_testament", "zechariah", "angel"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who encouraged Zerubbabel by saying that success would come not by human strength but by God's power?",
+"option_a": "Haggai",
+"option_b": "Zechariah",
+"option_c": "An angel",
+"option_d": "God",
+"correct_answer": "D",
+"reference": "Zechariah 4:6",
+"tags": ["old_testament", "zechariah", "god"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who asked whether their religious practices were truly done for the right reasons?",
+"option_a": "Ezra",
+"option_b": "Nehemiah",
+"option_c": "God",
+"option_d": "Zechariah",
+"correct_answer": "C",
+"reference": "Zechariah 7:5-6",
+"tags": ["old_testament", "zechariah", "god"],
+"difficulty": "hard"
+}
+]

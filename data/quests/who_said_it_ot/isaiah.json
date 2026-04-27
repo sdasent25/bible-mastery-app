@@ -1,0 +1,98 @@
+[
+{
+"type": "who_said_it",
+"question": "Who saw a vision of God in the temple and felt unworthy?",
+"option_a": "Jeremiah",
+"option_b": "Isaiah",
+"option_c": "Ezekiel",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Isaiah 6:1-5",
+"tags": ["old_testament", "isaiah", "isaiah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who asked who would go to deliver a message and received a willing response?",
+"option_a": "Isaiah",
+"option_b": "An angel",
+"option_c": "God",
+"option_d": "The king",
+"correct_answer": "C",
+"reference": "Isaiah 6:8",
+"tags": ["old_testament", "isaiah", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who responded that he was ready to be sent to deliver God's message?",
+"option_a": "Jeremiah",
+"option_b": "Isaiah",
+"option_c": "Ezekiel",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Isaiah 6:8",
+"tags": ["old_testament", "isaiah", "isaiah"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who refused to ask for a sign even when offered one?",
+"option_a": "Hezekiah",
+"option_b": "Ahaz",
+"option_c": "Isaiah",
+"option_d": "David",
+"correct_answer": "B",
+"reference": "Isaiah 7:12",
+"tags": ["old_testament", "isaiah", "ahaz"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who delivered a message promising a child as a sign to the people?",
+"option_a": "Jeremiah",
+"option_b": "Isaiah",
+"option_c": "Ezekiel",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Isaiah 7:14",
+"tags": ["old_testament", "isaiah", "isaiah"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who prayed when facing a powerful enemy threatening his city?",
+"option_a": "David",
+"option_b": "Ahaz",
+"option_c": "Hezekiah",
+"option_d": "Solomon",
+"correct_answer": "C",
+"reference": "Isaiah 37:14-15",
+"tags": ["old_testament", "isaiah", "hezekiah"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who delivered a message that the city would be protected from attack?",
+"option_a": "Isaiah",
+"option_b": "Jeremiah",
+"option_c": "Daniel",
+"option_d": "Ezekiel",
+"correct_answer": "A",
+"reference": "Isaiah 37:33-35",
+"tags": ["old_testament", "isaiah", "isaiah"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who received a promise of extended life after praying during illness?",
+"option_a": "Ahaz",
+"option_b": "Hezekiah",
+"option_c": "David",
+"option_d": "Solomon",
+"correct_answer": "B",
+"reference": "Isaiah 38:5",
+"tags": ["old_testament", "isaiah", "hezekiah"],
+"difficulty": "hard"
+}
+]

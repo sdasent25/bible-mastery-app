@@ -1,0 +1,74 @@
+[
+{
+"type": "who_said_it",
+"question": "Who called Ezekiel to be a messenger to a rebellious people?",
+"option_a": "Jeremiah",
+"option_b": "Ezekiel",
+"option_c": "God",
+"option_d": "Daniel",
+"correct_answer": "C",
+"reference": "Ezekiel 2:3-4",
+"tags": ["old_testament", "ezekiel", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who was told to eat a scroll as part of receiving a message?",
+"option_a": "Jeremiah",
+"option_b": "Ezekiel",
+"option_c": "Isaiah",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Ezekiel 3:1-3",
+"tags": ["old_testament", "ezekiel", "ezekiel"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who warned that he must speak what he was told, whether people listened or not?",
+"option_a": "Ezekiel",
+"option_b": "Jeremiah",
+"option_c": "God",
+"option_d": "Isaiah",
+"correct_answer": "C",
+"reference": "Ezekiel 3:11",
+"tags": ["old_testament", "ezekiel", "god"],
+"difficulty": "easy"
+},
+{
+"type": "who_said_it",
+"question": "Who was appointed as a watchman responsible for warning others?",
+"option_a": "Jeremiah",
+"option_b": "Ezekiel",
+"option_c": "Daniel",
+"option_d": "Isaiah",
+"correct_answer": "B",
+"reference": "Ezekiel 3:17",
+"tags": ["old_testament", "ezekiel", "ezekiel"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who described a vision of dry bones coming back to life?",
+"option_a": "Isaiah",
+"option_b": "Ezekiel",
+"option_c": "Jeremiah",
+"option_d": "Daniel",
+"correct_answer": "B",
+"reference": "Ezekiel 37:1-5",
+"tags": ["old_testament", "ezekiel", "ezekiel"],
+"difficulty": "medium"
+},
+{
+"type": "who_said_it",
+"question": "Who promised to give people a new heart and spirit?",
+"option_a": "Ezekiel",
+"option_b": "Jeremiah",
+"option_c": "Isaiah",
+"option_d": "God",
+"correct_answer": "D",
+"reference": "Ezekiel 36:26",
+"tags": ["old_testament", "ezekiel", "god"],
+"difficulty": "hard"
+}
+]
