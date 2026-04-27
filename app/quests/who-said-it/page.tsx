@@ -21,6 +21,22 @@ type BookProgress = {
 
 type ProgressMap = Record<string, BookProgress>
 
+function Ring({ percent }: { percent: number }) {
+  const p = Math.min(100, Math.max(0, percent || 0))
+  return (
+    <div
+      className="w-24 h-24 rounded-full flex items-center justify-center"
+      style={{
+        background: `conic-gradient(#3b82f6 ${p}%, #1f2937 ${p}%)`,
+      }}
+    >
+      <div className="w-20 h-20 rounded-full bg-gray-900 flex items-center justify-center">
+        <span className="text-xs text-gray-300">{p}%</span>
+      </div>
+    </div>
+  )
+}
+
 export default function WhoSaidItPage() {
   const [progress, setProgress] = useState<ProgressMap>({})
   const router = useRouter()
@@ -65,9 +81,14 @@ export default function WhoSaidItPage() {
         Who Said It
       </h1>
 
+      <div className="mb-6 bg-yellow-500 text-black p-4 rounded-xl text-center">
+        ⭐ Daily Challenge — Mixed Questions
+      </div>
+
       <div className="flex flex-col items-center gap-6">
         {books.map((book, i) => {
           const unlocked = isUnlocked(i)
+          const isCurrent = i === 0
           const p = progress[book.key] || { total: 0, completed: 0 }
 
           return (
@@ -75,18 +96,24 @@ export default function WhoSaidItPage() {
               key={book.key}
               className="flex flex-col items-center"
             >
-              <div
-                onClick={() => {
-                  if (!unlocked) return
-                  router.push(`/quests/who-said-it/play?book=${book.key}`)
-                }}
-                className={`
-                  w-20 h-20 rounded-full flex items-center justify-center
-                  text-center cursor-pointer transition
-                  ${unlocked ? "bg-blue-600 hover:scale-105" : "bg-gray-700 opacity-50"}
-                `}
-              >
-                {unlocked ? book.label.slice(0, 3) : "🔒"}
+              <div className={isCurrent ? "animate-pulse" : ""}>
+                <div className="relative">
+                  <Ring percent={(p.total ? Math.round((p.completed / p.total) * 100) : 0)} />
+                  <div
+                    onClick={() => {
+                      if (!unlocked) return
+                      router.push(`/quests/who-said-it/play?book=${book.key}`)
+                    }}
+                    className={`
+                      absolute inset-0 flex items-center justify-center text-center cursor-pointer
+                      ${unlocked ? "hover:scale-105" : "opacity-50 pointer-events-none"}
+                    `}
+                  >
+                    <div className="text-sm font-semibold">
+                      {unlocked ? book.label.slice(0, 3) : "🔒"}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mt-2 text-sm text-gray-300">

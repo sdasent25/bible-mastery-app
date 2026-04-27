@@ -99,14 +99,33 @@ export default function WhoSaidItPlay() {
   if (!current) {
     return (
       <div className="p-6 text-white text-center">
-        <h1 className="text-2xl font-bold mb-2">Quest Complete 🎉</h1>
-        <p className="mb-4">+{sessionXp} XP earned</p>
-        <button
-          onClick={() => window.location.href = "/quests"}
-          className="bg-blue-600 px-4 py-2 rounded"
-        >
-          Back to Quests
-        </button>
+        <h1 className="text-3xl font-bold mb-2">
+          Quest Complete 🎉
+        </h1>
+
+        <p className="text-green-400 text-xl mb-4">
+          +{sessionXp} XP
+        </p>
+
+        <p className="text-gray-400 mb-6">
+          Great work. Keep building your recall.
+        </p>
+
+        <div className="flex gap-3 justify-center">
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-blue-600 px-4 py-2 rounded"
+          >
+            Replay
+          </button>
+
+          <button
+            onClick={() => window.location.href = "/quests"}
+            className="bg-gray-700 px-4 py-2 rounded"
+          >
+            Back to Quests
+          </button>
+        </div>
       </div>
     )
   }
