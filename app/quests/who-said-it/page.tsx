@@ -1,3 +1,5 @@
+"use client"
+
 export default function WhoSaidItPage() {
   return (
     <div className="w-full px-4 py-6">
