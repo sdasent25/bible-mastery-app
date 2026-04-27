@@ -1,12 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-
-const supabase = createClient()
 
 type QuestBook = {
   id: string
+  book_order?: number | null
   category: string | null
   book: string | null
   theme: string | null
@@ -17,13 +15,10 @@ export default function BooksPage() {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await supabase
-        .from("quest_questions")
-        .select("*")
-        .eq("type", "books")
-        .order("order", { ascending: true })
+      const res = await fetch("/api/quests/books")
+      const { books } = await res.json()
 
-      setBooks((data as QuestBook[]) || [])
+      setBooks(books || [])
     }
 
     void load()
@@ -40,6 +35,9 @@ export default function BooksPage() {
 
         {books.map((book) => (
           <div key={book.id} className="bg-gray-800 p-4 rounded-xl">
+            <div className="text-gray-500 text-xs">
+              #{book.book_order}
+            </div>
             <div className="text-blue-400 text-sm">
               {book.category}
             </div>
