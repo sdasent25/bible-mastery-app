@@ -1,0 +1,530 @@
+[
+{
+"type": "books",
+"book": "Genesis",
+"order": 1,
+"testament": "old_testament",
+"category": "pentateuch",
+"theme": "Creation, early humanity, and the beginnings of God's covenant people."
+},
+{
+"type": "books",
+"book": "Exodus",
+"order": 2,
+"testament": "old_testament",
+"category": "pentateuch",
+"theme": "God delivers Israel from slavery and gives His covenant law."
+},
+{
+"type": "books",
+"book": "Leviticus",
+"order": 3,
+"testament": "old_testament",
+"category": "pentateuch",
+"theme": "Holiness, worship, and the laws for Israel's covenant life."
+},
+{
+"type": "books",
+"book": "Numbers",
+"order": 4,
+"testament": "old_testament",
+"category": "pentateuch",
+"theme": "Israel's wilderness journey and God's faithfulness despite rebellion."
+},
+{
+"type": "books",
+"book": "Deuteronomy",
+"order": 5,
+"testament": "old_testament",
+"category": "pentateuch",
+"theme": "Moses renews the covenant and calls Israel to obey God."
+},
+{
+"type": "books",
+"book": "Joshua",
+"order": 6,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel enters and settles the promised land under God's leadership."
+},
+{
+"type": "books",
+"book": "Judges",
+"order": 7,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel's repeated rebellion and God's deliverance through judges."
+},
+{
+"type": "books",
+"book": "Ruth",
+"order": 8,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Faithfulness, redemption, and God's providence through ordinary lives."
+},
+{
+"type": "books",
+"book": "1 Samuel",
+"order": 9,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel transitions from judges to kings under Saul and David."
+},
+{
+"type": "books",
+"book": "2 Samuel",
+"order": 10,
+"testament": "old_testament",
+"category": "historical",
+"theme": "David's reign shows both God's covenant promise and human failure."
+},
+{
+"type": "books",
+"book": "1 Kings",
+"order": 11,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel's kingdom divides as kings rise, fall, and turn from God."
+},
+{
+"type": "books",
+"book": "2 Kings",
+"order": 12,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel and Judah decline into exile because of persistent disobedience."
+},
+{
+"type": "books",
+"book": "1 Chronicles",
+"order": 13,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Israel's history is retold with focus on David, worship, and covenant."
+},
+{
+"type": "books",
+"book": "2 Chronicles",
+"order": 14,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Judah's kings, temple worship, and the need for covenant faithfulness."
+},
+{
+"type": "books",
+"book": "Ezra",
+"order": 15,
+"testament": "old_testament",
+"category": "historical",
+"theme": "God restores His people from exile and rebuilds temple worship."
+},
+{
+"type": "books",
+"book": "Nehemiah",
+"order": 16,
+"testament": "old_testament",
+"category": "historical",
+"theme": "Jerusalem's walls are rebuilt as the people renew their covenant."
+},
+{
+"type": "books",
+"book": "Esther",
+"order": 17,
+"testament": "old_testament",
+"category": "historical",
+"theme": "God preserves His people through courage and hidden providence."
+},
+{
+"type": "books",
+"book": "Job",
+"order": 18,
+"testament": "old_testament",
+"category": "wisdom",
+"theme": "Suffering, faith, and God's wisdom beyond human understanding."
+},
+{
+"type": "books",
+"book": "Psalms",
+"order": 19,
+"testament": "old_testament",
+"category": "wisdom",
+"theme": "Prayers and songs of worship, lament, trust, and praise."
+},
+{
+"type": "books",
+"book": "Proverbs",
+"order": 20,
+"testament": "old_testament",
+"category": "wisdom",
+"theme": "Wisdom for faithful living rooted in the fear of the Lord."
+},
+{
+"type": "books",
+"book": "Ecclesiastes",
+"order": 21,
+"testament": "old_testament",
+"category": "wisdom",
+"theme": "Life's limits and meaning are understood through reverence for God."
+},
+{
+"type": "books",
+"book": "Song of Solomon",
+"order": 22,
+"testament": "old_testament",
+"category": "wisdom",
+"theme": "Love, desire, and the beauty of covenant relationship."
+},
+{
+"type": "books",
+"book": "Isaiah",
+"order": 23,
+"testament": "old_testament",
+"category": "major_prophets",
+"theme": "Judgment, hope, and God's promised salvation through His servant."
+},
+{
+"type": "books",
+"book": "Jeremiah",
+"order": 24,
+"testament": "old_testament",
+"category": "major_prophets",
+"theme": "Judgment on Judah and the promise of a new covenant."
+},
+{
+"type": "books",
+"book": "Lamentations",
+"order": 25,
+"testament": "old_testament",
+"category": "major_prophets",
+"theme": "Grief over Jerusalem's fall and hope in God's mercy."
+},
+{
+"type": "books",
+"book": "Ezekiel",
+"order": 26,
+"testament": "old_testament",
+"category": "major_prophets",
+"theme": "God's glory, judgment, and promise to restore His people."
+},
+{
+"type": "books",
+"book": "Daniel",
+"order": 27,
+"testament": "old_testament",
+"category": "major_prophets",
+"theme": "Faithfulness in exile and God's rule over kingdoms."
+},
+{
+"type": "books",
+"book": "Hosea",
+"order": 28,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God's faithful love toward an unfaithful people."
+},
+{
+"type": "books",
+"book": "Joel",
+"order": 29,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "The day of the Lord calls for repentance and promises restoration."
+},
+{
+"type": "books",
+"book": "Amos",
+"order": 30,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God demands justice, righteousness, and true worship."
+},
+{
+"type": "books",
+"book": "Obadiah",
+"order": 31,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God judges pride and promises deliverance for His people."
+},
+{
+"type": "books",
+"book": "Jonah",
+"order": 32,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God's mercy reaches even those people consider enemies."
+},
+{
+"type": "books",
+"book": "Micah",
+"order": 33,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God requires justice, mercy, and humble faithfulness."
+},
+{
+"type": "books",
+"book": "Nahum",
+"order": 34,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God judges oppressive nations and defends His people."
+},
+{
+"type": "books",
+"book": "Habakkuk",
+"order": 35,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "Faith trusts God's justice even when His ways are hard to understand."
+},
+{
+"type": "books",
+"book": "Zephaniah",
+"order": 36,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "The day of the Lord brings judgment and future restoration."
+},
+{
+"type": "books",
+"book": "Haggai",
+"order": 37,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God calls His restored people to rebuild the temple."
+},
+{
+"type": "books",
+"book": "Zechariah",
+"order": 38,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God encourages His people with visions of restoration and the coming King."
+},
+{
+"type": "books",
+"book": "Malachi",
+"order": 39,
+"testament": "old_testament",
+"category": "minor_prophets",
+"theme": "God confronts covenant unfaithfulness and points to future renewal."
+},
+{
+"type": "books",
+"book": "Matthew",
+"order": 40,
+"testament": "new_testament",
+"category": "gospels",
+"theme": "Jesus is the promised Messiah and King."
+},
+{
+"type": "books",
+"book": "Mark",
+"order": 41,
+"testament": "new_testament",
+"category": "gospels",
+"theme": "Jesus is the suffering Son of God who serves and saves."
+},
+{
+"type": "books",
+"book": "Luke",
+"order": 42,
+"testament": "new_testament",
+"category": "gospels",
+"theme": "Jesus brings salvation to all people."
+},
+{
+"type": "books",
+"book": "John",
+"order": 43,
+"testament": "new_testament",
+"category": "gospels",
+"theme": "Jesus is the Son of God who gives eternal life."
+},
+{
+"type": "books",
+"book": "Acts",
+"order": 44,
+"testament": "new_testament",
+"category": "acts",
+"theme": "The Holy Spirit empowers the church to spread the gospel."
+},
+{
+"type": "books",
+"book": "Romans",
+"order": 45,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "God's righteousness is revealed through faith in Jesus Christ."
+},
+{
+"type": "books",
+"book": "1 Corinthians",
+"order": 46,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul corrects the church and teaches faithful life in Christ."
+},
+{
+"type": "books",
+"book": "2 Corinthians",
+"order": 47,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul defends his ministry and teaches strength through weakness."
+},
+{
+"type": "books",
+"book": "Galatians",
+"order": 48,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Believers are justified by faith and called to freedom in Christ."
+},
+{
+"type": "books",
+"book": "Ephesians",
+"order": 49,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "The church is united in Christ and called to holy living."
+},
+{
+"type": "books",
+"book": "Philippians",
+"order": 50,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Joy and faithful endurance come through life centered on Christ."
+},
+{
+"type": "books",
+"book": "Colossians",
+"order": 51,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Christ is supreme over creation, the church, and Christian life."
+},
+{
+"type": "books",
+"book": "1 Thessalonians",
+"order": 52,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul encourages faithfulness, holiness, and hope in Christ's return."
+},
+{
+"type": "books",
+"book": "2 Thessalonians",
+"order": 53,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul clarifies Christ's return and encourages steadfast living."
+},
+{
+"type": "books",
+"book": "1 Timothy",
+"order": 54,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul instructs Timothy on church leadership and sound teaching."
+},
+{
+"type": "books",
+"book": "2 Timothy",
+"order": 55,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul urges endurance, faithfulness, and confidence in Scripture."
+},
+{
+"type": "books",
+"book": "Titus",
+"order": 56,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul teaches church order, sound doctrine, and godly living."
+},
+{
+"type": "books",
+"book": "Philemon",
+"order": 57,
+"testament": "new_testament",
+"category": "pauline_epistles",
+"theme": "Paul appeals for forgiveness and reconciliation in Christ."
+},
+{
+"type": "books",
+"book": "Hebrews",
+"order": 58,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Jesus is the superior high priest and fulfillment of God's promises."
+},
+{
+"type": "books",
+"book": "James",
+"order": 59,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "True faith is shown through obedience, wisdom, and works."
+},
+{
+"type": "books",
+"book": "1 Peter",
+"order": 60,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Believers endure suffering with hope and holy conduct."
+},
+{
+"type": "books",
+"book": "2 Peter",
+"order": 61,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Peter warns against false teachers and calls believers to grow in grace."
+},
+{
+"type": "books",
+"book": "1 John",
+"order": 62,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "True fellowship with God is marked by love, truth, and obedience."
+},
+{
+"type": "books",
+"book": "2 John",
+"order": 63,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Believers are called to walk in truth and love."
+},
+{
+"type": "books",
+"book": "3 John",
+"order": 64,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Faithful believers support truth and practice godly hospitality."
+},
+{
+"type": "books",
+"book": "Jude",
+"order": 65,
+"testament": "new_testament",
+"category": "general_epistles",
+"theme": "Believers must contend for the faith against false teaching."
+},
+{
+"type": "books",
+"book": "Revelation",
+"order": 66,
+"testament": "new_testament",
+"category": "apocalyptic",
+"theme": "Christ triumphs, evil is judged, and God's kingdom is fully restored."
+}
+]
