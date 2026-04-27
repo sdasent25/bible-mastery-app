@@ -32,7 +32,7 @@ export default function WhoSaidItPlay() {
       const { data } = await supabase
         .from("quest_questions")
         .select("*")
-        .eq("type", "who_said_it")
+        .like("type", "who_said_it%")
         .limit(10)
 
       setQuestions((data as Question[]) || [])
