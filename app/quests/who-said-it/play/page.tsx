@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import GameHeader from "@/components/GameHeader"
 import { addXp, getXp } from "@/lib/xp"
@@ -19,6 +20,8 @@ type Question = {
 }
 
 export default function WhoSaidItPlay() {
+  const searchParams = useSearchParams()
+  const setType = searchParams.get("set")
   const [questions, setQuestions] = useState<Question[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selected, setSelected] = useState<string | null>(null)
@@ -29,11 +32,19 @@ export default function WhoSaidItPlay() {
 
   useEffect(() => {
     const load = async () => {
-      const { data } = await supabase
+      let query = supabase
         .from("quest_questions")
         .select("*")
-        .like("type", "who_said_it%")
-        .limit(10)
+
+      if (setType === "ot") {
+        query = query.like("type", "who_said_it_ot%")
+      } else if (setType === "nt") {
+        query = query.like("type", "who_said_it_nt%")
+      } else {
+        query = query.like("type", "who_said_it%")
+      }
+
+      const { data } = await query.limit(10)
 
       setQuestions((data as Question[]) || [])
 
@@ -44,7 +55,7 @@ export default function WhoSaidItPlay() {
     }
 
     void load()
-  }, [])
+  }, [setType])
 
   const current = questions[currentIndex]
 

@@ -10,10 +10,17 @@ export default function WhoSaidItPage() {
         </p>
 
         <button
-          onClick={() => window.location.href = "/quests/who-said-it/play"}
+          onClick={() => window.location.href = "/quests/who-said-it/play?set=ot"}
           className="bg-blue-600 px-4 py-2 rounded"
         >
-          Start Quest
+          Old Testament
+        </button>
+
+        <button
+          onClick={() => window.location.href = "/quests/who-said-it/play?set=nt"}
+          className="bg-purple-600 px-4 py-2 rounded"
+        >
+          New Testament
         </button>
       </div>
     </div>
