@@ -87,6 +87,7 @@ export default function QuestsPage() {
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
   const [genesisComplete, setGenesisComplete] = useState(false)
+  const isDevUnlock = true
 
   useEffect(() => {
     const run = async () => {
@@ -160,7 +161,8 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
-          locked={!genesisComplete}
+          // const locked = !genesisComplete
+          locked={!isDevUnlock}
           progress={0}
           total={10}
         />
