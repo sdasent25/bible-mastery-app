@@ -31,13 +31,13 @@ function getAllJsonFiles(dir) {
 }
 
 async function upload() {
-  const booksFile = path.join(baseDir, "books.json")
-  const files = getAllJsonFiles(baseDir).filter(file => file !== booksFile)
+  const files = getAllJsonFiles(baseDir)
 
   console.log(`Found ${files.length} files`)
 
   for (const file of files) {
     console.log(`Uploading: ${file}`)
+    const fileName = path.basename(file)
 
     let data
 
@@ -60,34 +60,14 @@ async function upload() {
       continue
     }
 
-    const { error } = await supabase
-      .from("quest_questions")
-      .insert(data)
+    const { error } = fileName === "books.json"
+      ? await supabase.from("books").insert(data)
+      : await supabase.from("quest_questions").insert(data)
 
     if (error) {
       console.error("Error inserting:", error.message)
     } else {
       console.log("✅ Uploaded")
-    }
-  }
-
-  if (fs.existsSync(booksFile)) {
-    const raw = fs.readFileSync(booksFile, "utf-8").trim()
-
-    if (raw) {
-      const booksData = JSON.parse(raw)
-
-      if (Array.isArray(booksData)) {
-        const { error } = await supabase
-          .from("quest_questions")
-          .insert(booksData)
-
-        if (error) {
-          console.error("Error inserting books.json:", error.message)
-        } else {
-          console.log("✅ Uploaded books.json")
-        }
-      }
     }
   }
 
