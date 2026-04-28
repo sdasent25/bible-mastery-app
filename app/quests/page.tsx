@@ -169,7 +169,7 @@ export default function QuestsPage() {
 
         <QuestCard
           title="Books of the Bible"
-          href="/quests/books/play"
+          href="/quests/books"
           accentClass="from-amber-700 via-orange-600 to-yellow-500"
           imageLabel="Scrolls"
           locked={false}
