@@ -112,8 +112,8 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Test Mode"
             description="Challenge yourself with a more demanding mastery check across all books."
-            badge="Coming Soon"
-            disabled
+            badge="Play"
+            href="/quests/books/test"
           />
         </div>
       </div>
