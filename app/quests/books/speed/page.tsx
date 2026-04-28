@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
 
 type BookRow = {
   id: string
@@ -30,8 +31,15 @@ function shuffle<T>(items: T[]) {
   return next
 }
 
-function awardBooksSpeedXp() {
-  // TODO: connect real XP awarding for Speed Round
+function getXP(score: number) {
+  if (score <= 5) return 5
+  if (score <= 10) return 10
+  if (score <= 15) return 15
+  return 20
+}
+
+function getTodayDate() {
+  return new Date().toLocaleDateString("en-CA")
 }
 
 function createQuestion(sortedBooks: BookRow[]): Question | null {
@@ -93,6 +101,8 @@ export default function BooksSpeedRoundPage() {
   const [hasStarted, setHasStarted] = useState(false)
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null)
   const [showPoint, setShowPoint] = useState(false)
+  const [xpEarned, setXpEarned] = useState<number | null>(null)
+  const [isPractice, setIsPractice] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -156,7 +166,6 @@ export default function BooksSpeedRoundPage() {
 
     if (timeLeft <= 0) {
       setGameOver(true)
-      awardBooksSpeedXp()
       return
     }
 
@@ -167,6 +176,82 @@ export default function BooksSpeedRoundPage() {
     return () => window.clearTimeout(timer)
   }, [timeLeft, gameOver, loading, sortedBooks, hasStarted, currentQuestion])
 
+  useEffect(() => {
+    if (!gameOver) return
+
+    let cancelled = false
+
+    const syncDailyReward = async () => {
+      try {
+        const supabase = createClient()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+
+        if (!user) {
+          if (!cancelled) {
+            setIsPractice(true)
+            setXpEarned(null)
+          }
+          return
+        }
+
+        const today = getTodayDate()
+
+        const { data: existingRecord, error: existingError } = await supabase
+          .from("user_daily_activity")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("mode", "speed_round")
+          .eq("activity_date", today)
+          .maybeSingle()
+
+        if (existingError) {
+          throw existingError
+        }
+
+        if (existingRecord) {
+          if (!cancelled) {
+            setIsPractice(true)
+            setXpEarned(null)
+          }
+          return
+        }
+
+        const earnedXp = getXP(score)
+
+        const { error: insertError } = await supabase.from("user_daily_activity").insert({
+          user_id: user.id,
+          mode: "speed_round",
+          activity_date: today,
+          best_score: score,
+          completed: true,
+        })
+
+        if (insertError) {
+          throw insertError
+        }
+
+        if (!cancelled) {
+          setXpEarned(earnedXp)
+          setIsPractice(false)
+        }
+      } catch (rewardError) {
+        console.error("Failed to sync speed round daily reward", rewardError)
+        if (!cancelled) {
+          setIsPractice(true)
+          setXpEarned(null)
+        }
+      }
+    }
+
+    void syncDailyReward()
+
+    return () => {
+      cancelled = true
+    }
+  }, [gameOver, score])
+
   const startGame = () => {
     setHasStarted(true)
     setScore(0)
@@ -176,6 +261,8 @@ export default function BooksSpeedRoundPage() {
     setChoices([])
     setFeedback(null)
     setShowPoint(false)
+    setXpEarned(null)
+    setIsPractice(false)
     setSelectedId(null)
   }
 
@@ -239,8 +326,22 @@ export default function BooksSpeedRoundPage() {
       <div className="mx-auto max-w-lg p-6 text-white md:p-10">
         <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
           <h1 className="text-3xl font-bold">Time&apos;s Up!</h1>
-          <p className="mt-4 text-2xl font-semibold text-white">Score: {score}</p>
-          <p className="mt-3 text-2xl font-semibold text-green-400">+XP</p>
+          {xpEarned !== null ? (
+            <>
+              <p className="mt-4 text-3xl font-semibold text-green-400">+{xpEarned} XP</p>
+              <p className="mt-3 text-lg font-semibold text-amber-300">
+                Fire Daily reward earned
+              </p>
+            </>
+          ) : isPractice ? (
+            <>
+              <p className="mt-4 text-2xl font-semibold text-white">Practice Mode</p>
+              <p className="mt-3 text-lg text-gray-300">No XP — come back tomorrow</p>
+            </>
+          ) : (
+            <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
+          )}
+          <p className="mt-4 text-lg text-gray-300">Score: {score}</p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
