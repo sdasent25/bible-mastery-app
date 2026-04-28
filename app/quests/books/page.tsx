@@ -18,16 +18,23 @@ function HubCard({
   disabled = false,
 }: HubCardProps) {
   const content = (
-    <div className={`rounded-3xl border border-white/10 bg-gray-900/90 p-5 shadow-xl transition ${
+    <div className={`rounded-3xl bg-slate-800 p-5 shadow-xl border border-white/5 transition-all duration-200 ease-out ${
       disabled
-        ? "opacity-60"
-        : "hover:scale-[1.02] active:scale-[0.99]"
+        ? "opacity-60 cursor-not-allowed"
+        : "cursor-pointer hover:scale-[1.02] hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-400/20 active:scale-[0.98]"
     }`}>
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-xl md:text-2xl font-semibold text-white">
-            {title}
-          </h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="text-xl md:text-2xl font-semibold text-white">
+              {title}
+            </h2>
+            {!disabled && title === "Order Builder" && (
+              <span className="ml-2 text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded-full">
+                Recommended
+              </span>
+            )}
+          </div>
           <p className="mt-2 text-sm text-gray-300">
             {description}
           </p>
@@ -42,12 +49,12 @@ function HubCard({
       </div>
 
       <div className="mt-4">
-        <div className={`inline-flex rounded-2xl px-4 py-2 text-sm font-semibold ${
+        <div className={`inline-flex w-full justify-center rounded-2xl px-4 py-2 text-sm font-semibold ${
           disabled
             ? "bg-gray-800 text-gray-300"
-            : "bg-gradient-to-r from-amber-500 to-orange-500 text-black"
+            : "bg-orange-500 hover:bg-orange-400 text-black font-semibold"
         }`}>
-          {disabled ? "Coming Soon" : "Start Training"}
+          {disabled ? "Coming Soon" : "Play Now"}
         </div>
       </div>
     </div>
