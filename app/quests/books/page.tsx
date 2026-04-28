@@ -105,8 +105,8 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Speed Round"
             description="Race the clock and lock in faster recognition under pressure."
-            badge="Coming Soon"
-            disabled
+            badge="Play"
+            href="/quests/books/speed"
           />
 
           <HubCard
