@@ -98,8 +98,8 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Category Sort"
             description="Group books by section and sharpen your understanding of the Bible's structure."
-            badge="Coming Soon"
-            disabled
+            badge="Play"
+            href="/quests/books/sort"
           />
 
           <HubCard
