@@ -92,6 +92,7 @@ export default function BooksSpeedRoundPage() {
   const [gameOver, setGameOver] = useState(false)
   const [hasStarted, setHasStarted] = useState(false)
   const [feedback, setFeedback] = useState<"correct" | "wrong" | null>(null)
+  const [showPoint, setShowPoint] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -138,6 +139,7 @@ export default function BooksSpeedRoundPage() {
     setCurrentQuestion(nextQuestion)
     setChoices(shuffle([nextQuestion.answer, ...incorrectChoices]))
     setFeedback(null)
+    setShowPoint(false)
     setSelectedId(null)
   }, [sortedBooks])
 
@@ -173,6 +175,7 @@ export default function BooksSpeedRoundPage() {
     setCurrentQuestion(null)
     setChoices([])
     setFeedback(null)
+    setShowPoint(false)
     setSelectedId(null)
   }
 
@@ -181,10 +184,13 @@ export default function BooksSpeedRoundPage() {
 
     const isCorrect = book.id === currentQuestion.answer.id
     setSelectedId(book.id)
-    setFeedback(isCorrect ? "correct" : "wrong")
 
     if (isCorrect) {
       setScore((prev) => prev + 1)
+      setFeedback("correct")
+      setShowPoint(true)
+    } else {
+      setFeedback("wrong")
     }
 
     window.setTimeout(() => {
@@ -193,10 +199,13 @@ export default function BooksSpeedRoundPage() {
         setCurrentQuestion(null)
         setChoices([])
         setFeedback(null)
+        setShowPoint(false)
         setSelectedId(null)
         return
       }
 
+      setFeedback(null)
+      setShowPoint(false)
       buildQuestion()
     }, 250)
   }
@@ -355,21 +364,22 @@ export default function BooksSpeedRoundPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-3">
+          {showPoint && (
+            <div className="text-center text-lg font-bold text-green-400 animate-pulse">
+              +1
+            </div>
+          )}
           {choices.map((book) => {
-            const isSelected = selectedId === book.id
-            const isCorrect = isSelected && feedback === "correct"
-            const isWrong = isSelected && feedback === "wrong"
-
             return (
               <button
                 key={book.id}
                 onClick={() => handleAnswer(book)}
                 disabled={selectedId !== null}
-                className={`w-full rounded-2xl border px-4 py-4 text-left transition transform active:scale-95 ${
-                  isCorrect
-                    ? "border-green-500 bg-green-600 text-white"
-                  : isWrong
-                    ? "border-red-500 bg-red-600 text-white animate-shake"
+                className={`w-full rounded-2xl border px-4 py-4 text-left transition-all duration-150 active:scale-95 ${
+                  feedback === "correct"
+                    ? "border-green-500 bg-green-500 text-black"
+                    : feedback === "wrong"
+                      ? "border-red-500 bg-red-500 text-white"
                       : selectedId !== null
                         ? "cursor-not-allowed border-white/10 bg-gray-800/70 text-gray-400"
                         : "border-white/10 bg-gray-800 text-white hover:scale-105"
