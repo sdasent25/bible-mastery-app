@@ -103,6 +103,7 @@ export default function BooksSpeedRoundPage() {
   const [showPoint, setShowPoint] = useState(false)
   const [xpEarned, setXpEarned] = useState<number | null>(null)
   const [isPractice, setIsPractice] = useState(false)
+  const [bestScore, setBestScore] = useState(0)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -178,6 +179,8 @@ export default function BooksSpeedRoundPage() {
 
   useEffect(() => {
     if (!gameOver) return
+
+    setBestScore((prev) => (score > prev ? score : prev))
 
     let cancelled = false
 
@@ -325,23 +328,22 @@ export default function BooksSpeedRoundPage() {
     return (
       <div className="mx-auto max-w-lg p-6 text-white md:p-10">
         <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-          <h1 className="text-3xl font-bold">Time&apos;s Up!</h1>
+          <h2 className="text-2xl font-bold">Time&apos;s Up!</h2>
+          <p className="mt-4 text-lg">Score: {score}</p>
+          <p className="mt-2 text-sm text-gray-400">Best today: {bestScore}</p>
           {xpEarned !== null ? (
             <>
-              <p className="mt-4 text-3xl font-semibold text-green-400">+{xpEarned} XP</p>
-              <p className="mt-3 text-lg font-semibold text-amber-300">
-                Fire Daily reward earned
-              </p>
+              <div className="mt-4 font-semibold text-green-400">+{xpEarned} XP</div>
+              <div className="text-xs text-gray-400">Daily reward earned</div>
             </>
           ) : isPractice ? (
             <>
-              <p className="mt-4 text-2xl font-semibold text-white">Practice Mode</p>
-              <p className="mt-3 text-lg text-gray-300">No XP — come back tomorrow</p>
+              <div className="mt-4 font-semibold text-yellow-400">Practice Mode</div>
+              <div className="text-xs text-gray-400">No XP — new rewards tomorrow</div>
             </>
           ) : (
             <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
           )}
-          <p className="mt-4 text-lg text-gray-300">Score: {score}</p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
@@ -423,6 +425,10 @@ export default function BooksSpeedRoundPage() {
   return (
     <div className="mx-auto max-w-lg p-6 text-white md:p-10">
       <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
+        <div className="mb-2 flex justify-between text-sm text-gray-300">
+          <span>⚡ Speed Round</span>
+          <span>🔥 {score} Score</span>
+        </div>
         <div className="mb-6 flex items-center justify-between gap-3">
           <h1 className="text-3xl font-bold text-white">Speed Round</h1>
           <Link
@@ -431,6 +437,12 @@ export default function BooksSpeedRoundPage() {
           >
             Back
           </Link>
+        </div>
+
+        <div className="mb-4 text-xs text-gray-400">
+          ⚡ Earn XP on your first run today
+          <br />
+          Play as many times as you want
         </div>
 
         <div className="mb-6 flex items-center justify-between rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3">
