@@ -284,6 +284,12 @@ export default function BooksTestModePage() {
           </Link>
         </div>
 
+        <div className="mb-4 text-xs text-gray-400">
+          🧠 Earn XP on your first test today
+          <br />
+          Improve your score to master the material
+        </div>
+
         <div className="mb-6 rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3 text-sm font-medium text-gray-300">
           Question {questionIndex + 1} / {TOTAL_QUESTIONS}
         </div>

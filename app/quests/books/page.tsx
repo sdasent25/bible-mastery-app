@@ -5,6 +5,7 @@ import Link from "next/link"
 type HubCardProps = {
   title: string
   description: string
+  rewardNote?: string
   badge: string
   href?: string
   disabled?: boolean
@@ -13,6 +14,7 @@ type HubCardProps = {
 function HubCard({
   title,
   description,
+  rewardNote,
   badge,
   href,
   disabled = false,
@@ -38,6 +40,11 @@ function HubCard({
           <p className="mt-2 text-sm text-gray-300">
             {description}
           </p>
+          {rewardNote ? (
+            <p className="mt-2 text-xs text-green-400">
+              {rewardNote}
+            </p>
+          ) : null}
         </div>
         <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
           disabled
@@ -105,6 +112,7 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Speed Round"
             description="Race the clock and lock in faster recognition under pressure."
+            rewardNote="Earn XP on your first run each day"
             badge="Play"
             href="/quests/books/speed"
           />
@@ -112,6 +120,7 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Test Mode"
             description="Challenge yourself with a more demanding mastery check across all books."
+            rewardNote="Daily mastery reward available"
             badge="Play"
             href="/quests/books/test"
           />
