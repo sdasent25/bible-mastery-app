@@ -125,6 +125,8 @@ function createQuestion(sortedBooks: BookRow[]): Question | null {
 }
 
 export default function BooksTestModePage() {
+  const today = new Date().toISOString().slice(0, 10)
+  const seed = Number(today.replace(/-/g, ""))
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState("")
   const [choices, setChoices] = useState<string[]>([])
@@ -137,25 +139,42 @@ export default function BooksTestModePage() {
   const [xpEarned, setXpEarned] = useState<number | null>(null)
   const [isPractice, setIsPractice] = useState(false)
   const incrementXP = useXPStore((s) => s.incrementXP)
+  const testFocus = seed % 5
 
   const sortedBooks = useMemo(
     () => [...books].sort((a, b) => a.book_order - b.book_order),
     [books]
   )
 
+  const focusedBooks = useMemo(() => {
+    let filteredBooks = sortedBooks
+
+    if (testFocus === 0) {
+      filteredBooks = sortedBooks.filter((book) => book.category === "pentateuch")
+    } else if (testFocus === 1) {
+      filteredBooks = sortedBooks.filter((book) => book.category === "history")
+    } else if (testFocus === 2) {
+      filteredBooks = sortedBooks.filter((book) => book.category === "wisdom")
+    } else if (testFocus === 3) {
+      filteredBooks = sortedBooks.filter((book) => book.category === "prophets")
+    }
+
+    return filteredBooks.length >= 4 ? filteredBooks : sortedBooks
+  }, [sortedBooks, testFocus])
+
   const isComplete = questionIndex >= TOTAL_QUESTIONS
   const hasAnswered = selectedAnswer !== null
   const isCorrect = hasAnswered && selectedAnswer === correctAnswer
 
   const loadQuestion = useCallback(() => {
-    const nextQuestion = createQuestion(sortedBooks)
+    const nextQuestion = createQuestion(focusedBooks)
     if (!nextQuestion) return
 
     setCurrentQuestion(nextQuestion.prompt)
     setChoices(nextQuestion.choices)
     setCorrectAnswer(nextQuestion.correctAnswer)
     setSelectedAnswer(null)
-  }, [sortedBooks])
+  }, [focusedBooks])
 
   useEffect(() => {
     const loadBooks = async () => {
@@ -184,10 +203,10 @@ export default function BooksTestModePage() {
   }, [])
 
   useEffect(() => {
-    if (sortedBooks.length >= 4 && !currentQuestion && !isComplete) {
+    if (focusedBooks.length >= 4 && !currentQuestion && !isComplete) {
       loadQuestion()
     }
-  }, [sortedBooks, currentQuestion, isComplete, loadQuestion])
+  }, [focusedBooks, currentQuestion, isComplete, loadQuestion])
 
   useEffect(() => {
     if (!isComplete) return
@@ -353,7 +372,14 @@ export default function BooksTestModePage() {
     <div className="mx-auto max-w-lg p-6 text-white md:p-10">
       <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
         <div className="mb-6 flex items-center justify-between gap-3">
-          <h1 className="text-3xl font-bold text-white">Test Mode</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-white">Test Mode</h1>
+            {testFocus === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: PENTATEUCH</p>}
+            {testFocus === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: HISTORICAL</p>}
+            {testFocus === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: WISDOM</p>}
+            {testFocus === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: PROPHETS</p>}
+            {testFocus === 4 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: MIXED</p>}
+          </div>
           <Link
             href="/quests/books"
             className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"

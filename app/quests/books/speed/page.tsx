@@ -32,7 +32,7 @@ function shuffle<T>(items: T[]) {
   return next
 }
 
-function createQuestion(sortedBooks: BookRow[]): Question | null {
+function createQuestion(sortedBooks: BookRow[], modeSelector: number): Question | null {
   if (sortedBooks.length < 4) return null
 
   const availableModes: Question["mode"][] = []
@@ -43,7 +43,19 @@ function createQuestion(sortedBooks: BookRow[]): Question | null {
 
   availableModes.push("number")
 
-  const mode = availableModes[Math.floor(Math.random() * availableModes.length)]
+  let weightedModes: Question["mode"][] = availableModes
+
+  if (modeSelector === 0) {
+    weightedModes = ["after", "after", "after", "before", "number"]
+  } else if (modeSelector === 1) {
+    weightedModes = ["before", "before", "before", "after", "number"]
+  } else if (modeSelector === 2) {
+    weightedModes = ["number", "number", "number", "after", "before"]
+  }
+
+  const validModes = weightedModes.filter((mode) => availableModes.includes(mode))
+  const modePool = validModes.length > 0 ? validModes : availableModes
+  const mode = modePool[Math.floor(Math.random() * modePool.length)]
 
   if (mode === "after") {
     const index = Math.floor(Math.random() * (sortedBooks.length - 1))
@@ -82,6 +94,8 @@ function createQuestion(sortedBooks: BookRow[]): Question | null {
 }
 
 export default function BooksSpeedRoundPage() {
+  const today = new Date().toISOString().slice(0, 10)
+  const seed = Number(today.replace(/-/g, ""))
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [choices, setChoices] = useState<BookRow[]>([])
@@ -99,6 +113,7 @@ export default function BooksSpeedRoundPage() {
   const [error, setError] = useState<string | null>(null)
   const [modeStatus, setModeStatus] = useState<"xp" | "practice" | null>(null)
   const incrementXP = useXPStore((s) => s.incrementXP)
+  const modeSelector = seed % 4
 
   useEffect(() => {
     const load = async () => {
@@ -156,7 +171,7 @@ export default function BooksSpeedRoundPage() {
   )
 
   const buildQuestion = useCallback(() => {
-    const nextQuestion = createQuestion(sortedBooks)
+    const nextQuestion = createQuestion(sortedBooks, modeSelector)
     if (!nextQuestion) return
 
     const incorrectChoices = shuffle(
@@ -168,7 +183,7 @@ export default function BooksSpeedRoundPage() {
     setFeedback(null)
     setShowPoint(false)
     setSelectedId(null)
-  }, [sortedBooks])
+  }, [modeSelector, sortedBooks])
 
   useEffect(() => {
     if (sortedBooks.length >= 4 && hasStarted && !currentQuestion && !gameOver) {
@@ -376,6 +391,10 @@ export default function BooksSpeedRoundPage() {
                 Books Quest
               </div>
               <h1 className="mt-3 text-4xl font-black text-white">Speed Round</h1>
+              {modeSelector === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: AFTER</p>}
+              {modeSelector === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: BEFORE</p>}
+              {modeSelector === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: POSITION</p>}
+              {modeSelector === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: MIXED</p>}
               <p className="mt-4 text-sm leading-6 text-gray-300">
                 Answer as many books-of-the-Bible questions as you can in 30 seconds.
                 Expect order, before, and after prompts with four fast choices each round.
@@ -443,7 +462,13 @@ export default function BooksSpeedRoundPage() {
           <span>🔥 {score} Score</span>
         </div>
         <div className="mb-6 flex items-center justify-between gap-3">
-          <h1 className="text-3xl font-bold text-white">Speed Round</h1>
+          <div>
+            <h1 className="text-3xl font-bold text-white">Speed Round</h1>
+            {modeSelector === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: AFTER</p>}
+            {modeSelector === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: BEFORE</p>}
+            {modeSelector === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: POSITION</p>}
+            {modeSelector === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: MIXED</p>}
+          </div>
           <Link
             href="/quests/books"
             className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"
