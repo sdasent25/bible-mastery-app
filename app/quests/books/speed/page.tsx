@@ -97,6 +97,7 @@ export default function BooksSpeedRoundPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [modeStatus, setModeStatus] = useState<"xp" | "practice" | null>(null)
   const incrementXP = useXPStore((s) => s.incrementXP)
 
   useEffect(() => {
@@ -114,6 +115,30 @@ export default function BooksSpeedRoundPage() {
 
         const nextBooks = Array.isArray(payload?.books) ? payload.books : []
         setBooks(nextBooks)
+
+        const supabase = createClient()
+
+        const checkStatus = async () => {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser()
+          if (!user) return
+
+          const { data } = await supabase
+            .from("user_daily_activity")
+            .select("id")
+            .eq("user_id", user.id)
+            .eq("mode", "speed_round")
+            .eq("activity_date", new Date().toISOString().split("T")[0])
+
+          if (data && data.length > 0) {
+            setModeStatus("practice")
+          } else {
+            setModeStatus("xp")
+          }
+        }
+
+        await checkStatus()
       } catch (loadError) {
         console.error("Failed to load books speed round data", loadError)
         setError("Unable to load books right now.")
@@ -378,7 +403,19 @@ export default function BooksSpeedRoundPage() {
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            {modeStatus === "xp" && (
+              <div className="mt-6 text-green-400 text-sm mb-2 font-semibold">
+                🔥 Daily XP Available
+              </div>
+            )}
+
+            {modeStatus === "practice" && (
+              <div className="mt-6 text-yellow-400 text-sm mb-2 font-semibold">
+                🧪 Practice Mode — XP already earned today
+              </div>
+            )}
+
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={startGame}
                 className="flex-1 rounded-2xl bg-amber-400 px-5 py-4 text-base font-black text-slate-950 transition hover:scale-[1.02] hover:bg-amber-300 active:scale-[0.98]"
