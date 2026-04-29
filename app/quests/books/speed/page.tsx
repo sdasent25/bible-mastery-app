@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { useXPStore } from "@/lib/xpStore"
 
 type BookRow = {
   id: string
@@ -96,6 +97,7 @@ export default function BooksSpeedRoundPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const incrementXP = useXPStore((s) => s.incrementXP)
 
   useEffect(() => {
     const load = async () => {
@@ -200,6 +202,7 @@ export default function BooksSpeedRoundPage() {
 
         if (!cancelled) {
           if (data.awarded) {
+            incrementXP(data.xp)
             setXpEarned(data.xp)
             setIsPractice(false)
           } else {
@@ -221,7 +224,7 @@ export default function BooksSpeedRoundPage() {
     return () => {
       cancelled = true
     }
-  }, [gameOver, score])
+  }, [gameOver, incrementXP, score])
 
   const startGame = () => {
     setHasStarted(true)

@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { supabase } from "@/lib/supabase"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { useXPStore } from "@/lib/xpStore"
 
 type SectionKey =
   | "pentateuch"
@@ -25,7 +26,8 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const [planType, setPlanType] = useState<string>("free")
   const [isFamily, setIsFamily] = useState(false)
   const [isPlanLoaded, setIsPlanLoaded] = useState(false)
-  const [xp, setXp] = useState<number | null>(null)
+  const xp = useXPStore((s) => s.xp)
+  const setXP = useXPStore((s) => s.setXP)
   const hasAvailableQuests = true
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
@@ -53,7 +55,9 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         .eq("id", user.id)
         .single()
 
-      if (data) setXp(data.xp || 0)
+      if (data) {
+        setXP(data.xp || 0)
+      }
     }
 
     void loadXP()
@@ -183,7 +187,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             Total XP
           </div>
           <div className="text-sm font-semibold text-yellow-400">
-            🔥 {xp ?? "--"} XP
+            🔥 {xp} XP
           </div>
         </div>
         <div className="text-xs mt-2 text-white">
