@@ -56,13 +56,6 @@ function HubCard({
             </div>
           ) : null}
         </div>
-        <span className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
-          disabled
-            ? "bg-gray-700 text-gray-200"
-            : "bg-blue-600 text-white"
-        }`}>
-          {badge}
-        </span>
       </div>
 
       <div className="mt-4">
