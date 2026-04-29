@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { createClient } from "@/lib/supabase/client"
 import { supabase } from "@/lib/supabase"
 import { getUserPlan } from "@/lib/getUserPlan"
 
@@ -24,6 +25,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const [planType, setPlanType] = useState<string>("free")
   const [isFamily, setIsFamily] = useState(false)
   const [isPlanLoaded, setIsPlanLoaded] = useState(false)
+  const [xp, setXp] = useState<number | null>(null)
   const hasAvailableQuests = true
 
   const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
@@ -34,6 +36,28 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     gospels: false,
     epistles: false,
   })
+
+  useEffect(() => {
+    const loadXP = async () => {
+      const client = createClient()
+
+      const {
+        data: { user },
+      } = await client.auth.getUser()
+
+      if (!user) return
+
+      const { data } = await client
+        .from("profiles")
+        .select("xp")
+        .eq("id", user.id)
+        .single()
+
+      if (data) setXp(data.xp || 0)
+    }
+
+    void loadXP()
+  }, [])
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -154,6 +178,14 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
       <div className="flex-1 space-y-4">
         <h1 className="text-xl font-bold">Bible Athlete</h1>
+        <div className="mt-2 rounded-2xl border border-yellow-400/20 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.16),transparent_70%),rgba(250,204,21,0.08)] px-3 py-2 shadow-[0_0_24px_rgba(250,204,21,0.12)]">
+          <div className="text-xs text-gray-400">
+            Total XP
+          </div>
+          <div className="text-sm font-semibold text-yellow-400">
+            🔥 {xp ?? "--"} XP
+          </div>
+        </div>
         <div className="text-xs mt-2 text-white">
           Plan:{" "}
           <span className="font-semibold text-green-400">
