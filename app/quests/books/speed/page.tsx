@@ -235,6 +235,9 @@ export default function BooksSpeedRoundPage() {
           data: { user },
         } = await supabase.auth.getUser()
 
+        console.log("CURRENT USER ID:", user?.id)
+        console.log("SCORE BEING SENT:", score)
+
         if (!user) {
           return
         }
