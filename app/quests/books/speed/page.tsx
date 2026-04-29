@@ -191,6 +191,11 @@ export default function BooksSpeedRoundPage() {
           score_input: score,
         })
 
+        console.log("XP RPC RESULT:", {
+          data,
+          error
+        })
+
         if (error) {
           console.error("XP error:", error)
           if (!cancelled) {
