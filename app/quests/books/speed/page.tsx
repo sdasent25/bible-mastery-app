@@ -31,17 +31,6 @@ function shuffle<T>(items: T[]) {
   return next
 }
 
-function getXP(score: number) {
-  if (score <= 5) return 5
-  if (score <= 10) return 10
-  if (score <= 15) return 15
-  return 20
-}
-
-function getTodayDate() {
-  return new Date().toLocaleDateString("en-CA")
-}
-
 function createQuestion(sortedBooks: BookRow[]): Question | null {
   if (sortedBooks.length < 4) return null
 
@@ -192,65 +181,31 @@ export default function BooksSpeedRoundPage() {
         } = await supabase.auth.getUser()
 
         if (!user) {
-          if (!cancelled) {
-            setIsPractice(true)
-            setXpEarned(null)
-          }
           return
         }
 
-        const today = getTodayDate()
-
-        const { data: existingRecord, error: existingError } = await supabase
-          .from("user_daily_activity")
-          .select("*")
-          .eq("user_id", user.id)
-          .eq("mode", "speed_round")
-          .eq("activity_date", today)
-          .maybeSingle()
-
-        if (existingError) {
-          throw existingError
-        }
-
-        if (existingRecord) {
-          if (!cancelled) {
-            setIsPractice(true)
-            setXpEarned(null)
-          }
-          return
-        }
-
-        const earnedXp = getXP(score)
-
-        const { error: insertError } = await supabase.from("user_daily_activity").insert({
-          user_id: user.id,
-          mode: "speed_round",
-          activity_date: today,
-          best_score: score,
-          completed: true,
+        const { data, error } = await supabase.rpc("award_speed_round_xp", {
+          user_id_input: user.id,
+          score_input: score,
         })
 
-        if (insertError) {
-          throw insertError
-        }
-
-        if (user && earnedXp) {
-          const { error: xpError } = await supabase.rpc("increment_xp", {
-            user_id_input: user.id,
-            xp_amount: earnedXp,
-          })
-
-          if (xpError) {
-            throw xpError
+        if (error) {
+          console.error("XP error:", error)
+          if (!cancelled) {
+            setIsPractice(true)
+            setXpEarned(null)
           }
-
-          console.log("XP awarded:", earnedXp)
+          return
         }
 
         if (!cancelled) {
-          setXpEarned(earnedXp)
-          setIsPractice(false)
+          if (data.awarded) {
+            setXpEarned(data.xp)
+            setIsPractice(false)
+          } else {
+            setXpEarned(null)
+            setIsPractice(true)
+          }
         }
       } catch (rewardError) {
         console.error("Failed to sync speed round daily reward", rewardError)
