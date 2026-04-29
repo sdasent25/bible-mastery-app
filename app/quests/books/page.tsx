@@ -94,7 +94,7 @@ export default function BooksQuestHubPage() {
       } = await supabase.auth.getUser()
       if (!user) return
 
-      const today = new Date().toISOString().split("T")[0]
+      const today = new Date().toISOString().slice(0, 10)
 
       const { data: speedData } = await supabase
         .from("user_daily_activity")
@@ -103,7 +103,11 @@ export default function BooksQuestHubPage() {
         .eq("mode", "speed_round")
         .eq("activity_date", today)
 
-      setSpeedStatus(speedData && speedData.length > 0 ? "practice" : "xp")
+      if (speedData && speedData.length > 0) {
+        setSpeedStatus("practice")
+      } else {
+        setSpeedStatus("xp")
+      }
 
       const { data: testData } = await supabase
         .from("user_daily_activity")
@@ -112,7 +116,11 @@ export default function BooksQuestHubPage() {
         .eq("mode", "test_mode")
         .eq("activity_date", today)
 
-      setTestStatus(testData && testData.length > 0 ? "practice" : "xp")
+      if (testData && testData.length > 0) {
+        setTestStatus("practice")
+      } else {
+        setTestStatus("xp")
+      }
     }
 
     void checkStatus()
@@ -159,13 +167,13 @@ export default function BooksQuestHubPage() {
             description="Race the clock and lock in faster recognition under pressure."
             rewardNote={
               speedStatus === "xp" ? (
-                <div className="text-sm text-green-300 font-semibold">
+                <p className="text-green-400 text-sm font-semibold mt-2">
                   🔥 Daily XP Ready
-                </div>
+                </p>
               ) : speedStatus === "practice" ? (
-                <div className="text-sm text-yellow-300">
-                  Practice Mode — XP earned today
-                </div>
+                <p className="text-yellow-400 text-sm mt-2">
+                  🧪 Practice Mode — XP already earned
+                </p>
               ) : undefined
             }
             statusBadge={
@@ -203,13 +211,13 @@ export default function BooksQuestHubPage() {
             description="Challenge yourself with a more demanding mastery check across all books."
             rewardNote={
               testStatus === "xp" ? (
-                <div className="text-sm text-green-300 font-semibold">
+                <p className="text-green-400 text-sm font-semibold mt-2">
                   🔥 Daily XP Ready
-                </div>
+                </p>
               ) : testStatus === "practice" ? (
-                <div className="text-sm text-yellow-300">
-                  Practice Mode — XP earned today
-                </div>
+                <p className="text-yellow-400 text-sm mt-2">
+                  🧪 Practice Mode — XP already earned
+                </p>
               ) : undefined
             }
             statusBadge={
