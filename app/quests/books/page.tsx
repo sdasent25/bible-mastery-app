@@ -28,7 +28,7 @@ function HubCard({
   buttonClassName,
 }: HubCardProps) {
   const content = (
-    <div className={`relative rounded-3xl bg-slate-800 p-5 shadow-xl border border-white/5 transition-all duration-200 ease-out hover:scale-[1.02] ${
+    <div className={`relative rounded-3xl bg-slate-800 p-5 shadow-xl border border-white/5 transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/30 ${
       disabled
         ? "opacity-60 cursor-not-allowed"
         : `${highlightClassName || ""} cursor-pointer hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-400/20 active:scale-[0.98]`
@@ -62,7 +62,7 @@ function HubCard({
         <div className={`inline-flex w-full justify-center rounded-2xl px-4 py-2 text-sm font-semibold ${
           disabled
             ? "bg-gray-800 text-gray-300"
-            : buttonClassName || "bg-orange-500 hover:bg-orange-400 text-black font-semibold"
+            : buttonClassName || "bg-orange-500 hover:bg-orange-400 text-black font-semibold active:scale-95 transition-transform duration-100"
         }`}>
           {disabled ? "Coming Soon" : "Play Now"}
         </div>
@@ -120,6 +120,12 @@ export default function BooksQuestHubPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black px-4 py-6 text-white">
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       <div className="mx-auto flex w-full max-w-xl flex-col gap-6">
         <div className="rounded-3xl border border-white/10 bg-gray-950/90 p-6 shadow-2xl">
           <div className="text-sm uppercase tracking-[0.28em] text-amber-400">
@@ -133,7 +139,7 @@ export default function BooksQuestHubPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 animate-[fadeIn_0.4s_ease-out]">
           <HubCard
             title="Order Builder"
             description="Tap through the books in their correct canonical order and build recall fast."
@@ -165,7 +171,7 @@ export default function BooksQuestHubPage() {
             statusBadge={
               <div className="absolute top-3 right-3">
                 {speedStatus === "xp" && (
-                  <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30 animate-pulse">
                     🔥 XP Ready
                   </span>
                 )}
@@ -178,15 +184,15 @@ export default function BooksQuestHubPage() {
             }
             highlightClassName={
               speedStatus === "xp"
-                ? "ring-1 ring-green-400/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]"
+                ? "ring-1 ring-green-400/40 shadow-[0_0_30px_rgba(34,197,94,0.25)]"
                 : speedStatus === "practice"
                   ? "opacity-80"
                   : ""
             }
             buttonClassName={
               speedStatus === "practice"
-                ? "bg-orange-500/70 hover:bg-orange-400 text-black"
-                : "bg-orange-500 hover:bg-orange-400 text-black font-semibold"
+                ? "bg-orange-500/70 hover:bg-orange-400 text-black active:scale-95 transition-transform duration-100"
+                : "bg-orange-500 hover:bg-orange-400 text-black font-semibold active:scale-95 transition-transform duration-100"
             }
             badge="Play"
             href="/quests/books/speed"
@@ -209,7 +215,7 @@ export default function BooksQuestHubPage() {
             statusBadge={
               <div className="absolute top-3 right-3">
                 {testStatus === "xp" && (
-                  <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30">
+                  <span className="text-xs px-2 py-1 rounded-full bg-green-500/20 text-green-300 border border-green-400/30 animate-pulse">
                     🔥 XP Ready
                   </span>
                 )}
@@ -222,15 +228,15 @@ export default function BooksQuestHubPage() {
             }
             highlightClassName={
               testStatus === "xp"
-                ? "ring-1 ring-green-400/30 shadow-[0_0_20px_rgba(34,197,94,0.15)]"
+                ? "ring-1 ring-green-400/40 shadow-[0_0_30px_rgba(34,197,94,0.25)]"
                 : testStatus === "practice"
                   ? "opacity-80"
                   : ""
             }
             buttonClassName={
               testStatus === "practice"
-                ? "bg-orange-500/70 hover:bg-orange-400 text-black"
-                : "bg-orange-500 hover:bg-orange-400 text-black font-semibold"
+                ? "bg-orange-500/70 hover:bg-orange-400 text-black active:scale-95 transition-transform duration-100"
+                : "bg-orange-500 hover:bg-orange-400 text-black font-semibold active:scale-95 transition-transform duration-100"
             }
             badge="Play"
             href="/quests/books/test"
