@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+import { useXPStore } from "@/lib/xpStore"
 
 type BookRow = {
   id: string
@@ -132,6 +134,9 @@ export default function BooksTestModePage() {
   const [questionIndex, setQuestionIndex] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [xpEarned, setXpEarned] = useState<number | null>(null)
+  const [isPractice, setIsPractice] = useState(false)
+  const incrementXP = useXPStore((s) => s.incrementXP)
 
   const sortedBooks = useMemo(
     () => [...books].sort((a, b) => a.book_order - b.book_order),
@@ -184,6 +189,52 @@ export default function BooksTestModePage() {
     }
   }, [sortedBooks, currentQuestion, isComplete, loadQuestion])
 
+  useEffect(() => {
+    if (!isComplete) return
+
+    let cancelled = false
+
+    const syncDailyReward = async () => {
+      const supabase = createClient()
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) return
+
+      const { data, error } = await supabase.rpc("award_test_mode_xp", {
+        user_id_input: user.id,
+        score_input: score,
+      })
+
+      if (error) {
+        console.error("XP error:", error)
+        if (!cancelled) {
+          setIsPractice(true)
+        }
+        return
+      }
+
+      if (!cancelled) {
+        if (data.awarded) {
+          setXpEarned(data.xp)
+          setIsPractice(false)
+          incrementXP(data.xp)
+        } else {
+          setXpEarned(null)
+          setIsPractice(true)
+        }
+      }
+    }
+
+    void syncDailyReward()
+
+    return () => {
+      cancelled = true
+    }
+  }, [incrementXP, isComplete, score])
+
   const handleAnswer = (choice: string) => {
     if (hasAnswered) return
 
@@ -214,6 +265,8 @@ export default function BooksTestModePage() {
     setChoices([])
     setSelectedAnswer(null)
     setCorrectAnswer("")
+    setXpEarned(null)
+    setIsPractice(false)
   }
 
   if (loading) {
@@ -245,10 +298,35 @@ export default function BooksTestModePage() {
       <div className="mx-auto max-w-lg p-6 text-white md:p-10">
         <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
           <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-            <h1 className="text-3xl font-bold text-white">Test Complete</h1>
-            <p className="mt-4 text-2xl font-semibold text-white">
-              Score: {score} / {TOTAL_QUESTIONS}
-            </p>
+            <h2 className="text-2xl font-bold">Test Complete</h2>
+
+            <p className="text-lg">Score: {score} / 10</p>
+
+            {xpEarned !== null ? (
+              <>
+                <div className="mt-4 text-green-400 font-semibold">
+                  +{xpEarned} XP
+                </div>
+
+                <div className="text-xs text-gray-400">
+                  Daily reward earned
+                </div>
+              </>
+            ) : isPractice ? (
+              <>
+                <div className="mt-4 text-yellow-400 font-semibold">
+                  Practice Mode
+                </div>
+
+                <div className="text-xs text-gray-400">
+                  🔥 You already earned today&apos;s XP
+                  <br />
+                  Keep improving your score
+                </div>
+              </>
+            ) : (
+              <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
+            )}
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
               <button
@@ -284,10 +362,12 @@ export default function BooksTestModePage() {
           </Link>
         </div>
 
-        <div className="mb-4 text-xs text-gray-400">
-          🧠 Earn XP on your first test today
+        <div className="text-xs text-gray-400 mb-4">
+          🧠 Daily XP available
           <br />
-          Improve your score to master the material
+          Earn rewards on your first test
+          <br />
+          Practice to improve your score
         </div>
 
         <div className="mb-6 rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3 text-sm font-medium text-gray-300">
