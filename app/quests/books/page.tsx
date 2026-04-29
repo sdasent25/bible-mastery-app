@@ -1,11 +1,14 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
 
 type HubCardProps = {
   title: string
   description: string
   rewardNote?: string
+  rewardNoteClassName?: string
   badge: string
   href?: string
   disabled?: boolean
@@ -15,6 +18,7 @@ function HubCard({
   title,
   description,
   rewardNote,
+  rewardNoteClassName,
   badge,
   href,
   disabled = false,
@@ -41,7 +45,7 @@ function HubCard({
             {description}
           </p>
           {rewardNote ? (
-            <p className="mt-2 text-xs text-green-400">
+            <p className={`mt-2 text-xs ${rewardNoteClassName || "text-green-400"}`}>
               {rewardNote}
             </p>
           ) : null}
@@ -79,6 +83,42 @@ function HubCard({
 }
 
 export default function BooksQuestHubPage() {
+  const [speedStatus, setSpeedStatus] = useState<"xp" | "practice" | null>(null)
+  const [testStatus, setTestStatus] = useState<"xp" | "practice" | null>(null)
+
+  useEffect(() => {
+    const supabase = createClient()
+
+    const checkStatus = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) return
+
+      const today = new Date().toISOString().split("T")[0]
+
+      const { data: speedData } = await supabase
+        .from("user_daily_activity")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("mode", "speed_round")
+        .eq("activity_date", today)
+
+      setSpeedStatus(speedData && speedData.length > 0 ? "practice" : "xp")
+
+      const { data: testData } = await supabase
+        .from("user_daily_activity")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("mode", "test_mode")
+        .eq("activity_date", today)
+
+      setTestStatus(testData && testData.length > 0 ? "practice" : "xp")
+    }
+
+    void checkStatus()
+  }, [])
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black px-4 py-6 text-white">
       <div className="mx-auto flex w-full max-w-xl flex-col gap-6">
@@ -112,7 +152,20 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Speed Round"
             description="Race the clock and lock in faster recognition under pressure."
-            rewardNote="Earn XP on your first run each day"
+            rewardNote={
+              speedStatus === "xp"
+                ? "🔥 Daily XP Available"
+                : speedStatus === "practice"
+                  ? "🧪 Practice Mode"
+                  : undefined
+            }
+            rewardNoteClassName={
+              speedStatus === "xp"
+                ? "text-green-400"
+                : speedStatus === "practice"
+                  ? "text-yellow-400"
+                  : undefined
+            }
             badge="Play"
             href="/quests/books/speed"
           />
@@ -120,7 +173,20 @@ export default function BooksQuestHubPage() {
           <HubCard
             title="Test Mode"
             description="Challenge yourself with a more demanding mastery check across all books."
-            rewardNote="Daily mastery reward available"
+            rewardNote={
+              testStatus === "xp"
+                ? "🔥 Daily XP Available"
+                : testStatus === "practice"
+                  ? "🧪 Practice Mode"
+                  : undefined
+            }
+            rewardNoteClassName={
+              testStatus === "xp"
+                ? "text-green-400"
+                : testStatus === "practice"
+                  ? "text-yellow-400"
+                  : undefined
+            }
             badge="Play"
             href="/quests/books/test"
           />
