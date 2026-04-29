@@ -127,6 +127,15 @@ function createQuestion(sortedBooks: BookRow[]): Question | null {
 export default function BooksTestModePage() {
   const today = new Date().toISOString().slice(0, 10)
   const seed = Number(today.replace(/-/g, ""))
+  const testFocus = seed % 5
+  let challengeLabel = ""
+
+  if (testFocus === 0) challengeLabel = "Pentateuch"
+  if (testFocus === 1) challengeLabel = "Historical books"
+  if (testFocus === 2) challengeLabel = "Wisdom books"
+  if (testFocus === 3) challengeLabel = "Prophets"
+  if (testFocus === 4) challengeLabel = "Mixed challenge"
+
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState("")
   const [choices, setChoices] = useState<string[]>([])
@@ -139,7 +148,6 @@ export default function BooksTestModePage() {
   const [xpEarned, setXpEarned] = useState<number | null>(null)
   const [isPractice, setIsPractice] = useState(false)
   const incrementXP = useXPStore((s) => s.incrementXP)
-  const testFocus = seed % 5
 
   const sortedBooks = useMemo(
     () => [...books].sort((a, b) => a.book_order - b.book_order),
@@ -237,6 +245,9 @@ export default function BooksTestModePage() {
 
       if (!cancelled) {
         if (data.awarded) {
+          await supabase.rpc("update_streak", {
+            user_id_input: user.id
+          })
           setXpEarned(data.xp)
           setIsPractice(false)
           incrementXP(data.xp)
@@ -374,11 +385,9 @@ export default function BooksTestModePage() {
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-white">Test Mode</h1>
-            {testFocus === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: PENTATEUCH</p>}
-            {testFocus === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: HISTORICAL</p>}
-            {testFocus === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: WISDOM</p>}
-            {testFocus === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: PROPHETS</p>}
-            {testFocus === 4 && <p className="text-xs text-gray-400">🔥 Today&apos;s Focus: MIXED</p>}
+            <p className="text-sm text-gray-400 mt-1">
+              🔥 Today&apos;s Focus: {challengeLabel}
+            </p>
           </div>
           <Link
             href="/quests/books"

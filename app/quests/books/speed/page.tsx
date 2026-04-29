@@ -96,6 +96,20 @@ function createQuestion(sortedBooks: BookRow[], modeSelector: number): Question 
 export default function BooksSpeedRoundPage() {
   const today = new Date().toISOString().slice(0, 10)
   const seed = Number(today.replace(/-/g, ""))
+  let challengeLabel = ""
+
+  const modeSelector = seed % 4
+
+  if (modeSelector === 0) {
+    challengeLabel = "What comes next?"
+  } else if (modeSelector === 1) {
+    challengeLabel = "What comes before?"
+  } else if (modeSelector === 2) {
+    challengeLabel = "Book positions"
+  } else {
+    challengeLabel = "Mixed challenge"
+  }
+
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [choices, setChoices] = useState<BookRow[]>([])
@@ -113,7 +127,6 @@ export default function BooksSpeedRoundPage() {
   const [error, setError] = useState<string | null>(null)
   const [modeStatus, setModeStatus] = useState<"xp" | "practice" | null>(null)
   const incrementXP = useXPStore((s) => s.incrementXP)
-  const modeSelector = seed % 4
 
   useEffect(() => {
     const load = async () => {
@@ -247,6 +260,9 @@ export default function BooksSpeedRoundPage() {
 
         if (!cancelled) {
           if (data.awarded) {
+            await supabase.rpc("update_streak", {
+              user_id_input: user.id
+            })
             incrementXP(data.xp)
             setXpEarned(data.xp)
             setIsPractice(false)
@@ -391,10 +407,9 @@ export default function BooksSpeedRoundPage() {
                 Books Quest
               </div>
               <h1 className="mt-3 text-4xl font-black text-white">Speed Round</h1>
-              {modeSelector === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: AFTER</p>}
-              {modeSelector === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: BEFORE</p>}
-              {modeSelector === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: POSITION</p>}
-              {modeSelector === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: MIXED</p>}
+              <p className="text-sm text-gray-400 mt-1">
+                🔥 Today&apos;s Challenge: {challengeLabel}
+              </p>
               <p className="mt-4 text-sm leading-6 text-gray-300">
                 Answer as many books-of-the-Bible questions as you can in 30 seconds.
                 Expect order, before, and after prompts with four fast choices each round.
@@ -464,10 +479,9 @@ export default function BooksSpeedRoundPage() {
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-white">Speed Round</h1>
-            {modeSelector === 0 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: AFTER</p>}
-            {modeSelector === 1 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: BEFORE</p>}
-            {modeSelector === 2 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: POSITION</p>}
-            {modeSelector === 3 && <p className="text-xs text-gray-400">🔥 Today&apos;s Challenge: MIXED</p>}
+            <p className="text-sm text-gray-400 mt-1">
+              🔥 Today&apos;s Challenge: {challengeLabel}
+            </p>
           </div>
           <Link
             href="/quests/books"

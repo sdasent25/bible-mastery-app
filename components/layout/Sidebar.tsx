@@ -26,6 +26,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   const [planType, setPlanType] = useState<string>("free")
   const [isFamily, setIsFamily] = useState(false)
   const [isPlanLoaded, setIsPlanLoaded] = useState(false)
+  const [streak, setStreak] = useState(0)
   const xp = useXPStore((s) => s.xp)
   const setXP = useXPStore((s) => s.setXP)
   const hasAvailableQuests = true
@@ -51,12 +52,13 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
       const { data } = await client
         .from("profiles")
-        .select("xp")
+        .select("xp, streak")
         .eq("id", user.id)
         .single()
 
       if (data) {
         setXP(data.xp || 0)
+        setStreak(data.streak || 0)
       }
     }
 
@@ -188,6 +190,9 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           </div>
           <div className="text-sm font-semibold text-yellow-400">
             🔥 {xp} XP
+          </div>
+          <div className="text-sm font-semibold text-yellow-400">
+            🔥 {streak} Day Streak
           </div>
         </div>
         <div className="text-xs mt-2 text-white">
