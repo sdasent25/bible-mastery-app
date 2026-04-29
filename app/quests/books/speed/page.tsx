@@ -235,6 +235,19 @@ export default function BooksSpeedRoundPage() {
           throw insertError
         }
 
+        if (user && earnedXp) {
+          const { error: xpError } = await supabase.rpc("increment_xp", {
+            user_id_input: user.id,
+            xp_amount: earnedXp,
+          })
+
+          if (xpError) {
+            throw xpError
+          }
+
+          console.log("XP awarded:", earnedXp)
+        }
+
         if (!cancelled) {
           setXpEarned(earnedXp)
           setIsPractice(false)
