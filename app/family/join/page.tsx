@@ -91,11 +91,16 @@ export default function JoinFamilyPage() {
       .eq("family_id", invite.family_id)
 
     if (!existingMemberships || existingMemberships.length === 0) {
-      await supabase.from("family_members").insert({
-        family_id: invite.family_id,
-        user_id: userId,
-        role: "member",
+      const { data, error } = await supabase.rpc("join_family", {
+        user_id_input: userId,
+        family_id_input: invite.family_id
       })
+
+      if (error || !data?.success) {
+        console.error("Join failed:", error || data?.reason)
+        alert("Unable to join family")
+        return
+      }
     }
 
     await supabase

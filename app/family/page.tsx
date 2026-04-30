@@ -6,6 +6,10 @@ import { supabase } from "@/lib/supabase"
 type FamilyMember = {
   user_id: string
   status?: string | null
+  profiles?: {
+    name?: string | null
+    xp?: number | null
+  } | null
 }
 
 type FamilyInvite = {
@@ -63,7 +67,14 @@ export default function FamilyPage() {
 
     const { data: membersData } = await supabase
       .from("family_members")
-      .select("user_id, status")
+      .select(`
+        user_id,
+        status,
+        profiles (
+          name,
+          xp
+        )
+      `)
       .eq("family_id", membership.family_id)
 
     const allMembers = (membersData || []) as FamilyMember[]
@@ -208,11 +219,16 @@ export default function FamilyPage() {
       .eq("family_id", invite.family_id)
 
     if (!existingMemberships || existingMemberships.length === 0) {
-      await supabase.from("family_members").insert({
-        family_id: invite.family_id,
-        user_id: userId,
-        role: "member",
+      const { data, error } = await supabase.rpc("join_family", {
+        user_id_input: userId,
+        family_id_input: invite.family_id
       })
+
+      if (error || !data?.success) {
+        console.error("Join failed:", error || data?.reason)
+        alert("Unable to join family")
+        return
+      }
     }
 
     await supabase
@@ -304,10 +320,10 @@ export default function FamilyPage() {
             className="flex justify-between items-center text-white/80"
           >
             <span>
-              {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`} Member {i + 1}
+              {i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `#${i + 1}`} {member.profiles?.name || "Member"}
             </span>
 
-            <span>{100 * (members.length - i)} XP</span>
+            <span>{member.profiles?.xp || 0} XP</span>
           </div>
         ))}
       </div>
@@ -385,7 +401,7 @@ export default function FamilyPage() {
             key={member.user_id}
             className="flex justify-between items-center text-white/80"
           >
-            <span>Member {i + 1}</span>
+            <span>{member.profiles?.name || "Member"}</span>
 
             {isOwner && i !== 0 && (
               <button
@@ -415,7 +431,7 @@ export default function FamilyPage() {
             key={member.user_id}
             className="flex justify-between items-center text-white/70"
           >
-            <span>Member</span>
+            <span>{member.profiles?.name || "Member"}</span>
 
             {isOwner && (
               <button

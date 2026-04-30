@@ -10,6 +10,14 @@ type LeaderboardEntry = {
   score: number
 }
 
+type FamilyMemberRow = {
+  user_id: string
+  profiles?: {
+    name?: string | null
+    xp?: number | null
+  } | null
+}
+
 export default function LeaderboardPage() {
   const router = useRouter()
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
@@ -74,25 +82,26 @@ export default function LeaderboardPage() {
 
       const { data: members } = await supabase
         .from("family_members")
-        .select("user_id")
+        .select(`
+          user_id,
+          profiles (
+            name,
+            xp
+          )
+        `)
         .eq("family_id", membership.family_id)
 
-      const userIds = members?.map((member) => member.user_id) || []
+      const familyMembers = (members || []) as FamilyMemberRow[]
 
-      if (userIds.length === 0) return
+      if (familyMembers.length === 0) return
 
-      const { data: scores } = await supabase
-        .from("weekly_scores")
-        .select("user_id, score")
-
-      if (!scores) return
-
-      const formatted = scores
-        .filter((score) => userIds.includes(score.user_id))
-        .map((score) => ({
-          id: score.user_id,
-          name: score.user_id === user.id ? "You" : "Member",
-          score: score.score || 0,
+      const formatted = familyMembers
+        .map((member) => ({
+          id: member.user_id,
+          name: member.user_id === user.id
+            ? "You"
+            : member.profiles?.name || "Member",
+          score: member.profiles?.xp || 0,
         }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 6)
@@ -152,7 +161,7 @@ export default function LeaderboardPage() {
     )
   }
 
-  const currentUser = leaderboard.find((user) => user.name === "You")
+  const currentUser = leaderboard.find((user) => user.id === currentUserId)
   const users = leaderboard
   const currentIndex = leaderboard.findIndex((user) => user.id === currentUserId)
   let nudgeMessage = ""
