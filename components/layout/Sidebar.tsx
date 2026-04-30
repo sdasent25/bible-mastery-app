@@ -161,19 +161,22 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     planType === "pro_plus" || planType === "family_pro_plus"
   const showUpgradeCta =
     planType === "free" || planType === "pro" || planType === "family_pro"
-  const planLabel =
+  const fullPlanLabel =
     planType === "family_pro_plus"
-      ? "Pro+"
+      ? "Pro+ (Family)"
       : planType === "family_pro"
-        ? "Pro"
+        ? "Pro (Family)"
         : planType === "pro_plus"
-          ? "Pro+"
+          ? isFamily
+            ? "Pro+ (Family)"
+            : "Pro+ (Individual)"
           : planType === "pro"
-            ? "Pro"
-            : "Free"
-  const fullPlanLabel = isFamily
-    ? `${planLabel} (Family)`
-    : `${planLabel} (Individual)`
+            ? isFamily
+              ? "Pro (Family)"
+              : "Pro (Individual)"
+            : isFamily
+              ? "Free (Family)"
+              : "Free (Individual)"
   const questsActive = pathname.startsWith("/quests")
 
   if (!isPlanLoaded) {
