@@ -28,6 +28,7 @@ type JourneyAccessResult = {
 }
 
 type JourneyNode = {
+  title?: string
   label: string
   segment: string
   state: NodeState
@@ -260,6 +261,7 @@ export default function JourneyPage() {
         })
 
         return {
+          title: (seg as { title?: string }).title,
           label: seg.label,
           segment: segmentId,
           state,
@@ -426,6 +428,8 @@ export default function JourneyPage() {
             >
               {visibleNodes.map((node) => {
                 const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
+                const dayNumber = index + 1
+                const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
                 const offset = index - activeIndex
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
@@ -524,6 +528,9 @@ export default function JourneyPage() {
 
                       <div className="mt-3 text-center">
                         <div className="font-semibold text-white">
+                          {displayTitle}
+                        </div>
+                        <div className="text-sm text-slate-300">
                           {node.label}
                         </div>
                       </div>

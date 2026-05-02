@@ -20,9 +20,7 @@ export default function SegmentIntro() {
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
   const isPreview = searchParams.get("preview") === "true"
-  const isProPlus =
-    planType === "pro_plus" ||
-    planType === "family_pro_plus"
+  const isFree = planType === "free"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 
@@ -138,6 +136,32 @@ export default function SegmentIntro() {
   }
 
   const imageName = getImage(segment)
+  const depthOptions = [
+    {
+      id: "quick",
+      label: "⚡ Quick Review",
+      enabled: true,
+      value: 5,
+      unavailable: availableCount !== null && availableCount < 5,
+      accentClass: "bg-neutral-800 text-white",
+    },
+    {
+      id: "standard",
+      label: "🎯 Standard Study",
+      enabled: !isFree,
+      value: 10,
+      unavailable: availableCount !== null && availableCount < 10,
+      accentClass: "bg-neutral-800 text-white",
+    },
+    {
+      id: "deep",
+      label: "🔥 Deep Study",
+      enabled: !isFree,
+      value: 15,
+      unavailable: availableCount !== null && availableCount < 5,
+      accentClass: "bg-green-500 text-black font-bold",
+    },
+  ]
 
   return (
     <div className="min-h-screen bg-[#0B1220] text-white flex flex-col">
@@ -191,41 +215,42 @@ export default function SegmentIntro() {
             Read Scripture
           </a>
 
-          {isProPlus && questionCount === null && (
+          {questionCount === null && (
             <div className="bg-[#0B1220] p-6 rounded-2xl text-center space-y-4 border border-white/10">
               <h2 className="text-xl font-bold text-white">
                 Choose Your Depth
               </h2>
 
               <div className="space-y-3">
-                <button
-                  onClick={() => setQuestionCount(5)}
-                  disabled={availableCount !== null && availableCount < 5}
-                  className="w-full bg-neutral-800 py-3 rounded-xl text-white"
-                >
-                  ⚡ Quick Review (5 questions)
-                </button>
+                {depthOptions.map((option) => {
+                  const isLockedOption = !option.enabled
+                  const isUnavailable = option.unavailable
 
-                <button
-                  onClick={() => setQuestionCount(10)}
-                  disabled={availableCount !== null && availableCount < 10}
-                  className="w-full bg-neutral-800 py-3 rounded-xl text-white"
-                >
-                  🎯 Standard (10 questions)
-                </button>
+                  return (
+                    <button
+                      key={option.id}
+                      onClick={() => {
+                        if (isLockedOption) {
+                          router.push("/pricing")
+                          return
+                        }
 
-                <button
-                  onClick={() => setQuestionCount(15)}
-                  disabled={availableCount !== null && availableCount < 5}
-                  className="w-full bg-green-500 py-3 rounded-xl text-black font-bold"
-                >
-                  🔥 Deep Study ({availableCount ? Math.min(15, availableCount) : "..."} available)
-                </button>
+                        if (isUnavailable) return
+
+                        setQuestionCount(option.value)
+                      }}
+                      disabled={isUnavailable}
+                      className={`w-full py-3 rounded-xl ${option.accentClass} ${isLockedOption ? "opacity-50" : ""} ${isUnavailable ? "opacity-50 cursor-not-allowed" : ""}`}
+                    >
+                      {option.label} {isLockedOption ? "🔒" : ""}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           )}
 
-          {(!isProPlus || questionCount !== null) && (
+          {questionCount !== null && (
             <Link
               href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}${questionCount !== null ? `&depth=${questionCount}` : ""}`}
               className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
