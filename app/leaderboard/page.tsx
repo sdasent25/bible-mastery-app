@@ -1,4 +1,7 @@
-import { createClient } from "@/lib/supabase/server"
+"use client"
+
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 type ProfileRow = {
   name?: string | null
@@ -19,71 +22,109 @@ function getProfile(profile: FamilyMemberRow["profiles"]) {
   return profile ?? null
 }
 
-export default async function LeaderboardPage() {
-  const supabase = await createClient()
+export default function LeaderboardPage() {
+  const [userId, setUserId] = useState<string | null>(null)
+  const [hasMembership, setHasMembership] = useState<boolean | null>(null)
+  const [members, setMembers] = useState<FamilyMemberRow[]>([])
+  const [loading, setLoading] = useState(true)
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  useEffect(() => {
+    const loadLeaderboard = async () => {
+      const supabase = createClient()
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
-            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
-            <p className="mt-4 text-base text-slate-200">
-              Create or join a family to compete
-            </p>
-          </div>
-        </div>
-      </div>
-    )
-  }
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-  const { data: membership, error: membershipError } = await supabase
-    .from("family_members")
-    .select("family_id")
-    .eq("user_id", user.id)
-    .is("removed_at", null)
-    .maybeSingle()
+      console.log("LEADERBOARD USER", user)
 
-  if (!membership?.family_id) {
-    return (
-      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
-        <div className="mx-auto max-w-3xl">
-          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
-            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
-            <p className="mt-4 text-base text-slate-200">
-              Create or join a family to compete
-            </p>
-          </div>
-        </div>
-      </div>
-    )
-  }
+      if (!user) {
+        setHasMembership(false)
+        setMembers([])
+        setLoading(false)
+        return
+      }
 
-  const { data: members } = await supabase
-    .from("family_members")
-    .select(`
-      user_id,
-      role,
-      profiles (
-        name,
-        xp
-      )
-    `)
-    .eq("family_id", membership.family_id)
-    .eq("status", "active")
+      setUserId(user.id)
 
-  const normalizedMembers = ((members ?? []) as FamilyMemberRow[]).map((member) => ({
-    ...member,
-    profiles: getProfile(member.profiles),
-  }))
+      const { data: membership, error: membershipError } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", user.id)
+        .is("removed_at", null)
+        .maybeSingle()
 
-  const sorted = normalizedMembers.sort(
+      console.log("LEADERBOARD MEMBERSHIP", membership, membershipError)
+
+      if (!membership?.family_id) {
+        setHasMembership(false)
+        setMembers([])
+        setLoading(false)
+        return
+      }
+
+      setHasMembership(true)
+
+      const { data: familyMembers } = await supabase
+        .from("family_members")
+        .select(`
+          user_id,
+          role,
+          profiles (
+            name,
+            xp
+          )
+        `)
+        .eq("family_id", membership.family_id)
+        .eq("status", "active")
+
+      const normalizedMembers = ((familyMembers ?? []) as FamilyMemberRow[]).map((member) => ({
+        ...member,
+        profiles: getProfile(member.profiles),
+      }))
+
+      console.log("LEADERBOARD MEMBERS", normalizedMembers)
+
+      setMembers(normalizedMembers)
+      setLoading(false)
+    }
+
+    void loadLeaderboard()
+  }, [])
+
+  const sorted = [...members].sort(
     (a, b) => (((b.profiles as ProfileRow | null)?.xp) || 0) - (((a.profiles as ProfileRow | null)?.xp) || 0)
   )
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
+        <div className="mx-auto max-w-3xl">
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
+            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
+            <p className="mt-4 text-base text-slate-200">
+              Loading...
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (hasMembership === false) {
+    return (
+      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
+        <div className="mx-auto max-w-3xl">
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
+            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
+            <p className="mt-4 text-base text-slate-200">
+              Create or join a family to compete
+            </p>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-[#0B1220] px-4 py-8 text-white">
@@ -115,6 +156,7 @@ export default async function LeaderboardPage() {
             <div className="space-y-3">
               {sorted.map((member, index) => {
                 const profile = member.profiles as ProfileRow | null
+                const isCurrentUser = member.user_id === userId
 
                 return (
                   <div
@@ -128,7 +170,7 @@ export default async function LeaderboardPage() {
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="truncate text-base font-medium text-white">
-                          {profile?.name || "Member"}
+                          {isCurrentUser ? "You" : profile?.name || "Member"}
                         </span>
 
                         {member.role === "owner" && (
