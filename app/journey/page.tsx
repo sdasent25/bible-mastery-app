@@ -322,8 +322,12 @@ export default function JourneyPage() {
     journey: isPro || isProPlus,
     preview: isFree,
   }
+  const devBypass =
+    process.env.NEXT_PUBLIC_DEV_BYPASS === "true"
   const dailyLimitReached =
     isFree && dailyProgress >= 1
+  const effectiveDailyLimitReached =
+    devBypass ? false : dailyLimitReached
   const hasJourneyAccess = isPro || isProPlus
   const isPlanReady = planType !== null
 
@@ -426,7 +430,7 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const isAccessible = node.isAccessible
-                const isDailyLocked = isFree && dailyLimitReached && isActive
+                const isDailyLocked = isFree && effectiveDailyLimitReached && isActive
 
                 return (
                   <div
@@ -464,7 +468,7 @@ export default function JourneyPage() {
                           if (isLocked) return
 
                           if (index === activeIndex) {
-                            if (isFree && dailyLimitReached) {
+                            if (isFree && effectiveDailyLimitReached) {
                               return
                             }
 
@@ -619,7 +623,7 @@ export default function JourneyPage() {
             <div className="flex-shrink-0 pb-4">
               <button
                 onClick={() => {
-                  if (!program || !activeNode || !isPlanReady || (isFree && dailyLimitReached)) return
+                  if (!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached)) return
 
                   playSound("/sounds/click.mp3")
 
@@ -633,7 +637,7 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode || !isPlanReady || (isFree && dailyLimitReached)}
+                disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached)}
               >
                 Continue →
               </button>
@@ -646,13 +650,13 @@ export default function JourneyPage() {
               </div>
             )}
 
-            {!(!ACCESS.journey && isFree) && dailyLimitReached && (
+            {!(!ACCESS.journey && isFree) && effectiveDailyLimitReached && (
               <div className="mt-4 text-center text-sm text-yellow-400">
                 {"You've completed today's mission. Come back tomorrow."}
               </div>
             )}
 
-            {isFree && dailyLimitReached && nextSegment && (
+            {isFree && effectiveDailyLimitReached && nextSegment && (
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 opacity-50 blur-[1px] pointer-events-none">
                 <div className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
                   Tomorrow&apos;s Mission
