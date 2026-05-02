@@ -59,7 +59,6 @@ export default function LeaderboardPage() {
             xp
           )
         `)
-        .is("removed_at", null)
 
       console.log("LEADERBOARD MEMBERS", familyMembers)
 
