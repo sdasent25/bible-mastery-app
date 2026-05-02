@@ -41,10 +41,11 @@ export default async function LeaderboardPage() {
     )
   }
 
-  const { data: membership } = await supabase
+  const { data: membership, error: membershipError } = await supabase
     .from("family_members")
     .select("family_id")
     .eq("user_id", user.id)
+    .is("removed_at", null)
     .maybeSingle()
 
   if (!membership?.family_id) {
