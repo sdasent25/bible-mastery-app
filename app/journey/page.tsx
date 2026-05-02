@@ -469,6 +469,20 @@ export default function JourneyPage() {
 
                       <div
                         onClick={() => {
+                          const isFirstNode = index === 0
+
+                          if (isFree && !isFirstNode) {
+                            router.push("/pricing")
+                            return
+                          }
+
+                          if (isFree && isFirstNode) {
+                            playSound("/sounds/tap.mp3")
+
+                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                            return
+                          }
+
                           if (isLocked) return
 
                           if (index === activeIndex) {
@@ -483,7 +497,7 @@ export default function JourneyPage() {
                             playSound("/sounds/tap.mp3")
 
                             if (isFree) {
-                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}&preview=true`)
+                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
                               return
                             }
 
@@ -634,9 +648,9 @@ export default function JourneyPage() {
 
                   playSound("/sounds/click.mp3")
 
-                  // FREE -> preview only
+                  // FREE -> normal access
                   if (planType === "free") {
-                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}&preview=true`)
+                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                     return
                   }
 

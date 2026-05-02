@@ -13,13 +13,11 @@ export default function SegmentIntro() {
   const supabase = createClient()
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [planType, setPlanType] = useState("free")
-  const [previewCompleted, setPreviewCompleted] = useState(false)
   const [questionCount, setQuestionCount] = useState<number | null>(null)
   const [availableCount, setAvailableCount] = useState<number | null>(null)
 
   const segment = searchParams.get("segment") || ""
   const program = searchParams.get("program") || "genesis"
-  const isPreview = searchParams.get("preview") === "true"
   const isFree = planType === "free"
 
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
@@ -45,18 +43,11 @@ export default function SegmentIntro() {
         return
       }
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("preview_completed")
-        .eq("id", user.id)
-        .single()
-
       const plan = await getUserPlan()
 
       if (isMounted) {
         console.log("FINAL PLAN:", plan)
         setPlanType(plan)
-        setPreviewCompleted(profile?.preview_completed === true)
         setProfileLoaded(true)
       }
     }
@@ -71,12 +62,7 @@ export default function SegmentIntro() {
   useEffect(() => {
     if (!profileLoaded) return
 
-    if (planType === "free" && previewCompleted) {
-      router.push("/journey")
-      return
-    }
-
-    const isAllowedPreview = planType === "free" && isPreview && segment === "genesis-1-3"
+    const isFirstFreeSegment = planType === "free" && segment === "genesis-1-3"
 
     const hasFullAccess =
       planType === "pro" ||
@@ -84,11 +70,11 @@ export default function SegmentIntro() {
       planType === "family_pro" ||
       planType === "family_pro_plus"
 
-    if (!hasFullAccess && !isAllowedPreview) {
+    if (!hasFullAccess && !isFirstFreeSegment) {
       router.push("/pricing?source=journey_locked")
       return
     }
-  }, [book, chapter, isPreview, planType, previewCompleted, profileLoaded, router, segment])
+  }, [book, chapter, planType, profileLoaded, router, segment])
 
   useEffect(() => {
     if (!segment) return
@@ -252,7 +238,7 @@ export default function SegmentIntro() {
 
           {questionCount !== null && (
             <Link
-              href={`/quiz?program=${program}&segment=${segment}${isPreview ? "&preview=true" : ""}${questionCount !== null ? `&depth=${questionCount}` : ""}`}
+              href={`/quiz?program=${program}&segment=${segment}${questionCount !== null ? `&depth=${questionCount}` : ""}`}
               className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
             >
               Continue →
