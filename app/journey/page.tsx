@@ -6,8 +6,7 @@ import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
 import { nodes } from "@/lib/nodes"
-import { createClient } from "@/lib/supabase/client"
-import { getProgramProgress } from "@/lib/programProgress"
+import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
@@ -81,9 +80,7 @@ export default function JourneyPage() {
   const [weakCount, setWeakCount] = useState(0)
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
-  const [previewCompleted, setPreviewCompleted] = useState(false)
-  const [masteryData, setMasteryData] = useState<any[]>([])
-  const [lastCompletedDate, setLastCompletedDate] = useState<string | null>(null)
+  const [timeLeft, setTimeLeft] = useState("")
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -140,30 +137,20 @@ export default function JourneyPage() {
   }, [])
 
   useEffect(() => {
-    const loadProgress = async () => {
-      const supabase = createClient()
+    const interval = setInterval(() => {
+      const now = new Date()
+      const tomorrow = new Date()
+      tomorrow.setHours(24, 0, 0, 0)
 
-      const { data: userData } = await supabase.auth.getUser()
-      const user = userData?.user
+      const diff = tomorrow.getTime() - now.getTime()
 
-      if (!user) return
+      const hours = Math.floor(diff / (1000 * 60 * 60))
+      const minutes = Math.floor((diff / (1000 * 60)) % 60)
 
-      const { data: mastery } = await supabase
-        .from("user_segment_mastery")
-        .select("segment, mastered")
-        .eq("user_id", user.id)
+      setTimeLeft(`${hours}h ${minutes}m`)
+    }, 1000)
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("last_completed_date")
-        .eq("id", user.id)
-        .single()
-
-      setMasteryData(mastery || [])
-      setLastCompletedDate(profile?.last_completed_date || null)
-    }
-
-    void loadProgress()
+    return () => clearInterval(interval)
   }, [])
 
   const handleTrainWeak = () => {
@@ -189,33 +176,6 @@ export default function JourneyPage() {
     }
   }
 
-  const masteredSet = new Set(
-    masteryData
-      .filter(m => m.mastered)
-      .map(m => m.segment)
-  )
-
-  let unlockIndex = 0
-
-  for (let i = 0; i < nodes.length; i++) {
-    if (masteredSet.has(nodes[i].id)) {
-      unlockIndex = i + 1
-    } else {
-      break
-    }
-  }
-
-  const today = new Date().toISOString().split("T")[0]
-
-  const alreadyCompletedToday =
-    lastCompletedDate === today
-
-  if (alreadyCompletedToday) {
-    unlockIndex = Math.max(0, unlockIndex - 1)
-  }
-
-  // TODO: update last_completed_date after quiz completion
-
   useEffect(() => {
     async function loadAllProgress() {
       const xpVal = await getXp()
@@ -224,26 +184,17 @@ export default function JourneyPage() {
       const currentPlan = await getUserPlan()
 
       if (userRes?.user) {
-        const { data: profile } = await supabase
-          .from("profiles")
-          .select("preview_completed")
-          .eq("id", userRes.user.id)
-          .single()
-
         const nextPlan = currentPlan ?? "free"
         setPlanType(nextPlan as JourneyPlanType)
         console.log("SET PLAN TYPE:", nextPlan)
-        setPreviewCompleted(profile?.preview_completed === true)
       } else {
         setPlanType("free")
-        setPreviewCompleted(false)
       }
 
       setProfileLoaded(true)
 
       setXp(xpVal)
       setWeakCount(incorrect.length)
-      setDailyGoal(2)
     }
 
     void loadAllProgress()
@@ -255,18 +206,9 @@ export default function JourneyPage() {
     async function loadProgram() {
       const segments = nodes
 
-      let progress = await getProgramProgress(selectedProgram)
-
-      if (!progress || progress.currentSegmentIndex === undefined) {
-        progress = {
-          programId: selectedProgram,
-          completed: false,
-          currentSegmentIndex: 0,
-          bonusAwarded: false,
-        }
-      }
-
-      const start = unlockIndex
+      const progress = await getProgramProgress(selectedProgram)
+      const currentSegmentIndex = getResumeSegmentIndex(progress, segments.length)
+      const start = currentSegmentIndex
       const end = start + dailyGoal
       const isFree = planType === "free"
       const isPro =
@@ -281,7 +223,7 @@ export default function JourneyPage() {
 
       const mapped = segments.map((seg, index) => {
         const segmentId = seg.id
-        const isLocked = index > unlockIndex
+        const isLocked = index > currentSegmentIndex
         let isAccessible = false
 
         if (ACCESS.journey && !isLocked) {
@@ -291,9 +233,9 @@ export default function JourneyPage() {
         }
 
         const isCompleted =
-          hasPaidAccess && masteredSet.has(segmentId)
+          hasPaidAccess && (progress.completed || index < currentSegmentIndex)
         const isActive =
-          (hasPaidAccess && index === unlockIndex) ||
+          (hasPaidAccess && !progress.completed && index === currentSegmentIndex) ||
           (isFree && index === 0)
 
         const access = getSegmentAccess(
@@ -313,8 +255,7 @@ export default function JourneyPage() {
           index,
           label: seg.label,
           planType,
-          currentSegmentIndex: progress.currentSegmentIndex,
-          unlockIndex,
+          currentSegmentIndex,
           isAccessible,
         })
 
@@ -338,7 +279,7 @@ export default function JourneyPage() {
     }
 
     void loadProgram()
-  }, [dailyGoal, planType, previewCompleted, selectedProgram, unlockIndex, masteryData])
+  }, [dailyGoal, planType, selectedProgram])
 
   useEffect(() => {
     console.log("JOURNEY FINAL PLAN:", planType)
@@ -371,6 +312,7 @@ export default function JourneyPage() {
     100,
   )
   const program = getProgramById(selectedProgram)
+  const nextSegment = nodes[safeCurrentIndex + 1]
   const isFree = planType === "free"
   const isPro =
     planType === "pro" || planType === "family_pro"
@@ -380,6 +322,8 @@ export default function JourneyPage() {
     journey: isPro || isProPlus,
     preview: isFree,
   }
+  const dailyLimitReached =
+    isFree && dailyProgress >= 1
   const hasJourneyAccess = isPro || isProPlus
   const isPlanReady = planType !== null
 
@@ -482,6 +426,7 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const isAccessible = node.isAccessible
+                const isDailyLocked = isFree && dailyLimitReached && isActive
 
                 return (
                   <div
@@ -505,13 +450,25 @@ export default function JourneyPage() {
                         </div>
                       )}
 
+                      {isDailyLocked && !isLocked && (
+                        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
+                          <div className="text-center">
+                            <div className="text-xl">🔒</div>
+                            <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
+                          </div>
+                        </div>
+                      )}
+
                       <div
                         onClick={() => {
                           if (isLocked) return
 
                           if (index === activeIndex) {
+                            if (isFree && dailyLimitReached) {
+                              return
+                            }
+
                             if (!isAccessible) {
-                              router.push("/pricing?source=journey_locked")
                               return
                             }
 
@@ -531,7 +488,7 @@ export default function JourneyPage() {
                         className={`
                           relative min-w-[320px] max-w-[320px] h-72 md:h-80
                           rounded-2xl overflow-hidden
-                          cursor-pointer
+                          ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
                           border
                           transition-all duration-300
                           active:scale-[0.98]
@@ -548,7 +505,7 @@ export default function JourneyPage() {
                           fill
                           className={`
                             object-cover
-                            ${isLocked ? "opacity-70 saturate-90" : ""}
+                            ${isLocked || isDailyLocked ? "opacity-50 saturate-90" : ""}
                           `}
                         />
 
@@ -662,7 +619,7 @@ export default function JourneyPage() {
             <div className="flex-shrink-0 pb-4">
               <button
                 onClick={() => {
-                  if (!program || !activeNode || !isPlanReady) return
+                  if (!program || !activeNode || !isPlanReady || (isFree && dailyLimitReached)) return
 
                   playSound("/sounds/click.mp3")
 
@@ -676,16 +633,38 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode || !isPlanReady}
+                disabled={!activeNode || !isPlanReady || (isFree && dailyLimitReached)}
               >
                 Continue →
               </button>
             </div>
 
-            {isFree && (
+            {isFree && !ACCESS.journey && (
               <div className="mt-4 text-center text-sm text-yellow-400">
                 Preview mode: Complete this first segment to explore.
                 Upgrade to unlock your full journey.
+              </div>
+            )}
+
+            {!(!ACCESS.journey && isFree) && dailyLimitReached && (
+              <div className="mt-4 text-center text-sm text-yellow-400">
+                {"You've completed today's mission. Come back tomorrow."}
+              </div>
+            )}
+
+            {isFree && dailyLimitReached && nextSegment && (
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-4 opacity-50 blur-[1px] pointer-events-none">
+                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
+                  Tomorrow&apos;s Mission
+                </div>
+                <div className="mt-3 rounded-xl border border-white/10 bg-black/20 p-4">
+                  <div className="text-base font-semibold text-white">
+                    {nextSegment.label}
+                  </div>
+                  <div className="mt-2 text-sm text-slate-300">
+                    Next mission in {timeLeft}
+                  </div>
+                </div>
               </div>
             )}
 

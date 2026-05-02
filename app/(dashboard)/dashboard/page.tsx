@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
 
@@ -26,6 +26,8 @@ function getProfileName(profile: FamilyMember["profiles"]) {
 
 export default function DashboardPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const upgradePlan = searchParams.get("upgrade")
   const [plan, setPlan] = useState("free")
   const [memberCount, setMemberCount] = useState<number | null>(null)
   const [memberLimit, setMemberLimit] = useState<number | null>(null)
@@ -36,6 +38,7 @@ export default function DashboardPage() {
   const [membershipId, setMembershipId] = useState<string | null>(null)
   const [email, setEmail] = useState("")
   const [message, setMessage] = useState("")
+  const [upgradeMessage, setUpgradeMessage] = useState("")
   const [removingMemberId, setRemovingMemberId] = useState<string | null>(null)
   const [isLeavingFamily, setIsLeavingFamily] = useState(false)
 
@@ -100,6 +103,26 @@ export default function DashboardPage() {
 
     run()
   }, [])
+
+  useEffect(() => {
+    if (!upgradePlan) return
+
+    const planNameMap: Record<string, string> = {
+      pro: "Pro",
+      pro_plus: "Pro+",
+      family_pro: "Family Pro",
+      family_pro_plus: "Family Pro+",
+    }
+
+    setUpgradeMessage(`You're now upgraded to ${planNameMap[upgradePlan] || upgradePlan} 🎉`)
+    router.refresh()
+
+    const timeout = setTimeout(() => {
+      router.replace("/dashboard")
+    }, 2000)
+
+    return () => clearTimeout(timeout)
+  }, [upgradePlan, router])
 
   const handleInvite = async () => {
     if (!email || !familyId) return
@@ -228,6 +251,12 @@ export default function DashboardPage() {
         </h1>
 
         <p className="text-sm text-zinc-300">Current Plan: {plan}</p>
+
+        {upgradeMessage && (
+          <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-emerald-200">
+            {upgradeMessage}
+          </div>
+        )}
 
         {plan === "free" && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-red-300">

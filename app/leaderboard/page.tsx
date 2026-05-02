@@ -11,7 +11,6 @@ type ProfileRow = {
 type FamilyMemberRow = {
   user_id: string
   role: string | null
-  family_id: string
   profiles?: ProfileRow | ProfileRow[] | null
 }
 
@@ -48,17 +47,34 @@ export default function LeaderboardPage() {
 
       setUserId(user.id)
 
+      const { data: membership } = await supabase
+        .from("family_members")
+        .select("family_id")
+        .eq("user_id", user.id)
+        .eq("status", "active")
+        .maybeSingle()
+
+      if (!membership?.family_id) {
+        setHasMembership(false)
+        setMembers([])
+        setLoading(false)
+        return
+      }
+
+      const currentFamilyId = membership.family_id
+
       const { data: familyMembers } = await supabase
         .from("family_members")
         .select(`
           user_id,
           role,
-          family_id,
           profiles (
             name,
             xp
           )
         `)
+        .eq("family_id", currentFamilyId)
+        .eq("status", "active")
 
       console.log("LEADERBOARD MEMBERS", familyMembers)
 
@@ -66,35 +82,17 @@ export default function LeaderboardPage() {
         ...member,
         profiles: getProfile(member.profiles),
       }))
-
-      const userMembership = normalizedMembers.find(
-        (member) => member.user_id === user.id
-      )
-
-      if (!userMembership) {
-        setHasMembership(false)
-        setMembers([])
-        setLoading(false)
-        return
-      }
-
-      const familyId = userMembership.family_id
-      const familyMembersForUser = normalizedMembers.filter(
-        (member) => member.family_id === familyId
+      normalizedMembers.sort(
+        (a, b) => (((b.profiles as ProfileRow | null)?.xp) || 0) - (((a.profiles as ProfileRow | null)?.xp) || 0)
       )
 
       setHasMembership(true)
-
-      setMembers(familyMembersForUser)
+      setMembers(normalizedMembers)
       setLoading(false)
     }
 
     void loadLeaderboard()
   }, [])
-
-  const sorted = [...members].sort(
-    (a, b) => (((b.profiles as ProfileRow | null)?.xp) || 0) - (((a.profiles as ProfileRow | null)?.xp) || 0)
-  )
 
   if (loading) {
     return (
@@ -141,7 +139,7 @@ export default function LeaderboardPage() {
           </p>
         </div>
 
-        {sorted.length === 0 ? (
+        {members.length === 0 ? (
           <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center text-base text-slate-200 shadow-2xl shadow-black/20">
             Create or join a family to compete
           </div>
@@ -154,7 +152,7 @@ export default function LeaderboardPage() {
             </div>
 
             <div className="space-y-3">
-              {sorted.map((member, index) => {
+              {members.map((member, index) => {
                 const profile = member.profiles as ProfileRow | null
                 const isCurrentUser = member.user_id === userId
 
@@ -170,7 +168,7 @@ export default function LeaderboardPage() {
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="truncate text-base font-medium text-white">
-                          {isCurrentUser ? "You" : profile?.name || "Member"}
+                          {isCurrentUser ? "You" : profile?.name || "Player"}
                         </span>
 
                         {member.role === "owner" && (

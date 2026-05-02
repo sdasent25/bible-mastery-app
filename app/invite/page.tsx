@@ -50,7 +50,6 @@ export default function InvitePage() {
       }
 
       const { data, error } = await supabase.rpc("join_family", {
-        user_id_input: user.id,
         family_id_input: invite.family_id
       })
 
@@ -62,7 +61,10 @@ export default function InvitePage() {
 
       await supabase
         .from("family_invites")
-        .update({ status: "accepted" })
+        .update({
+          status: "accepted",
+          accepted_at: new Date().toISOString()
+        })
         .eq("id", invite.id)
 
       setMessage("Successfully joined family 🎉")

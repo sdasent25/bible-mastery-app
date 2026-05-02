@@ -115,9 +115,7 @@ export async function completeSegment() {
     return { success: false }
   }
 
-  const { data, error } = await supabase.rpc("complete_segment", {
-    p_user_id: user.id,
-  })
+  const { data, error } = await supabase.rpc("complete_segment")
 
   if (error) {
     console.error("Error completing segment:", error)
@@ -139,7 +137,6 @@ export async function completeSegment() {
   const totalXp = completionBonus + streakBonus
 
   await supabase.rpc("increment_xp", {
-    user_id: user.id,
     amount: totalXp,
   })
 

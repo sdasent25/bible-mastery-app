@@ -400,6 +400,8 @@ export default function QuizPage() {
 
   useEffect(() => {
     const syncProgramProgress = async () => {
+      if (programProgressSaved) return;
+
       if (
         !quizCompleted ||
         isReviewMode ||
@@ -667,6 +669,11 @@ export default function QuizPage() {
         const isCorrect = answerIndex === currentQuestion.correctIndex;
         recordAnswerPerformance(currentQuestion.segmentId, isCorrect);
 
+        if (!resolvedSegment) {
+          console.error("Missing segmentId");
+          return;
+        }
+
         console.log("CURRENT QUESTION:", currentQuestion);
         console.log("SENDING QUESTION ID:", currentQuestion.id);
 
@@ -678,31 +685,19 @@ export default function QuizPage() {
           },
           body: JSON.stringify({
             questionId: currentQuestion.id,
-            correct: isCorrect
+            correct: isCorrect,
+            segmentId: resolvedSegment
           })
         });
         console.log("API RESPONSE", await response.clone().json());
 
-        const previousXp = await getXp();
-        const previousLevel = Math.floor(previousXp / 100) + 1;
-
         if (isCorrect) {
-          const { perQuestion: baseXp } = getXpConfig(questionsPerDay);
           const nextCombo = combo + 1;
-          let comboBonus = 0;
-
-          if (nextCombo >= 3) comboBonus = 2;
-          if (nextCombo >= 5) comboBonus = 5;
-
-          const totalXp = baseXp + comboBonus;
           const audio = new Audio("/sounds/correct.mp3");
           audio.volume = 0.3;
           void audio.play();
           triggerHaptic("light");
           setShowResult("correct");
-          setXpAmount(totalXp);
-          setShowXpGain(true);
-          setTimeout(() => setShowXpGain(false), 800);
           setFlameState("correct");
           setShowCelebration(true);
           setTimeout(() => {
@@ -711,27 +706,6 @@ export default function QuizPage() {
           setStreak(prev => prev + 1);
           setCombo(prev => prev + 1);
           setScore(score + 1);
-          const {
-            data: { user },
-          } = await supabase.auth.getUser();
-
-          if (user) {
-            await supabase.rpc("increment_xp", {
-              user_id: user.id,
-              amount: totalXp,
-            });
-          }
-
-          const updatedXp = await getXp();
-          setTotalXp(updatedXp);
-
-          const currentLevel = Math.floor(updatedXp / 100) + 1;
-          if (currentLevel > previousLevel) {
-            playSound("/sounds/level-up.mp3");
-            triggerHaptic("heavy");
-            setNewLevel(currentLevel);
-            setShowLevelUp(true);
-          }
         } else {
           const audio = new Audio("/sounds/wrong.mp3");
           audio.volume = 0.25;

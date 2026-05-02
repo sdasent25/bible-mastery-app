@@ -38,13 +38,13 @@ export default function PricingSection() {
 
     const data = await response.json()
 
-    if (!data.url) {
+    if (!data?.url) {
       console.error("No checkout URL returned:", data)
       alert("Unable to start checkout. Please try again.")
       return
     }
 
-    window.location.href = "/upgrade"
+    window.location.href = data.url
   }
 
   const handleProPlusCheckout = async () => {

@@ -61,61 +61,15 @@ export default function JoinFamilyPage() {
   }, [token])
 
   useEffect(() => {
-    async function autoJoin() {
-      const { data: userRes } = await supabase.auth.getUser()
-
-      if (userRes?.user && invite && !joined) {
-        joinFamily()
-      }
+    if (token) {
+      router.replace(`/invite?token=${token}`)
     }
-
-    autoJoin()
   }, [invite, joined])
 
   async function joinFamily() {
-    const { data: userRes } = await supabase.auth.getUser()
+    if (!token) return
 
-    if (!userRes?.user) {
-      router.push(`/login?redirect=/family/join?token=${token}`)
-      return
-    }
-
-    if (!invite) return
-
-    const userId = userRes.user.id
-
-    const { data: existingMemberships } = await supabase
-      .from("family_members")
-      .select("user_id")
-      .eq("user_id", userId)
-      .eq("family_id", invite.family_id)
-
-    if (!existingMemberships || existingMemberships.length === 0) {
-      const { data, error } = await supabase.rpc("join_family", {
-        user_id_input: userId,
-        family_id_input: invite.family_id
-      })
-
-      if (error || !data?.success) {
-        console.error("Join failed:", error || data?.reason)
-        alert("Unable to join family")
-        return
-      }
-    }
-
-    await supabase
-      .from("family_invites")
-      .update({
-        status: "accepted",
-        accepted_at: new Date().toISOString(),
-      })
-      .eq("id", invite.id)
-
-    setJoined(true)
-
-    setTimeout(() => {
-      router.push("/dashboard")
-    }, 1200)
+    router.push(`/invite?token=${token}`)
   }
 
   if (loading) {

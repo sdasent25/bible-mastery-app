@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 
 type FamilyMember = {
@@ -22,12 +23,14 @@ type FamilyInvite = {
 }
 
 export default function FamilyPage() {
+  const router = useRouter()
   const [members, setMembers] = useState<FamilyMember[]>([])
   const [removedMembers, setRemovedMembers] = useState<FamilyMember[]>([])
   const [invites, setInvites] = useState<FamilyInvite[]>([])
   const [myInvites, setMyInvites] = useState<FamilyInvite[]>([])
   const [email, setEmail] = useState("")
   const [familyId, setFamilyId] = useState<string | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [isOwner, setIsOwner] = useState(false)
   const [noFamily, setNoFamily] = useState(false)
 
@@ -36,6 +39,7 @@ export default function FamilyPage() {
     if (!userRes?.user) return
 
     const userId = userRes.user.id
+    setCurrentUserId(userId)
     const email = userRes.user.email
     if (!email) {
       setMyInvites([])
@@ -207,39 +211,28 @@ export default function FamilyPage() {
   }
 
   async function acceptInvite(invite: FamilyInvite) {
+    if (!invite.token) return
+
+    router.push(`/invite?token=${invite.token}`)
+  }
+
+  async function leaveFamily() {
     const { data: userRes } = await supabase.auth.getUser()
-    if (!userRes?.user) return
+    const user = userRes?.user
 
-    const userId = userRes.user.id
-
-    const { data: existingMemberships } = await supabase
-      .from("family_members")
-      .select("user_id")
-      .eq("user_id", userId)
-      .eq("family_id", invite.family_id)
-
-    if (!existingMemberships || existingMemberships.length === 0) {
-      const { data, error } = await supabase.rpc("join_family", {
-        user_id_input: userId,
-        family_id_input: invite.family_id
-      })
-
-      if (error || !data?.success) {
-        console.error("Join failed:", error || data?.reason)
-        alert("Unable to join family")
-        return
-      }
-    }
+    if (!user) return
 
     await supabase
-      .from("family_invites")
+      .from("family_members")
       .update({
-        status: "accepted",
-        accepted_at: new Date().toISOString(),
+        status: "removed",
+        removed_at: new Date().toISOString()
       })
-      .eq("id", invite.id)
+      .eq("user_id", user.id)
 
-    load()
+    setNoFamily(true)
+    await load()
+    router.push("/dashboard")
   }
 
   if (noFamily) {
@@ -417,6 +410,19 @@ export default function FamilyPage() {
             )}
           </div>
         ))}
+
+        {currentUserId && (
+          <button
+            onClick={() => {
+              if (confirm("Leave your family?")) {
+                leaveFamily()
+              }
+            }}
+            className="text-red-400 text-sm"
+          >
+            Leave Family
+          </button>
+        )}
       </div>
 
       <div className="bg-neutral-900 border border-neutral-700 rounded-2xl p-5 space-y-3">

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server"
+import Stripe from "stripe"
 import { createClient } from "@supabase/supabase-js"
 
 export const dynamic = "force-dynamic"
@@ -6,7 +7,22 @@ export const dynamic = "force-dynamic"
 export async function POST(req: Request) {
   console.log("🔥 WEBHOOK HIT")
 
-  const event = await req.json()
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+  let event: Stripe.Event
+
+  try {
+    const rawBody = await req.text()
+    const sig = req.headers.get("stripe-signature")
+
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      sig!,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    )
+  } catch (error) {
+    console.error("Invalid Stripe signature", error)
+    return new Response("Invalid signature", { status: 400 })
+  }
 
   console.log("🔥 EVENT TYPE:", event.type)
 
