@@ -1,273 +1,154 @@
-"use client"
+import { createClient } from "@/lib/supabase/server"
 
-import { supabase } from "@/lib/supabase"
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
-
-type LeaderboardEntry = {
-  id: string
-  name: string
-  score: number
+type ProfileRow = {
+  name?: string | null
+  xp?: number | null
 }
 
 type FamilyMemberRow = {
   user_id: string
-  profiles?: {
-    name?: string | null
-    xp?: number | null
-  } | null
+  role: string | null
+  profiles?: ProfileRow | ProfileRow[] | null
 }
 
-export default function LeaderboardPage() {
-  const router = useRouter()
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  const [hasFamily, setHasFamily] = useState(false)
-  const [planType, setPlanType] = useState("free")
-  const [inFamily, setInFamily] = useState(false)
-  const [loading, setLoading] = useState(true)
+function getProfile(profile: FamilyMemberRow["profiles"]) {
+  if (Array.isArray(profile)) {
+    return profile[0] ?? null
+  }
 
-  useEffect(() => {
-    const loadPlan = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
+  return profile ?? null
+}
 
-      if (!user) {
-        setLoading(false)
-        return
-      }
+export default async function LeaderboardPage() {
+  const supabase = await createClient()
 
-      const { data } = await supabase
-        .from("user_access")
-        .select("final_plan, in_family")
-        .eq("user_id", user.id)
-        .single()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-      const planType = data?.final_plan
-      const inFamily = data?.in_family === true
-
-      console.log("FINAL PLAN:", planType)
-
-      if (planType) setPlanType(planType)
-      setInFamily(inFamily)
-      setLoading(false)
-    }
-
-    void loadPlan()
-  }, [])
-
-  const hasAccess = inFamily
-
-  useEffect(() => {
-    const loadLeaderboard = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (!user) return
-
-      setCurrentUserId(user.id)
-
-      const { data: membership } = await supabase
-        .from("family_members")
-        .select("family_id")
-        .eq("user_id", user.id)
-        .maybeSingle()
-
-      if (!membership?.family_id) {
-        return
-      }
-
-      setHasFamily(true)
-
-      const { data: members } = await supabase
-        .from("family_members")
-        .select(`
-          user_id,
-          profiles (
-            name,
-            xp
-          )
-        `)
-        .eq("family_id", membership.family_id)
-
-      const familyMembers = (members || []) as FamilyMemberRow[]
-
-      if (familyMembers.length === 0) return
-
-      const formatted = familyMembers
-        .map((member) => ({
-          id: member.user_id,
-          name: member.user_id === user.id
-            ? "You"
-            : member.profiles?.name || "Member",
-          score: member.profiles?.xp || 0,
-        }))
-        .sort((a, b) => b.score - a.score)
-        .slice(0, 6)
-
-      setLeaderboard(formatted)
-    }
-
-    void loadLeaderboard()
-  }, [])
-
-  if (!loading && !inFamily && (planType === "pro" || planType === "pro_plus")) {
+  if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white px-4">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold mb-4">
-            🚧 Leaderboard Coming Soon
-          </h2>
-
-          <p className="text-white mb-4">
-            Individual leaderboard is coming soon.
-          </p>
-
-          <p className="text-white text-sm mb-6">
-            Global leaderboard is coming soon.
-            
-          </p>
-
-          <button
-            onClick={() => router.push("/pricing")}
-            className="bg-green-500 px-6 py-3 rounded-lg text-white font-bold"
-          >
-            View Plans
-          </button>
+      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
+        <div className="mx-auto max-w-3xl">
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
+            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
+            <p className="mt-4 text-base text-slate-200">
+              Create or join a family to compete
+            </p>
+          </div>
         </div>
       </div>
     )
   }
 
-  if (!loading && !hasAccess) {
+  const { data: membership } = await supabase
+    .from("family_members")
+    .select("family_id")
+    .eq("user_id", user.id)
+    .eq("status", "active")
+    .single()
+
+  if (!membership?.family_id) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-white">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">
-            Leaderboard is a Pro feature
-          </h2>
-          <p className="text-white mb-6">
-            Upgrade to compete and track your progress
-          </p>
-          <button
-            onClick={() => router.push("/pricing")}
-            className="bg-green-500 px-6 py-3 rounded-lg text-white font-bold"
-          >
-            Upgrade Plan
-          </button>
+      <div className="min-h-screen bg-[#0B1220] px-4 py-10 text-white">
+        <div className="mx-auto max-w-3xl">
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center shadow-2xl shadow-black/20">
+            <h1 className="text-3xl font-bold">Family Leaderboard</h1>
+            <p className="mt-4 text-base text-slate-200">
+              Create or join a family to compete
+            </p>
+          </div>
         </div>
       </div>
     )
   }
 
-  const currentUser = leaderboard.find((user) => user.id === currentUserId)
-  const users = leaderboard
-  const currentIndex = leaderboard.findIndex((user) => user.id === currentUserId)
-  let nudgeMessage = ""
+  const { data: members } = await supabase
+    .from("family_members")
+    .select(`
+      user_id,
+      role,
+      profiles (
+        name,
+        xp
+      )
+    `)
+    .eq("family_id", membership.family_id)
+    .eq("status", "active")
 
-  if (leaderboard.length === 0) {
-    nudgeMessage = "Start training to join the leaderboard"
-  } else if (currentIndex === 0) {
-    nudgeMessage = "🔥 You're leading the family — keep it up!"
-  } else if (currentIndex > 0) {
-    const above = leaderboard[currentIndex - 1]
-    const current = leaderboard[currentIndex]
+  const normalizedMembers = ((members ?? []) as FamilyMemberRow[]).map((member) => ({
+    ...member,
+    profiles: getProfile(member.profiles),
+  }))
 
-    const diff = above.score - current.score
-
-    if (diff <= 5) {
-      nudgeMessage = `🔥 You're only ${diff} points from 1st`
-    } else {
-      nudgeMessage = `You're ${diff} points behind ${above.name}`
-    }
-  } else {
-    nudgeMessage = "Stay consistent to climb the leaderboard"
-  }
+  const sorted = normalizedMembers.sort(
+    (a, b) => (((b.profiles as ProfileRow | null)?.xp) || 0) - (((a.profiles as ProfileRow | null)?.xp) || 0)
+  )
 
   return (
-    <div className="w-full max-w-xl mx-auto px-4 py-6 space-y-6">
-      <h1 className="text-3xl font-bold text-white text-center">
-        Family Leaderboard
-      </h1>
-
-      <div className="flex gap-2 justify-center">
-        <button
-          className="px-4 py-2 rounded-xl bg-blue-600 text-white"
-        >
-          Family
-        </button>
-      </div>
-
-      <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-5 text-center">
-        <p className="text-sm text-white">You</p>
-        <p className="mt-1 text-xs uppercase tracking-[0.2em] text-white">
-          Weekly Score
-        </p>
-        <p className="mt-2 text-3xl font-bold text-white">
-          {currentUser?.score ?? 0}
-        </p>
-      </div>
-
-      {!hasFamily ? (
-        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white">
-          Create or join a family to compete
+    <div className="min-h-screen bg-[#0B1220] px-4 py-8 text-white">
+      <div className="mx-auto max-w-3xl space-y-6">
+        <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-6 shadow-2xl shadow-black/20">
+          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-yellow-400">
+            Family
+          </p>
+          <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
+            Leaderboard
+          </h1>
+          <p className="mt-2 text-sm text-slate-300 sm:text-base">
+            See who&apos;s leading your family by total XP.
+          </p>
         </div>
-      ) : users.length === 0 ? (
-        <div className="rounded-2xl border border-neutral-700 bg-[#121826] p-6 text-center text-white">
-          Create or join a family to compete
-        </div>
-      ) : (
-        <>
-          <div className="text-center mb-4 text-sm text-white font-semibold">
-            {nudgeMessage}
+
+        {sorted.length === 0 ? (
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-8 text-center text-base text-slate-200 shadow-2xl shadow-black/20">
+            Create or join a family to compete
           </div>
+        ) : (
+          <div className="rounded-3xl border border-white/10 bg-slate-900/80 p-4 shadow-2xl shadow-black/20 sm:p-6">
+            <div className="mb-3 grid grid-cols-[72px_minmax(0,1fr)_88px] gap-3 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              <span>Rank</span>
+              <span>Name</span>
+              <span className="text-right">XP</span>
+            </div>
 
-          <div className="flex flex-col items-center gap-3">
-            {users.map((user, index) => {
-              const isCurrentUser = user.id === currentUserId
-              const isTopThree = index < 3
-              const topThreeStyles =
-                index === 0
-                  ? "scale-[1.03] border-yellow-400/70 shadow-[0_0_35px_rgba(250,204,21,0.25)]"
-                  : index === 1
-                    ? "scale-[1.01] border-slate-300/50 shadow-[0_0_25px_rgba(226,232,240,0.15)]"
-                    : index === 2
-                      ? "scale-[1.01] border-amber-600/60 shadow-[0_0_25px_rgba(217,119,6,0.18)]"
-                      : ""
+            <div className="space-y-3">
+              {sorted.map((member, index) => {
+                const profile = member.profiles as ProfileRow | null
 
-              return (
-                <div
-                  key={user.id}
-                  className={`w-full flex items-center justify-between rounded-xl px-4 py-3 border transition-all ${
-                    isCurrentUser
-                      ? "bg-[#1E293B] border-green-500"
-                      : "bg-[#121826] border-gray-700"
-                  } ${isTopThree ? topThreeStyles : ""}`}
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`font-bold text-white ${
-                      isTopThree ? "text-base" : "text-sm"
-                    }`}>
-                      {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
-                    </span>
+                return (
+                  <div
+                    key={member.user_id}
+                    className="grid grid-cols-[72px_minmax(0,1fr)_88px] items-center gap-3 rounded-2xl bg-slate-800 p-4"
+                  >
+                    <div className="text-lg font-bold text-white">
+                      #{index + 1}
+                    </div>
 
-                    <span className={`text-white ${
-                      isTopThree ? "text-lg font-bold" : "font-medium"
-                    }`}>
-                      {user.name}
-                    </span>
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="truncate text-base font-medium text-white">
+                          {profile?.name || "Member"}
+                        </span>
+
+                        {member.role === "owner" && (
+                          <span className="rounded-full bg-yellow-400/10 px-2 py-1 text-xs font-semibold text-yellow-300">
+                            Owner
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="text-right text-base font-semibold text-yellow-400">
+                      {profile?.xp || 0}
+                    </div>
                   </div>
-
-                  <span className="font-bold text-white">
-                    {user.score}
-                  </span>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   )
 }
