@@ -9,6 +9,19 @@ type FamilyMember = {
   id: string
   user_id: string
   role: string
+  profiles?: {
+    name?: string | null
+  } | {
+    name?: string | null
+  }[] | null
+}
+
+function getProfileName(profile: FamilyMember["profiles"]) {
+  if (Array.isArray(profile)) {
+    return profile[0]?.name || "Member"
+  }
+
+  return profile?.name || "Member"
 }
 
 export default function DashboardPage() {
@@ -67,7 +80,14 @@ export default function DashboardPage() {
           .maybeSingle(),
         supabase
           .from("family_members")
-          .select("id, user_id, role")
+          .select(`
+            id,
+            user_id,
+            role,
+            profiles (
+              name
+            )
+          `)
           .eq("family_id", nextFamilyId)
           .is("removed_at", null)
           .order("role", { ascending: true }),
@@ -280,7 +300,7 @@ export default function DashboardPage() {
                   >
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-white">
-                        {member.user_id}
+                        {isCurrentUser ? "You" : getProfileName(member.profiles)}
                       </p>
                       <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
                         {member.role}
