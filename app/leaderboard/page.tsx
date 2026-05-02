@@ -11,6 +11,7 @@ type ProfileRow = {
 type FamilyMemberRow = {
   user_id: string
   role: string | null
+  family_id: string
   profiles?: ProfileRow | ProfileRow[] | null
 }
 
@@ -47,45 +48,45 @@ export default function LeaderboardPage() {
 
       setUserId(user.id)
 
-      const { data: membership, error: membershipError } = await supabase
-        .from("family_members")
-        .select("family_id")
-        .eq("user_id", user.id)
-        .is("removed_at", null)
-        .maybeSingle()
-
-      console.log("LEADERBOARD MEMBERSHIP", membership, membershipError)
-
-      if (!membership?.family_id) {
-        setHasMembership(false)
-        setMembers([])
-        setLoading(false)
-        return
-      }
-
-      setHasMembership(true)
-
       const { data: familyMembers } = await supabase
         .from("family_members")
         .select(`
           user_id,
           role,
+          family_id,
           profiles (
             name,
             xp
           )
         `)
-        .eq("family_id", membership.family_id)
-        .eq("status", "active")
+        .is("removed_at", null)
+
+      console.log("LEADERBOARD MEMBERS", familyMembers)
 
       const normalizedMembers = ((familyMembers ?? []) as FamilyMemberRow[]).map((member) => ({
         ...member,
         profiles: getProfile(member.profiles),
       }))
 
-      console.log("LEADERBOARD MEMBERS", normalizedMembers)
+      const userMembership = normalizedMembers.find(
+        (member) => member.user_id === user.id
+      )
 
-      setMembers(normalizedMembers)
+      if (!userMembership) {
+        setHasMembership(false)
+        setMembers([])
+        setLoading(false)
+        return
+      }
+
+      const familyId = userMembership.family_id
+      const familyMembersForUser = normalizedMembers.filter(
+        (member) => member.family_id === familyId
+      )
+
+      setHasMembership(true)
+
+      setMembers(familyMembersForUser)
       setLoading(false)
     }
 
