@@ -81,6 +81,16 @@ export default function SegmentIntro() {
       planType === "family_pro_plus"
 
     if (!hasFullAccess && !isFirstFreeSegment) {
+      // HARD OVERRIDE: Always allow free users into Day 1
+      if (
+        planType === "free" &&
+        normalizedSegment &&
+        normalizedSegment.toLowerCase().replaceAll("_", "-") === "genesis-1-3"
+      ) {
+        console.log("OVERRIDE: Allowing free user into Day 1 segment")
+        return
+      }
+
       console.error("REDIRECT TRIGGERED HERE", {
         location: "app/segment/page.tsx",
         planType,
