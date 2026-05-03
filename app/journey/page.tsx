@@ -368,40 +368,49 @@ export default function JourneyPage() {
               </p>
             </div>
 
-            <div className="mt-8 w-full max-w-md">
-              <div className="relative rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(34,197,94,0.4)] animate-pulse">
+            <div className="mt-8 w-full max-w-[420px] mx-auto px-4">
+              <div className="relative w-full aspect-[9/16] rounded-2xl shadow-[0_0_30px_rgba(34,197,94,0.25)] animate-pulse overflow-hidden">
                 <img
                   src={`/icons/genesis/${getNodeIcon(nextNode.label)}`}
-                  className="w-full h-[240px] object-cover opacity-70"
+                  className="absolute inset-0 w-full h-full object-contain"
                   alt={nextNode.label}
                 />
 
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-black/60 rounded-full p-4 text-white text-2xl">
+                  <div className="bg-black/60 rounded-full p-4 text-white text-2xl backdrop-blur-sm">
                     🔒
                   </div>
                 </div>
-              </div>
 
-              <div className="text-center mt-4 text-white">
-                <div className="text-lg font-semibold">
-                  Day 2: Genesis 4–6
-                </div>
-                <div className="text-sm text-white/60 mt-1">
-                  Unlocks tomorrow
+                <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
+                  <div className="text-lg font-semibold">
+                    Day 2
+                  </div>
+
+                  <div className="text-xl font-bold mt-1">
+                    Genesis 4–6
+                  </div>
+
+                  <div className="text-sm text-white/70 mt-1">
+                    Unlocks tomorrow
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 w-full max-w-sm opacity-40">
-              <img
-                src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
-                className="w-full h-[160px] object-cover rounded-xl"
-                alt={completedNode.label}
-              />
+            <div className="mt-6 w-full max-w-sm">
+              <div className="relative w-full aspect-[9/16] opacity-40 scale-95 rounded-xl overflow-hidden">
+                <img
+                  src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
+                  className="w-full h-full object-contain"
+                  alt={completedNode.label}
+                />
 
-              <div className="text-center mt-2 text-white text-sm">
-                ✔ Completed
+                <div className="absolute bottom-3 w-full text-center text-white text-sm">
+                  ✔ Completed
+                </div>
               </div>
             </div>
 
