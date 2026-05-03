@@ -197,7 +197,11 @@ export default function QuizPage() {
         setActiveProgramId(matchedProgram.id);
         setActiveProgramSegmentIndex(safeIndex);
         if (!segmentParam) {
-          setSegment(toQuizSegmentId(matchedProgram.segments[safeIndex].segment));
+          setSegment(
+            matchedProgram.segments[safeIndex].segment
+              .toLowerCase()
+              .replaceAll("_", "-")
+          );
         } else {
           setSegment(segmentParam);
         }
