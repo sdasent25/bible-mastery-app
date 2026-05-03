@@ -2,8 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
-
 import { getProgramById } from "@/lib/programs"
 import { nodes } from "@/lib/nodes"
 import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
@@ -329,8 +327,6 @@ export default function JourneyPage() {
     (dailyProgress / dailyGoal) * 100,
     100,
   )
-  const nextNode = journeyNodes[1] ?? nodes[1]
-  const completedNode = journeyNodes[0] ?? nodes[0]
   const program = getProgramById(selectedProgram)
   const nextSegment = nodes[safeCurrentIndex + 1]
   const isFree = planType === "free"
@@ -357,8 +353,7 @@ export default function JourneyPage() {
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
-        {completionMode ? (
-          <div className="flex flex-col items-center justify-center w-full px-4">
+          {completionMode ? (
             <div className="text-center mt-6">
               <h1 className="text-3xl md:text-4xl font-bold text-white">
                 🔥 Day 1 Complete
@@ -366,72 +361,27 @@ export default function JourneyPage() {
               <p className="text-yellow-300 mt-2">
                 You showed up today. Keep it going tomorrow.
               </p>
+              <div className="text-center mt-6 text-orange-400 font-semibold">
+                🔥 Your streak continues tomorrow
+              </div>
             </div>
+          ) : (
+            <div className="text-center mt-6">
+              <div className="flex-shrink-0 flex justify-center mb-8">
+                <div className="text-center max-w-md">
+                  <h1 className="text-3xl md:text-5xl font-bold text-white">
+                    {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
+                  </h1>
 
-            <div className="mt-8 w-full max-w-[420px] mx-auto px-4">
-              <div className="relative w-full aspect-[9/16] rounded-2xl shadow-[0_0_30px_rgba(34,197,94,0.25)] animate-pulse overflow-hidden">
-                <img
-                  src={`/icons/genesis/${getNodeIcon(nextNode.label)}`}
-                  className="absolute inset-0 w-full h-full object-contain"
-                  alt={nextNode.label}
-                />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-black/60 rounded-full p-4 text-white text-2xl backdrop-blur-sm">
-                    🔒
-                  </div>
-                </div>
-
-                <div className="absolute bottom-6 left-0 right-0 text-center text-white px-4">
-                  <div className="text-lg font-semibold">
-                    Day 2
-                  </div>
-
-                  <div className="text-xl font-bold mt-1">
-                    Genesis 4–6
-                  </div>
-
-                  <div className="text-sm text-white/70 mt-1">
-                    Unlocks tomorrow
-                  </div>
+                  <p className="text-gray-200 mt-1">
+                    Progress through Scripture
+                  </p>
                 </div>
               </div>
             </div>
+          )}
 
-            <div className="mt-6 w-full max-w-sm">
-              <div className="relative w-full aspect-[9/16] opacity-40 scale-95 rounded-xl overflow-hidden">
-                <img
-                  src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
-                  className="w-full h-full object-contain"
-                  alt={completedNode.label}
-                />
-
-                <div className="absolute bottom-3 w-full text-center text-white text-sm">
-                  ✔ Completed
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center mt-6 text-orange-400 font-semibold">
-              🔥 Your streak continues tomorrow
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div className="flex-shrink-0 flex justify-center mb-8">
-              <div className="text-center max-w-md">
-                <h1 className="text-3xl md:text-5xl font-bold text-white">
-                  {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
-                </h1>
-
-                <p className="text-gray-200 mt-1">
-                  Progress through Scripture
-                </p>
-              </div>
-            </div>
-
+          {!completionMode && (
             <div className="lg:hidden sticky top-0 z-30 mb-4">
               <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
                 <div className="flex items-center justify-between text-sm mb-1">
@@ -454,53 +404,50 @@ export default function JourneyPage() {
                 </div>
               </div>
             </div>
+          )}
 
-            {weakCount > 0 && (
-              <div className="lg:hidden mb-4">
+          {!completionMode && weakCount > 0 && (
+            <div className="lg:hidden mb-4">
+              <button
+                onClick={handleTrainWeak}
+                className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Train Weak Areas
+              </button>
+            </div>
+          )}
+
+          <div className="flex w-full flex-col lg:flex-row justify-center gap-12 px-0 md:px-8">
+            <div className="mt-8 md:mt-16 flex flex-col items-center justify-center flex-1 max-w-4xl">
+              <div className="hidden md:flex justify-between mb-4 w-full max-w-[960px] px-4">
                 <button
-                  onClick={handleTrainWeak}
-                  className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => {
+                    if (activeIndex <= 0) return
+                    const nextIndex = activeIndex - 1
+                    setActiveIndex(nextIndex)
+                    setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                  }}
+                  className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                 >
-                  Train Weak Areas
+                  ←
+                </button>
+
+                <button
+                  onClick={() => {
+                    if (activeIndex >= journeyNodes.length - 1) return
+                    const nextIndex = activeIndex + 1
+                    setActiveIndex(nextIndex)
+                    setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                  }}
+                  className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                >
+                  →
                 </button>
               </div>
-            )}
 
-            <div className="flex w-full flex-col lg:flex-row justify-center gap-12 px-8">
-
-              {/* PATH */}
-              <div className="mt-16 flex flex-col items-center justify-center flex-1 max-w-4xl">
-                <div className="hidden md:flex justify-between mb-4">
-                  <button
-                    onClick={() => {
-                      if (activeIndex <= 0) return
-                      const nextIndex = activeIndex - 1
-                      setActiveIndex(nextIndex)
-                      setSelectedSegment(journeyNodes[nextIndex]?.segment)
-                    }}
-                    className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                  >
-                    ←
-                  </button>
-
-                  <button
-                    onClick={() => {
-                      if (activeIndex >= journeyNodes.length - 1) return
-                      const nextIndex = activeIndex + 1
-                      setActiveIndex(nextIndex)
-                      setSelectedSegment(journeyNodes[nextIndex]?.segment)
-                    }}
-                    className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                  >
-                    →
-                  </button>
-                </div>
-
+              <div className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar">
                 <div
-                  className="
-                    flex items-center justify-center gap-6 relative
-                    touch-pan-x
-                  "
+                  className="flex items-center gap-6 relative"
                   onMouseDown={handleStart}
                   onMouseUp={handleEnd}
                   onTouchStart={handleStart}
@@ -515,21 +462,10 @@ export default function JourneyPage() {
                     const isActive = offset === 0
                     const isLocked = node.state === "locked"
                     const isAccessible = node.isAccessible
-                    const isNextNode = completionMode && index === 1
                     const isCompletedNode = completionMode && index === 0
+                    const isNextNode = completionMode && index === 1
+                    const isFutureNode = completionMode && index > 1
                     const isLockedToday = completionMode
-                    const focusClass = isNextNode
-                      ? "scale-105 z-10"
-                      : ""
-                    const glowClass = isNextNode
-                      ? "shadow-[0_0_25px_rgba(34,197,94,0.4)] animate-pulse"
-                      : ""
-                    const dimClass = completionMode && !isNextNode
-                      ? "opacity-40"
-                      : ""
-                    const completedClass = isCompletedNode
-                      ? "opacity-50"
-                      : ""
                     const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
                     return (
@@ -537,30 +473,33 @@ export default function JourneyPage() {
                         key={index}
                         className={`
                           relative
+                          w-[260px] md:w-[300px]
+                          aspect-[9/16]
+                          rounded-2xl overflow-hidden
                           transition-all duration-300
-                          ${isActive ? "scale-125 z-20" : "scale-95 opacity-60"}
-                          ${focusClass}
-                          ${glowClass}
-                          ${dimClass}
-                          ${completedClass}
+                          flex-shrink-0
+                          ${completionMode
+                            ? `${isNextNode ? "scale-105 z-10 shadow-[0_0_30px_rgba(34,197,94,0.35)]" : ""} ${isCompletedNode ? "opacity-60 scale-95" : ""} ${isFutureNode ? "opacity-30 scale-90" : ""}`
+                            : `${isActive ? "scale-105 z-10" : "scale-95 opacity-60"}`
+                          }
                         `}
                       >
-                        <div className="relative flex flex-col items-center">
-                          {node.isTodayTarget && !isLocked && !isLockedToday && (
+                        <div className="relative flex flex-col items-center h-full">
+                          {node.isTodayTarget && !completionMode && !isLocked && !isLockedToday && (
                             <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
                           )}
 
-                          {isActive && !isLockedToday && (
+                          {isActive && !completionMode && !isLockedToday && (
                             <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
                           )}
 
-                          {isLocked && (
+                          {isLocked && !completionMode && (
                             <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
                               <span className="text-xl">🔒</span>
                             </div>
                           )}
 
-                          {isDailyLocked && !isLocked && (
+                          {isDailyLocked && !completionMode && !isLocked && (
                             <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
                               <div className="text-center">
                                 <div className="text-xl">🔒</div>
@@ -620,7 +559,8 @@ export default function JourneyPage() {
                               }
                             }}
                             className={`
-                              relative min-w-[320px] max-w-[320px] h-72 md:h-80
+                              relative
+                              w-full h-full
                               rounded-2xl overflow-hidden
                               ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
                               border
@@ -628,67 +568,66 @@ export default function JourneyPage() {
                               active:scale-[0.98]
                               hover:scale-[1.02]
                               hover:shadow-xl
-                              ${isActive
+                              ${isActive && !completionMode
                                 ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]"
                                 : "border-gray-600"}
                             `}
                           >
-                            <Image
+                            <img
                               src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                              alt="node"
-                              fill
-                              className={`
-                                object-cover
-                                ${isLocked || isDailyLocked ? "opacity-50 saturate-90" : ""}
-                              `}
+                              alt={node.label}
+                              className={`absolute inset-0 w-full h-full object-contain ${!completionMode && (isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
                             />
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                            {isCompletedNode && (
+                              <div className="absolute inset-0 flex items-center justify-center text-white text-lg">
+                                ✔ Completed
+                              </div>
+                            )}
 
                             {isNextNode && (
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="bg-black/60 rounded-full p-3 text-white text-xl">
-                                  🔒
+                              <>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <div className="bg-black/60 backdrop-blur-sm rounded-full p-4 text-2xl text-white">
+                                    🔒
+                                  </div>
                                 </div>
-                              </div>
+
+                                <div className="absolute bottom-4 w-full text-center text-white">
+                                  <div className="text-lg font-semibold">Day 2</div>
+                                  <div className="text-sm opacity-80">Genesis 4–6</div>
+                                  <div className="text-xs opacity-60">Unlocks tomorrow</div>
+                                </div>
+                              </>
                             )}
                           </div>
 
-                          {isActive && !isLocked && !isLockedToday && (
+                          {isActive && !completionMode && !isLocked && !isLockedToday && (
                             <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
                               START
                             </div>
                           )}
 
-                          <div className="mt-3 text-center">
-                            <div className="font-semibold text-white">
-                              {displayTitle}
-                            </div>
-                            <div className="text-sm text-slate-300">
-                              {node.label}
-                            </div>
-                            {isNextNode && (
-                              <div className="text-center mt-2 text-white">
-                                <div className="font-semibold">
-                                  Day 2: Genesis 4–6
-                                </div>
-                                <div className="text-sm text-white/60">
-                                  Unlocks tomorrow
-                                </div>
+                          {!completionMode && (
+                            <div className="mt-3 text-center">
+                              <div className="font-semibold text-white">
+                                {displayTitle}
                               </div>
-                            )}
-                          </div>
+                              <div className="text-sm text-slate-300">
+                                {node.label}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )
                   })}
                 </div>
-
               </div>
             </div>
           </div>
-        )}
-
           {/* RIGHT PANEL */}
           <div className="w-[320px] flex-shrink-0">
           <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
