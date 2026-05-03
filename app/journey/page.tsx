@@ -390,7 +390,7 @@ export default function JourneyPage() {
         </div>
 
         {!completionMode && (
-        <>
+        <div>
         <div className="lg:hidden sticky top-0 z-30 mb-4">
           <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
             <div className="flex items-center justify-between text-sm mb-1">
@@ -644,7 +644,7 @@ export default function JourneyPage() {
             </div>
 
           </div>
-        </>
+        </div>
         )}
 
           {/* RIGHT PANEL */}
