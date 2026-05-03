@@ -221,12 +221,24 @@ export default function QuizPage() {
         return;
       }
 
-      if (activeProgramId && !isPro && !isPreviewMode) {
+      const isFree = !isPro && !isProPlus
+
+      const isFirstFreeSegment =
+        isFree && (selectedSegmentParam || segment) === "genesis-1-3"
+
+      const isQuickDepth =
+        safeDepth === 5
+
+      if (
+        activeProgramId &&
+        isFree &&
+        !(isFirstFreeSegment && isQuickDepth)
+      ) {
         window.location.assign('/pricing?source=generic_upgrade');
       }
     }
     checkPro();
-  }, [activeProgramId, isPreviewMode, mode]);
+  }, [activeProgramId, mode, safeDepth, segment, selectedSegmentParam]);
 
   useEffect(() => {
     const checkAccess = async () => {
