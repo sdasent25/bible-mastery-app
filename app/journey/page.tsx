@@ -84,25 +84,22 @@ export default function JourneyPage() {
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
   const [timeLeft, setTimeLeft] = useState("")
-  const [justCompleted, setJustCompleted] = useState(false)
+  const [completionMode, setCompletionMode] = useState(false)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
 
   useEffect(() => {
     if (completed === "true") {
-      setJustCompleted(true)
+      setCompletionMode(true)
     }
   }, [completed])
 
   useEffect(() => {
-    if (justCompleted) {
-      const timeout = setTimeout(() => {
-        setJustCompleted(false)
-      }, 4000)
-      return () => clearTimeout(timeout)
+    if (completed === "true") {
+      router.replace("/journey")
     }
-  }, [justCompleted])
+  }, [completed, router])
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -359,20 +356,36 @@ export default function JourneyPage() {
         <div className="transition-opacity duration-300">
         <div className="flex-shrink-0 flex justify-center mb-8">
           <div className="text-center max-w-md">
-            <h1 className="text-3xl md:text-5xl font-bold text-white">
-              {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
-            </h1>
+            {completionMode ? (
+              <>
+                <h1 className="text-3xl font-bold text-white text-center">
+                  🔥 Day Complete
+                </h1>
+                <p className="text-yellow-300 text-center mt-2">
+                  You showed up today. Keep the streak alive.
+                </p>
+                <div className="text-center mt-4 text-white">
+                  <div className="text-lg font-semibold">
+                    ⏳ Next mission unlocks tomorrow
+                  </div>
+                  <div className="text-sm text-white/70 mt-1">
+                    Day 2: Genesis 4–6
+                  </div>
+                </div>
+                <div className="text-center mt-6 text-orange-400 font-semibold">
+                  🔥 Your streak continues tomorrow
+                </div>
+              </>
+            ) : (
+              <>
+                <h1 className="text-3xl md:text-5xl font-bold text-white">
+                  {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
+                </h1>
 
-            <p className="text-gray-200 mt-1">
-              Progress through Scripture
-            </p>
-
-            {justCompleted && (
-              <div className="text-center text-yellow-300 font-semibold mt-4">
-                🔥 You&apos;ve completed today&apos;s mission
-                <br />
-                ⏳ Come back tomorrow to continue your journey
-              </div>
+                <p className="text-gray-200 mt-1">
+                  Progress through Scripture
+                </p>
+              </>
             )}
           </div>
         </div>
@@ -460,21 +473,22 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const isAccessible = node.isAccessible
-                const isDailyLocked = isFree && effectiveDailyLimitReached && isActive
+                const isLockedToday = completionMode
+                const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
                 return (
                   <div
                     key={index}
                     className={`transition-all duration-300 ${
                       isActive ? "scale-125 z-20" : "scale-95 opacity-60"
-                    }`}
+                    } ${isLockedToday ? "opacity-40" : ""}`}
                   >
                     <div className="relative flex flex-col items-center">
-                      {node.isTodayTarget && !isLocked && (
+                      {node.isTodayTarget && !isLocked && !isLockedToday && (
                         <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
                       )}
 
-                      {isActive && (
+                      {isActive && !isLockedToday && (
                         <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
                       )}
 
@@ -495,6 +509,7 @@ export default function JourneyPage() {
 
                       <div
                         onClick={() => {
+                          if (completionMode) return
                           const isFirstNode = index === 0
 
                           if (isFree && !isFirstNode) {
@@ -569,7 +584,7 @@ export default function JourneyPage() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                       </div>
 
-                      {isActive && !isLocked && (
+                      {isActive && !isLocked && !isLockedToday && (
                         <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
                           START
                         </div>
@@ -679,7 +694,7 @@ export default function JourneyPage() {
             <div className="flex-shrink-0 pb-4">
               <button
                 onClick={() => {
-                  if (!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached)) return
+                  if (!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode) return
 
                   playSound("/sounds/click.mp3")
 
@@ -693,18 +708,11 @@ export default function JourneyPage() {
                   router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached)}
+                disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
               >
                 Continue →
               </button>
             </div>
-
-            {isFree && !ACCESS.journey && (
-              <div className="mt-4 text-center text-sm text-yellow-400">
-                Preview mode: Complete this first segment to explore.
-                Upgrade to unlock your full journey.
-              </div>
-            )}
 
             {!(!ACCESS.journey && isFree) && effectiveDailyLimitReached && (
               <div className="mt-4 text-center text-sm text-yellow-400">
