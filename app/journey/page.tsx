@@ -327,6 +327,8 @@ export default function JourneyPage() {
     (dailyProgress / dailyGoal) * 100,
     100,
   )
+  const completedNode = journeyNodes[0] ?? nodes[0]
+  const nextNode = journeyNodes[1] ?? nodes[1]
   const program = getProgramById(selectedProgram)
   const nextSegment = nodes[safeCurrentIndex + 1]
   const isFree = planType === "free"
@@ -353,288 +355,288 @@ export default function JourneyPage() {
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
-          {completionMode ? (
-            <div className="text-center mt-6">
-              <h1 className="text-3xl md:text-4xl font-bold text-white">
-                🔥 Day 1 Complete
-              </h1>
-              <p className="text-yellow-300 mt-2">
-                You showed up today. Keep it going tomorrow.
-              </p>
-              <div className="text-center mt-6 text-orange-400 font-semibold">
-                🔥 Your streak continues tomorrow
-              </div>
-            </div>
-          ) : (
-            <div className="text-center mt-6">
-              <div className="flex-shrink-0 flex justify-center mb-8">
-                <div className="text-center max-w-md">
-                  <h1 className="text-3xl md:text-5xl font-bold text-white">
-                    {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
-                  </h1>
-
-                  <p className="text-gray-200 mt-1">
-                    Progress through Scripture
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {!completionMode && (
-            <div className="lg:hidden sticky top-0 z-30 mb-4">
-              <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-orange-400 font-semibold animate-pulse">
-                    🔥 {streak}
-                  </span>
-                  <span className="text-gray-200">
-                    🎯 Goal
-                  </span>
-                  <span className="font-semibold text-white">
-                    {dailyProgress} / {dailyGoal}
-                  </span>
-                </div>
-
-                <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-green-400"
-                    style={{ width: `${(dailyProgress / dailyGoal) * 100}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-
-          {!completionMode && weakCount > 0 && (
-            <div className="lg:hidden mb-4">
-              <button
-                onClick={handleTrainWeak}
-                className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Train Weak Areas
-              </button>
-            </div>
-          )}
-
           <div className="flex flex-col lg:flex-row w-full">
-            <div className="flex-1 flex flex-col items-center justify-start px-4">
-              <div className="mt-8 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl">
-              <div className="hidden md:flex justify-between mb-4 w-full max-w-[960px] px-4">
-                <button
-                  onClick={() => {
-                    if (activeIndex <= 0) return
-                    const nextIndex = activeIndex - 1
-                    setActiveIndex(nextIndex)
-                    setSelectedSegment(journeyNodes[nextIndex]?.segment)
-                  }}
-                  className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                >
-                  ←
-                </button>
 
-                <button
-                  onClick={() => {
-                    if (activeIndex >= journeyNodes.length - 1) return
-                    const nextIndex = activeIndex + 1
-                    setActiveIndex(nextIndex)
-                    setSelectedSegment(journeyNodes[nextIndex]?.segment)
-                  }}
-                  className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                >
-                  →
-                </button>
-              </div>
+            <div className="flex-1 flex flex-col items-center px-4">
+              {completionMode ? (
+                <div className="w-full flex flex-col items-center">
+                  <div className="text-center mt-6">
+                    <h1 className="text-3xl md:text-4xl font-bold text-white">
+                      🔥 Day 1 Complete
+                    </h1>
+                    <p className="text-yellow-300 mt-2">
+                      You showed up today. Keep it going tomorrow.
+                    </p>
+                  </div>
 
-              <div className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar">
-                <div
-                  className="flex items-center gap-6 relative"
-                  onMouseDown={handleStart}
-                  onMouseUp={handleEnd}
-                  onTouchStart={handleStart}
-                  onTouchMove={(e) => e.stopPropagation()}
-                  onTouchEnd={handleEnd}
-                >
-                  {visibleNodes.map((node) => {
-                    const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
-                    const dayNumber = index + 1
-                    const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
-                    const offset = index - activeIndex
-                    const isActive = offset === 0
-                    const isLocked = node.state === "locked"
-                    const isAccessible = node.isAccessible
-                    const isCompletedNode = completionMode && index === 0
-                    const isNextNode = completionMode && index === 1
-                    const isFutureNode = completionMode && index > 1
-                    const isLockedToday = completionMode
-                    const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
+                  <div className="flex items-center justify-center gap-6 mt-8">
+                    <div className="w-[240px] aspect-[9/16] opacity-60">
+                      <img
+                        src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
+                        className="w-full h-full object-contain"
+                        alt={completedNode.label}
+                      />
+                      <div className="text-center text-white text-sm mt-2">
+                        ✔ Completed
+                      </div>
+                    </div>
 
-                    return (
-                      <div
-                        key={index}
-                        className={`
-                          relative
-                          w-[260px] md:w-[300px]
-                          aspect-[9/16]
-                          rounded-2xl overflow-hidden
-                          transition-all duration-300
-                          flex-shrink-0
-                          ${completionMode
-                            ? `${isNextNode ? "scale-105 z-10 shadow-[0_0_30px_rgba(34,197,94,0.35)]" : ""} ${isCompletedNode ? "opacity-60 scale-95" : ""} ${isFutureNode ? "opacity-30 scale-90" : ""}`
-                            : `${isActive ? "scale-105 z-10" : "scale-95 opacity-60"}`
-                          }
-                        `}
-                      >
-                        <div className="relative flex flex-col items-center h-full">
-                          {node.isTodayTarget && !completionMode && !isLocked && !isLockedToday && (
-                            <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
-                          )}
+                    <div className="relative w-[260px] aspect-[9/16] scale-105">
+                      <img
+                        src={`/icons/genesis/${getNodeIcon(nextNode.label)}`}
+                        className="w-full h-full object-contain"
+                        alt={nextNode.label}
+                      />
 
-                          {isActive && !completionMode && !isLockedToday && (
-                            <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
-                          )}
-
-                          {isLocked && !completionMode && (
-                            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
-                              <span className="text-xl">🔒</span>
-                            </div>
-                          )}
-
-                          {isDailyLocked && !completionMode && !isLocked && (
-                            <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
-                              <div className="text-center">
-                                <div className="text-xl">🔒</div>
-                                <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
-                              </div>
-                            </div>
-                          )}
-
-                          <div
-                            onClick={() => {
-                              if (completionMode) return
-                              const isFirstNode = index === 0
-
-                              if (isFree && !isFirstNode) {
-                                console.error("REDIRECT TRIGGERED HERE", {
-                                  location: "app/journey/page.tsx",
-                                  planType,
-                                  isPro,
-                                  isProPlus,
-                                  activeProgramId: null,
-                                  segmentParam: node.segment,
-                                  safeDepth: null
-                                });
-                                router.push("/pricing")
-                                return
-                              }
-
-                              if (isFree && isFirstNode) {
-                                playSound("/sounds/tap.mp3")
-
-                                router.push(`/segment?segment=${node.segment}`)
-                                return
-                              }
-
-                              if (isLocked) return
-
-                              if (index === activeIndex) {
-                                if (isFree && effectiveDailyLimitReached) {
-                                  return
-                                }
-
-                                if (!isAccessible) {
-                                  return
-                                }
-
-                                playSound("/sounds/tap.mp3")
-
-                                if (isFree) {
-                                  router.push(`/segment?segment=${node.segment}`)
-                                  return
-                                }
-
-                                router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
-                              } else {
-                                setActiveIndex(index)
-                                setSelectedSegment(node.segment)
-                              }
-                            }}
-                            className={`
-                              relative
-                              w-full h-full
-                              rounded-2xl overflow-hidden
-                              ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
-                              border
-                              transition-all duration-300
-                              active:scale-[0.98]
-                              hover:scale-[1.02]
-                              hover:shadow-xl
-                              ${isActive && !completionMode
-                                ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]"
-                                : "border-gray-600"}
-                            `}
-                          >
-                            <img
-                              src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                              alt={node.label}
-                              className={`absolute inset-0 w-full h-full object-contain ${!completionMode && (isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
-                            />
-
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                            {isCompletedNode && (
-                              <div className="absolute inset-0 flex items-center justify-center text-white text-lg">
-                                ✔ Completed
-                              </div>
-                            )}
-
-                            {isNextNode && (
-                              <>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <div className="bg-black/60 backdrop-blur-sm rounded-full p-4 text-2xl text-white">
-                                    🔒
-                                  </div>
-                                </div>
-
-                                <div className="absolute bottom-4 w-full text-center text-white">
-                                  <div className="text-lg font-semibold">Day 2</div>
-                                  <div className="text-sm opacity-80">Genesis 4–6</div>
-                                  <div className="text-xs opacity-60">Unlocks tomorrow</div>
-                                </div>
-                              </>
-                            )}
-                          </div>
-
-                          {isActive && !completionMode && !isLocked && !isLockedToday && (
-                            <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
-                              START
-                            </div>
-                          )}
-
-                          {!completionMode && (
-                            <div className="mt-3 text-center">
-                              <div className="font-semibold text-white">
-                                {displayTitle}
-                              </div>
-                              <div className="text-sm text-slate-300">
-                                {node.label}
-                              </div>
-                            </div>
-                          )}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="bg-black/60 rounded-full p-4 text-white text-xl">
+                          🔒
                         </div>
                       </div>
-                    )
-                  })}
-                </div>
-              </div>
-              </div>
-            </div>
-          {/* RIGHT PANEL */}
-          <div className="w-full lg:w-[320px] flex-shrink-0 mt-6 lg:mt-0 lg:ml-6">
-          <div className="lg:sticky lg:top-6">
-          <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
-            <h2 className="text-xl font-bold mb-4">Your Progress</h2>
+                      <div className="absolute bottom-4 w-full text-center text-white">
+                        <div className="font-semibold">Day 2</div>
+                        <div className="text-sm opacity-70">Genesis 4–6</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full">
+                  <div className="text-center mt-6">
+                    <div className="flex-shrink-0 flex justify-center mb-8">
+                      <div className="text-center max-w-md">
+                        <h1 className="text-3xl md:text-5xl font-bold text-white">
+                          {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
+                        </h1>
+
+                        <p className="text-gray-200 mt-1">
+                          Progress through Scripture
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="lg:hidden sticky top-0 z-30 mb-4">
+                    <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-orange-400 font-semibold animate-pulse">
+                          🔥 {streak}
+                        </span>
+                        <span className="text-gray-200">
+                          🎯 Goal
+                        </span>
+                        <span className="font-semibold text-white">
+                          {dailyProgress} / {dailyGoal}
+                        </span>
+                      </div>
+
+                      <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-green-400"
+                          style={{ width: `${(dailyProgress / dailyGoal) * 100}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {weakCount > 0 && (
+                    <div className="lg:hidden mb-4">
+                      <button
+                        onClick={handleTrainWeak}
+                        className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Train Weak Areas
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="mt-8 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
+                    <div className="hidden md:flex justify-between mb-4 w-full max-w-[960px] px-4">
+                      <button
+                        onClick={() => {
+                          if (activeIndex <= 0) return
+                          const nextIndex = activeIndex - 1
+                          setActiveIndex(nextIndex)
+                          setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                        }}
+                        className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                      >
+                        ←
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          if (activeIndex >= journeyNodes.length - 1) return
+                          const nextIndex = activeIndex + 1
+                          setActiveIndex(nextIndex)
+                          setSelectedSegment(journeyNodes[nextIndex]?.segment)
+                        }}
+                        className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                      >
+                        →
+                      </button>
+                    </div>
+
+                    <div className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar">
+                      <div
+                        className="flex items-center gap-6 relative"
+                        onMouseDown={handleStart}
+                        onMouseUp={handleEnd}
+                        onTouchStart={handleStart}
+                        onTouchMove={(e) => e.stopPropagation()}
+                        onTouchEnd={handleEnd}
+                      >
+                        {visibleNodes.map((node) => {
+                          const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
+                          const dayNumber = index + 1
+                          const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
+                          const offset = index - activeIndex
+                          const isActive = offset === 0
+                          const isLocked = node.state === "locked"
+                          const isAccessible = node.isAccessible
+                          const isLockedToday = completionMode
+                          const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
+
+                          return (
+                            <div
+                              key={index}
+                              className={`
+                                relative
+                                w-[260px] md:w-[300px]
+                                aspect-[9/16]
+                                rounded-2xl overflow-hidden
+                                transition-all duration-300
+                                flex-shrink-0
+                                ${isActive ? "scale-105 z-10" : "scale-95 opacity-60"}
+                              `}
+                            >
+                              <div className="relative flex flex-col items-center h-full">
+                                {node.isTodayTarget && !isLocked && !isLockedToday && (
+                                  <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
+                                )}
+
+                                {isActive && !isLockedToday && (
+                                  <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
+                                )}
+
+                                {isLocked && (
+                                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
+                                    <span className="text-xl">🔒</span>
+                                  </div>
+                                )}
+
+                                {isDailyLocked && !isLocked && (
+                                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
+                                    <div className="text-center">
+                                      <div className="text-xl">🔒</div>
+                                      <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
+                                    </div>
+                                  </div>
+                                )}
+
+                                <div
+                                  onClick={() => {
+                                    if (completionMode) return
+                                    const isFirstNode = index === 0
+
+                                    if (isFree && !isFirstNode) {
+                                      console.error("REDIRECT TRIGGERED HERE", {
+                                        location: "app/journey/page.tsx",
+                                        planType,
+                                        isPro,
+                                        isProPlus,
+                                        activeProgramId: null,
+                                        segmentParam: node.segment,
+                                        safeDepth: null
+                                      });
+                                      router.push("/pricing")
+                                      return
+                                    }
+
+                                    if (isFree && isFirstNode) {
+                                      playSound("/sounds/tap.mp3")
+
+                                      router.push(`/segment?segment=${node.segment}`)
+                                      return
+                                    }
+
+                                    if (isLocked) return
+
+                                    if (index === activeIndex) {
+                                      if (isFree && effectiveDailyLimitReached) {
+                                        return
+                                      }
+
+                                      if (!isAccessible) {
+                                        return
+                                      }
+
+                                      playSound("/sounds/tap.mp3")
+
+                                      if (isFree) {
+                                        router.push(`/segment?segment=${node.segment}`)
+                                        return
+                                      }
+
+                                      router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                                    } else {
+                                      setActiveIndex(index)
+                                      setSelectedSegment(node.segment)
+                                    }
+                                  }}
+                                  className={`
+                                    relative
+                                    w-full h-full
+                                    rounded-2xl overflow-hidden
+                                    ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
+                                    border
+                                    transition-all duration-300
+                                    active:scale-[0.98]
+                                    hover:scale-[1.02]
+                                    hover:shadow-xl
+                                    ${isActive ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]" : "border-gray-600"}
+                                  `}
+                                >
+                                  <img
+                                    src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                                    alt={node.label}
+                                    className={`absolute inset-0 w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                                  />
+
+                                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                                </div>
+
+                                {isActive && !isLocked && !isLockedToday && (
+                                  <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
+                                    START
+                                  </div>
+                                )}
+
+                                <div className="mt-3 text-center">
+                                  <div className="font-semibold text-white">
+                                    {displayTitle}
+                                  </div>
+                                  <div className="text-sm text-slate-300">
+                                    {node.label}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="w-full lg:w-[320px] mt-6 lg:mt-0 lg:ml-6">
+              <div className="lg:sticky lg:top-6">
+                <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
+
+                  <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
             <div className="space-y-2">
               <div className="text-sm text-gray-200 mb-1">
@@ -756,11 +758,12 @@ export default function JourneyPage() {
               </div>
             )}
 
-          </div>
-          </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        </div>
+      </div>
     </div>
   )
 }
