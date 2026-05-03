@@ -31,9 +31,10 @@ export async function GET(req: NextRequest) {
     const searchParams = req.nextUrl.searchParams
     const depthParam = searchParams.get("depth")
     const depth = depthParam ? parseInt(depthParam) : null
+    const limit = depth || 5
 
     // ✅ DETERMINE QUESTION COUNT (SINGLE SOURCE OF TRUTH)
-    let questionCount = 2 // free default
+    let questionCount = limit
 
     if (
       access?.final_plan === "pro" ||
@@ -108,13 +109,14 @@ export async function GET(req: NextRequest) {
       let allQuestions = []
 
       for (const node of sortedNodes) {
-        const questions = await getQuestions({
+        const data = await getQuestions({
           book: node.book,
           startChapter: node.startChapter,
           endChapter: node.endChapter,
           limit: questionCount
         })
 
+        const questions = data.slice(0, questionCount)
         allQuestions.push(...questions)
       }
 
@@ -149,12 +151,14 @@ export async function GET(req: NextRequest) {
 
     const { book, startChapter, endChapter } = parsed
 
-    const questions = await getQuestions({
+    const data = await getQuestions({
       book,
       startChapter,
       endChapter,
       limit: questionCount
     })
+
+    const questions = data.slice(0, questionCount)
 
     return NextResponse.json(questions)
   } catch (err) {

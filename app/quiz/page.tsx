@@ -277,8 +277,10 @@ export default function QuizPage() {
       setLoadingQuestions(true);
 
       try {
+        const isFree = !isProUser && !isProPlusUser;
+        const enforcedDepth = isFree ? 5 : safeDepth;
         const response = await fetch(
-          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${safeDepth || ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
+          `/api/quiz/questions?segment=${encodeURIComponent(resolvedSegment)}&mode=${encodeURIComponent(mode)}&depth=${enforcedDepth ?? ""}&isPro=${String(isProUser || isProPlusUser)}&seed=${quizSeed}`,
           {
             credentials: 'include'
           }
