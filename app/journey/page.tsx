@@ -479,7 +479,7 @@ export default function JourneyPage() {
                           if (isFree && isFirstNode) {
                             playSound("/sounds/tap.mp3")
 
-                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                            router.push(`/segment?segment=${node.segment}`)
                             return
                           }
 
@@ -497,7 +497,7 @@ export default function JourneyPage() {
                             playSound("/sounds/tap.mp3")
 
                             if (isFree) {
-                              router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                              router.push(`/segment?segment=${node.segment}`)
                               return
                             }
 
@@ -650,7 +650,7 @@ export default function JourneyPage() {
 
                   // FREE -> normal access
                   if (planType === "free") {
-                    router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
+                    router.push(`/segment?segment=${activeNode.segment}`)
                     return
                   }
 

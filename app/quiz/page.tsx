@@ -53,7 +53,7 @@ function getStreakMessage(streak: number) {
 
 export default function QuizPage() {
   const router = useRouter();
-  const [segment, setSegment] = useState('genesis_1_3');
+  const [segment, setSegment] = useState('genesis-1-3');
   const [selectedSegmentParam, setSelectedSegmentParam] = useState<string | null>(null);
   const [paramsInitialized, setParamsInitialized] = useState(false);
 
@@ -147,7 +147,7 @@ export default function QuizPage() {
       const search = typeof window !== 'undefined' ? window.location.search : '';
       const params = new URLSearchParams(search);
       const segmentParam = params.get('segment');
-      const fallbackSegment = 'genesis_1_3';
+      const fallbackSegment = 'genesis-1-3';
       const programParam = params.get('program');
       const modeParam = params.get('mode') as 'scholar' | null;
       const previewParam = params.get('preview') === 'true';
@@ -173,7 +173,7 @@ export default function QuizPage() {
       }
 
       const matchedProgram = getProgramById(programParam);
-      if (matchedProgram) {
+      if (matchedProgram && plan !== "free") {
         const progress = await getProgramProgress(matchedProgram.id);
 
         if (progress.completed) {
@@ -219,29 +219,11 @@ export default function QuizPage() {
       setLoadingPro(false);
 
       if (mode === 'scholar' && !isProPlus) {
-        window.location.assign('/pricing?source=generic_upgrade');
         return;
-      }
-
-      const isFree = !isPro && !isProPlus
-      const segmentParam = selectedSegmentParam || segment
-
-      const isFirstFreeSegment =
-        segmentParam === "genesis-1-3"
-
-      const isQuickDepth =
-        safeDepth === 5
-
-      if (
-        activeProgramId &&
-        isFree &&
-        !(isFirstFreeSegment && isQuickDepth)
-      ) {
-        window.location.assign('/pricing?source=generic_upgrade');
       }
     }
     checkPro();
-  }, [activeProgramId, mode, paramsInitialized, safeDepth, segment, selectedSegmentParam]);
+  }, [mode, paramsInitialized]);
 
   useEffect(() => {
     const checkAccess = async () => {
@@ -473,12 +455,6 @@ export default function QuizPage() {
     markPreviewCompleted();
   }, [isPreviewMode, isProPlusUser, isProUser, previewCompletionSaved, quizCompleted]);
 
-  useEffect(() => {
-    if (previewCompleted === true && planType === "free") {
-      router.replace("/pricing?source=journey_pro_plus");
-    }
-  }, [planType, previewCompleted, router]);
-
   const isFreeUser = !isProUser && !isProPlusUser;
 
   useEffect(() => {
@@ -499,10 +475,6 @@ export default function QuizPage() {
   }
 
   if (previewCompleted === null || planType === null) {
-    return null;
-  }
-
-  if (previewCompleted === true && planType === "free") {
     return null;
   }
 

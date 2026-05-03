@@ -122,6 +122,9 @@ export default function SegmentIntro() {
   }
 
   const imageName = getImage(segment)
+  const quizHref = isFree
+    ? `/quiz?segment=${segment}&depth=5`
+    : `/quiz?program=${program}&segment=${segment}${questionCount ? `&depth=${questionCount}` : ""}`
   const depthOptions = [
     {
       id: "quick",
@@ -238,7 +241,7 @@ export default function SegmentIntro() {
 
           {questionCount !== null && (
             <Link
-              href={`/quiz?program=${program}&segment=${segment}${questionCount !== null ? `&depth=${questionCount}` : ""}`}
+              href={quizHref}
               className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
             >
               Continue →
