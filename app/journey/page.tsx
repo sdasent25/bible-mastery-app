@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
@@ -70,6 +70,8 @@ function getNodeIcon(label: string) {
 
 export default function JourneyPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const completed = searchParams.get("completed")
 
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
@@ -82,9 +84,25 @@ export default function JourneyPage() {
   const [dailyGoal, setDailyGoal] = useState(1)
   const [dailyProgress, setDailyProgress] = useState(0)
   const [timeLeft, setTimeLeft] = useState("")
+  const [justCompleted, setJustCompleted] = useState(false)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
+
+  useEffect(() => {
+    if (completed === "true") {
+      setJustCompleted(true)
+    }
+  }, [completed])
+
+  useEffect(() => {
+    if (justCompleted) {
+      const timeout = setTimeout(() => {
+        setJustCompleted(false)
+      }, 4000)
+      return () => clearTimeout(timeout)
+    }
+  }, [justCompleted])
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -348,6 +366,14 @@ export default function JourneyPage() {
             <p className="text-gray-200 mt-1">
               Progress through Scripture
             </p>
+
+            {justCompleted && (
+              <div className="text-center text-yellow-300 font-semibold mt-4">
+                🔥 You&apos;ve completed today&apos;s mission
+                <br />
+                ⏳ Come back tomorrow to continue your journey
+              </div>
+            )}
           </div>
         </div>
 

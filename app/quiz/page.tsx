@@ -8,7 +8,7 @@ import { createClient } from "@supabase/supabase-js";
 import { supabase } from '@/lib/supabase';
 import { completeToday, hasCompletedToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
-import { getProgramById, toQuizSegmentId } from '@/lib/programs';
+import { getProgramById } from '@/lib/programs';
 import {
   completeSegment,
   getProgramProgress,
@@ -943,11 +943,7 @@ export default function QuizPage() {
           <div className="space-y-3">
             {next && !isPreviewMode && (
               <button
-                onClick={() =>
-                  router.push(
-                    `/segment?program=${activeProgram?.id}&segment=${toQuizSegmentId(next.segment)}`
-                  )
-                }
+                onClick={() => router.push("/journey?completed=true")}
                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Continue Journey →
@@ -956,18 +952,7 @@ export default function QuizPage() {
 
             {isPreviewMode && (
               <button
-                onClick={() => {
-                  console.error("REDIRECT TRIGGERED HERE", {
-                    location: "app/quiz/page.tsx",
-                    planType,
-                    isPro: isProUser,
-                    isProPlus: isProPlusUser,
-                    activeProgramId,
-                    segmentParam: selectedSegmentParam || segment,
-                    safeDepth
-                  });
-                  router.push('/pricing?source=journey_locked')
-                }}
+                onClick={() => router.push("/journey?completed=true")}
                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Unlock Full Journey
@@ -993,7 +978,7 @@ export default function QuizPage() {
             )}
 
             <button
-              onClick={() => router.push('/journey')}
+              onClick={() => router.push('/journey?completed=true')}
               className="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-slate-600 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Back to Journey
