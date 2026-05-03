@@ -235,6 +235,8 @@ export default function JourneyPage() {
 
       const mapped = segments.map((seg, index) => {
         const segmentId = seg.id
+        const isNextNode = completionMode && index === 1
+        const isCompletedNode = completionMode && index === 0
         const isLocked = index > currentSegmentIndex
         let isAccessible = false
 
@@ -276,6 +278,8 @@ export default function JourneyPage() {
           label: seg.label,
           segment: segmentId,
           state,
+          isNextNode,
+          isCompletedNode,
           access,
           isAccessible,
           isTodayTarget,
@@ -470,15 +474,35 @@ export default function JourneyPage() {
                 const isActive = offset === 0
                 const isLocked = node.state === "locked"
                 const isAccessible = node.isAccessible
+                const isNextNode = completionMode && index === 1
+                const isCompletedNode = completionMode && index === 0
                 const isLockedToday = completionMode
+                const focusClass = isNextNode
+                  ? "scale-105 z-10"
+                  : ""
+                const glowClass = isNextNode
+                  ? "shadow-[0_0_25px_rgba(34,197,94,0.4)] animate-pulse"
+                  : ""
+                const dimClass = completionMode && !isNextNode
+                  ? "opacity-40"
+                  : ""
+                const completedClass = isCompletedNode
+                  ? "opacity-50"
+                  : ""
                 const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
                 return (
                   <div
                     key={index}
-                    className={`transition-all duration-300 ${
-                      isActive ? "scale-125 z-20" : "scale-95 opacity-60"
-                    } ${isLockedToday ? "opacity-40" : ""}`}
+                    className={`
+                      relative
+                      transition-all duration-300
+                      ${isActive ? "scale-125 z-20" : "scale-95 opacity-60"}
+                      ${focusClass}
+                      ${glowClass}
+                      ${dimClass}
+                      ${completedClass}
+                    `}
                   >
                     <div className="relative flex flex-col items-center">
                       {node.isTodayTarget && !isLocked && !isLockedToday && (
@@ -579,6 +603,14 @@ export default function JourneyPage() {
                         />
 
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+                        {isNextNode && (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="bg-black/60 rounded-full p-3 text-white text-xl">
+                              🔒
+                            </div>
+                          </div>
+                        )}
                       </div>
 
                       {isActive && !isLocked && !isLockedToday && (
@@ -594,6 +626,16 @@ export default function JourneyPage() {
                         <div className="text-sm text-slate-300">
                           {node.label}
                         </div>
+                        {isNextNode && (
+                          <div className="text-center mt-2 text-white">
+                            <div className="font-semibold">
+                              Day 2: Genesis 4–6
+                            </div>
+                            <div className="text-sm text-white/60">
+                              Unlocks tomorrow
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
