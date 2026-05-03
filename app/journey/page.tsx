@@ -315,8 +315,6 @@ export default function JourneyPage() {
           label: seg.label,
           segment: segmentId,
           state,
-          isNextNode,
-          isCompletedNode,
           access,
           isAccessible,
           isTodayTarget,
