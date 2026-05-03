@@ -376,7 +376,7 @@ export default function JourneyPage() {
               </div>
             )}
             {!completionMode && (
-              <>
+              <div>
                 <h1 className="text-3xl md:text-5xl font-bold text-white">
                   {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
                 </h1>
@@ -384,7 +384,7 @@ export default function JourneyPage() {
                 <p className="text-gray-200 mt-1">
                   Progress through Scripture
                 </p>
-              </>
+              </div>
             )}
           </div>
         </div>
