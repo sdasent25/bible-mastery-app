@@ -779,8 +779,6 @@ export default function JourneyPage() {
           </div>
         </div>
         </div>
-      </div>
-
     </div>
   )
 }
