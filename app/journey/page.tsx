@@ -472,6 +472,15 @@ export default function JourneyPage() {
                           const isFirstNode = index === 0
 
                           if (isFree && !isFirstNode) {
+                            console.error("REDIRECT TRIGGERED HERE", {
+                              location: "app/journey/page.tsx",
+                              planType,
+                              isPro,
+                              isProPlus,
+                              activeProgramId: null,
+                              segmentParam: node.segment,
+                              safeDepth: null
+                            });
                             router.push("/pricing")
                             return
                           }

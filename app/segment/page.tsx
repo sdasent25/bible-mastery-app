@@ -20,6 +20,12 @@ export default function SegmentIntro() {
   const program = searchParams.get("program") || "genesis"
   const isFree = planType === "free"
 
+  console.log("SEGMENT ACCESS CHECK", {
+    planType,
+    segment,
+    program
+  });
+
   const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
 
   let book: string | null = null
@@ -71,6 +77,15 @@ export default function SegmentIntro() {
       planType === "family_pro_plus"
 
     if (!hasFullAccess && !isFirstFreeSegment) {
+      console.error("REDIRECT TRIGGERED HERE", {
+        location: "app/segment/page.tsx",
+        planType,
+        isPro: planType === "pro" || planType === "family_pro",
+        isProPlus: planType === "pro_plus" || planType === "family_pro_plus",
+        activeProgramId: null,
+        segmentParam: segment,
+        safeDepth: questionCount
+      });
       router.push("/pricing?source=journey_locked")
       return
     }
@@ -220,6 +235,15 @@ export default function SegmentIntro() {
                       key={option.id}
                       onClick={() => {
                         if (isLockedOption) {
+                          console.error("REDIRECT TRIGGERED HERE", {
+                            location: "app/segment/page.tsx",
+                            planType,
+                            isPro: planType === "pro" || planType === "family_pro",
+                            isProPlus: planType === "pro_plus" || planType === "family_pro_plus",
+                            activeProgramId: null,
+                            segmentParam: segment,
+                            safeDepth: questionCount
+                          });
                           router.push("/pricing")
                           return
                         }

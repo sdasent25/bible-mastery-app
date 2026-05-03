@@ -101,6 +101,17 @@ export default function QuizPage() {
   const [safeDepth, setSafeDepth] = useState<number | null>(null);
   const [questionsPerDay, setQuestionsPerDay] = useState(10);
 
+  console.log("QUIZ LOAD STATE", {
+    planType,
+    isPro: isProUser,
+    isProPlus: isProPlusUser,
+    activeProgramId,
+    segment,
+    selectedSegmentParam,
+    safeDepth,
+    mode
+  });
+
   const activeProgram = getProgramById(activeProgramId);
   const isProgramMode = Boolean(activeProgram && activeProgramSegmentIndex !== null);
   const isFinalProgramSegment = Boolean(
@@ -333,6 +344,15 @@ export default function QuizPage() {
       return;
     }
 
+    console.error("REDIRECT TRIGGERED HERE", {
+      location: "app/quiz/page.tsx",
+      planType,
+      isPro: isProUser,
+      isProPlus: isProPlusUser,
+      activeProgramId,
+      segmentParam: selectedSegmentParam || segment,
+      safeDepth
+    });
     window.location.assign('/pricing?source=generic_upgrade');
   };
 
@@ -598,7 +618,18 @@ export default function QuizPage() {
           </ul>
           <div className="space-y-3">
             <button
-              onClick={() => router.push("/pricing?source=journey_pro_plus")}
+              onClick={() => {
+                console.error("REDIRECT TRIGGERED HERE", {
+                  location: "app/quiz/page.tsx",
+                  planType,
+                  isPro: isProUser,
+                  isProPlus: isProPlusUser,
+                  activeProgramId,
+                  segmentParam: selectedSegmentParam || segment,
+                  safeDepth
+                });
+                router.push("/pricing?source=journey_pro_plus")
+              }}
               className="w-full bg-green-500 text-black font-bold py-3 px-4 rounded-xl transition-all duration-150 hover:bg-green-400 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-400"
             >
               Start My Journey
@@ -923,7 +954,18 @@ export default function QuizPage() {
 
             {isPreviewMode && (
               <button
-                onClick={() => router.push('/pricing?source=journey_locked')}
+                onClick={() => {
+                  console.error("REDIRECT TRIGGERED HERE", {
+                    location: "app/quiz/page.tsx",
+                    planType,
+                    isPro: isProUser,
+                    isProPlus: isProPlusUser,
+                    activeProgramId,
+                    segmentParam: selectedSegmentParam || segment,
+                    safeDepth
+                  });
+                  router.push('/pricing?source=journey_locked')
+                }}
                 className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Unlock Full Journey
