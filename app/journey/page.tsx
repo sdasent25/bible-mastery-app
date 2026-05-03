@@ -320,6 +320,7 @@ export default function JourneyPage() {
   const completedCount = journeyNodes.filter(n => n.state === "complete").length
   const totalCount = journeyNodes.length
   const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
+  const progress = dailyProgress
   const progressPercent = Math.min(
     (dailyProgress / dailyGoal) * 100,
     100,
@@ -352,7 +353,7 @@ export default function JourneyPage() {
         <div className="transition-opacity duration-300">
         <div className="flex-shrink-0 flex justify-center mb-8">
           <div className="text-center max-w-md">
-            {completionMode ? (
+            {completionMode && (
               <div className="text-center mt-4">
                 <h1 className="text-3xl font-bold text-white text-center">
                   🔥 Day Complete
@@ -369,7 +370,8 @@ export default function JourneyPage() {
                   🔥 Your streak continues tomorrow
                 </div>
               </div>
-            ) : (
+            )}
+            {!completionMode && (
               <>
                 <h1 className="text-3xl md:text-5xl font-bold text-white">
                   {getProgramById(selectedProgram)?.title?.replace(" Program","") || selectedProgram}
@@ -383,6 +385,8 @@ export default function JourneyPage() {
           </div>
         </div>
 
+        {!completionMode && (
+        <>
         <div className="lg:hidden sticky top-0 z-30 mb-4">
           <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
             <div className="flex items-center justify-between text-sm mb-1">
@@ -598,6 +602,8 @@ export default function JourneyPage() {
             </div>
 
           </div>
+        </>
+        )}
 
           {/* RIGHT PANEL */}
           <div className="w-[320px] flex-shrink-0">
@@ -668,10 +674,6 @@ export default function JourneyPage() {
                 🎯 Daily Goal
               </div>
 
-              <div className="text-sm font-semibold mb-2">
-                Complete {dailyGoal} segments
-              </div>
-
               <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-green-400"
@@ -680,7 +682,7 @@ export default function JourneyPage() {
               </div>
 
               <div className="text-xs text-gray-200 mt-1">
-                {dailyProgress} / {dailyGoal}
+                {completionMode ? "✅ Completed" : `${progress} / 1`}
               </div>
             </div>
 
