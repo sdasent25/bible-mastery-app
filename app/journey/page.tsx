@@ -417,8 +417,9 @@ export default function JourneyPage() {
             </div>
           )}
 
-          <div className="flex w-full flex-col lg:flex-row justify-center gap-12 px-0 md:px-8">
-            <div className="mt-8 md:mt-16 flex flex-col items-center justify-center flex-1 max-w-4xl">
+          <div className="flex flex-col lg:flex-row w-full">
+            <div className="flex-1 flex flex-col items-center justify-start px-4">
+              <div className="mt-8 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl">
               <div className="hidden md:flex justify-between mb-4 w-full max-w-[960px] px-4">
                 <button
                   onClick={() => {
@@ -626,10 +627,11 @@ export default function JourneyPage() {
                   })}
                 </div>
               </div>
+              </div>
             </div>
-          </div>
           {/* RIGHT PANEL */}
-          <div className="w-[320px] flex-shrink-0">
+          <div className="w-full lg:w-[320px] flex-shrink-0 mt-6 lg:mt-0 lg:ml-6">
+          <div className="lg:sticky lg:top-6">
           <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
             <h2 className="text-xl font-bold mb-4">Your Progress</h2>
@@ -754,6 +756,7 @@ export default function JourneyPage() {
               </div>
             )}
 
+          </div>
           </div>
           </div>
         </div>
