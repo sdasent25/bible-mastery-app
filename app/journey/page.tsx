@@ -1,13 +1,14 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 import { getProgramById } from "@/lib/programs"
 import { nodes } from "@/lib/nodes"
 import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { hasCompletedToday } from "@/lib/streak"
 import { getXp } from "@/lib/xp"
 import { getIncorrectQuestions } from "@/lib/review"
 import { playSound } from "@/lib/sound"
@@ -70,8 +71,6 @@ function getNodeIcon(label: string) {
 
 export default function JourneyPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const completed = searchParams.get("completed")
 
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
@@ -90,16 +89,13 @@ export default function JourneyPage() {
   const startX = useRef(0)
 
   useEffect(() => {
-    if (completed === "true") {
-      setCompletionMode(true)
+    const checkCompletion = async () => {
+      const completed = await hasCompletedToday()
+      setCompletionMode(completed)
     }
-  }, [completed])
 
-  useEffect(() => {
-    if (completed === "true") {
-      router.replace("/journey")
-    }
-  }, [completed, router])
+    checkCompletion()
+  }, [])
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -357,25 +353,22 @@ export default function JourneyPage() {
         <div className="flex-shrink-0 flex justify-center mb-8">
           <div className="text-center max-w-md">
             {completionMode ? (
-              <>
+              <div className="text-center mt-4">
                 <h1 className="text-3xl font-bold text-white text-center">
                   🔥 Day Complete
                 </h1>
-                <p className="text-yellow-300 text-center mt-2">
-                  You showed up today. Keep the streak alive.
+                <p className="text-yellow-300 mt-2">
+                  You showed up today. Keep it going tomorrow.
                 </p>
                 <div className="text-center mt-4 text-white">
-                  <div className="text-lg font-semibold">
-                    ⏳ Next mission unlocks tomorrow
-                  </div>
-                  <div className="text-sm text-white/70 mt-1">
-                    Day 2: Genesis 4–6
-                  </div>
+                  ⏳ Next mission unlocks tomorrow
+                  <br />
+                  Day 2: Genesis 4–6
                 </div>
                 <div className="text-center mt-6 text-orange-400 font-semibold">
                   🔥 Your streak continues tomorrow
                 </div>
-              </>
+              </div>
             ) : (
               <>
                 <h1 className="text-3xl md:text-5xl font-bold text-white">
@@ -710,7 +703,7 @@ export default function JourneyPage() {
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
               >
-                Continue →
+                {completionMode ? "Come Back Tomorrow" : "Continue →"}
               </button>
             </div>
 
