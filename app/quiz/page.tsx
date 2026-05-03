@@ -59,10 +59,13 @@ export default function QuizPage() {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState<boolean | null>(null);
   const [score, setScore] = useState(0);
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [combo, setCombo] = useState(0);
+  const [comboFlash, setComboFlash] = useState(false);
   const [, setShowResult] = useState<"correct" | "wrong" | null>(null);
   const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
   const [showXpGain, setShowXpGain] = useState(false);
@@ -376,6 +379,14 @@ export default function QuizPage() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [selectedAnswer, currentQuestion]);
 
+  useEffect(() => {
+    if (combo > 1) {
+      setComboFlash(true);
+      const timeout = window.setTimeout(() => setComboFlash(false), 300);
+      return () => window.clearTimeout(timeout);
+    }
+  }, [combo]);
+
   const buildWeakQuestionSet = (ids: string[]) => {
     const idSet = new Set(ids);
     return shuffleArray(questions.filter((question) => idSet.has(question.id)));
@@ -636,17 +647,35 @@ export default function QuizPage() {
   const progress = ((currentQuestionIndex + 1) / availableQuestionCount) * 100;
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
   const isAnswered = selectedAnswer !== null;
-  const isCorrectAnswer = selectedAnswer === currentQuestion.correctIndex;
+  const correctIndex = currentQuestion.correctIndex;
+
+  const getButtonStyle = (index: number) => {
+    if (!showFeedback) return "bg-blue-600";
+
+    if (index === correctIndex) {
+      return "bg-green-500 scale-105";
+    }
+
+    if (index === selectedAnswer) {
+      return "bg-red-500";
+    }
+
+    return "bg-gray-700 opacity-50";
+  };
 
   const handleAnswerSelect = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
     const correctAnswer = currentQuestion.correctIndex;
+    const correct = answerIndex === correctIndex;
+    const shouldAutoAdvance = !isReviewMode;
     console.log("ANSWER CLICKED", {
       questionId: currentQuestion.id,
       selectedAnswer: answerIndex,
       correctAnswer
     });
     setSelectedAnswer(answerIndex);
+    setIsCorrectAnswer(correct);
+    setShowFeedback(shouldAutoAdvance);
 
     if (!isReviewMode) {
       const handleProgress = async () => {
@@ -710,6 +739,13 @@ export default function QuizPage() {
       };
 
       handleProgress();
+
+      window.setTimeout(() => {
+        handleNextQuestion();
+        setSelectedAnswer(null);
+        setShowFeedback(false);
+        setIsCorrectAnswer(null);
+      }, 700);
     }
   };
 
@@ -727,6 +763,8 @@ export default function QuizPage() {
     setShowXpGain(false);
     setShowCelebration(false);
     setFlameState("idle");
+    setShowFeedback(false);
+    setIsCorrectAnswer(null);
 
     const isLastQuestion = currentQuestionIndex >= availableQuestionCount - 1
 
@@ -743,6 +781,8 @@ export default function QuizPage() {
   const resetQuiz = () => {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
+    setShowFeedback(false);
+    setIsCorrectAnswer(null);
     setScore(0);
     setStreak(0);
     setCombo(0);
@@ -774,12 +814,16 @@ export default function QuizPage() {
     setReviewQuestions(incorrectQuestions.map(item => item.question));
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
+    setShowFeedback(false);
+    setIsCorrectAnswer(null);
     setQuizCompleted(false);
     setShowRetryPrompt(false);
   };
 
   const handleTryAgain = () => {
     setSelectedAnswer(null);
+    setShowFeedback(false);
+    setIsCorrectAnswer(null);
     setShowRetryPrompt(false);
   };
 
@@ -1045,7 +1089,9 @@ export default function QuizPage() {
                     </p>
                   )}
                 </div>
-                <span>⚡ Combo: {combo}</span>
+                <div className={`${comboFlash ? "scale-110 text-yellow-400" : ""} transition-all duration-200`}>
+                  🔥 Combo: {combo}
+                </div>
                 <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
               </div>
 
@@ -1075,7 +1121,7 @@ export default function QuizPage() {
                 )}
               </div>
 
-              {!isAnswered && (
+              {(!isAnswered || showFeedback) && (
                 <div className="flex-shrink-0 space-y-2">
                   <p className="text-sm text-slate-300 text-center">
                     Select the correct answer
@@ -1086,30 +1132,7 @@ export default function QuizPage() {
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
                       disabled={selectedAnswer !== null}
-                      className="
-                        relative
-                        w-full text-left
-                        py-2.5
-                        px-4 md:px-6
-                        text-sm
-                        rounded-xl
-                        border border-white/10
-                        bg-slate-900
-                        font-medium
-                        transition-all duration-150
-                        hover:bg-slate-800
-                        hover:scale-[1.02]
-                        hover:shadow-[0_0_20px_rgba(59,130,246,0.4)]
-                        shadow-md
-                        active:scale-95
-                        active:brightness-90
-                        disabled:opacity-50
-                        disabled:cursor-not-allowed
-                        button-primary
-                        focus:outline-none focus:ring-2 focus:ring-blue-500
-                        text-white
-                        md:py-3
-                      "
+                      className={`w-full py-4 px-4 md:px-6 text-left text-sm rounded-xl border border-white/10 font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 ${getButtonStyle(index)}`}
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
                       <div className="flex items-center justify-between gap-4">
@@ -1125,7 +1148,7 @@ export default function QuizPage() {
                 </div>
               )}
 
-              {isAnswered && (
+              {isAnswered && !showFeedback && (
                 <div className="flex flex-col items-center justify-center text-center mt-1 animate-[fadeIn_0.25s_ease]">
                   {isCorrectAnswer ? (
                     <>
