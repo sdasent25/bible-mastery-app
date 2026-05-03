@@ -17,6 +17,9 @@ export default function SegmentIntro() {
   const [availableCount, setAvailableCount] = useState<number | null>(null)
 
   const segment = searchParams.get("segment") || ""
+  const normalizedSegment = segment
+    ?.toLowerCase()
+    .replaceAll("_", "-")
   const program = searchParams.get("program") || "genesis"
   const isFree = planType === "free"
 
@@ -68,7 +71,8 @@ export default function SegmentIntro() {
   useEffect(() => {
     if (!profileLoaded) return
 
-    const isFirstFreeSegment = planType === "free" && segment === "genesis-1-3"
+    const isFirstFreeSegment =
+      planType === "free" && normalizedSegment === "genesis-1-3"
 
     const hasFullAccess =
       planType === "pro" ||
