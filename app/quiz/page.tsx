@@ -210,6 +210,8 @@ export default function QuizPage() {
   }, []);
 
   useEffect(() => {
+    if (!paramsInitialized) return
+
     async function checkPro() {
       const { isPro, isProPlus } = await getSubscriptionStatus();
       setIsProUser(isPro);
@@ -222,9 +224,10 @@ export default function QuizPage() {
       }
 
       const isFree = !isPro && !isProPlus
+      const segmentParam = selectedSegmentParam || segment
 
       const isFirstFreeSegment =
-        isFree && (selectedSegmentParam || segment) === "genesis-1-3"
+        segmentParam === "genesis-1-3"
 
       const isQuickDepth =
         safeDepth === 5
@@ -238,7 +241,7 @@ export default function QuizPage() {
       }
     }
     checkPro();
-  }, [activeProgramId, mode, safeDepth, segment, selectedSegmentParam]);
+  }, [activeProgramId, mode, paramsInitialized, safeDepth, segment, selectedSegmentParam]);
 
   useEffect(() => {
     const checkAccess = async () => {
