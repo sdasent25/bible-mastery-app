@@ -611,46 +611,6 @@ export default function QuizPage() {
     );
   }
 
-  if (!isProUser && quizCompleted && !isReviewMode) {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
-          <h1 className="text-2xl font-bold text-center text-white mb-4">Start Your Journey</h1>
-          <p className="text-center text-white mb-4">Continue your journey through Scripture and build lasting understanding</p>
-          <ul className="text-sm text-white space-y-2 mb-6">
-            <li>📖 Progress through the full Bible</li>
-            <li>🔥 Build consistency and streaks</li>
-            <li>🧠 Strengthen long-term memory</li>
-          </ul>
-          <div className="space-y-3">
-            <button
-              onClick={() => {
-                console.error("REDIRECT TRIGGERED HERE", {
-                  location: "app/quiz/page.tsx",
-                  planType,
-                  isPro: isProUser,
-                  isProPlus: isProPlusUser,
-                  activeProgramId,
-                  segmentParam: selectedSegmentParam || segment,
-                  safeDepth
-                });
-                router.push("/pricing?source=journey_pro_plus")
-              }}
-              className="w-full bg-green-500 text-black font-bold py-3 px-4 rounded-xl transition-all duration-150 hover:bg-green-400 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-green-400"
-            >
-              Start My Journey
-            </button>
-            <Link href="/dashboard" className="block">
-              <button className="w-full bg-gray-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-gray-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500">
-                Back to Dashboard
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (!questions) {
     return <div>Loading questions...</div>;
   }
