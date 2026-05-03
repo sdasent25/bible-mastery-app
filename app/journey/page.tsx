@@ -329,6 +329,8 @@ export default function JourneyPage() {
     (dailyProgress / dailyGoal) * 100,
     100,
   )
+  const nextNode = journeyNodes[1] ?? nodes[1]
+  const completedNode = journeyNodes[0] ?? nodes[0]
   const program = getProgramById(selectedProgram)
   const nextSegment = nodes[safeCurrentIndex + 1]
   const isFree = planType === "free"
@@ -356,26 +358,55 @@ export default function JourneyPage() {
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
         {completionMode ? (
-          <div>
-            <div className="flex-shrink-0 flex justify-center mb-8">
-              <div className="text-center max-w-md">
-                <div className="text-center mt-4">
-                  <h1 className="text-3xl font-bold text-white text-center">
-                    🔥 Day Complete
-                  </h1>
-                  <p className="text-yellow-300 mt-2">
-                    You showed up today. Keep it going tomorrow.
-                  </p>
-                  <div className="text-center mt-4 text-white">
-                    ⏳ Next mission unlocks tomorrow
-                    <br />
-                    Day 2: Genesis 4–6
-                  </div>
-                  <div className="text-center mt-6 text-orange-400 font-semibold">
-                    🔥 Your streak continues tomorrow
+          <div className="flex flex-col items-center justify-center w-full px-4">
+            <div className="text-center mt-6">
+              <h1 className="text-3xl md:text-4xl font-bold text-white">
+                🔥 Day 1 Complete
+              </h1>
+              <p className="text-yellow-300 mt-2">
+                You showed up today. Keep it going tomorrow.
+              </p>
+            </div>
+
+            <div className="mt-8 w-full max-w-md">
+              <div className="relative rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(34,197,94,0.4)] animate-pulse">
+                <img
+                  src={`/icons/genesis/${getNodeIcon(nextNode.label)}`}
+                  className="w-full h-[240px] object-cover opacity-70"
+                  alt={nextNode.label}
+                />
+
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="bg-black/60 rounded-full p-4 text-white text-2xl">
+                    🔒
                   </div>
                 </div>
               </div>
+
+              <div className="text-center mt-4 text-white">
+                <div className="text-lg font-semibold">
+                  Day 2: Genesis 4–6
+                </div>
+                <div className="text-sm text-white/60 mt-1">
+                  Unlocks tomorrow
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 w-full max-w-sm opacity-40">
+              <img
+                src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
+                className="w-full h-[160px] object-cover rounded-xl"
+                alt={completedNode.label}
+              />
+
+              <div className="text-center mt-2 text-white text-sm">
+                ✔ Completed
+              </div>
+            </div>
+
+            <div className="text-center mt-6 text-orange-400 font-semibold">
+              🔥 Your streak continues tomorrow
             </div>
           </div>
         ) : (
