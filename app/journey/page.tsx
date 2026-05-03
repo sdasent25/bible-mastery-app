@@ -73,7 +73,7 @@ export default function JourneyPage() {
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(1)
   const [selectedSegment, setSelectedSegment] = useState(nodes[0]?.id)
   const [planType, setPlanType] = useState<JourneyPlanType | null>(null)
   const [xp, setXp] = useState(0)
@@ -94,6 +94,47 @@ export default function JourneyPage() {
 
     checkCompletion()
   }, [])
+
+  useEffect(() => {
+    if (completionMode) {
+      setActiveIndex(1)
+    }
+  }, [completionMode])
+
+  useEffect(() => {
+    const container = document.querySelector("#node-scroll")
+
+    if (!container) return
+
+    const handleScroll = () => {
+      const scrollEl = container as HTMLElement
+      const track = scrollEl.firstElementChild as HTMLElement | null
+      if (!track) return
+
+      const children = Array.from(track.children)
+      const center = scrollEl.scrollLeft + scrollEl.offsetWidth / 2
+
+      let closest = 0
+      let minDist = Infinity
+
+      children.forEach((child, index) => {
+        const el = child as HTMLElement
+        const childCenter = el.offsetLeft + el.offsetWidth / 2
+        const dist = Math.abs(center - childCenter)
+
+        if (dist < minDist) {
+          minDist = dist
+          closest = Number(el.dataset.nodeIndex ?? index)
+        }
+      })
+
+      setActiveIndex(closest)
+    }
+
+    container.addEventListener("scroll", handleScroll)
+
+    return () => container.removeEventListener("scroll", handleScroll)
+  }, [completionMode])
 
   useEffect(() => {
     const loadPlan = async () => {
@@ -233,8 +274,6 @@ export default function JourneyPage() {
 
       const mapped = segments.map((seg, index) => {
         const segmentId = seg.id
-        const isNextNode = completionMode && index === 1
-        const isCompletedNode = completionMode && index === 0
         const isLocked = index > currentSegmentIndex
         let isAccessible = false
 
@@ -327,8 +366,6 @@ export default function JourneyPage() {
     (dailyProgress / dailyGoal) * 100,
     100,
   )
-  const completedNode = journeyNodes[0] ?? nodes[0]
-  const nextNode = journeyNodes[1] ?? nodes[1]
   const program = getProgramById(selectedProgram)
   const nextSegment = nodes[safeCurrentIndex + 1]
   const isFree = planType === "free"
@@ -346,7 +383,6 @@ export default function JourneyPage() {
     isFree && dailyProgress >= 1
   const effectiveDailyLimitReached =
     devBypass ? false : dailyLimitReached
-  const hasJourneyAccess = isPro || isProPlus
   const isPlanReady = planType !== null
 
   return (
@@ -369,35 +405,64 @@ export default function JourneyPage() {
                     </p>
                   </div>
 
-                  <div className="flex items-center justify-center gap-6 mt-8">
-                    <div className="w-[240px] aspect-[9/16] opacity-60">
-                      <img
-                        src={`/icons/genesis/${getNodeIcon(completedNode.label)}`}
-                        className="w-full h-full object-contain"
-                        alt={completedNode.label}
-                      />
-                      <div className="text-center text-white text-sm mt-2">
-                        ✔ Completed
-                      </div>
-                    </div>
+                  <div
+                    id="node-scroll"
+                    className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar snap-x snap-mandatory"
+                    style={{ scrollBehavior: "smooth" }}
+                  >
+                    <div
+                      className="flex items-center gap-6"
+                      onMouseDown={handleStart}
+                      onMouseUp={handleEnd}
+                      onTouchStart={handleStart}
+                      onTouchMove={(e) => e.stopPropagation()}
+                      onTouchEnd={handleEnd}
+                    >
+                      {visibleNodes.map((node) => {
+                        const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
+                        const isActive = index === activeIndex
+                        const isCompletedNode = completionMode && index === 0
+                        const isNextNode = completionMode && index === 1
 
-                    <div className="relative w-[260px] aspect-[9/16] scale-105">
-                      <img
-                        src={`/icons/genesis/${getNodeIcon(nextNode.label)}`}
-                        className="w-full h-full object-contain"
-                        alt={nextNode.label}
-                      />
+                        return (
+                          <div
+                            key={index}
+                            data-node-index={index}
+                            className="snap-center flex-shrink-0"
+                          >
+                            <div
+                              className={`
+                                relative
+                                w-[220px] md:w-[260px]
+                                aspect-[9/16]
+                                transition-all duration-300
+                                ${isActive ? "scale-105 z-10" : "scale-90 opacity-50"}
+                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.35)] animate-pulse" : ""}
+                              `}
+                            >
+                              <img
+                                src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                                className="w-full h-full object-contain"
+                                alt={node.label}
+                              />
 
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="bg-black/60 rounded-full p-4 text-white text-xl">
-                          🔒
-                        </div>
-                      </div>
+                              {isNextNode && (
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <div className="bg-black/60 rounded-full p-4 text-white text-xl">
+                                    🔒
+                                  </div>
+                                </div>
+                              )}
 
-                      <div className="absolute bottom-4 w-full text-center text-white">
-                        <div className="font-semibold">Day 2</div>
-                        <div className="text-sm opacity-70">Genesis 4–6</div>
-                      </div>
+                              {isCompletedNode && (
+                                <div className="absolute bottom-2 w-full text-center text-white text-sm">
+                                  ✔ Completed
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
@@ -478,9 +543,13 @@ export default function JourneyPage() {
                       </button>
                     </div>
 
-                    <div className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar">
+                    <div
+                      id="node-scroll"
+                      className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar snap-x snap-mandatory"
+                      style={{ scrollBehavior: "smooth" }}
+                    >
                       <div
-                        className="flex items-center gap-6 relative"
+                        className="flex items-center gap-6"
                         onMouseDown={handleStart}
                         onMouseUp={handleEnd}
                         onTouchStart={handleStart}
@@ -491,24 +560,28 @@ export default function JourneyPage() {
                           const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                           const dayNumber = index + 1
                           const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
-                          const offset = index - activeIndex
-                          const isActive = offset === 0
+                          const isActive = index === activeIndex
                           const isLocked = node.state === "locked"
                           const isAccessible = node.isAccessible
+                          const isCompletedNode = completionMode && index === 0
+                          const isNextNode = completionMode && index === 1
                           const isLockedToday = completionMode
                           const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
                           return (
                             <div
                               key={index}
-                              className={`
-                                relative
-                                w-[260px] md:w-[300px]
+                              data-node-index={index}
+                              className="snap-center flex-shrink-0"
+                            >
+                              <div
+                                className={`
+                                  relative
+                                w-[220px] md:w-[260px]
                                 aspect-[9/16]
-                                rounded-2xl overflow-hidden
                                 transition-all duration-300
-                                flex-shrink-0
-                                ${isActive ? "scale-105 z-10" : "scale-95 opacity-60"}
+                                ${isActive ? "scale-105 z-10" : "scale-90 opacity-50"}
+                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.35)] animate-pulse" : ""}
                               `}
                             >
                               <div className="relative flex flex-col items-center h-full">
@@ -601,10 +674,24 @@ export default function JourneyPage() {
                                   <img
                                     src={`/icons/genesis/${getNodeIcon(node.label)}`}
                                     alt={node.label}
-                                    className={`absolute inset-0 w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                                    className={`w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
                                   />
 
                                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+                                  {isNextNode && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                      <div className="bg-black/60 rounded-full p-4 text-white text-xl">
+                                        🔒
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {isCompletedNode && (
+                                    <div className="absolute bottom-2 w-full text-center text-white text-sm">
+                                      ✔ Completed
+                                    </div>
+                                  )}
                                 </div>
 
                                 {isActive && !isLocked && !isLockedToday && (
@@ -621,6 +708,7 @@ export default function JourneyPage() {
                                     {node.label}
                                   </div>
                                 </div>
+                            </div>
                               </div>
                             </div>
                           )
