@@ -376,14 +376,13 @@ export default function JourneyPage() {
     <div className="min-h-screen flex flex-col">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
-      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220]">
-        <div className="absolute inset-0 flex flex-col">
-          <div className="h-[70px] flex items-center justify-between px-4">
+      <div className="md:hidden h-full flex flex-col">
+        <div className="h-[70px] flex items-center justify-between px-4">
             <div className="text-sm text-white">🔥 {streak}</div>
             <div className="text-sm text-white">🎯 {dailyProgress}/1</div>
           </div>
 
-          <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+          <div className="flex-1 flex items-center justify-center">
             <div
               className="relative w-full h-full flex items-center justify-center"
               onMouseDown={handleStart}
@@ -538,38 +537,6 @@ export default function JourneyPage() {
                 )
               })}
             </div>
-          </div>
-
-          <div className="h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
-            <Link href="/dashboard" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">🏠</span>
-              <span>Dashboard</span>
-            </Link>
-
-            <Link href="/journey" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">📖</span>
-              <span>Journey</span>
-            </Link>
-
-            <Link href="/flashcards" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">🧠</span>
-              <span>Flashcards</span>
-            </Link>
-
-            <Link href="/quests" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">🗺️</span>
-              <span>Quests</span>
-            </Link>
-
-            <Link href="/leaderboard" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">🏆</span>
-              <span>Leaderboard</span>
-            </Link>
-
-            <Link href="/settings" className="flex flex-col items-center text-white text-xs">
-              <span className="text-xl">⚙️</span>
-              <span>Settings</span>
-            </Link>
           </div>
         </div>
       </div>

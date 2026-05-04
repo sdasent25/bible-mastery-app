@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { useState } from "react"
 import Sidebar from "@/components/layout/Sidebar"
 
@@ -41,11 +42,51 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div
-          className={`flex-1 overflow-y-auto p-2 md:p-6 transition ${
+          className={`flex-1 md:overflow-y-auto md:p-6 transition ${
             open ? "pointer-events-none blur-sm" : ""
           }`}
         >
-          {children}
+          <div className="md:hidden fixed inset-0 bg-[#0B1220] flex flex-col">
+            <div className="flex-1 overflow-hidden">
+              {children}
+            </div>
+
+            <div className="h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
+              <Link href="/dashboard" className="flex flex-col items-center text-xs">
+                <span>🏠</span>
+                <span>Home</span>
+              </Link>
+
+              <Link href="/journey" className="flex flex-col items-center text-xs">
+                <span>📖</span>
+                <span>Journey</span>
+              </Link>
+
+              <Link href="/flashcards" className="flex flex-col items-center text-xs">
+                <span>🧠</span>
+                <span>Cards</span>
+              </Link>
+
+              <Link href="/quests" className="flex flex-col items-center text-xs">
+                <span>⚔️</span>
+                <span>Quests</span>
+              </Link>
+
+              <Link href="/leaderboard" className="flex flex-col items-center text-xs">
+                <span>🏆</span>
+                <span>Rank</span>
+              </Link>
+
+              <Link href="/settings" className="flex flex-col items-center text-xs">
+                <span>⚙️</span>
+                <span>Settings</span>
+              </Link>
+            </div>
+          </div>
+
+          <div className="hidden md:block">
+            {children}
+          </div>
         </div>
       </div>
     </div>
