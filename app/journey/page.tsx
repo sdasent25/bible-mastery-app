@@ -382,7 +382,7 @@ export default function JourneyPage() {
             <div className="order-1 lg:order-none flex-1 flex flex-col items-center px-4">
               {completionMode ? (
                 <div className="w-full flex flex-col items-center">
-                  <div className="text-center mt-4 md:mt-12">
+                  <div className="text-center mt-2 md:mt-12">
                     <h1 className="text-2xl md:text-4xl font-bold text-white">
                       🔥 Day 1 Complete
                     </h1>
@@ -394,7 +394,12 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
-                  <div className="min-h-[60vh] flex items-center justify-center w-full">
+                  <div className="md:hidden flex justify-center gap-6 mt-2 text-sm text-white/80">
+                    <div>🔥 {streak}</div>
+                    <div>🎯 {dailyProgress}/1</div>
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center min-h-[65vh] md:min-h-0 w-full">
                   <div
                     className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
                     onMouseDown={handleStart}
@@ -438,7 +443,7 @@ export default function JourneyPage() {
                           <div className="relative w-[260px] md:w-[320px] lg:w-[380px] aspect-[9/16]">
                             <img
                               src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                              className="w-full h-full object-contain"
+                              className="w-full h-full object-contain max-h-[65vh]"
                               alt={node.label}
                             />
 
@@ -476,7 +481,7 @@ export default function JourneyPage() {
                     </div>
                   </div>
 
-                  <div className="lg:hidden sticky top-0 z-30 mb-4">
+                  <div className="hidden md:block lg:hidden sticky top-0 z-30 mb-4">
                     <div className="bg-[#121A2B] rounded-xl px-4 py-3 shadow-md">
                       <div className="flex items-center justify-between text-sm mb-1">
                         <span className="text-orange-400 font-semibold animate-pulse">
@@ -500,7 +505,7 @@ export default function JourneyPage() {
                   </div>
 
                   {weakCount > 0 && (
-                    <div className="lg:hidden mb-4">
+                    <div className="hidden md:block lg:hidden mb-4">
                       <button
                         onClick={handleTrainWeak}
                         className="w-full rounded-xl border border-gray-700 bg-[#1A2233] px-6 py-3 text-white transition-all duration-200 hover:scale-105 hover:bg-[#222C40] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -510,7 +515,12 @@ export default function JourneyPage() {
                     </div>
                   )}
 
-                  <div className="mt-6 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto min-h-[60vh]">
+                  <div className="md:hidden flex justify-center gap-6 mt-2 text-sm text-white/80">
+                    <div>🔥 {streak}</div>
+                    <div>🎯 {dailyProgress}/1</div>
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center min-h-[65vh] md:min-h-0 w-full max-w-4xl mx-auto">
                     <div
                       className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
                       onMouseDown={handleStart}
@@ -657,7 +667,7 @@ export default function JourneyPage() {
                                 <img
                                   src={`/icons/genesis/${getNodeIcon(node.label)}`}
                                   alt={node.label}
-                                  className={`w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                                  className={`w-full h-full object-contain max-h-[65vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
                                 />
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -699,7 +709,7 @@ export default function JourneyPage() {
               )}
             </div>
 
-            <div className="order-2 lg:order-none w-full lg:w-[320px] mt-4 lg:mt-0 lg:ml-6">
+            <div className="hidden md:block order-2 lg:order-none w-full lg:w-[320px] mt-4 lg:mt-0 lg:ml-6">
               <div className="lg:sticky lg:top-6">
                 <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-4 md:p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
@@ -828,6 +838,31 @@ export default function JourneyPage() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="h-[80px] md:hidden" />
+          <div className="fixed bottom-0 left-0 w-full bg-black/80 backdrop-blur-md p-4 flex justify-between items-center md:hidden z-50">
+            <div className="text-white text-sm">
+              📊 Progress
+            </div>
+
+            <button
+              onClick={() => {
+                if (!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode) return
+
+                playSound("/sounds/click.mp3")
+
+                if (planType === "free") {
+                  router.push(`/segment?segment=${activeNode.segment}`)
+                  return
+                }
+
+                router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
+              }}
+              className="bg-green-500 text-black px-6 py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
+            >
+              Continue →
+            </button>
           </div>
         </div>
       </div>
