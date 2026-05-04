@@ -376,173 +376,202 @@ export default function JourneyPage() {
     <div className="min-h-screen flex flex-col">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
-      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220] flex flex-col justify-between">
-        <div className="flex justify-between items-center px-4 py-2 text-white text-sm">
-          <div>🔥 {streak}</div>
-          <div>🎯 {dailyProgress}/1</div>
-        </div>
+      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220]">
+        <div className="absolute inset-0 flex flex-col">
+          <div className="h-[70px] flex items-center justify-between px-4">
+            <div className="text-sm text-white">🔥 {streak}</div>
+            <div className="text-sm text-white">🎯 {dailyProgress}/1</div>
+          </div>
 
-        <div className="flex-1 flex items-center justify-center">
-          <div
-            className="relative w-full max-w-[900px] max-h-[65vh] h-full flex items-center justify-center"
-            onMouseDown={handleStart}
-            onMouseUp={handleEnd}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{ touchAction: "pan-y" }}
-          >
-            {journeyNodes.map((node, index) => {
-              const dayNumber = index + 1
-              const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
-              const isActive = index === activeIndex
-              const isLeft = index === activeIndex - 1
-              const isRight = index === activeIndex + 1
-              const isLocked = node.state === "locked"
-              const isAccessible = node.isAccessible
-              const isLockedToday = completionMode
-              const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
+          <div className="flex-1 relative flex items-center justify-center overflow-hidden">
+            <div
+              className="relative w-full h-full flex items-center justify-center"
+              onMouseDown={handleStart}
+              onMouseUp={handleEnd}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              style={{ touchAction: "pan-y" }}
+            >
+              {journeyNodes.map((node, index) => {
+                const dayNumber = index + 1
+                const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
+                const isActive = index === activeIndex
+                const isLeft = index === activeIndex - 1
+                const isRight = index === activeIndex + 1
+                const isLocked = node.state === "locked"
+                const isAccessible = node.isAccessible
+                const isLockedToday = completionMode
+                const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
-              return (
-                <div
-                  key={node.segment}
-                  className={`
-                    absolute top-1/2 left-1/2
-                    transition-all duration-500 ease-out
-                    ${isActive ? "z-20 -translate-x-1/2 -translate-y-1/2 scale-105" : ""}
-                    ${isLeft ? "z-10 -translate-x-[110%] -translate-y-1/2 scale-90 opacity-70" : ""}
-                    ${isRight ? "z-10 translate-x-[10%] -translate-y-1/2 scale-90 opacity-70" : ""}
-                    ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
-                  `}
-                >
-                  <div className="relative flex flex-col items-center">
-                    {node.isTodayTarget && !isLocked && !isLockedToday && (
-                      <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
-                    )}
+                return (
+                  <div
+                    key={node.segment}
+                    className={`
+                      absolute inset-0 flex items-center justify-center
+                      transition-all duration-500 ease-out
+                      ${isActive ? "z-20 scale-105" : ""}
+                      ${isLeft ? "z-10 -translate-x-[110%] scale-90 opacity-70" : ""}
+                      ${isRight ? "z-10 translate-x-[10%] scale-90 opacity-70" : ""}
+                      ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
+                    `}
+                  >
+                    <div className="w-[260px] aspect-[9/16] relative">
+                      {node.isTodayTarget && !isLocked && !isLockedToday && (
+                        <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
+                      )}
 
-                    {isActive && !isLockedToday && (
-                      <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
-                    )}
+                      {isActive && !isLockedToday && (
+                        <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
+                      )}
 
-                    {isLocked && (
-                      <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
-                        <span className="text-xl">🔒</span>
-                      </div>
-                    )}
+                      <div
+                        onClick={() => {
+                          if (completionMode) return
+                          const isFirstNode = index === 0
 
-                    {isDailyLocked && !isLocked && (
-                      <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
-                        <div className="text-center">
-                          <div className="text-xl">🔒</div>
-                          <div className="mt-2 text-xs font-semibold text-white">You&apos;ve completed today&apos;s mission</div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div
-                      onClick={() => {
-                        if (completionMode) return
-                        const isFirstNode = index === 0
-
-                        if (isFree && !isFirstNode) {
-                          console.error("REDIRECT TRIGGERED HERE", {
-                            location: "app/journey/page.tsx",
-                            planType,
-                            isPro,
-                            isProPlus,
-                            activeProgramId: null,
-                            segmentParam: node.segment,
-                            safeDepth: null
-                          });
-                          router.push("/pricing")
-                          return
-                        }
-
-                        if (isFree && isFirstNode) {
-                          playSound("/sounds/tap.mp3")
-
-                          router.push(`/segment?segment=${node.segment}`)
-                          return
-                        }
-
-                        if (isLocked) return
-
-                        if (index === activeIndex) {
-                          if (isFree && effectiveDailyLimitReached) {
+                          if (isFree && !isFirstNode) {
+                            console.error("REDIRECT TRIGGERED HERE", {
+                              location: "app/journey/page.tsx",
+                              planType,
+                              isPro,
+                              isProPlus,
+                              activeProgramId: null,
+                              segmentParam: node.segment,
+                              safeDepth: null
+                            });
+                            router.push("/pricing")
                             return
                           }
 
-                          if (!isAccessible) {
-                            return
-                          }
+                          if (isFree && isFirstNode) {
+                            playSound("/sounds/tap.mp3")
 
-                          playSound("/sounds/tap.mp3")
-
-                          if (isFree) {
                             router.push(`/segment?segment=${node.segment}`)
                             return
                           }
 
-                          router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
-                        } else {
-                          setActiveIndex(index)
-                          setSelectedSegment(node.segment)
-                        }
-                      }}
-                      className={`
-                        relative flex items-center justify-center
-                        max-h-[70vh]
-                        w-[260px] aspect-[9/16]
-                        rounded-2xl overflow-hidden
-                        ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
-                        border
-                        transition-all duration-300
-                        active:scale-95
-                        ${isActive ? "border-green-500 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : "border-gray-600"}
-                      `}
-                    >
-                      <img
-                        src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                        alt={node.label}
-                        className={`w-full h-full object-contain max-h-[65vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
-                      />
+                          if (isLocked) return
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                          if (index === activeIndex) {
+                            if (isFree && effectiveDailyLimitReached) {
+                              return
+                            }
 
-                      {completionMode && index === 1 && (
-                        <div className="absolute inset-0 flex items-center justify-center text-3xl text-white">
-                          🔒
+                            if (!isAccessible) {
+                              return
+                            }
+
+                            playSound("/sounds/tap.mp3")
+
+                            if (isFree) {
+                              router.push(`/segment?segment=${node.segment}`)
+                              return
+                            }
+
+                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                          } else {
+                            setActiveIndex(index)
+                            setSelectedSegment(node.segment)
+                          }
+                        }}
+                        className={`
+                          absolute inset-0
+                          rounded-2xl overflow-hidden
+                          ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
+                          border
+                          transition-all duration-300
+                          active:scale-95
+                          ${isActive ? "border-green-500 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : "border-gray-600"}
+                        `}
+                      >
+                        <img
+                          src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                          alt={node.label}
+                          className={`w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                        />
+
+                        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-center">
+                          <p className="text-sm font-semibold text-white">
+                            {displayTitle}
+                          </p>
+                          <p className="text-xs text-gray-300">
+                            {node.label}
+                          </p>
+                        </div>
+
+                        {isLocked && (
+                          <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
+                            <span className="text-xl">🔒</span>
+                          </div>
+                        )}
+
+                        {isDailyLocked && !isLocked && (
+                          <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
+                            <div className="text-center">
+                              <div className="text-xl">🔒</div>
+                              <div className="mt-2 text-xs font-semibold text-white">You&apos;ve completed today&apos;s mission</div>
+                            </div>
+                          </div>
+                        )}
+
+                        {completionMode && index === 1 && (
+                          <div className="absolute inset-0 flex items-center justify-center text-3xl text-white">
+                            🔒
+                          </div>
+                        )}
+
+                        {completionMode && index === 0 && (
+                          <div className="absolute bottom-14 left-0 right-0 text-center text-sm text-white">
+                            ✔ Completed
+                          </div>
+                        )}
+                      </div>
+
+                      {isActive && !isLocked && !isLockedToday && (
+                        <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-bold text-yellow-300 animate-float-slow">
+                          START
                         </div>
                       )}
-
-                      {completionMode && index === 0 && (
-                        <div className="absolute bottom-2 w-full text-center text-sm text-white">
-                          ✔ Completed
-                        </div>
-                      )}
-                    </div>
-
-                    {isActive && !isLocked && !isLockedToday && (
-                      <div className="absolute -top-6 text-sm font-bold text-yellow-300 animate-float-slow">
-                        START
-                      </div>
-                    )}
-
-                    <div className="mt-3 text-center">
-                      <div className="font-semibold text-white">
-                        {displayTitle}
-                      </div>
-                      <div className="text-sm text-slate-300">
-                        {node.label}
-                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
+                )
+              })}
+            </div>
+          </div>
+
+          <div className="h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
+            <Link href="/dashboard" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">🏠</span>
+              <span>Dashboard</span>
+            </Link>
+
+            <Link href="/journey" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">📖</span>
+              <span>Journey</span>
+            </Link>
+
+            <Link href="/flashcards" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">🧠</span>
+              <span>Flashcards</span>
+            </Link>
+
+            <Link href="/quests" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">🗺️</span>
+              <span>Quests</span>
+            </Link>
+
+            <Link href="/leaderboard" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">🏆</span>
+              <span>Leaderboard</span>
+            </Link>
+
+            <Link href="/settings" className="flex flex-col items-center text-white text-xs">
+              <span className="text-xl">⚙️</span>
+              <span>Settings</span>
+            </Link>
           </div>
         </div>
-        <div className="h-[80px]" />
       </div>
       <div className="hidden md:flex md:flex-1">
       <div className="relative flex-1 px-4 py-6 md:px-8">
@@ -1005,37 +1034,6 @@ export default function JourneyPage() {
           </div>
         </div>
       </div>
-      </div>
-      <div className="fixed bottom-0 left-0 w-full bg-black/95 border-t border-white/10 flex justify-around items-center py-3 z-50 md:hidden">
-        <Link href="/dashboard" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">🏠</span>
-          <span>Dashboard</span>
-        </Link>
-
-        <Link href="/journey" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">📖</span>
-          <span>Journey</span>
-        </Link>
-
-        <Link href="/flashcards" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">🧠</span>
-          <span>Flashcards</span>
-        </Link>
-
-        <Link href="/quests" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">🗺️</span>
-          <span>Quests</span>
-        </Link>
-
-        <Link href="/leaderboard" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">🏆</span>
-          <span>Leaderboard</span>
-        </Link>
-
-        <Link href="/settings" className="flex flex-col items-center text-white text-xs">
-          <span className="text-xl">⚙️</span>
-          <span>Settings</span>
-        </Link>
       </div>
     </div>
   )
