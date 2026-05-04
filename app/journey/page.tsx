@@ -82,6 +82,8 @@ export default function JourneyPage() {
   const [dailyProgress, setDailyProgress] = useState(0)
   const [timeLeft, setTimeLeft] = useState("")
   const [completionMode, setCompletionMode] = useState(false)
+  const [touchStartX, setTouchStartX] = useState(0)
+  const [touchEndX, setTouchEndX] = useState(0)
   const selectedProgram = "genesis"
   const streak = 3
   const startX = useRef(0)
@@ -187,6 +189,31 @@ export default function JourneyPage() {
       setSelectedSegment(journeyNodes[nextIndex]?.segment)
     } else if (diff < -50 && activeIndex > 0) {
       const nextIndex = activeIndex - 1
+      setActiveIndex(nextIndex)
+      setSelectedSegment(journeyNodes[nextIndex]?.segment)
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX)
+    setTouchEndX(e.touches[0].clientX)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.touches[0].clientX)
+  }
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX - touchEndX
+
+    if (Math.abs(diff) < 50) return
+
+    if (diff > 0) {
+      const nextIndex = Math.min(activeIndex + 1, journeyNodes.length - 1)
+      setActiveIndex(nextIndex)
+      setSelectedSegment(journeyNodes[nextIndex]?.segment)
+    } else {
+      const nextIndex = Math.max(activeIndex - 1, 0)
       setActiveIndex(nextIndex)
       setSelectedSegment(journeyNodes[nextIndex]?.segment)
     }
@@ -368,23 +395,23 @@ export default function JourneyPage() {
                   </div>
 
                   <div
-                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-8"
+                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-6 md:mt-8"
                     onMouseDown={handleStart}
                     onMouseUp={handleEnd}
-                    onTouchStart={handleStart}
-                    onTouchMove={(e) => e.stopPropagation()}
-                    onTouchEnd={handleEnd}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
                   >
                     <button
                       onClick={() => setActiveIndex((i) => Math.max(i - 1, 0))}
-                      className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                      className="hidden md:block absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                     >
                       ←
                     </button>
 
                     <button
                       onClick={() => setActiveIndex((i) => Math.min(i + 1, journeyNodes.length - 1))}
-                      className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                      className="hidden md:block absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                     >
                       →
                     </button>
@@ -400,7 +427,7 @@ export default function JourneyPage() {
                           className={`
                             absolute top-0 left-1/2
                             transition-all duration-500 ease-out
-                            ${isActive ? "z-20 scale-110 -translate-x-1/2 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : ""}
+                            ${isActive ? "z-20 scale-110 md:scale-105 -translate-x-1/2 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : ""}
                             ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
                             ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
                             ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
@@ -480,14 +507,14 @@ export default function JourneyPage() {
                     </div>
                   )}
 
-                  <div className="mt-8 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
+                  <div className="mt-6 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
                     <div
-                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-8"
+                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-6 md:mt-8"
                       onMouseDown={handleStart}
                       onMouseUp={handleEnd}
-                      onTouchStart={handleStart}
-                      onTouchMove={(e) => e.stopPropagation()}
-                      onTouchEnd={handleEnd}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
                     >
                       <button
                         onClick={() => {
@@ -496,7 +523,7 @@ export default function JourneyPage() {
                           setActiveIndex(nextIndex)
                           setSelectedSegment(journeyNodes[nextIndex]?.segment)
                         }}
-                        className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                        className="hidden md:block absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                       >
                         ←
                       </button>
@@ -508,7 +535,7 @@ export default function JourneyPage() {
                           setActiveIndex(nextIndex)
                           setSelectedSegment(journeyNodes[nextIndex]?.segment)
                         }}
-                        className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                        className="hidden md:block absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                       >
                         →
                       </button>
@@ -530,7 +557,7 @@ export default function JourneyPage() {
                             className={`
                               absolute top-0 left-1/2
                               transition-all duration-500 ease-out
-                              ${isActive ? "z-20 scale-110 -translate-x-1/2" : ""}
+                              ${isActive ? "z-20 scale-110 md:scale-105 -translate-x-1/2" : ""}
                               ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
                               ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
                               ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
@@ -617,7 +644,7 @@ export default function JourneyPage() {
                                   ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
                                   border
                                   transition-all duration-300
-                                  active:scale-[0.98]
+                                  active:scale-95
                                   hover:scale-[1.02]
                                   hover:shadow-xl
                                   ${isActive ? "border-green-500 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : "border-gray-600"}
