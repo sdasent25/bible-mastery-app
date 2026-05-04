@@ -73,7 +73,7 @@ export default function JourneyPage() {
   const [loading, setLoading] = useState(true)
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
-  const [activeIndex, setActiveIndex] = useState(1)
+  const [activeIndex, setActiveIndex] = useState(0)
   const [selectedSegment, setSelectedSegment] = useState(nodes[0]?.id)
   const [planType, setPlanType] = useState<JourneyPlanType | null>(null)
   const [xp, setXp] = useState(0)
@@ -99,41 +99,6 @@ export default function JourneyPage() {
     if (completionMode) {
       setActiveIndex(1)
     }
-  }, [completionMode])
-
-  useEffect(() => {
-    const container = document.querySelector("#node-scroll")
-
-    if (!container) return
-
-    const handleScroll = () => {
-      const scrollEl = container as HTMLElement
-      const track = scrollEl.firstElementChild as HTMLElement | null
-      if (!track) return
-
-      const children = Array.from(track.children)
-      const center = scrollEl.scrollLeft + scrollEl.offsetWidth / 2
-
-      let closest = 0
-      let minDist = Infinity
-
-      children.forEach((child, index) => {
-        const el = child as HTMLElement
-        const childCenter = el.offsetLeft + el.offsetWidth / 2
-        const dist = Math.abs(center - childCenter)
-
-        if (dist < minDist) {
-          minDist = dist
-          closest = Number(el.dataset.nodeIndex ?? index)
-        }
-      })
-
-      setActiveIndex(closest)
-    }
-
-    container.addEventListener("scroll", handleScroll)
-
-    return () => container.removeEventListener("scroll", handleScroll)
   }, [completionMode])
 
   useEffect(() => {
@@ -352,10 +317,6 @@ export default function JourneyPage() {
   const activeNode = journeyNodes.find(n => n.state === "active")
   const currentIndex = journeyNodes.findIndex(n => n.segment === selectedSegment)
   const safeCurrentIndex = currentIndex === -1 ? activeIndex : currentIndex
-  const visibleNodes = journeyNodes.slice(
-    Math.max(0, safeCurrentIndex - 2),
-    safeCurrentIndex + 3
-  )
   const completedCount = journeyNodes.filter(n => n.state === "complete").length
   const totalCount = journeyNodes.length
   const overallProgressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0
@@ -406,81 +367,67 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
-                  <div className="relative w-full overflow-hidden overflow-y-hidden">
-                    <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black via-black/60 to-transparent z-10" />
-                    <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black via-black/60 to-transparent z-10" />
-                    <div className="flex justify-center w-full">
-                    <div
-                      id="node-scroll"
-                      className="
-                        flex
-                        items-center
-                        gap-6
-                        overflow-x-auto
-                        overflow-y-hidden
-                        snap-x snap-mandatory
-                        scroll-smooth
-                        no-scrollbar
-                      "
-                      style={{ WebkitOverflowScrolling: "touch" }}
-                      onMouseDown={handleStart}
-                      onMouseUp={handleEnd}
-                      onTouchStart={handleStart}
-                      onTouchMove={(e) => e.stopPropagation()}
-                      onTouchEnd={handleEnd}
+                  <div
+                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-8"
+                    onMouseDown={handleStart}
+                    onMouseUp={handleEnd}
+                    onTouchStart={handleStart}
+                    onTouchMove={(e) => e.stopPropagation()}
+                    onTouchEnd={handleEnd}
+                  >
+                    <button
+                      onClick={() => setActiveIndex((i) => Math.max(i - 1, 0))}
+                      className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                     >
-                      <div className="min-w-[50%]" />
-                      {visibleNodes.map((node) => {
-                        const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
-                        const isActive = index === activeIndex
-                        const isCompletedNode = completionMode && index === 0
-                        const isNextNode = completionMode && index === 1
-                        const isFutureNode = completionMode && index > 1
+                      ←
+                    </button>
 
-                        return (
-                          <div
-                            key={index}
-                            data-node-index={index}
-                            className="snap-center flex-shrink-0"
-                          >
-                            <div
-                              className={`
-                                relative
-                                w-[280px] md:w-[360px] lg:w-[420px]
-                                aspect-[9/16]
-                                transition-all duration-300 ease-out
-                                ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-30"}
-                                ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.18)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
-                                ${isCompletedNode ? "opacity-60" : ""}
-                                ${isFutureNode ? "opacity-30" : ""}
-                              `}
-                            >
-                              <img
-                                src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                                className="w-full h-full object-contain"
-                                alt={node.label}
-                              />
+                    <button
+                      onClick={() => setActiveIndex((i) => Math.min(i + 1, journeyNodes.length - 1))}
+                      className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                    >
+                      →
+                    </button>
 
-                              {isNextNode && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <div className="bg-black/60 rounded-full p-4 text-white text-xl">
-                                    🔒
-                                  </div>
-                                </div>
-                              )}
+                    {journeyNodes.map((node, index) => {
+                      const isActive = index === activeIndex
+                      const isLeft = index === activeIndex - 1
+                      const isRight = index === activeIndex + 1
 
-                              {isCompletedNode && (
-                                <div className="absolute bottom-2 w-full text-center text-white text-sm">
-                                  ✔ Completed
-                                </div>
-                              )}
-                            </div>
+                      return (
+                        <div
+                          key={node.segment}
+                          className={`
+                            absolute top-0 left-1/2
+                            transition-all duration-500 ease-out
+                            ${isActive ? "z-20 scale-110 -translate-x-1/2 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : ""}
+                            ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
+                            ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
+                            ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
+                          `}
+                        >
+                          <div className="relative w-[260px] md:w-[320px] lg:w-[380px] aspect-[9/16]">
+                            <img
+                              src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                              className="w-full h-full object-contain"
+                              alt={node.label}
+                            />
+
+                            {completionMode && index === 0 && (
+                              <div className="absolute bottom-2 w-full text-center text-white text-sm">
+                                ✔ Completed
+                              </div>
+                            )}
+
+                            {completionMode && index === 1 && (
+                              <div className="absolute inset-0 flex items-center justify-center text-white text-3xl">
+                                🔒
+                              </div>
+                            )}
                           </div>
-                        )
-                      })}
-                      <div className="min-w-[50%]" />
-                    </div>
-                    </div>
+                        </div>
+                      )
+                    })}
                   </div>
                 </div>
               ) : (
@@ -534,7 +481,14 @@ export default function JourneyPage() {
                   )}
 
                   <div className="mt-8 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
-                    <div className="hidden md:flex justify-between mb-4 w-full max-w-[960px] px-4">
+                    <div
+                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-8"
+                      onMouseDown={handleStart}
+                      onMouseUp={handleEnd}
+                      onTouchStart={handleStart}
+                      onTouchMove={(e) => e.stopPropagation()}
+                      onTouchEnd={handleEnd}
+                    >
                       <button
                         onClick={() => {
                           if (activeIndex <= 0) return
@@ -542,7 +496,7 @@ export default function JourneyPage() {
                           setActiveIndex(nextIndex)
                           setSelectedSegment(journeyNodes[nextIndex]?.segment)
                         }}
-                        className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                        className="absolute left-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                       >
                         ←
                       </button>
@@ -554,204 +508,160 @@ export default function JourneyPage() {
                           setActiveIndex(nextIndex)
                           setSelectedSegment(journeyNodes[nextIndex]?.segment)
                         }}
-                        className="rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                        className="absolute right-4 top-1/2 z-30 -translate-y-1/2 rounded-lg border border-gray-700 bg-[#1A2233] px-4 py-2 text-white shadow-md transition-all duration-200 hover:scale-105 hover:shadow-lg"
                       >
                         →
                       </button>
-                    </div>
 
-                    <div className="relative w-full overflow-hidden overflow-y-hidden">
-                      <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black via-black/60 to-transparent z-10" />
-                      <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black via-black/60 to-transparent z-10" />
-                      <div className="flex justify-center w-full">
-                      <div
-                        id="node-scroll"
-                        className="
-                          flex
-                          items-center
-                          gap-6
-                          overflow-x-auto
-                          overflow-y-hidden
-                          snap-x snap-mandatory
-                          scroll-smooth
-                          no-scrollbar
-                        "
-                        style={{ WebkitOverflowScrolling: "touch" }}
-                        onMouseDown={handleStart}
-                        onMouseUp={handleEnd}
-                        onTouchStart={handleStart}
-                        onTouchMove={(e) => e.stopPropagation()}
-                        onTouchEnd={handleEnd}
-                      >
-                        <div className="min-w-[50%]" />
-                        {visibleNodes.map((node) => {
-                          const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
-                          const dayNumber = index + 1
-                          const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
-                          const isActive = index === activeIndex
-                          const isLocked = node.state === "locked"
-                          const isAccessible = node.isAccessible
-                          const isCompletedNode = completionMode && index === 0
-                          const isNextNode = completionMode && index === 1
-                          const isFutureNode = completionMode && index > 1
-                          const isLockedToday = completionMode
-                          const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
+                      {journeyNodes.map((node, index) => {
+                        const dayNumber = index + 1
+                        const displayTitle = `Day ${dayNumber}: ${node.title || node.label}`
+                        const isActive = index === activeIndex
+                        const isLeft = index === activeIndex - 1
+                        const isRight = index === activeIndex + 1
+                        const isLocked = node.state === "locked"
+                        const isAccessible = node.isAccessible
+                        const isLockedToday = completionMode
+                        const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
-                          return (
-                            <div
-                              key={index}
-                              data-node-index={index}
-                              className="snap-center flex-shrink-0"
-                            >
+                        return (
+                          <div
+                            key={node.segment}
+                            className={`
+                              absolute top-0 left-1/2
+                              transition-all duration-500 ease-out
+                              ${isActive ? "z-20 scale-110 -translate-x-1/2" : ""}
+                              ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
+                              ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
+                              ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
+                            `}
+                          >
+                            <div className="relative flex flex-col items-center">
+                              {node.isTodayTarget && !isLocked && !isLockedToday && (
+                                <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
+                              )}
+
+                              {isActive && !isLockedToday && (
+                                <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
+                              )}
+
+                              {isLocked && (
+                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
+                                  <span className="text-xl">🔒</span>
+                                </div>
+                              )}
+
+                              {isDailyLocked && !isLocked && (
+                                <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
+                                  <div className="text-center">
+                                    <div className="text-xl">🔒</div>
+                                    <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
+                                  </div>
+                                </div>
+                              )}
+
                               <div
-                                className={`
-                                  relative
-                                  w-[280px] md:w-[360px] lg:w-[420px]
-                                  aspect-[9/16]
-                                  transition-all duration-300 ease-out
-                                  ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-30"}
-                                  ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.18)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
-                                  ${isCompletedNode ? "opacity-60" : ""}
-                                  ${isFutureNode ? "opacity-30" : ""}
-                                `}
-                              >
-                              <div className="relative flex flex-col items-center h-full">
-                                {node.isTodayTarget && !isLocked && !isLockedToday && (
-                                  <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
-                                )}
+                                onClick={() => {
+                                  if (completionMode) return
+                                  const isFirstNode = index === 0
 
-                                {isActive && !isLockedToday && (
-                                  <div className="absolute inset-0 z-0 rounded-2xl border border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)] transition-all duration-300" />
-                                )}
+                                  if (isFree && !isFirstNode) {
+                                    console.error("REDIRECT TRIGGERED HERE", {
+                                      location: "app/journey/page.tsx",
+                                      planType,
+                                      isPro,
+                                      isProPlus,
+                                      activeProgramId: null,
+                                      segmentParam: node.segment,
+                                      safeDepth: null
+                                    });
+                                    router.push("/pricing")
+                                    return
+                                  }
 
-                                {isLocked && (
-                                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
-                                    <span className="text-xl">🔒</span>
-                                  </div>
-                                )}
+                                  if (isFree && isFirstNode) {
+                                    playSound("/sounds/tap.mp3")
 
-                                {isDailyLocked && !isLocked && (
-                                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
-                                    <div className="text-center">
-                                      <div className="text-xl">🔒</div>
-                                      <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
-                                    </div>
-                                  </div>
-                                )}
+                                    router.push(`/segment?segment=${node.segment}`)
+                                    return
+                                  }
 
-                                <div
-                                  onClick={() => {
-                                    if (completionMode) return
-                                    const isFirstNode = index === 0
+                                  if (isLocked) return
 
-                                    if (isFree && !isFirstNode) {
-                                      console.error("REDIRECT TRIGGERED HERE", {
-                                        location: "app/journey/page.tsx",
-                                        planType,
-                                        isPro,
-                                        isProPlus,
-                                        activeProgramId: null,
-                                        segmentParam: node.segment,
-                                        safeDepth: null
-                                      });
-                                      router.push("/pricing")
+                                  if (index === activeIndex) {
+                                    if (isFree && effectiveDailyLimitReached) {
                                       return
                                     }
 
-                                    if (isFree && isFirstNode) {
-                                      playSound("/sounds/tap.mp3")
+                                    if (!isAccessible) {
+                                      return
+                                    }
 
+                                    playSound("/sounds/tap.mp3")
+
+                                    if (isFree) {
                                       router.push(`/segment?segment=${node.segment}`)
                                       return
                                     }
 
-                                    if (isLocked) return
+                                    router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                                  } else {
+                                    setActiveIndex(index)
+                                    setSelectedSegment(node.segment)
+                                  }
+                                }}
+                                className={`
+                                  relative
+                                  w-[260px] md:w-[320px] lg:w-[380px] aspect-[9/16]
+                                  rounded-2xl overflow-hidden
+                                  ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
+                                  border
+                                  transition-all duration-300
+                                  active:scale-[0.98]
+                                  hover:scale-[1.02]
+                                  hover:shadow-xl
+                                  ${isActive ? "border-green-500 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : "border-gray-600"}
+                                `}
+                              >
+                                <img
+                                  src={`/icons/genesis/${getNodeIcon(node.label)}`}
+                                  alt={node.label}
+                                  className={`w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                                />
 
-                                    if (index === activeIndex) {
-                                      if (isFree && effectiveDailyLimitReached) {
-                                        return
-                                      }
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 
-                                      if (!isAccessible) {
-                                        return
-                                      }
-
-                                      playSound("/sounds/tap.mp3")
-
-                                      if (isFree) {
-                                        router.push(`/segment?segment=${node.segment}`)
-                                        return
-                                      }
-
-                                      router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
-                                    } else {
-                                      setActiveIndex(index)
-                                      setSelectedSegment(node.segment)
-                                    }
-                                  }}
-                                  className={`
-                                    relative
-                                    w-full h-full
-                                    rounded-2xl overflow-hidden
-                                    ${isLocked || isDailyLocked ? "cursor-not-allowed" : "cursor-pointer"}
-                                    border
-                                    transition-all duration-300
-                                    active:scale-[0.98]
-                                    hover:scale-[1.02]
-                                    hover:shadow-xl
-                                    ${isActive ? "border-green-500 shadow-[0_0_60px_rgba(34,197,94,0.45)]" : "border-gray-600"}
-                                  `}
-                                >
-                                  <img
-                                    src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                                    alt={node.label}
-                                    className={`w-full h-full object-contain ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
-                                  />
-
-                                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-
-                                  {isNextNode && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                      <div className="bg-black/60 rounded-full p-4 text-white text-xl">
-                                        🔒
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  {isCompletedNode && (
-                                    <div className="absolute bottom-2 w-full text-center text-white text-sm">
-                                      ✔ Completed
-                                    </div>
-                                  )}
-                                </div>
-
-                                {isActive && !isLocked && !isLockedToday && (
-                                  <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
-                                    START
+                                {completionMode && index === 1 && (
+                                  <div className="absolute inset-0 flex items-center justify-center text-white text-3xl">
+                                    🔒
                                   </div>
                                 )}
 
-                                <div className="mt-3 text-center">
-                                  <div className="font-semibold text-white">
-                                    {displayTitle}
+                                {completionMode && index === 0 && (
+                                  <div className="absolute bottom-2 w-full text-center text-white text-sm">
+                                    ✔ Completed
                                   </div>
-                                  <div className="text-sm text-slate-300">
-                                    {node.label}
-                                  </div>
-                                  {isActive && (
-                                    <div className="text-center mt-2 text-white font-semibold">
-                                      {index === 1 ? "The Fall" : ""}
-                                    </div>
-                                  )}
+                                )}
+                              </div>
+
+                              {isActive && !isLocked && !isLockedToday && (
+                                <div className="absolute -top-6 text-yellow-300 font-bold text-sm animate-float-slow">
+                                  START
                                 </div>
-                            </div>
+                              )}
+
+                              <div className="mt-3 text-center">
+                                <div className="font-semibold text-white">
+                                  {displayTitle}
+                                </div>
+                                <div className="text-sm text-slate-300">
+                                  {node.label}
+                                </div>
                               </div>
                             </div>
-                          )
-                        })}
-                        <div className="min-w-[50%]" />
-                      </div>
-                      </div>
+                          </div>
+                        )
+                      })}
                     </div>
                   </div>
                 </div>
