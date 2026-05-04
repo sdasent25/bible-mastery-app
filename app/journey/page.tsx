@@ -406,29 +406,30 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
-                  <div
-                    id="node-scroll"
-                    className="
-                      w-full
-                      overflow-x-auto
-                      flex
-                      justify-start
-                      gap-6
-                      px-6
-                      snap-x snap-mandatory
-                      scroll-smooth
-                    "
-                    style={{ WebkitOverflowScrolling: "touch" }}
-                  >
+                  <div className="relative w-full max-w-[720px] mx-auto overflow-hidden overflow-y-hidden">
+                    <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10" />
+                    <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-black to-transparent z-10" />
                     <div
-                      className="flex items-center gap-6"
+                      id="node-scroll"
+                      className="
+                        flex
+                        items-center
+                        gap-6
+                        overflow-x-auto
+                        overflow-y-hidden
+                        snap-x snap-mandatory
+                        scroll-smooth
+                        px-0
+                        no-scrollbar
+                      "
+                      style={{ WebkitOverflowScrolling: "touch" }}
                       onMouseDown={handleStart}
                       onMouseUp={handleEnd}
                       onTouchStart={handleStart}
                       onTouchMove={(e) => e.stopPropagation()}
                       onTouchEnd={handleEnd}
                     >
-                      <div className="min-w-[40%] md:min-w-[30%]" />
+                      <div className="min-w-[50%]" />
                       {visibleNodes.map((node) => {
                         const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                         const isActive = index === activeIndex
@@ -445,14 +446,13 @@ export default function JourneyPage() {
                             <div
                               className={`
                                 relative
-                                w-[220px] md:w-[260px]
+                                w-[260px] md:w-[320px] lg:w-[380px]
                                 aspect-[9/16]
                                 transition-all duration-300 ease-out
-                                ${isActive ? "scale-110 z-20" : "scale-90"}
-                                ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.35)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-50"}
+                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.25)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
                                 ${isCompletedNode ? "opacity-60" : ""}
                                 ${isFutureNode ? "opacity-30" : ""}
-                                ${isActive ? "translate-y-0" : "translate-y-2"}
                               `}
                             >
                               <img
@@ -478,7 +478,7 @@ export default function JourneyPage() {
                           </div>
                         )
                       })}
-                      <div className="min-w-[40%] md:min-w-[30%]" />
+                      <div className="min-w-[50%]" />
                     </div>
                   </div>
                 </div>
@@ -559,29 +559,30 @@ export default function JourneyPage() {
                       </button>
                     </div>
 
-                    <div
-                      id="node-scroll"
-                      className="
-                        w-full
-                        overflow-x-auto
-                        flex
-                        justify-start
-                        gap-6
-                        px-6
-                        snap-x snap-mandatory
-                        scroll-smooth
-                      "
-                      style={{ WebkitOverflowScrolling: "touch" }}
-                    >
+                    <div className="relative w-full max-w-[720px] mx-auto overflow-hidden overflow-y-hidden">
+                      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10" />
+                      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-black to-transparent z-10" />
                       <div
-                        className="flex items-center gap-6"
+                        id="node-scroll"
+                        className="
+                          flex
+                          items-center
+                          gap-6
+                          overflow-x-auto
+                          overflow-y-hidden
+                          snap-x snap-mandatory
+                          scroll-smooth
+                          px-0
+                          no-scrollbar
+                        "
+                        style={{ WebkitOverflowScrolling: "touch" }}
                         onMouseDown={handleStart}
                         onMouseUp={handleEnd}
                         onTouchStart={handleStart}
                         onTouchMove={(e) => e.stopPropagation()}
                         onTouchEnd={handleEnd}
                       >
-                        <div className="min-w-[40%] md:min-w-[30%]" />
+                        <div className="min-w-[50%]" />
                         {visibleNodes.map((node) => {
                           const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                           const dayNumber = index + 1
@@ -602,18 +603,17 @@ export default function JourneyPage() {
                               className="snap-center flex-shrink-0"
                             >
                               <div
-                              className={`
+                                className={`
                                   relative
-                                  w-[220px] md:w-[260px]
+                                  w-[260px] md:w-[320px] lg:w-[380px]
                                   aspect-[9/16]
                                   transition-all duration-300 ease-out
-                                  ${isActive ? "scale-110 z-20" : "scale-90"}
-                                  ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.35)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                  ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-50"}
+                                  ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.25)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
                                   ${isCompletedNode ? "opacity-60" : ""}
                                   ${isFutureNode ? "opacity-30" : ""}
-                                  ${isActive ? "translate-y-0" : "translate-y-2"}
-                               `}
-                             >
+                                `}
+                              >
                               <div className="relative flex flex-col items-center h-full">
                                 {node.isTodayTarget && !isLocked && !isLockedToday && (
                                   <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
@@ -748,7 +748,7 @@ export default function JourneyPage() {
                             </div>
                           )
                         })}
-                        <div className="min-w-[40%] md:min-w-[30%]" />
+                        <div className="min-w-[50%]" />
                       </div>
                     </div>
                   </div>
