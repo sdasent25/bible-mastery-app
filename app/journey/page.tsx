@@ -394,14 +394,9 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
-                  <div className="md:hidden flex justify-center gap-6 mt-2 text-sm text-white/80">
-                    <div>🔥 {streak}</div>
-                    <div>🎯 {dailyProgress}/1</div>
-                  </div>
-
-                  <div className="flex flex-col items-center justify-center min-h-[65vh] md:min-h-0 w-full">
+                  <div className="flex flex-col items-center justify-center w-full h-[75vh] md:h-auto">
                   <div
-                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
+                    className="relative w-full max-w-[900px] mx-auto mt-4 md:mt-8"
                     onMouseDown={handleStart}
                     onMouseUp={handleEnd}
                     onTouchStart={handleTouchStart}
@@ -443,7 +438,7 @@ export default function JourneyPage() {
                           <div className="relative w-[260px] md:w-[320px] lg:w-[380px] aspect-[9/16]">
                             <img
                               src={`/icons/genesis/${getNodeIcon(node.label)}`}
-                              className="w-full h-full object-contain max-h-[65vh]"
+                              className="w-full h-full object-contain max-h-[70vh]"
                               alt={node.label}
                             />
 
@@ -467,7 +462,11 @@ export default function JourneyPage() {
                 </div>
               ) : (
                 <div className="w-full">
-                  <div className="text-center mt-6">
+                  <div className="md:hidden text-center mt-2 text-white font-semibold">
+                    Genesis
+                  </div>
+
+                  <div className="hidden md:block text-center mt-6">
                     <div className="flex-shrink-0 flex justify-center mb-8">
                       <div className="text-center max-w-md">
                         <h1 className="text-3xl md:text-5xl font-bold text-white">
@@ -515,14 +514,9 @@ export default function JourneyPage() {
                     </div>
                   )}
 
-                  <div className="md:hidden flex justify-center gap-6 mt-2 text-sm text-white/80">
-                    <div>🔥 {streak}</div>
-                    <div>🎯 {dailyProgress}/1</div>
-                  </div>
-
-                  <div className="flex flex-col items-center justify-center min-h-[65vh] md:min-h-0 w-full max-w-4xl mx-auto">
+                  <div className="flex flex-col items-center justify-center w-full max-w-4xl mx-auto h-[75vh] md:h-auto">
                     <div
-                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
+                      className="relative w-full max-w-[900px] mx-auto mt-2 md:mt-8"
                       onMouseDown={handleStart}
                       onMouseUp={handleEnd}
                       onTouchStart={handleTouchStart}
@@ -667,7 +661,7 @@ export default function JourneyPage() {
                                 <img
                                   src={`/icons/genesis/${getNodeIcon(node.label)}`}
                                   alt={node.label}
-                                  className={`w-full h-full object-contain max-h-[65vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                                  className={`w-full h-full object-contain max-h-[70vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
                                 />
 
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -839,10 +833,11 @@ export default function JourneyPage() {
               </div>
             </div>
           </div>
-          <div className="h-[80px] md:hidden" />
-          <div className="fixed bottom-0 left-0 w-full bg-black/80 backdrop-blur-md p-4 flex justify-between items-center md:hidden z-50">
-            <div className="text-white text-sm">
-              📊 Progress
+          <div className="h-[70px] md:hidden" />
+          <div className="fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-md px-4 py-3 flex justify-between items-center md:hidden z-50">
+            <div className="flex items-center gap-4 text-white text-sm">
+              <div>🔥 {streak}</div>
+              <div>🎯 {dailyProgress}/1</div>
             </div>
 
             <button
@@ -858,7 +853,7 @@ export default function JourneyPage() {
 
                 router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
               }}
-              className="bg-green-500 text-black px-6 py-3 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-green-500 text-black px-5 py-2 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
             >
               Continue →
