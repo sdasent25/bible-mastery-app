@@ -406,9 +406,10 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
-                  <div className="relative w-full max-w-[720px] mx-auto overflow-hidden overflow-y-hidden">
-                    <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10" />
-                    <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-black to-transparent z-10" />
+                  <div className="relative w-full overflow-hidden overflow-y-hidden">
+                    <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black via-black/60 to-transparent z-10" />
+                    <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black via-black/60 to-transparent z-10" />
+                    <div className="flex justify-center w-full">
                     <div
                       id="node-scroll"
                       className="
@@ -419,7 +420,6 @@ export default function JourneyPage() {
                         overflow-y-hidden
                         snap-x snap-mandatory
                         scroll-smooth
-                        px-0
                         no-scrollbar
                       "
                       style={{ WebkitOverflowScrolling: "touch" }}
@@ -446,11 +446,11 @@ export default function JourneyPage() {
                             <div
                               className={`
                                 relative
-                                w-[260px] md:w-[320px] lg:w-[380px]
+                                w-[280px] md:w-[360px] lg:w-[420px]
                                 aspect-[9/16]
                                 transition-all duration-300 ease-out
-                                ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-50"}
-                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.25)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-30"}
+                                ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.18)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
                                 ${isCompletedNode ? "opacity-60" : ""}
                                 ${isFutureNode ? "opacity-30" : ""}
                               `}
@@ -479,6 +479,7 @@ export default function JourneyPage() {
                         )
                       })}
                       <div className="min-w-[50%]" />
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -559,9 +560,10 @@ export default function JourneyPage() {
                       </button>
                     </div>
 
-                    <div className="relative w-full max-w-[720px] mx-auto overflow-hidden overflow-y-hidden">
-                      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10" />
-                      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-black to-transparent z-10" />
+                    <div className="relative w-full overflow-hidden overflow-y-hidden">
+                      <div className="pointer-events-none absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-black via-black/60 to-transparent z-10" />
+                      <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-black via-black/60 to-transparent z-10" />
+                      <div className="flex justify-center w-full">
                       <div
                         id="node-scroll"
                         className="
@@ -572,7 +574,6 @@ export default function JourneyPage() {
                           overflow-y-hidden
                           snap-x snap-mandatory
                           scroll-smooth
-                          px-0
                           no-scrollbar
                         "
                         style={{ WebkitOverflowScrolling: "touch" }}
@@ -605,11 +606,11 @@ export default function JourneyPage() {
                               <div
                                 className={`
                                   relative
-                                  w-[260px] md:w-[320px] lg:w-[380px]
+                                  w-[280px] md:w-[360px] lg:w-[420px]
                                   aspect-[9/16]
                                   transition-all duration-300 ease-out
-                                  ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-50"}
-                                  ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.25)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                  ${isActive ? "scale-110 z-20 translate-y-0" : "scale-90 translate-y-6 opacity-30"}
+                                  ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.18)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
                                   ${isCompletedNode ? "opacity-60" : ""}
                                   ${isFutureNode ? "opacity-30" : ""}
                                 `}
@@ -749,6 +750,7 @@ export default function JourneyPage() {
                           )
                         })}
                         <div className="min-w-[50%]" />
+                      </div>
                       </div>
                     </div>
                   </div>
