@@ -376,20 +376,15 @@ export default function JourneyPage() {
     <div className="min-h-screen flex flex-col">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
-      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220] flex flex-col">
-        <div className="flex items-center justify-between px-4 py-2">
-          <div className="w-6" />
-
-          <div className="text-white font-semibold">
-            Genesis
-          </div>
-
-          <div className="w-6" />
+      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220] flex flex-col justify-between">
+        <div className="flex justify-between items-center px-4 py-2 text-white text-sm">
+          <div>🔥 {streak}</div>
+          <div>🎯 {dailyProgress}/1</div>
         </div>
 
         <div className="flex-1 flex items-center justify-center">
           <div
-            className="relative w-full max-w-[900px] max-h-[70vh] h-full flex items-center justify-center"
+            className="relative w-full max-w-[900px] max-h-[65vh] h-full flex items-center justify-center"
             onMouseDown={handleStart}
             onMouseUp={handleEnd}
             onTouchStart={handleTouchStart}
@@ -509,7 +504,7 @@ export default function JourneyPage() {
                       <img
                         src={`/icons/genesis/${getNodeIcon(node.label)}`}
                         alt={node.label}
-                        className={`w-full h-full object-contain max-h-[70vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
+                        className={`w-full h-full object-contain max-h-[65vh] ${(isLocked || isDailyLocked) ? "opacity-50 saturate-90" : ""}`}
                       />
 
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -547,7 +542,7 @@ export default function JourneyPage() {
             })}
           </div>
         </div>
-        <div className="h-[80px] md:hidden" />
+        <div className="h-[80px]" />
       </div>
       <div className="hidden md:flex md:flex-1">
       <div className="relative flex-1 px-4 py-6 md:px-8">
@@ -1011,34 +1006,34 @@ export default function JourneyPage() {
         </div>
       </div>
       </div>
-      <div className="fixed bottom-0 left-0 w-full bg-black/95 backdrop-blur-md border-t border-white/10 flex justify-around items-center py-2 z-50 md:hidden">
+      <div className="fixed bottom-0 left-0 w-full bg-black/95 border-t border-white/10 flex justify-around items-center py-3 z-50 md:hidden">
         <Link href="/dashboard" className="flex flex-col items-center text-white text-xs">
-          <span>🏠</span>
+          <span className="text-xl">🏠</span>
           <span>Dashboard</span>
         </Link>
 
         <Link href="/journey" className="flex flex-col items-center text-white text-xs">
-          <span>📖</span>
+          <span className="text-xl">📖</span>
           <span>Journey</span>
         </Link>
 
         <Link href="/flashcards" className="flex flex-col items-center text-white text-xs">
-          <span>🧠</span>
+          <span className="text-xl">🧠</span>
           <span>Flashcards</span>
         </Link>
 
         <Link href="/quests" className="flex flex-col items-center text-white text-xs">
-          <span>🗺️</span>
+          <span className="text-xl">🗺️</span>
           <span>Quests</span>
         </Link>
 
         <Link href="/leaderboard" className="flex flex-col items-center text-white text-xs">
-          <span>🏆</span>
+          <span className="text-xl">🏆</span>
           <span>Leaderboard</span>
         </Link>
 
         <Link href="/settings" className="flex flex-col items-center text-white text-xs">
-          <span>⚙️</span>
+          <span className="text-xl">⚙️</span>
           <span>Settings</span>
         </Link>
       </div>
