@@ -17,7 +17,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       <div
         className={`
-          fixed md:relative z-[999] h-full w-64 bg-[#020617]
+          hidden md:block md:relative z-[999] h-full w-64 bg-[#020617]
           transform transition-transform duration-300
           ${open ? "translate-x-0" : "-translate-x-full"}
           md:translate-x-0
@@ -27,7 +27,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex-1 flex flex-col md:min-w-0">
-        <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-neutral-800 bg-[#020617] sticky top-0 z-30">
+        <div className="hidden md:hidden items-center justify-between px-4 py-3 border-b border-neutral-800 bg-[#020617] sticky top-0 z-30">
           <button
             onClick={() => setOpen(true)}
             className="text-white text-xl"

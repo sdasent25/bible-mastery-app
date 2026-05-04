@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { getProgramById } from "@/lib/programs"
 import { nodes } from "@/lib/nodes"
@@ -71,7 +72,6 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
@@ -377,61 +377,8 @@ export default function JourneyPage() {
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220] flex flex-col">
-        {mobileMenuOpen && (
-          <>
-            <div
-              className="absolute inset-0 z-20 bg-black/70"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <div className="absolute left-4 top-14 z-30 w-56 rounded-2xl border border-white/10 bg-[#121826] p-3 shadow-2xl">
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  router.push("/dashboard")
-                }}
-                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  router.push("/journey")
-                }}
-                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
-              >
-                Journey
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  router.push("/flashcards")
-                }}
-                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
-              >
-                Flashcards
-              </button>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false)
-                  router.push("/quests")
-                }}
-                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
-              >
-                Quests
-              </button>
-            </div>
-          </>
-        )}
-
         <div className="flex items-center justify-between px-4 py-2">
-          <button
-            onClick={() => setMobileMenuOpen((open) => !open)}
-            className="text-white"
-            aria-label="Open navigation menu"
-          >
-            ☰
-          </button>
+          <div className="w-6" />
 
           <div className="text-white font-semibold">
             Genesis
@@ -600,7 +547,7 @@ export default function JourneyPage() {
             })}
           </div>
         </div>
-        <div className="h-[70px]" />
+        <div className="h-[80px] md:hidden" />
       </div>
       <div className="hidden md:flex md:flex-1">
       <div className="relative flex-1 px-4 py-6 md:px-8">
@@ -1064,30 +1011,36 @@ export default function JourneyPage() {
         </div>
       </div>
       </div>
-      <div className="fixed bottom-0 left-0 z-[70] flex w-full items-center justify-between bg-black/90 px-4 py-3 backdrop-blur-md md:hidden">
-        <div className="flex items-center gap-4 text-sm text-white">
-          <div>🔥 {streak}</div>
-          <div>🎯 {dailyProgress}/1</div>
-        </div>
+      <div className="fixed bottom-0 left-0 w-full bg-black/95 backdrop-blur-md border-t border-white/10 flex justify-around items-center py-2 z-50 md:hidden">
+        <Link href="/dashboard" className="flex flex-col items-center text-white text-xs">
+          <span>🏠</span>
+          <span>Dashboard</span>
+        </Link>
 
-        <button
-          onClick={() => {
-            if (!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode) return
+        <Link href="/journey" className="flex flex-col items-center text-white text-xs">
+          <span>📖</span>
+          <span>Journey</span>
+        </Link>
 
-            playSound("/sounds/click.mp3")
+        <Link href="/flashcards" className="flex flex-col items-center text-white text-xs">
+          <span>🧠</span>
+          <span>Flashcards</span>
+        </Link>
 
-            if (planType === "free") {
-              router.push(`/segment?segment=${activeNode.segment}`)
-              return
-            }
+        <Link href="/quests" className="flex flex-col items-center text-white text-xs">
+          <span>🗺️</span>
+          <span>Quests</span>
+        </Link>
 
-            router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
-          }}
-          className="rounded-xl bg-green-500 px-5 py-2 font-semibold text-black disabled:cursor-not-allowed disabled:opacity-50"
-          disabled={!program || !activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
-        >
-          Continue →
-        </button>
+        <Link href="/leaderboard" className="flex flex-col items-center text-white text-xs">
+          <span>🏆</span>
+          <span>Leaderboard</span>
+        </Link>
+
+        <Link href="/settings" className="flex flex-col items-center text-white text-xs">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </Link>
       </div>
     </div>
   )
