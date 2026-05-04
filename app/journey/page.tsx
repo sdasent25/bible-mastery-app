@@ -379,11 +379,11 @@ export default function JourneyPage() {
         <div className="transition-opacity duration-300">
           <div className="flex flex-col lg:flex-row w-full">
 
-            <div className="flex-1 flex flex-col items-center px-4">
+            <div className="order-1 lg:order-none flex-1 flex flex-col items-center px-4">
               {completionMode ? (
                 <div className="w-full flex flex-col items-center">
-                  <div className="text-center mt-6">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white">
+                  <div className="text-center mt-4 md:mt-12">
+                    <h1 className="text-2xl md:text-4xl font-bold text-white">
                       🔥 Day 1 Complete
                     </h1>
                     <p className="text-yellow-300 mt-2">
@@ -394,13 +394,15 @@ export default function JourneyPage() {
                     📖 Genesis
                   </div>
 
+                  <div className="min-h-[60vh] flex items-center justify-center w-full">
                   <div
-                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-6 md:mt-8"
+                    className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
                     onMouseDown={handleStart}
                     onMouseUp={handleEnd}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}
+                    style={{ touchAction: "pan-y" }}
                   >
                     <button
                       onClick={() => setActiveIndex((i) => Math.max(i - 1, 0))}
@@ -427,7 +429,7 @@ export default function JourneyPage() {
                           className={`
                             absolute top-0 left-1/2
                             transition-all duration-500 ease-out
-                            ${isActive ? "z-20 scale-110 md:scale-105 -translate-x-1/2 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : ""}
+                            ${isActive ? "z-20 scale-105 md:scale-105 -translate-x-1/2 shadow-[0_0_35px_rgba(34,197,94,0.35)]" : ""}
                             ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
                             ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
                             ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
@@ -455,6 +457,7 @@ export default function JourneyPage() {
                         </div>
                       )
                     })}
+                  </div>
                   </div>
                 </div>
               ) : (
@@ -507,14 +510,15 @@ export default function JourneyPage() {
                     </div>
                   )}
 
-                  <div className="mt-6 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto">
+                  <div className="mt-6 md:mt-16 flex flex-col items-center justify-center w-full max-w-4xl mx-auto min-h-[60vh]">
                     <div
-                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-6 md:mt-8"
+                      className="relative w-full max-w-[900px] h-[500px] mx-auto mt-4 md:mt-8"
                       onMouseDown={handleStart}
                       onMouseUp={handleEnd}
                       onTouchStart={handleTouchStart}
                       onTouchMove={handleTouchMove}
                       onTouchEnd={handleTouchEnd}
+                      style={{ touchAction: "pan-y" }}
                     >
                       <button
                         onClick={() => {
@@ -557,7 +561,7 @@ export default function JourneyPage() {
                             className={`
                               absolute top-0 left-1/2
                               transition-all duration-500 ease-out
-                              ${isActive ? "z-20 scale-110 md:scale-105 -translate-x-1/2" : ""}
+                              ${isActive ? "z-20 scale-105 md:scale-105 -translate-x-1/2" : ""}
                               ${isLeft ? "z-10 scale-90 -translate-x-[110%] md:-translate-x-[120%] opacity-70" : ""}
                               ${isRight ? "z-10 scale-90 translate-x-[10%] md:translate-x-[20%] opacity-70" : ""}
                               ${!isActive && !isLeft && !isRight ? "opacity-0 pointer-events-none" : ""}
@@ -695,9 +699,9 @@ export default function JourneyPage() {
               )}
             </div>
 
-            <div className="w-full lg:w-[320px] mt-6 lg:mt-0 lg:ml-6">
+            <div className="order-2 lg:order-none w-full lg:w-[320px] mt-4 lg:mt-0 lg:ml-6">
               <div className="lg:sticky lg:top-6">
-                <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
+                <div className="h-fit w-full space-y-6 rounded-2xl border border-gray-800 bg-[#121826] p-4 md:p-6 shadow-lg transition-all duration-300 hover:shadow-xl backdrop-blur-sm lg:w-80">
 
                   <h2 className="text-xl font-bold mb-4">Your Progress</h2>
 
