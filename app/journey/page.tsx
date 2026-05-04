@@ -71,6 +71,7 @@ export default function JourneyPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(true)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [journeyNodes, setJourneyNodes] = useState<JourneyNode[]>([])
   const [activeIndex, setActiveIndex] = useState(0)
@@ -375,12 +376,71 @@ export default function JourneyPage() {
     <div className="min-h-screen flex flex-col">
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
-      <div className="md:hidden fixed inset-0 z-[60] flex flex-col bg-[#0B1220]">
-        <div className="absolute top-2 w-full text-center text-white font-semibold">
-          Genesis
+      <div className="md:hidden fixed inset-0 z-50 bg-[#0B1220] flex flex-col">
+        {mobileMenuOpen && (
+          <>
+            <div
+              className="absolute inset-0 z-20 bg-black/70"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+            <div className="absolute left-4 top-14 z-30 w-56 rounded-2xl border border-white/10 bg-[#121826] p-3 shadow-2xl">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  router.push("/dashboard")
+                }}
+                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
+              >
+                Dashboard
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  router.push("/journey")
+                }}
+                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
+              >
+                Journey
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  router.push("/flashcards")
+                }}
+                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
+              >
+                Flashcards
+              </button>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false)
+                  router.push("/quests")
+                }}
+                className="block w-full rounded-xl px-4 py-3 text-left text-white transition hover:bg-white/10"
+              >
+                Quests
+              </button>
+            </div>
+          </>
+        )}
+
+        <div className="flex items-center justify-between px-4 py-2">
+          <button
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="text-white"
+            aria-label="Open navigation menu"
+          >
+            ☰
+          </button>
+
+          <div className="text-white font-semibold">
+            Genesis
+          </div>
+
+          <div className="w-6" />
         </div>
 
-        <div className="flex-1 flex items-center justify-center px-2">
+        <div className="flex-1 flex items-center justify-center">
           <div
             className="relative w-full max-w-[900px] max-h-[70vh] h-full flex items-center justify-center"
             onMouseDown={handleStart}
@@ -540,9 +600,10 @@ export default function JourneyPage() {
             })}
           </div>
         </div>
+        <div className="h-[70px]" />
       </div>
-
-      <div className="relative hidden flex-1 md:block px-4 py-6 md:px-8">
+      <div className="hidden md:flex md:flex-1">
+      <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
           <div className="flex flex-col lg:flex-row w-full">
 
@@ -1001,6 +1062,7 @@ export default function JourneyPage() {
             </div>
           </div>
         </div>
+      </div>
       </div>
       <div className="fixed bottom-0 left-0 z-[70] flex w-full items-center justify-between bg-black/90 px-4 py-3 backdrop-blur-md md:hidden">
         <div className="flex items-center gap-4 text-sm text-white">
