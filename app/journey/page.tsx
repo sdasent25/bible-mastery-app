@@ -373,7 +373,7 @@ export default function JourneyPage() {
   const isPlanReady = planType !== null
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <div className="absolute left-1/2 top-[-120px] h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-green-500 opacity-10 blur-[140px]" />
       <div className="absolute right-[-100px] top-[200px] h-[400px] w-[400px] rounded-full bg-blue-500 opacity-10 blur-[120px]" />
       <div className="md:hidden h-full flex flex-col">
@@ -539,7 +539,6 @@ export default function JourneyPage() {
             </div>
           </div>
         </div>
-      </div>
       <div className="hidden md:flex md:flex-1">
       <div className="relative flex-1 px-4 py-6 md:px-8">
         <div className="transition-opacity duration-300">
@@ -1002,6 +1001,6 @@ export default function JourneyPage() {
         </div>
       </div>
       </div>
-    </div>
+    </>
   )
 }
