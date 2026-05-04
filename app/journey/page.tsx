@@ -402,11 +402,23 @@ export default function JourneyPage() {
                       You showed up today. Keep it going tomorrow.
                     </p>
                   </div>
+                  <div className="text-center mt-4 text-white/80">
+                    📖 Genesis
+                  </div>
 
                   <div
                     id="node-scroll"
-                    className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar snap-x snap-mandatory"
-                    style={{ scrollBehavior: "smooth" }}
+                    className="
+                      w-full
+                      overflow-x-auto
+                      flex
+                      justify-start
+                      gap-6
+                      px-6
+                      snap-x snap-mandatory
+                      scroll-smooth
+                    "
+                    style={{ WebkitOverflowScrolling: "touch" }}
                   >
                     <div
                       className="flex items-center gap-6"
@@ -416,11 +428,13 @@ export default function JourneyPage() {
                       onTouchMove={(e) => e.stopPropagation()}
                       onTouchEnd={handleEnd}
                     >
+                      <div className="min-w-[40%] md:min-w-[30%]" />
                       {visibleNodes.map((node) => {
                         const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                         const isActive = index === activeIndex
                         const isCompletedNode = completionMode && index === 0
                         const isNextNode = completionMode && index === 1
+                        const isFutureNode = completionMode && index > 1
 
                         return (
                           <div
@@ -433,9 +447,12 @@ export default function JourneyPage() {
                                 relative
                                 w-[220px] md:w-[260px]
                                 aspect-[9/16]
-                                transition-all duration-300
-                                ${isActive ? "scale-105 z-10" : "scale-90 opacity-50"}
-                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.35)] animate-pulse" : ""}
+                                transition-all duration-300 ease-out
+                                ${isActive ? "scale-110 z-20" : "scale-90"}
+                                ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.35)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                ${isCompletedNode ? "opacity-60" : ""}
+                                ${isFutureNode ? "opacity-30" : ""}
+                                ${isActive ? "translate-y-0" : "translate-y-2"}
                               `}
                             >
                               <img
@@ -461,6 +478,7 @@ export default function JourneyPage() {
                           </div>
                         )
                       })}
+                      <div className="min-w-[40%] md:min-w-[30%]" />
                     </div>
                   </div>
                 </div>
@@ -543,8 +561,17 @@ export default function JourneyPage() {
 
                     <div
                       id="node-scroll"
-                      className="w-full overflow-x-auto flex justify-center mt-8 px-4 no-scrollbar snap-x snap-mandatory"
-                      style={{ scrollBehavior: "smooth" }}
+                      className="
+                        w-full
+                        overflow-x-auto
+                        flex
+                        justify-start
+                        gap-6
+                        px-6
+                        snap-x snap-mandatory
+                        scroll-smooth
+                      "
+                      style={{ WebkitOverflowScrolling: "touch" }}
                     >
                       <div
                         className="flex items-center gap-6"
@@ -554,6 +581,7 @@ export default function JourneyPage() {
                         onTouchMove={(e) => e.stopPropagation()}
                         onTouchEnd={handleEnd}
                       >
+                        <div className="min-w-[40%] md:min-w-[30%]" />
                         {visibleNodes.map((node) => {
                           const index = journeyNodes.findIndex((journeyNode) => journeyNode.segment === node.segment)
                           const dayNumber = index + 1
@@ -563,6 +591,7 @@ export default function JourneyPage() {
                           const isAccessible = node.isAccessible
                           const isCompletedNode = completionMode && index === 0
                           const isNextNode = completionMode && index === 1
+                          const isFutureNode = completionMode && index > 1
                           const isLockedToday = completionMode
                           const isDailyLocked = (isFree && effectiveDailyLimitReached && isActive) || isLockedToday
 
@@ -573,15 +602,18 @@ export default function JourneyPage() {
                               className="snap-center flex-shrink-0"
                             >
                               <div
-                                className={`
+                              className={`
                                   relative
-                                w-[220px] md:w-[260px]
-                                aspect-[9/16]
-                                transition-all duration-300
-                                ${isActive ? "scale-105 z-10" : "scale-90 opacity-50"}
-                                ${isNextNode ? "shadow-[0_0_25px_rgba(34,197,94,0.35)] animate-pulse" : ""}
-                              `}
-                            >
+                                  w-[220px] md:w-[260px]
+                                  aspect-[9/16]
+                                  transition-all duration-300 ease-out
+                                  ${isActive ? "scale-110 z-20" : "scale-90"}
+                                  ${isNextNode ? "shadow-[0_0_40px_rgba(34,197,94,0.35)] animate-[pulse_2.5s_ease-in-out_infinite]" : ""}
+                                  ${isCompletedNode ? "opacity-60" : ""}
+                                  ${isFutureNode ? "opacity-30" : ""}
+                                  ${isActive ? "translate-y-0" : "translate-y-2"}
+                               `}
+                             >
                               <div className="relative flex flex-col items-center h-full">
                                 {node.isTodayTarget && !isLocked && !isLockedToday && (
                                   <div className="absolute inset-[-10px] z-0 rounded-[1.75rem] border border-cyan-400/40 bg-cyan-400/5 shadow-[0_0_35px_rgba(34,211,238,0.18)]" />
@@ -705,12 +737,18 @@ export default function JourneyPage() {
                                   <div className="text-sm text-slate-300">
                                     {node.label}
                                   </div>
+                                  {isActive && (
+                                    <div className="text-center mt-2 text-white font-semibold">
+                                      {index === 1 ? "The Fall" : ""}
+                                    </div>
+                                  )}
                                 </div>
                             </div>
                               </div>
                             </div>
                           )
                         })}
+                        <div className="min-w-[40%] md:min-w-[30%]" />
                       </div>
                     </div>
                   </div>
