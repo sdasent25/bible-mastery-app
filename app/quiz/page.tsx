@@ -1101,9 +1101,9 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="flex-1 flex flex-col justify-center text-center px-2">
-                <div className="flex items-center justify-center text-center px-2">
-                  <h1 className="px-2 text-center text-[clamp(20px,4vh,32px)] font-bold leading-tight break-words">
+              <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-2">
+                <div className="max-h-[30vh] flex items-center justify-center px-3">
+                  <h1 className="line-clamp-3 text-center text-[clamp(18px,3.2vh,28px)] font-bold leading-tight break-words">
                     {currentQuestion.question}
                   </h1>
                 </div>
@@ -1122,7 +1122,7 @@ export default function QuizPage() {
               </div>
 
               {(!isAnswered || showFeedback) && (
-                <div className="mt-3 flex flex-col gap-2 px-4">
+                <div className="mt-2 flex flex-col gap-2 px-4 pb-20">
                   <p className="text-sm text-slate-300 text-center">
                     Select the correct answer
                   </p>
