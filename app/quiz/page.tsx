@@ -1026,10 +1026,10 @@ export default function QuizPage() {
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
       <div className="relative z-10 flex-1 overflow-hidden pb-20 md:px-6 md:py-4">
-        <div className="flex justify-center items-start w-full">
-        <div className="w-full max-w-2xl mx-auto">
-          <div className="h-full flex flex-col justify-between space-y-3 md:space-y-6">
-            <div className="flex-shrink-0 space-y-2 pt-2 pb-2 px-4">
+        <div className="flex h-full w-full justify-center">
+        <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
+          <div className="h-full flex flex-col">
+            <div className="flex-shrink-0 px-4 pt-2 pb-2">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-4">
                   <button
@@ -1071,62 +1071,66 @@ export default function QuizPage() {
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] bg-slate-900 rounded-2xl p-5 md:p-10 shadow-xl shadow-[0_0_40px_rgba(59,130,246,0.15)] scale-[1.02] border border-white/5 ${
+              className={`animate-[fadeIn_0.3s_ease] flex-1 bg-slate-900 rounded-2xl px-4 py-4 md:p-10 shadow-xl shadow-[0_0_40px_rgba(59,130,246,0.15)] scale-[1.02] border border-white/5 ${
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-500'
                   : ''
-              }`}
+              } flex flex-col overflow-hidden`}
             >
-              <div className="flex justify-between text-sm text-gray-300 mb-3">
-                <div>
-                  <p className="mt-1 text-sm text-orange-400">
-                    🔥 Streak: {streak}
-                  </p>
-
-                  {getStreakMessage(streak) && (
-                    <p className="text-xs text-orange-300 mt-1">
-                      {getStreakMessage(streak)}
+              <div className="flex-shrink-0">
+                <div className="flex justify-between text-sm text-gray-300 mb-3">
+                  <div>
+                    <p className="mt-1 text-sm text-orange-400">
+                      🔥 Streak: {streak}
                     </p>
-                  )}
-                </div>
-                <div className={`${comboFlash ? "scale-110 text-yellow-400" : ""} transition-all duration-200`}>
-                  🔥 Combo: {combo}
-                </div>
-                <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
-              </div>
 
-              {currentQuestion.difficulty === 'scholar' && (
-                <div className="mb-4 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
-                  <p className="text-center text-sm font-bold tracking-wider text-yellow-400">SCHOLAR MODE</p>
-                </div>
-              )}
-
-              <div className="flex flex-col items-center justify-center gap-1 px-3 text-center">
-                <div className="max-h-[30vh] flex items-center justify-center px-3">
-                  <h1 className="px-3 text-center text-[clamp(18px,2.6vh,24px)] font-extrabold leading-snug break-words">
-                    {currentQuestion.question}
-                  </h1>
+                    {getStreakMessage(streak) && (
+                      <p className="text-xs text-orange-300 mt-1">
+                        {getStreakMessage(streak)}
+                      </p>
+                    )}
+                  </div>
+                  <div className={`${comboFlash ? "scale-110 text-yellow-400" : ""} transition-all duration-200`}>
+                    🔥 Combo: {combo}
+                  </div>
+                  <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
                 </div>
 
-                {currentQuestion.reference && (
-                  <p className="text-sm text-gray-200 mt-2">
-                    {currentQuestion.reference}
-                  </p>
-                )}
-
-                {isReviewMode && currentIncorrectItem && (
-                  <div className="mb-4 rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
-                    You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
+                {currentQuestion.difficulty === 'scholar' && (
+                  <div className="mb-3 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
+                    <p className="text-center text-sm font-bold tracking-wider text-yellow-400">SCHOLAR MODE</p>
                   </div>
                 )}
               </div>
 
-              {(!isAnswered || showFeedback) && (
-                <div className="flex flex-col gap-2 px-4 pb-20">
-                  <p className="text-sm text-slate-300 text-center">
-                    Select the correct answer
-                  </p>
+              <div className="flex-[0_0_32%] flex items-center justify-center px-4 text-center">
+                <div className="flex flex-col items-center justify-center gap-1 px-3">
+                  <h1 className="text-[clamp(16px,2.4vh,22px)] leading-snug font-bold break-words">
+                    {currentQuestion.question}
+                  </h1>
 
+                  {currentQuestion.reference && (
+                    <p className="text-sm text-gray-200">
+                      {currentQuestion.reference}
+                    </p>
+                  )}
+
+                  {!isAnswered && (
+                    <p className="text-sm text-slate-300 text-center">
+                      Select the correct answer
+                    </p>
+                  )}
+
+                  {isReviewMode && currentIncorrectItem && (
+                    <div className="rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
+                      You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {(!isAnswered || showFeedback) && (
+                <div className="flex-1 flex flex-col justify-evenly gap-2 px-4 pb-20">
                   {currentQuestion.options.map((answer, index) => (
                     <button
                       key={index}
