@@ -1101,9 +1101,9 @@ export default function QuizPage() {
                 </div>
               )}
 
-              <div className="flex-1 flex flex-col items-center justify-center gap-2 text-center px-2">
+              <div className="flex flex-col items-center justify-center gap-1 px-3 text-center">
                 <div className="max-h-[30vh] flex items-center justify-center px-3">
-                  <h1 className="line-clamp-3 text-center text-[clamp(18px,3.2vh,28px)] font-bold leading-tight break-words">
+                  <h1 className="px-3 text-center text-[clamp(18px,2.6vh,24px)] font-extrabold leading-snug break-words">
                     {currentQuestion.question}
                   </h1>
                 </div>
@@ -1122,7 +1122,7 @@ export default function QuizPage() {
               </div>
 
               {(!isAnswered || showFeedback) && (
-                <div className="mt-2 flex flex-col gap-2 px-4 pb-20">
+                <div className="flex flex-col gap-2 px-4 pb-20">
                   <p className="text-sm text-slate-300 text-center">
                     Select the correct answer
                   </p>
@@ -1132,11 +1132,11 @@ export default function QuizPage() {
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
                       disabled={selectedAnswer !== null}
-                      className={`w-full rounded-xl border border-white/10 px-4 py-3 text-left text-base font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
+                      className={`min-h-[56px] w-full rounded-xl border border-white/10 px-4 py-2 text-left text-base leading-tight font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span>
+                        <span className="text-base leading-tight">
                           <span className="font-bold text-xl mr-4">
                             {["A", "B", "C", "D"][index]}.
                           </span>
