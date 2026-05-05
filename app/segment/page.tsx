@@ -197,8 +197,8 @@ export default function SegmentIntro() {
         ✕
       </Link>
 
-      <div className="flex-1 flex flex-col items-center justify-start px-4 pt-6">
-        <div className="relative w-full max-w-md h-[55vh] rounded-2xl overflow-hidden shadow-2xl">
+      <div className="flex flex-col h-full">
+        <div className="relative w-full h-[40vh] max-h-[420px] rounded-2xl overflow-hidden shadow-2xl">
           {segment === "genesis-1-3" ? (
             <video
               autoPlay
@@ -230,68 +230,70 @@ export default function SegmentIntro() {
           </div>
         </div>
 
-        <div className="w-full max-w-md mt-2 space-y-2">
-          <a
-            href={`https://www.biblegateway.com/passage/?search=${segment.replace("-", "%20")}`}
-            target="_blank"
-            rel="noreferrer"
-            className="block w-full text-center bg-slate-800 hover:bg-slate-700 py-3 rounded-xl font-semibold"
-          >
-            Read Scripture
-          </a>
-
-          {questionCount === null && (
-            <div className="bg-[#0B1220] p-6 rounded-2xl text-center space-y-4 border border-white/10">
-              <h2 className="text-xl font-bold text-white">
-                Choose Your Depth
-              </h2>
-
-              <div className="space-y-3">
-                {depthOptions.map((option) => {
-                  const isLockedOption = !option.enabled
-                  const isUnavailable = option.unavailable
-
-                  return (
-                    <button
-                      key={option.id}
-                      onClick={() => {
-                        if (isLockedOption) {
-                          console.error("REDIRECT TRIGGERED HERE", {
-                            location: "app/segment/page.tsx",
-                            planType,
-                            isPro: planType === "pro" || planType === "family_pro",
-                            isProPlus: planType === "pro_plus" || planType === "family_pro_plus",
-                            activeProgramId: null,
-                            segmentParam: segment,
-                            safeDepth: questionCount
-                          });
-                          router.push("/pricing")
-                          return
-                        }
-
-                        if (isUnavailable) return
-
-                        setQuestionCount(option.value)
-                      }}
-                      disabled={isUnavailable}
-                      className={`w-full py-3 rounded-xl ${option.accentClass} ${isLockedOption ? "opacity-50" : ""} ${isUnavailable ? "opacity-50 cursor-not-allowed" : ""}`}
-                    >
-                      {option.label} {isLockedOption ? "🔒" : ""}
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          )}
-
-          {questionCount !== null && (
-            <Link
-              href={quizHref}
-              className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
+        <div className="flex-1 overflow-y-auto px-4 pb-24 pt-4">
+          <div className="mx-auto w-full max-w-md space-y-2">
+            <a
+              href={`https://www.biblegateway.com/passage/?search=${segment.replace("-", "%20")}`}
+              target="_blank"
+              rel="noreferrer"
+              className="block w-full text-center bg-slate-800 hover:bg-slate-700 py-3 rounded-xl font-semibold"
             >
-              Continue →
-            </Link>
-          )}
+              Read Scripture
+            </a>
+
+            {questionCount === null && (
+              <div className="bg-[#0B1220] p-6 rounded-2xl text-center space-y-4 border border-white/10">
+                <h2 className="text-xl font-bold text-white">
+                  Choose Your Depth
+                </h2>
+
+                <div className="space-y-3">
+                  {depthOptions.map((option) => {
+                    const isLockedOption = !option.enabled
+                    const isUnavailable = option.unavailable
+
+                    return (
+                      <button
+                        key={option.id}
+                        onClick={() => {
+                          if (isLockedOption) {
+                            console.error("REDIRECT TRIGGERED HERE", {
+                              location: "app/segment/page.tsx",
+                              planType,
+                              isPro: planType === "pro" || planType === "family_pro",
+                              isProPlus: planType === "pro_plus" || planType === "family_pro_plus",
+                              activeProgramId: null,
+                              segmentParam: segment,
+                              safeDepth: questionCount
+                            });
+                            router.push("/pricing")
+                            return
+                          }
+
+                          if (isUnavailable) return
+
+                          setQuestionCount(option.value)
+                        }}
+                        disabled={isUnavailable}
+                        className={`w-full py-3 rounded-xl ${option.accentClass} ${isLockedOption ? "opacity-50" : ""} ${isUnavailable ? "opacity-50 cursor-not-allowed" : ""}`}
+                      >
+                        {option.label} {isLockedOption ? "🔒" : ""}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {questionCount !== null && (
+              <Link
+                href={quizHref}
+                className="block w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold text-lg text-center"
+              >
+                Continue →
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </div>
