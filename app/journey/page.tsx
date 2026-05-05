@@ -443,12 +443,14 @@ export default function JourneyPage() {
                             return
                           }
 
-                          if (isFree && isFirstNode) {
-                            playSound("/sounds/tap.mp3")
+                        if (isFree && isFirstNode) {
+                          playSound("/sounds/tap.mp3")
 
-                            router.push(`/segment?segment=${node.segment}`)
-                            return
-                          }
+                          const normalized = node.segment.replaceAll("_", "-")
+
+                          router.push(`/segment?segment=${normalized}`)
+                          return
+                        }
 
                           if (isLocked) return
 
@@ -464,11 +466,15 @@ export default function JourneyPage() {
                             playSound("/sounds/tap.mp3")
 
                             if (isFree) {
-                              router.push(`/segment?segment=${node.segment}`)
+                              const normalized = node.segment.replaceAll("_", "-")
+
+                              router.push(`/segment?segment=${normalized}`)
                               return
                             }
 
-                            router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                            const normalized = node.segment.replaceAll("_", "-")
+
+                            router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
                           } else {
                             setActiveIndex(index)
                             setSelectedSegment(node.segment)
@@ -782,7 +788,9 @@ export default function JourneyPage() {
                                   if (isFree && isFirstNode) {
                                     playSound("/sounds/tap.mp3")
 
-                                    router.push(`/segment?segment=${node.segment}`)
+                                    const normalized = node.segment.replaceAll("_", "-")
+
+                                    router.push(`/segment?segment=${normalized}`)
                                     return
                                   }
 
@@ -800,11 +808,15 @@ export default function JourneyPage() {
                                     playSound("/sounds/tap.mp3")
 
                                     if (isFree) {
-                                      router.push(`/segment?segment=${node.segment}`)
+                                      const normalized = node.segment.replaceAll("_", "-")
+
+                                      router.push(`/segment?segment=${normalized}`)
                                       return
                                     }
 
-                                    router.push(`/segment?program=${selectedProgram}&segment=${node.segment}`)
+                                    const normalized = node.segment.replaceAll("_", "-")
+
+                                    router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
                                   } else {
                                     setActiveIndex(index)
                                     setSelectedSegment(node.segment)
@@ -958,12 +970,16 @@ export default function JourneyPage() {
 
                   // FREE -> normal access
                   if (planType === "free") {
-                    router.push(`/segment?segment=${activeNode.segment}`)
+                    const normalized = activeNode.segment.replaceAll("_", "-")
+
+                    router.push(`/segment?segment=${normalized}`)
                     return
                   }
 
                   // ALL PAID PLANS -> full access
-                  router.push(`/segment?program=${selectedProgram}&segment=${activeNode.segment}`)
+                  const normalized = activeNode.segment.replaceAll("_", "-")
+
+                  router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}

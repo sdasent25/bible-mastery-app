@@ -16,10 +16,11 @@ export default function SegmentIntro() {
   const [questionCount, setQuestionCount] = useState<number | null>(null)
   const [availableCount, setAvailableCount] = useState<number | null>(null)
 
-  const segment = searchParams.get("segment") || ""
-  const normalizedSegment = segment
-    ?.toLowerCase()
+  const rawSegment = searchParams.get("segment") || ""
+  const segment = rawSegment
+    .toLowerCase()
     .replaceAll("_", "-")
+  const normalizedSegment = segment
   const program = searchParams.get("program") || "genesis"
   const isFree = planType === "free"
 
@@ -125,8 +126,14 @@ export default function SegmentIntro() {
 
   function formatSegment(segment: string) {
     const parts = segment.split("-")
+
+    if (parts.length < 3) return segment
+
     const book = parts[0].charAt(0).toUpperCase() + parts[0].slice(1)
-    return `${book} ${parts[1]}-${parts[2]}`
+    const start = parts[1]
+    const end = parts[2]
+
+    return `${book} ${start}–${end}`
   }
 
   function getImage(currentSegment: string) {
