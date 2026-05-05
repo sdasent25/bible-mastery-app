@@ -1028,7 +1028,7 @@ export default function QuizPage() {
         <div className="flex h-full w-full justify-center">
         <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
           <div className="h-full flex flex-col">
-            <div className="flex-shrink-0 px-4 pt-2 pb-2">
+            <div className="flex-[0_1_auto] px-4 pt-1 pb-2">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-4">
                   <button
@@ -1076,8 +1076,8 @@ export default function QuizPage() {
                   : ''
               } flex flex-col`}
             >
-              <div className="flex-shrink-0">
-                <div className="flex justify-between text-sm text-gray-300 mb-3">
+              <div className="flex-[0_1_auto]">
+                <div className="flex justify-between text-sm text-gray-300 mb-2">
                   <div>
                     <p className="mt-1 text-sm text-orange-400">
                       🔥 Streak: {streak}
@@ -1096,7 +1096,7 @@ export default function QuizPage() {
                 </div>
 
                 {currentQuestion.difficulty === 'scholar' && (
-                  <div className="mb-3 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
+                  <div className="mb-2 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
                     <p className="text-center text-sm font-bold tracking-wider text-yellow-400">SCHOLAR MODE</p>
                   </div>
                 )}
