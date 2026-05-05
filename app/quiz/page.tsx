@@ -1077,7 +1077,7 @@ export default function QuizPage() {
               } flex flex-col`}
             >
               <div className="flex-[0_1_auto]">
-                <div className="flex justify-between text-sm text-gray-300 mb-2">
+                <div className="flex items-center justify-between gap-2 text-sm text-gray-300 mb-2">
                   <div>
                     <p className="mt-1 text-sm text-orange-400">
                       🔥 Streak: {streak}
@@ -1105,13 +1105,13 @@ export default function QuizPage() {
               <div className="flex-[0_1_auto] flex items-center justify-center px-4 text-center">
                 <div className="flex flex-col items-center justify-center gap-1 px-3">
                   <div className="flex items-center justify-center px-2">
-                    <h1 className="text-[20px] leading-snug font-semibold text-center break-words px-2">
+                    <h1 className="text-[20px] leading-snug font-bold text-white text-center break-words px-2">
                       {currentQuestion.question}
                     </h1>
                   </div>
 
                   {currentQuestion.reference && (
-                    <p className="text-sm text-gray-200">
+                    <p className="mb-1 text-sm text-gray-200">
                       {currentQuestion.reference}
                     </p>
                   )}
@@ -1131,17 +1131,17 @@ export default function QuizPage() {
               </div>
 
               {(!isAnswered || showFeedback) && (
-                <div className="flex-1 flex flex-col justify-evenly gap-2 px-4 pb-[100px]">
+                <div className="mt-3 flex-1 flex flex-col justify-start gap-2 px-4 pb-[100px]">
                   {currentQuestion.options.map((answer, index) => (
                     <button
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
                       disabled={selectedAnswer !== null}
-                      className={`min-h-[56px] w-full rounded-xl border border-white/10 px-4 py-2 text-left text-base leading-tight font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
+                      className={`min-h-[56px] w-full rounded-xl border border-white/10 px-4 py-2 text-left text-base leading-tight font-medium text-white shadow-lg transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-base leading-tight">
+                        <span className="text-base leading-tight font-normal">
                           <span className="font-bold text-xl mr-4">
                             {["A", "B", "C", "D"][index]}.
                           </span>
