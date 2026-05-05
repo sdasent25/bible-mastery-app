@@ -39,25 +39,6 @@ body {
   scrollbar-width: none;
 }
 
-h1 {
-  font-size: 3rem;
-  font-weight: 700;
-}
-
-h2 {
-  font-size: 2.25rem;
-  font-weight: 600;
-}
-
-h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-p {
-  font-size: 1.1rem;
-}
-
 /* readability overrides for dark surfaces */
 [class*="text-gray-400"],
 [class*="text-gray-500"],
