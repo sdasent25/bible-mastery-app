@@ -648,6 +648,17 @@ export default function QuizPage() {
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
   const isAnswered = selectedAnswer !== null;
   const correctIndex = currentQuestion.correctIndex;
+  const questionLength = currentQuestion.question.length
+
+  let questionSizeClass = "text-[22px]"
+
+  if (questionLength > 120) {
+    questionSizeClass = "text-[16px]"
+  } else if (questionLength > 90) {
+    questionSizeClass = "text-[18px]"
+  } else if (questionLength > 60) {
+    questionSizeClass = "text-[20px]"
+  }
 
   const getButtonStyle = (index: number) => {
     if (!showFeedback) return "bg-blue-600";
@@ -1103,11 +1114,13 @@ export default function QuizPage() {
                 )}
               </div>
 
-              <div className="flex-[0_0_32%] flex items-center justify-center px-4 text-center">
+              <div className="flex-shrink-0 flex items-center justify-center px-4 text-center">
                 <div className="flex flex-col items-center justify-center gap-1 px-3">
-                  <h1 className="text-[clamp(16px,2.4vh,22px)] leading-snug font-bold break-words">
-                    {currentQuestion.question}
-                  </h1>
+                  <div className="max-h-[28%] flex items-center justify-center">
+                    <h1 className={`${questionSizeClass} leading-snug font-bold text-center break-words`}>
+                      {currentQuestion.question}
+                    </h1>
+                  </div>
 
                   {currentQuestion.reference && (
                     <p className="text-sm text-gray-200">
