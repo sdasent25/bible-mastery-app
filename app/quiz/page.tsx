@@ -1024,7 +1024,7 @@ export default function QuizPage() {
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
-      <div className="relative z-10 flex-1 overflow-hidden pb-20 md:px-6 md:py-4">
+      <div className="relative z-10 flex-1 pb-20 md:px-6 md:py-4">
         <div className="flex h-full w-full justify-center">
         <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
           <div className="h-full flex flex-col">
@@ -1074,7 +1074,7 @@ export default function QuizPage() {
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-500'
                   : ''
-              } flex flex-col overflow-hidden`}
+              } flex flex-col`}
             >
               <div className="flex-shrink-0">
                 <div className="flex justify-between text-sm text-gray-300 mb-3">
@@ -1102,9 +1102,9 @@ export default function QuizPage() {
                 )}
               </div>
 
-              <div className="flex-shrink-0 flex items-center justify-center px-4 text-center">
+              <div className="flex-[0_1_auto] flex items-center justify-center px-4 text-center">
                 <div className="flex flex-col items-center justify-center gap-1 px-3">
-                  <div className="max-h-[25vh] flex items-center justify-center overflow-hidden px-2">
+                  <div className="flex items-center justify-center px-2">
                     <h1 className="text-[14px] leading-snug font-bold text-center break-words px-2">
                       {currentQuestion.question}
                     </h1>
