@@ -1105,7 +1105,7 @@ export default function QuizPage() {
               <div className="flex-[0_1_auto] flex items-center justify-center px-4 text-center">
                 <div className="flex flex-col items-center justify-center gap-1 px-3">
                   <div className="flex items-center justify-center px-2">
-                    <h1 className="text-[14px] leading-snug font-bold text-center break-words px-2">
+                    <h1 className="text-[16px] leading-snug font-bold text-center break-words px-2">
                       {currentQuestion.question}
                     </h1>
                   </div>
