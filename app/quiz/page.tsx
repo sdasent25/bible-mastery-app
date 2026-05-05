@@ -648,18 +648,6 @@ export default function QuizPage() {
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
   const isAnswered = selectedAnswer !== null;
   const correctIndex = currentQuestion.correctIndex;
-  const questionLength = currentQuestion.question.length
-
-  let questionSizeClass = "text-[22px]"
-
-  if (questionLength > 120) {
-    questionSizeClass = "text-[16px]"
-  } else if (questionLength > 90) {
-    questionSizeClass = "text-[18px]"
-  } else if (questionLength > 60) {
-    questionSizeClass = "text-[20px]"
-  }
-
   const getButtonStyle = (index: number) => {
     if (!showFeedback) return "bg-blue-600";
 
@@ -1095,11 +1083,11 @@ export default function QuizPage() {
                       🔥 Streak: {streak}
                     </p>
 
-                    {getStreakMessage(streak) && (
-                      <p className="text-xs text-orange-300 mt-1">
-                        {getStreakMessage(streak)}
-                      </p>
-                    )}
+                  {getStreakMessage(streak) && (
+                    <p className="text-xs text-orange-300 mt-1">
+                      {getStreakMessage(streak)}
+                    </p>
+                  )}
                   </div>
                   <div className={`${comboFlash ? "scale-110 text-yellow-400" : ""} transition-all duration-200`}>
                     🔥 Combo: {combo}
@@ -1117,7 +1105,7 @@ export default function QuizPage() {
               <div className="flex-shrink-0 flex items-center justify-center px-4 text-center">
                 <div className="flex flex-col items-center justify-center gap-1 px-3">
                   <div className="max-h-[28%] flex items-center justify-center">
-                    <h1 className={`${questionSizeClass} leading-snug font-bold text-center break-words`}>
+                    <h1 className="text-sm leading-snug font-bold text-center break-words px-2">
                       {currentQuestion.question}
                     </h1>
                   </div>
