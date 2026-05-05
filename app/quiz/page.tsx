@@ -1025,12 +1025,12 @@ export default function QuizPage() {
         <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
         <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
       </div>
-      <div className="relative z-10 flex-1 md:px-6 md:py-4 overflow-hidden">
+      <div className="relative z-10 flex-1 overflow-hidden pb-20 md:px-6 md:py-4">
         <div className="flex justify-center items-start w-full">
         <div className="w-full max-w-2xl mx-auto">
-          <div className="space-y-3 md:space-y-6">
-            <div className="flex-shrink-0 space-y-2">
-              <div className="flex items-center justify-between mb-4">
+          <div className="h-full flex flex-col justify-between space-y-3 md:space-y-6">
+            <div className="flex-shrink-0 space-y-2 pt-2 pb-2 px-4">
+              <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => router.push('/journey')}
@@ -1061,9 +1061,9 @@ export default function QuizPage() {
                 </div>
               </div>
 
-              <div className="h-3 rounded-full bg-slate-800">
+              <div className="h-2 rounded-full bg-slate-800">
                 <div
-                  className="transition-all duration-500 ease-out h-4 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)]"
+                  className="h-2 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-500 ease-out"
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -1103,7 +1103,7 @@ export default function QuizPage() {
 
               <div className="flex-1 flex flex-col justify-center text-center px-2">
                 <div className="flex items-center justify-center text-center px-2">
-                  <h1 className="text-sm md:text-xl font-bold leading-snug text-center break-words">
+                  <h1 className="px-2 text-center text-[clamp(20px,4vh,32px)] font-bold leading-tight break-words">
                     {currentQuestion.question}
                   </h1>
                 </div>
@@ -1122,7 +1122,7 @@ export default function QuizPage() {
               </div>
 
               {(!isAnswered || showFeedback) && (
-                <div className="flex-shrink-0 space-y-2">
+                <div className="mt-3 flex flex-col gap-2 px-4">
                   <p className="text-sm text-slate-300 text-center">
                     Select the correct answer
                   </p>
@@ -1132,7 +1132,7 @@ export default function QuizPage() {
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
                       disabled={selectedAnswer !== null}
-                      className={`w-full py-4 px-4 md:px-6 text-left text-sm rounded-xl border border-white/10 font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 ${getButtonStyle(index)}`}
+                      className={`w-full rounded-xl border border-white/10 px-4 py-3 text-left text-base font-medium text-white shadow-md transition-all duration-200 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
                       aria-label={`Answer option ${index + 1}: ${answer}`}
                     >
                       <div className="flex items-center justify-between gap-4">
