@@ -1131,7 +1131,7 @@ export default function QuizPage() {
               </div>
 
               {(!isAnswered || showFeedback) && (
-                <div className="flex-1 flex flex-col justify-evenly gap-2 px-4 pb-20">
+                <div className="flex-1 flex flex-col justify-evenly gap-2 px-4 pb-[100px]">
                   {currentQuestion.options.map((answer, index) => (
                     <button
                       key={index}
