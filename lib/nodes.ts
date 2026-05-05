@@ -395,13 +395,18 @@ export function getAllNodes() {
 }
 
 export function parseNodeId(id: string) {
-  const parts = id.split("_")
+  if (!id) return null
+
+  // normalize to hyphen format
+  const normalized = id.toLowerCase().replaceAll("_", "-")
+
+  const parts = normalized.split("-")
 
   if (parts.length < 3) return null
 
-  const book = parts.slice(0, parts.length - 2).join("_")
-  const startChapter = Number(parts[parts.length - 2])
-  const endChapter = Number(parts[parts.length - 1])
+  const book = parts[0]
+  const startChapter = Number(parts[1])
+  const endChapter = Number(parts[2])
 
   if (!book || Number.isNaN(startChapter) || Number.isNaN(endChapter)) return null
 
