@@ -329,7 +329,7 @@ export default function ExplorePage() {
       <div className="pointer-events-none absolute -left-12 top-52 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl" />
       <div className="pointer-events-none absolute right-0 top-80 h-48 w-48 rounded-full bg-fuchsia-400/10 blur-3xl" />
 
-      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
         <header className="mb-10 sm:mb-14">
           <div className="text-sm font-bold uppercase tracking-[0.32em] text-cyan-200/80">
             Explorer
@@ -513,30 +513,6 @@ export default function ExplorePage() {
           </section>
         </div>
 
-        <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#050812]/95 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-md items-center justify-around px-4 py-3">
-            <Link href="/home" className="flex flex-col items-center text-[11px] font-medium text-slate-400">
-              <span className="text-lg">🏠</span>
-              <span>Home</span>
-            </Link>
-            <Link href="/journey" className="flex flex-col items-center text-[11px] font-medium text-slate-400">
-              <span className="text-lg">📖</span>
-              <span>Journey</span>
-            </Link>
-            <Link href="/explore" className="flex flex-col items-center text-[11px] font-semibold text-cyan-200">
-              <span className="text-lg">🧭</span>
-              <span>Explore</span>
-            </Link>
-            <Link href="/quests" className="flex flex-col items-center text-[11px] font-medium text-slate-400">
-              <span className="text-lg">⚔️</span>
-              <span>Quests</span>
-            </Link>
-            <Link href="/leaderboard" className="flex flex-col items-center text-[11px] font-medium text-slate-400">
-              <span className="text-lg">🏆</span>
-              <span>Rank</span>
-            </Link>
-          </div>
-        </nav>
       </div>
     </main>
   )

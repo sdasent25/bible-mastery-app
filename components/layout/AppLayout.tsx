@@ -2,13 +2,22 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import Sidebar from "@/components/layout/Sidebar"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isGameMode =
+    pathname === "/quiz" ||
+    pathname === "/flashcards/review" ||
+    pathname.startsWith("/games/")
+
+  const showMobileNav = !isGameMode
 
   return (
-    <div className={`flex min-h-screen bg-[#020617] text-white ${open ? "overflow-hidden" : ""}`}>
+    <div className={`flex min-h-screen bg-[#020617] text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}>
       {open && (
         <div
           className="fixed inset-0 bg-black/60 z-[900] md:hidden"
@@ -42,49 +51,51 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div
-          className={`flex-1 md:overflow-y-auto md:p-6 transition ${
+          className={`flex-1 transition ${
             open ? "pointer-events-none blur-sm" : ""
           }`}
         >
-          <div className="md:hidden fixed inset-0 bg-[#0B1220] flex flex-col">
-            <div className="flex-1 overflow-hidden">
+          <div className="md:hidden bg-[#0B1220]">
+            <div className={showMobileNav ? "pb-[92px]" : ""}>
               {children}
             </div>
 
-            <div className="h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
-              <Link href="/dashboard" className="flex flex-col items-center text-xs">
-                <span>🏠</span>
-                <span>Home</span>
-              </Link>
+            {showMobileNav && (
+              <div className="fixed inset-x-0 bottom-0 z-40 h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
+                <Link href="/dashboard" className="flex flex-col items-center text-xs">
+                  <span>🏠</span>
+                  <span>Home</span>
+                </Link>
 
-              <Link href="/journey" className="flex flex-col items-center text-xs">
-                <span>📖</span>
-                <span>Journey</span>
-              </Link>
+                <Link href="/journey" className="flex flex-col items-center text-xs">
+                  <span>📖</span>
+                  <span>Journey</span>
+                </Link>
 
-              <Link href="/flashcards" className="flex flex-col items-center text-xs">
-                <span>🧠</span>
-                <span>Cards</span>
-              </Link>
+                <Link href="/flashcards" className="flex flex-col items-center text-xs">
+                  <span>🧠</span>
+                  <span>Cards</span>
+                </Link>
 
-              <Link href="/quests" className="flex flex-col items-center text-xs">
-                <span>⚔️</span>
-                <span>Quests</span>
-              </Link>
+                <Link href="/quests" className="flex flex-col items-center text-xs">
+                  <span>⚔️</span>
+                  <span>Quests</span>
+                </Link>
 
-              <Link href="/leaderboard" className="flex flex-col items-center text-xs">
-                <span>🏆</span>
-                <span>Rank</span>
-              </Link>
+                <Link href="/leaderboard" className="flex flex-col items-center text-xs">
+                  <span>🏆</span>
+                  <span>Rank</span>
+                </Link>
 
-              <Link href="/settings" className="flex flex-col items-center text-xs">
-                <span>⚙️</span>
-                <span>Settings</span>
-              </Link>
-            </div>
+                <Link href="/settings" className="flex flex-col items-center text-xs">
+                  <span>⚙️</span>
+                  <span>Settings</span>
+                </Link>
+              </div>
+            )}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:block md:p-6 md:overflow-y-auto">
             {children}
           </div>
         </div>
