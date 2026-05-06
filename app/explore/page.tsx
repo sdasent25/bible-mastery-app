@@ -116,6 +116,23 @@ const EXPLORER_CATEGORIES: CategoryKey[] = [
   "apocalyptic",
 ]
 
+const HERO_CATEGORY: CategoryKey = "pentateuch"
+
+const OLD_TESTAMENT_CATEGORIES: CategoryKey[] = [
+  "historical",
+  "wisdom",
+  "major_prophets",
+  "minor_prophets",
+]
+
+const NEW_TESTAMENT_CATEGORIES: CategoryKey[] = [
+  "gospels",
+  "acts",
+  "pauline_epistles",
+  "general_epistles",
+  "apocalyptic",
+]
+
 function slugifyBook(book: string) {
   return book.toLowerCase().replace(/\s+/g, "_")
 }
@@ -312,106 +329,184 @@ export default function ExplorePage() {
       <div className="pointer-events-none absolute -left-12 top-52 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl" />
       <div className="pointer-events-none absolute right-0 top-80 h-48 w-48 rounded-full bg-fuchsia-400/10 blur-3xl" />
 
-      <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col px-4 pb-24 pt-6">
-        <header className="mb-6">
+      <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 pb-24 pt-6 sm:px-6 lg:px-8">
+        <header className="mb-10 sm:mb-14">
           <div className="text-sm font-bold uppercase tracking-[0.32em] text-cyan-200/80">
             Explorer
           </div>
-          <h1 className="mt-3 text-4xl font-black leading-tight text-white">
+          <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl">
             Enter the Bible
           </h1>
-          <p className="mt-3 max-w-sm text-base leading-7 text-slate-300">
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
             Move through sacred regions, learn their terrain, and master each world through practice.
           </p>
         </header>
 
-        <section className="relative overflow-hidden rounded-[2rem] border border-emerald-300/15 bg-[radial-gradient(circle_at_top,rgba(126,230,156,0.18),transparent_34%),linear-gradient(180deg,rgba(14,22,39,0.98),rgba(7,10,18,0.98))] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.3)]">
-          <div className="absolute inset-x-10 top-0 h-24 rounded-full bg-emerald-300/10 blur-3xl" />
+        <section className="relative overflow-hidden rounded-[2rem] border border-emerald-300/12 bg-[radial-gradient(circle_at_top,rgba(126,230,156,0.14),transparent_34%),linear-gradient(180deg,rgba(14,22,39,0.92),rgba(7,10,18,0.92))] px-5 py-6 shadow-[0_20px_52px_rgba(0,0,0,0.24)] sm:px-6">
+          <div className="absolute inset-x-10 top-0 h-24 rounded-full bg-emerald-300/8 blur-3xl" />
 
-          <div className="relative z-10 flex items-center gap-5">
-            <div
-              className="relative flex h-24 w-24 items-center justify-center rounded-full p-[7px]"
-              style={ringStyle}
-            >
-              <div className="flex h-full w-full items-center justify-center rounded-full bg-[#07101b] shadow-inner shadow-black/30">
-                <div className="text-center">
-                  <div className="text-2xl font-black text-white">
-                    {derived.overallPercent}%
+          <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-5">
+              <div
+                className="relative flex h-24 w-24 items-center justify-center rounded-full p-[7px]"
+                style={ringStyle}
+              >
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-[#07101b] shadow-inner shadow-black/30">
+                  <div className="text-center">
+                    <div className="text-2xl font-black text-white">
+                      {derived.overallPercent}%
+                    </div>
+                    <div className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
+                      Mapped
+                    </div>
                   </div>
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-slate-300">
-                    Mapped
-                  </div>
+                </div>
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="text-xs font-bold uppercase tracking-[0.24em] text-emerald-200/80">
+                  World Progress
+                </div>
+                <div className="mt-2 max-w-xl text-lg font-semibold text-white">
+                  {derived.strongestCategory
+                    ? `${CATEGORY_META[derived.strongestCategory].title} is currently your strongest region.`
+                    : "Your Bible world is just beginning to open."}
+                </div>
+                <div className="mt-3 text-sm leading-6 text-slate-300">
+                  {derived.booksMastered} of {derived.totalBooks} books fully mastered across {derived.masteredSegments} cleared segments.
                 </div>
               </div>
             </div>
 
-            <div className="min-w-0 flex-1">
-              <div className="text-xs font-bold uppercase tracking-[0.24em] text-emerald-200/80">
-                Progress Summary
-              </div>
-              <div className="mt-3 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-3">
-                  <div className="text-xl font-black text-white">
-                    {derived.booksMastered} / {derived.totalBooks}
-                  </div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-300">
-                    Books Mastered
-                  </div>
+            <div className="flex gap-6 text-sm text-slate-300 sm:justify-end">
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                  Books
                 </div>
-                <div className="rounded-2xl border border-white/10 bg-black/20 px-3 py-3">
-                  <div className="text-xl font-black text-white">
-                    {derived.masteredSegments}
-                  </div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-300">
-                    Segments Cleared
-                  </div>
+                <div className="mt-1 text-xl font-black text-white">
+                  {derived.booksMastered}/{derived.totalBooks}
                 </div>
               </div>
-              <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
-                <div className="text-xs uppercase tracking-[0.18em] text-slate-300">
-                  Strongest Region
+              <div>
+                <div className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                  Segments
                 </div>
-                <div className="mt-2 text-lg font-bold text-white">
-                  {derived.strongestCategory
-                    ? CATEGORY_META[derived.strongestCategory].title
-                    : "Beginning the journey"}
+                <div className="mt-1 text-xl font-black text-white">
+                  {derived.masteredSegments}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <div className="mt-8 flex-1">
+        <div className="mt-12 sm:mt-16">
+          <div className="mb-5">
+            <div className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
+              Featured Region
+            </div>
+            <h2 className="mt-2 text-3xl font-black text-white sm:text-4xl">
+              Begin at the Source
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+              The opening region stands apart as the entry point into the whole Bible world.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-4xl">
+            {(() => {
+              const meta = CATEGORY_META[HERO_CATEGORY]
+              const stat = derived.categoryStats[HERO_CATEGORY]
+
+              return (
+                <ExplorerCategoryCard
+                  href={`/explore/category/${HERO_CATEGORY}`}
+                  title={meta.title}
+                  subtitle={meta.subtitle}
+                  bookCount={stat.bookCount}
+                  masteryPercent={stat.progressPercent}
+                  progressPercent={stat.progressPercent}
+                  state={stat.progressPercent >= 100 ? "mastered" : "open"}
+                  theme={meta.theme}
+                />
+              )
+            })()}
+          </div>
+        </div>
+
+        <div className="mt-16 space-y-16 sm:mt-24 sm:space-y-24">
           <section>
-            <div className="mb-4">
-              <div className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
-                Regions
+            <div className="mb-8 sm:mb-10">
+              <div className="text-xs font-bold uppercase tracking-[0.32em] text-amber-200/70">
+                Old Testament
               </div>
-              <h2 className="mt-2 text-2xl font-black text-white">
-                Sacred Region Library
+              <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
+                Ancient Realms
               </h2>
-              <p className="mt-2 max-w-sm text-sm leading-6 text-slate-300">
-                Each category is framed as an explorable Bible region with its own atmosphere, light, and terrain.
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+                Wilderness, kingdoms, poetry, and prophetic fire spread across the first sacred territories.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 gap-5">
-              {EXPLORER_CATEGORIES.map((category) => {
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:gap-8">
+              {[HERO_CATEGORY, ...OLD_TESTAMENT_CATEGORIES].map((category, index) => {
                 const meta = CATEGORY_META[category]
                 const stat = derived.categoryStats[category]
 
                 return (
-                  <ExplorerCategoryCard
+                  <div
                     key={category}
-                    href={`/explore/category/${category}`}
-                    title={meta.title}
-                    subtitle={meta.subtitle}
-                    bookCount={stat.bookCount}
-                    masteryPercent={stat.progressPercent}
-                    progressPercent={stat.progressPercent}
-                    state={stat.progressPercent >= 100 ? "mastered" : "open"}
-                    theme={meta.theme}
-                  />
+                    className={index % 2 === 1 ? "md:translate-y-10" : ""}
+                  >
+                    <ExplorerCategoryCard
+                      href={`/explore/category/${category}`}
+                      title={meta.title}
+                      subtitle={meta.subtitle}
+                      bookCount={stat.bookCount}
+                      masteryPercent={stat.progressPercent}
+                      progressPercent={stat.progressPercent}
+                      state={stat.progressPercent >= 100 ? "mastered" : "open"}
+                      theme={meta.theme}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+
+          <section>
+            <div className="mb-8 sm:mb-10">
+              <div className="text-xs font-bold uppercase tracking-[0.32em] text-cyan-200/70">
+                New Testament
+              </div>
+              <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
+                Expanding Horizons
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+                Radiant life, mission roads, letters, and final revelation open the later world of Scripture.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:gap-8">
+              {NEW_TESTAMENT_CATEGORIES.map((category, index) => {
+                const meta = CATEGORY_META[category]
+                const stat = derived.categoryStats[category]
+
+                return (
+                  <div
+                    key={category}
+                    className={index % 2 === 0 ? "md:translate-y-6" : ""}
+                  >
+                    <ExplorerCategoryCard
+                      href={`/explore/category/${category}`}
+                      title={meta.title}
+                      subtitle={meta.subtitle}
+                      bookCount={stat.bookCount}
+                      masteryPercent={stat.progressPercent}
+                      progressPercent={stat.progressPercent}
+                      state={stat.progressPercent >= 100 ? "mastered" : "open"}
+                      theme={meta.theme}
+                    />
+                  </div>
                 )
               })}
             </div>
