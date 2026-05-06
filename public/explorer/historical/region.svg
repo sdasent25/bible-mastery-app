@@ -1,0 +1,24 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#315EA6"/>
+      <stop offset="0.45" stop-color="#173464"/>
+      <stop offset="1" stop-color="#08111E"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1110 230) rotate(90) scale(220 220)">
+      <stop stop-color="#CFE0FF"/>
+      <stop offset="1" stop-color="#CFE0FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#moon)"/>
+  <path d="M0 670L133 610L217 635L305 575L401 612L510 520L590 566L693 493L799 542L880 507L960 546L1088 470L1207 556L1330 520L1452 585L1600 530V900H0V670Z" fill="#0C1730"/>
+  <path d="M835 390H943V620H835V390Z" fill="#18284A"/>
+  <path d="M803 440H975V620H803V440Z" fill="#213865"/>
+  <path d="M784 470H994V620H784V470Z" fill="#29477C"/>
+  <rect x="866" y="494" width="30" height="126" fill="#12213F"/>
+  <rect x="905" y="494" width="30" height="126" fill="#12213F"/>
+  <rect x="820" y="592" width="158" height="28" fill="#12213F"/>
+  <path d="M737 620H1052V662H737V620Z" fill="#15284D"/>
+  <path d="M0 756C155 700 301 691 436 708C605 729 719 810 896 810C1081 810 1197 706 1382 699C1456 696 1530 710 1600 738V900H0V756Z" fill="#070D19"/>
+</svg>

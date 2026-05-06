@@ -45,69 +45,75 @@ const CATEGORY_META: Record<
       | "major_prophets"
       | "minor_prophets"
       | "gospels"
+      | "acts"
       | "pauline_epistles"
+      | "general_epistles"
       | "apocalyptic"
   }
 > = {
   pentateuch: {
     title: "Pentateuch",
-    subtitle: "The Law and the Beginning",
+    subtitle: "Creation light, wilderness, covenant fire, and the first sacred paths.",
     theme: "pentateuch",
   },
   historical: {
     title: "Historical",
-    subtitle: "Kingdoms, conquest, exile, and return",
+    subtitle: "Fortress cities, royal thrones, conquest, exile, and return.",
     theme: "historical",
   },
   wisdom: {
     title: "Wisdom",
-    subtitle: "Psalms, Proverbs & More",
+    subtitle: "Star-soaked stillness, poetic depth, and divine understanding.",
     theme: "wisdom",
   },
   major_prophets: {
     title: "Major Prophets",
-    subtitle: "Visions, warning, and thunder from the watchmen",
+    subtitle: "Visions, warning, and thunder from the watchmen.",
     theme: "major_prophets",
   },
   minor_prophets: {
     title: "Minor Prophets",
-    subtitle: "Mystic warnings carried by shorter scrolls",
+    subtitle: "Hidden voices crossing mist, roads, and ancient thresholds.",
     theme: "minor_prophets",
   },
   gospels: {
     title: "Gospels",
-    subtitle: "The life and teachings of Jesus",
+    subtitle: "Radiant hope, holy nearness, and the light of divine life.",
     theme: "gospels",
   },
   acts: {
     title: "Acts",
-    subtitle: "The mission expands outward with courage, movement, and fire.",
-    theme: "gospels",
+    subtitle: "Harbors, roads, wind, and fire as the mission moves outward.",
+    theme: "acts",
   },
   pauline_epistles: {
     title: "Pauline Epistles",
-    subtitle: "Doctrine, correction, encouragement, and letters forged in motion.",
+    subtitle: "Candlelit counsel, disciplined thought, and letters forged in motion.",
     theme: "pauline_epistles",
   },
   general_epistles: {
     title: "General Epistles",
-    subtitle: "Steady counsel for endurance, holiness, love, and truth.",
-    theme: "historical",
+    subtitle: "Steady watchfires for endurance, holiness, love, and truth.",
+    theme: "general_epistles",
   },
   apocalyptic: {
     title: "Apocalyptic",
-    subtitle: "The veil lifts: conflict, victory, judgment, and final restoration.",
+    subtitle: "The veil lifts with cosmic storm, judgment, victory, and restoration.",
     theme: "apocalyptic",
   },
 }
 
-const DEMO_CATEGORIES: CategoryKey[] = [
+const EXPLORER_CATEGORIES: CategoryKey[] = [
   "pentateuch",
   "historical",
   "wisdom",
   "major_prophets",
   "minor_prophets",
   "gospels",
+  "acts",
+  "pauline_epistles",
+  "general_epistles",
+  "apocalyptic",
 ]
 
 function slugifyBook(book: string) {
@@ -312,10 +318,10 @@ export default function ExplorePage() {
             Explorer
           </div>
           <h1 className="mt-3 text-4xl font-black leading-tight text-white">
-            Explore the Bible
+            Enter the Bible
           </h1>
           <p className="mt-3 max-w-sm text-base leading-7 text-slate-300">
-            Master every book through progression and practice.
+            Move through sacred regions, learn their terrain, and master each world through practice.
           </p>
         </header>
 
@@ -323,7 +329,10 @@ export default function ExplorePage() {
           <div className="absolute inset-x-10 top-0 h-24 rounded-full bg-emerald-300/10 blur-3xl" />
 
           <div className="relative z-10 flex items-center gap-5">
-            <div className="relative flex h-24 w-24 items-center justify-center rounded-full p-[7px]" style={ringStyle}>
+            <div
+              className="relative flex h-24 w-24 items-center justify-center rounded-full p-[7px]"
+              style={ringStyle}
+            >
               <div className="flex h-full w-full items-center justify-center rounded-full bg-[#07101b] shadow-inner shadow-black/30">
                 <div className="text-center">
                   <div className="text-2xl font-black text-white">
@@ -360,7 +369,7 @@ export default function ExplorePage() {
               </div>
               <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 px-4 py-3">
                 <div className="text-xs uppercase tracking-[0.18em] text-slate-300">
-                  Strongest Category
+                  Strongest Region
                 </div>
                 <div className="mt-2 text-lg font-bold text-white">
                   {derived.strongestCategory
@@ -379,15 +388,15 @@ export default function ExplorePage() {
                 Regions
               </div>
               <h2 className="mt-2 text-2xl font-black text-white">
-                First Explorer Regions
+                Sacred Region Library
               </h2>
               <p className="mt-2 max-w-sm text-sm leading-6 text-slate-300">
-                A premium category card system preview for the first regions of the Bible.
+                Each category is framed as an explorable Bible region with its own atmosphere, light, and terrain.
               </p>
             </div>
 
             <div className="grid grid-cols-1 gap-5">
-              {DEMO_CATEGORIES.map((category) => {
+              {EXPLORER_CATEGORIES.map((category) => {
                 const meta = CATEGORY_META[category]
                 const stat = derived.categoryStats[category]
 

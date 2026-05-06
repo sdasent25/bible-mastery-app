@@ -1,0 +1,29 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4E2F8C"/>
+      <stop offset="0.48" stop-color="#24174A"/>
+      <stop offset="1" stop-color="#080913"/>
+    </linearGradient>
+    <radialGradient id="nebula" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(825 248) rotate(90) scale(320 550)">
+      <stop stop-color="#D7C0FF" stop-opacity="0.85"/>
+      <stop offset="0.55" stop-color="#A582F0" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#A582F0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#nebula)"/>
+  <g fill="#F8EDFF" fill-opacity="0.92">
+    <circle cx="260" cy="118" r="3"/>
+    <circle cx="402" cy="184" r="2.5"/>
+    <circle cx="583" cy="98" r="2"/>
+    <circle cx="715" cy="140" r="2.5"/>
+    <circle cx="908" cy="92" r="3"/>
+    <circle cx="1114" cy="170" r="2"/>
+    <circle cx="1261" cy="108" r="2.5"/>
+    <circle cx="1365" cy="212" r="2"/>
+  </g>
+  <path d="M0 664C179 602 304 602 474 641C621 674 749 747 893 747C1067 747 1174 617 1355 599C1446 590 1526 597 1600 617V900H0V664Z" fill="#120F23"/>
+  <path d="M256 640C351 595 421 541 504 470C551 561 618 620 710 670C601 714 548 765 487 850C435 756 392 699 256 640Z" fill="#A48DFF" fill-opacity="0.18"/>
+  <path d="M0 760C170 720 322 730 456 753C596 777 695 822 843 822C1030 822 1154 752 1320 734C1416 724 1514 733 1600 758V900H0V760Z" fill="#080B14"/>
+</svg>

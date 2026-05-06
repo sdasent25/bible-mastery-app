@@ -1,0 +1,20 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5B1F7C"/>
+      <stop offset="0.42" stop-color="#2B143F"/>
+      <stop offset="1" stop-color="#090911"/>
+    </linearGradient>
+    <radialGradient id="storm" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(880 228) rotate(90) scale(280 580)">
+      <stop stop-color="#F0B2FF" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#F0B2FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#storm)"/>
+  <path d="M214 216L498 172L347 320L608 284L436 430L787 382L512 562" stroke="#F7B3FF" stroke-opacity="0.58" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M0 675C162 611 292 610 440 639C610 673 731 762 896 762C1074 762 1183 625 1367 612C1454 606 1527 615 1600 633V900H0V675Z" fill="#120A19"/>
+  <path d="M782 580L832 430L882 580H782Z" fill="#24112E"/>
+  <rect x="826" y="575" width="12" height="110" fill="#24112E"/>
+  <path d="M0 770C181 730 337 740 480 763C618 786 708 826 856 826C1042 826 1161 752 1334 734C1422 725 1514 735 1600 760V900H0V770Z" fill="#090910"/>
+</svg>

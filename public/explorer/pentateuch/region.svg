@@ -1,0 +1,31 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="800" y1="0" x2="800" y2="900" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4C56B"/>
+      <stop offset="0.36" stop-color="#C98B2E"/>
+      <stop offset="0.68" stop-color="#5D3815"/>
+      <stop offset="1" stop-color="#110B08"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 270) rotate(90) scale(300 520)">
+      <stop stop-color="#FFF4C8"/>
+      <stop offset="0.58" stop-color="#FFD97E" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#FFD97E" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dune1" x1="0" y1="0" x2="1600" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D39B4A"/>
+      <stop offset="1" stop-color="#7B4C19"/>
+    </linearGradient>
+    <linearGradient id="dune2" x1="0" y1="0" x2="1600" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#A6662F"/>
+      <stop offset="1" stop-color="#462310"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#sun)"/>
+  <path d="M0 612C150 572 279 544 445 566C560 581 670 636 802 636C950 636 1029 565 1171 553C1331 540 1452 590 1600 625V900H0V612Z" fill="url(#dune1)"/>
+  <path d="M0 704C170 664 295 670 467 695C640 721 751 787 925 787C1095 787 1241 702 1400 690C1484 684 1547 693 1600 708V900H0V704Z" fill="url(#dune2)"/>
+  <path d="M1118 502L1149 444L1180 502H1118Z" fill="#3C2411" fill-opacity="0.72"/>
+  <rect x="1143" y="500" width="12" height="77" fill="#3C2411" fill-opacity="0.72"/>
+  <path d="M1158 537L1215 565H1101L1158 537Z" fill="#523116" fill-opacity="0.62"/>
+  <path d="M0 0H1600V900H0V0Z" fill="black" fill-opacity="0.08"/>
+</svg>
