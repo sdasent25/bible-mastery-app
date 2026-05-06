@@ -33,178 +33,85 @@ type CategoryKey =
   | "general_epistles"
   | "apocalyptic"
 
-const CATEGORY_ORDER: {
-  heading: "Old Testament" | "New Testament"
-  categories: CategoryKey[]
-}[] = [
-  {
-    heading: "Old Testament",
-    categories: [
-      "pentateuch",
-      "historical",
-      "wisdom",
-      "major_prophets",
-      "minor_prophets",
-    ],
-  },
-  {
-    heading: "New Testament",
-    categories: [
-      "gospels",
-      "acts",
-      "pauline_epistles",
-      "general_epistles",
-      "apocalyptic",
-    ],
-  },
-]
-
 const CATEGORY_META: Record<
   CategoryKey,
   {
     title: string
     subtitle: string
-    accent: {
-      glow: string
-      border: string
-      chip: string
-      meter: string
-      surface: string
-      orb: string
-    }
+    theme:
+      | "pentateuch"
+      | "historical"
+      | "wisdom"
+      | "major_prophets"
+      | "minor_prophets"
+      | "gospels"
+      | "pauline_epistles"
+      | "apocalyptic"
   }
 > = {
   pentateuch: {
     title: "Pentateuch",
-    subtitle: "Origins, covenant, law, and the first fires of the story.",
-    accent: {
-      glow: "bg-amber-300/20",
-      border: "border-amber-300/20",
-      chip: "border-amber-200/20 bg-amber-300/10",
-      meter: "bg-gradient-to-r from-amber-200 via-yellow-300 to-amber-400",
-      surface: "bg-[linear-gradient(180deg,rgba(54,38,12,0.94),rgba(19,14,10,0.98))]",
-      orb: "bg-amber-200/20",
-    },
+    subtitle: "The Law and the Beginning",
+    theme: "pentateuch",
   },
   historical: {
     title: "Historical",
-    subtitle: "Kings, battles, exile, return, and the rise and fall of a people.",
-    accent: {
-      glow: "bg-emerald-300/16",
-      border: "border-emerald-300/16",
-      chip: "border-emerald-200/20 bg-emerald-300/10",
-      meter: "bg-gradient-to-r from-emerald-200 via-teal-300 to-emerald-400",
-      surface: "bg-[linear-gradient(180deg,rgba(11,40,34,0.94),rgba(8,16,18,0.98))]",
-      orb: "bg-emerald-200/20",
-    },
+    subtitle: "Kingdoms, conquest, exile, and return",
+    theme: "historical",
   },
   wisdom: {
     title: "Wisdom",
-    subtitle: "Songs, sorrow, insight, and the long search for understanding.",
-    accent: {
-      glow: "bg-sky-300/18",
-      border: "border-sky-300/18",
-      chip: "border-sky-200/20 bg-sky-300/10",
-      meter: "bg-gradient-to-r from-sky-200 via-cyan-300 to-blue-400",
-      surface: "bg-[linear-gradient(180deg,rgba(10,29,52,0.95),rgba(7,12,24,0.98))]",
-      orb: "bg-sky-200/20",
-    },
+    subtitle: "Psalms, Proverbs & More",
+    theme: "wisdom",
   },
   major_prophets: {
     title: "Major Prophets",
-    subtitle: "Thunderous warnings, visions of judgment, and luminous hope.",
-    accent: {
-      glow: "bg-fuchsia-400/18",
-      border: "border-fuchsia-300/18",
-      chip: "border-fuchsia-200/20 bg-fuchsia-300/10",
-      meter: "bg-gradient-to-r from-fuchsia-200 via-violet-300 to-purple-400",
-      surface: "bg-[linear-gradient(180deg,rgba(44,18,56,0.95),rgba(13,10,24,0.98))]",
-      orb: "bg-fuchsia-200/20",
-    },
+    subtitle: "Visions, warning, and thunder from the watchmen",
+    theme: "major_prophets",
   },
   minor_prophets: {
     title: "Minor Prophets",
-    subtitle: "Sharp voices, swift warnings, and a watchman’s urgency.",
-    accent: {
-      glow: "bg-purple-400/16",
-      border: "border-purple-300/16",
-      chip: "border-purple-200/20 bg-purple-300/10",
-      meter: "bg-gradient-to-r from-purple-200 via-violet-300 to-indigo-400",
-      surface: "bg-[linear-gradient(180deg,rgba(30,18,54,0.95),rgba(10,9,22,0.98))]",
-      orb: "bg-purple-200/20",
-    },
+    subtitle: "Mystic warnings carried by shorter scrolls",
+    theme: "minor_prophets",
   },
   gospels: {
     title: "Gospels",
-    subtitle: "The radiant center of the story, seen through four witnesses.",
-    accent: {
-      glow: "bg-yellow-300/20",
-      border: "border-yellow-300/20",
-      chip: "border-yellow-200/20 bg-yellow-300/10",
-      meter: "bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-400",
-      surface: "bg-[linear-gradient(180deg,rgba(61,43,8,0.95),rgba(22,15,8,0.98))]",
-      orb: "bg-yellow-200/20",
-    },
+    subtitle: "The life and teachings of Jesus",
+    theme: "gospels",
   },
   acts: {
     title: "Acts",
     subtitle: "The mission expands outward with courage, movement, and fire.",
-    accent: {
-      glow: "bg-orange-300/18",
-      border: "border-orange-300/18",
-      chip: "border-orange-200/20 bg-orange-300/10",
-      meter: "bg-gradient-to-r from-orange-200 via-amber-300 to-orange-400",
-      surface: "bg-[linear-gradient(180deg,rgba(57,28,13,0.95),rgba(21,13,10,0.98))]",
-      orb: "bg-orange-200/20",
-    },
+    theme: "gospels",
   },
   pauline_epistles: {
     title: "Pauline Epistles",
     subtitle: "Doctrine, correction, encouragement, and letters forged in motion.",
-    accent: {
-      glow: "bg-blue-400/18",
-      border: "border-blue-300/18",
-      chip: "border-blue-200/20 bg-blue-300/10",
-      meter: "bg-gradient-to-r from-blue-200 via-sky-300 to-indigo-400",
-      surface: "bg-[linear-gradient(180deg,rgba(10,25,58,0.95),rgba(8,11,26,0.98))]",
-      orb: "bg-blue-200/20",
-    },
+    theme: "pauline_epistles",
   },
   general_epistles: {
     title: "General Epistles",
     subtitle: "Steady counsel for endurance, holiness, love, and truth.",
-    accent: {
-      glow: "bg-cyan-300/18",
-      border: "border-cyan-300/18",
-      chip: "border-cyan-200/20 bg-cyan-300/10",
-      meter: "bg-gradient-to-r from-cyan-200 via-sky-300 to-teal-400",
-      surface: "bg-[linear-gradient(180deg,rgba(10,38,45,0.95),rgba(8,14,18,0.98))]",
-      orb: "bg-cyan-200/20",
-    },
+    theme: "historical",
   },
   apocalyptic: {
     title: "Apocalyptic",
     subtitle: "The veil lifts: conflict, victory, judgment, and final restoration.",
-    accent: {
-      glow: "bg-rose-400/18",
-      border: "border-rose-300/18",
-      chip: "border-rose-200/20 bg-rose-300/10",
-      meter: "bg-gradient-to-r from-rose-200 via-pink-300 to-red-400",
-      surface: "bg-[linear-gradient(180deg,rgba(54,16,26,0.95),rgba(19,9,13,0.98))]",
-      orb: "bg-rose-200/20",
-    },
+    theme: "apocalyptic",
   },
 }
 
+const DEMO_CATEGORIES: CategoryKey[] = [
+  "pentateuch",
+  "historical",
+  "wisdom",
+  "major_prophets",
+  "minor_prophets",
+  "gospels",
+]
+
 function slugifyBook(book: string) {
   return book.toLowerCase().replace(/\s+/g, "_")
-}
-
-function formatCategoryLabel(category: string) {
-  return category
-    .split("_")
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(" ")
 }
 
 export default function ExplorePage() {
@@ -465,43 +372,41 @@ export default function ExplorePage() {
           </div>
         </section>
 
-        <div className="mt-8 flex-1 space-y-8">
-          {CATEGORY_ORDER.map((group) => (
-            <section key={group.heading}>
-              <div className="mb-4 flex items-end justify-between">
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
-                    Testament
-                  </div>
-                  <h2 className="mt-2 text-2xl font-black text-white">
-                    {group.heading}
-                  </h2>
-                </div>
+        <div className="mt-8 flex-1">
+          <section>
+            <div className="mb-4">
+              <div className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400">
+                Regions
               </div>
+              <h2 className="mt-2 text-2xl font-black text-white">
+                First Explorer Regions
+              </h2>
+              <p className="mt-2 max-w-sm text-sm leading-6 text-slate-300">
+                A premium category card system preview for the first regions of the Bible.
+              </p>
+            </div>
 
-              <div className="space-y-4">
-                {group.categories.map((category) => {
-                  const meta = CATEGORY_META[category]
-                  const stat = derived.categoryStats[category]
+            <div className="grid grid-cols-1 gap-5">
+              {DEMO_CATEGORIES.map((category) => {
+                const meta = CATEGORY_META[category]
+                const stat = derived.categoryStats[category]
 
-                  return (
-                    <ExplorerCategoryCard
-                      key={category}
-                      href={`/explore/category/${category}`}
-                      title={meta.title}
-                      category={formatCategoryLabel(category)}
-                      subtitle={meta.subtitle}
-                      bookCount={stat.bookCount}
-                      progressPercent={stat.progressPercent}
-                      masteredSegments={stat.masteredSegments}
-                      totalSegments={stat.totalSegments}
-                      accent={meta.accent}
-                    />
-                  )
-                })}
-              </div>
-            </section>
-          ))}
+                return (
+                  <ExplorerCategoryCard
+                    key={category}
+                    href={`/explore/category/${category}`}
+                    title={meta.title}
+                    subtitle={meta.subtitle}
+                    bookCount={stat.bookCount}
+                    masteryPercent={stat.progressPercent}
+                    progressPercent={stat.progressPercent}
+                    state={stat.progressPercent >= 100 ? "mastered" : "open"}
+                    theme={meta.theme}
+                  />
+                )
+              })}
+            </div>
+          </section>
         </div>
 
         <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#050812]/95 backdrop-blur-xl">
