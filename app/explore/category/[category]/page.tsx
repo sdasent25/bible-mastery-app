@@ -359,10 +359,10 @@ export default function ExploreCategoryPage() {
                 </div>
                 <div className="mt-6">
                   <Link
-                    href="/journey"
+                    href="/explore/book/genesis"
                     className="inline-flex rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm"
                   >
-                    Enter Journey →
+                    Enter Campaign →
                   </Link>
                 </div>
               </div>
