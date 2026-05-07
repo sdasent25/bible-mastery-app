@@ -48,7 +48,6 @@ export default function SegmentIntro() {
   const supabase = createClient()
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [planType, setPlanType] = useState("free")
-  const [questionCount, setQuestionCount] = useState<number | null>(null)
   const [availableCount, setAvailableCount] = useState<number | null>(null)
 
   const rawSegment = searchParams.get("segment") || ""
@@ -190,13 +189,6 @@ export default function SegmentIntro() {
     ? getGenesisMissionArt(currentNode.id)
     : "/explorer/pentateuch/region.png"
 
-  const baseQuizHref = isFree
-    ? `/quiz?segment=${segment}&depth=5`
-    : `/quiz?program=${program}&segment=${segment}`
-  const quizHref = isFree
-    ? baseQuizHref
-    : `${baseQuizHref}${questionCount ? `&depth=${questionCount}` : ""}`
-
   const scoutReward = `+${getXpConfig(5).completionBonus} XP`
   const journeyReward = `+${getXpConfig(10).completionBonus} XP`
   const masteryReward = `+${getXpConfig(15).completionBonus} XP`
@@ -246,13 +238,12 @@ export default function SegmentIntro() {
     },
   ]
 
-  const selectedOption =
-    missionOptions.find((option) => option.value === questionCount) || null
-
   const backHref =
     program === "genesis" ? "/explore/book/genesis" : "/journey"
   const actionLabel =
     currentMissionIndex <= 0 ? "Begin Mission" : "Continue Mission"
+  const missionActionLabel =
+    currentMissionIndex <= 0 ? "Deploy Mission" : "Resume Mission"
 
   if (!profileLoaded) {
     return (
@@ -404,7 +395,10 @@ export default function SegmentIntro() {
             {missionOptions.map((option) => {
               const isLockedOption = !option.enabled
               const isUnavailable = option.unavailable
-              const isSelected = questionCount === option.value
+              const optionBaseHref = isFree
+                ? `/quiz?segment=${segment}&depth=5`
+                : `/quiz?program=${program}&segment=${segment}&depth=${option.value}`
+              const optionQuizHref = optionBaseHref
 
               return (
                 <button
@@ -417,20 +411,26 @@ export default function SegmentIntro() {
 
                     if (isUnavailable) return
 
-                    setQuestionCount(option.value)
+                    router.push(optionQuizHref)
                   }}
                   disabled={isUnavailable}
-                  className={`relative overflow-hidden rounded-[1.8rem] border p-5 text-left transition ${
+                  className={`group relative overflow-hidden rounded-[1.8rem] border p-5 text-left transition duration-200 active:scale-[0.985] ${
                     option.accentClass
                   } ${
-                    isSelected ? "scale-[1.01] shadow-[0_24px_60px_rgba(0,0,0,0.26)]" : "shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                    isLockedOption
+                      ? "opacity-70 shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                      : isUnavailable
+                        ? "opacity-50 cursor-not-allowed shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                        : "shadow-[0_18px_42px_rgba(0,0,0,0.20)] hover:scale-[1.01] hover:shadow-[0_26px_64px_rgba(0,0,0,0.28),0_0_28px_rgba(251,191,36,0.08)]"
                   } ${
-                    isLockedOption ? "opacity-70" : ""
-                  } ${
-                    isUnavailable ? "opacity-50 cursor-not-allowed" : ""
+                    !isLockedOption && !isUnavailable ? "cursor-pointer" : ""
                   }`}
+                  aria-label={`${option.label}. ${missionActionLabel}. ${option.estTime}. ${option.reward}.`}
                 >
                   <div className="absolute inset-0 opacity-[0.06] bg-[radial-gradient(circle_at_top_left,white,transparent_42%)]" />
+                  {!isLockedOption && !isUnavailable && (
+                    <div className="absolute inset-0 opacity-0 transition duration-200 group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(255,236,189,0.12),transparent_34%)]" />
+                  )}
 
                   <div className="relative z-10">
                     <div className="flex items-start justify-between gap-4">
@@ -449,7 +449,7 @@ export default function SegmentIntro() {
                       </div>
 
                       <div className="text-right text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58">
-                        {isLockedOption ? "Locked" : isSelected ? "Selected" : "Ready"}
+                        {isLockedOption ? "Locked" : isUnavailable ? "Unavailable" : missionActionLabel}
                       </div>
                     </div>
 
@@ -464,41 +464,23 @@ export default function SegmentIntro() {
                       {isLockedOption && <span>Upgrade required</span>}
                       {isUnavailable && <span>Not enough questions available</span>}
                     </div>
+
+                    <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4 text-sm">
+                      <span className="text-white/68">
+                        {isLockedOption
+                          ? "Unlock this mission type to deploy."
+                          : isUnavailable
+                            ? "This passage does not have enough prompts for this mission."
+                            : "Select to enter gameplay immediately."}
+                      </span>
+                      <span className="font-semibold uppercase tracking-[0.2em] text-amber-100/78">
+                        {isLockedOption ? "View Access" : isUnavailable ? "Stand By" : `${actionLabel} →`}
+                      </span>
+                    </div>
                   </div>
                 </button>
               )
             })}
-          </div>
-        </section>
-
-        <section className="mt-9 sm:mt-11">
-          <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(19,14,10,0.94),rgba(10,9,8,0.98))] p-5 shadow-[0_20px_54px_rgba(0,0,0,0.2)]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-100/72">
-              Mission Launch
-            </div>
-            <h2 className="mt-3 text-3xl font-black text-white">
-              {selectedOption ? `${actionLabel} — ${selectedOption.label}` : "Choose a mission path to begin"}
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              {selectedOption
-                ? `${selectedOption.label} is ready. Enter the mission and move directly into the existing gameplay flow.`
-                : "Your mission path determines the intensity of the upcoming encounter. Select one above to continue."}
-            </p>
-
-            <div className="mt-6">
-              {selectedOption ? (
-                <Link
-                  href={quizHref}
-                  className={`${MISSION_CTA_CLASS} flex w-full py-4 text-center text-lg`}
-                >
-                  {actionLabel} →
-                </Link>
-              ) : (
-                <div className="w-full rounded-full border border-white/12 bg-white/8 px-5 py-4 text-center text-base font-semibold text-white/64">
-                  Select a mission path first
-                </div>
-              )}
-            </div>
           </div>
         </section>
 
