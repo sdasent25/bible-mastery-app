@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Lottie from "lottie-react";
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
+import { MISSION_CTA_CLASS } from '@/lib/missionUi';
+import { getQuizMissionTheme } from '@/lib/quizMissionTheme';
 import { supabase } from '@/lib/supabase';
-import { completeToday, hasCompletedToday } from '@/lib/streak';
+import { completeToday } from '@/lib/streak';
 import { getXp } from '@/lib/xp';
 import { getProgramById } from '@/lib/programs';
 import {
@@ -20,9 +21,6 @@ import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
 import { playSound, triggerHaptic } from '@/lib/sound';
-import { getXpConfig } from '@/lib/xpEngine';
-import checkAnim from "@/public/lottie/check.json";
-import Flame from '@/components/Flame';
 
 type Question = {
   id: string;
@@ -44,13 +42,6 @@ function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
-function getStreakMessage(streak: number) {
-  if (streak >= 10) return "Unstoppable 🔥";
-  if (streak >= 5) return "Strong momentum";
-  if (streak >= 3) return "You're on fire";
-  return "";
-}
-
 export default function QuizPage() {
   const router = useRouter();
   const [segment, setSegment] = useState('genesis-1-3');
@@ -66,11 +57,6 @@ export default function QuizPage() {
   const [streak, setStreak] = useState(0);
   const [combo, setCombo] = useState(0);
   const [comboFlash, setComboFlash] = useState(false);
-  const [, setShowResult] = useState<"correct" | "wrong" | null>(null);
-  const [, setFlameState] = useState<"idle" | "correct" | "wrong">("idle");
-  const [showXpGain, setShowXpGain] = useState(false);
-  const [xpAmount, setXpAmount] = useState(10);
-  const [displayXp, setDisplayXp] = useState(0);
   const [showCelebration, setShowCelebration] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
@@ -78,9 +64,6 @@ export default function QuizPage() {
   const [reviewQuestions, setReviewQuestions] = useState<Question[]>([]);
   const [streakSaved, setStreakSaved] = useState(false);
   const [, setShowRetryPrompt] = useState(false);
-  const [completedToday, setCompletedToday] = useState(false);
-  const [showLevelUp, setShowLevelUp] = useState(false);
-  const [newLevel, setNewLevel] = useState<number | null>(null);
   const [isProUser, setIsProUser] = useState(false);
   const [isProPlusUser, setIsProPlusUser] = useState(false);
   const [loadingPro, setLoadingPro] = useState(true);
@@ -132,29 +115,6 @@ export default function QuizPage() {
     return activeProgram.segments[nextIndex];
   };
   const next = nextSegment();
-
-  useEffect(() => {
-    let start = 0;
-    const end = xpAmount;
-    const duration = 600;
-
-    if (showXpGain) {
-      const increment = end / (duration / 16);
-
-      const counter = setInterval(() => {
-        start += increment;
-
-        if (start >= end) {
-          setDisplayXp(end);
-          clearInterval(counter);
-        } else {
-          setDisplayXp(Math.floor(start));
-        }
-      }, 16);
-
-      return () => clearInterval(counter);
-    }
-  }, [xpAmount, showXpGain]);
 
   useEffect(() => {
     const initializeQuiz = async () => {
@@ -211,9 +171,6 @@ export default function QuizPage() {
       } else {
         setSegment(segmentParam || fallbackSegment);
       }
-
-      const completed = await hasCompletedToday();
-      setCompletedToday(completed);
 
       const storedXp = await getXp();
       setTotalXp(storedXp);
@@ -326,44 +283,6 @@ export default function QuizPage() {
   const activeQuestions = baseQuestions;
   const availableQuestionCount = activeQuestions.length;
   const currentQuestion = activeQuestions[currentQuestionIndex];
-
-  const percentageScore = availableQuestionCount > 0 ? (score / availableQuestionCount) * 100 : 0;
-  let percentile = 50;
-  let percentileEmoji = '📖';
-
-  if (percentageScore >= 90) {
-    percentile = 90;
-    percentileEmoji = '🔥';
-  } else if (percentageScore >= 75) {
-    percentile = 75;
-    percentileEmoji = '💪';
-  } else if (percentageScore >= 60) {
-    percentile = 60;
-    percentileEmoji = '👍';
-  } else {
-    percentile = 40;
-    percentileEmoji = '📖';
-  }
-
-  const handleContinueTraining = () => {
-    if (isProPlusUser) {
-      setIsTrainingMode(true);
-      setQuizSeed(prev => prev + 1);
-      resetQuiz();
-      return;
-    }
-
-    console.error("REDIRECT TRIGGERED HERE", {
-      location: "app/quiz/page.tsx",
-      planType,
-      isPro: isProUser,
-      isProPlus: isProPlusUser,
-      activeProgramId,
-      segmentParam: selectedSegmentParam || segment,
-      safeDepth
-    });
-    window.location.assign('/pricing?source=generic_upgrade');
-  };
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -530,7 +449,7 @@ export default function QuizPage() {
   if (!paramsInitialized) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <p className="text-lg text-slate-300">Preparing quiz...</p>
+        <p className="text-lg text-slate-300">Preparing mission...</p>
       </div>
     );
   }
@@ -538,86 +457,7 @@ export default function QuizPage() {
   if (loadingQuestions) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <p className="text-lg text-slate-300">Loading questions...</p>
-      </div>
-    );
-  }
-
-  if (showLevelUp && newLevel !== null) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 p-4">
-        <div className="w-full max-w-md rounded-xl bg-white p-6 text-center shadow-2xl">
-          <div className="mb-4 flex justify-center">
-            <Flame state="levelup" size={80} />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Level Up!</h1>
-          <p className="text-lg text-gray-700 mb-6">You&apos;re now Level {newLevel}</p>
-          <button
-            onClick={() => setShowLevelUp(false)}
-            className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            Continue
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  if (false && completedToday && !isReviewMode && !isTrainingMode && !isWeaknessMode && !isProgramMode && mode !== 'scholar') {
-    return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
-          <h1 className="text-2xl font-bold text-center text-white mb-4">
-            You&apos;ve completed today&apos;s quiz ✅
-          </h1>
-          <p className="text-center text-slate-300 mb-2">
-            Great work! Keep building your mastery by reviewing what you missed.
-          </p>
-          <p className="text-center text-gray-200 text-sm mb-6">
-            New questions unlock tomorrow 🔥
-          </p>
-          <div className="space-y-3">
-              <button
-                onClick={handleTrainWeakAreas}
-                className="w-full bg-indigo-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-indigo-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              >
-                Review Past Answers
-              </button>
-            {noWeakAreasMessage && (
-              <p className="text-center text-sm text-slate-300">You&apos;re doing great! No past errors to review right now.</p>
-            )}
-            {isProPlusUser ? (
-              <button
-                onClick={handleContinueTraining}
-                className="w-full bg-black text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-gray-900 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500"
-              >
-                Continue Training
-              </button>
-            ) : (
-              <div className="rounded-lg border border-slate-700 bg-slate-800 p-3 text-center">
-                <p className="text-white mb-3">🔒 Continue Training is available on Pro+</p>
-                <Link href="/pricing?source=link_upgrade" className="block">
-                  <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    Upgrade to Pro+
-                  </button>
-                </Link>
-              </div>
-            )}
-            {incorrectQuestions.length > 0 && (
-              <button
-                onClick={() => startReview()}
-                className="w-full bg-yellow-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-yellow-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-yellow-500"
-              >
-                Review Mistakes
-              </button>
-            )}
-            <Link href="/dashboard" className="block">
-              <button className="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-blue-700 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500">
-                Back to Dashboard
-              </button>
-            </Link>
-          </div>
-        </div>
+        <p className="text-lg text-slate-300">Gathering mission prompts...</p>
       </div>
     );
   }
@@ -648,18 +488,19 @@ export default function QuizPage() {
   const currentIncorrectItem = incorrectQuestions.find(x => x.question.id === currentQuestion.id);
   const isAnswered = selectedAnswer !== null;
   const correctIndex = currentQuestion.correctIndex;
+  const missionTheme = getQuizMissionTheme(resolvedSegment || segment);
   const getButtonStyle = (index: number) => {
-    if (!showFeedback) return "bg-blue-600";
+    if (!showFeedback) return `${missionTheme.answerIdleClass} ${missionTheme.answerHoverClass}`;
 
     if (index === correctIndex) {
-      return "bg-green-500 scale-105";
+      return missionTheme.answerCorrectClass;
     }
 
     if (index === selectedAnswer) {
-      return "bg-red-500";
+      return missionTheme.answerWrongClass;
     }
 
-    return "bg-gray-700 opacity-50";
+    return missionTheme.answerMutedClass;
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -704,13 +545,8 @@ export default function QuizPage() {
         console.log("API RESPONSE", await response.clone().json());
 
         if (isCorrect) {
-          const nextCombo = combo + 1;
-          const audio = new Audio("/sounds/correct.mp3");
-          audio.volume = 0.3;
-          void audio.play();
+          playSound("/sounds/journey-selected.mp3");
           triggerHaptic("light");
-          setShowResult("correct");
-          setFlameState("correct");
           setShowCelebration(true);
           setTimeout(() => {
             setShowCelebration(false);
@@ -719,12 +555,8 @@ export default function QuizPage() {
           setCombo(prev => prev + 1);
           setScore(score + 1);
         } else {
-          const audio = new Audio("/sounds/wrong.mp3");
-          audio.volume = 0.25;
-          void audio.play();
+          playSound("/sounds/wrong.mp3");
           triggerHaptic("medium");
-          setShowResult("wrong");
-          setFlameState("wrong");
           setStreak(0);
           setCombo(0);
           addIncorrectQuestion(currentQuestion.id);
@@ -758,10 +590,7 @@ export default function QuizPage() {
   };
 
   const handleNextQuestion = () => {
-    setShowResult(null);
-    setShowXpGain(false);
     setShowCelebration(false);
-    setFlameState("idle");
     setShowFeedback(false);
     setIsCorrectAnswer(null);
 
@@ -785,9 +614,6 @@ export default function QuizPage() {
     setScore(0);
     setStreak(0);
     setCombo(0);
-    setShowResult(null);
-    setFlameState("idle");
-    setShowXpGain(false);
     setShowCelebration(false);
     setProgramProgressSaved(false);
     setProgramLimitReached(false);
@@ -864,112 +690,107 @@ export default function QuizPage() {
     return (
       <>
         {programLimitReached && (
-          <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-md rounded-2xl border border-amber-400/40 bg-amber-500/10 px-4 py-3 text-center text-sm font-semibold text-amber-200 shadow-lg">
-            Daily limit reached. Upgrade or come back tomorrow to continue.
-          </div>
-        )}
-
-        {showXpGain && (
-          <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
-            <span className="animate-xp text-xl font-bold text-green-400 animate-pulse">
-              +{displayXp} XP
-            </span>
+          <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-md rounded-2xl border border-amber-300/30 bg-black/35 px-4 py-3 text-center text-sm font-semibold text-amber-100 shadow-[0_0_24px_rgba(251,191,36,0.12)] backdrop-blur-sm">
+            A new mission arrives tomorrow. Upgrade if you want to keep moving tonight.
           </div>
         )}
 
         {showCelebration && (
           <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
             <div className="animate-pop text-center">
-              <div className="text-5xl mb-2">🔥</div>
+              <div className="text-5xl mb-2 text-amber-200">✦</div>
               <div className="text-xl font-bold text-white">
-                Well Done
+                Mission Secured
               </div>
             </div>
           </div>
         )}
 
-        <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-4">
-          <div className="max-w-md w-full bg-slate-900 rounded-2xl shadow-xl p-6">
+        <div className="min-h-screen bg-[#08090d] text-white flex items-center justify-center p-4">
+          <div className={`max-w-md w-full rounded-[1.8rem] border p-6 ${missionTheme.surfaceClass}`}>
           <h1 className="text-2xl font-bold text-center text-white mb-4">
             {isReviewMode
-              ? 'Review Completed!'
+              ? 'Review Complete'
               : isProgramMode
                 ? isFinalProgramSegment
-                  ? 'Program Complete 🎉'
-                  : 'Segment Complete!'
+                  ? 'Campaign Complete'
+                  : 'Mission Complete'
                 : isTrainingMode
-                  ? 'Training session complete!'
-                  : 'Quiz Completed!'}
+                  ? 'Training Complete'
+                  : 'Mission Complete'}
           </h1>
           <div className="text-center mb-6">
             {isReviewMode ? (
               <p className="text-sm text-slate-300 mt-2">
-                Review complete — great job reinforcing your knowledge
+                You reinforced the mission material and sharpened your recall.
               </p>
             ) : isProgramMode ? (
               <>
-                <p className="text-lg text-slate-200">Correct Answers: {score} / {questions.length}</p>
+                <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>{missionTheme.campaignLabel}</p>
+                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
                 <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
-                <p className="mt-3 text-xl font-semibold text-indigo-400">
-                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
+                  {missionTheme.missionTitle}
                 </p>
                 {isFinalProgramSegment ? (
                   <p className="text-sm text-slate-300 mt-2">
-                    You finished {activeProgram?.title}.
+                    You finished {activeProgram?.title} and carried the campaign to its close.
                   </p>
                 ) : (
-                  <p className="text-sm text-slate-300 mt-2">Next: {next?.label}</p>
+                  <p className="text-sm text-slate-300 mt-2">Next mission: {next?.label}</p>
                 )}
-                <p className="text-sm text-orange-300 mt-2">
-                  🔥 Streak increased to {streak}
+                <p className="text-sm text-amber-200 mt-2">
+                  Streak now stands at {streak}
                 </p>
               </>
             ) : isTrainingMode ? (
               <>
-                <p className="text-lg text-slate-200">Correct Answers: {score} / {questions.length}</p>
+                <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>Training Debrief</p>
+                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
                 <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
-                <p className="mt-3 text-xl font-semibold text-indigo-400">
-                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
+                  {missionTheme.missionAtmosphere}
                 </p>
-                <p className="text-sm text-slate-300 mt-2">You&apos;re building mastery with every session!</p>
+                <p className="text-sm text-slate-300 mt-2">You&apos;re building mastery with every return to the text.</p>
               </>
             ) : (
               <>
-                <p className="text-lg text-slate-200">Correct Answers: {score} / {questions.length}</p>
+                <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>Mission Debrief</p>
+                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
                 <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
-                <p className="mt-3 text-xl font-semibold text-indigo-400">
-                  {percentileEmoji} You&apos;re ahead of <span className="font-extrabold">{percentile}%</span> of users
+                <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
+                  {missionTheme.missionTitle}
                 </p>
-                <p className="text-sm text-slate-300 mt-2">Great job! Keep studying to master more verses.</p>
+                <p className="text-sm text-slate-300 mt-2">The mission is complete. Continue the campaign or return for mastery.</p>
               </>
             )}
           </div>
           <p className="text-sm text-slate-300 text-center mb-4">
-            What would you like to do next?
+            Choose your next step in the campaign.
           </p>
           <div className="space-y-3">
             {next && !isPreviewMode && (
               <button
                 onClick={() => router.push("/journey?completed=true")}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`${MISSION_CTA_CLASS} flex w-full py-3 text-lg`}
               >
-                Continue Journey →
+                Continue Campaign →
               </button>
             )}
 
             {isPreviewMode && (
               <button
                 onClick={() => router.push("/journey?completed=true")}
-                className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-lg transition-all duration-150 hover:bg-blue-500 hover:scale-[1.02] shadow-md hover:shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.4)] active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`${MISSION_CTA_CLASS} flex w-full py-3 text-lg`}
               >
-                Unlock Full Journey
+                Continue Journey
               </button>
             )}
 
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={handleTrainWeakAreas}
-                className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-purple-500 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-full border border-white/12 bg-white/10 py-3 text-white font-semibold backdrop-blur-sm transition hover:bg-white/14 hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Train Weak Areas
               </button>
@@ -978,7 +799,7 @@ export default function QuizPage() {
             {incorrectQuestions.length > 0 && (
               <button
                 onClick={startReview}
-                className="w-full bg-yellow-600 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-yellow-500 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full rounded-full border border-white/12 bg-white/10 py-3 text-white font-semibold backdrop-blur-sm transition hover:bg-white/14 hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Review Mistakes
               </button>
@@ -986,9 +807,9 @@ export default function QuizPage() {
 
             <button
               onClick={() => router.push('/journey?completed=true')}
-              className="w-full bg-slate-700 text-white py-3 rounded-xl font-semibold transition-all duration-150 hover:bg-slate-600 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-full border border-white/10 bg-black/18 py-3 text-white/84 font-semibold backdrop-blur-sm transition hover:bg-black/26 hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Back to Journey
+              Return to Journey
             </button>
           </div>
           </div>
@@ -998,31 +819,34 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0B0F1A] to-[#05070D]">
-      {showXpGain && (
-        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-40">
-          <span className="animate-xp text-xl font-bold text-green-400 animate-pulse">
-            +{displayXp} XP
-          </span>
-        </div>
-      )}
-
+    <div className="min-h-screen bg-[#060709]">
       {showCelebration && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
           <div className="animate-pop text-center">
-            <div className="text-5xl mb-2">🔥</div>
+            <div className="text-5xl mb-2 text-amber-200">✦</div>
             <div className="text-xl font-bold text-white">
-              Well Done
+              Truth secured
             </div>
           </div>
         </div>
       )}
 
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-100px] left-1/2 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500 opacity-10 blur-3xl" />
-        <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-slate-950 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-slate-950 to-transparent" />
-        <div className="absolute inset-0 opacity-5 bg-[radial-gradient(circle_at_20%_20%,white,transparent_20%)]" />
+        <div className="absolute inset-0">
+          <Image
+            src={missionTheme.backgroundImage}
+            alt=""
+            fill
+            priority
+            className="object-cover opacity-34"
+            style={{ objectPosition: missionTheme.backgroundPosition }}
+            sizes="100vw"
+          />
+        </div>
+        <div className={`absolute inset-0 ${missionTheme.overlayClass}`} />
+        <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black/80 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black/80 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
       </div>
       <div className="relative z-10 flex-1 pb-20 md:px-6 md:py-4">
         <div className="flex h-full w-full justify-center">
@@ -1050,19 +874,19 @@ export default function QuizPage() {
                     ✕
                   </button>
 
-                  <span className="text-sm md:text-base text-slate-300">
+                  <span className={`text-sm md:text-base ${missionTheme.accentTextClass}`}>
                     Question {currentQuestionIndex + 1} of {availableQuestionCount}
                   </span>
                 </div>
 
-                <div className="text-sm md:text-base text-slate-300">
-                  XP: {totalXp} • Level {Math.floor(totalXp / 100) + 1}
+                <div className={`text-sm md:text-base ${missionTheme.accentTextClass}`}>
+                  {missionTheme.campaignLabel}
                 </div>
               </div>
 
-              <div className="h-2 rounded-full bg-slate-800">
+              <div className="h-[6px] rounded-full bg-white/10 overflow-hidden">
                 <div
-                  className="h-2 rounded-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] transition-all duration-500 ease-out"
+                  className={`h-full rounded-full ${missionTheme.progressClass} shadow-[0_0_18px_rgba(251,191,36,0.18)] transition-all duration-500 ease-out`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
@@ -1070,35 +894,37 @@ export default function QuizPage() {
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] flex h-full flex-col bg-slate-900 rounded-2xl px-4 py-6 md:p-10 shadow-xl shadow-[0_0_40px_rgba(59,130,246,0.15)] scale-[1.02] border border-white/5 ${
+              className={`animate-[fadeIn_0.3s_ease] flex h-full flex-col rounded-[1.9rem] border px-4 py-6 md:p-10 scale-[1.02] ${missionTheme.surfaceClass} ${
                 currentQuestion.difficulty === 'scholar'
-                  ? 'border-2 border-yellow-500'
+                  ? 'border-2 border-yellow-300/40'
                   : ''
               }`}
             >
               <div className="flex flex-col gap-5 pt-2">
                 <div className="w-full flex-[0_1_auto]">
-                  <div className="flex items-center justify-between gap-2 text-sm text-gray-300">
+                  <div className="flex items-center justify-between gap-2 text-sm text-slate-300/84">
                     <div>
-                      <p className="mt-1 text-sm text-orange-400">
-                        🔥 Streak: {streak}
+                      <p className={`mt-1 text-sm ${missionTheme.accentTextClass}`}>
+                        {missionTheme.worldLabel}
                       </p>
 
-                    {getStreakMessage(streak) && (
-                      <p className="text-xs text-orange-300 mt-1">
-                        {getStreakMessage(streak)}
+                      <p className="text-xs text-white/62 mt-1">
+                        {missionTheme.missionTitle}
                       </p>
-                    )}
                     </div>
-                    <div className={`${comboFlash ? "scale-110 text-yellow-400" : ""} transition-all duration-200`}>
-                      🔥 Combo: {combo}
+                    <div className="flex items-center gap-2">
+                      <div className={`rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.18em] ${missionTheme.badgeClass}`}>
+                        Streak {streak}
+                      </div>
+                      <div className={`${comboFlash ? "scale-110 text-amber-200" : "text-white/72"} transition-all duration-200 text-[11px] uppercase tracking-[0.18em]`}>
+                        Combo {combo}
+                      </div>
                     </div>
-                    <span>🎯 Level {Math.floor(totalXp / 100) + 1}</span>
                   </div>
 
                   {currentQuestion.difficulty === 'scholar' && (
-                    <div className="mt-2 rounded-lg border border-yellow-500 bg-yellow-500 bg-opacity-20 px-3 py-2">
-                      <p className="text-center text-sm font-bold tracking-wider text-yellow-400">SCHOLAR MODE</p>
+                    <div className="mt-3 rounded-full border border-yellow-300/32 bg-yellow-200/8 px-4 py-2">
+                      <p className="text-center text-xs font-bold tracking-[0.24em] text-yellow-100">SCHOLAR MISSION</p>
                     </div>
                   )}
                 </div>
@@ -1116,7 +942,7 @@ export default function QuizPage() {
 
                   {!isAnswered && (
                     <p className="text-sm text-slate-400">
-                      Select the correct answer
+                      Choose the answer that fulfills the mission prompt
                     </p>
                   )}
 
@@ -1134,12 +960,12 @@ export default function QuizPage() {
                         key={index}
                         onClick={() => handleAnswerSelect(index)}
                         disabled={selectedAnswer !== null}
-                        className={`min-h-[56px] w-full rounded-xl border border-white/10 px-4 py-2 text-left text-base leading-tight font-medium text-white shadow-lg transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 md:px-6 ${getButtonStyle(index)}`}
+                        className={`min-h-[60px] w-full rounded-[1.4rem] border px-4 py-3 text-left text-base leading-tight font-medium text-white shadow-[0_18px_36px_rgba(0,0,0,0.18)] transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:px-6 ${getButtonStyle(index)}`}
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
                         <div className="flex items-center justify-between gap-4">
                           <span className="text-base leading-tight font-normal">
-                            <span className="font-bold text-xl mr-4">
+                            <span className={`font-bold text-xl mr-4 ${missionTheme.accentTextClass}`}>
                               {["A", "B", "C", "D"][index]}.
                             </span>
                             {answer}
@@ -1155,40 +981,32 @@ export default function QuizPage() {
                 <div className="flex flex-col items-center justify-center text-center mt-1 animate-[fadeIn_0.25s_ease]">
                   {isCorrectAnswer ? (
                     <>
-                      <div className="w-28 mb-2">
-                        <Lottie animationData={checkAnim} loop={false} />
-                      </div>
+                      <div className="mb-2 text-5xl text-amber-200">✦</div>
 
-                      <h1 className="text-2xl font-bold text-green-400">
-                        Correct
+                      <h1 className="text-2xl font-bold text-emerald-300">
+                        Truth Confirmed
                       </h1>
                     </>
                   ) : (
                     <>
-                      <div className="text-3xl font-bold mb-2 text-red-400">
-                        Not quite
-                      </div>
-
-                      <div className="animate-float">
-                        <Flame
-                          state="sad"
-                          size={96}
-                        />
+                      <div className="text-4xl mb-2 text-rose-300">✕</div>
+                      <div className="text-3xl font-bold mb-2 text-rose-300">
+                        Missed the Mark
                       </div>
                     </>
                   )}
 
-                  <div className="mt-1 text-lg text-slate-300">
-                    Correct Answer:
+                  <div className="mt-2 text-sm uppercase tracking-[0.22em] text-slate-400">
+                    Correct Answer
                   </div>
 
-                  <div className="text-xl font-semibold text-white mt-1">
+                  <div className="text-xl font-semibold text-white mt-2">
                     {currentQuestion.options[currentQuestion.correctIndex]}
                   </div>
 
                   {isCorrectAnswer && (
-                    <div className="text-2xl text-green-400 font-bold mt-2 animate-pop">
-                      +10 XP
+                    <div className={`text-lg font-bold mt-3 animate-pop ${missionTheme.accentTextClass}`}>
+                      Mission momentum rises
                     </div>
                   )}
 
@@ -1196,52 +1014,33 @@ export default function QuizPage() {
                     <button
                       id="continueBtn"
                       onClick={() => {
-                        playSound("/sounds/click.mp3");
+                        playSound("/sounds/tap.mp3");
                         triggerHaptic("light");
                         handleNextQuestion();
                       }}
-                      className="
-                        mt-2
-                        w-full
-                        bg-blue-600
-                        hover:bg-blue-500
-                        text-white
-                        font-bold
-                        text-xl
-                        px-6 py-4
-                        rounded-xl
-                        shadow-md
-                        transition-all duration-150
-                        hover:scale-[1.02]
-                        hover:shadow-lg
-                        hover:shadow-[0_0_15px_rgba(59,130,246,0.4)]
-                        active:scale-95
-                        active:brightness-90
-                        disabled:opacity-50
-                        disabled:cursor-not-allowed
-                      "
+                      className={`${MISSION_CTA_CLASS} mt-4 flex w-full px-6 py-4 text-xl`}
                     >
-                      Continue →
+                      Advance Mission →
                     </button>
                   </div>
                 </div>
               )}
 
               {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
-                <div className={`mt-2 rounded-lg p-4 ${
+                <div className={`mt-2 rounded-[1.3rem] border border-white/10 bg-black/26 p-4 text-slate-200 backdrop-blur-sm ${
                   currentQuestion.difficulty === 'scholar'
-                    ? 'border border-yellow-500 bg-slate-800 text-slate-200'
-                    : 'bg-slate-800 text-slate-200'
+                    ? 'ring-1 ring-yellow-300/25'
+                    : ''
                 }`}>
                   <p>{currentQuestion.explanation}</p>
                 </div>
               )}
 
               {isAnswered && (
-                <div className={`mt-2 rounded-lg p-4 ${
+                <div className={`mt-2 rounded-[1.3rem] border border-white/10 bg-black/26 p-4 text-slate-200 backdrop-blur-sm ${
                   currentQuestion.difficulty === 'scholar'
-                    ? 'border border-yellow-500 bg-slate-800 text-slate-200'
-                    : 'bg-slate-800 text-slate-200'
+                    ? 'ring-1 ring-yellow-300/25'
+                    : ''
                 }`}>
                   <p>{currentQuestion.explanation}</p>
                 </div>
@@ -1250,9 +1049,9 @@ export default function QuizPage() {
               {isReviewMode && selectedAnswer !== null && (
                 <button
                   onClick={handleTryAgain}
-                  className="mt-3 w-full bg-indigo-600 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-150 hover:bg-indigo-700 hover:scale-[1.02] shadow-md hover:shadow-lg active:scale-95 active:brightness-90 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className={`${MISSION_CTA_CLASS} mt-3 flex w-full py-3 text-base`}
                 >
-                  Try Again
+                  Reattempt Mission Prompt
                 </button>
               )}
             </div>

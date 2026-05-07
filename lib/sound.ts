@@ -12,12 +12,13 @@ export function playSound(src: string) {
     audio = new Audio(src)
     audio.preload = "auto"
 
-    if (src.includes("correct")) audio.volume = 0.5
-    else if (src.includes("wrong")) audio.volume = 0.25
-    else if (src.includes("click")) audio.volume = 0.2
-    else if (src.includes("tap")) audio.volume = 0.15
-    else if (src.includes("level-up")) audio.volume = 0.6
-    else audio.volume = 0.3
+    if (src.includes("journey-selected")) audio.volume = 0.22
+    else if (src.includes("correct")) audio.volume = 0.28
+    else if (src.includes("wrong")) audio.volume = 0.18
+    else if (src.includes("click")) audio.volume = 0.12
+    else if (src.includes("tap")) audio.volume = 0.1
+    else if (src.includes("level-up")) audio.volume = 0.28
+    else audio.volume = 0.18
 
     audioCache[src] = audio
   }
