@@ -230,7 +230,8 @@ export default function HomePage() {
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.22),transparent_28%),linear-gradient(180deg,rgba(13,10,6,0.02),rgba(13,10,6,0.12)_40%,rgba(7,6,4,0.56))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.22),transparent_28%),linear-gradient(180deg,rgba(13,10,6,0.04),rgba(13,10,6,0.16)_40%,rgba(7,6,4,0.62))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.32),transparent_34%),linear-gradient(90deg,rgba(7,6,4,0.58),rgba(7,6,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(7,6,4,0.08)_46%,rgba(7,6,4,0.28)_100%)]" />
 
           <div className="relative z-10 flex min-h-[31rem] flex-col justify-between px-5 py-6">
             <div className="flex items-start justify-between gap-4">

@@ -461,7 +461,8 @@ export default function ExplorePage() {
                   sizes="100vw"
                 />
               </div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_26%),linear-gradient(180deg,rgba(12,10,6,0.02),rgba(12,10,6,0.16)_40%,rgba(6,5,4,0.58))]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_26%),linear-gradient(180deg,rgba(12,10,6,0.04),rgba(12,10,6,0.18)_40%,rgba(6,5,4,0.62))]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.32),transparent_34%),linear-gradient(90deg,rgba(6,5,4,0.58),rgba(6,5,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(6,5,4,0.08)_46%,rgba(6,5,4,0.28)_100%)]" />
 
               <div className="relative z-10 grid gap-8 px-5 py-6 sm:px-7 sm:py-8 lg:grid-cols-[1.2fr_0.8fr]">
                 <div className="flex flex-col justify-between">

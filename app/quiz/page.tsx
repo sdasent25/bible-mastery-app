@@ -922,6 +922,7 @@ export default function QuizPage() {
           </div>
         )}
         <div className={`absolute inset-0 ${missionTheme.overlayClass}`} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(0,0,0,0.24),transparent_34%),linear-gradient(90deg,rgba(0,0,0,0.28),rgba(0,0,0,0.10)_42%,transparent_72%),linear-gradient(180deg,rgba(0,0,0,0.04),transparent_28%,rgba(0,0,0,0.14)_72%,rgba(0,0,0,0.34)_100%)]" />
         <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
         <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-black/85 via-black/40 to-transparent" />
         <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />

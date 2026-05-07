@@ -325,7 +325,8 @@ export default function ExploreBookPage() {
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,230,160,0.30),transparent_28%),linear-gradient(180deg,rgba(20,12,4,0.00),rgba(20,12,4,0.08)_36%,rgba(8,6,4,0.50))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,230,160,0.30),transparent_28%),linear-gradient(180deg,rgba(20,12,4,0.05),rgba(20,12,4,0.16)_36%,rgba(8,6,4,0.60))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.30),transparent_34%),linear-gradient(90deg,rgba(8,6,4,0.58),rgba(8,6,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(8,6,4,0.08)_46%,rgba(8,6,4,0.32)_100%)]" />
 
           <div className="relative z-10 flex min-h-[32rem] flex-col justify-between px-5 py-6 sm:min-h-[38rem] sm:px-7 sm:py-8">
             <div className="flex items-start justify-between gap-4">
@@ -412,7 +413,8 @@ export default function ExploreBookPage() {
                   sizes="100vw"
                 />
               </div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_26%),linear-gradient(180deg,rgba(12,10,6,0.02),rgba(12,10,6,0.12)_40%,rgba(6,5,4,0.56))]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_26%),linear-gradient(180deg,rgba(12,10,6,0.04),rgba(12,10,6,0.16)_40%,rgba(6,5,4,0.62))]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.30),transparent_34%),linear-gradient(90deg,rgba(6,5,4,0.58),rgba(6,5,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(6,5,4,0.08)_46%,rgba(6,5,4,0.28)_100%)]" />
 
               <div className="relative z-10 grid gap-8 px-5 py-6 sm:px-7 sm:py-8 lg:grid-cols-[1.2fr_0.8fr]">
                 <div className="flex flex-col justify-between">
@@ -646,14 +648,15 @@ export default function ExploreBookPage() {
                         <div
                           className={`absolute inset-0 ${
                             mission.current
-                              ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.10),rgba(9,7,5,0.34))]"
+                              ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.16),rgba(9,7,5,0.42))]"
                               : mission.mastered
-                                ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.16),rgba(9,7,5,0.44))]"
+                                ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.20),rgba(9,7,5,0.50))]"
                                 : mission.locked
-                                  ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.20),rgba(9,7,5,0.56))]"
-                                  : "bg-[linear-gradient(180deg,rgba(9,7,5,0.18),rgba(9,7,5,0.50))]"
+                                  ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.24),rgba(9,7,5,0.62))]"
+                                  : "bg-[linear-gradient(180deg,rgba(9,7,5,0.20),rgba(9,7,5,0.56))]"
                           }`}
                         />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.28),transparent_34%),linear-gradient(90deg,rgba(6,5,4,0.54),rgba(6,5,4,0.16)_44%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(6,5,4,0.06)_46%,rgba(6,5,4,0.22)_100%)]" />
 
                         <div className="relative z-10 px-5 py-5">
                           <div className="flex items-start justify-between gap-4">

@@ -237,7 +237,8 @@ export default function ExploreCategoryPage() {
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_30%),linear-gradient(180deg,rgba(21,12,4,0.00),rgba(21,12,4,0.08)_36%,rgba(8,6,4,0.52))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_30%),linear-gradient(180deg,rgba(21,12,4,0.04),rgba(21,12,4,0.16)_36%,rgba(8,6,4,0.60))]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_30%,rgba(0,0,0,0.28),transparent_34%),linear-gradient(90deg,rgba(8,6,4,0.56),rgba(8,6,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(8,6,4,0.08)_44%,rgba(8,6,4,0.34)_100%)]" />
 
           <div className="relative z-10 flex min-h-[28rem] flex-col justify-between px-5 py-6 sm:min-h-[34rem] sm:px-7 sm:py-8">
             <div className="flex items-start justify-between gap-4">
@@ -316,7 +317,8 @@ export default function ExploreCategoryPage() {
                 sizes="100vw"
               />
             </div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.20),transparent_28%),linear-gradient(180deg,rgba(18,12,4,0.04),rgba(18,12,4,0.10)_40%,rgba(8,6,4,0.56))]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.20),transparent_28%),linear-gradient(180deg,rgba(18,12,4,0.06),rgba(18,12,4,0.14)_40%,rgba(8,6,4,0.60))]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.30),transparent_34%),linear-gradient(90deg,rgba(8,6,4,0.58),rgba(8,6,4,0.20)_44%,transparent_74%),linear-gradient(180deg,transparent_0%,rgba(8,6,4,0.08)_46%,rgba(8,6,4,0.30)_100%)]" />
 
             <div className="relative z-10 grid gap-8 px-5 py-6 sm:px-7 sm:py-8 lg:grid-cols-[1.25fr_0.75fr]">
               <div className="flex flex-col justify-between">
@@ -400,7 +402,8 @@ export default function ExploreCategoryPage() {
                     sizes="(max-width: 768px) 100vw, 420px"
                   />
                 </div>
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.12),transparent_28%),linear-gradient(180deg,rgba(10,8,4,0.00),rgba(10,8,4,0.08)_46%,rgba(6,5,4,0.54))]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.12),transparent_28%),linear-gradient(180deg,rgba(10,8,4,0.04),rgba(10,8,4,0.12)_46%,rgba(6,5,4,0.60))]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(0,0,0,0.26),transparent_34%),linear-gradient(90deg,rgba(6,5,4,0.52),rgba(6,5,4,0.16)_42%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(6,5,4,0.08)_46%,rgba(6,5,4,0.28)_100%)]" />
 
                 <div className="relative z-10 flex min-h-[19rem] flex-col justify-between p-5">
                   <div>
