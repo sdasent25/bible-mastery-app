@@ -20,7 +20,13 @@ import { getUserPlan } from '@/lib/getUserPlan';
 import { getSubscriptionStatus } from '@/lib/user';
 import { addIncorrectQuestion, getIncorrectQuestions } from '@/lib/review';
 import { recordAnswerPerformance } from '@/lib/performance';
-import { playSound, triggerHaptic } from '@/lib/sound';
+import {
+  playMissionAdvanceSound,
+  playMissionAffirmSound,
+  playMissionPulseSound,
+  playMissionSetbackSound,
+  triggerHaptic,
+} from '@/lib/sound';
 
 type Question = {
   id: string;
@@ -489,6 +495,30 @@ export default function QuizPage() {
   const isAnswered = selectedAnswer !== null;
   const correctIndex = currentQuestion.correctIndex;
   const missionTheme = getQuizMissionTheme(resolvedSegment || segment);
+  const missionModeLabel = isReviewMode
+    ? "Review Operation"
+    : isTrainingMode
+      ? "Training Operation"
+      : "Primary Mission";
+  const missionStatusLabel = isReviewMode
+    ? "Reinforce recall and resolve previous misses."
+    : "Stay quick and accurate as the mission unfolds.";
+  const comboStatusLabel =
+    combo >= 5
+      ? "Precision chain holding"
+      : combo >= 3
+        ? "Rhythm established"
+        : combo >= 2
+          ? "Momentum gathering"
+          : "Hold steady";
+  const streakStatusLabel =
+    streak >= 7
+      ? "Endurance proven"
+      : streak >= 3
+        ? "Continuity intact"
+        : streak >= 1
+          ? "Mission path active"
+          : "Recovering focus";
   const getButtonStyle = (index: number) => {
     if (!showFeedback) return `${missionTheme.answerIdleClass} ${missionTheme.answerHoverClass}`;
 
@@ -545,17 +575,17 @@ export default function QuizPage() {
         console.log("API RESPONSE", await response.clone().json());
 
         if (isCorrect) {
-          playSound("/sounds/journey-selected.mp3");
+          playMissionAffirmSound();
           triggerHaptic("light");
           setShowCelebration(true);
           setTimeout(() => {
             setShowCelebration(false);
-          }, 1000);
+          }, 820);
           setStreak(prev => prev + 1);
           setCombo(prev => prev + 1);
           setScore(score + 1);
         } else {
-          playSound("/sounds/wrong.mp3");
+          playMissionSetbackSound();
           triggerHaptic("medium");
           setStreak(0);
           setCombo(0);
@@ -576,14 +606,14 @@ export default function QuizPage() {
         setSelectedAnswer(null);
         setShowFeedback(false);
         setIsCorrectAnswer(null);
-      }, 700);
+      }, 860);
     }
   };
 
   const completeQuiz = () => {
     setQuizCompleted(true);
     setShowCelebration(true);
-    setTimeout(() => setShowCelebration(false), 1200);
+    setTimeout(() => setShowCelebration(false), 1000);
     if (!isReviewMode && !isTrainingMode) {
       updateMastery();
     }
@@ -697,18 +727,51 @@ export default function QuizPage() {
 
         {showCelebration && (
           <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-            <div className="animate-pop text-center">
-              <div className="text-5xl mb-2 text-amber-200">✦</div>
-              <div className="text-xl font-bold text-white">
+            <div className="animate-[fadeIn_0.45s_ease] rounded-[1.8rem] border border-amber-200/16 bg-black/26 px-8 py-5 text-center shadow-[0_0_40px_rgba(251,191,36,0.12)] backdrop-blur-xl">
+              <div className="text-[11px] uppercase tracking-[0.32em] text-amber-100/68 mb-2">
+                Debrief Received
+              </div>
+              <div className="text-xl font-semibold text-white">
                 Mission Secured
               </div>
             </div>
           </div>
         )}
 
-        <div className="min-h-screen bg-[#08090d] text-white flex items-center justify-center p-4">
-          <div className={`max-w-md w-full rounded-[1.8rem] border p-6 ${missionTheme.surfaceClass}`}>
-          <h1 className="text-2xl font-bold text-center text-white mb-4">
+        <div className="relative min-h-screen overflow-hidden bg-[#08090d] text-white">
+          <div className="absolute inset-0">
+            {missionTheme.backgroundVideo ? (
+              <video
+                className="h-full w-full object-cover opacity-30"
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={missionTheme.backgroundImage}
+              >
+                <source src={missionTheme.backgroundVideo} type="video/mp4" />
+              </video>
+            ) : (
+              <Image
+                src={missionTheme.backgroundImage}
+                alt=""
+                fill
+                priority
+                className="object-cover opacity-30"
+                style={{ objectPosition: missionTheme.backgroundFallbackPosition }}
+                sizes="100vw"
+              />
+            )}
+          </div>
+          <div className={`absolute inset-0 ${missionTheme.overlayClass}`} />
+          <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/70 to-transparent" />
+          <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-black/70 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-black via-black/72 to-transparent" />
+          <div className="relative flex min-h-screen items-center justify-center p-4">
+          <div className={`max-w-lg w-full rounded-[2rem] border p-6 md:p-8 ${missionTheme.surfaceClass}`}>
+          <div className="mb-5 text-center">
+            <p className={`text-[11px] uppercase tracking-[0.36em] ${missionTheme.accentTextClass}`}>Mission Debrief</p>
+            <h1 className="mt-3 text-3xl font-semibold text-white">
             {isReviewMode
               ? 'Review Complete'
               : isProgramMode
@@ -716,58 +779,57 @@ export default function QuizPage() {
                   ? 'Campaign Complete'
                   : 'Mission Complete'
                 : isTrainingMode
-                  ? 'Training Complete'
-                  : 'Mission Complete'}
-          </h1>
-          <div className="text-center mb-6">
+                ? 'Training Complete'
+                : 'Mission Complete'}
+            </h1>
+          </div>
+          <div className="text-center mb-8">
             {isReviewMode ? (
               <p className="text-sm text-slate-300 mt-2">
-                You reinforced the mission material and sharpened your recall.
+                You returned to the passage, resolved weak points, and steadied recall.
               </p>
             ) : isProgramMode ? (
               <>
                 <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>{missionTheme.campaignLabel}</p>
-                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
-                <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
                 <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
                   {missionTheme.missionTitle}
                 </p>
                 {isFinalProgramSegment ? (
                   <p className="text-sm text-slate-300 mt-2">
-                    You finished {activeProgram?.title} and carried the campaign to its close.
+                    You carried {activeProgram?.title} to its close and sealed the final objective.
                   </p>
                 ) : (
-                  <p className="text-sm text-slate-300 mt-2">Next mission: {next?.label}</p>
+                  <p className="text-sm text-slate-300 mt-2">Next mission briefing: {next?.label}</p>
                 )}
-                <p className="text-sm text-amber-200 mt-2">
-                  Streak now stands at {streak}
+                <p className="mt-3 text-sm text-slate-200">
+                  {score} of {questions.length} prompts were resolved with the campaign still advancing.
                 </p>
               </>
             ) : isTrainingMode ? (
               <>
                 <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>Training Debrief</p>
-                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
-                <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
                 <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
                   {missionTheme.missionAtmosphere}
                 </p>
-                <p className="text-sm text-slate-300 mt-2">You&apos;re building mastery with every return to the text.</p>
+                <p className="mt-3 text-sm text-slate-300">Each return to the text strengthens fluency without breaking campaign rhythm.</p>
+                <p className="text-sm text-slate-200 mt-2">{score} of {questions.length} prompts were resolved in this training pass.</p>
               </>
             ) : (
               <>
-                <p className={`text-sm uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>Mission Debrief</p>
-                <p className="mt-3 text-lg text-slate-200">Resolved {score} of {questions.length} prompts</p>
-                <p className="text-lg text-slate-200">XP Total: {totalXp}</p>
                 <p className={`mt-3 text-xl font-semibold ${missionTheme.accentTextClass}`}>
                   {missionTheme.missionTitle}
                 </p>
-                <p className="text-sm text-slate-300 mt-2">The mission is complete. Continue the campaign or return for mastery.</p>
+                <p className="mt-3 text-sm text-slate-300">The mission is complete. Continue the campaign path or return to reinforce what you uncovered.</p>
+                <p className="text-sm text-slate-200 mt-2">{score} of {questions.length} prompts were resolved before debrief.</p>
               </>
             )}
           </div>
-          <p className="text-sm text-slate-300 text-center mb-4">
-            Choose your next step in the campaign.
-          </p>
+          <div className="mb-6 rounded-[1.5rem] border border-white/10 bg-black/18 px-4 py-4 text-center backdrop-blur-md">
+            <div className="text-[11px] uppercase tracking-[0.28em] text-white/48">Campaign Continuity</div>
+            <p className="mt-3 text-sm leading-6 text-slate-200">
+              Accuracy settled at {Math.round((score / Math.max(questions.length, 1)) * 100)}%. XP now stands at {totalXp}, and the current streak holds at {streak}.
+            </p>
+          </div>
           <div className="space-y-3">
             {next && !isPreviewMode && (
               <button
@@ -813,18 +875,21 @@ export default function QuizPage() {
             </button>
           </div>
           </div>
+          </div>
         </div>
       </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#060709]">
+    <div className="min-h-screen overflow-hidden bg-[#060709]">
       {showCelebration && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-          <div className="animate-pop text-center">
-            <div className="text-5xl mb-2 text-amber-200">✦</div>
-            <div className="text-xl font-bold text-white">
+          <div className="animate-[fadeIn_0.35s_ease] rounded-[1.8rem] border border-amber-200/16 bg-black/24 px-7 py-4 text-center shadow-[0_0_40px_rgba(251,191,36,0.10)] backdrop-blur-xl">
+            <div className="text-[11px] uppercase tracking-[0.32em] text-amber-100/66 mb-2">
+              Confirmation Received
+            </div>
+            <div className="text-lg font-medium text-white">
               Truth secured
             </div>
           </div>
@@ -832,38 +897,56 @@ export default function QuizPage() {
       )}
 
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0">
-          <Image
-            src={missionTheme.backgroundImage}
-            alt=""
-            fill
-            priority
-            className="object-cover opacity-34"
-            style={{ objectPosition: missionTheme.backgroundPosition }}
-            sizes="100vw"
-          />
-        </div>
+        {missionTheme.backgroundVideo ? (
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-38"
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster={missionTheme.backgroundImage}
+          >
+            <source src={missionTheme.backgroundVideo} type="video/mp4" />
+          </video>
+        ) : (
+          <div className="absolute inset-0">
+            <Image
+              src={missionTheme.backgroundImage}
+              alt=""
+              fill
+              priority
+              className="object-cover opacity-34"
+              style={{ objectPosition: missionTheme.backgroundPosition }}
+              sizes="100vw"
+            />
+          </div>
+        )}
         <div className={`absolute inset-0 ${missionTheme.overlayClass}`} />
-        <div className="absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-black/80 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-black/80 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-black/85 via-black/40 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-black/85 via-black/40 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black via-black/72 to-transparent" />
+        <div className="absolute left-1/2 top-[10%] h-40 w-40 -translate-x-1/2 rounded-full bg-amber-100/8 blur-3xl" />
       </div>
-      <div className="relative z-10 flex-1 pb-20 md:px-6 md:py-4">
+      <div className="relative z-10 flex-1 pb-16 md:px-6 md:py-4">
         <div className="flex h-full w-full justify-center">
-        <div className="mx-auto flex h-full w-full max-w-2xl flex-col">
+        <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
           <div className="h-full flex flex-col">
-            <div className="flex-[0_1_auto] px-4 pt-1 pb-2">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-4">
+            <div className="flex-[0_1_auto] px-4 pt-3 pb-3 md:px-6">
+              <div className={`rounded-[1.4rem] border px-3 py-3 md:px-4 ${missionTheme.hudClass}`}>
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div className="flex items-start gap-4">
                   <button
                     onClick={() => router.push('/journey')}
                     className="
-                      rounded-xl
+                      rounded-2xl
+                      border border-white/10
+                      bg-black/20
                       px-3 py-3
                       text-gray-200
                       hover:text-white
-                      text-2xl
-                      font-bold
+                      text-xl
+                      font-semibold
                       transition-all duration-150
                       hover:scale-[1.02]
                       active:scale-95
@@ -874,27 +957,63 @@ export default function QuizPage() {
                     ✕
                   </button>
 
-                  <span className={`text-sm md:text-base ${missionTheme.accentTextClass}`}>
-                    Question {currentQuestionIndex + 1} of {availableQuestionCount}
-                  </span>
+                  <div>
+                    <p className={`text-[11px] uppercase tracking-[0.3em] ${missionTheme.accentTextClass}`}>
+                      {missionTheme.bookLabel} Mission
+                    </p>
+                    <p className="mt-1 text-sm md:text-base text-white">
+                      Prompt {currentQuestionIndex + 1} of {availableQuestionCount}
+                    </p>
+                  </div>
                 </div>
 
-                <div className={`text-sm md:text-base ${missionTheme.accentTextClass}`}>
-                  {missionTheme.campaignLabel}
+                <div className="text-right">
+                  <div className={`text-[11px] uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>
+                    {missionTheme.campaignLabel}
+                  </div>
+                  <div className="mt-1 text-sm text-white/76">
+                    {missionModeLabel}
+                  </div>
                 </div>
               </div>
 
-              <div className="h-[6px] rounded-full bg-white/10 overflow-hidden">
+              <div className="grid grid-cols-4 gap-2 mb-3 text-center">
+                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">XP</div>
+                  <div className="mt-1 text-sm font-semibold text-white">{totalXp}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Streak</div>
+                  <div className="mt-1 text-sm font-semibold text-white">{streak}</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/40">{streakStatusLabel}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Combo</div>
+                  <div className={`mt-1 text-sm font-semibold transition-all duration-200 ${comboFlash ? "scale-110 text-amber-100" : "text-white"}`}>{combo}</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/40">{comboStatusLabel}</div>
+                </div>
+                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Score</div>
+                  <div className="mt-1 text-sm font-semibold text-white">{score}</div>
+                </div>
+              </div>
+
+              <div className="mb-2 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] text-white/44">
+                <span>Mission progress</span>
+                <span>{Math.round(progress)}%</span>
+              </div>
+              <div className="h-[7px] rounded-full bg-white/8 overflow-hidden">
                 <div
                   className={`h-full rounded-full ${missionTheme.progressClass} shadow-[0_0_18px_rgba(251,191,36,0.18)] transition-all duration-500 ease-out`}
                   style={{ width: `${progress}%` }}
                 />
               </div>
+              </div>
             </div>
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.3s_ease] flex h-full flex-col rounded-[1.9rem] border px-4 py-6 md:p-10 scale-[1.02] ${missionTheme.surfaceClass} ${
+              className={`animate-[fadeIn_0.45s_ease] flex h-full flex-col rounded-[2rem] border px-4 py-6 md:p-10 transition-[opacity,transform] duration-500 ${missionTheme.surfaceClass} ${
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-300/40'
                   : ''
@@ -902,22 +1021,19 @@ export default function QuizPage() {
             >
               <div className="flex flex-col gap-5 pt-2">
                 <div className="w-full flex-[0_1_auto]">
-                  <div className="flex items-center justify-between gap-2 text-sm text-slate-300/84">
+                  <div className="flex items-start justify-between gap-4 text-sm text-slate-300/84">
                     <div>
-                      <p className={`mt-1 text-sm ${missionTheme.accentTextClass}`}>
+                      <p className={`mt-1 text-[11px] uppercase tracking-[0.28em] ${missionTheme.accentTextClass}`}>
                         {missionTheme.worldLabel}
                       </p>
 
-                      <p className="text-xs text-white/62 mt-1">
-                        {missionTheme.missionTitle}
+                      <p className="text-sm text-white/72 mt-2 max-w-md">
+                        {missionTheme.missionBrief}
                       </p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="hidden md:flex items-center gap-2">
                       <div className={`rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.18em] ${missionTheme.badgeClass}`}>
-                        Streak {streak}
-                      </div>
-                      <div className={`${comboFlash ? "scale-110 text-amber-200" : "text-white/72"} transition-all duration-200 text-[11px] uppercase tracking-[0.18em]`}>
-                        Combo {combo}
+                        {missionTheme.missionAtmosphere}
                       </div>
                     </div>
                   </div>
@@ -931,23 +1047,23 @@ export default function QuizPage() {
 
                 <div className="flex flex-col items-center text-center gap-4">
                   {currentQuestion.reference && (
-                    <p className="text-sm text-gray-300">
+                    <p className="text-sm uppercase tracking-[0.18em] text-gray-300">
                       {currentQuestion.reference}
                     </p>
                   )}
 
-                  <h1 className="text-[22px] leading-snug font-bold text-white text-center break-words">
+                  <h1 className="max-w-2xl text-[24px] leading-snug font-semibold text-white text-center break-words md:text-[30px]">
                     {currentQuestion.question}
                   </h1>
 
                   {!isAnswered && (
                     <p className="text-sm text-slate-400">
-                      Choose the answer that fulfills the mission prompt
+                      {missionStatusLabel}
                     </p>
                   )}
 
                   {isReviewMode && currentIncorrectItem && (
-                    <div className="rounded-lg border border-red-400/40 bg-red-600/15 p-3 text-sm text-red-100">
+                    <div className="rounded-[1rem] border border-amber-200/14 bg-black/24 p-3 text-sm text-amber-50/88">
                       You previously chose: <strong>{currentIncorrectItem.userAnswer}</strong>
                     </div>
                   )}
@@ -960,13 +1076,13 @@ export default function QuizPage() {
                         key={index}
                         onClick={() => handleAnswerSelect(index)}
                         disabled={selectedAnswer !== null}
-                        className={`min-h-[60px] w-full rounded-[1.4rem] border px-4 py-3 text-left text-base leading-tight font-medium text-white shadow-[0_18px_36px_rgba(0,0,0,0.18)] transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:px-6 ${getButtonStyle(index)}`}
+                        className={`min-h-[72px] w-full rounded-[1.55rem] border px-4 py-4 text-left text-base leading-tight font-medium text-white transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:px-6 ${missionTheme.answerShellClass} ${getButtonStyle(index)}`}
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
                         <div className="flex items-center justify-between gap-4">
                           <span className="text-base leading-tight font-normal">
-                            <span className={`font-bold text-xl mr-4 ${missionTheme.accentTextClass}`}>
-                              {["A", "B", "C", "D"][index]}.
+                            <span className={`mr-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-semibold ${missionTheme.accentTextClass}`}>
+                              {["A", "B", "C", "D"][index]}
                             </span>
                             {answer}
                           </span>
@@ -978,26 +1094,27 @@ export default function QuizPage() {
               </div>
 
               {isAnswered && !showFeedback && (
-                <div className="flex flex-col items-center justify-center text-center mt-1 animate-[fadeIn_0.25s_ease]">
+                <div className="mt-1 flex flex-col items-center justify-center text-center animate-[fadeIn_0.35s_ease]">
                   {isCorrectAnswer ? (
                     <>
-                      <div className="mb-2 text-5xl text-amber-200">✦</div>
-
-                      <h1 className="text-2xl font-bold text-emerald-300">
-                        Truth Confirmed
+                      <div className="mb-2 h-px w-20 bg-gradient-to-r from-transparent via-amber-100/70 to-transparent" />
+                      <div className="text-[11px] uppercase tracking-[0.3em] text-amber-100/70">Alignment</div>
+                      <h1 className="mt-3 text-2xl font-semibold text-white">
+                        The passage holds
                       </h1>
                     </>
                   ) : (
                     <>
-                      <div className="text-4xl mb-2 text-rose-300">✕</div>
-                      <div className="text-3xl font-bold mb-2 text-rose-300">
-                        Missed the Mark
+                      <div className="mb-2 h-px w-20 bg-gradient-to-r from-transparent via-white/35 to-transparent" />
+                      <div className="text-[11px] uppercase tracking-[0.3em] text-white/50">Adjustment</div>
+                      <div className="mt-3 text-2xl font-semibold text-white">
+                        Recenter on the text
                       </div>
                     </>
                   )}
 
                   <div className="mt-2 text-sm uppercase tracking-[0.22em] text-slate-400">
-                    Correct Answer
+                    Passage Anchor
                   </div>
 
                   <div className="text-xl font-semibold text-white mt-2">
@@ -1005,8 +1122,14 @@ export default function QuizPage() {
                   </div>
 
                   {isCorrectAnswer && (
-                    <div className={`text-lg font-bold mt-3 animate-pop ${missionTheme.accentTextClass}`}>
-                      Mission momentum rises
+                    <div className={`mt-3 text-sm uppercase tracking-[0.22em] ${missionTheme.accentTextClass}`}>
+                      Mission continuity preserved
+                    </div>
+                  )}
+
+                  {!isCorrectAnswer && (
+                    <div className="mt-3 text-sm uppercase tracking-[0.22em] text-white/52">
+                      Correct course and continue
                     </div>
                   )}
 
@@ -1014,7 +1137,7 @@ export default function QuizPage() {
                     <button
                       id="continueBtn"
                       onClick={() => {
-                        playSound("/sounds/tap.mp3");
+                        playMissionAdvanceSound();
                         triggerHaptic("light");
                         handleNextQuestion();
                       }}
@@ -1042,13 +1165,17 @@ export default function QuizPage() {
                     ? 'ring-1 ring-yellow-300/25'
                     : ''
                 }`}>
+                  <p className="mb-2 text-[11px] uppercase tracking-[0.24em] text-white/44">Field Note</p>
                   <p>{currentQuestion.explanation}</p>
                 </div>
               )}
 
               {isReviewMode && selectedAnswer !== null && (
                 <button
-                  onClick={handleTryAgain}
+                  onClick={() => {
+                    playMissionPulseSound();
+                    handleTryAgain();
+                  }}
                   className={`${MISSION_CTA_CLASS} mt-3 flex w-full py-3 text-base`}
                 >
                   Reattempt Mission Prompt
