@@ -68,6 +68,18 @@ function getNodeIcon(label: string) {
   return "globe.svg"
 }
 
+function buildJourneyQuizHref(
+  planType: JourneyPlanType | null,
+  program: string,
+  normalizedSegment: string,
+) {
+  if (planType === "free") {
+    return `/quiz?segment=${normalizedSegment}&depth=5`
+  }
+
+  return `/quiz?program=${program}&segment=${normalizedSegment}&depth=10`
+}
+
 export default function JourneyPage() {
   const router = useRouter()
 
@@ -448,7 +460,7 @@ export default function JourneyPage() {
 
                           const normalized = node.segment.replaceAll("_", "-")
 
-                          router.push(`/segment?segment=${normalized}`)
+                          router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                           return
                         }
 
@@ -468,13 +480,13 @@ export default function JourneyPage() {
                             if (isFree) {
                               const normalized = node.segment.replaceAll("_", "-")
 
-                              router.push(`/segment?segment=${normalized}`)
+                              router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                               return
                             }
 
                             const normalized = node.segment.replaceAll("_", "-")
 
-                            router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
+                            router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                           } else {
                             setActiveIndex(index)
                             setSelectedSegment(node.segment)
@@ -796,7 +808,7 @@ export default function JourneyPage() {
 
                                     const normalized = node.segment.replaceAll("_", "-")
 
-                                    router.push(`/segment?segment=${normalized}`)
+                                    router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                                     return
                                   }
 
@@ -816,13 +828,13 @@ export default function JourneyPage() {
                                     if (isFree) {
                                       const normalized = node.segment.replaceAll("_", "-")
 
-                                      router.push(`/segment?segment=${normalized}`)
+                                      router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                                       return
                                     }
 
                                     const normalized = node.segment.replaceAll("_", "-")
 
-                                    router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
+                                    router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                                   } else {
                                     setActiveIndex(index)
                                     setSelectedSegment(node.segment)
@@ -978,14 +990,14 @@ export default function JourneyPage() {
                   if (planType === "free") {
                     const normalized = activeNode.segment.replaceAll("_", "-")
 
-                    router.push(`/segment?segment=${normalized}`)
+                    router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                     return
                   }
 
                   // ALL PAID PLANS -> full access
                   const normalized = activeNode.segment.replaceAll("_", "-")
 
-                  router.push(`/segment?program=${selectedProgram}&segment=${normalized}`)
+                  router.push(buildJourneyQuizHref(planType, selectedProgram, normalized))
                 }}
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}

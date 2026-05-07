@@ -8,6 +8,7 @@ import {
   getGenesisMissionArt,
   getGenesisMissionMeta,
 } from "@/lib/genesisCampaign"
+import { getUserPlan as getPlanType } from "@/lib/getUserPlan"
 import { getProgramById } from "@/lib/programs"
 import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
 import { getUserPlan, type UserPlan } from "@/lib/userPlan"
@@ -30,22 +31,12 @@ type HomeState = {
   missionSubtitle: string
   missionAtmosphere: string
   missionArt: string
+  paidAccess: boolean
 }
 
 type MasteryRow = {
   segment: string
   mastered: boolean
-}
-
-function getSegmentChapterSummary(segment: string) {
-  const match = segment.match(/^([a-z]+)-(\d+)-(\d+)$/)
-  if (!match) {
-    return "3 chapter segment"
-  }
-
-  const start = Number(match[2])
-  const end = Number(match[3])
-  return `Chapters ${start}-${end}`
 }
 
 export default function HomePage() {
@@ -89,7 +80,10 @@ export default function HomePage() {
       }
 
       // 3. ONLY CONTINUE IF ONBOARDING COMPLETE
-      const plan = await getUserPlan()
+      const [plan, planType] = await Promise.all([
+        getUserPlan(),
+        getPlanType(),
+      ])
 
       if (!plan) {
         router.replace("/onboarding")
@@ -179,6 +173,11 @@ export default function HomePage() {
         missionSubtitle: missionMeta.subtitle,
         missionAtmosphere: missionMeta.atmosphere,
         missionArt: getGenesisMissionArt(currentSegment.segment),
+        paidAccess:
+          planType === "pro" ||
+          planType === "pro_plus" ||
+          planType === "family_pro" ||
+          planType === "family_pro_plus",
       })
       setLoading(false)
     }
@@ -199,12 +198,10 @@ export default function HomePage() {
   }
 
   const continueHref = homeState
-    ? `/segment?program=genesis&segment=${homeState.currentSegmentSlug}`
+    ? !homeState.paidAccess
+      ? `/quiz?segment=${homeState.currentSegmentSlug}&depth=5`
+      : `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=10`
     : "/journey"
-
-  const segmentSummary = homeState
-    ? getSegmentChapterSummary(homeState.currentSegmentSlug)
-    : "3 chapter segment"
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#1f2b47_0%,_#0d1321_34%,_#070a12_100%)] px-4 py-6 text-white">
