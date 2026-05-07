@@ -560,7 +560,7 @@ export default function SegmentIntro() {
           </div>
         </section>
 
-        <section className="mt-14 sm:mt-16">
+        <section className="mt-9 sm:mt-11">
           <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(19,14,10,0.94),rgba(10,9,8,0.98))] p-5 shadow-[0_20px_54px_rgba(0,0,0,0.2)]">
             <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-100/72">
               Mission Launch
