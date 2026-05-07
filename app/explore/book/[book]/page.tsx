@@ -322,7 +322,7 @@ export default function ExploreBookPage() {
                   <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-amber-50/78">
                     <div>{currentMission.label}</div>
                     <div>{currentMission.mastered ? "Mastered" : currentMission.completed ? "Replay ready" : "Daily Mission Available"}</div>
-                    <div>{currentMission.locked ? "Mission Incoming" : "Continue Campaign"}</div>
+                    <div>{currentMission.locked ? "Mission Incoming" : "Next mission unlocks tomorrow"}</div>
                   </div>
                 </div>
 
@@ -335,14 +335,17 @@ export default function ExploreBookPage() {
                   </div>
                   <div className="mt-2 text-sm text-slate-300">
                     {currentMission.completed
-                      ? "This mission remains open for replay while the campaign continues forward."
-                      : "The next Genesis mission is ready. Enter when you are prepared to continue the campaign."}
+                      ? "Mission Complete. A new mission arrives tomorrow. Continue mastery and training in the meantime."
+                      : "Daily Mission Available. Enter when you are ready, then let the next mission arrive with tomorrow's light."}
                   </div>
                   <div className="mt-6 h-[6px] overflow-hidden rounded-full bg-white/10">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_36px_rgba(251,191,36,0.22)]"
                       style={{ width: `${((currentMission.missionNumber - 1) / Math.max(genesisCampaign.totalMissions - 1, 1)) * 100}%` }}
                     />
+                  </div>
+                  <div className="mt-4 text-xs uppercase tracking-[0.22em] text-amber-100/62">
+                    {currentMission.completed ? "A new mission arrives tomorrow" : "Next mission unlocks tomorrow"}
                   </div>
                   <div className="mt-6">
                     {currentMission.locked ? (
@@ -483,7 +486,7 @@ export default function ExploreBookPage() {
                                     : "More ahead in the campaign"}
                             </span>
                             <span>
-                              {mission.locked ? "Unlocks Tomorrow" : "Continue Campaign"}
+                              {mission.locked ? "Unlocks Tomorrow" : mission.current ? "Next mission unlocks tomorrow" : "Continue Campaign"}
                             </span>
                           </div>
 

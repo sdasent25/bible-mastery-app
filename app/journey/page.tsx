@@ -558,10 +558,13 @@ export default function JourneyPage() {
                 <div className="w-full flex flex-col items-center">
                   <div className="text-center mt-2 md:mt-12">
                     <h1 className="text-2xl md:text-4xl font-bold text-white">
-                      🔥 Day 1 Complete
+                      Mission Complete
                     </h1>
                     <p className="text-yellow-300 mt-2">
-                      You showed up today. Keep it going tomorrow.
+                      A new mission arrives tomorrow.
+                    </p>
+                    <p className="mt-3 text-sm text-white/72">
+                      Continue mastery and training in the meantime.
                     </p>
                   </div>
                   <div className="text-center mt-4 text-white/80">
@@ -764,7 +767,7 @@ export default function JourneyPage() {
                                 <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/60 rounded-2xl">
                                   <div className="text-center">
                                     <div className="text-xl">🔒</div>
-                                    <div className="mt-2 text-xs font-semibold text-white">You've completed today's mission</div>
+                                    <div className="mt-2 text-xs font-semibold text-white">A new mission arrives tomorrow</div>
                                   </div>
                                 </div>
                               )}
@@ -987,13 +990,13 @@ export default function JourneyPage() {
                 className="w-full rounded-xl bg-green-500 px-6 py-3 text-lg font-bold text-black shadow-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!activeNode || !isPlanReady || (isFree && effectiveDailyLimitReached) || completionMode}
               >
-                {completionMode ? "Come Back Tomorrow" : "Continue →"}
+                {completionMode ? "Continue Mastery" : "Continue Mission →"}
               </button>
             </div>
 
             {!(!ACCESS.journey && isFree) && effectiveDailyLimitReached && (
               <div className="mt-4 text-center text-sm text-yellow-400">
-                {"You've completed today's mission. Come back tomorrow."}
+                {"Mission complete. A new mission arrives tomorrow."}
               </div>
             )}
 
@@ -1007,7 +1010,7 @@ export default function JourneyPage() {
                     {nextSegment.label}
                   </div>
                   <div className="mt-2 text-sm text-slate-300">
-                    Next mission in {timeLeft}
+                    A new mission arrives in {timeLeft}
                   </div>
                 </div>
               </div>
