@@ -1,10 +1,20 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 
 import ExplorerCategoryCard from "@/components/explore/ExplorerCategoryCard"
+import {
+  getGenesisMissionArt,
+  getGenesisMissionMeta,
+} from "@/lib/genesisCampaign"
 import { nodes } from "@/lib/nodes"
+import { getProgramById } from "@/lib/programs"
+import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
+import { getUserPlan } from "@/lib/getUserPlan"
+import { hasCompletedToday } from "@/lib/streak"
 import { createClient } from "@/lib/supabase/client"
 
 type BookRow = {
@@ -19,6 +29,23 @@ type BookRow = {
 type MasteryRow = {
   segment: string
   mastered: boolean
+}
+
+type ActiveCampaignHeroState = {
+  title: string
+  subtitle: string
+  eyebrow: string
+  missionLabel: string
+  missionTitle: string
+  missionAtmosphere: string
+  missionArt: string
+  progressPercent: number
+  completedMissionCount: number
+  totalMissions: number
+  masteryPercent: number
+  ctaLabel: string
+  ctaHref: string
+  completeToday: boolean
 }
 
 type CategoryKey =
@@ -137,9 +164,31 @@ function slugifyBook(book: string) {
   return book.toLowerCase().replace(/\s+/g, "_")
 }
 
+function hasPaidCampaignAccess(planType: string | null) {
+  return (
+    planType === "pro" ||
+    planType === "pro_plus" ||
+    planType === "family_pro" ||
+    planType === "family_pro_plus"
+  )
+}
+
+function buildCampaignQuizHref(
+  segment: string,
+  paidAccess: boolean,
+) {
+  if (!paidAccess) {
+    return `/quiz?segment=${segment}&depth=5`
+  }
+
+  return `/quiz?program=genesis&segment=${segment}&depth=10`
+}
+
 export default function ExplorePage() {
+  const router = useRouter()
   const [books, setBooks] = useState<BookRow[]>([])
   const [mastery, setMastery] = useState<MasteryRow[]>([])
+  const [activeHero, setActiveHero] = useState<ActiveCampaignHeroState | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -164,21 +213,78 @@ export default function ExplorePage() {
 
         const user = userRes.data.user
         let masteryRows: MasteryRow[] = []
+        let activeCampaignHero: ActiveCampaignHeroState | null = null
 
         if (user) {
           const supabase = createClient()
-          const { data } = await supabase
-            .from("user_segment_mastery")
-            .select("segment, mastered")
-            .eq("user_id", user.id)
+          const genesisProgram = getProgramById("genesis")
+          const [{ data }, planType, progress] = await Promise.all([
+            supabase
+              .from("user_segment_mastery")
+              .select("segment, mastered")
+              .eq("user_id", user.id),
+            getUserPlan(),
+            getProgramProgress("genesis"),
+          ])
 
           masteryRows = (data || []) as MasteryRow[]
+
+          if (genesisProgram) {
+            const resumeIndex = getResumeSegmentIndex(progress, genesisProgram.segments.length)
+            const currentSegment = genesisProgram.segments[resumeIndex] || genesisProgram.segments[0]
+            const currentMissionMeta = getGenesisMissionMeta(
+              currentSegment.segment.replaceAll("-", "_")
+            )
+            const completedMissionCount = progress.completed
+              ? genesisProgram.segments.length
+              : Math.min(resumeIndex, genesisProgram.segments.length)
+            const progressPercent =
+              genesisProgram.segments.length > 0
+                ? Math.round((completedMissionCount / genesisProgram.segments.length) * 100)
+                : 0
+            const masteredSet = new Set(
+              masteryRows
+                .filter((row) => row.mastered)
+                .map((row) => row.segment.replaceAll("_", "-"))
+            )
+            const masteryCount = genesisProgram.segments.filter((segment) =>
+              masteredSet.has(segment.segment)
+            ).length
+            const masteryPercent =
+              genesisProgram.segments.length > 0
+                ? Math.round((masteryCount / genesisProgram.segments.length) * 100)
+                : 0
+            const completeToday = hasCompletedToday()
+            const paidAccess = hasPaidCampaignAccess(planType)
+
+            activeCampaignHero = {
+              title: completeToday ? "Mission Complete" : "Continue Genesis",
+              subtitle: completeToday
+                ? "The next mission arrives tomorrow. Continue mastery and exploration in the meantime."
+                : "Step back into the Genesis campaign and resume the next sacred mission without navigating back through the world.",
+              eyebrow: completeToday ? "Next Mission State" : "Active Campaign",
+              missionLabel: `Mission ${Math.min(resumeIndex + 1, genesisProgram.segments.length)} — ${currentSegment.label}`,
+              missionTitle: currentMissionMeta.title,
+              missionAtmosphere: currentMissionMeta.atmosphere,
+              missionArt: getGenesisMissionArt(currentSegment.segment),
+              progressPercent,
+              completedMissionCount,
+              totalMissions: genesisProgram.segments.length,
+              masteryPercent,
+              ctaLabel: completeToday ? "Open Genesis Campaign" : "Continue Mission →",
+              ctaHref: completeToday
+                ? "/explore/book/genesis"
+                : buildCampaignQuizHref(currentSegment.segment, paidAccess),
+              completeToday,
+            }
+          }
         }
 
         if (!active) return
 
         setBooks(Array.isArray(booksPayload?.books) ? booksPayload.books : [])
         setMastery(masteryRows)
+        setActiveHero(activeCampaignHero)
       } catch (loadError) {
         console.error("Failed to load explorer data", loadError)
         if (!active) return
@@ -330,6 +436,100 @@ export default function ExplorePage() {
       <div className="pointer-events-none absolute right-0 top-80 h-48 w-48 rounded-full bg-fuchsia-400/10 blur-3xl" />
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 py-6 sm:px-6 lg:px-8">
+        {activeHero && (
+          <section className="mb-8 sm:mb-10">
+            <div className="mb-5">
+              <div className="text-xs font-bold uppercase tracking-[0.32em] text-amber-200/80">
+                {activeHero.eyebrow}
+              </div>
+              <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
+                {activeHero.title}
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+                {activeHero.subtitle}
+              </p>
+            </div>
+
+            <div className="relative overflow-hidden rounded-[2.35rem] shadow-[0_30px_110px_rgba(0,0,0,0.38)]">
+              <div className="absolute inset-0">
+                <Image
+                  src={activeHero.missionArt}
+                  alt=""
+                  fill
+                  priority
+                  className="object-cover object-center brightness-[1.08] saturate-[1.08]"
+                  sizes="100vw"
+                />
+              </div>
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,228,163,0.24),transparent_26%),linear-gradient(180deg,rgba(12,10,6,0.02),rgba(12,10,6,0.16)_40%,rgba(6,5,4,0.58))]" />
+
+              <div className="relative z-10 grid gap-8 px-5 py-6 sm:px-7 sm:py-8 lg:grid-cols-[1.2fr_0.8fr]">
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-50/72">
+                      Pentateuch Campaign
+                    </div>
+                    <p className="mt-4 text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/74 drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
+                      {activeHero.missionAtmosphere}
+                    </p>
+                    <h3 className="mt-4 text-4xl font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-5xl">
+                      {activeHero.missionTitle}
+                    </h3>
+                    <p className="mt-3 text-lg font-semibold text-amber-100/80">
+                      {activeHero.missionLabel}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-amber-50/78">
+                    <div>{activeHero.completedMissionCount} of {activeHero.totalMissions} cleared</div>
+                    <div>{activeHero.masteryPercent}% mastery</div>
+                    <div>{activeHero.completeToday ? "Campaign anticipation preserved" : "Daily mission ready"}</div>
+                  </div>
+                </div>
+
+                <div className="rounded-[1.75rem] border border-white/10 bg-black/24 p-5 backdrop-blur-sm">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/62">
+                    Campaign Continuity
+                  </div>
+                  <div className="mt-4 text-5xl font-black text-white">
+                    {activeHero.progressPercent}%
+                  </div>
+                  <div className="mt-2 text-sm text-slate-300">
+                    {activeHero.completeToday
+                      ? "Today’s mission is secured. The path continues tomorrow, while Genesis remains open for mastery and exploration."
+                      : "Your active campaign is already positioned on the next mission, so you can deploy immediately."}
+                  </div>
+                  <div className="mt-6 h-[6px] overflow-hidden rounded-full bg-white/10">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_36px_rgba(251,191,36,0.22)]"
+                      style={{ width: `${activeHero.progressPercent}%` }}
+                    />
+                  </div>
+                  <div className="mt-4 text-xs uppercase tracking-[0.22em] text-amber-100/62">
+                    {activeHero.completeToday ? "A new mission arrives tomorrow" : "One-tap daily re-entry"}
+                  </div>
+                  <div className="mt-6 flex flex-col gap-3">
+                    <button
+                      onClick={() => router.push(activeHero.ctaHref)}
+                      className="w-full rounded-full bg-amber-200 px-5 py-4 text-lg font-black text-[#2c1600] shadow-[0_0_36px_rgba(251,191,36,0.22)] transition hover:scale-[1.01] active:scale-95"
+                    >
+                      {activeHero.ctaLabel}
+                    </button>
+                    {activeHero.completeToday && (
+                      <button
+                        onClick={() => router.push("/quiz?mode=quick")}
+                        className="w-full rounded-full border border-white/12 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/14 active:scale-95"
+                      >
+                        Continue Mastery
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
         <header className="mb-10 sm:mb-14">
           <div className="text-sm font-bold uppercase tracking-[0.32em] text-cyan-200/80">
             Explorer
