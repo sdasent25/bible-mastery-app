@@ -507,7 +507,10 @@ export default function JourneyPage() {
 
                         {isLocked && (
                           <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
-                            <span className="text-xl">🔒</span>
+                            <div className="text-center">
+                              <div className="text-xl">🔒</div>
+                              <div className="mt-2 text-xs font-semibold text-white/90">Mission Incoming</div>
+                            </div>
                           </div>
                         )}
 
@@ -515,7 +518,7 @@ export default function JourneyPage() {
                           <div className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl bg-black/60">
                             <div className="text-center">
                               <div className="text-xl">🔒</div>
-                              <div className="mt-2 text-xs font-semibold text-white">You&apos;ve completed today&apos;s mission</div>
+                              <div className="mt-2 text-xs font-semibold text-white">Unlocks Tomorrow</div>
                             </div>
                           </div>
                         )}
@@ -535,7 +538,7 @@ export default function JourneyPage() {
 
                       {isActive && !isLocked && !isLockedToday && (
                         <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-sm font-bold text-yellow-300 animate-float-slow">
-                          START
+                          {completionMode ? "MISSION INCOMING" : "BEGIN MISSION"}
                         </div>
                       )}
                     </div>

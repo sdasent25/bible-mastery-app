@@ -321,8 +321,8 @@ export default function ExploreBookPage() {
 
                   <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-amber-50/78">
                     <div>{currentMission.label}</div>
-                    <div>{currentMission.mastered ? "Mastered" : currentMission.completed ? "Cleared" : "Ready now"}</div>
-                    <div>{currentMission.locked ? "Locked" : "Open path"}</div>
+                    <div>{currentMission.mastered ? "Mastered" : currentMission.completed ? "Replay ready" : "Daily Mission Available"}</div>
+                    <div>{currentMission.locked ? "Mission Incoming" : "Continue Campaign"}</div>
                   </div>
                 </div>
 
@@ -335,8 +335,8 @@ export default function ExploreBookPage() {
                   </div>
                   <div className="mt-2 text-sm text-slate-300">
                     {currentMission.completed
-                      ? "Return to this mission or continue deeper into the campaign."
-                      : "Read the passage, choose your depth, and enter the current Genesis mission."}
+                      ? "This mission remains open for replay while the campaign continues forward."
+                      : "The next Genesis mission is ready. Enter when you are prepared to continue the campaign."}
                   </div>
                   <div className="mt-6 h-[6px] overflow-hidden rounded-full bg-white/10">
                     <div
@@ -347,14 +347,14 @@ export default function ExploreBookPage() {
                   <div className="mt-6">
                     {currentMission.locked ? (
                       <div className="inline-flex rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-semibold text-white/70">
-                        Complete earlier missions to unlock
+                        Mission Incoming
                       </div>
                     ) : (
                       <Link
                         href={currentMission.href}
                         className="inline-flex rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_0_36px_rgba(251,191,36,0.22)] transition hover:scale-[1.01]"
                       >
-                        {currentMission.completed ? "Revisit Mission" : "Start Mission"} →
+                        {currentMission.completed ? "Replay Mission" : currentMission.missionNumber > 1 ? "Continue Mission" : "Begin Mission"} →
                       </Link>
                     )}
                   </div>
@@ -386,18 +386,28 @@ export default function ExploreBookPage() {
                 const markerClass = mission.mastered
                   ? "bg-amber-200 shadow-[0_0_24px_rgba(251,191,36,0.34)]"
                   : mission.current
-                    ? "bg-white shadow-[0_0_20px_rgba(255,255,255,0.24)]"
+                    ? "bg-white shadow-[0_0_24px_rgba(255,255,255,0.3)]"
                     : mission.completed
                       ? "bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.22)]"
                       : mission.locked
-                        ? "bg-white/20"
+                        ? "bg-amber-100/35 shadow-[0_0_18px_rgba(251,191,36,0.08)]"
                         : "bg-amber-100/70"
 
                 const shellClass = mission.current
-                  ? "border-amber-100/22 bg-[linear-gradient(180deg,rgba(34,22,8,0.92),rgba(13,10,7,0.94))] shadow-[0_24px_54px_rgba(0,0,0,0.28)]"
+                  ? "border-amber-100/24 bg-[linear-gradient(180deg,rgba(34,22,8,0.88),rgba(13,10,7,0.92))] shadow-[0_0_45px_rgba(251,191,36,0.14),0_24px_54px_rgba(0,0,0,0.28)]"
                   : mission.mastered
-                    ? "border-amber-100/18 bg-[linear-gradient(180deg,rgba(28,20,8,0.88),rgba(11,9,7,0.92))] shadow-[0_18px_42px_rgba(0,0,0,0.22)]"
-                    : "border-white/10 bg-[linear-gradient(180deg,rgba(17,13,10,0.84),rgba(9,8,8,0.9))] shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+                    ? "border-amber-100/18 bg-[linear-gradient(180deg,rgba(26,19,10,0.86),rgba(11,9,7,0.9))] shadow-[0_0_22px_rgba(251,191,36,0.08),0_18px_42px_rgba(0,0,0,0.22)]"
+                    : mission.locked
+                      ? "border-white/10 bg-[linear-gradient(180deg,rgba(17,13,10,0.78),rgba(9,8,8,0.86))] shadow-[0_0_18px_rgba(251,191,36,0.05),0_16px_36px_rgba(0,0,0,0.16)]"
+                      : "border-white/10 bg-[linear-gradient(180deg,rgba(17,13,10,0.84),rgba(9,8,8,0.9))] shadow-[0_16px_36px_rgba(0,0,0,0.18)]"
+
+                const imageClass = mission.current
+                  ? "object-cover object-center brightness-[1.08] saturate-[1.08]"
+                  : mission.mastered
+                    ? "object-cover object-center brightness-[0.9] saturate-[0.96]"
+                    : mission.locked
+                      ? "object-cover object-center brightness-[0.72] saturate-[0.78] blur-[1px]"
+                      : "object-cover object-center brightness-[0.86] saturate-[0.9]"
 
                 return (
                   <div key={mission.id} className="relative">
@@ -405,16 +415,30 @@ export default function ExploreBookPage() {
 
                     <article className={`overflow-hidden rounded-[1.8rem] border ${shellClass}`}>
                       <div className="relative">
-                        <div className="absolute inset-0 opacity-24">
+                        {mission.current && (
+                          <div className="absolute inset-[-1px] rounded-[1.8rem] border border-amber-100/18 animate-pulse" />
+                        )}
+
+                        <div className={`absolute inset-0 ${mission.current ? "opacity-44" : mission.mastered ? "opacity-24" : mission.locked ? "opacity-42" : "opacity-22"}`}>
                           <Image
                             src={mission.artSrc}
                             alt=""
                             fill
-                            className="object-cover object-center"
+                            className={imageClass}
                             sizes="100vw"
                           />
                         </div>
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,7,5,0.18),rgba(9,7,5,0.50))]" />
+                        <div
+                          className={`absolute inset-0 ${
+                            mission.current
+                              ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.10),rgba(9,7,5,0.34))]"
+                              : mission.mastered
+                                ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.16),rgba(9,7,5,0.44))]"
+                                : mission.locked
+                                  ? "bg-[linear-gradient(180deg,rgba(9,7,5,0.20),rgba(9,7,5,0.56))]"
+                                  : "bg-[linear-gradient(180deg,rgba(9,7,5,0.18),rgba(9,7,5,0.50))]"
+                          }`}
+                        />
 
                         <div className="relative z-10 px-5 py-5">
                           <div className="flex items-start justify-between gap-4">
@@ -434,11 +458,11 @@ export default function ExploreBookPage() {
                               {mission.mastered
                                 ? "Mastered"
                                 : mission.current
-                                  ? "Current"
+                                  ? "Active Mission"
                                   : mission.completed
-                                    ? "Cleared"
+                                    ? "Replay Ready"
                                     : mission.locked
-                                      ? "Locked"
+                                      ? "Mission Incoming"
                                       : "Open"}
                             </div>
                           </div>
@@ -449,8 +473,18 @@ export default function ExploreBookPage() {
 
                           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/62">
                             <span>{mission.label}</span>
-                            <span>{mission.mastered ? "Mastery glow active" : "Mastery in progress"}</span>
-                            <span>{mission.locked ? "Awaiting previous mission" : "Campaign path open"}</span>
+                            <span>
+                              {mission.mastered
+                                ? "Mastery glow active"
+                                : mission.completed
+                                  ? "Return anytime for training"
+                                  : mission.current
+                                    ? "Daily Mission Available"
+                                    : "More ahead in the campaign"}
+                            </span>
+                            <span>
+                              {mission.locked ? "Unlocks Tomorrow" : "Continue Campaign"}
+                            </span>
                           </div>
 
                           <div className="mt-5">
@@ -480,15 +514,20 @@ export default function ExploreBookPage() {
 
                           <div className="mt-5">
                             {mission.locked ? (
-                              <div className="inline-flex rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/60">
-                                Locked until previous mission is complete
+                              <div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/68">
+                                <span>🔒</span>
+                                <span>{mission.current ? "Daily Mission Available" : "Mission Incoming"}</span>
                               </div>
                             ) : (
                               <Link
                                 href={mission.href}
-                                className="inline-flex rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/14"
+                                className={`inline-flex rounded-full border border-white/12 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition ${
+                                  mission.current
+                                    ? "bg-amber-200 text-[#2c1600] shadow-[0_0_30px_rgba(251,191,36,0.18)] hover:scale-[1.01]"
+                                    : "bg-white/10 hover:bg-white/14"
+                                }`}
                               >
-                                {mission.current ? "Enter Mission" : mission.completed ? "Revisit" : "Open Mission"} →
+                                {mission.current ? "Continue Mission" : mission.completed ? "Replay Mission" : "Begin Mission"} →
                               </Link>
                             )}
                           </div>

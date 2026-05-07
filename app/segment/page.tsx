@@ -487,11 +487,11 @@ export default function SegmentIntro() {
             <div className="space-y-4">
               {nearbyMissions.map((mission) => {
                 const markerClass = mission.current
-                  ? "bg-white shadow-[0_0_22px_rgba(255,255,255,0.26)]"
+                  ? "bg-white shadow-[0_0_24px_rgba(255,255,255,0.28)]"
                   : mission.completed
                     ? "bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.22)]"
                     : mission.futureLocked
-                      ? "bg-white/20"
+                      ? "bg-amber-100/35 shadow-[0_0_18px_rgba(251,191,36,0.08)]"
                       : "bg-amber-100/70"
 
                 return (
@@ -500,8 +500,10 @@ export default function SegmentIntro() {
                     <article
                       className={`rounded-[1.65rem] border p-4 ${
                         mission.current
-                          ? "border-amber-100/20 bg-[linear-gradient(180deg,rgba(34,22,8,0.92),rgba(13,10,7,0.94))] shadow-[0_20px_50px_rgba(0,0,0,0.22)]"
-                          : "border-white/10 bg-[linear-gradient(180deg,rgba(17,13,10,0.84),rgba(9,8,8,0.9))] shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
+                          ? "border-amber-100/22 bg-[linear-gradient(180deg,rgba(34,22,8,0.9),rgba(13,10,7,0.94))] shadow-[0_0_32px_rgba(251,191,36,0.12),0_20px_50px_rgba(0,0,0,0.22)]"
+                          : mission.completed
+                            ? "border-emerald-200/12 bg-[linear-gradient(180deg,rgba(18,20,14,0.84),rgba(9,8,8,0.9))] shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
+                            : "border-white/10 bg-[linear-gradient(180deg,rgba(17,13,10,0.78),rgba(9,8,8,0.86))] shadow-[0_0_18px_rgba(251,191,36,0.05),0_14px_32px_rgba(0,0,0,0.16)]"
                       }`}
                     >
                       <div className="flex items-start justify-between gap-4">
@@ -519,13 +521,26 @@ export default function SegmentIntro() {
 
                         <div className="text-right text-[11px] font-semibold uppercase tracking-[0.22em] text-white/58">
                           {mission.current
-                            ? "Current"
+                            ? "Active Mission"
                             : mission.completed
-                              ? "Cleared"
+                              ? "Replay Ready"
                               : mission.futureLocked
-                                ? "Locked"
+                                ? "Mission Incoming"
                                 : "Open"}
                         </div>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-white/62">
+                        <span>
+                          {mission.current
+                            ? "Daily Mission Available"
+                            : mission.completed
+                              ? "Mastered path remains open"
+                              : "There is more ahead"}
+                        </span>
+                        <span>
+                          {mission.futureLocked ? "Unlocks Tomorrow" : "Continue Campaign"}
+                        </span>
                       </div>
                     </article>
                   </div>
