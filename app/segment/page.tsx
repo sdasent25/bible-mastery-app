@@ -471,6 +471,37 @@ export default function SegmentIntro() {
           </div>
         </section>
 
+        <section className="mt-9 sm:mt-11">
+          <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(19,14,10,0.94),rgba(10,9,8,0.98))] p-5 shadow-[0_20px_54px_rgba(0,0,0,0.2)]">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-100/72">
+              Mission Launch
+            </div>
+            <h2 className="mt-3 text-3xl font-black text-white">
+              {selectedOption ? `${actionLabel} — ${selectedOption.label}` : "Choose a mission path to begin"}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-300">
+              {selectedOption
+                ? `${selectedOption.label} is ready. Enter the mission and move directly into the existing gameplay flow.`
+                : "Your mission path determines the intensity of the upcoming encounter. Select one above to continue."}
+            </p>
+
+            <div className="mt-6">
+              {selectedOption ? (
+                <Link
+                  href={quizHref}
+                  className={`${MISSION_CTA_CLASS} flex w-full py-4 text-center text-lg`}
+                >
+                  {actionLabel} →
+                </Link>
+              ) : (
+                <div className="w-full rounded-full border border-white/12 bg-white/8 px-5 py-4 text-center text-base font-semibold text-white/64">
+                  Select a mission path first
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
         <section className="mt-14 sm:mt-16">
           <div className="mb-6">
             <div className="text-xs font-bold uppercase tracking-[0.32em] text-amber-200/70">
@@ -530,7 +561,7 @@ export default function SegmentIntro() {
                                 ? "Unlocks Tomorrow"
                                 : mission.futureLocked
                                   ? "Locked"
-                                : "Open"}
+                                  : "Open"}
                         </div>
                       </div>
 
@@ -556,37 +587,6 @@ export default function SegmentIntro() {
                   </div>
                 )
               })}
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-9 sm:mt-11">
-          <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(19,14,10,0.94),rgba(10,9,8,0.98))] p-5 shadow-[0_20px_54px_rgba(0,0,0,0.2)]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.28em] text-amber-100/72">
-              Mission Launch
-            </div>
-            <h2 className="mt-3 text-3xl font-black text-white">
-              {selectedOption ? `${actionLabel} — ${selectedOption.label}` : "Choose a mission path to begin"}
-            </h2>
-            <p className="mt-3 text-sm leading-6 text-slate-300">
-              {selectedOption
-                ? `${selectedOption.label} is ready. Enter the mission and move directly into the existing gameplay flow.`
-                : "Your mission path determines the intensity of the upcoming encounter. Select one above to continue."}
-            </p>
-
-            <div className="mt-6">
-              {selectedOption ? (
-                <Link
-                  href={quizHref}
-                  className={`${MISSION_CTA_CLASS} flex w-full py-4 text-center text-lg`}
-                >
-                  {actionLabel} →
-                </Link>
-              ) : (
-                <div className="w-full rounded-full border border-white/12 bg-white/8 px-5 py-4 text-center text-base font-semibold text-white/64">
-                  Select a mission path first
-                </div>
-              )}
             </div>
           </div>
         </section>
