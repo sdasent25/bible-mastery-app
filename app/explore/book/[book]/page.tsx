@@ -9,6 +9,7 @@ import { nodes } from "@/lib/nodes"
 import { getProgramProgress, getResumeSegmentIndex, type ProgramProgress } from "@/lib/programProgress"
 import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { MISSION_CTA_CLASS } from "@/lib/missionUi"
 import {
   getGenesisMissionArt,
   getGenesisMissionMeta,
@@ -120,6 +121,7 @@ export default function ExploreBookPage() {
       const current = !progress.completed && index === safeIndex
       const unlocked = hasPaidAccess ? index <= safeIndex : index === 0
       const locked = !unlocked
+      const nextUnlock = !progress.completed && locked && index === safeIndex + 1
 
       return {
         ...node,
@@ -129,6 +131,7 @@ export default function ExploreBookPage() {
         completed,
         current,
         locked,
+        nextUnlock,
         href: `/segment?program=genesis&segment=${normalizeSegmentId(node.id)}`,
         artSrc: getGenesisMissionArt(node.id),
       }
@@ -322,7 +325,7 @@ export default function ExploreBookPage() {
                   <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-amber-50/78">
                     <div>{currentMission.label}</div>
                     <div>{currentMission.mastered ? "Mastered" : currentMission.completed ? "Replay ready" : "Daily Mission Available"}</div>
-                    <div>{currentMission.locked ? "Mission Incoming" : "Next mission unlocks tomorrow"}</div>
+                    <div>{currentMission.locked ? currentMission.nextUnlock ? "Unlocks Tomorrow" : "Locked" : "Next mission unlocks tomorrow"}</div>
                   </div>
                 </div>
 
@@ -350,12 +353,12 @@ export default function ExploreBookPage() {
                   <div className="mt-6">
                     {currentMission.locked ? (
                       <div className="inline-flex rounded-full border border-white/12 bg-white/8 px-4 py-2 text-sm font-semibold text-white/70">
-                        Mission Incoming
+                        {currentMission.nextUnlock ? "Unlocks Tomorrow" : "Locked"}
                       </div>
                     ) : (
                       <Link
                         href={currentMission.href}
-                        className="inline-flex rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_0_36px_rgba(251,191,36,0.22)] transition hover:scale-[1.01]"
+                        className={MISSION_CTA_CLASS}
                       >
                         {currentMission.completed ? "Replay Mission" : currentMission.missionNumber > 1 ? "Continue Mission" : "Begin Mission"} →
                       </Link>
@@ -464,8 +467,10 @@ export default function ExploreBookPage() {
                                   ? "Active Mission"
                                   : mission.completed
                                     ? "Replay Ready"
-                                    : mission.locked
-                                      ? "Mission Incoming"
+                                    : mission.nextUnlock
+                                      ? "Unlocks Tomorrow"
+                                      : mission.locked
+                                        ? "Locked"
                                       : "Open"}
                             </div>
                           </div>
@@ -483,10 +488,18 @@ export default function ExploreBookPage() {
                                   ? "Return anytime for training"
                                   : mission.current
                                     ? "Daily Mission Available"
-                                    : "More ahead in the campaign"}
+                                    : mission.nextUnlock
+                                      ? "Mission Incoming"
+                                      : "More ahead in the campaign"}
                             </span>
                             <span>
-                              {mission.locked ? "Unlocks Tomorrow" : mission.current ? "Next mission unlocks tomorrow" : "Continue Campaign"}
+                              {mission.locked
+                                ? mission.nextUnlock
+                                  ? "Unlocks Tomorrow"
+                                  : "Locked"
+                                : mission.current
+                                  ? "Next mission unlocks tomorrow"
+                                  : "Continue Campaign"}
                             </span>
                           </div>
 
@@ -519,15 +532,15 @@ export default function ExploreBookPage() {
                             {mission.locked ? (
                               <div className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/68">
                                 <span>🔒</span>
-                                <span>{mission.current ? "Daily Mission Available" : "Mission Incoming"}</span>
+                                <span>{mission.nextUnlock ? "Unlocks Tomorrow" : "Locked"}</span>
                               </div>
                             ) : (
                               <Link
                                 href={mission.href}
-                                className={`inline-flex rounded-full border border-white/12 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition ${
+                                className={`${
                                   mission.current
-                                    ? "bg-amber-200 text-[#2c1600] shadow-[0_0_30px_rgba(251,191,36,0.18)] hover:scale-[1.01]"
-                                    : "bg-white/10 hover:bg-white/14"
+                                    ? MISSION_CTA_CLASS
+                                    : "inline-flex rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/14"
                                 }`}
                               >
                                 {mission.current ? "Continue Mission" : mission.completed ? "Replay Mission" : "Begin Mission"} →

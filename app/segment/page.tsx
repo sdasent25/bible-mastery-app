@@ -10,6 +10,7 @@ import {
   getGenesisMissionMeta,
   normalizeSegmentId,
 } from "@/lib/genesisCampaign"
+import { MISSION_CTA_CLASS } from "@/lib/missionUi"
 import { nodes } from "@/lib/nodes"
 import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/getUserPlan"
@@ -179,6 +180,7 @@ export default function SegmentIntro() {
           missionNumber: missionIndex + 1,
           current: node.id === currentNode?.id,
           completed: missionIndex < currentMissionIndex,
+          nextUnlock: missionIndex === currentMissionIndex + 1,
           futureLocked: missionIndex > currentMissionIndex,
         }
       })
@@ -524,8 +526,10 @@ export default function SegmentIntro() {
                             ? "Active Mission"
                             : mission.completed
                               ? "Replay Ready"
-                              : mission.futureLocked
-                                ? "Mission Incoming"
+                              : mission.nextUnlock
+                                ? "Unlocks Tomorrow"
+                                : mission.futureLocked
+                                  ? "Locked"
                                 : "Open"}
                         </div>
                       </div>
@@ -536,10 +540,16 @@ export default function SegmentIntro() {
                             ? "Daily Mission Available"
                             : mission.completed
                               ? "Mastered path remains open"
-                              : "There is more ahead"}
+                              : mission.nextUnlock
+                                ? "Mission Incoming"
+                                : "There is more ahead"}
                         </span>
                         <span>
-                          {mission.futureLocked ? "Unlocks Tomorrow" : "Continue Campaign"}
+                          {mission.futureLocked
+                            ? mission.nextUnlock
+                              ? "Unlocks Tomorrow"
+                              : "Locked"
+                            : "Continue Campaign"}
                         </span>
                       </div>
                     </article>
@@ -568,7 +578,7 @@ export default function SegmentIntro() {
               {selectedOption ? (
                 <Link
                   href={quizHref}
-                  className="block w-full rounded-full bg-amber-200 px-5 py-4 text-center text-lg font-black text-[#2c1600] shadow-[0_0_36px_rgba(251,191,36,0.22)] transition hover:scale-[1.01]"
+                  className={`${MISSION_CTA_CLASS} flex w-full py-4 text-center text-lg`}
                 >
                   {actionLabel} →
                 </Link>
