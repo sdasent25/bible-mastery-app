@@ -56,12 +56,12 @@ type AnswerFeedbackState = {
 
 const ANSWER_FEEDBACK_TIMING = {
   affirm: {
-    overlayMs: 780,
-    advanceMs: 860,
+    overlayMs: 980,
+    advanceMs: 960,
   },
   setback: {
-    overlayMs: 980,
-    advanceMs: 1060,
+    overlayMs: 1260,
+    advanceMs: 1220,
   },
 } as const;
 
@@ -574,6 +574,22 @@ export default function QuizPage() {
     return missionTheme.answerMutedClass;
   };
 
+  const getAnswerRevealAccent = (index: number) => {
+    if (!showFeedback || selectedAnswer === null) return "";
+
+    if (index === correctIndex) {
+      return isCorrectAnswer
+        ? "ring-1 ring-amber-100/42 shadow-[inset_0_1px_0_rgba(255,248,220,0.24),0_0_34px_rgba(245,208,116,0.22)] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,240,200,0.08)_32%,rgba(255,220,140,0.22)_50%,rgba(255,240,200,0.08)_68%,transparent_100%)] before:animate-[pulse_1.25s_ease-out]"
+        : "ring-1 ring-amber-100/30 shadow-[inset_0_1px_0_rgba(255,248,220,0.16),0_0_26px_rgba(245,208,116,0.16)] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,240,200,0.05)_34%,rgba(255,220,140,0.16)_50%,rgba(255,240,200,0.05)_66%,transparent_100%)]";
+    }
+
+    if (index === selectedAnswer && !isCorrectAnswer) {
+      return "opacity-78 saturate-75";
+    }
+
+    return "";
+  };
+
   const clearAnswerFeedbackTimeout = () => {
     if (answerFeedbackTimeoutRef.current !== null) {
       window.clearTimeout(answerFeedbackTimeoutRef.current);
@@ -985,40 +1001,6 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-[100svh] overflow-hidden bg-[#060709]">
-      {answerFeedback && (
-        <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-          <div
-            className={`animate-[fadeIn_0.25s_ease] rounded-[1.8rem] border px-7 py-4 text-center shadow-[0_0_40px_rgba(0,0,0,0.22)] backdrop-blur-xl ${
-              answerFeedback.tone === 'affirm'
-                ? 'border-amber-200/16 bg-black/24'
-                : 'border-white/12 bg-black/32'
-            }`}
-          >
-            <div
-              className={`mb-2 text-[11px] uppercase tracking-[0.32em] ${
-                answerFeedback.tone === 'affirm'
-                  ? 'text-amber-100/66'
-                  : 'text-white/56'
-              }`}
-            >
-              {answerFeedback.eyebrow}
-            </div>
-            <div className="text-lg font-medium text-white">
-              {answerFeedback.title}
-            </div>
-            <div
-              className={`mt-2 text-xs uppercase tracking-[0.24em] ${
-                answerFeedback.tone === 'affirm'
-                  ? `${missionTheme.accentTextClass}`
-                  : 'text-white/52'
-              }`}
-            >
-              {answerFeedback.detail}
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="absolute inset-0 pointer-events-none">
         {missionTheme.backgroundVideo ? (
           <video
@@ -1203,7 +1185,7 @@ export default function QuizPage() {
                         key={index}
                         onClick={() => handleAnswerSelect(index)}
                         disabled={selectedAnswer !== null}
-                        className={`min-h-[60px] w-full rounded-[1.2rem] border px-3 py-3 text-left text-[15px] leading-tight font-medium text-white transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:min-h-[72px] md:rounded-[1.55rem] md:px-6 md:py-4 md:text-base ${missionTheme.answerShellClass} ${getButtonStyle(index)}`}
+                        className={`relative min-h-[60px] w-full overflow-hidden rounded-[1.2rem] border px-3 py-3 text-left text-[15px] leading-tight font-medium text-white transition-all duration-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:min-h-[72px] md:rounded-[1.55rem] md:px-6 md:py-4 md:text-base ${missionTheme.answerShellClass} ${getButtonStyle(index)} ${getAnswerRevealAccent(index)}`}
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
                         <div className="flex items-center justify-between gap-4">
@@ -1216,6 +1198,38 @@ export default function QuizPage() {
                         </div>
                       </button>
                     ))}
+                  </div>
+                )}
+
+                {answerFeedback && (
+                  <div
+                    className={`mt-3 animate-[fadeIn_0.28s_ease] rounded-[1.25rem] border px-4 py-3 text-center backdrop-blur-md md:px-5 ${
+                      answerFeedback.tone === 'affirm'
+                        ? 'border-amber-200/18 bg-[linear-gradient(180deg,rgba(47,34,15,0.34),rgba(14,11,8,0.56))] shadow-[inset_0_1px_0_rgba(255,245,214,0.10),0_16px_30px_rgba(0,0,0,0.18)]'
+                        : 'border-white/10 bg-[linear-gradient(180deg,rgba(26,24,24,0.34),rgba(12,11,11,0.56))] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_16px_30px_rgba(0,0,0,0.18)]'
+                    }`}
+                  >
+                    <div
+                      className={`text-[10px] uppercase tracking-[0.28em] ${
+                        answerFeedback.tone === 'affirm'
+                          ? 'text-amber-100/66'
+                          : 'text-white/48'
+                      }`}
+                    >
+                      {answerFeedback.eyebrow}
+                    </div>
+                    <div className="mt-2 text-base font-semibold text-white md:text-lg">
+                      {answerFeedback.title}
+                    </div>
+                    <div
+                      className={`mt-2 text-xs uppercase tracking-[0.18em] md:text-[13px] ${
+                        answerFeedback.tone === 'affirm'
+                          ? `${missionTheme.accentTextClass}`
+                          : 'text-white/60'
+                      }`}
+                    >
+                      {answerFeedback.detail}
+                    </div>
                   </div>
                 )}
               </div>
