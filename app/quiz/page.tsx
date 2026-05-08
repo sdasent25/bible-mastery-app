@@ -882,7 +882,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#060709]">
+    <div className="min-h-[100svh] overflow-hidden bg-[#060709]">
       {showCelebration && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
           <div className="animate-[fadeIn_0.35s_ease] rounded-[1.8rem] border border-amber-200/16 bg-black/24 px-7 py-4 text-center shadow-[0_0_40px_rgba(251,191,36,0.10)] backdrop-blur-xl">
@@ -929,29 +929,32 @@ export default function QuizPage() {
         <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black via-black/72 to-transparent" />
         <div className="absolute left-1/2 top-[10%] h-40 w-40 -translate-x-1/2 rounded-full bg-amber-100/8 blur-3xl" />
       </div>
-      <div className="relative z-10 flex-1 pb-16 md:px-6 md:py-4">
+      <div className="relative z-10 flex-1 pb-6 md:px-6 md:py-4 md:pb-16">
         <div className="flex h-full w-full justify-center">
-        <div className="mx-auto flex h-full w-full max-w-3xl flex-col">
-          <div className="h-full flex flex-col">
-            <div className="flex-[0_1_auto] px-4 pt-3 pb-3 md:px-6">
-              <div className={`rounded-[1.4rem] border px-3 py-3 md:px-4 ${missionTheme.hudClass}`}>
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <div className="flex items-start gap-4">
+        <div className="mx-auto flex min-h-[100svh] h-full w-full max-w-3xl flex-col">
+          <div className="flex h-full flex-col">
+            <div className="flex-[0_1_auto] px-3 pt-2 pb-2 md:px-6 md:pt-3 md:pb-3">
+              <div className={`rounded-[1.2rem] border px-3 py-2.5 md:rounded-[1.4rem] md:px-4 md:py-3 ${missionTheme.hudClass}`}>
+              <div className="mb-2 flex items-start justify-between gap-3 md:mb-3 md:gap-4">
+                <div className="flex items-start gap-3 md:gap-4">
                   <button
                     onClick={() => router.push('/journey')}
                     className="
-                      rounded-2xl
+                      rounded-[1.1rem]
                       border border-white/10
                       bg-black/20
-                      px-3 py-3
+                      px-2.5 py-2
                       text-gray-200
                       hover:text-white
-                      text-xl
+                      text-base
                       font-semibold
                       transition-all duration-150
                       hover:scale-[1.02]
                       active:scale-95
                       active:brightness-90
+                      md:rounded-2xl
+                      md:px-3 md:py-3
+                      md:text-xl
                     "
                     aria-label="Close quiz and return to journey"
                   >
@@ -962,48 +965,48 @@ export default function QuizPage() {
                     <p className={`text-[11px] uppercase tracking-[0.3em] ${missionTheme.accentTextClass}`}>
                       {missionTheme.bookLabel} Mission
                     </p>
-                    <p className="mt-1 text-sm md:text-base text-white">
+                    <p className="mt-0.5 text-[13px] text-white md:mt-1 md:text-base">
                       Prompt {currentQuestionIndex + 1} of {availableQuestionCount}
                     </p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <div className={`text-[11px] uppercase tracking-[0.24em] ${missionTheme.accentTextClass}`}>
+                  <div className={`hidden text-[11px] uppercase tracking-[0.24em] md:block ${missionTheme.accentTextClass}`}>
                     {missionTheme.campaignLabel}
                   </div>
-                  <div className="mt-1 text-sm text-white/76">
+                  <div className="mt-0.5 text-[11px] uppercase tracking-[0.18em] text-white/70 md:mt-1 md:text-sm md:normal-case md:tracking-normal md:text-white/76">
                     {missionModeLabel}
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-4 gap-2 mb-3 text-center">
-                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+              <div className="mb-2 grid grid-cols-4 gap-1.5 text-center md:mb-3 md:gap-2">
+                <div className="rounded-[1rem] border border-white/8 bg-black/16 px-1.5 py-1.5 md:rounded-2xl md:px-2 md:py-2">
                   <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">XP</div>
-                  <div className="mt-1 text-sm font-semibold text-white">{totalXp}</div>
+                  <div className="mt-0.5 text-[13px] font-semibold text-white md:mt-1 md:text-sm">{totalXp}</div>
                 </div>
-                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                <div className="rounded-[1rem] border border-white/8 bg-black/16 px-1.5 py-1.5 md:rounded-2xl md:px-2 md:py-2">
                   <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Streak</div>
-                  <div className="mt-1 text-sm font-semibold text-white">{streak}</div>
-                  <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/40">{streakStatusLabel}</div>
+                  <div className="mt-0.5 text-[13px] font-semibold text-white md:mt-1 md:text-sm">{streak}</div>
+                  <div className="mt-1 hidden text-[10px] uppercase tracking-[0.16em] text-white/40 md:block">{streakStatusLabel}</div>
                 </div>
-                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                <div className="rounded-[1rem] border border-white/8 bg-black/16 px-1.5 py-1.5 md:rounded-2xl md:px-2 md:py-2">
                   <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Combo</div>
-                  <div className={`mt-1 text-sm font-semibold transition-all duration-200 ${comboFlash ? "scale-110 text-amber-100" : "text-white"}`}>{combo}</div>
-                  <div className="mt-1 text-[10px] uppercase tracking-[0.16em] text-white/40">{comboStatusLabel}</div>
+                  <div className={`mt-0.5 text-[13px] font-semibold transition-all duration-200 md:mt-1 md:text-sm ${comboFlash ? "scale-110 text-amber-100" : "text-white"}`}>{combo}</div>
+                  <div className="mt-1 hidden text-[10px] uppercase tracking-[0.16em] text-white/40 md:block">{comboStatusLabel}</div>
                 </div>
-                <div className="rounded-2xl border border-white/8 bg-black/16 px-2 py-2">
+                <div className="rounded-[1rem] border border-white/8 bg-black/16 px-1.5 py-1.5 md:rounded-2xl md:px-2 md:py-2">
                   <div className="text-[10px] uppercase tracking-[0.18em] text-white/50">Score</div>
-                  <div className="mt-1 text-sm font-semibold text-white">{score}</div>
+                  <div className="mt-0.5 text-[13px] font-semibold text-white md:mt-1 md:text-sm">{score}</div>
                 </div>
               </div>
 
-              <div className="mb-2 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] text-white/44">
+              <div className="mb-1.5 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-white/44 md:mb-2 md:text-[11px] md:tracking-[0.22em]">
                 <span>Mission progress</span>
                 <span>{Math.round(progress)}%</span>
               </div>
-              <div className="h-[7px] rounded-full bg-white/8 overflow-hidden">
+              <div className="h-[6px] overflow-hidden rounded-full bg-white/8 md:h-[7px]">
                 <div
                   className={`h-full rounded-full ${missionTheme.progressClass} shadow-[0_0_18px_rgba(251,191,36,0.18)] transition-all duration-500 ease-out`}
                   style={{ width: `${progress}%` }}
@@ -1014,51 +1017,51 @@ export default function QuizPage() {
 
             <div
               key={currentQuestion.id}
-              className={`animate-[fadeIn_0.45s_ease] flex h-full flex-col rounded-[2rem] border px-4 py-6 md:p-10 transition-[opacity,transform] duration-500 ${missionTheme.surfaceClass} ${
+              className={`animate-[fadeIn_0.45s_ease] flex h-full flex-col rounded-[1.7rem] border px-3 py-4 md:rounded-[2rem] md:p-10 transition-[opacity,transform] duration-500 ${missionTheme.surfaceClass} ${
                 currentQuestion.difficulty === 'scholar'
                   ? 'border-2 border-yellow-300/40'
                   : ''
               }`}
             >
-              <div className="flex flex-col gap-5 pt-2">
+              <div className="flex flex-col gap-3 pt-0 md:gap-5 md:pt-2">
                 <div className="w-full flex-[0_1_auto]">
-                  <div className="flex items-start justify-between gap-4 text-sm text-slate-300/84">
+                  <div className="flex items-start justify-between gap-3 text-sm text-slate-300/84 md:gap-4">
                     <div>
                       <p className={`mt-1 text-[11px] uppercase tracking-[0.28em] ${missionTheme.accentTextClass}`}>
                         {missionTheme.worldLabel}
                       </p>
 
-                      <p className="text-sm text-white/72 mt-2 max-w-md">
+                      <p className="mt-2 hidden max-w-md text-sm text-white/72 md:block">
                         {missionTheme.missionBrief}
                       </p>
                     </div>
-                    <div className="hidden md:flex items-center gap-2">
-                      <div className={`rounded-full border px-3 py-1 text-[11px] uppercase tracking-[0.18em] ${missionTheme.badgeClass}`}>
+                    <div className="flex items-center gap-2">
+                      <div className={`rounded-full border px-2.5 py-1 text-[10px] uppercase tracking-[0.16em] md:px-3 md:text-[11px] md:tracking-[0.18em] ${missionTheme.badgeClass}`}>
                         {missionTheme.missionAtmosphere}
                       </div>
                     </div>
                   </div>
 
                   {currentQuestion.difficulty === 'scholar' && (
-                    <div className="mt-3 rounded-full border border-yellow-300/32 bg-yellow-200/8 px-4 py-2">
+                    <div className="mt-2 rounded-full border border-yellow-300/32 bg-yellow-200/8 px-3 py-1.5 md:mt-3 md:px-4 md:py-2">
                       <p className="text-center text-xs font-bold tracking-[0.24em] text-yellow-100">SCHOLAR MISSION</p>
                     </div>
                   )}
                 </div>
 
-                <div className="flex flex-col items-center text-center gap-4">
+                <div className="flex flex-col items-center gap-3 text-center md:gap-4">
                   {currentQuestion.reference && (
-                    <p className="text-sm uppercase tracking-[0.18em] text-gray-300">
+                    <p className="text-xs uppercase tracking-[0.18em] text-gray-300 md:text-sm">
                       {currentQuestion.reference}
                     </p>
                   )}
 
-                  <h1 className="max-w-2xl text-[24px] leading-snug font-semibold text-white text-center break-words md:text-[30px]">
+                  <h1 className="max-w-2xl text-center text-[21px] leading-snug font-semibold break-words text-white md:text-[30px]">
                     {currentQuestion.question}
                   </h1>
 
                   {!isAnswered && (
-                    <p className="text-sm text-slate-400">
+                    <p className="text-xs text-slate-400 md:text-sm">
                       {missionStatusLabel}
                     </p>
                   )}
@@ -1071,18 +1074,18 @@ export default function QuizPage() {
                 </div>
 
                 {(!isAnswered || showFeedback) && (
-                  <div className="flex flex-col gap-3 pt-2">
+                  <div className="flex flex-col gap-2 pt-1 md:gap-3 md:pt-2">
                     {currentQuestion.options.map((answer, index) => (
                       <button
                         key={index}
                         onClick={() => handleAnswerSelect(index)}
                         disabled={selectedAnswer !== null}
-                        className={`min-h-[72px] w-full rounded-[1.55rem] border px-4 py-4 text-left text-base leading-tight font-medium text-white transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:px-6 ${missionTheme.answerShellClass} ${getButtonStyle(index)}`}
+                        className={`min-h-[60px] w-full rounded-[1.2rem] border px-3 py-3 text-left text-[15px] leading-tight font-medium text-white transition-all duration-200 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:min-h-[72px] md:rounded-[1.55rem] md:px-6 md:py-4 md:text-base ${missionTheme.answerShellClass} ${getButtonStyle(index)}`}
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
                         <div className="flex items-center justify-between gap-4">
-                          <span className="text-base leading-tight font-normal">
-                            <span className={`mr-4 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-semibold ${missionTheme.accentTextClass}`}>
+                          <span className="text-[15px] leading-tight font-normal md:text-base">
+                            <span className={`mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-xs font-semibold md:mr-4 md:h-10 md:w-10 md:text-sm ${missionTheme.accentTextClass}`}>
                               {["A", "B", "C", "D"][index]}
                             </span>
                             {answer}
