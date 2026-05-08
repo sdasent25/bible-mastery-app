@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
@@ -44,6 +44,18 @@ type IncorrectItem = {
   userAnswer: string;
 };
 
+type AnswerFeedbackTone = 'affirm' | 'setback';
+
+type AnswerFeedbackState = {
+  tone: AnswerFeedbackTone;
+  eyebrow: string;
+  title: string;
+  detail: string;
+};
+
+const ANSWER_FEEDBACK_OVERLAY_MS = 640;
+const ANSWER_AUTO_ADVANCE_MS = 720;
+
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -64,6 +76,7 @@ export default function QuizPage() {
   const [combo, setCombo] = useState(0);
   const [comboFlash, setComboFlash] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
+  const [answerFeedback, setAnswerFeedback] = useState<AnswerFeedbackState | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -92,6 +105,9 @@ export default function QuizPage() {
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
   const [safeDepth, setSafeDepth] = useState<number | null>(null);
   const [questionsPerDay, setQuestionsPerDay] = useState(10);
+  const answerFeedbackTimeoutRef = useRef<number | null>(null);
+  const autoAdvanceTimeoutRef = useRef<number | null>(null);
+  const answerLockedRef = useRef(false);
 
   console.log("QUIZ LOAD STATE", {
     planType,
@@ -311,6 +327,18 @@ export default function QuizPage() {
       return () => window.clearTimeout(timeout);
     }
   }, [combo]);
+
+  useEffect(() => {
+    return () => {
+      if (answerFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(answerFeedbackTimeoutRef.current);
+      }
+
+      if (autoAdvanceTimeoutRef.current !== null) {
+        window.clearTimeout(autoAdvanceTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const buildWeakQuestionSet = (ids: string[]) => {
     const idSet = new Set(ids);
@@ -533,80 +561,122 @@ export default function QuizPage() {
     return missionTheme.answerMutedClass;
   };
 
+  const clearAnswerFeedbackTimeout = () => {
+    if (answerFeedbackTimeoutRef.current !== null) {
+      window.clearTimeout(answerFeedbackTimeoutRef.current);
+      answerFeedbackTimeoutRef.current = null;
+    }
+  };
+
+  const clearAutoAdvanceTimeout = () => {
+    if (autoAdvanceTimeoutRef.current !== null) {
+      window.clearTimeout(autoAdvanceTimeoutRef.current);
+      autoAdvanceTimeoutRef.current = null;
+    }
+  };
+
+  const scheduleAnswerFeedbackClear = (duration = ANSWER_FEEDBACK_OVERLAY_MS) => {
+    clearAnswerFeedbackTimeout();
+    answerFeedbackTimeoutRef.current = window.setTimeout(() => {
+      setAnswerFeedback(null);
+      answerFeedbackTimeoutRef.current = null;
+    }, duration);
+  };
+
+  const persistAnswerProgress = async (questionId: string, isCorrect: boolean, segmentId: string) => {
+    try {
+      const response = await fetch("/api/quiz/answer", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          questionId,
+          correct: isCorrect,
+          segmentId
+        })
+      });
+
+      console.log("API RESPONSE", await response.clone().json());
+    } catch (error) {
+      console.error("Error saving quiz answer:", error);
+    }
+  };
+
   const handleAnswerSelect = (answerIndex: number) => {
-    if (selectedAnswer !== null) return;
-    const correctAnswer = currentQuestion.correctIndex;
+    if (selectedAnswer !== null || answerLockedRef.current) return;
+    answerLockedRef.current = true;
+
     const correct = answerIndex === correctIndex;
     const shouldAutoAdvance = !isReviewMode;
+
     console.log("ANSWER CLICKED", {
       questionId: currentQuestion.id,
       selectedAnswer: answerIndex,
-      correctAnswer
+      correctAnswer: currentQuestion.correctIndex
     });
+
+    clearAnswerFeedbackTimeout();
+    clearAutoAdvanceTimeout();
     setSelectedAnswer(answerIndex);
     setIsCorrectAnswer(correct);
     setShowFeedback(shouldAutoAdvance);
 
+    if (correct) {
+      playMissionAffirmSound();
+      triggerHaptic("light");
+      setAnswerFeedback({
+        tone: 'affirm',
+        eyebrow: 'Confirmation Received',
+        title: 'Truth secured',
+        detail: 'Mission continuity preserved'
+      });
+
+      if (!isReviewMode) {
+        setStreak(prev => prev + 1);
+        setCombo(prev => prev + 1);
+        setScore(prev => prev + 1);
+      }
+    } else {
+      playMissionSetbackSound();
+      triggerHaptic("medium");
+      setAnswerFeedback({
+        tone: 'setback',
+        eyebrow: 'Adjustment',
+        title: 'Truth remains ahead',
+        detail: 'Recenter on the text'
+      });
+
+      if (!isReviewMode) {
+        setStreak(0);
+        setCombo(0);
+        addIncorrectQuestion(currentQuestion.id);
+        setIncorrectQuestions(prev =>
+          prev.some(q => q.question.id === currentQuestion.id)
+            ? prev
+            : [...prev, { question: currentQuestion, userAnswer: currentQuestion.options[answerIndex] }]
+        );
+      }
+    }
+
+    scheduleAnswerFeedbackClear();
+
     if (!isReviewMode) {
-      const handleProgress = async () => {
-        const isCorrect = answerIndex === currentQuestion.correctIndex;
-        recordAnswerPerformance(currentQuestion.segmentId, isCorrect);
+      recordAnswerPerformance(currentQuestion.segmentId, correct);
 
-        if (!resolvedSegment) {
-          console.error("Missing segmentId");
-          return;
-        }
-
+      if (!resolvedSegment) {
+        console.error("Missing segmentId");
+      } else {
         console.log("CURRENT QUESTION:", currentQuestion);
         console.log("SENDING QUESTION ID:", currentQuestion.id);
+        void persistAnswerProgress(currentQuestion.id, correct, resolvedSegment);
+      }
 
-        const response = await fetch("/api/quiz/answer", {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            questionId: currentQuestion.id,
-            correct: isCorrect,
-            segmentId: resolvedSegment
-          })
-        });
-        console.log("API RESPONSE", await response.clone().json());
-
-        if (isCorrect) {
-          playMissionAffirmSound();
-          triggerHaptic("light");
-          setShowCelebration(true);
-          setTimeout(() => {
-            setShowCelebration(false);
-          }, 820);
-          setStreak(prev => prev + 1);
-          setCombo(prev => prev + 1);
-          setScore(score + 1);
-        } else {
-          playMissionSetbackSound();
-          triggerHaptic("medium");
-          setStreak(0);
-          setCombo(0);
-          addIncorrectQuestion(currentQuestion.id);
-          setIncorrectQuestions(prev =>
-            prev.some(q => q.question.id === currentQuestion.id)
-              ? prev
-              : [...prev, { question: currentQuestion, userAnswer: currentQuestion.options[answerIndex] }]
-          );
-        }
-
-      };
-
-      handleProgress();
-
-      window.setTimeout(() => {
+      autoAdvanceTimeoutRef.current = window.setTimeout(() => {
+        autoAdvanceTimeoutRef.current = null;
         handleNextQuestion();
-        setSelectedAnswer(null);
-        setShowFeedback(false);
-        setIsCorrectAnswer(null);
-      }, 860);
+      }, ANSWER_AUTO_ADVANCE_MS);
     }
   };
 
@@ -620,7 +690,11 @@ export default function QuizPage() {
   };
 
   const handleNextQuestion = () => {
+    clearAutoAdvanceTimeout();
+    clearAnswerFeedbackTimeout();
+    answerLockedRef.current = false;
     setShowCelebration(false);
+    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
 
@@ -637,8 +711,12 @@ export default function QuizPage() {
   };
 
   const resetQuiz = () => {
+    clearAutoAdvanceTimeout();
+    clearAnswerFeedbackTimeout();
+    answerLockedRef.current = false;
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
+    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setScore(0);
@@ -665,10 +743,14 @@ export default function QuizPage() {
 
   const startReview = () => {
     if (incorrectQuestions.length === 0) return;
+    clearAutoAdvanceTimeout();
+    clearAnswerFeedbackTimeout();
+    answerLockedRef.current = false;
     setIsReviewMode(true);
     setReviewQuestions(incorrectQuestions.map(item => item.question));
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
+    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setQuizCompleted(false);
@@ -676,7 +758,10 @@ export default function QuizPage() {
   };
 
   const handleTryAgain = () => {
+    clearAnswerFeedbackTimeout();
+    answerLockedRef.current = false;
     setSelectedAnswer(null);
+    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setShowRetryPrompt(false);
@@ -883,14 +968,35 @@ export default function QuizPage() {
 
   return (
     <div className="min-h-[100svh] overflow-hidden bg-[#060709]">
-      {showCelebration && (
+      {answerFeedback && (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-          <div className="animate-[fadeIn_0.35s_ease] rounded-[1.8rem] border border-amber-200/16 bg-black/24 px-7 py-4 text-center shadow-[0_0_40px_rgba(251,191,36,0.10)] backdrop-blur-xl">
-            <div className="text-[11px] uppercase tracking-[0.32em] text-amber-100/66 mb-2">
-              Confirmation Received
+          <div
+            className={`animate-[fadeIn_0.25s_ease] rounded-[1.8rem] border px-7 py-4 text-center shadow-[0_0_40px_rgba(0,0,0,0.22)] backdrop-blur-xl ${
+              answerFeedback.tone === 'affirm'
+                ? 'border-amber-200/16 bg-black/24'
+                : 'border-white/12 bg-black/32'
+            }`}
+          >
+            <div
+              className={`mb-2 text-[11px] uppercase tracking-[0.32em] ${
+                answerFeedback.tone === 'affirm'
+                  ? 'text-amber-100/66'
+                  : 'text-white/56'
+              }`}
+            >
+              {answerFeedback.eyebrow}
             </div>
             <div className="text-lg font-medium text-white">
-              Truth secured
+              {answerFeedback.title}
+            </div>
+            <div
+              className={`mt-2 text-xs uppercase tracking-[0.24em] ${
+                answerFeedback.tone === 'affirm'
+                  ? `${missionTheme.accentTextClass}`
+                  : 'text-white/52'
+              }`}
+            >
+              {answerFeedback.detail}
             </div>
           </div>
         </div>
@@ -1112,7 +1218,7 @@ export default function QuizPage() {
                       <div className="mb-2 h-px w-20 bg-gradient-to-r from-transparent via-white/35 to-transparent" />
                       <div className="text-[11px] uppercase tracking-[0.3em] text-white/50">Adjustment</div>
                       <div className="mt-3 text-2xl font-semibold text-white">
-                        Recenter on the text
+                        Truth remains ahead
                       </div>
                     </>
                   )}
@@ -1133,7 +1239,7 @@ export default function QuizPage() {
 
                   {!isCorrectAnswer && (
                     <div className="mt-3 text-sm uppercase tracking-[0.22em] text-white/52">
-                      Correct course and continue
+                      Recenter on the text
                     </div>
                   )}
 
