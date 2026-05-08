@@ -7,6 +7,20 @@ const SOUND_EFFECTS = {
   missionPulse: "/sounds/tap.mp3",
 } as const
 
+function configureAudio(audio: HTMLAudioElement, src: string) {
+  audio.preload = "auto"
+  audio.setAttribute("playsinline", "true")
+
+  if (src.includes("journey-selected")) audio.volume = 0.16
+  else if (src.includes("correct")) audio.volume = 0.28
+  else if (src.includes("wrong")) audio.volume = 0.1
+  else if (src.includes("click")) audio.volume = 0.06
+  else if (src.includes("tap")) audio.volume = 0.05
+  else if (src.includes("swipe")) audio.volume = 0.07
+  else if (src.includes("level-up")) audio.volume = 0.12
+  else audio.volume = 0.1
+}
+
 export function playSound(src: string) {
   if (typeof window === "undefined") return
 
@@ -17,22 +31,16 @@ export function playSound(src: string) {
 
   if (!audio) {
     audio = new Audio(src)
-    audio.preload = "auto"
-
-    if (src.includes("journey-selected")) audio.volume = 0.16
-    else if (src.includes("correct")) audio.volume = 0.28
-    else if (src.includes("wrong")) audio.volume = 0.1
-    else if (src.includes("click")) audio.volume = 0.06
-    else if (src.includes("tap")) audio.volume = 0.05
-    else if (src.includes("swipe")) audio.volume = 0.07
-    else if (src.includes("level-up")) audio.volume = 0.12
-    else audio.volume = 0.1
-
+    configureAudio(audio, src)
     audioCache[src] = audio
   }
 
-  audio.currentTime = 0
-  audio.play().catch(() => {})
+  // Play from a preloaded template so the tap response does not depend on
+  // rewinding a shared audio element that may still be resolving.
+  const playbackAudio = audio.cloneNode(true) as HTMLAudioElement
+  configureAudio(playbackAudio, src)
+  playbackAudio.currentTime = 0
+  playbackAudio.play().catch(() => {})
 }
 
 export function playMissionAffirmSound() {
@@ -59,17 +67,7 @@ export function preloadMissionSounds() {
 
     if (!audio) {
       audio = new Audio(src)
-      audio.preload = "auto"
-
-      if (src.includes("journey-selected")) audio.volume = 0.16
-      else if (src.includes("correct")) audio.volume = 0.28
-      else if (src.includes("wrong")) audio.volume = 0.1
-      else if (src.includes("click")) audio.volume = 0.06
-      else if (src.includes("tap")) audio.volume = 0.05
-      else if (src.includes("swipe")) audio.volume = 0.07
-      else if (src.includes("level-up")) audio.volume = 0.12
-      else audio.volume = 0.1
-
+      configureAudio(audio, src)
       audioCache[src] = audio
     }
 

@@ -646,6 +646,14 @@ export default function QuizPage() {
       correctAnswer: currentQuestion.correctIndex
     });
 
+    if (correct) {
+      playMissionAffirmSound();
+      triggerHaptic("light");
+    } else {
+      playMissionSetbackSound();
+      triggerHaptic("medium");
+    }
+
     clearAnswerFeedbackTimeout();
     clearAutoAdvanceTimeout();
     setSelectedAnswer(answerIndex);
@@ -657,8 +665,6 @@ export default function QuizPage() {
       : ANSWER_FEEDBACK_TIMING.setback;
 
     if (correct) {
-      playMissionAffirmSound();
-      triggerHaptic("light");
       setAnswerFeedback({
         tone: 'affirm',
         eyebrow: 'Confirmation Received',
@@ -672,8 +678,6 @@ export default function QuizPage() {
         setScore(prev => prev + 1);
       }
     } else {
-      playMissionSetbackSound();
-      triggerHaptic("medium");
       setAnswerFeedback({
         tone: 'setback',
         eyebrow: 'Adjustment',
@@ -1179,18 +1183,18 @@ export default function QuizPage() {
                 </div>
 
                 {(!isAnswered || showFeedback) && (
-                  <div className="flex flex-col gap-2 pt-1 md:gap-3 md:pt-2">
-                    {currentQuestion.options.map((answer, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleAnswerSelect(index)}
-                        disabled={selectedAnswer !== null}
-                        className={`relative min-h-[60px] w-full overflow-hidden rounded-[1.2rem] border px-3 py-3 text-left text-[15px] leading-tight font-medium text-white transition-all duration-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:min-h-[72px] md:rounded-[1.55rem] md:px-6 md:py-4 md:text-base ${missionTheme.answerShellClass} ${getButtonStyle(index)} ${getAnswerRevealAccent(index)}`}
+                    <div className="grid grid-cols-1 gap-2 pt-1 md:grid-cols-2 md:gap-3 md:pt-2">
+                      {currentQuestion.options.map((answer, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleAnswerSelect(index)}
+                          disabled={selectedAnswer !== null}
+                        className={`relative min-h-[60px] w-full overflow-hidden rounded-[1.2rem] border px-3 py-3 text-left text-[15px] leading-tight font-medium text-white transition-all duration-300 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-amber-200/40 md:min-h-[132px] md:rounded-[1.55rem] md:px-6 md:py-5 md:text-base ${missionTheme.answerShellClass} ${getButtonStyle(index)} ${getAnswerRevealAccent(index)}`}
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
-                        <div className="flex items-center justify-between gap-4">
-                          <span className="text-[15px] leading-tight font-normal md:text-base">
-                            <span className={`mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-xs font-semibold md:mr-4 md:h-10 md:w-10 md:text-sm ${missionTheme.accentTextClass}`}>
+                        <div className="flex items-center justify-between gap-4 md:h-full md:items-start">
+                          <span className="text-[15px] leading-tight font-normal md:flex md:min-h-full md:flex-col md:justify-start md:text-[17px]">
+                            <span className={`mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-xs font-semibold md:mr-0 md:mb-4 md:h-10 md:w-10 md:text-sm ${missionTheme.accentTextClass}`}>
                               {["A", "B", "C", "D"][index]}
                             </span>
                             {answer}
