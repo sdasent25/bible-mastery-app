@@ -51,6 +51,32 @@ export function playMissionPulseSound() {
   playSound(SOUND_EFFECTS.missionPulse)
 }
 
+export function preloadMissionSounds() {
+  if (typeof window === "undefined") return
+
+  Object.values(SOUND_EFFECTS).forEach((src) => {
+    let audio = audioCache[src]
+
+    if (!audio) {
+      audio = new Audio(src)
+      audio.preload = "auto"
+
+      if (src.includes("journey-selected")) audio.volume = 0.16
+      else if (src.includes("correct")) audio.volume = 0.28
+      else if (src.includes("wrong")) audio.volume = 0.1
+      else if (src.includes("click")) audio.volume = 0.06
+      else if (src.includes("tap")) audio.volume = 0.05
+      else if (src.includes("swipe")) audio.volume = 0.07
+      else if (src.includes("level-up")) audio.volume = 0.12
+      else audio.volume = 0.1
+
+      audioCache[src] = audio
+    }
+
+    audio.load()
+  })
+}
+
 export function triggerHaptic(type: "light" | "medium" | "heavy" = "light") {
   if (typeof window === "undefined") return
 

@@ -25,6 +25,7 @@ import {
   playMissionAffirmSound,
   playMissionPulseSound,
   playMissionSetbackSound,
+  preloadMissionSounds,
   triggerHaptic,
 } from '@/lib/sound';
 
@@ -53,8 +54,16 @@ type AnswerFeedbackState = {
   detail: string;
 };
 
-const ANSWER_FEEDBACK_OVERLAY_MS = 640;
-const ANSWER_AUTO_ADVANCE_MS = 720;
+const ANSWER_FEEDBACK_TIMING = {
+  affirm: {
+    overlayMs: 780,
+    advanceMs: 860,
+  },
+  setback: {
+    overlayMs: 980,
+    advanceMs: 1060,
+  },
+} as const;
 
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
@@ -329,6 +338,10 @@ export default function QuizPage() {
   }, [combo]);
 
   useEffect(() => {
+    preloadMissionSounds();
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (answerFeedbackTimeoutRef.current !== null) {
         window.clearTimeout(answerFeedbackTimeoutRef.current);
@@ -575,7 +588,7 @@ export default function QuizPage() {
     }
   };
 
-  const scheduleAnswerFeedbackClear = (duration = ANSWER_FEEDBACK_OVERLAY_MS) => {
+  const scheduleAnswerFeedbackClear = (duration: number) => {
     clearAnswerFeedbackTimeout();
     answerFeedbackTimeoutRef.current = window.setTimeout(() => {
       setAnswerFeedback(null);
@@ -623,6 +636,10 @@ export default function QuizPage() {
     setIsCorrectAnswer(correct);
     setShowFeedback(shouldAutoAdvance);
 
+    const feedbackTiming = correct
+      ? ANSWER_FEEDBACK_TIMING.affirm
+      : ANSWER_FEEDBACK_TIMING.setback;
+
     if (correct) {
       playMissionAffirmSound();
       triggerHaptic("light");
@@ -660,7 +677,7 @@ export default function QuizPage() {
       }
     }
 
-    scheduleAnswerFeedbackClear();
+    scheduleAnswerFeedbackClear(feedbackTiming.overlayMs);
 
     if (!isReviewMode) {
       recordAnswerPerformance(currentQuestion.segmentId, correct);
@@ -676,7 +693,7 @@ export default function QuizPage() {
       autoAdvanceTimeoutRef.current = window.setTimeout(() => {
         autoAdvanceTimeoutRef.current = null;
         handleNextQuestion();
-      }, ANSWER_AUTO_ADVANCE_MS);
+      }, feedbackTiming.advanceMs);
     }
   };
 
