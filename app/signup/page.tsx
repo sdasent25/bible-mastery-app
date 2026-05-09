@@ -26,7 +26,7 @@ export default function SignupPage() {
       return
     }
 
-    setMessage("Account created. Continue to your journey.")
+    setMessage("Account created. Continue to Explore.")
     setLoading(false)
   }
 
@@ -38,7 +38,7 @@ export default function SignupPage() {
         </h1>
 
         <p className="mb-6 text-center text-sm text-white">
-          Start your journey today. Build consistency in God&apos;s Word.
+          Start training today. Build consistency in God&apos;s Word.
         </p>
 
         <div className="space-y-4">
@@ -63,7 +63,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-500"
           >
-            {loading ? "Creating account..." : "Start My Journey"}
+            {loading ? "Creating account..." : "Enter Explore"}
           </button>
 
           {message && (

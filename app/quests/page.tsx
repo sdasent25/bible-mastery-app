@@ -40,7 +40,7 @@ function QuestCard({
       {locked && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="text-center text-white">
-            🔒 Complete Genesis in Journey to unlock
+            🔒 Complete the Genesis campaign to unlock
           </div>
         </div>
       )}

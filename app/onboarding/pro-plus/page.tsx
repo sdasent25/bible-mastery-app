@@ -59,7 +59,7 @@ export default function ProPlusOnboarding() {
           onClick={handleContinue}
           className="w-full bg-green-500 py-4 rounded-xl font-bold text-black"
         >
-          Start My Journey
+          Enter Explore
         </button>
 
       </div>

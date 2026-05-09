@@ -26,7 +26,7 @@ const steps = [
   {
     number: "01",
     title: "Start",
-    description: "Begin a guided journey through scripture with a clear path and no guesswork.",
+    description: "Enter the Bible world through guided campaigns with a clear path and no guesswork.",
   },
   {
     number: "02",
@@ -41,7 +41,7 @@ const steps = [
 ]
 
 const valuePoints = [
-  "Full Bible journey",
+  "Full Bible world access",
   "Daily streak and XP momentum",
   "Memory-first training system",
   "Unlimited practice sessions",
@@ -123,7 +123,7 @@ export default function LandingPage() {
                   onClick={() => router.push("/signup")}
                   className="mt-4 rounded-2xl bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] px-7 py-4 text-base font-black text-[#06101B] shadow-[0_20px_60px_rgba(82,224,255,0.24)] transition hover:scale-[1.01] active:scale-[0.99] sm:mt-0"
                 >
-                  Start Your Journey
+                  Start Training
                 </button>
                 <button
                   onClick={() => router.push("/explore")}
@@ -344,7 +344,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl rounded-[2.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(14,21,39,0.98),rgba(7,10,19,0.98))] px-6 py-12 shadow-[0_32px_90px_rgba(0,0,0,0.34)] sm:px-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">Start Now</p>
           <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
-            Your journey starts here.
+            Your Bible world starts here.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white sm:text-lg">
             Begin training today and experience a more focused, rewarding way to learn the Bible.

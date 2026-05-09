@@ -190,7 +190,7 @@ export default function ExploreCategoryPage() {
             href="/explore"
             className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200"
           >
-            ← Back to Explorer
+            ← Back to Explore
           </Link>
 
           <section className="mt-8 rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(14,22,39,0.98),rgba(7,10,18,0.98))] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.3)]">
@@ -223,7 +223,7 @@ export default function ExploreCategoryPage() {
           href="/explore"
           className="inline-flex rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm text-slate-100 backdrop-blur-sm"
         >
-          ← Back to Explorer
+          ← Back to Explore
         </Link>
 
         <section className="relative mt-6 overflow-hidden rounded-[2.25rem] shadow-[0_28px_90px_rgba(0,0,0,0.34)]">
@@ -298,7 +298,7 @@ export default function ExploreCategoryPage() {
               Hero Campaign
             </div>
             <h2 className="mt-3 text-3xl font-black text-white sm:text-4xl">
-              The journey begins here
+              The campaign begins here
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
               Genesis stands at the front of the region as the opening campaign of origins,

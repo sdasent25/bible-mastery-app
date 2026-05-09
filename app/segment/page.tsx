@@ -190,7 +190,7 @@ export default function SegmentIntro() {
     : "/explorer/pentateuch/region.png"
 
   const scoutReward = `+${getXpConfig(5).completionBonus} XP`
-  const journeyReward = `+${getXpConfig(10).completionBonus} XP`
+  const campaignReward = `+${getXpConfig(10).completionBonus} XP`
   const masteryReward = `+${getXpConfig(15).completionBonus} XP`
 
   const missionOptions: MissionOption[] = [
@@ -209,15 +209,15 @@ export default function SegmentIntro() {
       ringClass: "from-sky-200 via-cyan-200 to-blue-300",
     },
     {
-      id: "journey",
-      label: "Journey Mission",
+      id: "campaign",
+      label: "Campaign Mission",
       enabled: !isFree,
       value: 10,
       unavailable: availableCount !== null && availableCount < 10,
       icon: "⬢",
       estTime: "4-6 min",
       flavor: "The main campaign path with balanced progression and core story momentum.",
-      reward: journeyReward,
+      reward: campaignReward,
       accentClass:
         "border-amber-100/14 bg-[linear-gradient(180deg,rgba(34,22,8,0.94),rgba(15,11,8,0.98))]",
       ringClass: "from-amber-100 via-yellow-200 to-orange-300",
@@ -239,7 +239,7 @@ export default function SegmentIntro() {
   ]
 
   const backHref =
-    program === "genesis" ? "/explore/book/genesis" : "/journey"
+    program === "genesis" ? "/explore/book/genesis" : "/explore"
   const actionLabel =
     currentMissionIndex <= 0 ? "Begin Mission" : "Continue Mission"
   const missionActionLabel =
