@@ -543,12 +543,12 @@ export default function QuizPage() {
 
     if (index === correctIndex) {
       return isCorrectAnswer
-        ? "ring-1 ring-amber-100/42 shadow-[inset_0_1px_0_rgba(255,248,220,0.24),0_0_34px_rgba(245,208,116,0.22)] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,240,200,0.08)_32%,rgba(255,220,140,0.22)_50%,rgba(255,240,200,0.08)_68%,transparent_100%)] before:animate-[pulse_1.25s_ease-out]"
-        : "ring-1 ring-amber-100/30 shadow-[inset_0_1px_0_rgba(255,248,220,0.16),0_0_26px_rgba(245,208,116,0.16)] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,240,200,0.05)_34%,rgba(255,220,140,0.16)_50%,rgba(255,240,200,0.05)_66%,transparent_100%)]";
+        ? "ring-1 ring-emerald-200/48 shadow-[inset_0_1px_0_rgba(236,253,245,0.28),0_0_38px_rgba(16,185,129,0.18),0_0_34px_rgba(245,208,116,0.18)] brightness-110 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,248,220,0.10)_30%,rgba(255,221,160,0.24)_50%,rgba(236,253,245,0.10)_70%,transparent_100%)] before:animate-[pulse_1.3s_ease-out]"
+        : "ring-1 ring-emerald-200/34 shadow-[inset_0_1px_0_rgba(236,253,245,0.20),0_0_26px_rgba(16,185,129,0.14)] brightness-105 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(220,252,231,0.05)_34%,rgba(110,231,183,0.14)_50%,rgba(220,252,231,0.05)_66%,transparent_100%)]";
     }
 
     if (index === selectedAnswer && !isCorrectAnswer) {
-      return "opacity-78 saturate-75";
+      return "ring-1 ring-rose-300/54 shadow-[inset_0_1px_0_rgba(254,226,226,0.18),0_0_34px_rgba(244,63,94,0.22)] brightness-110 saturate-110";
     }
 
     return "";
@@ -630,6 +630,26 @@ export default function QuizPage() {
       }
     }
   };
+
+  const truthConfirmationMessage = isCorrectAnswer
+    ? (
+      <div className="rounded-[1.15rem] border border-emerald-200/22 bg-[linear-gradient(180deg,rgba(12,46,33,0.34),rgba(8,22,17,0.56))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(236,253,245,0.10),0_16px_28px_rgba(0,0,0,0.16)]">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-emerald-100/72">Confirmation</div>
+        <div className="mt-2 text-base font-semibold text-white md:text-lg">Truth secured.</div>
+      </div>
+    )
+    : (
+      <div className="rounded-[1.15rem] border border-white/12 bg-[linear-gradient(180deg,rgba(28,16,18,0.34),rgba(12,10,11,0.56))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_16px_28px_rgba(0,0,0,0.16)]">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-white/52">Correction</div>
+        <div className="mt-2 text-base font-semibold text-white md:text-lg">Truth remains ahead.</div>
+        <div className="mt-2 text-sm text-white/82">
+          The correct answer is:
+          <span className={`block mt-1 text-base font-semibold ${missionTheme.accentTextClass}`}>
+            {currentQuestion.options[currentQuestion.correctIndex]}
+          </span>
+        </div>
+      </div>
+    );
 
   const completeQuiz = () => {
     setQuizCompleted(true);
@@ -1157,16 +1177,19 @@ export default function QuizPage() {
               )}
 
               {isAnswered && !isReviewMode && (
-                <button
-                  onClick={() => {
-                    playMissionAdvanceSound();
-                    triggerHaptic("light");
-                    handleNextQuestion();
-                  }}
-                  className={`${MISSION_CTA_CLASS} mt-3 flex w-full py-3 text-base md:py-4 md:text-lg`}
-                >
-                  Continue Mission →
-                </button>
+                <div className="mt-3 space-y-3">
+                  {truthConfirmationMessage}
+                  <button
+                    onClick={() => {
+                      playMissionAdvanceSound();
+                      triggerHaptic("light");
+                      handleNextQuestion();
+                    }}
+                    className={`${MISSION_CTA_CLASS} flex w-full py-3 text-base md:py-4 md:text-lg`}
+                  >
+                    Continue Mission →
+                  </button>
+                </div>
               )}
 
               {isReviewMode && selectedAnswer !== null && (
