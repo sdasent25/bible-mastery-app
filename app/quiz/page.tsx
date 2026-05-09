@@ -659,7 +659,6 @@ export default function QuizPage() {
     : (
       <div className="rounded-[1.15rem] border border-rose-100/18 bg-[linear-gradient(180deg,rgba(40,18,22,0.46),rgba(14,10,12,0.68))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(255,228,230,0.10),0_18px_30px_rgba(0,0,0,0.18)]">
         <div className="text-[10px] uppercase tracking-[0.28em] text-white/70">Correction</div>
-        <div className="mt-2 text-base font-semibold text-white md:text-lg">Truth remains ahead.</div>
         <div className="mt-2 text-sm text-white/90">
           The correct answer is:
           <span className={`block mt-1 text-base font-semibold ${missionTheme.accentTextClass}`}>
