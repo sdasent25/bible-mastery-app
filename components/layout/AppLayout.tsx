@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
+import { isNavItemActive, mobileNavItems } from "@/lib/navigation"
 import Sidebar from "@/components/layout/Sidebar"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -61,36 +62,31 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             {showMobileNav && (
-              <div className="fixed inset-x-0 bottom-0 z-40 h-[80px] bg-black/95 border-t border-white/10 flex items-center justify-around">
-                <Link href="/dashboard" className="flex flex-col items-center text-xs">
-                  <span>🏠</span>
-                  <span>Home</span>
-                </Link>
+              <div className="fixed inset-x-0 bottom-0 z-40 h-[80px] border-t border-white/10 bg-black/95">
+                <div className="grid h-full grid-cols-5">
+                  {mobileNavItems.map((item) => {
+                    const active = isNavItemActive(pathname, item.href)
 
-                <Link href="/explore" className="flex flex-col items-center text-xs">
-                  <span>🗺️</span>
-                  <span>Explore</span>
-                </Link>
-
-                <Link href="/flashcards" className="flex flex-col items-center text-xs">
-                  <span>🧠</span>
-                  <span>Training</span>
-                </Link>
-
-                <Link href="/quests" className="flex flex-col items-center text-xs">
-                  <span>⚔️</span>
-                  <span>Quests</span>
-                </Link>
-
-                <Link href="/leaderboard" className="flex flex-col items-center text-xs">
-                  <span>🏆</span>
-                  <span>Rank</span>
-                </Link>
-
-                <Link href="/settings" className="flex flex-col items-center text-xs">
-                  <span>⚙️</span>
-                  <span>Settings</span>
-                </Link>
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex flex-col items-center justify-center gap-1 px-1 text-[11px] font-medium transition ${
+                          active
+                            ? "text-white"
+                            : "text-white/70 hover:text-white"
+                        }`}
+                      >
+                        <span className={`text-base ${active ? "scale-105" : ""}`}>
+                          {item.icon}
+                        </span>
+                        <span className="leading-none">
+                          {item.label}
+                        </span>
+                      </Link>
+                    )
+                  })}
+                </div>
               </div>
             )}
           </div>

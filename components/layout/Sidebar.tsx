@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { supabase } from "@/lib/supabase"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { desktopNavItems, isNavItemActive } from "@/lib/navigation"
 import { useXPStore } from "@/lib/xpStore"
 
 type SectionKey =
@@ -107,8 +108,8 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
     }))
   }
 
-  function navItem(label: string, href: string) {
-    const active = pathname.startsWith(href)
+  function navItem(label: string, href: string, icon?: string) {
+    const active = isNavItemActive(pathname, href)
 
     return (
       <Link
@@ -120,7 +121,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             : "text-white hover:bg-neutral-800 hover:text-white"
         }`}
       >
-        {label}
+        {icon ? `${icon} ${label}` : label}
       </Link>
     )
   }
@@ -206,9 +207,13 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         </div>
 
         <div className="space-y-2">
-          {navItem("🏠 Dashboard", "/dashboard")}
-          {navItem("🗺️ Explore", "/explore")}
-          {navItem("🧠 Flashcards", "/flashcards")}
+          {desktopNavItems
+            .filter((item) => item.href !== "/quests" && item.href !== "/leaderboard")
+            .map((item) => (
+              <div key={item.href}>
+                {navItem(item.label, item.href, item.icon)}
+              </div>
+            ))}
           <Link
             href="/quests"
             onClick={() => closeMobile?.()}
@@ -218,7 +223,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
                 : "text-white hover:bg-neutral-800 hover:text-white"
             }`}
           >
-            <span>🗺️ Quests</span>
+            <span>⚔️ Quests</span>
             {hasAvailableQuests && (
               <span className="ml-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
                 1
@@ -226,7 +231,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             )}
           </Link>
           {hasLeaderboardAccess ? (
-            navItem("🏆 Leaderboard", "/leaderboard")
+            navItem("Leaderboard", "/leaderboard", "🏆")
           ) : (
             <div
               onClick={() => router.push("/pricing?source=leaderboard_locked")}
