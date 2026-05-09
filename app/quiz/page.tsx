@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClient } from "@supabase/supabase-js";
@@ -54,17 +54,6 @@ type AnswerFeedbackState = {
   detail: string;
 };
 
-const ANSWER_FEEDBACK_TIMING = {
-  affirm: {
-    overlayMs: 980,
-    advanceMs: 960,
-  },
-  setback: {
-    overlayMs: 1260,
-    advanceMs: 1220,
-  },
-} as const;
-
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -114,9 +103,6 @@ export default function QuizPage() {
   const [showPreviewPaywall, setShowPreviewPaywall] = useState(false);
   const [safeDepth, setSafeDepth] = useState<number | null>(null);
   const [questionsPerDay, setQuestionsPerDay] = useState(10);
-  const answerFeedbackTimeoutRef = useRef<number | null>(null);
-  const autoAdvanceTimeoutRef = useRef<number | null>(null);
-  const answerLockedRef = useRef(false);
 
   console.log("QUIZ LOAD STATE", {
     planType,
@@ -339,18 +325,6 @@ export default function QuizPage() {
 
   useEffect(() => {
     preloadMissionSounds();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (answerFeedbackTimeoutRef.current !== null) {
-        window.clearTimeout(answerFeedbackTimeoutRef.current);
-      }
-
-      if (autoAdvanceTimeoutRef.current !== null) {
-        window.clearTimeout(autoAdvanceTimeoutRef.current);
-      }
-    };
   }, []);
 
   const buildWeakQuestionSet = (ids: string[]) => {
@@ -590,28 +564,6 @@ export default function QuizPage() {
     return "";
   };
 
-  const clearAnswerFeedbackTimeout = () => {
-    if (answerFeedbackTimeoutRef.current !== null) {
-      window.clearTimeout(answerFeedbackTimeoutRef.current);
-      answerFeedbackTimeoutRef.current = null;
-    }
-  };
-
-  const clearAutoAdvanceTimeout = () => {
-    if (autoAdvanceTimeoutRef.current !== null) {
-      window.clearTimeout(autoAdvanceTimeoutRef.current);
-      autoAdvanceTimeoutRef.current = null;
-    }
-  };
-
-  const scheduleAnswerFeedbackClear = (duration: number) => {
-    clearAnswerFeedbackTimeout();
-    answerFeedbackTimeoutRef.current = window.setTimeout(() => {
-      setAnswerFeedback(null);
-      answerFeedbackTimeoutRef.current = null;
-    }, duration);
-  };
-
   const persistAnswerProgress = async (questionId: string, isCorrect: boolean, segmentId: string) => {
     try {
       const response = await fetch("/api/quiz/answer", {
@@ -634,8 +586,7 @@ export default function QuizPage() {
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
-    if (selectedAnswer !== null || answerLockedRef.current) return;
-    answerLockedRef.current = true;
+    if (selectedAnswer !== null) return;
 
     const correct = answerIndex === correctIndex;
     const shouldAutoAdvance = !isReviewMode;
@@ -654,15 +605,9 @@ export default function QuizPage() {
       triggerHaptic("medium");
     }
 
-    clearAnswerFeedbackTimeout();
-    clearAutoAdvanceTimeout();
     setSelectedAnswer(answerIndex);
     setIsCorrectAnswer(correct);
     setShowFeedback(shouldAutoAdvance);
-
-    const feedbackTiming = correct
-      ? ANSWER_FEEDBACK_TIMING.affirm
-      : ANSWER_FEEDBACK_TIMING.setback;
 
     if (correct) {
       setAnswerFeedback({
@@ -697,8 +642,6 @@ export default function QuizPage() {
       }
     }
 
-    scheduleAnswerFeedbackClear(feedbackTiming.overlayMs);
-
     if (!isReviewMode) {
       recordAnswerPerformance(currentQuestion.segmentId, correct);
 
@@ -709,11 +652,6 @@ export default function QuizPage() {
         console.log("SENDING QUESTION ID:", currentQuestion.id);
         void persistAnswerProgress(currentQuestion.id, correct, resolvedSegment);
       }
-
-      autoAdvanceTimeoutRef.current = window.setTimeout(() => {
-        autoAdvanceTimeoutRef.current = null;
-        handleNextQuestion();
-      }, feedbackTiming.advanceMs);
     }
   };
 
@@ -727,9 +665,6 @@ export default function QuizPage() {
   };
 
   const handleNextQuestion = () => {
-    clearAutoAdvanceTimeout();
-    clearAnswerFeedbackTimeout();
-    answerLockedRef.current = false;
     setShowCelebration(false);
     setAnswerFeedback(null);
     setShowFeedback(false);
@@ -748,9 +683,6 @@ export default function QuizPage() {
   };
 
   const resetQuiz = () => {
-    clearAutoAdvanceTimeout();
-    clearAnswerFeedbackTimeout();
-    answerLockedRef.current = false;
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
     setAnswerFeedback(null);
@@ -780,9 +712,6 @@ export default function QuizPage() {
 
   const startReview = () => {
     if (incorrectQuestions.length === 0) return;
-    clearAutoAdvanceTimeout();
-    clearAnswerFeedbackTimeout();
-    answerLockedRef.current = false;
     setIsReviewMode(true);
     setReviewQuestions(incorrectQuestions.map(item => item.question));
     setCurrentQuestionIndex(0);
@@ -795,8 +724,6 @@ export default function QuizPage() {
   };
 
   const handleTryAgain = () => {
-    clearAnswerFeedbackTimeout();
-    answerLockedRef.current = false;
     setSelectedAnswer(null);
     setAnswerFeedback(null);
     setShowFeedback(false);
@@ -1313,6 +1240,19 @@ export default function QuizPage() {
                   <p className="mb-2 text-[11px] uppercase tracking-[0.24em] text-white/44">Field Note</p>
                   <p>{currentQuestion.explanation}</p>
                 </div>
+              )}
+
+              {isAnswered && !isReviewMode && (
+                <button
+                  onClick={() => {
+                    playMissionAdvanceSound();
+                    triggerHaptic("light");
+                    handleNextQuestion();
+                  }}
+                  className={`${MISSION_CTA_CLASS} mt-3 flex w-full py-3 text-base md:py-4 md:text-lg`}
+                >
+                  Continue Mission →
+                </button>
               )}
 
               {isReviewMode && selectedAnswer !== null && (
