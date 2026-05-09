@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import GameHeader from '@/components/GameHeader'
 import InstructionModal from '@/components/InstructionModal'
 import LockedOverlay from '@/components/LockedOverlay'
+import { canAccessFlashcards } from '@/lib/flashcardAccess'
 import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { type PlanType, getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
@@ -58,11 +59,11 @@ export default function FlashcardSprintPage() {
 
   useEffect(() => {
     async function initialize() {
-      const { plan, isProPlus } = await getSubscriptionStatus()
+      const { plan } = await getSubscriptionStatus()
       setPlan(plan)
       setLoadingPlan(false)
 
-      if (!isProPlus) {
+      if (!canAccessFlashcards(plan)) {
         return
       }
 
@@ -85,7 +86,7 @@ export default function FlashcardSprintPage() {
   const currentCard = sessionFinished ? null : sessionCards[currentIndex] || null
   const progressCount = Math.min(currentIndex + (currentCard ? 1 : 0), sessionCards.length)
   const progressPercent = sessionCards.length > 0 ? (currentIndex / sessionCards.length) * 100 : 0
-  const isLocked = plan !== 'pro_plus' && plan !== 'family_pro_plus'
+  const isLocked = !canAccessFlashcards(plan)
 
   useEffect(() => {
     if (loadingData || sessionCards.length === 0 || sessionFinished) {
@@ -287,7 +288,7 @@ export default function FlashcardSprintPage() {
         steps={[
           "Quick recall training",
           "Reveal answer before responding",
-          "No XP in this mode",
+          "Earn Memory XP with first-attempt correct answers",
         ]}
       />
 
@@ -405,8 +406,8 @@ export default function FlashcardSprintPage() {
 
         {isLocked && (
           <LockedOverlay
-            title="Pro+ Required"
-            message="Unlock advanced training modes and master Scripture."
+            title="Unlock Scripture Memory Training"
+            message="Create verse cards, train recall, and strengthen retention."
           />
         )}
       </div>

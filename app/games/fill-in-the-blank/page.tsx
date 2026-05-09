@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import GameHeader from '@/components/GameHeader'
 import InstructionModal from '@/components/InstructionModal'
 import LockedOverlay from '@/components/LockedOverlay'
+import { canAccessFlashcards } from '@/lib/flashcardAccess'
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from '@/lib/flashcards'
 import { type PlanType, getSubscriptionStatus } from '@/lib/user'
 import { addXp, getXp } from '@/lib/xp'
@@ -115,11 +116,11 @@ export default function FillInTheBlankPage() {
 
   useEffect(() => {
     async function initialize() {
-      const { plan, isProPlus } = await getSubscriptionStatus()
+      const { plan } = await getSubscriptionStatus()
       setPlan(plan)
       setLoadingPlan(false)
 
-      if (!isProPlus) {
+      if (!canAccessFlashcards(plan)) {
         return
       }
 
@@ -145,7 +146,7 @@ export default function FillInTheBlankPage() {
   const currentCard = orderedFlashcards.length > 0
     ? orderedFlashcards[currentIndex % orderedFlashcards.length]
     : null
-  const isLocked = plan !== 'pro_plus' && plan !== 'family_pro_plus'
+  const isLocked = !canAccessFlashcards(plan)
 
   const blankIndexMap = useMemo(() => {
     return new Map(round?.puzzle.blanks.map((blank, index) => [blank.tokenIndex, index]) || [])
@@ -458,8 +459,8 @@ export default function FillInTheBlankPage() {
 
         {isLocked && (
           <LockedOverlay
-            title="Pro+ Required"
-            message="Unlock advanced training modes and master Scripture."
+            title="Unlock Scripture Memory Training"
+            message="Create verse cards, train recall, and strengthen retention."
           />
         )}
       </div>

@@ -1,7 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Paywall from "@/components/Paywall"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { getFlashcards } from "@/lib/flashcards"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 type FlashcardListItem = {
   id: string
@@ -11,11 +14,20 @@ type FlashcardListItem = {
 
 export default function FlashcardListPage() {
   const [cards, setCards] = useState<FlashcardListItem[]>([])
+  const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const load = async () => {
       try {
+        const nextPlan = await getUserPlan()
+        setPlan(nextPlan)
+
+        if (!canAccessFlashcards(nextPlan)) {
+          setCards([])
+          return
+        }
+
         const data = await getFlashcards()
         setCards(data || [])
       } catch (error) {
@@ -31,6 +43,15 @@ export default function FlashcardListPage() {
 
   if (loading) {
     return <div className="p-6 text-white">Loading cards...</div>
+  }
+
+  if (!canAccessFlashcards(plan)) {
+    return (
+      <Paywall
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
+      />
+    )
   }
 
   if (!cards.length) {

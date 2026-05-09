@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Paywall from "@/components/Paywall"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function FlashcardsPage() {
@@ -18,22 +19,15 @@ export default function FlashcardsPage() {
     run()
   }, [])
 
-  const allowedPlans = [
-    "pro",
-    "pro_plus",
-    "family_pro",
-    "family_pro_plus",
-  ]
-
   if (loading) {
     return <div>Loading...</div>
   }
 
-  if (!allowedPlans.includes(plan)) {
+  if (!canAccessFlashcards(plan)) {
     return (
       <Paywall
-        title="🔒 Flashcards Locked"
-        message="Upgrade to Pro to unlock flashcards and start memorizing scripture."
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
       />
     )
   }
@@ -79,7 +73,7 @@ export default function FlashcardsPage() {
         >
           <h3 className="font-semibold">⚡ Sprint Mode</h3>
           <p className="text-sm text-gray-300">
-            Fast-paced recall training (no XP)
+            Fast-paced recall training with protected Memory XP
           </p>
         </div>
       </div>

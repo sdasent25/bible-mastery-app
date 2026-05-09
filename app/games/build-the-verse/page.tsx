@@ -1,9 +1,12 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import Paywall from "@/components/Paywall"
 import GameHeader from "@/components/GameHeader"
 import InstructionModal from "@/components/InstructionModal"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { getDifficulty, getFlashcards, type Flashcard, prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
+import { getUserPlan } from "@/lib/getUserPlan"
 import { addXp, getXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
@@ -57,6 +60,7 @@ function getHiddenIndexes(tokens: string[], difficulty: "easy" | "medium" | "har
 
 export default function BuildTheVersePage() {
   const [cards, setCards] = useState<Flashcard[]>([])
+  const [plan, setPlan] = useState("free")
   const [current, setCurrent] = useState<Flashcard | null>(null)
   const [tokens, setTokens] = useState<string[]>([])
   const [hiddenIndexes, setHiddenIndexes] = useState<number[]>([])
@@ -74,6 +78,14 @@ export default function BuildTheVersePage() {
   useEffect(() => {
     const load = async () => {
       try {
+        const nextPlan = await getUserPlan()
+        setPlan(nextPlan)
+
+        if (!canAccessFlashcards(nextPlan)) {
+          setCards([])
+          return
+        }
+
         const [data, xp] = await Promise.all([
           getFlashcards(),
           getXp(),
@@ -194,6 +206,15 @@ export default function BuildTheVersePage() {
 
   if (loading) {
     return <div className="p-6 text-white">Loading...</div>
+  }
+
+  if (!canAccessFlashcards(plan)) {
+    return (
+      <Paywall
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
+      />
+    )
   }
 
   if (!current) {

@@ -1,9 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import Paywall from "@/components/Paywall"
 import GameHeader from "@/components/GameHeader"
 import InstructionModal from "@/components/InstructionModal"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { getDifficulty, getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import { getUserPlan } from "@/lib/getUserPlan"
 import { addXp, getXp } from "@/lib/xp"
 
 function shuffle<T>(arr: T[]) {
@@ -12,6 +15,7 @@ function shuffle<T>(arr: T[]) {
 
 export default function MatchingGamePage() {
   const [cards, setCards] = useState<Flashcard[]>([])
+  const [plan, setPlan] = useState("free")
   const [left, setLeft] = useState<Flashcard[]>([])
   const [right, setRight] = useState<Flashcard[]>([])
   const [selectedLeft, setSelectedLeft] = useState<Flashcard | null>(null)
@@ -26,6 +30,16 @@ export default function MatchingGamePage() {
   useEffect(() => {
     const load = async () => {
       try {
+        const nextPlan = await getUserPlan()
+        setPlan(nextPlan)
+
+        if (!canAccessFlashcards(nextPlan)) {
+          setCards([])
+          setLeft([])
+          setRight([])
+          return
+        }
+
         const [data, xp] = await Promise.all([
           getFlashcards(),
           getXp(),
@@ -101,6 +115,15 @@ export default function MatchingGamePage() {
 
   if (loading) {
     return <div className="p-6 text-white">Loading matching game...</div>
+  }
+
+  if (!canAccessFlashcards(plan)) {
+    return (
+      <Paywall
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
+      />
+    )
   }
 
   if (!cards.length) {

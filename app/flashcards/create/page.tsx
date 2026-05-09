@@ -1,14 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Paywall from "@/components/Paywall"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { createFlashcard } from "@/lib/flashcards"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function CreateFlashcard() {
   const router = useRouter()
 
+  const [loadingPlan, setLoadingPlan] = useState(true)
+  const [plan, setPlan] = useState("free")
   const [text, setText] = useState("")
   const [ref, setRef] = useState("")
+
+  useEffect(() => {
+    const loadPlan = async () => {
+      const nextPlan = await getUserPlan()
+      setPlan(nextPlan)
+      setLoadingPlan(false)
+    }
+
+    void loadPlan()
+  }, [])
 
   const handleSave = async () => {
     if (!text || !ref) return
@@ -23,6 +38,19 @@ export default function CreateFlashcard() {
     setRef("")
 
     router.push("/flashcards")
+  }
+
+  if (loadingPlan) {
+    return <div className="w-full min-h-screen bg-black px-4 py-8 text-white">Loading flashcards...</div>
+  }
+
+  if (!canAccessFlashcards(plan)) {
+    return (
+      <Paywall
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
+      />
+    )
   }
 
   return (

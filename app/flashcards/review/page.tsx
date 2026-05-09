@@ -2,10 +2,14 @@
 
 import { useEffect, useMemo, useState } from "react"
 
+import Paywall from "@/components/Paywall"
+import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import { getFlashcards, prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function ReviewMode() {
   const [cards, setCards] = useState<Flashcard[]>([])
+  const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
   const [index, setIndex] = useState(0)
   const [flipped, setFlipped] = useState(false)
@@ -13,6 +17,14 @@ export default function ReviewMode() {
   useEffect(() => {
     const loadCards = async () => {
       try {
+        const nextPlan = await getUserPlan()
+        setPlan(nextPlan)
+
+        if (!canAccessFlashcards(nextPlan)) {
+          setCards([])
+          return
+        }
+
         const loadedCards = await getFlashcards()
         setCards(loadedCards)
       } catch (error) {
@@ -82,6 +94,15 @@ export default function ReviewMode() {
       <div className="w-full h-screen flex items-center justify-center text-white bg-black">
         Loading weak cards...
       </div>
+    )
+  }
+
+  if (!canAccessFlashcards(plan)) {
+    return (
+      <Paywall
+        title={FLASHCARD_PAYWALL_COPY.title}
+        message={FLASHCARD_PAYWALL_COPY.message}
+      />
     )
   }
 
