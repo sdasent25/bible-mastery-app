@@ -56,6 +56,14 @@ export default function HomePage() {
   useEffect(() => {
     let active = true
 
+    const fallbackPlan: UserPlan = {
+      userId: "",
+      timelineDays: 365,
+      segmentsPerDay: 1,
+      trainingEnabled: true,
+      estimatedDays: 365,
+    }
+
     async function loadHome() {
       // 1. GET USER FIRST
       const {
@@ -74,7 +82,7 @@ export default function HomePage() {
         .eq("id", user.id)
         .single()
 
-      if (error || !profile || profile.onboarding_complete === false) {
+      if (error || !profile || profile.onboarding_complete !== true) {
         router.replace("/onboarding")
         return
       }
@@ -85,9 +93,9 @@ export default function HomePage() {
         getPlanType(),
       ])
 
-      if (!plan) {
-        router.replace("/onboarding")
-        return
+      const resolvedPlan = plan || {
+        ...fallbackPlan,
+        userId: user.id,
       }
 
       const program = getProgramById("genesis")
@@ -107,7 +115,7 @@ export default function HomePage() {
         program.segments[resumeIndex] || program.segments[0]
 
       const highlightedEndIndex = Math.min(
-        resumeIndex + Math.max(plan.segmentsPerDay - 1, 0),
+        resumeIndex + Math.max(resolvedPlan.segmentsPerDay - 1, 0),
         program.segments.length - 1
       )
 
@@ -138,20 +146,20 @@ export default function HomePage() {
       const missionMeta = getGenesisMissionMeta(missionId)
 
       const completedToday =
-        plan.segmentsPerDay <= 1
+        resolvedPlan.segmentsPerDay <= 1
           ? 0
-          : resumeIndex % plan.segmentsPerDay
+          : resumeIndex % resolvedPlan.segmentsPerDay
 
       const progressPercent = Math.min(
         Math.round(
-          (completedToday / Math.max(plan.segmentsPerDay, 1)) * 100
+          (completedToday / Math.max(resolvedPlan.segmentsPerDay, 1)) * 100
         ),
         100
       )
 
       if (!active) return
 
-      setTrainingEnabled(plan.trainingEnabled)
+      setTrainingEnabled(resolvedPlan.trainingEnabled)
 
       setHomeState({
         currentSegmentLabel: currentSegment.label,
@@ -165,7 +173,7 @@ export default function HomePage() {
         highlightedRangeLabel: `${currentSegment.label} -> ${highlightedEndSegment.label}`,
         completedToday,
         progressPercent,
-        segmentsPerDay: plan.segmentsPerDay,
+        segmentsPerDay: resolvedPlan.segmentsPerDay,
         completedMissionCount,
         masteryCount,
         masteryPercent,

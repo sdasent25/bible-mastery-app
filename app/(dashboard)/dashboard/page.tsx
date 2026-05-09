@@ -111,6 +111,14 @@ export default function DashboardPage() {
   useEffect(() => {
     let active = true
 
+    const fallbackPlan = {
+      userId: "",
+      timelineDays: 365,
+      segmentsPerDay: 1,
+      trainingEnabled: true,
+      estimatedDays: 365,
+    }
+
     async function loadDashboard() {
       try {
         const supabase = createClient()
@@ -133,11 +141,15 @@ export default function DashboardPage() {
 
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
-          .select("name, onboarding_complete, xp, streak")
+          .select("name, handle, onboarding_complete, xp, streak")
           .eq("id", user.id)
           .single()
 
-        if (profileError || !profile || profile.onboarding_complete === false) {
+        if (
+          profileError ||
+          !profile ||
+          profile.onboarding_complete !== true
+        ) {
           router.replace("/onboarding")
           return
         }
@@ -158,9 +170,9 @@ export default function DashboardPage() {
         ])
         const membership = membershipRes.data
 
-        if (!userPlan) {
-          router.replace("/onboarding")
-          return
+        const resolvedPlan = userPlan || {
+          ...fallbackPlan,
+          userId: user.id,
         }
 
         const program = getProgramById("genesis")
@@ -211,7 +223,7 @@ export default function DashboardPage() {
 
         if (!active) return
 
-        setTrainingEnabled(userPlan.trainingEnabled)
+        setTrainingEnabled(resolvedPlan.trainingEnabled)
         setDashboardState({
           playerName: profile.name || "Athlete",
           currentSegmentLabel: currentSegment.label,
