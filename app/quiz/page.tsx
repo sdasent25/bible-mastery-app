@@ -543,15 +543,33 @@ export default function QuizPage() {
 
     if (index === correctIndex) {
       return isCorrectAnswer
-        ? "ring-1 ring-emerald-200/48 shadow-[inset_0_1px_0_rgba(236,253,245,0.28),0_0_38px_rgba(16,185,129,0.18),0_0_34px_rgba(245,208,116,0.18)] brightness-110 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,248,220,0.10)_30%,rgba(255,221,160,0.24)_50%,rgba(236,253,245,0.10)_70%,transparent_100%)] before:animate-[pulse_1.3s_ease-out]"
-        : "ring-1 ring-emerald-200/34 shadow-[inset_0_1px_0_rgba(236,253,245,0.20),0_0_26px_rgba(16,185,129,0.14)] brightness-105 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(220,252,231,0.05)_34%,rgba(110,231,183,0.14)_50%,rgba(220,252,231,0.05)_66%,transparent_100%)]";
+        ? "ring-1 ring-emerald-100/58 shadow-[inset_0_1px_0_rgba(236,253,245,0.34),0_0_42px_rgba(16,185,129,0.22),0_0_36px_rgba(245,208,116,0.22)] brightness-[1.16] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(255,248,220,0.14)_28%,rgba(255,221,160,0.30)_50%,rgba(236,253,245,0.14)_72%,transparent_100%)] before:animate-[pulse_1.3s_ease-out]"
+        : "ring-1 ring-emerald-100/40 shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_28px_rgba(16,185,129,0.18)] brightness-[1.08] before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(115deg,transparent_0%,rgba(220,252,231,0.06)_34%,rgba(110,231,183,0.18)_50%,rgba(220,252,231,0.06)_66%,transparent_100%)]";
     }
 
     if (index === selectedAnswer && !isCorrectAnswer) {
-      return "ring-1 ring-rose-300/54 shadow-[inset_0_1px_0_rgba(254,226,226,0.18),0_0_34px_rgba(244,63,94,0.22)] brightness-110 saturate-110";
+      return "ring-1 ring-rose-100/66 shadow-[inset_0_1px_0_rgba(255,228,230,0.24),0_0_40px_rgba(244,63,94,0.28)] brightness-[1.15] saturate-[1.18]";
     }
 
     return "";
+  };
+
+  const getAnswerTextStyle = (index: number) => {
+    if (!showFeedback || selectedAnswer === null) {
+      return "text-white/92";
+    }
+
+    if (index === selectedAnswer && !isCorrectAnswer) {
+      return "text-white font-semibold";
+    }
+
+    if (index === correctIndex) {
+      return isCorrectAnswer
+        ? "text-white font-semibold"
+        : "text-emerald-50 font-semibold";
+    }
+
+    return "text-white/76";
   };
 
   const persistAnswerProgress = async (questionId: string, isCorrect: boolean, segmentId: string) => {
@@ -633,16 +651,16 @@ export default function QuizPage() {
 
   const truthConfirmationMessage = isCorrectAnswer
     ? (
-      <div className="rounded-[1.15rem] border border-emerald-200/22 bg-[linear-gradient(180deg,rgba(12,46,33,0.34),rgba(8,22,17,0.56))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(236,253,245,0.10),0_16px_28px_rgba(0,0,0,0.16)]">
-        <div className="text-[10px] uppercase tracking-[0.28em] text-emerald-100/72">Confirmation</div>
+      <div className="rounded-[1.15rem] border border-emerald-100/28 bg-[linear-gradient(180deg,rgba(12,52,37,0.46),rgba(7,24,18,0.68))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(236,253,245,0.14),0_18px_30px_rgba(0,0,0,0.18)]">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-emerald-50/80">Confirmation</div>
         <div className="mt-2 text-base font-semibold text-white md:text-lg">Truth secured.</div>
       </div>
     )
     : (
-      <div className="rounded-[1.15rem] border border-white/12 bg-[linear-gradient(180deg,rgba(28,16,18,0.34),rgba(12,10,11,0.56))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_16px_28px_rgba(0,0,0,0.16)]">
-        <div className="text-[10px] uppercase tracking-[0.28em] text-white/52">Correction</div>
+      <div className="rounded-[1.15rem] border border-rose-100/18 bg-[linear-gradient(180deg,rgba(40,18,22,0.46),rgba(14,10,12,0.68))] px-4 py-3 text-center shadow-[inset_0_1px_0_rgba(255,228,230,0.10),0_18px_30px_rgba(0,0,0,0.18)]">
+        <div className="text-[10px] uppercase tracking-[0.28em] text-white/70">Correction</div>
         <div className="mt-2 text-base font-semibold text-white md:text-lg">Truth remains ahead.</div>
-        <div className="mt-2 text-sm text-white/82">
+        <div className="mt-2 text-sm text-white/90">
           The correct answer is:
           <span className={`block mt-1 text-base font-semibold ${missionTheme.accentTextClass}`}>
             {currentQuestion.options[currentQuestion.correctIndex]}
@@ -1112,7 +1130,7 @@ export default function QuizPage() {
                         aria-label={`Answer option ${index + 1}: ${answer}`}
                       >
                         <div className="flex items-center justify-between gap-4 md:h-full md:items-start">
-                          <span className="text-[15px] leading-tight font-normal md:flex md:min-h-full md:flex-col md:justify-start md:text-[17px]">
+                          <span className={`text-[15px] leading-tight font-normal md:flex md:min-h-full md:flex-col md:justify-start md:text-[17px] ${getAnswerTextStyle(index)}`}>
                             <span className={`mr-3 inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-xs font-semibold md:mr-0 md:mb-4 md:h-10 md:w-10 md:text-sm ${missionTheme.accentTextClass}`}>
                               {["A", "B", "C", "D"][index]}
                             </span>

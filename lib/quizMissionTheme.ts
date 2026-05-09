@@ -144,9 +144,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-amber-200/10 bg-[linear-gradient(180deg,rgba(18,14,10,0.78),rgba(8,6,5,0.9))] shadow-[inset_0_1px_0_rgba(255,235,186,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-amber-200/12 bg-[linear-gradient(180deg,rgba(30,22,14,0.86),rgba(14,10,8,0.96))]",
       answerHoverClass: "hover:border-amber-200/34 hover:bg-[linear-gradient(180deg,rgba(39,28,15,0.94),rgba(18,13,9,0.98))] hover:shadow-[inset_0_1px_0_rgba(255,236,189,0.16),0_0_30px_rgba(251,191,36,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(18,16,14,0.88),rgba(10,9,8,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(18,16,14,0.92),rgba(10,9,8,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -166,9 +166,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-[#d4ad73]/10 bg-[linear-gradient(180deg,rgba(14,18,24,0.8),rgba(8,9,14,0.92))] shadow-[inset_0_1px_0_rgba(240,225,198,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-[#d4ad73]/14 bg-[linear-gradient(180deg,rgba(18,24,32,0.88),rgba(10,12,18,0.97))]",
       answerHoverClass: "hover:border-[#e2c38d]/34 hover:bg-[linear-gradient(180deg,rgba(23,30,39,0.94),rgba(12,15,21,0.98))] hover:shadow-[inset_0_1px_0_rgba(245,229,205,0.14),0_0_30px_rgba(212,173,115,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(14,18,24,0.88),rgba(8,10,14,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(14,18,24,0.92),rgba(8,10,14,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -188,9 +188,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-[#c19a6b]/10 bg-[linear-gradient(180deg,rgba(18,15,28,0.8),rgba(8,7,16,0.92))] shadow-[inset_0_1px_0_rgba(240,225,198,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-[#c19a6b]/14 bg-[linear-gradient(180deg,rgba(24,19,37,0.88),rgba(11,10,22,0.97))]",
       answerHoverClass: "hover:border-[#e1c38f]/34 hover:bg-[linear-gradient(180deg,rgba(31,24,46,0.94),rgba(14,11,26,0.98))] hover:shadow-[inset_0_1px_0_rgba(245,229,205,0.14),0_0_30px_rgba(193,154,107,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(16,14,22,0.88),rgba(8,8,12,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(16,14,22,0.92),rgba(8,8,12,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -211,9 +211,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-[#cda56f]/10 bg-[linear-gradient(180deg,rgba(20,11,19,0.8),rgba(10,7,14,0.92))] shadow-[inset_0_1px_0_rgba(240,225,198,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-[#cda56f]/14 bg-[linear-gradient(180deg,rgba(28,13,23,0.88),rgba(13,9,17,0.97))]",
       answerHoverClass: "hover:border-[#e5c797]/34 hover:bg-[linear-gradient(180deg,rgba(35,16,28,0.94),rgba(17,10,19,0.98))] hover:shadow-[inset_0_1px_0_rgba(245,229,205,0.14),0_0_30px_rgba(205,165,111,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(20,12,18,0.88),rgba(8,8,12,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(20,12,18,0.92),rgba(8,8,12,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -233,9 +233,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-[#d7af76]/10 bg-[linear-gradient(180deg,rgba(20,15,10,0.8),rgba(10,8,6,0.92))] shadow-[inset_0_1px_0_rgba(240,225,198,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-[#d7af76]/14 bg-[linear-gradient(180deg,rgba(28,21,14,0.88),rgba(13,10,8,0.97))]",
       answerHoverClass: "hover:border-[#ecd29d]/34 hover:bg-[linear-gradient(180deg,rgba(35,26,15,0.94),rgba(17,12,9,0.98))] hover:shadow-[inset_0_1px_0_rgba(245,229,205,0.14),0_0_30px_rgba(215,175,118,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(18,15,11,0.88),rgba(9,8,8,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(18,15,11,0.92),rgba(9,8,8,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -255,9 +255,9 @@ function getCategoryTheme(bookKey: string) {
       answerShellClass: "border-[#d4ad73]/10 bg-[linear-gradient(180deg,rgba(15,18,24,0.8),rgba(8,10,15,0.92))] shadow-[inset_0_1px_0_rgba(240,225,198,0.08),0_18px_40px_rgba(0,0,0,0.22)]",
       answerIdleClass: "border-[#d4ad73]/14 bg-[linear-gradient(180deg,rgba(18,23,30,0.88),rgba(10,12,18,0.97))]",
       answerHoverClass: "hover:border-[#e2c38d]/34 hover:bg-[linear-gradient(180deg,rgba(22,28,36,0.94),rgba(12,15,21,0.98))] hover:shadow-[inset_0_1px_0_rgba(245,229,205,0.14),0_0_30px_rgba(212,173,115,0.10)]",
-      answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(19,54,38,0.96),rgba(11,28,20,0.98))] shadow-[inset_0_1px_0_rgba(209,250,229,0.14),0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-      answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-      answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(14,18,22,0.88),rgba(8,10,14,0.94))] opacity-55",
+      answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+      answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+      answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(14,18,22,0.92),rgba(8,10,14,0.97))] opacity-70",
     } satisfies QuizMissionThemeBase
   }
 
@@ -276,9 +276,9 @@ function getCategoryTheme(bookKey: string) {
     answerShellClass: "border-stone-200/10 bg-[linear-gradient(180deg,rgba(20,18,16,0.8),rgba(10,10,9,0.92))] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_18px_40px_rgba(0,0,0,0.22)]",
     answerIdleClass: "border-white/12 bg-[linear-gradient(180deg,rgba(20,18,16,0.84),rgba(10,10,9,0.92))]",
     answerHoverClass: "hover:border-white/20 hover:bg-[linear-gradient(180deg,rgba(28,24,20,0.92),rgba(12,11,10,0.96))]",
-    answerCorrectClass: "border-emerald-300/34 bg-[linear-gradient(180deg,rgba(18,48,34,0.96),rgba(11,28,20,0.98))] shadow-[0_0_28px_rgba(110,231,183,0.16)] scale-[1.01]",
-    answerWrongClass: "border-rose-300/30 bg-[linear-gradient(180deg,rgba(62,18,22,0.96),rgba(32,11,14,0.98))] shadow-[0_0_24px_rgba(251,113,133,0.14)]",
-    answerMutedClass: "border-white/10 bg-[linear-gradient(180deg,rgba(16,16,16,0.88),rgba(9,9,9,0.94))] opacity-55",
+    answerCorrectClass: "border-emerald-200/52 bg-[linear-gradient(180deg,rgba(23,74,52,0.98),rgba(10,32,22,0.99))] shadow-[inset_0_1px_0_rgba(236,253,245,0.24),0_0_34px_rgba(16,185,129,0.22)] scale-[1.015]",
+    answerWrongClass: "border-rose-200/54 bg-[linear-gradient(180deg,rgba(88,22,30,0.98),rgba(40,12,16,0.99))] shadow-[inset_0_1px_0_rgba(255,228,230,0.16),0_0_30px_rgba(244,63,94,0.22)]",
+    answerMutedClass: "border-white/12 bg-[linear-gradient(180deg,rgba(16,16,16,0.92),rgba(9,9,9,0.97))] opacity-70",
   } satisfies QuizMissionThemeBase
 }
 
