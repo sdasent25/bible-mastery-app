@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { getQuestions } from "@/lib/quiz/getQuestions"
 import { getAllNodes, getNodeById, parseNodeId } from "@/lib/nodes"
+import { getProgramById } from "@/lib/programs"
 
 export const dynamic = "force-dynamic"
 
@@ -55,6 +56,8 @@ export async function GET(req: NextRequest) {
     }
 
     const mode = searchParams.get("mode") || "normal"
+    const programParam = searchParams.get("program")
+    const requestedProgram = getProgramById(programParam)
 
     const { data: historyCheck } = await supabase
       .from("user_question_history")
@@ -79,16 +82,6 @@ export async function GET(req: NextRequest) {
         .filter((m) => m.mastered)
         .map((m) => m.segment)
     )
-
-    let unlockIndex = 0
-
-    for (let i = 0; i < nodeIds.length; i++) {
-      if (masteredSet.has(nodeIds[i])) {
-        unlockIndex = i + 1
-      } else {
-        break
-      }
-    }
 
     if (mode === "scholar") {
       const { data: masteryData } = await supabase
@@ -140,13 +133,50 @@ export async function GET(req: NextRequest) {
       ? nodeIds.indexOf(requestedNode.id)
       : -1
 
-    if (requestedIndex === 0) {
-      // always allowed
-    } else if (requestedIndex > unlockIndex) {
-      return NextResponse.json(
-        { error: "Segment locked" },
-        { status: 403 }
+    if (requestedProgram) {
+      const { data: programProgress } = await supabase
+        .from("user_program_progress")
+        .select("current_segment_index, completed")
+        .eq("user_id", user.id)
+        .eq("program_id", requestedProgram.id)
+        .maybeSingle()
+
+      const unlockedIndex = programProgress?.completed
+        ? requestedProgram.segments.length - 1
+        : Math.max(programProgress?.current_segment_index ?? 0, 0)
+      const requestedProgramIndex = requestedProgram.segments.findIndex(
+        (programSegment) => programSegment.segment === segment
       )
+
+      if (requestedProgramIndex === -1) {
+        return NextResponse.json({ error: "Segment locked" }, { status: 403 })
+      }
+
+      if (requestedProgramIndex > unlockedIndex) {
+        return NextResponse.json(
+          { error: "Segment locked" },
+          { status: 403 }
+        )
+      }
+    } else {
+      let unlockIndex = 0
+
+      for (let i = 0; i < nodeIds.length; i++) {
+        if (masteredSet.has(nodeIds[i])) {
+          unlockIndex = i + 1
+        } else {
+          break
+        }
+      }
+
+      if (requestedIndex === 0) {
+        // always allowed
+      } else if (requestedIndex > unlockIndex) {
+        return NextResponse.json(
+          { error: "Segment locked" },
+          { status: 403 }
+        )
+      }
     }
 
     const { book, startChapter, endChapter } = parsed

@@ -74,7 +74,7 @@ function buildJourneyQuizHref(
   normalizedSegment: string,
 ) {
   if (planType === "free") {
-    return `/quiz?segment=${normalizedSegment}&depth=5`
+    return `/quiz?program=${program}&segment=${normalizedSegment}&depth=5`
   }
 
   return `/quiz?program=${program}&segment=${normalizedSegment}&depth=10`

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@supabase/supabase-js"
 
+import { getProgramById } from "@/lib/programs"
+
 import JourneyNode from "@/components/journey/JourneyNode"
 import Flame from "@/components/Flame"
 
@@ -25,43 +27,63 @@ const nodes: JourneyNodeType[] = [
 
 export default function JourneyPath() {
   const router = useRouter()
-  const [mastery, setMastery] = useState<Record<string, boolean>>({})
+  const [completedSegments, setCompletedSegments] = useState<Record<string, boolean>>({})
+  const [currentSegmentId, setCurrentSegmentId] = useState<string | null>(null)
+  const [programComplete, setProgramComplete] = useState(false)
 
   useEffect(() => {
-    const fetchMastery = async () => {
+    const fetchProgress = async () => {
       const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
         process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
       )
 
-      const { data } = await supabase
-        .from("user_segment_mastery")
-        .select("segment, mastered")
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
 
-      if (data) {
-        const map: Record<string, boolean> = {}
-        data.forEach((row) => {
-          map[row.segment] = row.mastered
-        })
-        setMastery(map)
+      if (!user) return
+
+      const program = getProgramById("genesis")
+      const { data } = await supabase
+        .from("user_program_progress")
+        .select("current_segment_index, completed")
+        .eq("user_id", user.id)
+        .eq("program_id", "genesis")
+        .maybeSingle()
+
+      const totalSegments = program?.segments.length ?? 0
+      const completedCount = data?.completed
+        ? totalSegments
+        : Math.min(data?.current_segment_index ?? 0, totalSegments)
+
+      const map: Record<string, boolean> = {}
+      for (const segment of program?.segments.slice(0, completedCount) || []) {
+        map[segment.segment.replaceAll("-", "_")] = true
       }
+
+      setCompletedSegments(map)
+      const nextSegment = data?.completed
+        ? null
+        : program?.segments[Math.max(data?.current_segment_index ?? 0, 0)]?.segment ?? null
+      setCurrentSegmentId(nextSegment ? nextSegment.replaceAll("-", "_") : null)
+      setProgramComplete(data?.completed === true)
     }
 
-    fetchMastery()
+    void fetchProgress()
   }, [])
 
   const computedNodes = nodes.map((node, index) => {
     if (!node.segment) return node
 
-    const isMastered = mastery[node.segment]
+    const isCompleted = completedSegments[node.segment]
+    const isCurrent = !programComplete && node.segment === currentSegmentId
 
-    if (isMastered) {
+    if (isCompleted) {
       return { ...node, status: "complete" as const }
     }
 
-    const previousNode = nodes[index - 1]
-
-    if (!previousNode || (previousNode.segment && mastery[previousNode.segment])) {
+    if (index === 0 || isCurrent) {
       return { ...node, status: "available" as const }
     }
 
@@ -73,7 +95,7 @@ export default function JourneyPath() {
 
     if (!node.segment) return
 
-    router.push(`/quiz?segment=${node.segment}`)
+    router.push(`/quiz?program=genesis&segment=${node.segment.replaceAll("_", "-")}`)
   }
 
   return (

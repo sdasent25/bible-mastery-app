@@ -199,7 +199,7 @@ export default function HomePage() {
 
   const continueHref = homeState
     ? !homeState.paidAccess
-      ? `/quiz?segment=${homeState.currentSegmentSlug}&depth=5`
+      ? `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=5`
       : `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=10`
     : "/explore"
 

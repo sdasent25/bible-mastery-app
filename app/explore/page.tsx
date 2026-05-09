@@ -10,9 +10,17 @@ import {
   getGenesisMissionArt,
   getGenesisMissionMeta,
 } from "@/lib/genesisCampaign"
+import {
+  getCompletedProgramSegmentCount,
+  getCompletedWorldSegments,
+} from "@/lib/campaignProgress"
 import { nodes } from "@/lib/nodes"
 import { getProgramById } from "@/lib/programs"
-import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
+import {
+  getProgramProgress,
+  getResumeSegmentIndex,
+  type ProgramProgress,
+} from "@/lib/programProgress"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { hasCompletedToday } from "@/lib/streak"
 import { createClient } from "@/lib/supabase/client"
@@ -178,7 +186,7 @@ function buildCampaignQuizHref(
   paidAccess: boolean,
 ) {
   if (!paidAccess) {
-    return `/quiz?segment=${segment}&depth=5`
+    return `/quiz?program=genesis&segment=${segment}&depth=5`
   }
 
   return `/quiz?program=genesis&segment=${segment}&depth=10`
@@ -189,6 +197,7 @@ export default function ExplorePage() {
   const [books, setBooks] = useState<BookRow[]>([])
   const [mastery, setMastery] = useState<MasteryRow[]>([])
   const [activeHero, setActiveHero] = useState<ActiveCampaignHeroState | null>(null)
+  const [genesisProgress, setGenesisProgress] = useState<ProgramProgress | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -214,6 +223,7 @@ export default function ExplorePage() {
         const user = userRes.data.user
         let masteryRows: MasteryRow[] = []
         let activeCampaignHero: ActiveCampaignHeroState | null = null
+        let genesisCampaignProgress: ProgramProgress | null = null
 
         if (user) {
           const supabase = createClient()
@@ -228,6 +238,7 @@ export default function ExplorePage() {
           ])
 
           masteryRows = (data || []) as MasteryRow[]
+          genesisCampaignProgress = progress
 
           if (genesisProgram) {
             const resumeIndex = getResumeSegmentIndex(progress, genesisProgram.segments.length)
@@ -235,9 +246,10 @@ export default function ExplorePage() {
             const currentMissionMeta = getGenesisMissionMeta(
               currentSegment.segment.replaceAll("-", "_")
             )
-            const completedMissionCount = progress.completed
-              ? genesisProgram.segments.length
-              : Math.min(resumeIndex, genesisProgram.segments.length)
+            const completedMissionCount = getCompletedProgramSegmentCount(
+              progress,
+              genesisProgram.segments.length
+            )
             const progressPercent =
               genesisProgram.segments.length > 0
                 ? Math.round((completedMissionCount / genesisProgram.segments.length) * 100)
@@ -285,6 +297,7 @@ export default function ExplorePage() {
         setBooks(Array.isArray(booksPayload?.books) ? booksPayload.books : [])
         setMastery(masteryRows)
         setActiveHero(activeCampaignHero)
+        setGenesisProgress(genesisCampaignProgress)
       } catch (loadError) {
         console.error("Failed to load explore data", loadError)
         if (!active) return
@@ -305,6 +318,9 @@ export default function ExplorePage() {
 
   const derived = useMemo(() => {
     const categoryByBook = new Map<string, CategoryKey>()
+    const completedSegments = getCompletedWorldSegments(
+      genesisProgress ? { genesis: genesisProgress } : {}
+    )
 
     for (const book of books) {
       if (book.category && book.category in CATEGORY_META) {
@@ -322,8 +338,10 @@ export default function ExplorePage() {
         {
           bookCount: 0,
           totalSegments: 0,
+          completedSegments: 0,
           masteredSegments: 0,
           progressPercent: 0,
+          masteryPercent: 0,
         },
       ])
     ) as Record<
@@ -331,18 +349,27 @@ export default function ExplorePage() {
       {
         bookCount: number
         totalSegments: number
+        completedSegments: number
         masteredSegments: number
         progressPercent: number
+        masteryPercent: number
       }
     >
 
-    const bookCompletion: Record<string, { total: number; mastered: number }> = {}
+    const bookCompletion: Record<
+      string,
+      {
+        total: number
+        completed: number
+        mastered: number
+      }
+    > = {}
 
     for (const book of books) {
       const category = categoryByBook.get(book.book)
       if (!category) continue
       categoryStats[category].bookCount += 1
-      bookCompletion[book.book] = { total: 0, mastered: 0 }
+      bookCompletion[book.book] = { total: 0, completed: 0, mastered: 0 }
     }
 
     for (const node of nodes) {
@@ -350,7 +377,7 @@ export default function ExplorePage() {
       if (!category) continue
 
       categoryStats[category].totalSegments += 1
-      bookCompletion[node.book] ??= { total: 0, mastered: 0 }
+      bookCompletion[node.book] ??= { total: 0, completed: 0, mastered: 0 }
       bookCompletion[node.book].total += 1
 
       const normalizedIds = new Set([
@@ -360,7 +387,13 @@ export default function ExplorePage() {
         `${slugifyBook(node.book)}-${node.startChapter}-${node.endChapter}`,
       ])
 
+      const isCompleted = Array.from(normalizedIds).some((id) => completedSegments.has(id))
       const isMastered = Array.from(normalizedIds).some((id) => masteredSet.has(id))
+
+      if (isCompleted) {
+        categoryStats[category].completedSegments += 1
+        bookCompletion[node.book].completed += 1
+      }
 
       if (isMastered) {
         categoryStats[category].masteredSegments += 1
@@ -369,22 +402,26 @@ export default function ExplorePage() {
     }
 
     let totalSegments = 0
-    let masteredSegments = 0
+    let completedSegmentsCount = 0
 
     ;(Object.keys(categoryStats) as CategoryKey[]).forEach((category) => {
       const stat = categoryStats[category]
       stat.progressPercent =
         stat.totalSegments > 0
+          ? Math.round((stat.completedSegments / stat.totalSegments) * 100)
+          : 0
+      stat.masteryPercent =
+        stat.totalSegments > 0
           ? Math.round((stat.masteredSegments / stat.totalSegments) * 100)
           : 0
 
       totalSegments += stat.totalSegments
-      masteredSegments += stat.masteredSegments
+      completedSegmentsCount += stat.completedSegments
     })
 
     const totalBooks = books.length
-    const booksMastered = Object.values(bookCompletion).filter(
-      (book) => book.total > 0 && book.mastered === book.total
+    const booksCompleted = Object.values(bookCompletion).filter(
+      (book) => book.total > 0 && book.completed === book.total
     ).length
 
     const strongestCategory =
@@ -400,14 +437,14 @@ export default function ExplorePage() {
     return {
       categoryStats,
       totalBooks,
-      booksMastered,
+      booksCompleted,
       totalSegments,
-      masteredSegments,
+      completedSegments: completedSegmentsCount,
       overallPercent:
-        totalSegments > 0 ? Math.round((masteredSegments / totalSegments) * 100) : 0,
+        totalSegments > 0 ? Math.round((completedSegmentsCount / totalSegments) * 100) : 0,
       strongestCategory,
     }
-  }, [books, mastery])
+  }, [books, genesisProgress, mastery])
 
   if (loading) {
     return (
@@ -574,7 +611,7 @@ export default function ExplorePage() {
                     : "Your Bible world is just beginning to open."}
                 </div>
                 <div className="mt-3 text-sm leading-6 text-slate-300">
-                  {derived.booksMastered} of {derived.totalBooks} books fully mastered across {derived.masteredSegments} cleared segments.
+                  {derived.booksCompleted} of {derived.totalBooks} books fully cleared across {derived.completedSegments} completed segments.
                 </div>
               </div>
             </div>
@@ -585,7 +622,7 @@ export default function ExplorePage() {
                   Books
                 </div>
                 <div className="mt-1 text-xl font-black text-white">
-                  {derived.booksMastered}/{derived.totalBooks}
+                  {derived.booksCompleted}/{derived.totalBooks}
                 </div>
               </div>
               <div>
@@ -593,7 +630,7 @@ export default function ExplorePage() {
                   Segments
                 </div>
                 <div className="mt-1 text-xl font-black text-white">
-                  {derived.masteredSegments}
+                  {derived.completedSegments}
                 </div>
               </div>
             </div>
@@ -624,7 +661,7 @@ export default function ExplorePage() {
                   title={meta.title}
                   subtitle={meta.subtitle}
                   bookCount={stat.bookCount}
-                  masteryPercent={stat.progressPercent}
+                  masteryPercent={stat.masteryPercent}
                   progressPercent={stat.progressPercent}
                   state={stat.progressPercent >= 100 ? "mastered" : "open"}
                   theme={meta.theme}
@@ -663,7 +700,7 @@ export default function ExplorePage() {
                       title={meta.title}
                       subtitle={meta.subtitle}
                       bookCount={stat.bookCount}
-                      masteryPercent={stat.progressPercent}
+                      masteryPercent={stat.masteryPercent}
                       progressPercent={stat.progressPercent}
                       state={stat.progressPercent >= 100 ? "mastered" : "open"}
                       theme={meta.theme}
@@ -702,7 +739,7 @@ export default function ExplorePage() {
                       title={meta.title}
                       subtitle={meta.subtitle}
                       bookCount={stat.bookCount}
-                      masteryPercent={stat.progressPercent}
+                      masteryPercent={stat.masteryPercent}
                       progressPercent={stat.progressPercent}
                       state={stat.progressPercent >= 100 ? "mastered" : "open"}
                       theme={meta.theme}

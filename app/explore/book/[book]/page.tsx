@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useParams, useSearchParams } from "next/navigation"
 
 import { nodes } from "@/lib/nodes"
+import { getCompletedProgramSegmentCount } from "@/lib/campaignProgress"
 import { getProgramProgress, getResumeSegmentIndex, type ProgramProgress } from "@/lib/programProgress"
 import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/getUserPlan"
@@ -64,7 +65,7 @@ function hasPaidCampaignAccess(planType: PlanType) {
 
 function buildCampaignQuizHref(segment: string, isFree: boolean, depth: number) {
   if (isFree) {
-    return `/quiz?segment=${segment}&depth=5`
+    return `/quiz?program=genesis&segment=${segment}&depth=5`
   }
 
   return `/quiz?program=genesis&segment=${segment}&depth=${depth}`
@@ -135,9 +136,10 @@ export default function ExploreBookPage() {
 
     const safeIndex = getResumeSegmentIndex(progress, genesisNodes.length)
     const hasPaidAccess = hasPaidCampaignAccess(planType)
-    const completedMissionCount = progress.completed
-      ? genesisNodes.length
-      : Math.min(safeIndex, genesisNodes.length)
+    const completedMissionCount = getCompletedProgramSegmentCount(
+      progress,
+      genesisNodes.length
+    )
     const masteryCount = genesisNodes.filter((node) =>
       masteredSet.has(normalizeSegmentId(node.id))
     ).length
@@ -145,7 +147,7 @@ export default function ExploreBookPage() {
     const missions = genesisNodes.map((node, index) => {
       const meta = getGenesisMissionMeta(node.id)
       const mastered = masteredSet.has(normalizeSegmentId(node.id))
-      const completed = progress.completed || index < safeIndex
+      const completed = progress.completed || index < completedMissionCount
       const current = !progress.completed && index === safeIndex
       const unlocked = hasPaidAccess ? index <= safeIndex : index === 0
       const locked = !unlocked

@@ -5,7 +5,9 @@ import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { useParams } from "next/navigation"
 
+import { getCompletedProgramSegmentCount } from "@/lib/campaignProgress"
 import { nodes } from "@/lib/nodes"
+import { getProgramProgress, type ProgramProgress } from "@/lib/programProgress"
 import { createClient } from "@/lib/supabase/client"
 
 type MasteryRow = {
@@ -106,6 +108,7 @@ export default function ExploreCategoryPage() {
   const category = params?.category ?? ""
   const supabase = createClient()
   const [mastery, setMastery] = useState<MasteryRow[]>([])
+  const [genesisProgress, setGenesisProgress] = useState<ProgramProgress | null>(null)
   const [loading, setLoading] = useState(category === "pentateuch")
 
   useEffect(() => {
@@ -125,13 +128,17 @@ export default function ExploreCategoryPage() {
           return
         }
 
-        const { data } = await supabase
-          .from("user_segment_mastery")
-          .select("segment, mastered")
-          .eq("user_id", user.id)
+        const [masteryResult, progress] = await Promise.all([
+          supabase
+            .from("user_segment_mastery")
+            .select("segment, mastered")
+            .eq("user_id", user.id),
+          getProgramProgress("genesis"),
+        ])
 
         if (!active) return
-        setMastery((data || []) as MasteryRow[])
+        setMastery((masteryResult.data || []) as MasteryRow[])
+        setGenesisProgress(progress)
       } finally {
         if (active) {
           setLoading(false)
@@ -150,37 +157,48 @@ export default function ExploreCategoryPage() {
     const masteredSet = new Set(
       mastery.filter((row) => row.mastered).map((row) => normalizeSegmentId(row.segment))
     )
+    const genesisCompletedCount = genesisProgress
+      ? getCompletedProgramSegmentCount(
+          genesisProgress,
+          nodes.filter((node) => node.book === "Genesis").length
+        )
+      : 0
 
     const books = PENTATEUCH_ORDER.map((bookKey) => {
       const segments = nodes.filter((node) => node.book === bookKey)
       const masteredCount = segments.filter((node) =>
         masteredSet.has(normalizeSegmentId(node.id))
       ).length
+      const completedCount =
+        bookKey === "Genesis"
+          ? genesisCompletedCount
+          : 0
       const progressPercent =
-        segments.length > 0 ? (masteredCount / segments.length) * 100 : 0
+        segments.length > 0 ? (completedCount / segments.length) * 100 : 0
 
       return {
         ...BOOK_PRESENTATION[bookKey],
         segmentCount: segments.length,
+        completedCount,
         masteredCount,
         progressPercent,
-        completed: segments.length > 0 && masteredCount === segments.length,
+        completed: segments.length > 0 && completedCount === segments.length,
       }
     })
 
     const totalSegments = books.reduce((sum, book) => sum + book.segmentCount, 0)
-    const totalMastered = books.reduce((sum, book) => sum + book.masteredCount, 0)
-    const overallPercent = totalSegments > 0 ? (totalMastered / totalSegments) * 100 : 0
+    const totalCompleted = books.reduce((sum, book) => sum + book.completedCount, 0)
+    const overallPercent = totalSegments > 0 ? (totalCompleted / totalSegments) * 100 : 0
 
     return {
       books,
       totalSegments,
-      totalMastered,
+      totalCompleted,
       overallPercent,
       genesis: books[0],
       supporting: books.slice(1),
     }
-  }, [mastery])
+  }, [genesisProgress, mastery])
 
   if (category !== "pentateuch") {
     return (
@@ -277,7 +295,7 @@ export default function ExploreCategoryPage() {
                   Segments
                 </div>
                 <div className="mt-2 text-2xl font-black text-white">
-                  {pentateuchProgress.totalMastered}/{pentateuchProgress.totalSegments}
+                  {pentateuchProgress.totalCompleted}/{pentateuchProgress.totalSegments}
                 </div>
               </div>
               <div>
@@ -336,7 +354,7 @@ export default function ExploreCategoryPage() {
 
                 <div className="mt-8 flex flex-wrap items-center gap-4 text-sm text-amber-50/76">
                   <div>{heroBook.segmentCount} segments</div>
-                  <div>{heroBook.masteredCount} cleared</div>
+                  <div>{heroBook.completedCount} cleared</div>
                   <div>{heroBook.completed ? "Completed" : "In Progress"}</div>
                 </div>
               </div>
@@ -350,8 +368,8 @@ export default function ExploreCategoryPage() {
                 </div>
                 <div className="mt-2 text-sm text-slate-300">
                   {heroBook.completed
-                    ? "Genesis has been fully mastered."
-                    : `${heroBook.masteredCount} of ${heroBook.segmentCount} Genesis segments completed.`}
+                    ? "Genesis has been fully completed."
+                    : `${heroBook.completedCount} of ${heroBook.segmentCount} Genesis segments completed.`}
                 </div>
                 <div className="mt-6 h-[6px] overflow-hidden rounded-full bg-white/10">
                   <div

@@ -395,9 +395,7 @@ export default function SegmentIntro() {
             {missionOptions.map((option) => {
               const isLockedOption = !option.enabled
               const isUnavailable = option.unavailable
-              const optionBaseHref = isFree
-                ? `/quiz?segment=${segment}&depth=5`
-                : `/quiz?program=${program}&segment=${segment}&depth=${option.value}`
+              const optionBaseHref = `/quiz?program=${program}&segment=${segment}&depth=${isFree ? 5 : option.value}`
               const optionQuizHref = optionBaseHref
 
               return (

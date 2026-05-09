@@ -154,7 +154,7 @@ export default function QuizPage() {
       }
 
       const matchedProgram = getProgramById(programParam);
-      if (matchedProgram && plan !== "free") {
+      if (matchedProgram) {
         const progress = await getProgramProgress(matchedProgram.id);
 
         if (progress.completed) {
@@ -353,7 +353,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     const markComplete = async () => {
-      if (quizCompleted && !isReviewMode && !streakSaved && !isTrainingMode && !isProgramMode) {
+      if (quizCompleted && !isReviewMode && !streakSaved && !isTrainingMode) {
         await completeToday();
         setStreakSaved(true);
       }
@@ -672,9 +672,6 @@ export default function QuizPage() {
     setQuizCompleted(true);
     setShowCelebration(true);
     setTimeout(() => setShowCelebration(false), 1000);
-    if (!isReviewMode && !isTrainingMode) {
-      updateMastery();
-    }
   };
 
   const handleNextQuestion = () => {
@@ -738,40 +735,6 @@ export default function QuizPage() {
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setShowRetryPrompt(false);
-  };
-
-  const updateMastery = async () => {
-    try {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
-
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) return;
-
-      const totalAnswered = questions.length;
-      const totalCorrect = score;
-      const accuracy = totalCorrect / totalAnswered;
-
-      await supabase
-        .from("user_segment_mastery")
-        .upsert({
-          user_id: user.id,
-          segment: segment,
-          total_answered: totalAnswered,
-          total_correct: totalCorrect,
-          accuracy: accuracy,
-          mastered: accuracy >= 0.8 && totalAnswered >= 10,
-          updated_at: new Date().toISOString()
-        }, {
-          onConflict: "user_id,segment"
-        });
-
-    } catch (err) {
-      console.error("Error updating mastery:", err);
-    }
   };
 
   if (quizCompleted) {
