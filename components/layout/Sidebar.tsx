@@ -207,7 +207,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
         <div className="space-y-2">
           {navItem("🏠 Dashboard", "/dashboard")}
-          {navItem("📖 Journey", "/journey")}
+          {navItem("🗺️ Explore", "/explore")}
           {navItem("🧠 Flashcards", "/flashcards")}
           <Link
             href="/quests"

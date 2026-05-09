@@ -354,10 +354,10 @@ export default function DashboardPage() {
         )}
 
         <button
-          onClick={() => router.push("/journey")}
+          onClick={() => router.push("/explore")}
           className="w-full bg-blue-600 hover:bg-blue-500 text-white py-4 rounded-xl text-lg font-semibold transition"
         >
-          Start Daily Training
+          Open Explore
         </button>
 
         {!isOwner && membershipId && (
@@ -390,7 +390,7 @@ export default function DashboardPage() {
           </div>
 
           <p className="text-xs text-white mt-2">
-            Continue your daily journey
+            Continue your active campaign
           </p>
         </div>
 

@@ -22,7 +22,7 @@ export default function ProPlusOnboarding() {
       })
       .eq("id", user.id)
 
-    router.push("/journey")
+    router.push("/explore")
   }
 
   return (

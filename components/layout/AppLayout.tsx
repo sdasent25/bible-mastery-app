@@ -67,14 +67,14 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <span>Home</span>
                 </Link>
 
-                <Link href="/journey" className="flex flex-col items-center text-xs">
-                  <span>📖</span>
-                  <span>Journey</span>
+                <Link href="/explore" className="flex flex-col items-center text-xs">
+                  <span>🗺️</span>
+                  <span>Explore</span>
                 </Link>
 
                 <Link href="/flashcards" className="flex flex-col items-center text-xs">
                   <span>🧠</span>
-                  <span>Cards</span>
+                  <span>Training</span>
                 </Link>
 
                 <Link href="/quests" className="flex flex-col items-center text-xs">

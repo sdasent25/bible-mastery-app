@@ -286,9 +286,9 @@ export default function ExplorePage() {
         setMastery(masteryRows)
         setActiveHero(activeCampaignHero)
       } catch (loadError) {
-        console.error("Failed to load explorer data", loadError)
+        console.error("Failed to load explore data", loadError)
         if (!active) return
-        setError("Unable to open the explorer right now.")
+        setError("Unable to open Explore right now.")
       } finally {
         if (active) {
           setLoading(false)
@@ -412,7 +412,7 @@ export default function ExplorePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#13233f,_#060914_55%)] px-4 py-6 text-white">
-        Loading explorer...
+        Loading Explore...
       </div>
     )
   }
@@ -533,7 +533,7 @@ export default function ExplorePage() {
 
         <header className="mb-10 sm:mb-14">
           <div className="text-sm font-bold uppercase tracking-[0.32em] text-cyan-200/80">
-            Explorer
+            Explore
           </div>
           <h1 className="mt-3 max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl">
             Enter the Bible

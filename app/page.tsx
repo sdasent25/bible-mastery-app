@@ -126,10 +126,10 @@ export default function LandingPage() {
                   Start Your Journey
                 </button>
                 <button
-                  onClick={() => router.push("/journey")}
+                  onClick={() => router.push("/explore")}
                   className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-7 py-4 text-base font-bold text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
                 >
-                  Explore the Journey
+                  Enter Explore
                 </button>
               </div>
 

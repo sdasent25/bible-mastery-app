@@ -201,7 +201,7 @@ export default function HomePage() {
     ? !homeState.paidAccess
       ? `/quiz?segment=${homeState.currentSegmentSlug}&depth=5`
       : `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=10`
-    : "/journey"
+    : "/explore"
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#1f2b47_0%,_#0d1321_34%,_#070a12_100%)] px-4 py-6 text-white">
