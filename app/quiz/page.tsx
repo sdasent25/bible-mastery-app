@@ -45,15 +45,6 @@ type IncorrectItem = {
   userAnswer: string;
 };
 
-type AnswerFeedbackTone = 'affirm' | 'setback';
-
-type AnswerFeedbackState = {
-  tone: AnswerFeedbackTone;
-  eyebrow: string;
-  title: string;
-  detail: string;
-};
-
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
@@ -74,7 +65,6 @@ export default function QuizPage() {
   const [combo, setCombo] = useState(0);
   const [comboFlash, setComboFlash] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
-  const [answerFeedback, setAnswerFeedback] = useState<AnswerFeedbackState | null>(null);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [incorrectQuestions, setIncorrectQuestions] = useState<IncorrectItem[]>([]);
   const [isReviewMode, setIsReviewMode] = useState(false);
@@ -610,26 +600,12 @@ export default function QuizPage() {
     setShowFeedback(shouldAutoAdvance);
 
     if (correct) {
-      setAnswerFeedback({
-        tone: 'affirm',
-        eyebrow: 'Confirmation Received',
-        title: 'Truth secured',
-        detail: 'Mission continuity preserved'
-      });
-
       if (!isReviewMode) {
         setStreak(prev => prev + 1);
         setCombo(prev => prev + 1);
         setScore(prev => prev + 1);
       }
     } else {
-      setAnswerFeedback({
-        tone: 'setback',
-        eyebrow: 'Adjustment',
-        title: 'Truth remains ahead',
-        detail: 'Recenter on the text'
-      });
-
       if (!isReviewMode) {
         setStreak(0);
         setCombo(0);
@@ -666,7 +642,6 @@ export default function QuizPage() {
 
   const handleNextQuestion = () => {
     setShowCelebration(false);
-    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
 
@@ -685,7 +660,6 @@ export default function QuizPage() {
   const resetQuiz = () => {
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
-    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setScore(0);
@@ -716,7 +690,6 @@ export default function QuizPage() {
     setReviewQuestions(incorrectQuestions.map(item => item.question));
     setCurrentQuestionIndex(0);
     setSelectedAnswer(null);
-    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setQuizCompleted(false);
@@ -725,7 +698,6 @@ export default function QuizPage() {
 
   const handleTryAgain = () => {
     setSelectedAnswer(null);
-    setAnswerFeedback(null);
     setShowFeedback(false);
     setIsCorrectAnswer(null);
     setShowRetryPrompt(false);
@@ -1132,37 +1104,6 @@ export default function QuizPage() {
                   </div>
                 )}
 
-                {answerFeedback && (
-                  <div
-                    className={`mt-3 animate-[fadeIn_0.28s_ease] rounded-[1.25rem] border px-4 py-3 text-center backdrop-blur-md md:px-5 ${
-                      answerFeedback.tone === 'affirm'
-                        ? 'border-amber-200/18 bg-[linear-gradient(180deg,rgba(47,34,15,0.34),rgba(14,11,8,0.56))] shadow-[inset_0_1px_0_rgba(255,245,214,0.10),0_16px_30px_rgba(0,0,0,0.18)]'
-                        : 'border-white/10 bg-[linear-gradient(180deg,rgba(26,24,24,0.34),rgba(12,11,11,0.56))] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_16px_30px_rgba(0,0,0,0.18)]'
-                    }`}
-                  >
-                    <div
-                      className={`text-[10px] uppercase tracking-[0.28em] ${
-                        answerFeedback.tone === 'affirm'
-                          ? 'text-amber-100/66'
-                          : 'text-white/48'
-                      }`}
-                    >
-                      {answerFeedback.eyebrow}
-                    </div>
-                    <div className="mt-2 text-base font-semibold text-white md:text-lg">
-                      {answerFeedback.title}
-                    </div>
-                    <div
-                      className={`mt-2 text-xs uppercase tracking-[0.18em] md:text-[13px] ${
-                        answerFeedback.tone === 'affirm'
-                          ? `${missionTheme.accentTextClass}`
-                          : 'text-white/60'
-                      }`}
-                    >
-                      {answerFeedback.detail}
-                    </div>
-                  </div>
-                )}
               </div>
 
               {isAnswered && !showFeedback && (
@@ -1199,12 +1140,6 @@ export default function QuizPage() {
                     </div>
                   )}
 
-                  {!isCorrectAnswer && (
-                    <div className="mt-3 text-sm uppercase tracking-[0.22em] text-white/52">
-                      Recenter on the text
-                    </div>
-                  )}
-
                   <div className="pb-4 w-full">
                     <button
                       id="continueBtn"
@@ -1218,27 +1153,6 @@ export default function QuizPage() {
                       Advance Mission →
                     </button>
                   </div>
-                </div>
-              )}
-
-              {currentIncorrectItem && isReviewMode && selectedAnswer === null && (
-                <div className={`mt-2 rounded-[1.3rem] border border-white/10 bg-black/26 p-4 text-slate-200 backdrop-blur-sm ${
-                  currentQuestion.difficulty === 'scholar'
-                    ? 'ring-1 ring-yellow-300/25'
-                    : ''
-                }`}>
-                  <p>{currentQuestion.explanation}</p>
-                </div>
-              )}
-
-              {isAnswered && (
-                <div className={`mt-2 rounded-[1.3rem] border border-white/10 bg-black/26 p-4 text-slate-200 backdrop-blur-sm ${
-                  currentQuestion.difficulty === 'scholar'
-                    ? 'ring-1 ring-yellow-300/25'
-                    : ''
-                }`}>
-                  <p className="mb-2 text-[11px] uppercase tracking-[0.24em] text-white/44">Field Note</p>
-                  <p>{currentQuestion.explanation}</p>
                 </div>
               )}
 
