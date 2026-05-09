@@ -1,4 +1,5 @@
 let audioCache: Record<string, HTMLAudioElement> = {}
+let audioPool: Record<string, HTMLAudioElement[]> = {}
 
 const SOUND_EFFECTS = {
   missionAffirm: "/sounds/journey-selected.mp3",
@@ -35,10 +36,21 @@ export function playSound(src: string) {
     audioCache[src] = audio
   }
 
-  // Play from a preloaded template so the tap response does not depend on
-  // rewinding a shared audio element that may still be resolving.
-  const playbackAudio = audio.cloneNode(true) as HTMLAudioElement
-  configureAudio(playbackAudio, src)
+  let pool = audioPool[src]
+  if (!pool) {
+    pool = [audio]
+    audioPool[src] = pool
+  }
+
+  let playbackAudio = pool.find((item) => item.paused || item.ended)
+
+  if (!playbackAudio) {
+    playbackAudio = new Audio(src)
+    configureAudio(playbackAudio, src)
+    playbackAudio.load()
+    pool.push(playbackAudio)
+  }
+
   playbackAudio.currentTime = 0
   playbackAudio.play().catch(() => {})
 }
@@ -71,7 +83,22 @@ export function preloadMissionSounds() {
       audioCache[src] = audio
     }
 
+    let pool = audioPool[src]
+    if (!pool) {
+      pool = [audio]
+      audioPool[src] = pool
+    }
+
     audio.load()
+
+    // Keep one extra preloaded instance ready so confirmation playback
+    // can start immediately on the first tap without clone-time delay.
+    if (pool.length < 2) {
+      const standbyAudio = new Audio(src)
+      configureAudio(standbyAudio, src)
+      standbyAudio.load()
+      pool.push(standbyAudio)
+    }
   })
 }
 
