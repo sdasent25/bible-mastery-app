@@ -17,7 +17,12 @@
     "option_d": "John",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["acts", "jesus", "ascension", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "jesus",
+      "ascension",
+      "speaker_recognition"
+    ],
     "source_key": "acts-001-jesus-wait-for-promise"
   },
   {
@@ -38,7 +43,13 @@
     "option_d": "Paul",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["acts", "jesus", "witness", "ascension", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "jesus",
+      "witness",
+      "ascension",
+      "speaker_recognition"
+    ],
     "source_key": "acts-002-jesus-you-will-be-my-witnesses"
   },
   {
@@ -59,7 +70,12 @@
     "option_d": "Moses and Elijah",
     "correct_answer": "Two Men in White Robes",
     "difficulty": "medium",
-    "tags": ["acts", "angels", "ascension", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "angels",
+      "ascension",
+      "speaker_recognition"
+    ],
     "source_key": "acts-003-two-men-looking-up"
   },
   {
@@ -80,7 +96,12 @@
     "option_d": "Matthias",
     "correct_answer": "Peter",
     "difficulty": "hard",
-    "tags": ["acts", "peter", "matthias", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "matthias",
+      "speaker_recognition"
+    ],
     "source_key": "acts-004-peter-one-must-become-witness"
   },
   {
@@ -101,7 +122,12 @@
     "option_d": "Sadducees",
     "correct_answer": "Crowd",
     "difficulty": "easy",
-    "tags": ["acts", "crowd", "pentecost", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "crowd",
+      "pentecost",
+      "speaker_recognition"
+    ],
     "source_key": "acts-005-crowd-what-does-this-mean"
   },
   {
@@ -122,7 +148,12 @@
     "option_d": "Paul",
     "correct_answer": "Peter",
     "difficulty": "easy",
-    "tags": ["acts", "peter", "pentecost", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "pentecost",
+      "speaker_recognition"
+    ],
     "source_key": "acts-006-peter-these-are-not-drunk"
   },
   {
@@ -143,7 +174,12 @@
     "option_d": "Philip",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["acts", "peter", "pentecost", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "pentecost",
+      "speaker_recognition"
+    ],
     "source_key": "acts-007-peter-repent-baptized"
   },
   {
@@ -164,7 +200,13 @@
     "option_d": "Stephen",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["acts", "peter", "temple", "healing", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "temple",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "acts-008-peter-rise-and-walk"
   },
   {
@@ -185,7 +227,13 @@
     "option_d": "Stephen",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["acts", "peter", "council", "salvation", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "council",
+      "salvation",
+      "speaker_recognition"
+    ],
     "source_key": "acts-009-peter-no-other-name"
   },
   {
@@ -206,7 +254,13 @@
     "option_d": "Roman Guard",
     "correct_answer": "Jewish Council",
     "difficulty": "hard",
-    "tags": ["acts", "council", "peter", "john", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "council",
+      "peter",
+      "john",
+      "speaker_recognition"
+    ],
     "source_key": "acts-010-council-not-to-speak"
   },
   {
@@ -227,7 +281,12 @@
     "option_d": "Barnabas",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["acts", "peter", "ananias", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "ananias",
+      "speaker_recognition"
+    ],
     "source_key": "acts-011-peter-satan-filled-heart"
   },
   {
@@ -248,7 +307,12 @@
     "option_d": "James",
     "correct_answer": "Peter",
     "difficulty": "hard",
-    "tags": ["acts", "peter", "sapphira", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "sapphira",
+      "speaker_recognition"
+    ],
     "source_key": "acts-012-peter-agreed-together"
   },
   {
@@ -269,7 +333,12 @@
     "option_d": "Gamaliel",
     "correct_answer": "Angel of the Lord",
     "difficulty": "hard",
-    "tags": ["acts", "angel_of_the_lord", "apostles", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "angel_of_the_lord",
+      "apostles",
+      "speaker_recognition"
+    ],
     "source_key": "acts-013-angel-go-stand-in-temple"
   },
   {
@@ -290,7 +359,12 @@
     "option_d": "Annas",
     "correct_answer": "Gamaliel",
     "difficulty": "hard",
-    "tags": ["acts", "gamaliel", "council", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "gamaliel",
+      "council",
+      "speaker_recognition"
+    ],
     "source_key": "acts-014-gamaliel-keep-away-from-these-men"
   },
   {
@@ -311,7 +385,12 @@
     "option_d": "Elders",
     "correct_answer": "Twelve Apostles",
     "difficulty": "hard",
-    "tags": ["acts", "apostles", "seven", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "apostles",
+      "seven",
+      "speaker_recognition"
+    ],
     "source_key": "acts-015-twelve-it-is-not-right"
   },
   {
@@ -332,7 +411,12 @@
     "option_d": "Barnabas",
     "correct_answer": "Stephen",
     "difficulty": "hard",
-    "tags": ["acts", "stephen", "council", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "stephen",
+      "council",
+      "speaker_recognition"
+    ],
     "source_key": "acts-016-stephen-you-stiff-necked-people"
   },
   {
@@ -353,7 +437,12 @@
     "option_d": "Paul",
     "correct_answer": "Stephen",
     "difficulty": "hard",
-    "tags": ["acts", "stephen", "martyrdom", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "stephen",
+      "martyrdom",
+      "speaker_recognition"
+    ],
     "source_key": "acts-017-stephen-receive-my-spirit"
   },
   {
@@ -374,7 +463,12 @@
     "option_d": "Barnabas",
     "correct_answer": "Philip",
     "difficulty": "medium",
-    "tags": ["acts", "philip", "ethiopian", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "philip",
+      "ethiopian",
+      "speaker_recognition"
+    ],
     "source_key": "acts-018-philip-do-you-understand"
   },
   {
@@ -395,7 +489,12 @@
     "option_d": "Cornelius",
     "correct_answer": "Ethiopian Official",
     "difficulty": "hard",
-    "tags": ["acts", "ethiopian_official", "philip", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "ethiopian_official",
+      "philip",
+      "speaker_recognition"
+    ],
     "source_key": "acts-019-ethiopian-how-can-i-unless-guided"
   },
   {
@@ -416,7 +515,13 @@
     "option_d": "Gamaliel",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["acts", "jesus", "saul", "damascus_road", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "jesus",
+      "saul",
+      "damascus_road",
+      "speaker_recognition"
+    ],
     "source_key": "acts-020-jesus-why-are-you-persecuting-me"
   },
   {
@@ -437,7 +542,12 @@
     "option_d": "Peter",
     "correct_answer": "Ananias of Damascus",
     "difficulty": "hard",
-    "tags": ["acts", "ananias_of_damascus", "saul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "ananias_of_damascus",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-021-ananias-heard-from-many"
   },
   {
@@ -458,7 +568,12 @@
     "option_d": "Paul",
     "correct_answer": "Cornelius",
     "difficulty": "hard",
-    "tags": ["acts", "cornelius", "vision", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "cornelius",
+      "vision",
+      "speaker_recognition"
+    ],
     "source_key": "acts-022-cornelius-what-is-it-lord"
   },
   {
@@ -479,7 +594,13 @@
     "option_d": "James",
     "correct_answer": "Voice from Heaven",
     "difficulty": "hard",
-    "tags": ["acts", "voice_from_heaven", "peter", "vision", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "voice_from_heaven",
+      "peter",
+      "vision",
+      "speaker_recognition"
+    ],
     "source_key": "acts-023-voice-what-god-has-made-clean"
   },
   {
@@ -500,7 +621,12 @@
     "option_d": "James",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["acts", "peter", "cornelius", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "cornelius",
+      "speaker_recognition"
+    ],
     "source_key": "acts-024-peter-god-shows-no-partiality"
   },
   {
@@ -521,7 +647,12 @@
     "option_d": "Prophets from Antioch",
     "correct_answer": "Believers from the Circumcision",
     "difficulty": "hard",
-    "tags": ["acts", "circumcision_party", "peter", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "circumcision_party",
+      "peter",
+      "speaker_recognition"
+    ],
     "source_key": "acts-025-believers-you-went-to-uncircumcised-men"
   },
   {
@@ -542,7 +673,12 @@
     "option_d": "Philip",
     "correct_answer": "Agabus",
     "difficulty": "hard",
-    "tags": ["acts", "agabus", "antioch", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "agabus",
+      "antioch",
+      "speaker_recognition"
+    ],
     "source_key": "acts-026-agabus-great-famine"
   },
   {
@@ -551,19 +687,25 @@
     "book_order": 44,
     "testament": "new_testament",
     "category": "acts",
-"speaker": "Holy Spirit",
-"speaker_type": "divine",
+    "speaker": "Holy Spirit",
+    "speaker_type": "divine",
     "reference": "Acts 13:2-3",
     "quote_text": "Set apart for me Barnabas and Saul",
     "prompt_context": "While the church in Antioch worshiped and fasted, the Holy Spirit gave direction for missionary work.",
-"question": "Who said to set apart Barnabas and Saul for the work they had been called to do?",
-"option_a": "Church in Jerusalem",
-"option_b": "Holy Spirit",
-"option_c": "Council in Lystra",
-"option_d": "Believers in Joppa",
-"correct_answer": "Holy Spirit",
+    "question": "Who said to set apart Barnabas and Saul for the work they had been called to do?",
+    "option_a": "Church in Jerusalem",
+    "option_b": "Holy Spirit",
+    "option_c": "Council in Lystra",
+    "option_d": "Believers in Joppa",
+    "correct_answer": "Holy Spirit",
     "difficulty": "hard",
-    "tags": ["acts", "antioch", "barnabas", "saul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "antioch",
+      "barnabas",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-027-antioch-set-apart-barnabas-saul"
   },
   {
@@ -584,7 +726,12 @@
     "option_d": "Silas",
     "correct_answer": "Paul",
     "difficulty": "hard",
-    "tags": ["acts", "paul", "pisidian_antioch", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "pisidian_antioch",
+      "speaker_recognition"
+    ],
     "source_key": "acts-028-paul-forgiveness-is-proclaimed"
   },
   {
@@ -605,7 +752,12 @@
     "option_d": "Traveling Merchants",
     "correct_answer": "Crowd in Lystra",
     "difficulty": "hard",
-    "tags": ["acts", "lystra", "crowd", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "lystra",
+      "crowd",
+      "speaker_recognition"
+    ],
     "source_key": "acts-029-crowd-gods-have-come-down"
   },
   {
@@ -626,7 +778,12 @@
     "option_d": "Roman Officials",
     "correct_answer": "Certain Believers from Judea",
     "difficulty": "hard",
-    "tags": ["acts", "judea", "circumcision", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "judea",
+      "circumcision",
+      "speaker_recognition"
+    ],
     "source_key": "acts-030-certain-believers-unless-circumcised"
   },
   {
@@ -647,7 +804,12 @@
     "option_d": "Barnabas",
     "correct_answer": "Peter",
     "difficulty": "hard",
-    "tags": ["acts", "peter", "jerusalem_council", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "peter",
+      "jerusalem_council",
+      "speaker_recognition"
+    ],
     "source_key": "acts-031-peter-why-putting-god-to-test"
   },
   {
@@ -668,7 +830,12 @@
     "option_d": "Silas",
     "correct_answer": "James",
     "difficulty": "hard",
-    "tags": ["acts", "james", "jerusalem_council", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "james",
+      "jerusalem_council",
+      "speaker_recognition"
+    ],
     "source_key": "acts-032-james-my-judgment-is"
   },
   {
@@ -689,7 +856,12 @@
     "option_d": "Rhoda",
     "correct_answer": "Lydia",
     "difficulty": "hard",
-    "tags": ["acts", "lydia", "philippi", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "lydia",
+      "philippi",
+      "speaker_recognition"
+    ],
     "source_key": "acts-033-lydia-come-and-stay"
   },
   {
@@ -710,7 +882,12 @@
     "option_d": "Damaris",
     "correct_answer": "Slave Girl with a Spirit of Divination",
     "difficulty": "hard",
-    "tags": ["acts", "philippi", "slave_girl", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "philippi",
+      "slave_girl",
+      "speaker_recognition"
+    ],
     "source_key": "acts-034-slave-girl-servants-of-most-high"
   },
   {
@@ -731,7 +908,12 @@
     "option_d": "Festus",
     "correct_answer": "Philippian Jailer",
     "difficulty": "medium",
-    "tags": ["acts", "philippian_jailer", "philippi", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "philippian_jailer",
+      "philippi",
+      "speaker_recognition"
+    ],
     "source_key": "acts-035-jailer-what-must-i-do"
   },
   {
@@ -752,7 +934,13 @@
     "option_d": "Barnabas",
     "correct_answer": "Paul",
     "difficulty": "medium",
-    "tags": ["acts", "paul", "athens", "areopagus", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "athens",
+      "areopagus",
+      "speaker_recognition"
+    ],
     "source_key": "acts-036-paul-extremely-religious"
   },
   {
@@ -773,7 +961,12 @@
     "option_d": "Merchants in Corinth",
     "correct_answer": "Athenians and Foreigners",
     "difficulty": "hard",
-    "tags": ["acts", "athens", "areopagus", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "athens",
+      "areopagus",
+      "speaker_recognition"
+    ],
     "source_key": "acts-037-athenians-what-do-these-things-mean"
   },
   {
@@ -794,7 +987,12 @@
     "option_d": "Alexander",
     "correct_answer": "Town Clerk of Ephesus",
     "difficulty": "hard",
-    "tags": ["acts", "ephesus", "town_clerk", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "ephesus",
+      "town_clerk",
+      "speaker_recognition"
+    ],
     "source_key": "acts-038-town-clerk-men-of-ephesus"
   },
   {
@@ -815,7 +1013,13 @@
     "option_d": "Cornelius",
     "correct_answer": "Agabus",
     "difficulty": "hard",
-    "tags": ["acts", "agabus", "paul", "caesarea", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "agabus",
+      "paul",
+      "caesarea",
+      "speaker_recognition"
+    ],
     "source_key": "acts-039-agabus-pauls-belt"
   },
   {
@@ -836,7 +1040,12 @@
     "option_d": "Ananias of Damascus",
     "correct_answer": "Paul",
     "difficulty": "hard",
-    "tags": ["acts", "paul", "jerusalem_defense", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "jerusalem_defense",
+      "speaker_recognition"
+    ],
     "source_key": "acts-040-paul-who-are-you-lord"
   },
   {
@@ -857,7 +1066,13 @@
     "option_d": "Festus",
     "correct_answer": "Ananias the High Priest",
     "difficulty": "hard",
-    "tags": ["acts", "ananias_high_priest", "paul", "council", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "ananias_high_priest",
+      "paul",
+      "council",
+      "speaker_recognition"
+    ],
     "source_key": "acts-041-ananias-strike-him-on-mouth"
   },
   {
@@ -878,7 +1093,13 @@
     "option_d": "Silas",
     "correct_answer": "Lord",
     "difficulty": "hard",
-    "tags": ["acts", "lord", "paul", "rome", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "lord",
+      "paul",
+      "rome",
+      "speaker_recognition"
+    ],
     "source_key": "acts-042-lord-take-courage"
   },
   {
@@ -899,7 +1120,13 @@
     "option_d": "Lysias",
     "correct_answer": "Tertullus",
     "difficulty": "hard",
-    "tags": ["acts", "tertullus", "felix", "paul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "tertullus",
+      "felix",
+      "paul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-043-tertullus-we-have-long-enjoyed-peace"
   },
   {
@@ -920,7 +1147,13 @@
     "option_d": "Claudius Lysias",
     "correct_answer": "Festus",
     "difficulty": "hard",
-    "tags": ["acts", "festus", "paul", "trial", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "festus",
+      "paul",
+      "trial",
+      "speaker_recognition"
+    ],
     "source_key": "acts-044-festus-go-up-to-jerusalem"
   },
   {
@@ -941,7 +1174,12 @@
     "option_d": "Bernice",
     "correct_answer": "Agrippa",
     "difficulty": "medium",
-    "tags": ["acts", "agrippa", "paul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "agrippa",
+      "paul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-045-agrippa-you-have-permission"
   },
   {
@@ -962,7 +1200,12 @@
     "option_d": "Tertullus",
     "correct_answer": "Festus",
     "difficulty": "hard",
-    "tags": ["acts", "festus", "paul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "festus",
+      "paul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-046-festus-you-are-out-of-your-mind"
   },
   {
@@ -983,7 +1226,12 @@
     "option_d": "Felix",
     "correct_answer": "Agrippa",
     "difficulty": "hard",
-    "tags": ["acts", "agrippa", "paul", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "agrippa",
+      "paul",
+      "speaker_recognition"
+    ],
     "source_key": "acts-047-agrippa-so-quickly-persuading-me"
   },
   {
@@ -1004,7 +1252,12 @@
     "option_d": "The Pilot",
     "correct_answer": "Paul",
     "difficulty": "hard",
-    "tags": ["acts", "paul", "voyage", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "voyage",
+      "speaker_recognition"
+    ],
     "source_key": "acts-048-paul-voyage-with-danger"
   },
   {
@@ -1025,7 +1278,13 @@
     "option_d": "A Sailor",
     "correct_answer": "Paul",
     "difficulty": "hard",
-    "tags": ["acts", "paul", "voyage", "angelic_message", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "voyage",
+      "angelic_message",
+      "speaker_recognition"
+    ],
     "source_key": "acts-049-paul-do-not-be-afraid"
   },
   {
@@ -1046,7 +1305,12 @@
     "option_d": "Apollos",
     "correct_answer": "Paul",
     "difficulty": "hard",
-    "tags": ["acts", "paul", "rome", "speaker_recognition"],
+    "tags": [
+      "acts",
+      "paul",
+      "rome",
+      "speaker_recognition"
+    ],
     "source_key": "acts-050-paul-salvation-sent-to-gentiles"
   }
 ]

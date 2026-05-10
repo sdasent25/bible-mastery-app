@@ -17,7 +17,13 @@
     "option_d": "Ahaziah",
     "correct_answer": "Elijah",
     "difficulty": "medium",
-    "tags": ["2_kings", "elijah", "ahaziah", "messengers", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elijah",
+      "ahaziah",
+      "messengers",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-001-elijah-no-god-in-israel"
   },
   {
@@ -38,7 +44,13 @@
     "option_d": "Jehu",
     "correct_answer": "Captain of Fifty",
     "difficulty": "hard",
-    "tags": ["2_kings", "captain_of_fifty", "elijah", "ahaziah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "captain_of_fifty",
+      "elijah",
+      "ahaziah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-002-captain-come-down"
   },
   {
@@ -59,7 +71,12 @@
     "option_d": "Micaiah",
     "correct_answer": "Elijah",
     "difficulty": "easy",
-    "tags": ["2_kings", "elijah", "captain_of_fifty", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elijah",
+      "captain_of_fifty",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-003-elijah-if-i-am-man-of-god"
   },
   {
@@ -80,7 +97,12 @@
     "option_d": "Elisha",
     "correct_answer": "Second Captain of Fifty",
     "difficulty": "hard",
-    "tags": ["2_kings", "second_captain_of_fifty", "elijah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "second_captain_of_fifty",
+      "elijah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-004-second-captain-come-down-quickly"
   },
   {
@@ -101,7 +123,12 @@
     "option_d": "Jehoram",
     "correct_answer": "Third Captain of Fifty",
     "difficulty": "hard",
-    "tags": ["2_kings", "third_captain_of_fifty", "elijah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "third_captain_of_fifty",
+      "elijah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-005-third-captain-let-my-life-be-precious"
   },
   {
@@ -122,7 +149,12 @@
     "option_d": "Ahaziah",
     "correct_answer": "Angel of the Lord",
     "difficulty": "hard",
-    "tags": ["2_kings", "angel_of_the_lord", "elijah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "angel_of_the_lord",
+      "elijah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-006-angel-go-down-with-him"
   },
   {
@@ -143,7 +175,13 @@
     "option_d": "Jehu",
     "correct_answer": "Elijah",
     "difficulty": "medium",
-    "tags": ["2_kings", "elijah", "ahaziah", "judgment", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elijah",
+      "ahaziah",
+      "judgment",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-007-elijah-you-shall-surely-die"
   },
   {
@@ -164,7 +202,13 @@
     "option_d": "Jehoram",
     "correct_answer": "Elijah",
     "difficulty": "medium",
-    "tags": ["2_kings", "elijah", "elisha", "departure", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elijah",
+      "elisha",
+      "departure",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-008-elijah-stay-here"
   },
   {
@@ -185,7 +229,13 @@
     "option_d": "Men of Jericho",
     "correct_answer": "Sons of the Prophets",
     "difficulty": "hard",
-    "tags": ["2_kings", "sons_of_the_prophets", "elisha", "elijah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "sons_of_the_prophets",
+      "elisha",
+      "elijah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-009-sons-of-prophets-do-you-know"
   },
   {
@@ -206,7 +256,13 @@
     "option_d": "Naaman",
     "correct_answer": "Elisha",
     "difficulty": "easy",
-    "tags": ["2_kings", "elisha", "elijah", "double_portion", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "elijah",
+      "double_portion",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-010-elisha-double-portion"
   },
   {
@@ -227,7 +283,13 @@
     "option_d": "Jehoshaphat",
     "correct_answer": "Elisha",
     "difficulty": "medium",
-    "tags": ["2_kings", "elisha", "jordan", "elijah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "jordan",
+      "elijah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-011-elisha-where-is-the-lord"
   },
   {
@@ -248,7 +310,12 @@
     "option_d": "Captains of the Army",
     "correct_answer": "Men of Jericho",
     "difficulty": "hard",
-    "tags": ["2_kings", "men_of_jericho", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "men_of_jericho",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-012-men-of-jericho-water-is-bad"
   },
   {
@@ -269,7 +336,13 @@
     "option_d": "Huldah",
     "correct_answer": "Widow",
     "difficulty": "medium",
-    "tags": ["2_kings", "widow", "elisha", "oil", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "widow",
+      "elisha",
+      "oil",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-013-widow-your-servant-husband-is-dead"
   },
   {
@@ -290,7 +363,12 @@
     "option_d": "King of Israel",
     "correct_answer": "Elisha",
     "difficulty": "medium",
-    "tags": ["2_kings", "elisha", "widow", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "widow",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-014-elisha-what-shall-i-do-for-you"
   },
   {
@@ -311,7 +389,12 @@
     "option_d": "Queen Mother",
     "correct_answer": "Shunammite Woman",
     "difficulty": "hard",
-    "tags": ["2_kings", "shunammite_woman", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "shunammite_woman",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-015-shunammite-make-a-small-room"
   },
   {
@@ -332,7 +415,13 @@
     "option_d": "Hezekiah",
     "correct_answer": "Gehazi",
     "difficulty": "hard",
-    "tags": ["2_kings", "gehazi", "elisha", "shunammite_woman", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "gehazi",
+      "elisha",
+      "shunammite_woman",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-016-gehazi-she-has-no-son"
   },
   {
@@ -353,7 +442,13 @@
     "option_d": "Isaiah",
     "correct_answer": "Elisha",
     "difficulty": "medium",
-    "tags": ["2_kings", "elisha", "shunammite_woman", "promise", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "shunammite_woman",
+      "promise",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-017-elisha-you-shall-embrace-a-son"
   },
   {
@@ -374,7 +469,12 @@
     "option_d": "Huldah",
     "correct_answer": "Shunammite Woman",
     "difficulty": "hard",
-    "tags": ["2_kings", "shunammite_woman", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "shunammite_woman",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-018-shunammite-did-i-ask-for-a-son"
   },
   {
@@ -395,7 +495,12 @@
     "option_d": "Naaman",
     "correct_answer": "Elisha",
     "difficulty": "hard",
-    "tags": ["2_kings", "elisha", "gehazi", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "gehazi",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-019-elisha-gird-up-your-loins"
   },
   {
@@ -416,7 +521,12 @@
     "option_d": "Leprous Men",
     "correct_answer": "Sons of the Prophets",
     "difficulty": "medium",
-    "tags": ["2_kings", "sons_of_the_prophets", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "sons_of_the_prophets",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-020-sons-of-prophets-death-in-the-pot"
   },
   {
@@ -437,7 +547,13 @@
     "option_d": "Joram",
     "correct_answer": "Naaman",
     "difficulty": "medium",
-    "tags": ["2_kings", "naaman", "elisha", "healing", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "naaman",
+      "elisha",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-021-naaman-i-thought-he-would-come-out"
   },
   {
@@ -458,7 +574,12 @@
     "option_d": "Officials of Hezekiah",
     "correct_answer": "Naaman's Servants",
     "difficulty": "medium",
-    "tags": ["2_kings", "naamans_servants", "naaman", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "naamans_servants",
+      "naaman",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-022-naamans-servants-great-thing"
   },
   {
@@ -479,7 +600,12 @@
     "option_d": "Ben-hadad",
     "correct_answer": "Naaman",
     "difficulty": "easy",
-    "tags": ["2_kings", "naaman", "healing", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "naaman",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-023-naaman-now-i-know"
   },
   {
@@ -500,7 +626,12 @@
     "option_d": "Joram",
     "correct_answer": "Naaman",
     "difficulty": "hard",
-    "tags": ["2_kings", "naaman", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "naaman",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-024-naaman-two-mule-loads-of-earth"
   },
   {
@@ -521,7 +652,12 @@
     "option_d": "King of Israel",
     "correct_answer": "Gehazi",
     "difficulty": "hard",
-    "tags": ["2_kings", "gehazi", "naaman", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "gehazi",
+      "naaman",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-025-gehazi-master-has-spared-naaman"
   },
   {
@@ -542,7 +678,13 @@
     "option_d": "Joram",
     "correct_answer": "Gehazi",
     "difficulty": "medium",
-    "tags": ["2_kings", "gehazi", "naaman", "deception", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "gehazi",
+      "naaman",
+      "deception",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-026-gehazi-my-master-has-sent-me"
   },
   {
@@ -563,7 +705,12 @@
     "option_d": "Isaiah",
     "correct_answer": "Elisha",
     "difficulty": "hard",
-    "tags": ["2_kings", "elisha", "gehazi", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "gehazi",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-027-elisha-did-not-my-heart-go"
   },
   {
@@ -584,7 +731,12 @@
     "option_d": "Naaman's Servants",
     "correct_answer": "Sons of the Prophets",
     "difficulty": "hard",
-    "tags": ["2_kings", "sons_of_the_prophets", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "sons_of_the_prophets",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-028-sons-of-prophets-place-too-small"
   },
   {
@@ -605,7 +757,13 @@
     "option_d": "Joram",
     "correct_answer": "One of the Sons of the Prophets",
     "difficulty": "hard",
-    "tags": ["2_kings", "sons_of_the_prophets", "elisha", "axe_head", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "sons_of_the_prophets",
+      "elisha",
+      "axe_head",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-029-son-of-prophets-alas-my-master"
   },
   {
@@ -626,7 +784,12 @@
     "option_d": "Jehu",
     "correct_answer": "King of Aram",
     "difficulty": "hard",
-    "tags": ["2_kings", "king_of_aram", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "king_of_aram",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-030-king-of-aram-camp-here"
   },
   {
@@ -647,7 +810,12 @@
     "option_d": "One of the Sons of the Prophets",
     "correct_answer": "Elisha's Servant",
     "difficulty": "hard",
-    "tags": ["2_kings", "elishas_servant", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elishas_servant",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-031-servant-what-shall-we-do"
   },
   {
@@ -668,7 +836,12 @@
     "option_d": "Hezekiah",
     "correct_answer": "Elisha",
     "difficulty": "easy",
-    "tags": ["2_kings", "elisha", "servant", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "servant",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-032-elisha-do-not-be-afraid"
   },
   {
@@ -689,7 +862,12 @@
     "option_d": "King of Aram",
     "correct_answer": "King of Israel",
     "difficulty": "medium",
-    "tags": ["2_kings", "king_of_israel", "elisha", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "king_of_israel",
+      "elisha",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-033-king-shall-i-strike-them"
   },
   {
@@ -710,7 +888,13 @@
     "option_d": "Huldah",
     "correct_answer": "Elisha",
     "difficulty": "medium",
-    "tags": ["2_kings", "elisha", "samaria", "siege", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "samaria",
+      "siege",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-034-elisha-tomorrow-about-this-time"
   },
   {
@@ -731,7 +915,13 @@
     "option_d": "Naaman",
     "correct_answer": "Royal Officer",
     "difficulty": "hard",
-    "tags": ["2_kings", "royal_officer", "elisha", "siege", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "royal_officer",
+      "elisha",
+      "siege",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-035-officer-windows-in-heaven"
   },
   {
@@ -752,7 +942,12 @@
     "option_d": "Captains of the Guard",
     "correct_answer": "Four Lepers",
     "difficulty": "hard",
-    "tags": ["2_kings", "four_lepers", "samaria", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "four_lepers",
+      "samaria",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-036-four-lepers-why-sit-here"
   },
   {
@@ -773,7 +968,12 @@
     "option_d": "Messengers of the King",
     "correct_answer": "Four Lepers",
     "difficulty": "hard",
-    "tags": ["2_kings", "four_lepers", "good_news", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "four_lepers",
+      "good_news",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-037-four-lepers-not-doing-right"
   },
   {
@@ -794,7 +994,12 @@
     "option_d": "Huldah",
     "correct_answer": "Elisha",
     "difficulty": "medium",
-    "tags": ["2_kings", "elisha", "shunammite_woman", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "shunammite_woman",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-038-elisha-arise-and-depart"
   },
   {
@@ -815,7 +1020,12 @@
     "option_d": "Jehu",
     "correct_answer": "Elisha",
     "difficulty": "hard",
-    "tags": ["2_kings", "elisha", "hazael", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "hazael",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-039-elisha-certainly-recover-certainly-die"
   },
   {
@@ -836,7 +1046,12 @@
     "option_d": "Ben-hadad",
     "correct_answer": "Elisha",
     "difficulty": "hard",
-    "tags": ["2_kings", "elisha", "hazael", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "elisha",
+      "hazael",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-040-elisha-you-are-to-be-king"
   },
   {
@@ -857,7 +1072,12 @@
     "option_d": "Isaiah",
     "correct_answer": "Young Prophet",
     "difficulty": "hard",
-    "tags": ["2_kings", "young_prophet", "jehu", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "young_prophet",
+      "jehu",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-041-young-prophet-thus-says-the-lord"
   },
   {
@@ -878,7 +1098,12 @@
     "option_d": "Hazael",
     "correct_answer": "Jehu",
     "difficulty": "medium",
-    "tags": ["2_kings", "jehu", "messengers", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "jehu",
+      "messengers",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-042-jehu-what-have-you-to-do-with-peace"
   },
   {
@@ -899,7 +1124,12 @@
     "option_d": "Hazael",
     "correct_answer": "Joram",
     "difficulty": "hard",
-    "tags": ["2_kings", "joram", "jehu", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "joram",
+      "jehu",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-043-joram-is-it-peace-jehu"
   },
   {
@@ -920,7 +1150,12 @@
     "option_d": "Athaliah",
     "correct_answer": "Jehu",
     "difficulty": "medium",
-    "tags": ["2_kings", "jehu", "jezebel", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "jehu",
+      "jezebel",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-044-jehu-who-is-on-my-side"
   },
   {
@@ -941,7 +1176,12 @@
     "option_d": "Queen Mother",
     "correct_answer": "Athaliah",
     "difficulty": "easy",
-    "tags": ["2_kings", "athaliah", "joash", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "athaliah",
+      "joash",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-045-athaliah-treason-treason"
   },
   {
@@ -962,7 +1202,12 @@
     "option_d": "Hezekiah",
     "correct_answer": "Jehoiada",
     "difficulty": "hard",
-    "tags": ["2_kings", "jehoiada", "athaliah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "jehoiada",
+      "athaliah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-046-jehoiada-bring-her-out"
   },
   {
@@ -983,7 +1228,12 @@
     "option_d": "Isaiah",
     "correct_answer": "Rabshakeh",
     "difficulty": "medium",
-    "tags": ["2_kings", "rabshakeh", "hezekiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "rabshakeh",
+      "hezekiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-047-rabshakeh-what-is-this-trust"
   },
   {
@@ -1004,7 +1254,12 @@
     "option_d": "Sennacherib",
     "correct_answer": "Hezekiah's Officials",
     "difficulty": "hard",
-    "tags": ["2_kings", "hezekiahs_officials", "rabshakeh", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "hezekiahs_officials",
+      "rabshakeh",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-048-officials-speak-in-aramaic"
   },
   {
@@ -1025,7 +1280,12 @@
     "option_d": "Jehoiada",
     "correct_answer": "Rabshakeh",
     "difficulty": "medium",
-    "tags": ["2_kings", "rabshakeh", "hezekiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "rabshakeh",
+      "hezekiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-049-rabshakeh-do-not-let-hezekiah-deceive"
   },
   {
@@ -1046,7 +1306,12 @@
     "option_d": "Men of Jerusalem",
     "correct_answer": "Hezekiah's Servants",
     "difficulty": "hard",
-    "tags": ["2_kings", "hezekiahs_servants", "isaiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "hezekiahs_servants",
+      "isaiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-050-servants-day-of-distress"
   },
   {
@@ -1067,7 +1332,12 @@
     "option_d": "Assyrian Messengers",
     "correct_answer": "Hezekiah's Servants",
     "difficulty": "hard",
-    "tags": ["2_kings", "hezekiahs_servants", "isaiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "hezekiahs_servants",
+      "isaiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-051-servants-day-of-distress"
   },
   {
@@ -1088,7 +1358,12 @@
     "option_d": "Huldah",
     "correct_answer": "Isaiah",
     "difficulty": "medium",
-    "tags": ["2_kings", "isaiah", "hezekiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "isaiah",
+      "hezekiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-052-isaiah-do-not-be-afraid"
   },
   {
@@ -1109,7 +1384,12 @@
     "option_d": "Josiah",
     "correct_answer": "Hezekiah",
     "difficulty": "medium",
-    "tags": ["2_kings", "hezekiah", "prayer", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "hezekiah",
+      "prayer",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-053-hezekiah-save-us-please"
   },
   {
@@ -1130,7 +1410,12 @@
     "option_d": "Zephaniah",
     "correct_answer": "Isaiah",
     "difficulty": "medium",
-    "tags": ["2_kings", "isaiah", "hezekiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "isaiah",
+      "hezekiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-054-isaiah-thus-says-the-lord"
   },
   {
@@ -1151,7 +1436,12 @@
     "option_d": "Rabshakeh",
     "correct_answer": "Isaiah",
     "difficulty": "easy",
-    "tags": ["2_kings", "isaiah", "hezekiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "isaiah",
+      "hezekiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-055-isaiah-set-your-house-in-order"
   },
   {
@@ -1172,7 +1462,13 @@
     "option_d": "Huldah",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["2_kings", "god", "hezekiah", "isaiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "god",
+      "hezekiah",
+      "isaiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-056-god-i-have-heard-your-prayer"
   },
   {
@@ -1193,7 +1489,12 @@
     "option_d": "Zedekiah",
     "correct_answer": "Josiah",
     "difficulty": "medium",
-    "tags": ["2_kings", "josiah", "book_of_the_law", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "josiah",
+      "book_of_the_law",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-057-josiah-go-inquire-of-the-lord"
   },
   {
@@ -1214,7 +1515,12 @@
     "option_d": "Athaliah",
     "correct_answer": "Huldah",
     "difficulty": "medium",
-    "tags": ["2_kings", "huldah", "josiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "huldah",
+      "josiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-058-huldah-thus-says-the-lord"
   },
   {
@@ -1235,7 +1541,12 @@
     "option_d": "God",
     "correct_answer": "Huldah",
     "difficulty": "hard",
-    "tags": ["2_kings", "huldah", "josiah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "huldah",
+      "josiah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-059-huldah-because-your-heart-was-penitent"
   },
   {
@@ -1256,7 +1567,12 @@
     "option_d": "Jeremiah",
     "correct_answer": "Gedaliah",
     "difficulty": "hard",
-    "tags": ["2_kings", "gedaliah", "judah", "speaker_recognition"],
+    "tags": [
+      "2_kings",
+      "gedaliah",
+      "judah",
+      "speaker_recognition"
+    ],
     "source_key": "2-kings-060-gedaliah-do-not-be-afraid"
   }
 ]

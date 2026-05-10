@@ -17,7 +17,12 @@
     "option_d": "Joseph",
     "correct_answer": "Angel of the Lord",
     "difficulty": "easy",
-    "tags": ["matthew", "angel_of_the_lord", "joseph", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "angel_of_the_lord",
+      "joseph",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-001-angel-joseph-take-mary"
   },
   {
@@ -38,7 +43,12 @@
     "option_d": "Angel of the Lord",
     "correct_answer": "Herod",
     "difficulty": "medium",
-    "tags": ["matthew", "herod", "magi", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "herod",
+      "magi",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-002-herod-report-back-bethlehem"
   },
   {
@@ -59,7 +69,12 @@
     "option_d": "Peter",
     "correct_answer": "John the Baptist",
     "difficulty": "easy",
-    "tags": ["matthew", "john_the_baptist", "wilderness", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "john_the_baptist",
+      "wilderness",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-003-john-repent-kingdom-near"
   },
   {
@@ -80,7 +95,12 @@
     "option_d": "Jesus",
     "correct_answer": "Voice from Heaven",
     "difficulty": "easy",
-    "tags": ["matthew", "voice_from_heaven", "baptism", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "voice_from_heaven",
+      "baptism",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-004-voice-heaven-beloved-son"
   },
   {
@@ -101,7 +121,12 @@
     "option_d": "Angel of the Lord",
     "correct_answer": "Satan",
     "difficulty": "easy",
-    "tags": ["matthew", "satan", "temptation", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "satan",
+      "temptation",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-005-satan-stones-to-bread"
   },
   {
@@ -122,7 +147,12 @@
     "option_d": "Peter",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["matthew", "jesus", "disciples", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "disciples",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-006-jesus-fish-for-people"
   },
   {
@@ -143,7 +173,12 @@
     "option_d": "Moses",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["matthew", "jesus", "sermon_on_the_mount", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "sermon_on_the_mount",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-007-jesus-light-of-world"
   },
   {
@@ -164,7 +199,12 @@
     "option_d": "Matthew",
     "correct_answer": "Centurion",
     "difficulty": "easy",
-    "tags": ["matthew", "centurion", "healing", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "centurion",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-008-centurion-under-my-roof"
   },
   {
@@ -185,7 +225,12 @@
     "option_d": "Demons",
     "correct_answer": "Demons",
     "difficulty": "medium",
-    "tags": ["matthew", "demons", "gadarenes", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "demons",
+      "gadarenes",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-009-demons-son-of-god"
   },
   {
@@ -206,7 +251,11 @@
     "option_d": "Centurion",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["matthew", "jesus", "matthew", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-010-jesus-follow-me-matthew"
   },
   {
@@ -227,7 +276,12 @@
     "option_d": "Crowd",
     "correct_answer": "Disciples of John the Baptist",
     "difficulty": "medium",
-    "tags": ["matthew", "disciples_of_john", "fasting", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "disciples_of_john",
+      "fasting",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-011-johns-disciples-fasting-question"
   },
   {
@@ -248,7 +302,12 @@
     "option_d": "Moses",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "twelve", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "twelve",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-012-jesus-sheep-among-wolves"
   },
   {
@@ -269,7 +328,12 @@
     "option_d": "Joseph",
     "correct_answer": "John the Baptist",
     "difficulty": "medium",
-    "tags": ["matthew", "john_the_baptist", "prison", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "john_the_baptist",
+      "prison",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-013-john-are-you-the-one"
   },
   {
@@ -290,7 +354,12 @@
     "option_d": "Pharisees",
     "correct_answer": "Pharisees",
     "difficulty": "medium",
-    "tags": ["matthew", "pharisees", "sabbath", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "pharisees",
+      "sabbath",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-014-pharisees-sabbath-grain"
   },
   {
@@ -311,7 +380,12 @@
     "option_d": "Chief Priests",
     "correct_answer": "Disciples",
     "difficulty": "medium",
-    "tags": ["matthew", "disciples", "parables", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "disciples",
+      "parables",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-015-disciples-why-parables"
   },
   {
@@ -332,7 +406,12 @@
     "option_d": "Sadducees",
     "correct_answer": "People of Nazareth",
     "difficulty": "hard",
-    "tags": ["matthew", "people_of_nazareth", "hometown", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "people_of_nazareth",
+      "hometown",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-016-nazareth-carpenters-son"
   },
   {
@@ -353,7 +432,12 @@
     "option_d": "Angel of the Lord",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["matthew", "jesus", "walking_on_water", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "walking_on_water",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-017-jesus-it-is-i"
   },
   {
@@ -374,7 +458,12 @@
     "option_d": "Mother of James and John",
     "correct_answer": "Canaanite Woman",
     "difficulty": "medium",
-    "tags": ["matthew", "canaanite_woman", "faith", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "canaanite_woman",
+      "faith",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-018-canaanite-woman-crumbs"
   },
   {
@@ -395,7 +484,12 @@
     "option_d": "Andrew",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "caesarea_philippi", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "caesarea_philippi",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-019-jesus-who-do-you-say"
   },
   {
@@ -416,7 +510,12 @@
     "option_d": "Thomas",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["matthew", "peter", "passion_prediction", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "peter",
+      "passion_prediction",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-020-peter-this-must-never-happen"
   },
   {
@@ -437,7 +536,12 @@
     "option_d": "Voice from the Cloud",
     "correct_answer": "Voice from the Cloud",
     "difficulty": "hard",
-    "tags": ["matthew", "voice_from_the_cloud", "transfiguration", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "voice_from_the_cloud",
+      "transfiguration",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-021-voice-cloud-listen-to-him"
   },
   {
@@ -458,7 +562,12 @@
     "option_d": "Pharisees",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["matthew", "disciples", "private_question", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "disciples",
+      "private_question",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-022-disciples-why-could-we-not"
   },
   {
@@ -479,7 +588,12 @@
     "option_d": "Moses",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "greatness", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "greatness",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-023-jesus-become-like-children"
   },
   {
@@ -500,7 +614,12 @@
     "option_d": "Matthew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["matthew", "peter", "forgiveness", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "peter",
+      "forgiveness",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-024-peter-how-often-forgive"
   },
   {
@@ -521,7 +640,12 @@
     "option_d": "Tax Collector",
     "correct_answer": "Rich Young Man",
     "difficulty": "easy",
-    "tags": ["matthew", "rich_young_man", "eternal_life", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "rich_young_man",
+      "eternal_life",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-025-rich-young-man-eternal-life"
   },
   {
@@ -542,7 +666,12 @@
     "option_d": "Herodias",
     "correct_answer": "Mother of James and John",
     "difficulty": "hard",
-    "tags": ["matthew", "mother_of_james_and_john", "kingdom", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "mother_of_james_and_john",
+      "kingdom",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-026-mother-right-and-left"
   },
   {
@@ -563,7 +692,12 @@
     "option_d": "Soldiers",
     "correct_answer": "Crowds",
     "difficulty": "easy",
-    "tags": ["matthew", "crowds", "triumphal_entry", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "crowds",
+      "triumphal_entry",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-027-crowds-hosanna-son-of-david"
   },
   {
@@ -584,7 +718,12 @@
     "option_d": "Herodians",
     "correct_answer": "Chief Priests and Elders",
     "difficulty": "medium",
-    "tags": ["matthew", "chief_priests_and_elders", "temple", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "chief_priests_and_elders",
+      "temple",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-028-chief-priests-authority-question"
   },
   {
@@ -605,7 +744,12 @@
     "option_d": "John the Baptist",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "taxes", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "taxes",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-029-jesus-give-to-caesar"
   },
   {
@@ -626,7 +770,12 @@
     "option_d": "Sadducees",
     "correct_answer": "Sadducees",
     "difficulty": "hard",
-    "tags": ["matthew", "sadducees", "resurrection", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "sadducees",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-030-sadducees-whose-wife"
   },
   {
@@ -647,7 +796,12 @@
     "option_d": "Scribe from Nazareth",
     "correct_answer": "Lawyer",
     "difficulty": "hard",
-    "tags": ["matthew", "lawyer", "greatest_commandment", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "lawyer",
+      "greatest_commandment",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-031-lawyer-greatest-commandment"
   },
   {
@@ -668,7 +822,12 @@
     "option_d": "Stephen",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["matthew", "jesus", "scribes_and_pharisees", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "scribes_and_pharisees",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-032-jesus-whitewashed-tombs"
   },
   {
@@ -689,7 +848,12 @@
     "option_d": "Roman Soldiers",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["matthew", "disciples", "mount_of_olives", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "disciples",
+      "mount_of_olives",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-033-disciples-sign-of-coming"
   },
   {
@@ -710,7 +874,12 @@
     "option_d": "Watchman",
     "correct_answer": "Bridegroom",
     "difficulty": "hard",
-    "tags": ["matthew", "bridegroom", "parable", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "bridegroom",
+      "parable",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-034-bridegroom-i-do-not-know-you"
   },
   {
@@ -731,7 +900,12 @@
     "option_d": "Crowds",
     "correct_answer": "Chief Priests",
     "difficulty": "hard",
-    "tags": ["matthew", "chief_priests", "plot", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "chief_priests",
+      "plot",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-035-chief-priests-plot-secretly"
   },
   {
@@ -752,7 +926,12 @@
     "option_d": "Servants",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["matthew", "disciples", "last_supper", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "disciples",
+      "last_supper",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-036-disciples-surely-not-i"
   },
   {
@@ -773,7 +952,12 @@
     "option_d": "Thomas",
     "correct_answer": "Judas",
     "difficulty": "hard",
-    "tags": ["matthew", "judas", "last_supper", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "judas",
+      "last_supper",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-037-judas-surely-not-i-rabbi"
   },
   {
@@ -794,7 +978,12 @@
     "option_d": "High Priest",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "mount_of_olives", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "mount_of_olives",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-038-jesus-you-will-all-fall-away"
   },
   {
@@ -815,7 +1004,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["matthew", "peter", "denial", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "peter",
+      "denial",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-039-peter-i-will-not-deny"
   },
   {
@@ -836,7 +1030,12 @@
     "option_d": "John",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["matthew", "jesus", "gethsemane", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "gethsemane",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-040-jesus-let-this-cup-pass"
   },
   {
@@ -857,7 +1056,12 @@
     "option_d": "Angel of the Lord",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["matthew", "jesus", "judas", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "jesus",
+      "judas",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-041-jesus-friend-do-what-you-came"
   },
   {
@@ -878,7 +1082,12 @@
     "option_d": "Judas",
     "correct_answer": "High Priest",
     "difficulty": "hard",
-    "tags": ["matthew", "high_priest", "trial", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "high_priest",
+      "trial",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-042-high-priest-are-you-messiah"
   },
   {
@@ -899,7 +1108,12 @@
     "option_d": "John",
     "correct_answer": "Servant Girl",
     "difficulty": "hard",
-    "tags": ["matthew", "servant_girl", "peter", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "servant_girl",
+      "peter",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-043-servant-girl-you-were-with-jesus"
   },
   {
@@ -920,7 +1134,12 @@
     "option_d": "Centurion",
     "correct_answer": "Judas",
     "difficulty": "medium",
-    "tags": ["matthew", "judas", "silver", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "judas",
+      "silver",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-044-judas-betraying-innocent-blood"
   },
   {
@@ -941,7 +1160,12 @@
     "option_d": "Elders of the People",
     "correct_answer": "Chief Priests",
     "difficulty": "hard",
-    "tags": ["matthew", "chief_priests", "silver", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "chief_priests",
+      "silver",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-045-chief-priests-not-lawful-treasury"
   },
   {
@@ -962,7 +1186,12 @@
     "option_d": "Herodias",
     "correct_answer": "Pilate's Wife",
     "difficulty": "hard",
-    "tags": ["matthew", "pilates_wife", "dream", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "pilates_wife",
+      "dream",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-046-pilates-wife-innocent-man"
   },
   {
@@ -983,7 +1212,12 @@
     "option_d": "Disciples",
     "correct_answer": "Crowd",
     "difficulty": "hard",
-    "tags": ["matthew", "crowd", "pilate", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "crowd",
+      "pilate",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-047-crowd-his-blood-on-us"
   },
   {
@@ -1004,7 +1238,12 @@
     "option_d": "Disciples",
     "correct_answer": "Soldiers",
     "difficulty": "medium",
-    "tags": ["matthew", "soldiers", "mocking", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "soldiers",
+      "mocking",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-048-soldiers-hail-king-of-jews"
   },
   {
@@ -1025,7 +1264,12 @@
     "option_d": "Women at the Cross",
     "correct_answer": "Bystanders",
     "difficulty": "hard",
-    "tags": ["matthew", "bystanders", "crucifixion", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "bystanders",
+      "crucifixion",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-049-bystanders-calling-for-elijah"
   },
   {
@@ -1046,7 +1290,12 @@
     "option_d": "Peter",
     "correct_answer": "Angel of the Lord",
     "difficulty": "easy",
-    "tags": ["matthew", "angel_of_the_lord", "empty_tomb", "speaker_recognition"],
+    "tags": [
+      "matthew",
+      "angel_of_the_lord",
+      "empty_tomb",
+      "speaker_recognition"
+    ],
     "source_key": "matthew-050-angel-tomb-do-not-be-afraid"
   }
 ]

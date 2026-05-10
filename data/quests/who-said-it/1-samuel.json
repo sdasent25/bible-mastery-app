@@ -17,7 +17,13 @@
     "option_d": "Michal",
     "correct_answer": "Hannah",
     "difficulty": "easy",
-    "tags": ["1_samuel", "hannah", "prayer", "shiloh", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "hannah",
+      "prayer",
+      "shiloh",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-001-hannah-remember-me"
   },
   {
@@ -38,7 +44,13 @@
     "option_d": "Saul",
     "correct_answer": "Eli",
     "difficulty": "medium",
-    "tags": ["1_samuel", "eli", "hannah", "shiloh", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "eli",
+      "hannah",
+      "shiloh",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-002-eli-drunken-spectacle"
   },
   {
@@ -59,7 +71,13 @@
     "option_d": "Abigail",
     "correct_answer": "Hannah",
     "difficulty": "medium",
-    "tags": ["1_samuel", "hannah", "eli", "prayer", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "hannah",
+      "eli",
+      "prayer",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-003-hannah-pouring-out-my-soul"
   },
   {
@@ -80,7 +98,13 @@
     "option_d": "Nathan",
     "correct_answer": "Eli",
     "difficulty": "easy",
-    "tags": ["1_samuel", "eli", "hannah", "blessing", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "eli",
+      "hannah",
+      "blessing",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-004-eli-go-in-peace"
   },
   {
@@ -101,7 +125,13 @@
     "option_d": "Michal",
     "correct_answer": "Hannah",
     "difficulty": "medium",
-    "tags": ["1_samuel", "hannah", "samuel", "eli", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "hannah",
+      "samuel",
+      "eli",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-005-hannah-for-this-child-i-prayed"
   },
   {
@@ -122,7 +152,13 @@
     "option_d": "Saul",
     "correct_answer": "Man of God",
     "difficulty": "hard",
-    "tags": ["1_samuel", "god", "eli", "judgment", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "eli",
+      "judgment",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-006-god-those-who-honor-me"
   },
   {
@@ -143,7 +179,13 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "samuel", "eli", "calling", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "eli",
+      "calling",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-007-samuel-speak-servant-listening"
   },
   {
@@ -164,7 +206,13 @@
     "option_d": "Phinehas",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["1_samuel", "god", "samuel", "judgment", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "samuel",
+      "judgment",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-008-god-about-to-do-something"
   },
   {
@@ -185,7 +233,13 @@
     "option_d": "Jonathan",
     "correct_answer": "Eli",
     "difficulty": "medium",
-    "tags": ["1_samuel", "eli", "samuel", "vision", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "eli",
+      "samuel",
+      "vision",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-009-eli-what-was-it-he-told-you"
   },
   {
@@ -206,7 +260,13 @@
     "option_d": "Elders of Israel",
     "correct_answer": "Elders of Israel",
     "difficulty": "hard",
-    "tags": ["1_samuel", "samuel", "ark", "battle", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "ark",
+      "battle",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-010-samuel-let-us-bring-the-ark"
   },
   {
@@ -227,7 +287,12 @@
     "option_d": "Men of Jabesh-gilead",
     "correct_answer": "Philistines",
     "difficulty": "hard",
-    "tags": ["1_samuel", "philistines", "ark", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "philistines",
+      "ark",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-011-philistines-who-can-deliver-us"
   },
   {
@@ -248,7 +313,12 @@
     "option_d": "Jonathan",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "repentance", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "repentance",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-012-samuel-return-to-the-lord"
   },
   {
@@ -269,7 +339,13 @@
     "option_d": "Priests at Shiloh",
     "correct_answer": "Elders of Israel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "elders_of_israel", "king", "samuel", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "elders_of_israel",
+      "king",
+      "samuel",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-013-elders-appoint-for-us-a-king"
   },
   {
@@ -290,7 +366,13 @@
     "option_d": "Jonathan",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["1_samuel", "god", "samuel", "king", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "samuel",
+      "king",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-014-god-they-have-not-rejected-you"
   },
   {
@@ -311,7 +393,13 @@
     "option_d": "Abner",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "kingship", "warning", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "kingship",
+      "warning",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-015-samuel-ways-of-the-king"
   },
   {
@@ -332,7 +420,12 @@
     "option_d": "Men of Judah",
     "correct_answer": "People of Israel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "people_of_israel", "king", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "people_of_israel",
+      "king",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-016-people-no-but-we-will-have-a-king"
   },
   {
@@ -353,7 +446,13 @@
     "option_d": "Jonathan",
     "correct_answer": "God",
     "difficulty": "hard",
-    "tags": ["1_samuel", "god", "samuel", "saul", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "samuel",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-017-god-you-shall-anoint-him"
   },
   {
@@ -374,7 +473,13 @@
     "option_d": "Jonathan",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "saul", "seer", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "seer",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-018-samuel-i-am-the-seer"
   },
   {
@@ -395,7 +500,12 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "samuel", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "samuel",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-019-saul-am-i-not-a-benjaminite"
   },
   {
@@ -416,7 +526,13 @@
     "option_d": "Kish",
     "correct_answer": "Samuel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "samuel", "saul", "anointing", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "anointing",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-020-samuel-has-not-the-lord-anointed-you"
   },
   {
@@ -437,7 +553,13 @@
     "option_d": "Kish",
     "correct_answer": "Samuel",
     "difficulty": "hard",
-    "tags": ["1_samuel", "samuel", "saul", "gilgal", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "gilgal",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-021-samuel-go-down-to-gilgal"
   },
   {
@@ -458,7 +580,13 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "samuel", "uncle", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "samuel",
+      "uncle",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-022-saul-plainly-about-the-donkeys"
   },
   {
@@ -479,7 +607,13 @@
     "option_d": "Jonathan",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "saul", "mizpah", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "mizpah",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-023-samuel-see-him-whom-the-lord-has-chosen"
   },
   {
@@ -500,7 +634,12 @@
     "option_d": "Elders of Benjamin",
     "correct_answer": "Worthless Men",
     "difficulty": "hard",
-    "tags": ["1_samuel", "worthless_men", "saul", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "worthless_men",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-024-worthless-men-how-can-this-man-save-us"
   },
   {
@@ -521,7 +660,12 @@
     "option_d": "Achish",
     "correct_answer": "Nahash the Ammonite",
     "difficulty": "medium",
-    "tags": ["1_samuel", "nahash", "jabesh_gilead", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "nahash",
+      "jabesh_gilead",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-025-nahash-gouge-out-right-eye"
   },
   {
@@ -542,7 +686,12 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "jabesh_gilead", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "jabesh_gilead",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-026-saul-no-one-put-to-death-today"
   },
   {
@@ -563,7 +712,12 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "farewell", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "farewell",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-027-samuel-here-i-am-testify-against-me"
   },
   {
@@ -584,7 +738,13 @@
     "option_d": "Men of Benjamin",
     "correct_answer": "People of Israel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "people_of_israel", "samuel", "prayer", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "people_of_israel",
+      "samuel",
+      "prayer",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-028-people-pray-for-your-servants"
   },
   {
@@ -605,7 +765,12 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "hard",
-    "tags": ["1_samuel", "samuel", "prayer", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "prayer",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-029-samuel-far-be-it-from-me"
   },
   {
@@ -626,7 +791,13 @@
     "option_d": "Abner",
     "correct_answer": "Jonathan",
     "difficulty": "medium",
-    "tags": ["1_samuel", "jonathan", "armor_bearer", "battle", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathan",
+      "armor_bearer",
+      "battle",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-030-jonathan-nothing-can-hinder-the-lord"
   },
   {
@@ -647,7 +818,12 @@
     "option_d": "David",
     "correct_answer": "Jonathan's Armor-bearer",
     "difficulty": "hard",
-    "tags": ["1_samuel", "jonathans_armor_bearer", "jonathan", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathans_armor_bearer",
+      "jonathan",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-031-armor-bearer-do-all-in-your-heart"
   },
   {
@@ -668,7 +844,13 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "saul", "rebuke", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "rebuke",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-032-samuel-you-have-done-foolishly"
   },
   {
@@ -689,7 +871,13 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "oath", "battle", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "oath",
+      "battle",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-033-saul-cursed-be-the-man-who-eats"
   },
   {
@@ -710,7 +898,13 @@
     "option_d": "David",
     "correct_answer": "Jonathan",
     "difficulty": "hard",
-    "tags": ["1_samuel", "jonathan", "saul", "honey", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathan",
+      "saul",
+      "honey",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-034-jonathan-my-father-has-troubled-the-land"
   },
   {
@@ -731,7 +925,13 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "medium",
-    "tags": ["1_samuel", "samuel", "saul", "amalek", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "amalek",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-035-samuel-strike-amalek"
   },
   {
@@ -752,7 +952,13 @@
     "option_d": "Agag",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "samuel", "amalek", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "samuel",
+      "amalek",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-036-saul-carried-out-the-command"
   },
   {
@@ -773,7 +979,13 @@
     "option_d": "Abner",
     "correct_answer": "Samuel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "samuel", "saul", "amalek", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "amalek",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-037-samuel-what-is-this-bleating"
   },
   {
@@ -794,7 +1006,13 @@
     "option_d": "David",
     "correct_answer": "Samuel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "samuel", "saul", "obedience", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "obedience",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-038-samuel-obey-is-better"
   },
   {
@@ -815,7 +1033,12 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "confession", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "confession",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-039-saul-i-have-sinned"
   },
   {
@@ -836,7 +1059,13 @@
     "option_d": "David",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["1_samuel", "god", "samuel", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "samuel",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-040-god-how-long-will-you-grieve"
   },
   {
@@ -857,7 +1086,13 @@
     "option_d": "David",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["1_samuel", "god", "samuel", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "samuel",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-041-god-lord-looks-on-the-heart"
   },
   {
@@ -878,7 +1113,13 @@
     "option_d": "Philistine Messengers",
     "correct_answer": "Saul's Servants",
     "difficulty": "hard",
-    "tags": ["1_samuel", "sauls_servants", "david", "music", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "sauls_servants",
+      "david",
+      "music",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-042-servants-let-our-lord-command"
   },
   {
@@ -899,7 +1140,12 @@
     "option_d": "David",
     "correct_answer": "Goliath",
     "difficulty": "easy",
-    "tags": ["1_samuel", "goliath", "challenge", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "goliath",
+      "challenge",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-043-goliath-choose-a-man"
   },
   {
@@ -920,7 +1166,12 @@
     "option_d": "Abner",
     "correct_answer": "David",
     "difficulty": "easy",
-    "tags": ["1_samuel", "david", "goliath", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "goliath",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-044-david-who-is-this-philistine"
   },
   {
@@ -941,7 +1192,13 @@
     "option_d": "Samuel",
     "correct_answer": "David",
     "difficulty": "medium",
-    "tags": ["1_samuel", "david", "saul", "goliath", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "saul",
+      "goliath",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-045-david-let-no-ones-heart-fail"
   },
   {
@@ -962,7 +1219,13 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "david", "goliath", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "david",
+      "goliath",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-046-saul-you-are-not-able"
   },
   {
@@ -983,7 +1246,13 @@
     "option_d": "Abner",
     "correct_answer": "David",
     "difficulty": "medium",
-    "tags": ["1_samuel", "david", "faith", "goliath", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "faith",
+      "goliath",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-047-david-lord-who-delivered-me"
   },
   {
@@ -1004,7 +1273,13 @@
     "option_d": "Samuel",
     "correct_answer": "David",
     "difficulty": "medium",
-    "tags": ["1_samuel", "david", "goliath", "lord_of_hosts", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "goliath",
+      "lord_of_hosts",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-048-david-come-in-name-of-lord"
   },
   {
@@ -1025,7 +1300,13 @@
     "option_d": "Samuel",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "david", "goliath", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "david",
+      "goliath",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-049-saul-whose-son-are-you"
   },
   {
@@ -1046,7 +1327,13 @@
     "option_d": "Daughters of Shiloh",
     "correct_answer": "Women of Israel",
     "difficulty": "easy",
-    "tags": ["1_samuel", "women_of_israel", "saul", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "women_of_israel",
+      "saul",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-050-women-saul-has-killed-thousands"
   },
   {
@@ -1067,7 +1354,13 @@
     "option_d": "Abner",
     "correct_answer": "Jonathan",
     "difficulty": "hard",
-    "tags": ["1_samuel", "jonathan", "saul", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathan",
+      "saul",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-051-jonathan-let-not-the-king-sin"
   },
   {
@@ -1079,16 +1372,22 @@
     "speaker": "Michal",
     "speaker_type": "person",
     "reference": "1 Samuel 19:17",
-    "quote_text": "He said to me, let me go",
+    "quote_text": "Let me go",
     "prompt_context": "After helping David escape from Saul, Michal gave an explanation when her father confronted her.",
-    "question": "Who told Saul that David had threatened her if she did not let him go?",
+    "question": "Who told Saul that David had said, “Let me go,” and had threatened her?",
     "option_a": "Abigail",
     "option_b": "Hannah",
     "option_c": "Michal",
     "option_d": "Ahinoam",
     "correct_answer": "Michal",
     "difficulty": "hard",
-    "tags": ["1_samuel", "michal", "saul", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "michal",
+      "saul",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-052-michal-he-said-let-me-go"
   },
   {
@@ -1109,7 +1408,13 @@
     "option_d": "Saul",
     "correct_answer": "Jonathan",
     "difficulty": "medium",
-    "tags": ["1_samuel", "jonathan", "david", "covenant", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathan",
+      "david",
+      "covenant",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-053-jonathan-whatever-you-say"
   },
   {
@@ -1130,7 +1435,13 @@
     "option_d": "Abner",
     "correct_answer": "David",
     "difficulty": "hard",
-    "tags": ["1_samuel", "david", "jonathan", "saul", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "jonathan",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-054-david-step-between-me-and-death"
   },
   {
@@ -1151,7 +1462,13 @@
     "option_d": "Doeg",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "jonathan", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "jonathan",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-055-saul-as-long-as-son-of-jesse-lives"
   },
   {
@@ -1172,7 +1489,13 @@
     "option_d": "Samuel",
     "correct_answer": "Ahimelech",
     "difficulty": "hard",
-    "tags": ["1_samuel", "ahimelech", "david", "nob", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "ahimelech",
+      "david",
+      "nob",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-056-ahimelech-why-are-you-alone"
   },
   {
@@ -1193,7 +1516,13 @@
     "option_d": "Kish",
     "correct_answer": "Doeg the Edomite",
     "difficulty": "hard",
-    "tags": ["1_samuel", "doeg", "saul", "nob", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "doeg",
+      "saul",
+      "nob",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-057-doeg-i-saw-son-of-jesse"
   },
   {
@@ -1214,7 +1543,13 @@
     "option_d": "Abner",
     "correct_answer": "Abiathar",
     "difficulty": "hard",
-    "tags": ["1_samuel", "abiathar", "david", "nob", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "abiathar",
+      "david",
+      "nob",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-058-abiathar-i-escaped"
   },
   {
@@ -1235,7 +1570,13 @@
     "option_d": "Abner",
     "correct_answer": "David",
     "difficulty": "medium",
-    "tags": ["1_samuel", "david", "keilah", "inquiry", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "keilah",
+      "inquiry",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-059-david-shall-i-go-attack"
   },
   {
@@ -1256,7 +1597,13 @@
     "option_d": "Abigail",
     "correct_answer": "Jonathan",
     "difficulty": "hard",
-    "tags": ["1_samuel", "jonathan", "david", "wilderness", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "jonathan",
+      "david",
+      "wilderness",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-060-jonathan-do-not-be-afraid"
   },
   {
@@ -1277,7 +1624,13 @@
     "option_d": "Samuel",
     "correct_answer": "David",
     "difficulty": "medium",
-    "tags": ["1_samuel", "david", "saul", "cave", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "saul",
+      "cave",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-061-david-will-not-raise-my-hand"
   },
   {
@@ -1298,7 +1651,13 @@
     "option_d": "Samuel",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "david", "cave", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "david",
+      "cave",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-062-saul-you-are-more-righteous"
   },
   {
@@ -1319,7 +1678,12 @@
     "option_d": "Jonathan",
     "correct_answer": "Nabal",
     "difficulty": "medium",
-    "tags": ["1_samuel", "nabal", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "nabal",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-063-nabal-who-is-david"
   },
   {
@@ -1340,7 +1704,13 @@
     "option_d": "Ahinoam",
     "correct_answer": "Abigail",
     "difficulty": "medium",
-    "tags": ["1_samuel", "abigail", "david", "nabal", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "abigail",
+      "david",
+      "nabal",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-064-abigail-please-forgive-the-trespass"
   },
   {
@@ -1361,7 +1731,12 @@
     "option_d": "Samuel",
     "correct_answer": "David",
     "difficulty": "hard",
-    "tags": ["1_samuel", "david", "abigail", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "abigail",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-065-david-blessed-be-your-discretion"
   },
   {
@@ -1382,7 +1757,13 @@
     "option_d": "Joab",
     "correct_answer": "Abishai",
     "difficulty": "hard",
-    "tags": ["1_samuel", "abishai", "david", "saul", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "abishai",
+      "david",
+      "saul",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-066-abishai-god-has-given-your-enemy"
   },
   {
@@ -1403,7 +1784,13 @@
     "option_d": "Samuel",
     "correct_answer": "David",
     "difficulty": "hard",
-    "tags": ["1_samuel", "david", "saul", "anointed", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "saul",
+      "anointed",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-067-david-who-can-raise-a-hand"
   },
   {
@@ -1424,7 +1811,13 @@
     "option_d": "Doeg",
     "correct_answer": "Saul",
     "difficulty": "medium",
-    "tags": ["1_samuel", "saul", "david", "confession", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "david",
+      "confession",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-068-saul-i-have-sinned"
   },
   {
@@ -1445,7 +1838,13 @@
     "option_d": "Nabal",
     "correct_answer": "Achish",
     "difficulty": "hard",
-    "tags": ["1_samuel", "achish", "david", "philistines", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "achish",
+      "david",
+      "philistines",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-069-achish-make-you-my-bodyguard"
   },
   {
@@ -1466,7 +1865,12 @@
     "option_d": "Abner",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "endor", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "endor",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-070-saul-bring-up-for-me"
   },
   {
@@ -1487,7 +1891,13 @@
     "option_d": "Abner",
     "correct_answer": "Samuel",
     "difficulty": "hard",
-    "tags": ["1_samuel", "samuel", "saul", "endor", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "samuel",
+      "saul",
+      "endor",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-071-samuel-why-do-you-ask-me"
   },
   {
@@ -1508,7 +1918,12 @@
     "option_d": "Amalekite Raiders",
     "correct_answer": "Philistine Commanders",
     "difficulty": "hard",
-    "tags": ["1_samuel", "philistine_commanders", "david", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "philistine_commanders",
+      "david",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-072-philistine-commanders-make-the-man-go-back"
   },
   {
@@ -1529,7 +1944,13 @@
     "option_d": "Samuel",
     "correct_answer": "God",
     "difficulty": "medium",
-    "tags": ["1_samuel", "god", "david", "ziklag", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "god",
+      "david",
+      "ziklag",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-073-god-pursue"
   },
   {
@@ -1550,7 +1971,12 @@
     "option_d": "Ish-bosheth",
     "correct_answer": "Saul",
     "difficulty": "hard",
-    "tags": ["1_samuel", "saul", "final_battle", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "saul",
+      "final_battle",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-074-saul-draw-your-sword"
   },
   {
@@ -1571,7 +1997,13 @@
     "option_d": "Abiathar",
     "correct_answer": "David",
     "difficulty": "hard",
-    "tags": ["1_samuel", "david", "ziklag", "spoil", "speaker_recognition"],
+    "tags": [
+      "1_samuel",
+      "david",
+      "ziklag",
+      "spoil",
+      "speaker_recognition"
+    ],
     "source_key": "1-samuel-075-david-share-alike"
   }
 ]

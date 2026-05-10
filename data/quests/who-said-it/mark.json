@@ -17,7 +17,11 @@
     "option_d": "Andrew",
     "correct_answer": "John the Baptist",
     "difficulty": "easy",
-    "tags": ["mark", "john_the_baptist", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "john_the_baptist",
+      "speaker_recognition"
+    ],
     "source_key": "mark-001-john-the-baptist-more-powerful-is-coming"
   },
   {
@@ -38,7 +42,12 @@
     "option_d": "Spirit",
     "correct_answer": "Voice from Heaven",
     "difficulty": "medium",
-    "tags": ["mark", "voice_from_heaven", "baptism", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "voice_from_heaven",
+      "baptism",
+      "speaker_recognition"
+    ],
     "source_key": "mark-002-voice-from-heaven-beloved-son"
   },
   {
@@ -59,7 +68,12 @@
     "option_d": "Scribe",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["mark", "jesus", "galilee", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "galilee",
+      "speaker_recognition"
+    ],
     "source_key": "mark-003-jesus-kingdom-of-god-has-come-near"
   },
   {
@@ -80,7 +94,12 @@
     "option_d": "Peter",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["mark", "jesus", "calling", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "calling",
+      "speaker_recognition"
+    ],
     "source_key": "mark-004-jesus-follow-me"
   },
   {
@@ -101,7 +120,12 @@
     "option_d": "Pharisee",
     "correct_answer": "Unclean Spirit",
     "difficulty": "medium",
-    "tags": ["mark", "unclean_spirit", "capernaum", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "unclean_spirit",
+      "capernaum",
+      "speaker_recognition"
+    ],
     "source_key": "mark-005-unclean-spirit-i-know-who-you-are"
   },
   {
@@ -122,7 +146,12 @@
     "option_d": "Jairus",
     "correct_answer": "Leper",
     "difficulty": "medium",
-    "tags": ["mark", "leper", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "leper",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-006-leper-if-you-choose"
   },
   {
@@ -143,7 +172,12 @@
     "option_d": "Chief Priests",
     "correct_answer": "Scribes",
     "difficulty": "hard",
-    "tags": ["mark", "scribes", "paralytic", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "scribes",
+      "paralytic",
+      "speaker_recognition"
+    ],
     "source_key": "mark-007-scribes-who-can-forgive-sins"
   },
   {
@@ -164,7 +198,12 @@
     "option_d": "Sadducees",
     "correct_answer": "Scribes of the Pharisees",
     "difficulty": "hard",
-    "tags": ["mark", "scribes", "levi", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "scribes",
+      "levi",
+      "speaker_recognition"
+    ],
     "source_key": "mark-008-scribes-why-eat-with-sinners"
   },
   {
@@ -185,7 +224,12 @@
     "option_d": "Scribes",
     "correct_answer": "People",
     "difficulty": "hard",
-    "tags": ["mark", "people", "fasting", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "people",
+      "fasting",
+      "speaker_recognition"
+    ],
     "source_key": "mark-009-people-why-do-they-fast"
   },
   {
@@ -206,7 +250,12 @@
     "option_d": "Chief Priests",
     "correct_answer": "Pharisees",
     "difficulty": "medium",
-    "tags": ["mark", "pharisees", "sabbath", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "pharisees",
+      "sabbath",
+      "speaker_recognition"
+    ],
     "source_key": "mark-010-pharisees-why-not-lawful-on-sabbath"
   },
   {
@@ -227,7 +276,12 @@
     "option_d": "Scribe",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["mark", "jesus", "sabbath", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "sabbath",
+      "speaker_recognition"
+    ],
     "source_key": "mark-011-jesus-is-it-lawful-on-sabbath"
   },
   {
@@ -248,7 +302,11 @@
     "option_d": "Scribes",
     "correct_answer": "Unclean Spirits",
     "difficulty": "hard",
-    "tags": ["mark", "unclean_spirits", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "unclean_spirits",
+      "speaker_recognition"
+    ],
     "source_key": "mark-012-unclean-spirits-you-are-the-son-of-god"
   },
   {
@@ -269,7 +327,12 @@
     "option_d": "Sadducees",
     "correct_answer": "Scribes",
     "difficulty": "medium",
-    "tags": ["mark", "scribes", "beelzebul", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "scribes",
+      "beelzebul",
+      "speaker_recognition"
+    ],
     "source_key": "mark-013-scribes-he-has-beelzebul"
   },
   {
@@ -290,7 +353,13 @@
     "option_d": "James",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["mark", "jesus", "disciples", "parable", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "disciples",
+      "parable",
+      "speaker_recognition"
+    ],
     "source_key": "mark-014-jesus-do-you-not-understand-this-parable"
   },
   {
@@ -311,7 +380,12 @@
     "option_d": "Fishermen of Capernaum",
     "correct_answer": "Disciples",
     "difficulty": "medium",
-    "tags": ["mark", "disciples", "storm", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "disciples",
+      "storm",
+      "speaker_recognition"
+    ],
     "source_key": "mark-015-disciples-do-you-not-care"
   },
   {
@@ -332,7 +406,12 @@
     "option_d": "Scribe",
     "correct_answer": "Unclean Spirit",
     "difficulty": "hard",
-    "tags": ["mark", "unclean_spirit", "gerasene", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "unclean_spirit",
+      "gerasene",
+      "speaker_recognition"
+    ],
     "source_key": "mark-016-unclean-spirit-what-have-you-to-do-with-me"
   },
   {
@@ -353,7 +432,12 @@
     "option_d": "Bartimaeus",
     "correct_answer": "Demon Called Legion",
     "difficulty": "hard",
-    "tags": ["mark", "demon_called_legion", "gerasene", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "demon_called_legion",
+      "gerasene",
+      "speaker_recognition"
+    ],
     "source_key": "mark-017-demon-called-legion-my-name-is-legion"
   },
   {
@@ -374,7 +458,12 @@
     "option_d": "Leper",
     "correct_answer": "Jairus",
     "difficulty": "medium",
-    "tags": ["mark", "jairus", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jairus",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-018-jairus-little-daughter-point-of-death"
   },
   {
@@ -395,7 +484,12 @@
     "option_d": "Disciple",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["mark", "jesus", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-019-jesus-who-touched-my-clothes"
   },
   {
@@ -416,7 +510,12 @@
     "option_d": "Pharisees",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["mark", "disciples", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "disciples",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-020-disciples-you-see-the-crowd"
   },
   {
@@ -437,7 +536,12 @@
     "option_d": "Mourners",
     "correct_answer": "People from Jairus's House",
     "difficulty": "hard",
-    "tags": ["mark", "jairus", "messengers", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jairus",
+      "messengers",
+      "speaker_recognition"
+    ],
     "source_key": "mark-021-jairus-house-your-daughter-is-dead"
   },
   {
@@ -458,7 +562,12 @@
     "option_d": "Jairus",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["mark", "jesus", "jairus", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "jairus",
+      "speaker_recognition"
+    ],
     "source_key": "mark-022-jesus-do-not-fear-only-believe"
   },
   {
@@ -479,7 +588,12 @@
     "option_d": "A Mourner",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["mark", "jesus", "jairus", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "jairus",
+      "speaker_recognition"
+    ],
     "source_key": "mark-023-jesus-child-not-dead"
   },
   {
@@ -500,7 +614,11 @@
     "option_d": "Sadducees",
     "correct_answer": "People of Nazareth",
     "difficulty": "hard",
-    "tags": ["mark", "nazareth", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "nazareth",
+      "speaker_recognition"
+    ],
     "source_key": "mark-024-people-of-nazareth-where-did-this-man-get-these-things"
   },
   {
@@ -521,7 +639,12 @@
     "option_d": "Centurion",
     "correct_answer": "Herod",
     "difficulty": "hard",
-    "tags": ["mark", "herod", "john_the_baptist", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "herod",
+      "john_the_baptist",
+      "speaker_recognition"
+    ],
     "source_key": "mark-025-herod-john-has-been-raised"
   },
   {
@@ -542,7 +665,12 @@
     "option_d": "James",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["mark", "jesus", "disciples", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "disciples",
+      "speaker_recognition"
+    ],
     "source_key": "mark-026-jesus-come-away-and-rest"
   },
   {
@@ -563,7 +691,12 @@
     "option_d": "Scribes",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["mark", "disciples", "feeding", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "disciples",
+      "feeding",
+      "speaker_recognition"
+    ],
     "source_key": "mark-027-disciples-are-we-to-go-and-buy-bread"
   },
   {
@@ -584,7 +717,12 @@
     "option_d": "Herodians",
     "correct_answer": "Pharisees",
     "difficulty": "hard",
-    "tags": ["mark", "pharisees", "tradition", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "pharisees",
+      "tradition",
+      "speaker_recognition"
+    ],
     "source_key": "mark-028-pharisees-why-do-your-disciples-not-live-according-to-tradition"
   },
   {
@@ -605,7 +743,11 @@
     "option_d": "Martha",
     "correct_answer": "Syrophoenician Woman",
     "difficulty": "hard",
-    "tags": ["mark", "syrophoenician_woman", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "syrophoenician_woman",
+      "speaker_recognition"
+    ],
     "source_key": "mark-029-syrophoenician-woman-dogs-under-the-table"
   },
   {
@@ -626,7 +768,13 @@
     "option_d": "A Scribe",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["mark", "jesus", "pharisees", "sign", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "pharisees",
+      "sign",
+      "speaker_recognition"
+    ],
     "source_key": "mark-030-jesus-generation-seeks-sign"
   },
   {
@@ -647,7 +795,12 @@
     "option_d": "James",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["mark", "jesus", "disciples", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "disciples",
+      "speaker_recognition"
+    ],
     "source_key": "mark-031-jesus-why-talking-about-no-bread"
   },
   {
@@ -668,7 +821,12 @@
     "option_d": "James",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["mark", "jesus", "disciples", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "disciples",
+      "speaker_recognition"
+    ],
     "source_key": "mark-032-jesus-who-do-you-say"
   },
   {
@@ -689,7 +847,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["mark", "peter", "confession", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "peter",
+      "confession",
+      "speaker_recognition"
+    ],
     "source_key": "mark-033-peter-you-are-the-messiah"
   },
   {
@@ -710,7 +873,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "hard",
-    "tags": ["mark", "peter", "transfiguration", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "peter",
+      "transfiguration",
+      "speaker_recognition"
+    ],
     "source_key": "mark-034-peter-good-for-us-here"
   },
   {
@@ -731,7 +899,12 @@
     "option_d": "Peter",
     "correct_answer": "Voice from the Cloud",
     "difficulty": "hard",
-    "tags": ["mark", "voice_from_the_cloud", "transfiguration", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "voice_from_the_cloud",
+      "transfiguration",
+      "speaker_recognition"
+    ],
     "source_key": "mark-035-voice-from-the-cloud-listen-to-him"
   },
   {
@@ -752,7 +925,12 @@
     "option_d": "Centurion",
     "correct_answer": "Father of the Boy",
     "difficulty": "hard",
-    "tags": ["mark", "father_of_the_boy", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "father_of_the_boy",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-036-father-of-boy-help-my-unbelief"
   },
   {
@@ -773,7 +951,12 @@
     "option_d": "Crowd",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["mark", "disciples", "unclean_spirit", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "disciples",
+      "unclean_spirit",
+      "speaker_recognition"
+    ],
     "source_key": "mark-037-disciples-why-could-we-not-cast-it-out"
   },
   {
@@ -794,7 +977,12 @@
     "option_d": "Andrew",
     "correct_answer": "John",
     "difficulty": "hard",
-    "tags": ["mark", "john", "disciples", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "john",
+      "disciples",
+      "speaker_recognition"
+    ],
     "source_key": "mark-038-john-we-saw-someone-casting-out-demons"
   },
   {
@@ -815,7 +1003,12 @@
     "option_d": "Herodians",
     "correct_answer": "Pharisees",
     "difficulty": "medium",
-    "tags": ["mark", "pharisees", "divorce", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "pharisees",
+      "divorce",
+      "speaker_recognition"
+    ],
     "source_key": "mark-039-pharisees-is-it-lawful-to-divorce"
   },
   {
@@ -836,7 +1029,11 @@
     "option_d": "Chief Priests",
     "correct_answer": "James and John",
     "difficulty": "medium",
-    "tags": ["mark", "james_and_john", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "james_and_john",
+      "speaker_recognition"
+    ],
     "source_key": "mark-040-james-and-john-grant-us-to-sit"
   },
   {
@@ -857,7 +1054,12 @@
     "option_d": "Blind Man of Bethsaida",
     "correct_answer": "Bartimaeus",
     "difficulty": "easy",
-    "tags": ["mark", "bartimaeus", "healing", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "bartimaeus",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "mark-041-bartimaeus-son-of-david-have-mercy"
   },
   {
@@ -878,7 +1080,12 @@
     "option_d": "Disciples",
     "correct_answer": "Chief Priests and Scribes and Elders",
     "difficulty": "hard",
-    "tags": ["mark", "chief_priests_scribes_elders", "temple", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "chief_priests_scribes_elders",
+      "temple",
+      "speaker_recognition"
+    ],
     "source_key": "mark-042-chief-priests-scribes-elders-by-what-authority"
   },
   {
@@ -892,14 +1099,19 @@
     "reference": "Mark 12:14",
     "quote_text": "Is it lawful to pay taxes to Caesar?",
     "prompt_context": "Trying to trap Jesus in his words, an unusual alliance came with a politically loaded question.",
-    "question": "Who asked Jesus whether it was lawful to pay taxes to Caesar?",
+    "question": "Who tried to trap Jesus with a question about paying taxes to Caesar?",
     "option_a": "Chief Priests and Scribes",
     "option_b": "Sadducees",
     "option_c": "Pharisees and Herodians",
     "option_d": "Disciples",
     "correct_answer": "Pharisees and Herodians",
     "difficulty": "hard",
-    "tags": ["mark", "pharisees_and_herodians", "caesar", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "pharisees_and_herodians",
+      "caesar",
+      "speaker_recognition"
+    ],
     "source_key": "mark-043-pharisees-and-herodians-is-it-lawful-to-pay-taxes"
   },
   {
@@ -920,7 +1132,12 @@
     "option_d": "Herodians",
     "correct_answer": "Sadducees",
     "difficulty": "medium",
-    "tags": ["mark", "sadducees", "resurrection", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "sadducees",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "mark-044-sadducees-moses-wrote-for-us"
   },
   {
@@ -941,7 +1158,12 @@
     "option_d": "Pharisee",
     "correct_answer": "Scribe",
     "difficulty": "medium",
-    "tags": ["mark", "scribe", "commandment", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "scribe",
+      "commandment",
+      "speaker_recognition"
+    ],
     "source_key": "mark-045-scribe-which-commandment-is-first"
   },
   {
@@ -962,7 +1184,11 @@
     "option_d": "Crowd",
     "correct_answer": "Some",
     "difficulty": "hard",
-    "tags": ["mark", "bethany", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "bethany",
+      "speaker_recognition"
+    ],
     "source_key": "mark-046-some-why-was-ointment-wasted"
   },
   {
@@ -983,7 +1209,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["mark", "peter", "last_supper", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "peter",
+      "last_supper",
+      "speaker_recognition"
+    ],
     "source_key": "mark-047-peter-even-if-all-desert"
   },
   {
@@ -1004,7 +1235,12 @@
     "option_d": "James",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["mark", "jesus", "gethsemane", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "jesus",
+      "gethsemane",
+      "speaker_recognition"
+    ],
     "source_key": "mark-048-jesus-my-soul-is-very-sorrowful"
   },
   {
@@ -1025,7 +1261,12 @@
     "option_d": "Centurion",
     "correct_answer": "High Priest",
     "difficulty": "hard",
-    "tags": ["mark", "high_priest", "trial", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "high_priest",
+      "trial",
+      "speaker_recognition"
+    ],
     "source_key": "mark-049-high-priest-are-you-the-messiah"
   },
   {
@@ -1046,7 +1287,12 @@
     "option_d": "Centurion",
     "correct_answer": "Young Man at the Tomb",
     "difficulty": "hard",
-    "tags": ["mark", "young_man_at_the_tomb", "resurrection", "speaker_recognition"],
+    "tags": [
+      "mark",
+      "young_man_at_the_tomb",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "mark-050-young-man-at-the-tomb-do-not-be-alarmed"
   }
 ]

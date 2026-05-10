@@ -17,7 +17,12 @@
     "option_d": "Nicodemus",
     "correct_answer": "John the Baptist",
     "difficulty": "easy",
-    "tags": ["john", "john_the_baptist", "wilderness", "speaker_recognition"],
+    "tags": [
+      "john",
+      "john_the_baptist",
+      "wilderness",
+      "speaker_recognition"
+    ],
     "source_key": "john-001-john-the-baptist-make-straight-the-way"
   },
   {
@@ -38,7 +43,12 @@
     "option_d": "Nathanael",
     "correct_answer": "John the Baptist",
     "difficulty": "easy",
-    "tags": ["john", "john_the_baptist", "jesus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "john_the_baptist",
+      "jesus",
+      "speaker_recognition"
+    ],
     "source_key": "john-002-john-the-baptist-lamb-of-god"
   },
   {
@@ -59,7 +69,12 @@
     "option_d": "Philip",
     "correct_answer": "Jesus",
     "difficulty": "easy",
-    "tags": ["john", "jesus", "first_disciples", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "first_disciples",
+      "speaker_recognition"
+    ],
     "source_key": "john-003-jesus-come-and-see"
   },
   {
@@ -80,7 +95,12 @@
     "option_d": "Nathanael",
     "correct_answer": "Andrew",
     "difficulty": "medium",
-    "tags": ["john", "andrew", "simon_peter", "speaker_recognition"],
+    "tags": [
+      "john",
+      "andrew",
+      "simon_peter",
+      "speaker_recognition"
+    ],
     "source_key": "john-004-andrew-found-the-messiah"
   },
   {
@@ -101,7 +121,12 @@
     "option_d": "John the Baptist",
     "correct_answer": "Philip",
     "difficulty": "medium",
-    "tags": ["john", "philip", "nathanael", "speaker_recognition"],
+    "tags": [
+      "john",
+      "philip",
+      "nathanael",
+      "speaker_recognition"
+    ],
     "source_key": "john-005-philip-we-have-found-him"
   },
   {
@@ -122,7 +147,12 @@
     "option_d": "Peter",
     "correct_answer": "Nathanael",
     "difficulty": "medium",
-    "tags": ["john", "nathanael", "philip", "speaker_recognition"],
+    "tags": [
+      "john",
+      "nathanael",
+      "philip",
+      "speaker_recognition"
+    ],
     "source_key": "john-006-nathanael-good-from-nazareth"
   },
   {
@@ -143,7 +173,12 @@
     "option_d": "Mary the Mother of Jesus",
     "correct_answer": "Mary the Mother of Jesus",
     "difficulty": "easy",
-    "tags": ["john", "mary_mother_of_jesus", "cana", "speaker_recognition"],
+    "tags": [
+      "john",
+      "mary_mother_of_jesus",
+      "cana",
+      "speaker_recognition"
+    ],
     "source_key": "john-007-mary-they-have-no-wine"
   },
   {
@@ -164,7 +199,12 @@
     "option_d": "Martha",
     "correct_answer": "Mary the Mother of Jesus",
     "difficulty": "medium",
-    "tags": ["john", "mary_mother_of_jesus", "cana", "speaker_recognition"],
+    "tags": [
+      "john",
+      "mary_mother_of_jesus",
+      "cana",
+      "speaker_recognition"
+    ],
     "source_key": "john-008-mary-do-whatever-he-tells-you"
   },
   {
@@ -185,7 +225,12 @@
     "option_d": "Soldiers",
     "correct_answer": "Religious Leaders",
     "difficulty": "hard",
-    "tags": ["john", "religious_leaders", "temple", "speaker_recognition"],
+    "tags": [
+      "john",
+      "religious_leaders",
+      "temple",
+      "speaker_recognition"
+    ],
     "source_key": "john-009-religious-leaders-what-sign"
   },
   {
@@ -206,7 +251,12 @@
     "option_d": "Philip",
     "correct_answer": "Nicodemus",
     "difficulty": "medium",
-    "tags": ["john", "nicodemus", "night", "speaker_recognition"],
+    "tags": [
+      "john",
+      "nicodemus",
+      "night",
+      "speaker_recognition"
+    ],
     "source_key": "john-010-nicodemus-we-know-you-are-teacher"
   },
   {
@@ -227,7 +277,12 @@
     "option_d": "Peter",
     "correct_answer": "Nicodemus",
     "difficulty": "medium",
-    "tags": ["john", "nicodemus", "new_birth", "speaker_recognition"],
+    "tags": [
+      "john",
+      "nicodemus",
+      "new_birth",
+      "speaker_recognition"
+    ],
     "source_key": "john-011-nicodemus-how-can-be-born"
   },
   {
@@ -248,7 +303,12 @@
     "option_d": "Philip",
     "correct_answer": "John the Baptist",
     "difficulty": "medium",
-    "tags": ["john", "john_the_baptist", "jesus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "john_the_baptist",
+      "jesus",
+      "speaker_recognition"
+    ],
     "source_key": "john-012-john-the-baptist-he-must-increase"
   },
   {
@@ -269,7 +329,12 @@
     "option_d": "Woman Caught in Adultery",
     "correct_answer": "Samaritan Woman",
     "difficulty": "medium",
-    "tags": ["john", "samaritan_woman", "well", "speaker_recognition"],
+    "tags": [
+      "john",
+      "samaritan_woman",
+      "well",
+      "speaker_recognition"
+    ],
     "source_key": "john-013-samaritan-woman-ask-a-drink"
   },
   {
@@ -290,7 +355,12 @@
     "option_d": "Mary Magdalene",
     "correct_answer": "Samaritan Woman",
     "difficulty": "hard",
-    "tags": ["john", "samaritan_woman", "living_water", "speaker_recognition"],
+    "tags": [
+      "john",
+      "samaritan_woman",
+      "living_water",
+      "speaker_recognition"
+    ],
     "source_key": "john-014-samaritan-woman-no-bucket"
   },
   {
@@ -311,7 +381,12 @@
     "option_d": "Religious Leaders",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["john", "disciples", "well", "speaker_recognition"],
+    "tags": [
+      "john",
+      "disciples",
+      "well",
+      "speaker_recognition"
+    ],
     "source_key": "john-015-disciples-rabbi-eat-something"
   },
   {
@@ -332,7 +407,13 @@
     "option_d": "Philip",
     "correct_answer": "Royal Official",
     "difficulty": "hard",
-    "tags": ["john", "royal_official", "cana", "healing", "speaker_recognition"],
+    "tags": [
+      "john",
+      "royal_official",
+      "cana",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "john-016-royal-official-before-my-child-dies"
   },
   {
@@ -353,7 +434,12 @@
     "option_d": "Royal Official",
     "correct_answer": "Man at the Pool",
     "difficulty": "hard",
-    "tags": ["john", "man_at_pool", "healing", "speaker_recognition"],
+    "tags": [
+      "john",
+      "man_at_pool",
+      "healing",
+      "speaker_recognition"
+    ],
     "source_key": "john-017-man-at-pool-no-one-to-put-me-in"
   },
   {
@@ -374,7 +460,12 @@
     "option_d": "Galilean Fishermen",
     "correct_answer": "Crowd",
     "difficulty": "medium",
-    "tags": ["john", "crowd", "bread_of_life", "speaker_recognition"],
+    "tags": [
+      "john",
+      "crowd",
+      "bread_of_life",
+      "speaker_recognition"
+    ],
     "source_key": "john-018-crowd-what-must-we-do"
   },
   {
@@ -395,7 +486,12 @@
     "option_d": "Crowd",
     "correct_answer": "Crowd",
     "difficulty": "hard",
-    "tags": ["john", "crowd", "bread_of_life", "speaker_recognition"],
+    "tags": [
+      "john",
+      "crowd",
+      "bread_of_life",
+      "speaker_recognition"
+    ],
     "source_key": "john-019-crowd-give-us-this-bread"
   },
   {
@@ -416,7 +512,12 @@
     "option_d": "Thomas",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["john", "jesus", "twelve", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "twelve",
+      "speaker_recognition"
+    ],
     "source_key": "john-020-jesus-do-you-also-wish-to-go-away"
   },
   {
@@ -437,7 +538,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["john", "peter", "twelve", "speaker_recognition"],
+    "tags": [
+      "john",
+      "peter",
+      "twelve",
+      "speaker_recognition"
+    ],
     "source_key": "john-021-peter-to-whom-can-we-go"
   },
   {
@@ -458,7 +564,12 @@
     "option_d": "Brothers of Jesus",
     "correct_answer": "Brothers of Jesus",
     "difficulty": "hard",
-    "tags": ["john", "brothers_of_jesus", "festival", "speaker_recognition"],
+    "tags": [
+      "john",
+      "brothers_of_jesus",
+      "festival",
+      "speaker_recognition"
+    ],
     "source_key": "john-022-brothers-leave-here-and-go"
   },
   {
@@ -479,7 +590,12 @@
     "option_d": "Samaritans",
     "correct_answer": "Temple Officers",
     "difficulty": "hard",
-    "tags": ["john", "temple_officers", "religious_leaders", "speaker_recognition"],
+    "tags": [
+      "john",
+      "temple_officers",
+      "religious_leaders",
+      "speaker_recognition"
+    ],
     "source_key": "john-023-temple-officers-never-spoken-like-this"
   },
   {
@@ -500,7 +616,12 @@
     "option_d": "Nathanael",
     "correct_answer": "Nicodemus",
     "difficulty": "hard",
-    "tags": ["john", "nicodemus", "law", "speaker_recognition"],
+    "tags": [
+      "john",
+      "nicodemus",
+      "law",
+      "speaker_recognition"
+    ],
     "source_key": "john-024-nicodemus-our-law-does-not-judge"
   },
   {
@@ -521,7 +642,13 @@
     "option_d": "Temple Officers",
     "correct_answer": "Pharisees",
     "difficulty": "hard",
-    "tags": ["john", "pharisees", "blind_man", "sabbath", "speaker_recognition"],
+    "tags": [
+      "john",
+      "pharisees",
+      "blind_man",
+      "sabbath",
+      "speaker_recognition"
+    ],
     "source_key": "john-025-pharisees-this-man-is-not-from-god"
   },
   {
@@ -542,7 +669,12 @@
     "option_d": "Temple Officers",
     "correct_answer": "Parents of the Man Born Blind",
     "difficulty": "hard",
-    "tags": ["john", "parents_of_blind_man", "pharisees", "speaker_recognition"],
+    "tags": [
+      "john",
+      "parents_of_blind_man",
+      "pharisees",
+      "speaker_recognition"
+    ],
     "source_key": "john-026-parents-ask-him-he-is-of-age"
   },
   {
@@ -563,7 +695,12 @@
     "option_d": "Martha",
     "correct_answer": "Martha",
     "difficulty": "medium",
-    "tags": ["john", "martha", "lazarus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "martha",
+      "lazarus",
+      "speaker_recognition"
+    ],
     "source_key": "john-027-martha-if-you-had-been-here"
   },
   {
@@ -584,7 +721,13 @@
     "option_d": "John the Baptist",
     "correct_answer": "Jesus",
     "difficulty": "medium",
-    "tags": ["john", "jesus", "martha", "lazarus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "martha",
+      "lazarus",
+      "speaker_recognition"
+    ],
     "source_key": "john-028-jesus-resurrection-life"
   },
   {
@@ -605,7 +748,12 @@
     "option_d": "Andrew",
     "correct_answer": "Thomas",
     "difficulty": "hard",
-    "tags": ["john", "thomas", "lazarus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "thomas",
+      "lazarus",
+      "speaker_recognition"
+    ],
     "source_key": "john-029-thomas-let-us-also-go"
   },
   {
@@ -626,7 +774,12 @@
     "option_d": "Salome",
     "correct_answer": "Mary of Bethany",
     "difficulty": "hard",
-    "tags": ["john", "mary_of_bethany", "lazarus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "mary_of_bethany",
+      "lazarus",
+      "speaker_recognition"
+    ],
     "source_key": "john-030-mary-of-bethany-if-you-had-been-here"
   },
   {
@@ -647,7 +800,13 @@
     "option_d": "Pilate",
     "correct_answer": "Caiaphas",
     "difficulty": "hard",
-    "tags": ["john", "caiaphas", "council", "lazarus", "speaker_recognition"],
+    "tags": [
+      "john",
+      "caiaphas",
+      "council",
+      "lazarus",
+      "speaker_recognition"
+    ],
     "source_key": "john-031-caiaphas-it-is-better-for-you"
   },
   {
@@ -668,7 +827,12 @@
     "option_d": "Philip",
     "correct_answer": "Judas Iscariot",
     "difficulty": "medium",
-    "tags": ["john", "judas_iscariot", "mary_of_bethany", "speaker_recognition"],
+    "tags": [
+      "john",
+      "judas_iscariot",
+      "mary_of_bethany",
+      "speaker_recognition"
+    ],
     "source_key": "john-032-judas-why-was-this-perfume-not-sold"
   },
   {
@@ -689,7 +853,12 @@
     "option_d": "Temple Officers",
     "correct_answer": "Crowd",
     "difficulty": "hard",
-    "tags": ["john", "crowd", "son_of_man", "speaker_recognition"],
+    "tags": [
+      "john",
+      "crowd",
+      "son_of_man",
+      "speaker_recognition"
+    ],
     "source_key": "john-033-crowd-who-is-this-son-of-man"
   },
   {
@@ -710,7 +879,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["john", "peter", "footwashing", "speaker_recognition"],
+    "tags": [
+      "john",
+      "peter",
+      "footwashing",
+      "speaker_recognition"
+    ],
     "source_key": "john-034-peter-are-you-going-to-wash-my-feet"
   },
   {
@@ -731,7 +905,12 @@
     "option_d": "Thomas",
     "correct_answer": "Peter",
     "difficulty": "hard",
-    "tags": ["john", "peter", "footwashing", "speaker_recognition"],
+    "tags": [
+      "john",
+      "peter",
+      "footwashing",
+      "speaker_recognition"
+    ],
     "source_key": "john-035-peter-not-my-feet-only"
   },
   {
@@ -752,7 +931,12 @@
     "option_d": "Andrew",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["john", "jesus", "peter", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "peter",
+      "speaker_recognition"
+    ],
     "source_key": "john-036-jesus-you-cannot-follow-now"
   },
   {
@@ -773,7 +957,12 @@
     "option_d": "Judas Iscariot",
     "correct_answer": "Thomas",
     "difficulty": "medium",
-    "tags": ["john", "thomas", "farewell_discourse", "speaker_recognition"],
+    "tags": [
+      "john",
+      "thomas",
+      "farewell_discourse",
+      "speaker_recognition"
+    ],
     "source_key": "john-037-thomas-we-do-not-know-where-you-are-going"
   },
   {
@@ -794,7 +983,12 @@
     "option_d": "Peter",
     "correct_answer": "Philip",
     "difficulty": "medium",
-    "tags": ["john", "philip", "father", "speaker_recognition"],
+    "tags": [
+      "john",
+      "philip",
+      "father",
+      "speaker_recognition"
+    ],
     "source_key": "john-038-philip-show-us-the-father"
   },
   {
@@ -815,7 +1009,12 @@
     "option_d": "Peter",
     "correct_answer": "Judas (Not Iscariot)",
     "difficulty": "hard",
-    "tags": ["john", "judas_not_iscariot", "farewell_discourse", "speaker_recognition"],
+    "tags": [
+      "john",
+      "judas_not_iscariot",
+      "farewell_discourse",
+      "speaker_recognition"
+    ],
     "source_key": "john-039-judas-not-iscariot-how-is-it"
   },
   {
@@ -836,7 +1035,13 @@
     "option_d": "Lazarus",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["john", "jesus", "disciples", "farewell_discourse", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "disciples",
+      "farewell_discourse",
+      "speaker_recognition"
+    ],
     "source_key": "john-040-jesus-now-you-are-speaking-plainly"
   },
   {
@@ -857,7 +1062,12 @@
     "option_d": "Andrew",
     "correct_answer": "Peter",
     "difficulty": "medium",
-    "tags": ["john", "peter", "denial", "speaker_recognition"],
+    "tags": [
+      "john",
+      "peter",
+      "denial",
+      "speaker_recognition"
+    ],
     "source_key": "john-041-peter-i-am-not"
   },
   {
@@ -878,7 +1088,12 @@
     "option_d": "Nicodemus",
     "correct_answer": "Pilate",
     "difficulty": "medium",
-    "tags": ["john", "pilate", "trial", "speaker_recognition"],
+    "tags": [
+      "john",
+      "pilate",
+      "trial",
+      "speaker_recognition"
+    ],
     "source_key": "john-042-pilate-are-you-king-of-jews"
   },
   {
@@ -899,7 +1114,12 @@
     "option_d": "Chief Priests",
     "correct_answer": "Chief Priests",
     "difficulty": "hard",
-    "tags": ["john", "chief_priests", "pilate", "speaker_recognition"],
+    "tags": [
+      "john",
+      "chief_priests",
+      "pilate",
+      "speaker_recognition"
+    ],
     "source_key": "john-043-chief-priests-no-king-but-caesar"
   },
   {
@@ -920,7 +1140,12 @@
     "option_d": "Bystanders",
     "correct_answer": "Soldiers",
     "difficulty": "hard",
-    "tags": ["john", "soldiers", "cross", "speaker_recognition"],
+    "tags": [
+      "john",
+      "soldiers",
+      "cross",
+      "speaker_recognition"
+    ],
     "source_key": "john-044-soldiers-let-us-not-tear-it"
   },
   {
@@ -941,7 +1166,12 @@
     "option_d": "Salome",
     "correct_answer": "Mary Magdalene",
     "difficulty": "medium",
-    "tags": ["john", "mary_magdalene", "empty_tomb", "speaker_recognition"],
+    "tags": [
+      "john",
+      "mary_magdalene",
+      "empty_tomb",
+      "speaker_recognition"
+    ],
     "source_key": "john-045-mary-magdalene-they-have-taken-the-lord"
   },
   {
@@ -962,7 +1192,12 @@
     "option_d": "Martha",
     "correct_answer": "Mary Magdalene",
     "difficulty": "hard",
-    "tags": ["john", "mary_magdalene", "resurrection", "speaker_recognition"],
+    "tags": [
+      "john",
+      "mary_magdalene",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "john-046-mary-magdalene-if-you-have-carried-him-away"
   },
   {
@@ -983,7 +1218,12 @@
     "option_d": "Andrew",
     "correct_answer": "Thomas",
     "difficulty": "medium",
-    "tags": ["john", "thomas", "resurrection", "speaker_recognition"],
+    "tags": [
+      "john",
+      "thomas",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "john-047-thomas-unless-i-see"
   },
   {
@@ -1004,7 +1244,12 @@
     "option_d": "Thomas",
     "correct_answer": "Thomas",
     "difficulty": "medium",
-    "tags": ["john", "thomas", "resurrection", "speaker_recognition"],
+    "tags": [
+      "john",
+      "thomas",
+      "resurrection",
+      "speaker_recognition"
+    ],
     "source_key": "john-048-thomas-my-lord-and-my-god"
   },
   {
@@ -1025,7 +1270,12 @@
     "option_d": "Temple Officers",
     "correct_answer": "Disciples",
     "difficulty": "hard",
-    "tags": ["john", "disciples", "sea_of_tiberias", "speaker_recognition"],
+    "tags": [
+      "john",
+      "disciples",
+      "sea_of_tiberias",
+      "speaker_recognition"
+    ],
     "source_key": "john-049-disciples-we-will-go-with-you"
   },
   {
@@ -1046,7 +1296,13 @@
     "option_d": "Andrew",
     "correct_answer": "Jesus",
     "difficulty": "hard",
-    "tags": ["john", "jesus", "peter", "restoration", "speaker_recognition"],
+    "tags": [
+      "john",
+      "jesus",
+      "peter",
+      "restoration",
+      "speaker_recognition"
+    ],
     "source_key": "john-050-jesus-do-you-love-me"
   }
 ]
