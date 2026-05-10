@@ -1,228 +1,351 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
-import { prioritizeFlashcards, type Flashcard, updateFlashcardProgress } from "@/lib/flashcards"
+import Link from "next/link"
+import { useEffect, useMemo, useState } from "react"
+import { type Flashcard, prioritizeFlashcards, updateFlashcardProgress } from "@/lib/flashcards"
 import { addXp } from "@/lib/xp"
 
-export default function FlashcardStudy({
-  flashcards,
-  messages,
-}: {
+type FlashcardStudyProps = {
   flashcards: Flashcard[]
-  messages: Record<string, string>
-}) {
-  const router = useRouter()
-  const SESSION_SIZE = 10
+}
 
+type ReviewFeedbackTone = "idle" | "again" | "hard" | "easy"
+
+const SESSION_SIZE = 10
+
+function getFeedbackCopy(result: "again" | "hard" | "easy") {
+  if (result === "again") {
+    return "Recall grows through repetition."
+  }
+
+  if (result === "hard") {
+    return "Keep training."
+  }
+
+  return "One verse stronger."
+}
+
+export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
   const [session, setSession] = useState<Flashcard[]>([])
-  const [index, setIndex] = useState(0)
-  const [flipped, setFlipped] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [revealed, setRevealed] = useState(false)
   const [complete, setComplete] = useState(false)
-  const [animating, setAnimating] = useState(false)
-  const [hasAnswered, setHasAnswered] = useState(false)
-  const [xpPop, setXpPop] = useState<string | null>(null)
-
-  const tapSound = useRef<HTMLAudioElement | null>(null)
-  const correctSound = useRef<HTMLAudioElement | null>(null)
-  const wrongSound = useRef<HTMLAudioElement | null>(null)
-
-  useEffect(() => {
-    tapSound.current = new Audio("/sounds/tap.mp3")
-    correctSound.current = new Audio("/sounds/correct.mp3")
-    wrongSound.current = new Audio("/sounds/wrong.mp3")
-  }, [])
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [feedbackTone, setFeedbackTone] = useState<ReviewFeedbackTone>("idle")
+  const [feedbackMessage, setFeedbackMessage] = useState("Keep training.")
+  const [reviewedCount, setReviewedCount] = useState(0)
+  const [rememberedCount, setRememberedCount] = useState(0)
+  const [hardCount, setHardCount] = useState(0)
+  const [sessionXp, setSessionXp] = useState(0)
 
   useEffect(() => {
-    if (flashcards.length) {
-      setSession(prioritizeFlashcards(flashcards).slice(0, SESSION_SIZE))
-      setIndex(0)
-      setComplete(false)
-    } else {
-      setSession([])
-      setIndex(0)
-      setComplete(false)
-    }
+    const nextSession = prioritizeFlashcards(flashcards).slice(0, SESSION_SIZE)
+    setSession(nextSession)
+    setCurrentIndex(0)
+    setRevealed(false)
+    setComplete(false)
+    setIsSubmitting(false)
+    setFeedbackTone("idle")
+    setFeedbackMessage("Keep training.")
+    setReviewedCount(0)
+    setRememberedCount(0)
+    setHardCount(0)
+    setSessionXp(0)
   }, [flashcards])
 
-  useEffect(() => {
-    setFlipped(false)
-  }, [index])
+  const totalCards = session.length
+  const currentCard = complete ? null : session[currentIndex] ?? null
+  const cardsRemaining = Math.max(totalCards - reviewedCount, 0)
+  const currentCardNumber = currentCard ? reviewedCount + 1 : totalCards
+  const progressPercent = totalCards > 0 ? (reviewedCount / totalCards) * 100 : 0
 
-  useEffect(() => {
-    if (index >= session.length && session.length > 0) {
-      setIndex(0)
+  const statusClasses = useMemo(() => {
+    if (feedbackTone === "again") {
+      return "border-rose-300/25 bg-rose-400/10 text-rose-100"
     }
-  }, [session.length, index])
 
-  if (!session.length && !complete) {
-    return (
-      <div className="text-center text-gray-200">
-        {messages.no_flashcards}
-      </div>
-    )
-  }
+    if (feedbackTone === "hard") {
+      return "border-amber-300/25 bg-amber-300/10 text-amber-50"
+    }
 
-  const card = session[index]
+    if (feedbackTone === "easy") {
+      return "border-emerald-300/25 bg-emerald-400/10 text-emerald-50"
+    }
 
-  if (complete) {
-    return (
-      <div className="text-center space-y-4 mt-10 px-4">
-        <h2 className="text-2xl font-bold text-white">Session Complete 🎉</h2>
+    return "border-white/10 bg-white/[0.04] text-slate-200"
+  }, [feedbackTone])
 
-        <button
-          onClick={() => window.location.reload()}
-          className="w-full bg-blue-600 py-3 rounded-xl font-semibold"
-        >
-          Start New Session
-        </button>
-
-        <button
-          onClick={() => router.push("/dashboard")}
-          className="w-full bg-neutral-700 py-3 rounded-xl font-semibold"
-        >
-          Back to Dashboard
-        </button>
-      </div>
-    )
-  }
-
-  function nextCard(newSession: Flashcard[]) {
-    if (newSession.length === 0) {
-      setComplete(true)
+  async function handleAnswer(result: "again" | "hard" | "easy") {
+    if (!currentCard || isSubmitting) {
       return
     }
 
-    setIndex(0)
+    setIsSubmitting(true)
+
+    try {
+      let xpToAdd = 0
+
+      if (result === "hard") {
+        xpToAdd = 1
+      } else if (result === "easy") {
+        xpToAdd = 2
+      }
+
+      if (xpToAdd > 0) {
+        const xpResult = await addXp({
+          amount: xpToAdd,
+          source: "flashcards",
+          cardId: currentCard.id,
+          isFirstAttempt: true,
+        }).catch(console.error)
+
+        if (xpResult?.success) {
+          setSessionXp((currentXp) => currentXp + xpToAdd)
+        }
+      }
+
+      await updateFlashcardProgress(currentCard, result)
+
+      setReviewedCount((count) => count + 1)
+      setFeedbackTone(result)
+      setFeedbackMessage(getFeedbackCopy(result))
+
+      if (result === "again") {
+        setHardCount((count) => count + 1)
+      } else {
+        setRememberedCount((count) => count + 1)
+      }
+
+      const nextIndex = currentIndex + 1
+
+      if (nextIndex >= totalCards) {
+        setComplete(true)
+        setRevealed(false)
+      } else {
+        setCurrentIndex(nextIndex)
+        setRevealed(false)
+      }
+    } catch (error) {
+      console.error("Failed to update flashcard progress", error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
-  function handleFlip() {
-    tapSound.current?.play().catch(() => {})
-    setFlipped(!flipped)
+  if (!session.length && !complete) {
+    return (
+      <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+          Scripture Recall
+        </p>
+        <h2 className="mt-4 text-3xl font-bold text-white">
+          All caught up.
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-300">
+          You have no verses due for review right now.
+        </p>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/flashcards/create"
+            className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
+          >
+            Add Verse
+          </Link>
+          <Link
+            href="/flashcards/list"
+            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            View Library
+          </Link>
+          <Link
+            href="/flashcards"
+            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Back to Memory Training
+          </Link>
+        </div>
+      </div>
+    )
   }
 
-  async function handleAnswer(type: "again" | "hard" | "easy") {
-    setAnimating(true)
-    let newSession = [...session]
-    let xpToAdd = 0
-    let xpAwarded = false
-    const isFirstAttempt = !hasAnswered
-    setHasAnswered(true)
+  if (complete) {
+    return (
+      <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+          Scripture Recall
+        </p>
+        <h2 className="mt-4 text-3xl font-bold text-white">
+          Training Complete
+        </h2>
+        <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-300">
+          Your review session is complete. Return tomorrow or add more verses to keep memory training alive.
+        </p>
 
-    if (type === "again") {
-      const current = newSession.splice(index, 1)[0]
-      newSession.splice(1, 0, current)
-      xpToAdd = 0
-      wrongSound.current?.play().catch(() => {})
-    }
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Cards Reviewed</p>
+            <p className="mt-2 text-3xl font-bold text-white">{reviewedCount}</p>
+          </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Remembered</p>
+            <p className="mt-2 text-3xl font-bold text-white">{rememberedCount}</p>
+          </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Hard Cards</p>
+            <p className="mt-2 text-3xl font-bold text-white">{hardCount}</p>
+          </div>
+          <div className="rounded-[1.5rem] border border-amber-400/20 bg-amber-300/10 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">XP Earned</p>
+            <p className="mt-2 text-3xl font-bold text-white">+{sessionXp}</p>
+          </div>
+        </div>
 
-    if (type === "hard") {
-      const current = newSession.splice(index, 1)[0]
-      newSession.push(current)
-      xpToAdd = 1
-      correctSound.current?.play().catch(() => {})
-    }
-
-    if (type === "easy") {
-      newSession.splice(index, 1)
-      xpToAdd = 2
-      correctSound.current?.play().catch(() => {})
-    }
-
-    if (xpToAdd > 0) {
-      const xpResult = await addXp({
-        amount: xpToAdd,
-        source: "flashcards",
-        cardId: card.id,
-        isFirstAttempt,
-      }).catch(console.error)
-
-      xpAwarded = Boolean(xpResult?.success)
-    }
-
-    await updateFlashcardProgress(card, type).catch(console.error)
-
-    if (xpAwarded) {
-      setXpPop(`+${xpToAdd} XP`)
-      setTimeout(() => setXpPop(null), 800)
-    }
-
-    setTimeout(() => {
-      setSession(newSession)
-      setAnimating(false)
-      setHasAnswered(false)
-      nextCard(newSession)
-    }, 150)
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+          <Link
+            href="/flashcards"
+            className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
+          >
+            Back to Memory Training
+          </Link>
+          <Link
+            href="/flashcards/create"
+            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Add Another Verse
+          </Link>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="sticky top-0 z-50 bg-black/80 backdrop-blur border-b border-neutral-800 px-4 py-3 flex items-center justify-between">
-        <button
-          onClick={() => router.push("/dashboard")}
-          className="text-sm text-gray-300"
-        >
-          ← Dashboard
-        </button>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+            Scripture Recall
+          </p>
+          <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+            Train your memory through focused verse review.
+          </h1>
+          <p className="mt-4 text-base leading-7 text-slate-300">
+            Start with the reference, recall the verse mentally, then reveal and rate how firmly it lives in memory.
+          </p>
+        </div>
 
-        <div className="text-sm text-gray-300">
-          {session.length} left
+        <div className={`rounded-[1.5rem] border p-4 lg:w-[320px] ${statusClasses}`}>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+            Session Focus
+          </p>
+          <p className="mt-2 text-sm leading-6">
+            {feedbackMessage}
+          </p>
         </div>
       </div>
 
-      <div className="flex-1 px-4 py-4 space-y-4 relative max-w-xl mx-auto w-full">
-        {xpPop && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 text-green-400 font-bold animate-bounce">
-            {xpPop}
-          </div>
-        )}
-
-        <div className="mt-2">
-          <div
-            onClick={handleFlip}
-            className="perspective"
-          >
-          <div
-            className={`relative w-full min-h-[260px] transition-transform duration-500 transform-style preserve-3d ${
-              flipped ? "rotate-y-180" : ""
-            } ${animating ? "scale-95" : ""}`}
-          >
-            <div className="absolute w-full h-full backface-hidden p-6 rounded-2xl bg-neutral-900 text-white flex items-center justify-center text-center border border-neutral-700 text-lg leading-relaxed">
-              {card.verse_text}
-            </div>
-
-            <div className="absolute w-full h-full backface-hidden rotate-y-180 p-6 rounded-2xl bg-neutral-800 text-white flex items-center justify-center text-center border border-neutral-700">
-              {card.reference}
-            </div>
-          </div>
-          </div>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="rounded-[1.5rem] border border-amber-400/20 bg-amber-300/10 p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Cards Remaining</p>
+          <p className="mt-2 text-3xl font-bold text-white">{cardsRemaining}</p>
         </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Current Card</p>
+          <p className="mt-2 text-3xl font-bold text-white">{currentCardNumber}</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Reviewed This Session</p>
+          <p className="mt-2 text-3xl font-bold text-white">{reviewedCount}</p>
+        </div>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">XP Earned</p>
+          <p className="mt-2 text-3xl font-bold text-white">+{sessionXp}</p>
+        </div>
+      </section>
 
-        {flipped && (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <button
-              onClick={() => handleAnswer("again")}
-              className="bg-red-500 py-4 rounded-xl font-semibold"
-            >
-              {messages.didnt_know}
-            </button>
-
-            <button
-              onClick={() => handleAnswer("hard")}
-              className="bg-amber-500 py-4 rounded-xl font-semibold text-black"
-            >
-              {messages.almost}
-            </button>
-
-            <button
-              onClick={() => handleAnswer("easy")}
-              className="bg-blue-600 py-4 rounded-xl font-semibold"
-            >
-              {messages.got_it}
-            </button>
-          </div>
-        )}
+      <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+        <div
+          className="h-full rounded-full bg-amber-400 transition-all duration-300"
+          style={{ width: `${progressPercent}%` }}
+        />
       </div>
+
+      {currentCard && (
+        <section className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_28px_70px_rgba(0,0,0,0.42)] md:p-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-amber-100">
+              Recall First
+            </span>
+            <span className="text-sm font-semibold text-slate-400">
+              Card {currentCardNumber} of {totalCards}
+            </span>
+          </div>
+
+          <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-slate-950/70 p-6 text-center md:p-8">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+              Reference
+            </p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white md:text-4xl">
+              {currentCard.reference}
+            </h2>
+
+            {!revealed ? (
+              <div className="mt-8">
+                <p className="mx-auto max-w-2xl text-base leading-7 text-slate-300">
+                  Recall the verse mentally before revealing the text.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setRevealed(true)}
+                  className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-amber-400 px-5 py-3.5 text-base font-semibold text-slate-950 transition hover:bg-amber-300 sm:w-auto"
+                >
+                  Reveal Verse
+                </button>
+              </div>
+            ) : (
+              <div className="mt-8">
+                <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-5 text-left">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Verse Text
+                  </p>
+                  <p className="mt-4 text-lg leading-8 text-white md:text-xl">
+                    {currentCard.verse_text}
+                  </p>
+                </div>
+
+                <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+                  <button
+                    type="button"
+                    onClick={() => void handleAnswer("again")}
+                    disabled={isSubmitting}
+                    className="rounded-2xl border border-rose-300/20 bg-rose-400/10 px-5 py-4 text-left transition hover:bg-rose-400/20 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <div className="text-base font-semibold text-rose-100">I struggled</div>
+                    <div className="mt-1 text-sm text-rose-100/80">Needs more repetition.</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleAnswer("hard")}
+                    disabled={isSubmitting}
+                    className="rounded-2xl border border-amber-300/20 bg-amber-300/10 px-5 py-4 text-left transition hover:bg-amber-300/20 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <div className="text-base font-semibold text-amber-50">I remembered</div>
+                    <div className="mt-1 text-sm text-amber-50/80">Keep it in active review.</div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleAnswer("easy")}
+                    disabled={isSubmitting}
+                    className="rounded-2xl border border-emerald-300/20 bg-emerald-400/10 px-5 py-4 text-left transition hover:bg-emerald-400/20 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <div className="text-base font-semibold text-emerald-50">Mastered it</div>
+                    <div className="mt-1 text-sm text-emerald-50/80">Ready for a longer interval.</div>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   )
 }
