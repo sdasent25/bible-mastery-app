@@ -91,23 +91,23 @@ async function upload() {
       continue
     }
 
-    const { error } = fileName === "books.json"
-      ? await supabase.from("books").upsert(
-          data.map(b => ({
-            book: b.book,
-            book_order: b.order,
-            testament: b.testament,
-            category: b.category,
-            theme: b.theme,
-          }))
-          ,
-          {
-            onConflict: "book",
-          }
-        )
-      : await supabase.from("quest_questions").upsert(data, {
-          onConflict: "question,option_a,option_b,option_c,option_d,correct_answer",
-        })
+    if (fileName !== "books.json") {
+      console.log(`Skipping legacy quest upload: ${file}`)
+      continue
+    }
+
+    const { error } = await supabase.from("books").upsert(
+      data.map(b => ({
+        book: b.book,
+        book_order: b.order,
+        testament: b.testament,
+        category: b.category,
+        theme: b.theme,
+      })),
+      {
+        onConflict: "book",
+      }
+    )
 
     if (error) {
       console.error("Error inserting:", error.message)

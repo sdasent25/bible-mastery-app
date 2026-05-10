@@ -1,12 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
-import { createClient } from "@/lib/supabase/client"
-
-const supabase = createClient()
 
 function QuestCard({
   title,
@@ -16,6 +13,9 @@ function QuestCard({
   locked = false,
   progress = 0,
   total = 0,
+  statusLabel,
+  overlayMessage,
+  hideProgress = false,
 }: {
   title: string
   href: string
@@ -24,6 +24,9 @@ function QuestCard({
   locked?: boolean
   progress?: number
   total?: number
+  statusLabel?: string
+  overlayMessage?: string
+  hideProgress?: boolean
 }) {
   const progressPercent = total > 0 ? Math.min((progress / total) * 100, 100) : 0
 
@@ -40,7 +43,7 @@ function QuestCard({
       {locked && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="text-center text-white">
-            🔒 Complete the Genesis campaign to unlock
+            {overlayMessage || "🔒 Locked"}
           </div>
         </div>
       )}
@@ -61,7 +64,7 @@ function QuestCard({
       <div className="flex items-center justify-between px-5 py-4">
         <div>
           <div className="text-lg font-bold text-white">{title}</div>
-          {!locked && (
+          {!hideProgress && !locked && (
             <>
               <div className="mt-3 h-2 w-44 overflow-hidden rounded-full bg-white/10">
                 <div
@@ -76,7 +79,7 @@ function QuestCard({
           )}
         </div>
         <div className="rounded-full border border-white/15 px-3 py-1 text-sm text-zinc-200">
-          {locked ? "Locked" : "Open"}
+          {statusLabel || (locked ? "Locked" : "Open")}
         </div>
       </div>
     </Link>
@@ -86,8 +89,6 @@ function QuestCard({
 export default function QuestsPage() {
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
-  const [genesisComplete, setGenesisComplete] = useState(false)
-  const isDevUnlock = true
 
   useEffect(() => {
     const run = async () => {
@@ -97,28 +98,6 @@ export default function QuestsPage() {
     }
 
     run()
-  }, [])
-
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from("user_segment_mastery")
-        .select("segment, mastered")
-
-      if (!data) return
-
-      const genesisSegments = data.filter((d) =>
-        d.segment.startsWith("genesis")
-      )
-
-      const allComplete =
-        genesisSegments.length > 0 &&
-        genesisSegments.every((s) => s.mastered)
-
-      setGenesisComplete(allComplete)
-    }
-
-    void load()
   }, [])
 
   const allowedPlans = ["pro_plus", "family_pro_plus"]
@@ -161,10 +140,12 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
-          // const locked = !genesisComplete
-          locked={!isDevUnlock}
+          locked
           progress={0}
           total={10}
+          statusLabel="Coming Soon"
+          overlayMessage="Coming Soon"
+          hideProgress
         />
 
         <QuestCard
