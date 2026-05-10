@@ -10,6 +10,7 @@ function QuestCard({
   href,
   accentClass,
   imageLabel,
+  description,
   locked = false,
   progress = 0,
   total = 0,
@@ -21,6 +22,7 @@ function QuestCard({
   href: string
   accentClass: string
   imageLabel: string
+  description?: string
   locked?: boolean
   progress?: number
   total?: number
@@ -64,6 +66,11 @@ function QuestCard({
       <div className="flex items-center justify-between px-5 py-4">
         <div>
           <div className="text-lg font-bold text-white">{title}</div>
+          {description ? (
+            <div className="mt-2 max-w-xs text-sm text-zinc-400">
+              {description}
+            </div>
+          ) : null}
           {!hideProgress && !locked && (
             <>
               <div className="mt-3 h-2 w-44 overflow-hidden rounded-full bg-white/10">
@@ -143,10 +150,11 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
+          description="Practice Mode • No XP yet"
           locked={false}
           progress={0}
           total={0}
-          statusLabel="Genesis Available"
+          statusLabel="16 Books Available"
           hideProgress
         />
 

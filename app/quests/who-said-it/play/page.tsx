@@ -50,7 +50,7 @@ function ProgressPill({ label, value }: { label: string; value: string }) {
 
 export default function WhoSaidItPlayPage() {
   const searchParams = useSearchParams()
-  const requestedBook = searchParams.get("book")
+  const requestedBook = searchParams.get("book")?.trim() ?? ""
 
   const [plan, setPlan] = useState("free")
   const [planLoading, setPlanLoading] = useState(true)
@@ -63,10 +63,10 @@ export default function WhoSaidItPlayPage() {
   const [score, setScore] = useState(0)
   const [sessionSeed, setSessionSeed] = useState(0)
 
-  const isGenesis = requestedBook === "Genesis"
   const isSummary = questions.length > 0 && currentIndex >= questions.length
   const currentQuestion = !isSummary ? questions[currentIndex] : null
-  const accuracy = questions.length > 0 ? Math.round((score / questions.length) * 100) : 0
+  const accuracy =
+    questions.length > 0 ? Math.round((score / questions.length) * 100) : 0
 
   const answerOptions = useMemo(() => {
     if (!currentQuestion) {
@@ -92,7 +92,13 @@ export default function WhoSaidItPlayPage() {
   }, [])
 
   useEffect(() => {
-    if (planLoading || !allowedPlans.includes(plan) || !isGenesis) {
+    if (planLoading || !allowedPlans.includes(plan)) {
+      return
+    }
+
+    if (!requestedBook) {
+      setQuestions([])
+      setLoadError("This drill is being prepared.")
       return
     }
 
@@ -107,7 +113,7 @@ export default function WhoSaidItPlayPage() {
           "id, book, speaker, reference, quote_text, prompt_context, question, option_a, option_b, option_c, option_d, correct_answer, source_key"
         )
         .eq("type", "who_said_it")
-        .eq("book", "Genesis")
+        .eq("book", requestedBook)
         .order("source_key", { ascending: true })
 
       if (error) {
@@ -117,8 +123,20 @@ export default function WhoSaidItPlayPage() {
         return
       }
 
-      const shuffled = shuffleQuestions((data || []) as WhoSaidItQuestion[])
-      const sessionQuestions = shuffled.slice(0, Math.min(SESSION_SIZE, shuffled.length))
+      const validRows = (data ?? []) as WhoSaidItQuestion[]
+
+      if (validRows.length === 0) {
+        setLoadError("This drill is being prepared.")
+        setQuestions([])
+        setLoadingQuestions(false)
+        return
+      }
+
+      const shuffled = shuffleQuestions(validRows)
+      const sessionQuestions = shuffled.slice(
+        0,
+        Math.min(SESSION_SIZE, shuffled.length)
+      )
 
       setQuestions(sessionQuestions)
       setCurrentIndex(0)
@@ -129,7 +147,7 @@ export default function WhoSaidItPlayPage() {
     }
 
     void loadQuestions()
-  }, [isGenesis, plan, planLoading, sessionSeed])
+  }, [plan, planLoading, requestedBook, sessionSeed])
 
   const handleSelectAnswer = (answer: string) => {
     if (submittedAnswer) {
@@ -174,32 +192,6 @@ export default function WhoSaidItPlayPage() {
     )
   }
 
-  if (!isGenesis) {
-    return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
-        <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
-          <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
-            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Practice Preview
-            </div>
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              This drill is being prepared.
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-zinc-300">
-              Genesis is the only active Who Said It practice drill right now.
-            </p>
-          </div>
-          <Link
-            href="/quests/who-said-it"
-            className="rounded-2xl bg-amber-400 px-5 py-4 text-center text-base font-black text-slate-950"
-          >
-            Back to Who Said It
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   if (loadingQuestions) {
     return <div className="p-6 text-white">Preparing drill...</div>
   }
@@ -210,13 +202,15 @@ export default function WhoSaidItPlayPage() {
         <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
           <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Practice Preview
+              Practice Mode
             </div>
             <h1 className="mt-3 text-3xl font-bold text-white">
               This drill is being prepared.
             </h1>
             <p className="mt-3 text-sm leading-6 text-zinc-300">
-              We could not load Genesis questions for this practice session yet.
+              {requestedBook
+                ? `We could not load a Who Said It practice set for ${requestedBook}.`
+                : "Choose a book from the Who Said It hub to begin practice."}
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -250,11 +244,12 @@ export default function WhoSaidItPlayPage() {
               Training Complete
             </h1>
             <p className="mt-3 text-sm leading-6 text-zinc-300">
-              Genesis speaker recognition practice is complete. No XP was awarded in this preview.
+              Practice Mode — No XP yet.
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <ProgressPill label="Book" value={requestedBook} />
             <ProgressPill label="Score" value={`${score}/${questions.length}`} />
             <ProgressPill label="Accuracy" value={`${accuracy}%`} />
           </div>
@@ -285,7 +280,7 @@ export default function WhoSaidItPlayPage() {
         <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
           <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Practice Preview
+              Practice Mode
             </div>
             <h1 className="mt-3 text-3xl font-bold text-white">
               This drill is being prepared.
@@ -320,7 +315,7 @@ export default function WhoSaidItPlayPage() {
                 Who Said It?
               </h1>
               <p className="mt-2 text-sm leading-6 text-zinc-300">
-                Practice Mode • No XP awarded in this prototype
+                Practice Mode • No XP yet
               </p>
             </div>
             <div className="rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">
@@ -363,8 +358,12 @@ export default function WhoSaidItPlayPage() {
           <div className="mt-5 grid gap-3">
             {answerOptions.map((answer) => {
               const isSelected = selectedAnswer === answer
-              const showCorrect = submittedAnswer !== null && answer === currentQuestion.correct_answer
-              const showWrong = submittedAnswer === answer && answer !== currentQuestion.correct_answer
+              const showCorrect =
+                submittedAnswer !== null &&
+                answer === currentQuestion.correct_answer
+              const showWrong =
+                submittedAnswer === answer &&
+                answer !== currentQuestion.correct_answer
 
               return (
                 <button
@@ -403,8 +402,14 @@ export default function WhoSaidItPlayPage() {
             </button>
           ) : (
             <div className="mt-5 rounded-2xl border border-white/10 bg-black/30 p-4">
-              <div className={`text-base font-bold ${isCorrect ? "text-emerald-300" : "text-amber-200"}`}>
-                {isCorrect ? "Correct." : `The correct answer is: ${currentQuestion.correct_answer}`}
+              <div
+                className={`text-base font-bold ${
+                  isCorrect ? "text-emerald-300" : "text-amber-200"
+                }`}
+              >
+                {isCorrect
+                  ? "Correct."
+                  : `The correct answer is: ${currentQuestion.correct_answer}`}
               </div>
               <button
                 type="button"
