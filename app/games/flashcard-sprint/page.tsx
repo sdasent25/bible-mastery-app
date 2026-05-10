@@ -40,6 +40,10 @@ function buildSprintDeck(cards: Flashcard[]) {
   return ordered.slice(0, SESSION_LENGTH)
 }
 
+function getFeedbackCopy(result: 'correct' | 'review') {
+  return result === 'correct' ? 'One verse stronger.' : 'Keep training.'
+}
+
 export default function FlashcardSprintPage() {
   const [loadingPlan, setLoadingPlan] = useState(true)
   const [loadingData, setLoadingData] = useState(false)
@@ -53,7 +57,7 @@ export default function FlashcardSprintPage() {
   const [totalXp, setTotalXp] = useState(0)
   const [elapsedSeconds, setElapsedSeconds] = useState(0)
   const [feedbackTone, setFeedbackTone] = useState<'idle' | 'correct' | 'incorrect'>('idle')
-  const [feedbackMessage, setFeedbackMessage] = useState('')
+  const [feedbackMessage, setFeedbackMessage] = useState('Keep training.')
   const [isAnswering, setIsAnswering] = useState(false)
   const [hasAnswered, setHasAnswered] = useState(false)
 
@@ -79,7 +83,7 @@ export default function FlashcardSprintPage() {
       setLoadingData(false)
     }
 
-    initialize()
+    void initialize()
   }, [])
 
   const sessionFinished = sessionCards.length > 0 && currentIndex >= sessionCards.length
@@ -87,6 +91,7 @@ export default function FlashcardSprintPage() {
   const progressCount = Math.min(currentIndex + (currentCard ? 1 : 0), sessionCards.length)
   const progressPercent = sessionCards.length > 0 ? (currentIndex / sessionCards.length) * 100 : 0
   const isLocked = !canAccessFlashcards(plan)
+  const cardsRemaining = Math.max(sessionCards.length - currentIndex, 0)
 
   useEffect(() => {
     if (loadingData || sessionCards.length === 0 || sessionFinished) {
@@ -102,11 +107,11 @@ export default function FlashcardSprintPage() {
 
   const cardClasses = useMemo(() => {
     if (feedbackTone === 'correct') {
-      return 'bg-emerald-100/90 ring-4 ring-emerald-300 scale-[1.01]'
+      return 'bg-emerald-100/95 ring-4 ring-emerald-300 scale-[1.01]'
     }
 
     if (feedbackTone === 'incorrect') {
-      return 'bg-rose-100/90 ring-4 ring-rose-200 scale-[1.01]'
+      return 'bg-rose-100/95 ring-4 ring-rose-200 scale-[1.01]'
     }
 
     return 'bg-white/95'
@@ -120,7 +125,7 @@ export default function FlashcardSprintPage() {
     setSessionXp(0)
     setElapsedSeconds(0)
     setFeedbackTone('idle')
-    setFeedbackMessage('')
+    setFeedbackMessage('Keep training.')
     setIsAnswering(false)
     setHasAnswered(false)
   }
@@ -131,7 +136,6 @@ export default function FlashcardSprintPage() {
     }
 
     setIsAnswering(true)
-    let nextTotalXp = totalXp
     const isFirstAttempt = !hasAnswered
     setHasAnswered(true)
 
@@ -146,31 +150,27 @@ export default function FlashcardSprintPage() {
       })
 
       if (xpResult.success) {
-        nextTotalXp = xpResult.xp
         setSessionXp((currentXp) => currentXp + CORRECT_XP)
         setTotalXp(xpResult.xp)
       }
 
       setFeedbackTone('correct')
-      setFeedbackMessage('Nice! +XP 🎉')
     } else {
       setFeedbackTone('incorrect')
-      setFeedbackMessage('Keep going 💪')
     }
+
+    setFeedbackMessage(getFeedbackCopy(result))
 
     const updatedCard = await updateFlashcardProgress(
       currentCard,
       result === 'correct' ? 'easy' : 'again'
     )
 
-    let nextFlashcards = flashcards
-    let nextSessionCards = sessionCards
-
     if (updatedCard) {
-      nextFlashcards = flashcards.map((flashcard) =>
+      const nextFlashcards = flashcards.map((flashcard) =>
         flashcard.id === updatedCard.id ? updatedCard : flashcard
       )
-      nextSessionCards = sessionCards.map((flashcard) =>
+      const nextSessionCards = sessionCards.map((flashcard) =>
         flashcard.id === updatedCard.id ? updatedCard : flashcard
       )
       setFlashcards(nextFlashcards)
@@ -181,7 +181,7 @@ export default function FlashcardSprintPage() {
       setCurrentIndex((index) => index + 1)
       setRevealed(false)
       setFeedbackTone('idle')
-      setFeedbackMessage('')
+      setFeedbackMessage('Keep training.')
       setIsAnswering(false)
       setHasAnswered(false)
     }, 420)
@@ -213,21 +213,23 @@ export default function FlashcardSprintPage() {
     return (
       <div className="min-h-screen bg-slate-950 px-4 py-8 md:px-6 md:py-12">
         <div className="mx-auto max-w-3xl rounded-[2rem] border border-slate-800 bg-slate-900 p-8 text-center text-white shadow-2xl">
-          <h1 className="text-3xl font-extrabold tracking-tight">Flashcard Sprint</h1>
-          <p className="mt-2 text-slate-300">How fast can you recall?</p>
-          <p className="mt-8 text-lg font-semibold">Create a few flashcards first to start playing.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">Timed Recall</p>
+          <h1 className="mt-4 text-3xl font-extrabold tracking-tight">No sprint cards ready.</h1>
+          <p className="mt-3 text-base text-slate-300">
+            Add verses to build your sprint deck.
+          </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="/flashcards"
+              href="/flashcards/create"
               className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
             >
-              Open Flashcards
+              Add Verse
             </Link>
             <Link
               href="/flashcards"
               className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-white transition hover:bg-slate-800"
             >
-              Back to Flashcards
+              Back to Memory Training
             </Link>
           </div>
         </div>
@@ -240,10 +242,12 @@ export default function FlashcardSprintPage() {
       <div className="min-h-screen bg-slate-950 px-4 py-8 md:px-6 md:py-10">
         <div className="mx-auto flex max-w-3xl flex-col items-center rounded-[2rem] border border-slate-800 bg-slate-900 p-8 text-center text-white shadow-2xl">
           <div className="rounded-full bg-emerald-500/20 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300">
-            Sprint Complete
+            Training Complete
           </div>
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight">Flashcard Sprint</h1>
-          <p className="mt-2 text-lg text-slate-300">How fast can you recall?</p>
+          <h1 className="mt-6 text-4xl font-extrabold tracking-tight">Memory Sprint</h1>
+          <p className="mt-3 text-base text-slate-300">
+            Practice fast recall under pressure.
+          </p>
 
           <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
             <div className="rounded-2xl bg-slate-800 p-5">
@@ -266,13 +270,19 @@ export default function FlashcardSprintPage() {
               onClick={() => resetSession()}
               className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-slate-950 transition hover:bg-amber-400"
             >
-              Play Again
+              Sprint Again
             </button>
+            <Link
+              href="/flashcards/review"
+              className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-white transition hover:bg-slate-800"
+            >
+              Review Cards
+            </Link>
             <Link
               href="/flashcards"
               className="rounded-xl border border-slate-700 px-5 py-3 font-semibold text-white transition hover:bg-slate-800"
             >
-              Back to Flashcards
+              Back to Memory Training
             </Link>
           </div>
         </div>
@@ -283,31 +293,44 @@ export default function FlashcardSprintPage() {
   return (
     <>
       <InstructionModal
-        title="Sprint Mode"
+        title="Memory Sprint"
         storageKey="sprintSeen"
         steps={[
-          "Quick recall training",
-          "Reveal answer before responding",
-          "Earn Memory XP with first-attempt correct answers",
+          'Fast recall with your saved verses',
+          'Reveal the reference, then judge your recall honestly',
+          'Earn Memory XP with eligible first-attempt recall. Daily limits apply.',
         ]}
       />
 
-      <div className="relative min-h-screen bg-[radial-gradient(circle_at_top,_#1e293b,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.14),_transparent_18%),linear-gradient(180deg,_#1e293b_0%,_#020617_60%)] px-4 py-8 md:px-6 md:py-10">
         <div className={`mx-auto max-w-5xl space-y-8 ${isLocked ? 'pointer-events-none opacity-40' : ''}`}>
+          <div className="flex items-center justify-between gap-4">
+            <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
+              Back to Memory Training
+            </Link>
+            <Link href="/flashcards/create" className="text-sm font-semibold text-amber-200 transition hover:text-amber-100">
+              Add Verse
+            </Link>
+          </div>
+
           <header className="text-center text-white">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">Game Training</p>
-            <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Flashcard Sprint</h1>
-            <p className="mt-3 text-base text-slate-300 md:text-lg">How fast can you recall?</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-amber-300">Timed Recall</p>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight md:text-5xl">Memory Sprint</h1>
+            <p className="mt-3 text-base text-slate-300 md:text-lg">Practice fast recall under pressure.</p>
+            <p className="mt-4 text-sm text-slate-400">
+              Earn Memory XP with eligible first-attempt recall. Daily limits apply.
+            </p>
           </header>
 
-          <GameHeader
-            progress={isLocked ? 1 : currentIndex + 1}
-            total={isLocked ? SESSION_LENGTH : sessionCards.length}
-            sessionXp={sessionXp}
-            totalXp={totalXp}
-          />
-
-          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-2">
+          <section className="grid grid-cols-2 gap-3 text-white md:grid-cols-4">
+            <div className="rounded-2xl border border-amber-300/20 bg-amber-300/10 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Remaining</p>
+              <p className="mt-2 text-2xl font-bold">{cardsRemaining}</p>
+            </div>
+            <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Current Card</p>
+              <p className="mt-2 text-2xl font-bold">{isLocked ? 1 : progressCount}</p>
+            </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Timer</p>
               <p className="mt-2 text-2xl font-bold">{formatElapsed(elapsedSeconds)}</p>
@@ -317,6 +340,13 @@ export default function FlashcardSprintPage() {
               <p className="mt-2 text-2xl font-bold text-emerald-300">{correctCount}</p>
             </div>
           </section>
+
+          <GameHeader
+            progress={isLocked ? 1 : currentIndex + 1}
+            total={isLocked ? SESSION_LENGTH : sessionCards.length}
+            sessionXp={sessionXp}
+            totalXp={totalXp}
+          />
 
           <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
             <div
@@ -339,7 +369,13 @@ export default function FlashcardSprintPage() {
                   </span>
                 </div>
 
-                <div className="mt-10 min-h-56">
+                <div className="mt-6 text-center">
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
+                    Scripture Prompt
+                  </p>
+                </div>
+
+                <div className="mt-8 min-h-56">
                   <p className="text-center text-2xl font-extrabold leading-relaxed text-slate-950 md:text-3xl">
                     {revealed
                       ? (currentCard ?? PREVIEW_SPRINT_CARD).reference
@@ -357,7 +393,7 @@ export default function FlashcardSprintPage() {
                           : 'opacity-0'
                     }`}
                   >
-                    {feedbackMessage || 'Ready'}
+                    {feedbackMessage || 'Keep training.'}
                   </p>
                 </div>
               </div>
@@ -369,7 +405,7 @@ export default function FlashcardSprintPage() {
                     onClick={() => setRevealed(true)}
                     className="rounded-xl bg-amber-500 px-5 py-4 font-semibold text-slate-950 transition hover:bg-amber-400"
                   >
-                    Show Answer
+                    Reveal Reference
                   </button>
                 )}
 
@@ -381,7 +417,7 @@ export default function FlashcardSprintPage() {
                       disabled={isAnswering}
                       className="rounded-xl bg-emerald-500 px-5 py-4 font-semibold text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-300"
                     >
-                      {isAnswering ? 'Saving...' : 'Got it right'}
+                      {isAnswering ? 'Saving...' : 'I remembered'}
                     </button>
                     <button
                       type="button"
@@ -389,7 +425,7 @@ export default function FlashcardSprintPage() {
                       disabled={isAnswering}
                       className="rounded-xl bg-rose-500 px-5 py-4 font-semibold text-white transition hover:bg-rose-400 disabled:cursor-not-allowed disabled:bg-rose-300"
                     >
-                      {isAnswering ? 'Saving...' : 'Need to review'}
+                      {isAnswering ? 'Saving...' : 'Needs review'}
                     </button>
                   </>
                 )}
@@ -399,7 +435,7 @@ export default function FlashcardSprintPage() {
 
           <div className="text-center">
             <Link href="/flashcards" className="text-sm font-semibold text-slate-300 transition hover:text-white">
-              Back to Flashcards
+              Back to Memory Training
             </Link>
           </div>
         </div>
