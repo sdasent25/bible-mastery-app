@@ -39,6 +39,104 @@ const ALLOWED_SPEAKER_TYPES = new Set([
 ])
 const ALLOWED_DIFFICULTIES = new Set(["easy", "medium", "hard"])
 const LETTER_ANSWERS = new Set(["A", "B", "C", "D"])
+const BOOK_METADATA = {
+  Genesis: {
+    tag: "genesis",
+    book_order: 1,
+    testament: "old_testament",
+    category: "pentateuch",
+  },
+  Exodus: {
+    tag: "exodus",
+    book_order: 2,
+    testament: "old_testament",
+    category: "pentateuch",
+  },
+  "1 Samuel": {
+    tag: "1_samuel",
+    book_order: 9,
+    testament: "old_testament",
+    category: "historical",
+  },
+  "2 Samuel": {
+    tag: "2_samuel",
+    book_order: 10,
+    testament: "old_testament",
+    category: "historical",
+  },
+  "1 Kings": {
+    tag: "1_kings",
+    book_order: 11,
+    testament: "old_testament",
+    category: "historical",
+  },
+  "2 Kings": {
+    tag: "2_kings",
+    book_order: 12,
+    testament: "old_testament",
+    category: "historical",
+  },
+  Nehemiah: {
+    tag: "nehemiah",
+    book_order: 16,
+    testament: "old_testament",
+    category: "historical",
+  },
+  Job: {
+    tag: "job",
+    book_order: 18,
+    testament: "old_testament",
+    category: "wisdom",
+  },
+  Jeremiah: {
+    tag: "jeremiah",
+    book_order: 24,
+    testament: "old_testament",
+    category: "major_prophets",
+  },
+  Daniel: {
+    tag: "daniel",
+    book_order: 27,
+    testament: "old_testament",
+    category: "major_prophets",
+  },
+  Matthew: {
+    tag: "matthew",
+    book_order: 40,
+    testament: "new_testament",
+    category: "gospels",
+  },
+  Mark: {
+    tag: "mark",
+    book_order: 41,
+    testament: "new_testament",
+    category: "gospels",
+  },
+  Luke: {
+    tag: "luke",
+    book_order: 42,
+    testament: "new_testament",
+    category: "gospels",
+  },
+  John: {
+    tag: "john",
+    book_order: 43,
+    testament: "new_testament",
+    category: "gospels",
+  },
+  Acts: {
+    tag: "acts",
+    book_order: 44,
+    testament: "new_testament",
+    category: "acts",
+  },
+  Revelation: {
+    tag: "revelation",
+    book_order: 66,
+    testament: "new_testament",
+    category: "apocalyptic",
+  },
+}
 const CLI_ARGS = process.argv.slice(2)
 const DRY_RUN = CLI_ARGS.includes("--dry-run")
 const TARGET_FILE_ARG = CLI_ARGS.find((arg) => !arg.startsWith("--")) || null
@@ -137,6 +235,32 @@ function normalizeRecord(record) {
   }
 }
 
+function formatDifficultyMix(records) {
+  const counts = { easy: 0, medium: 0, hard: 0 }
+
+  for (const record of records) {
+    if (counts[record.difficulty] !== undefined) {
+      counts[record.difficulty] += 1
+    }
+  }
+
+  return `easy=${counts.easy}, medium=${counts.medium}, hard=${counts.hard}`
+}
+
+function summarizeByBook(records) {
+  const byBook = new Map()
+
+  for (const record of records) {
+    if (!byBook.has(record.book)) {
+      byBook.set(record.book, [])
+    }
+
+    byBook.get(record.book).push(record)
+  }
+
+  return [...byBook.entries()].sort(([a], [b]) => a.localeCompare(b))
+}
+
 function validateRecord(record, filePath, index) {
   const errors = []
   const label = `${path.basename(filePath)}#${index + 1}`
@@ -172,6 +296,60 @@ function validateRecord(record, filePath, index) {
 
   if (!Array.isArray(record.tags)) {
     errors.push(`${label}: tags must be an array`)
+  } else {
+    const seenTags = new Set()
+
+    for (const tag of record.tags) {
+      if (typeof tag !== "string") {
+        errors.push(`${label}: tags must contain only non-empty strings`)
+        continue
+      }
+
+      const trimmedTag = tag.trim()
+
+      if (!trimmedTag) {
+        errors.push(`${label}: tags must contain only non-empty strings`)
+        continue
+      }
+
+      if (seenTags.has(trimmedTag)) {
+        errors.push(`${label}: duplicate tag value "${trimmedTag}"`)
+      } else {
+        seenTags.add(trimmedTag)
+      }
+    }
+
+    if (!seenTags.has("speaker_recognition")) {
+      errors.push(`${label}: missing speaker_recognition tag`)
+    }
+  }
+
+  const expectedMetadata = BOOK_METADATA[record.book]
+
+  if (!expectedMetadata) {
+    errors.push(`${label}: unsupported book "${record.book}"`)
+  } else {
+    if (record.book_order !== expectedMetadata.book_order) {
+      errors.push(
+        `${label}: invalid book_order "${record.book_order}" for book "${record.book}", expected "${expectedMetadata.book_order}"`
+      )
+    }
+
+    if (record.testament !== expectedMetadata.testament) {
+      errors.push(
+        `${label}: invalid testament "${record.testament}" for book "${record.book}", expected "${expectedMetadata.testament}"`
+      )
+    }
+
+    if (record.category !== expectedMetadata.category) {
+      errors.push(
+        `${label}: invalid category "${record.category}" for book "${record.book}", expected "${expectedMetadata.category}"`
+      )
+    }
+
+    if (Array.isArray(record.tags) && !record.tags.includes(expectedMetadata.tag)) {
+      errors.push(`${label}: missing normalized book tag "${expectedMetadata.tag}"`)
+    }
   }
 
   if (!isNonEmptyString(record.source_key)) {
@@ -322,6 +500,29 @@ async function main() {
       validationErrors.forEach((error) => console.error(`- ${error}`))
       process.exitCode = 1
       return
+    }
+
+    if (files.length === 1) {
+      const onlyFile = path.basename(files[0])
+      const books = [...new Set(records.map((record) => record.book))].sort()
+      console.log("Single-file summary:")
+      console.log(`- file name: ${onlyFile}`)
+      console.log(`- detected book(s): ${books.join(", ")}`)
+      console.log(`- record count: ${records.length}`)
+      console.log(`- difficulty mix: ${formatDifficultyMix(records)}`)
+      console.log("- required tag validation passed")
+    } else {
+      console.log("All-file summary:")
+      console.log(`- total files: ${files.length}`)
+      console.log(`- total records: ${records.length}`)
+      console.log("- totals by book:")
+      for (const [book, bookRecords] of summarizeByBook(records)) {
+        console.log(`  - ${book}: ${bookRecords.length}`)
+      }
+      console.log("- difficulty mix by book:")
+      for (const [book, bookRecords] of summarizeByBook(records)) {
+        console.log(`  - ${book}: ${formatDifficultyMix(bookRecords)}`)
+      }
     }
 
     if (DRY_RUN) {
