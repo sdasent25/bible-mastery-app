@@ -39,7 +39,9 @@ const ALLOWED_SPEAKER_TYPES = new Set([
 ])
 const ALLOWED_DIFFICULTIES = new Set(["easy", "medium", "hard"])
 const LETTER_ANSWERS = new Set(["A", "B", "C", "D"])
-const DRY_RUN = process.argv.includes("--dry-run")
+const CLI_ARGS = process.argv.slice(2)
+const DRY_RUN = CLI_ARGS.includes("--dry-run")
+const TARGET_FILE_ARG = CLI_ARGS.find((arg) => !arg.startsWith("--")) || null
 
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0
@@ -55,6 +57,32 @@ function listJsonFiles(dir) {
     .filter((file) => file.endsWith(".json"))
     .sort()
     .map((file) => path.join(dir, file))
+}
+
+function resolveInputFiles(targetArg) {
+  if (!targetArg) {
+    return listJsonFiles(DATA_DIR)
+  }
+
+  const resolvedPath = path.isAbsolute(targetArg)
+    ? targetArg
+    : path.resolve(process.cwd(), targetArg)
+
+  if (!fs.existsSync(resolvedPath)) {
+    throw new Error(`Who Said It file not found: ${resolvedPath}`)
+  }
+
+  const fileStat = fs.statSync(resolvedPath)
+
+  if (!fileStat.isFile()) {
+    throw new Error(`Expected a JSON file path, received: ${resolvedPath}`)
+  }
+
+  if (path.extname(resolvedPath).toLowerCase() !== ".json") {
+    throw new Error(`Expected a .json file, received: ${resolvedPath}`)
+  }
+
+  return [resolvedPath]
 }
 
 function parseJsonArray(filePath) {
@@ -260,11 +288,13 @@ async function uploadRecords(records) {
 
 async function main() {
   try {
-    const files = listJsonFiles(DATA_DIR)
+    const files = resolveInputFiles(TARGET_FILE_ARG)
     const records = []
     const validationErrors = []
 
     console.log(`Who Said It files read: ${files.length}`)
+    console.log("Files processed:")
+    files.forEach((filePath) => console.log(`- ${path.relative(process.cwd(), filePath)}`))
 
     for (const filePath of files) {
       const items = parseJsonArray(filePath)
