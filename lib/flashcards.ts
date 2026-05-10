@@ -45,12 +45,36 @@ export async function createFlashcard({
 
   if (!userRes?.user) throw new Error("Not authenticated")
 
+  const trimmedVerseText = verse_text.trim()
+  const trimmedReference = reference.trim()
+  const normalizedTags = tags
+    .map((tag) => tag.trim())
+    .filter(Boolean)
+
+  if (!trimmedVerseText || !trimmedReference) {
+    throw new Error("Reference and verse text are required")
+  }
+
   const { error } = await supabase.from("flashcards").insert({
     user_id: userRes.user.id,
-    verse_text,
-    reference,
-    tags,
+    verse_text: trimmedVerseText,
+    reference: trimmedReference,
+    tags: normalizedTags,
   })
+
+  if (error) throw error
+}
+
+export async function deleteFlashcard(id: string) {
+  const { data: userRes } = await supabase.auth.getUser()
+
+  if (!userRes?.user) throw new Error("Not authenticated")
+
+  const { error } = await supabase
+    .from("flashcards")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", userRes.user.id)
 
   if (error) throw error
 }

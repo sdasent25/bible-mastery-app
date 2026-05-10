@@ -1,21 +1,18 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useEffect, useMemo, useState } from "react"
+import FlashcardList from "@/components/flashcards/FlashcardList"
 import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
-import { getFlashcards } from "@/lib/flashcards"
+import { deleteFlashcard, getFlashcards, type Flashcard } from "@/lib/flashcards"
 import { getUserPlan } from "@/lib/getUserPlan"
 
-type FlashcardListItem = {
-  id: string
-  reference: string
-  verse_text: string
-}
-
 export default function FlashcardListPage() {
-  const [cards, setCards] = useState<FlashcardListItem[]>([])
+  const [cards, setCards] = useState<Flashcard[]>([])
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   useEffect(() => {
     const load = async () => {
@@ -38,11 +35,53 @@ export default function FlashcardListPage() {
       }
     }
 
-    load()
+    void load()
   }, [])
 
+  const stats = useMemo(() => {
+    const mastered = cards.filter((card) => card.status === "mastered").length
+    const due = cards.filter((card) => !card.due_date || new Date(card.due_date).getTime() <= Date.now()).length
+
+    return {
+      total: cards.length,
+      mastered,
+      due,
+    }
+  }, [cards])
+
+  async function handleDelete(card: Flashcard) {
+    const confirmed = window.confirm(`Delete ${card.reference} from your verse library?`)
+
+    if (!confirmed) {
+      return
+    }
+
+    try {
+      setDeletingId(card.id)
+      await deleteFlashcard(card.id)
+      setCards((existingCards) => existingCards.filter((existingCard) => existingCard.id !== card.id))
+    } catch (error) {
+      console.error("Failed to delete flashcard", error)
+      window.alert("We couldn't remove that verse right now. Please try again.")
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
   if (loading) {
-    return <div className="p-6 text-white">Loading cards...</div>
+    return (
+      <div className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-6">
+        <div className="mx-auto max-w-6xl animate-pulse space-y-6">
+          <div className="h-8 w-56 rounded-full bg-white/5" />
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="h-24 rounded-[1.75rem] bg-white/5" />
+            <div className="h-24 rounded-[1.75rem] bg-white/5" />
+            <div className="h-24 rounded-[1.75rem] bg-white/5" />
+          </div>
+          <div className="h-56 rounded-[2rem] bg-white/5" />
+        </div>
+      </div>
+    )
   }
 
   if (!canAccessFlashcards(plan)) {
@@ -54,50 +93,88 @@ export default function FlashcardListPage() {
     )
   }
 
-  if (!cards.length) {
-    return (
-      <div className="p-6 text-white">
-        <button
-          onClick={() => window.location.href = "/flashcards"}
-          className="mb-4 text-sm text-gray-300"
-        >
-          ← Back
-        </button>
-
-        <h1 className="text-2xl font-bold mb-2">My Cards</h1>
-        <p>No flashcards yet. Create your first one.</p>
-      </div>
-    )
-  }
-
   return (
-    <div className="p-6 text-white max-w-4xl mx-auto">
-      <button
-        onClick={() => window.location.href = "/flashcards"}
-        className="mb-4 text-sm text-gray-300"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_24%),linear-gradient(180deg,_#0f172a_0%,_#020617_54%,_#000000_100%)] px-4 py-8 text-white md:px-6 md:py-10">
+      <div className="mx-auto max-w-6xl">
+        <Link
+          href="/flashcards"
+          className="inline-flex items-center text-sm font-semibold text-slate-300 transition hover:text-white"
+        >
+          Back to Memory Training
+        </Link>
 
-      <h1 className="text-3xl font-bold mb-6">
-        My Cards
-      </h1>
-
-      <div className="grid gap-4">
-        {cards.map((card) => (
-          <div
-            key={card.id}
-            className="bg-gray-800 rounded-xl p-4"
-          >
-            <div className="text-sm text-blue-400 mb-2">
-              {card.reference}
-            </div>
-
-            <div className="text-lg">
-              {card.verse_text}
-            </div>
+        <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+              Your Verse Library
+            </p>
+            <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
+              Review, organize, and strengthen the verses you are training.
+            </h1>
+            <p className="mt-4 text-base leading-7 text-slate-300">
+              Keep your memory library visible, stay honest about what is due, and return to the
+              verses that need reinforcement.
+            </p>
           </div>
-        ))}
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <Link
+              href="/flashcards/review"
+              className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
+            >
+              Start Review
+            </Link>
+            <Link
+              href="/flashcards/create"
+              className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              Add Verse
+            </Link>
+          </div>
+        </div>
+
+        <section className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="rounded-[1.75rem] border border-amber-400/20 bg-amber-300/10 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-200">Verses in Training</p>
+            <p className="mt-3 text-3xl font-extrabold text-white">{stats.total}</p>
+          </div>
+          <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Due for Review</p>
+            <p className="mt-3 text-3xl font-extrabold text-white">{stats.due}</p>
+          </div>
+          <div className="rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">Mastered Verses</p>
+            <p className="mt-3 text-3xl font-extrabold text-white">{stats.mastered}</p>
+          </div>
+        </section>
+
+        {!cards.length ? (
+          <section className="mt-6 rounded-[2rem] border border-white/10 bg-white/[0.04] p-8 text-center shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+              Verse Library
+            </p>
+            <h2 className="mt-4 text-3xl font-bold text-white">
+              No verses added yet.
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-300">
+              Add your first verse to begin Scripture Memory Training.
+            </p>
+            <Link
+              href="/flashcards/create"
+              className="mt-6 inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
+            >
+              Add Verse
+            </Link>
+          </section>
+        ) : (
+          <section className="mt-6">
+            <FlashcardList
+              flashcards={cards}
+              onDelete={handleDelete}
+              deletingId={deletingId}
+            />
+          </section>
+        )}
       </div>
     </div>
   )
