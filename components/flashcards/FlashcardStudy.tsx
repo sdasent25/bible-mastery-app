@@ -7,11 +7,24 @@ import { addXp } from "@/lib/xp"
 
 type FlashcardStudyProps = {
   flashcards: Flashcard[]
+  totalLibraryCards?: number
+  hasScheduledDueCards?: boolean
 }
 
 type ReviewFeedbackTone = "idle" | "again" | "hard" | "easy"
 
 const SESSION_SIZE = 10
+
+function formatDate(value?: string | null) {
+  if (!value) {
+    return null
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+  }).format(new Date(value))
+}
 
 function getFeedbackCopy(result: "again" | "hard" | "easy") {
   if (result === "again") {
@@ -25,7 +38,11 @@ function getFeedbackCopy(result: "again" | "hard" | "easy") {
   return "One verse stronger."
 }
 
-export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
+export default function FlashcardStudy({
+  flashcards,
+  totalLibraryCards = 0,
+  hasScheduledDueCards = false,
+}: FlashcardStudyProps) {
   const [session, setSession] = useState<Flashcard[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [revealed, setRevealed] = useState(false)
@@ -36,6 +53,7 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
   const [reviewedCount, setReviewedCount] = useState(0)
   const [rememberedCount, setRememberedCount] = useState(0)
   const [hardCount, setHardCount] = useState(0)
+  const [masteredCount, setMasteredCount] = useState(0)
   const [sessionXp, setSessionXp] = useState(0)
 
   useEffect(() => {
@@ -50,6 +68,7 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
     setReviewedCount(0)
     setRememberedCount(0)
     setHardCount(0)
+    setMasteredCount(0)
     setSessionXp(0)
   }, [flashcards])
 
@@ -58,6 +77,17 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
   const cardsRemaining = Math.max(totalCards - reviewedCount, 0)
   const currentCardNumber = currentCard ? reviewedCount + 1 : totalCards
   const progressPercent = totalCards > 0 ? (reviewedCount / totalCards) * 100 : 0
+  const earliestNextReview = useMemo(() => {
+    const timestamps = session
+      .map((card) => (card.due_date ? new Date(card.due_date).getTime() : null))
+      .filter((value): value is number => value !== null && value > Date.now())
+
+    if (!timestamps.length) {
+      return null
+    }
+
+    return formatDate(new Date(Math.min(...timestamps)).toISOString())
+  }, [session])
 
   const statusClasses = useMemo(() => {
     if (feedbackTone === "again") {
@@ -104,7 +134,12 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
         }
       }
 
-      await updateFlashcardProgress(currentCard, result)
+      const updatedCard = await updateFlashcardProgress(currentCard, result)
+      setSession((existingSession) =>
+        existingSession.map((sessionCard) =>
+          sessionCard.id === updatedCard.id ? updatedCard : sessionCard
+        )
+      )
 
       setReviewedCount((count) => count + 1)
       setFeedbackTone(result)
@@ -114,6 +149,9 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
         setHardCount((count) => count + 1)
       } else {
         setRememberedCount((count) => count + 1)
+        if (result === "easy") {
+          setMasteredCount((count) => count + 1)
+        }
       }
 
       const nextIndex = currentIndex + 1
@@ -139,10 +177,14 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
           Scripture Recall
         </p>
         <h2 className="mt-4 text-3xl font-bold text-white">
-          All caught up.
+          {totalLibraryCards === 0 ? "No verses added yet." : "All caught up."}
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-300">
-          You have no verses due for review right now.
+          {totalLibraryCards === 0
+            ? "Add your first verse to begin Scripture Memory Training."
+            : hasScheduledDueCards
+              ? "You have no verses due right now. Keep building your memory deck or return when your next review arrives."
+              : "You have no verses due right now. Keep building your memory deck or return when your next review arrives."}
         </p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -151,18 +193,22 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
           >
             Add Verse
           </Link>
-          <Link
-            href="/flashcards/list"
-            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            View Library
-          </Link>
-          <Link
-            href="/flashcards"
-            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-          >
-            Back to Memory Training
-          </Link>
+          {totalLibraryCards > 0 && (
+            <>
+              <Link
+                href="/flashcards/list"
+                className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                View Library
+              </Link>
+              <Link
+                href="/flashcards"
+                className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
+                Back to Memory Training
+              </Link>
+            </>
+          )}
         </div>
       </div>
     )
@@ -194,9 +240,22 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Hard Cards</p>
             <p className="mt-2 text-3xl font-bold text-white">{hardCount}</p>
           </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Mastered</p>
+            <p className="mt-2 text-3xl font-bold text-white">{masteredCount}</p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="rounded-[1.5rem] border border-amber-400/20 bg-amber-300/10 p-4">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">XP Earned</p>
             <p className="mt-2 text-3xl font-bold text-white">+{sessionXp}</p>
+          </div>
+          <div className="rounded-[1.5rem] border border-white/10 bg-slate-950/60 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Next Review</p>
+            <p className="mt-2 text-lg font-semibold text-white">
+              {earliestNextReview ? `Next review arrives ${earliestNextReview}.` : "Your next review is scheduled soon."}
+            </p>
           </div>
         </div>
 
@@ -206,6 +265,12 @@ export default function FlashcardStudy({ flashcards }: FlashcardStudyProps) {
             className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
           >
             Back to Memory Training
+          </Link>
+          <Link
+            href="/flashcards/list"
+            className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Review Library
           </Link>
           <Link
             href="/flashcards/create"

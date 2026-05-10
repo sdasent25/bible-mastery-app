@@ -19,10 +19,61 @@ export type Flashcard = {
   last_reviewed?: string | null
 }
 
+export type FlashcardVisibilityStatus =
+  | "new"
+  | "learning"
+  | "due"
+  | "mastered"
+  | "needs_review"
+
 export function getDifficulty(card: Pick<Flashcard, "lapses" | "interval">) {
   if ((card.lapses ?? 0) > 0 || (card.interval ?? 0) <= 2) return "easy" as const
   if ((card.interval ?? 0) <= 7) return "medium" as const
   return "hard" as const
+}
+
+export function hasDueDate(card: Pick<Flashcard, "due_date">) {
+  return Boolean(card.due_date)
+}
+
+export function isFlashcardDue(card: Pick<Flashcard, "due_date">) {
+  if (!card.due_date) {
+    return false
+  }
+
+  return new Date(card.due_date).getTime() <= Date.now()
+}
+
+export function isFlashcardLearning(card: Pick<Flashcard, "status">) {
+  return card.status === "learning" || card.status === "new"
+}
+
+export function isFlashcardMastered(card: Pick<Flashcard, "status">) {
+  return card.status === "mastered"
+}
+
+export function isFlashcardNeedingReview(card: Pick<Flashcard, "lapses">) {
+  return (card.lapses ?? 0) > 0
+}
+
+export function getFlashcardVisibilityStatus(card: Pick<Flashcard, "status" | "due_date" | "lapses">): FlashcardVisibilityStatus {
+  if (isFlashcardNeedingReview(card)) {
+    return "needs_review"
+  }
+
+  if (isFlashcardDue(card)) {
+    return "due"
+  }
+
+  if (isFlashcardMastered(card)) {
+    return "mastered"
+  }
+
+  if (card.status === "learning") {
+    return "learning"
+  }
+
+  return "new"
 }
 
 function mapStudyResultToStatus(status: "new" | "learning" | "mastered" | "again" | "hard" | "easy") {

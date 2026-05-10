@@ -4,16 +4,8 @@ import { useEffect, useMemo, useState } from "react"
 import FlashcardStudy from "@/components/flashcards/FlashcardStudy"
 import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
-import { getFlashcards, type Flashcard } from "@/lib/flashcards"
+import { getFlashcards, hasDueDate, isFlashcardDue, isFlashcardLearning, isFlashcardNeedingReview, type Flashcard } from "@/lib/flashcards"
 import { getUserPlan } from "@/lib/getUserPlan"
-
-function isDueForReview(card: Flashcard) {
-  if (!card.due_date) {
-    return true
-  }
-
-  return new Date(card.due_date).getTime() <= Date.now()
-}
 
 export default function ReviewMode() {
   const [cards, setCards] = useState<Flashcard[]>([])
@@ -48,10 +40,15 @@ export default function ReviewMode() {
     () =>
       cards.filter(
         (card) =>
-          isDueForReview(card) ||
-          (card.lapses ?? 0) > 0 ||
-          card.status === "learning"
+          isFlashcardDue(card) ||
+          isFlashcardNeedingReview(card) ||
+          isFlashcardLearning(card)
       ),
+    [cards]
+  )
+
+  const hasAnyScheduledDue = useMemo(
+    () => cards.some((card) => hasDueDate(card) && isFlashcardDue(card)),
     [cards]
   )
 
@@ -84,7 +81,11 @@ export default function ReviewMode() {
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_24%),linear-gradient(180deg,_#0f172a_0%,_#020617_54%,_#000000_100%)] px-4 py-8 text-white md:px-6 md:py-10">
       <div className="mx-auto max-w-5xl">
-        <FlashcardStudy flashcards={reviewCards} />
+        <FlashcardStudy
+          flashcards={reviewCards}
+          totalLibraryCards={cards.length}
+          hasScheduledDueCards={hasAnyScheduledDue}
+        />
       </div>
     </div>
   )

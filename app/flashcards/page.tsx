@@ -4,7 +4,16 @@ import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
-import { type Flashcard, getFlashcards } from "@/lib/flashcards"
+import {
+  type Flashcard,
+  getFlashcardVisibilityStatus,
+  getFlashcards,
+  hasDueDate,
+  isFlashcardDue,
+  isFlashcardLearning,
+  isFlashcardMastered,
+  isFlashcardNeedingReview,
+} from "@/lib/flashcards"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
 
@@ -19,6 +28,7 @@ type RecommendedAction = {
 type StatCard = {
   label: string
   value: string
+  detail?: string
   tone?: "gold" | "slate"
 }
 
@@ -50,14 +60,6 @@ const trainingModes: ModeCard[] = [
     href: "/flashcards/review",
   },
 ]
-
-function isDue(card: Pick<Flashcard, "due_date">) {
-  if (!card.due_date) {
-    return true
-  }
-
-  return new Date(card.due_date).getTime() <= Date.now()
-}
 
 export default function FlashcardsPage() {
   const [plan, setPlan] = useState("free")
@@ -110,25 +112,39 @@ export default function FlashcardsPage() {
   }, [])
 
   const stats = useMemo(() => {
-    const dueCount = cards.filter((card) => isDue(card)).length
-    const masteredCount = cards.filter((card) => card.status === "mastered").length
+    const dueTodayCount = cards.filter((card) => hasDueDate(card) && isFlashcardDue(card)).length
+    const learningCount = cards.filter((card) => isFlashcardLearning(card)).length
+    const masteredCount = cards.filter((card) => isFlashcardMastered(card)).length
+    const needsReviewCount = cards.filter((card) => isFlashcardNeedingReview(card)).length
 
     return {
       totalCards: cards.length,
-      dueCount,
+      dueTodayCount,
+      learningCount,
       masteredCount,
+      needsReviewCount,
       xp,
       streak,
     }
   }, [cards, streak, xp])
 
   const recommendedAction = useMemo<RecommendedAction>(() => {
-    if (stats.dueCount > 0) {
+    if (stats.dueTodayCount > 0) {
       return {
         eyebrow: "Recommended Today",
-        title: "Review Cards",
-        description: "You have verses ready for review. Keep recall sharp and stay disciplined.",
-        cta: "Review Cards",
+        title: "Review Due Verses",
+        description: "You have verses scheduled for review today. Keep recall sharp and stay disciplined.",
+        cta: "Review Due Verses",
+        href: "/flashcards/review",
+      }
+    }
+
+    if (stats.needsReviewCount > 0) {
+      return {
+        eyebrow: "Recommended Today",
+        title: "Strengthen Weak Verses",
+        description: "Some verses need reinforcement. Return to the places where memory is slipping.",
+        cta: "Strengthen Weak Verses",
         href: "/flashcards/review",
       }
     }
@@ -145,19 +161,27 @@ export default function FlashcardsPage() {
 
     return {
       eyebrow: "Recommended Today",
-      title: "Start Training",
-      description: "Your library is ready. Run a focused training session and strengthen retention.",
-      cta: "Start Training",
-      href: "/flashcards/review",
+      title: "Memory Sprint",
+      description: "Your deck is in a strong place. Run a fast recall session and keep momentum alive.",
+      cta: "Open Memory Sprint",
+      href: "/games/flashcard-sprint",
     }
-  }, [stats.dueCount, stats.totalCards])
+  }, [stats.dueTodayCount, stats.needsReviewCount, stats.totalCards])
 
   const statCards: StatCard[] = [
-    { label: "Cards Due", value: String(stats.dueCount), tone: "gold" },
-    { label: "Mastered Verses", value: String(stats.masteredCount) },
-    { label: "Memory XP", value: String(stats.xp) },
-    { label: "Streak", value: String(stats.streak) },
+    { label: "Due Today", value: String(stats.dueTodayCount), detail: "Scheduled for review now.", tone: "gold" },
+    { label: "Learning", value: String(stats.learningCount), detail: "Still in active repetition." },
+    { label: "Mastered", value: String(stats.masteredCount), detail: "Holding on longer intervals." },
+    { label: "Needs Review", value: String(stats.needsReviewCount), detail: "Lapsed verses needing attention." },
   ]
+
+  const desktopStatusPreview = useMemo(() => {
+    return cards.slice(0, 3).map((card) => ({
+      id: card.id,
+      reference: card.reference,
+      status: getFlashcardVisibilityStatus(card),
+    }))
+  }, [cards])
 
   if (loading) {
     return (
@@ -233,13 +257,42 @@ export default function FlashcardsPage() {
                   Daily Training
                 </p>
                 <p className="mt-2 text-sm text-amber-50/90">
-                  {stats.dueCount > 0
-                    ? `${stats.dueCount} verse${stats.dueCount === 1 ? "" : "s"} due for review today.`
+                  {stats.dueTodayCount > 0
+                    ? `${stats.dueTodayCount} verse${stats.dueTodayCount === 1 ? "" : "s"} due for review today.`
+                    : stats.needsReviewCount > 0
+                      ? `${stats.needsReviewCount} verse${stats.needsReviewCount === 1 ? "" : "s"} need reinforcement even if none are due today.`
                     : stats.totalCards === 0
                       ? "No verses saved yet. Start your training library today."
-                      : "No cards due right now. A fresh review round is still ready for you."}
+                      : "No verses are due right now. A sprint or fresh review round will keep recall warm."}
                 </p>
               </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                  Memory XP {stats.xp}
+                </span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                  Streak {stats.streak}
+                </span>
+              </div>
+
+              {desktopStatusPreview.length > 0 && (
+                <div className="mt-5 hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:block">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
+                    Library Snapshot
+                  </p>
+                  <div className="mt-3 space-y-3">
+                    {desktopStatusPreview.map((card) => (
+                      <div key={card.id} className="flex items-center justify-between gap-3 text-sm">
+                        <span className="font-semibold text-white">{card.reference}</span>
+                        <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100">
+                          {card.status.replace("_", " ")}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <Link
                 href={recommendedAction.href}
@@ -267,6 +320,11 @@ export default function FlashcardsPage() {
               <p className="mt-3 text-3xl font-extrabold text-white">
                 {card.value}
               </p>
+              {card.detail && (
+                <p className="mt-2 text-sm leading-6 text-slate-400">
+                  {card.detail}
+                </p>
+              )}
             </div>
           ))}
         </section>

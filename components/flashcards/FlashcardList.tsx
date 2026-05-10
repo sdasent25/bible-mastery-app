@@ -1,6 +1,10 @@
 "use client"
 
-import type { Flashcard } from "@/lib/flashcards"
+import {
+  type Flashcard,
+  getFlashcardVisibilityStatus,
+  isFlashcardDue,
+} from "@/lib/flashcards"
 
 type FlashcardListProps = {
   flashcards: Flashcard[]
@@ -19,7 +23,17 @@ function formatDate(value?: string | null) {
   }).format(new Date(value))
 }
 
-function getStatusLabel(status: Flashcard["status"]) {
+function getStatusLabel(card: Flashcard) {
+  const status = getFlashcardVisibilityStatus(card)
+
+  if (status === "needs_review") {
+    return "Needs Review"
+  }
+
+  if (status === "due") {
+    return "Due"
+  }
+
   if (status === "mastered") {
     return "Mastered"
   }
@@ -31,14 +45,36 @@ function getStatusLabel(status: Flashcard["status"]) {
   return "New"
 }
 
-function getReviewLabel(card: Flashcard) {
-  if (!card.due_date) {
-    return "Due now"
+function getStatusClasses(card: Flashcard) {
+  const status = getFlashcardVisibilityStatus(card)
+
+  if (status === "needs_review") {
+    return "border-rose-300/20 bg-rose-400/10 text-rose-100"
   }
 
-  return new Date(card.due_date).getTime() <= Date.now()
+  if (status === "due") {
+    return "border-amber-300/20 bg-amber-300/10 text-amber-100"
+  }
+
+  if (status === "mastered") {
+    return "border-emerald-300/20 bg-emerald-400/10 text-emerald-100"
+  }
+
+  if (status === "learning") {
+    return "border-sky-300/20 bg-sky-400/10 text-sky-100"
+  }
+
+  return "border-white/10 bg-white/5 text-slate-200"
+}
+
+function getReviewLabel(card: Flashcard) {
+  if (!card.due_date) {
+    return "Next review unscheduled"
+  }
+
+  return isFlashcardDue(card)
     ? "Due now"
-    : `Due ${formatDate(card.due_date)}`
+    : `Next review ${formatDate(card.due_date)}`
 }
 
 export default function FlashcardList({
@@ -59,10 +95,15 @@ export default function FlashcardList({
         >
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200">
-                {getStatusLabel(card.status)}
-              </p>
-              <h3 className="mt-2 text-xl font-bold text-white">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${getStatusClasses(card)}`}>
+                  {getStatusLabel(card)}
+                </span>
+                <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-300 md:hidden">
+                  {getReviewLabel(card)}
+                </span>
+              </div>
+              <h3 className="mt-3 text-xl font-bold text-white">
                 {card.reference}
               </h3>
             </div>
@@ -79,17 +120,40 @@ export default function FlashcardList({
             )}
           </div>
 
-          <p className="mt-4 text-base leading-7 text-slate-200">
+          <p className="mt-4 line-clamp-4 text-base leading-7 text-slate-200">
             {card.verse_text}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2 md:hidden">
             <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
               {getReviewLabel(card)}
             </span>
-            <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
-              Last reviewed {formatDate(card.last_reviewed)}
-            </span>
+            {card.last_reviewed && (
+              <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                Last reviewed {formatDate(card.last_reviewed)}
+              </span>
+            )}
+          </div>
+
+          <div className="mt-5 hidden grid-cols-2 gap-3 rounded-[1.25rem] border border-white/10 bg-slate-950/50 p-4 text-sm md:grid xl:grid-cols-4">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Status</p>
+              <p className="mt-2 font-semibold text-white">{getStatusLabel(card)}</p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Next Review</p>
+              <p className="mt-2 font-semibold text-white">{getReviewLabel(card)}</p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Last Reviewed</p>
+              <p className="mt-2 font-semibold text-white">{formatDate(card.last_reviewed)}</p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">Session History</p>
+              <p className="mt-2 font-semibold text-white">
+                {card.repetitions ?? 0} reps • {card.lapses ?? 0} lapses
+              </p>
+            </div>
           </div>
 
           {card.tags && card.tags.length > 0 && (
@@ -104,6 +168,32 @@ export default function FlashcardList({
               ))}
             </div>
           )}
+
+          {!card.tags?.length && (
+            <div className="mt-4 hidden md:block">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                No tags added yet
+              </p>
+            </div>
+          )}
+
+          <div className="mt-4 hidden md:flex md:flex-wrap md:gap-2">
+            {!card.tags?.length && (
+              <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                Untagged
+              </span>
+            )}
+            {card.due_date && (
+              <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                Interval {card.interval ?? 0} day{(card.interval ?? 0) === 1 ? "" : "s"}
+              </span>
+            )}
+            {card.ease_factor && (
+              <span className="rounded-full border border-white/10 bg-slate-950/60 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
+                Ease {card.ease_factor.toFixed(1)}
+              </span>
+            )}
+          </div>
         </article>
       ))}
     </div>
