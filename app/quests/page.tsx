@@ -130,9 +130,12 @@ export default function QuestsPage() {
           href="/quests/characters"
           accentClass="from-emerald-700 via-emerald-600 to-teal-500"
           imageLabel="Heroes"
-          locked={false}
-          progress={3}
-          total={10}
+          locked
+          progress={0}
+          total={0}
+          statusLabel="Coming Soon"
+          overlayMessage="Coming Soon"
+          hideProgress
         />
 
         <QuestCard
@@ -140,11 +143,10 @@ export default function QuestsPage() {
           href="/quests/who-said-it"
           accentClass="from-sky-700 via-blue-600 to-cyan-500"
           imageLabel="Voices"
-          locked
+          locked={false}
           progress={0}
-          total={10}
-          statusLabel="Coming Soon"
-          overlayMessage="Coming Soon"
+          total={0}
+          statusLabel="Genesis Available"
           hideProgress
         />
 
