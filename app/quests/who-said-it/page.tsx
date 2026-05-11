@@ -11,16 +11,12 @@ const allowedPlans = ["pro_plus", "family_pro_plus"]
 type BookRow = {
   book: string
   book_order: number
-  difficulty: "easy" | "medium" | "hard"
 }
 
 type BookSummary = {
   book: string
   book_order: number
   total: number
-  easy: number
-  medium: number
-  hard: number
 }
 
 const BOOK_ACCENTS: Record<string, string> = {
@@ -42,10 +38,6 @@ const BOOK_ACCENTS: Record<string, string> = {
   Revelation: "from-zinc-700 via-zinc-900 to-black",
 }
 
-function formatDifficultyMix(summary: BookSummary) {
-  return `E ${summary.easy} • M ${summary.medium} • H ${summary.hard}`
-}
-
 function aggregateBooks(rows: BookRow[]) {
   const map = new Map<string, BookSummary>()
 
@@ -54,17 +46,10 @@ function aggregateBooks(rows: BookRow[]) {
       book: row.book,
       book_order: row.book_order,
       total: 0,
-      easy: 0,
-      medium: 0,
-      hard: 0,
     }
 
     existing.total += 1
     existing.book_order = row.book_order
-
-    if (row.difficulty === "easy") existing.easy += 1
-    if (row.difficulty === "medium") existing.medium += 1
-    if (row.difficulty === "hard") existing.hard += 1
 
     map.set(row.book, existing)
   }
@@ -108,8 +93,11 @@ function BookCard({ summary }: { summary: BookSummary }) {
         </div>
 
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-zinc-300">
-            Difficulty Mix: {formatDifficultyMix(summary)}
+          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+            <div className="text-sm font-semibold text-white">Practice Drill</div>
+            <div className="mt-1 text-sm text-zinc-400">
+              10 questions per session
+            </div>
           </div>
           <div className="rounded-2xl bg-amber-400 px-4 py-3 text-center text-sm font-black text-slate-950">
             Start Practice
@@ -147,7 +135,7 @@ export default function WhoSaidItPage() {
       const supabase = createClient()
       const { data, error } = await supabase
         .from("who_said_it_questions")
-        .select("book, book_order, difficulty")
+        .select("book, book_order")
         .eq("type", "who_said_it")
 
       if (error) {
