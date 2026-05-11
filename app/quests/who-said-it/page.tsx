@@ -75,23 +75,23 @@ function BookCard({ summary }: { summary: BookSummary }) {
         unlocked ? "hover:scale-[1.01] active:scale-[0.99]" : "opacity-80"
       }`}
     >
-      <div
-        className={`rounded-2xl border border-white/10 bg-gradient-to-br ${accentClass} p-5 ${
-          unlocked ? "" : "saturate-75"
-        }`}
-      >
+        <div
+          className={`rounded-2xl border border-white/10 bg-gradient-to-br ${accentClass} p-5 ${
+            unlocked ? "" : "saturate-75"
+          }`}
+        >
         <div className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
           Speaker Recognition Drill
         </div>
-        <div className="mt-3 flex items-start justify-between gap-3">
-          <div>
-            <h2 className="text-2xl font-bold text-white">{summary.book}</h2>
-            <p className="mt-2 text-sm leading-6 text-white/85">
-              {summary.total} questions available
-            </p>
-          </div>
-          <span
-            className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
+          <div className="mt-3 flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-2xl font-bold text-white">{summary.book}</h2>
+              <p className="mt-2 text-sm leading-6 text-white/85">
+                {summary.total}-question bank
+              </p>
+            </div>
+            <span
+              className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
               unlocked
                 ? "border-white/15 bg-black/25 text-amber-200"
                 : "border-white/15 bg-black/35 text-zinc-200"
@@ -104,9 +104,9 @@ function BookCard({ summary }: { summary: BookSummary }) {
 
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <div className="text-sm font-semibold text-white">Practice Drill</div>
+          <div className="text-sm font-semibold text-white">Daily Practice Set</div>
           <div className="mt-1 text-sm text-zinc-400">
-            10 questions per session
+            10 questions available today
           </div>
           {!unlocked ? (
             <div className="mt-2 text-sm text-zinc-300">
@@ -283,7 +283,7 @@ export default function WhoSaidItPage() {
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
                 Reward
               </div>
-              <div className="mt-2 text-2xl font-bold text-white">No XP Yet</div>
+              <div className="mt-2 text-2xl font-bold text-white">XP Coming Later</div>
             </div>
           </div>
 

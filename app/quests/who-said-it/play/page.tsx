@@ -32,15 +32,42 @@ type BookMetaRow = {
   book_order: number
 }
 
-function shuffleQuestions<T>(items: T[]) {
-  const next = [...items]
+function getLocalDateKey() {
+  const now = new Date()
+  const year = now.getFullYear()
+  const month = String(now.getMonth() + 1).padStart(2, "0")
+  const day = String(now.getDate()).padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
 
-  for (let index = next.length - 1; index > 0; index -= 1) {
-    const swapIndex = Math.floor(Math.random() * (index + 1))
-    ;[next[index], next[swapIndex]] = [next[swapIndex], next[index]]
+function hashString(input: string) {
+  let hash = 2166136261
+
+  for (let index = 0; index < input.length; index += 1) {
+    hash ^= input.charCodeAt(index)
+    hash = Math.imul(hash, 16777619)
   }
 
-  return next
+  return hash >>> 0
+}
+
+function selectDailyQuestions<T extends { source_key: string }>(
+  items: T[],
+  seed: string,
+  limit: number,
+) {
+  return [...items]
+    .sort((a, b) => {
+      const aHash = hashString(`${seed}|${a.source_key}`)
+      const bHash = hashString(`${seed}|${b.source_key}`)
+
+      if (aHash !== bHash) {
+        return aHash - bHash
+      }
+
+      return a.source_key.localeCompare(b.source_key)
+    })
+    .slice(0, Math.min(limit, items.length))
 }
 
 function ProgressPill({ label, value }: { label: string; value: string }) {
@@ -60,16 +87,15 @@ export default function WhoSaidItPlayPage() {
 
   const [plan, setPlan] = useState("free")
   const [planLoading, setPlanLoading] = useState(true)
+  const [userId, setUserId] = useState<string | null>(null)
   const [questions, setQuestions] = useState<WhoSaidItQuestion[]>([])
   const [loadingQuestions, setLoadingQuestions] = useState(false)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [bookExists, setBookExists] = useState(false)
-  const [bookUnlocked, setBookUnlocked] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [submittedAnswer, setSubmittedAnswer] = useState<string | null>(null)
   const [score, setScore] = useState(0)
-  const [sessionSeed, setSessionSeed] = useState(0)
 
   const isSummary = questions.length > 0 && currentIndex >= questions.length
   const currentQuestion = !isSummary ? questions[currentIndex] : null
@@ -91,7 +117,12 @@ export default function WhoSaidItPlayPage() {
 
   useEffect(() => {
     const resolvePlan = async () => {
+      const supabase = createClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
       const resolvedPlan = await getUserPlan()
+      setUserId(user?.id ?? null)
       setPlan(resolvedPlan)
       setPlanLoading(false)
     }
@@ -114,7 +145,6 @@ export default function WhoSaidItPlayPage() {
       setLoadingQuestions(true)
       setLoadError(null)
       setBookExists(false)
-      setBookUnlocked(false)
 
       const supabase = createClient()
       const { data: bookMeta, error: bookMetaError } = await supabase
@@ -142,7 +172,6 @@ export default function WhoSaidItPlayPage() {
       const selectedBook = bookMeta as BookMetaRow
       const unlocked = isWhoSaidItBookUnlocked(selectedBook.book_order)
       setBookExists(true)
-      setBookUnlocked(unlocked)
 
       if (!unlocked) {
         setLoadError("This drill is locked.")
@@ -176,10 +205,13 @@ export default function WhoSaidItPlayPage() {
         return
       }
 
-      const shuffled = shuffleQuestions(validRows)
-      const sessionQuestions = shuffled.slice(
-        0,
-        Math.min(SESSION_SIZE, shuffled.length)
+      const dateKey = getLocalDateKey()
+      const resolvedUserId = userId ?? "anonymous"
+      const nextDailySeed = `${resolvedUserId}|${requestedBook}|${dateKey}`
+      const sessionQuestions = selectDailyQuestions(
+        validRows,
+        nextDailySeed,
+        SESSION_SIZE
       )
 
       setQuestions(sessionQuestions)
@@ -191,7 +223,7 @@ export default function WhoSaidItPlayPage() {
     }
 
     void loadQuestions()
-  }, [plan, planLoading, requestedBook, sessionSeed])
+  }, [plan, planLoading, requestedBook, userId])
 
   const handleSelectAnswer = (answer: string) => {
     if (submittedAnswer) {
@@ -220,7 +252,10 @@ export default function WhoSaidItPlayPage() {
   }
 
   const handlePracticeAgain = () => {
-    setSessionSeed((seed) => seed + 1)
+    setCurrentIndex(0)
+    setSelectedAnswer(null)
+    setSubmittedAnswer(null)
+    setScore(0)
   }
 
   if (planLoading) {
@@ -248,7 +283,7 @@ export default function WhoSaidItPlayPage() {
         <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
           <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
             <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Practice Mode
+              Daily Practice Set
             </div>
             <h1 className="mt-3 text-3xl font-bold text-white">
               {isLockedState ? "This drill is locked." : "This drill is being prepared."}
@@ -300,7 +335,7 @@ export default function WhoSaidItPlayPage() {
               Training Complete
             </h1>
             <p className="mt-3 text-sm leading-6 text-zinc-300">
-              Practice Mode — No XP yet.
+              Daily Practice Set • XP coming later.
             </p>
           </div>
 
@@ -335,8 +370,8 @@ export default function WhoSaidItPlayPage() {
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
         <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
           <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
-            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Practice Mode
+              <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
+              Daily Practice Set
             </div>
             <h1 className="mt-3 text-3xl font-bold text-white">
               This drill is being prepared.
@@ -371,7 +406,7 @@ export default function WhoSaidItPlayPage() {
                 Who Said It?
               </h1>
               <p className="mt-2 text-sm leading-6 text-zinc-300">
-                Practice Mode • No XP yet
+                Daily Practice Set • 10 questions available today • XP coming later
               </p>
             </div>
             <div className="rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">
@@ -379,9 +414,10 @@ export default function WhoSaidItPlayPage() {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-4">
             <ProgressPill label="Book" value={currentQuestion.book} />
             <ProgressPill label="Reference" value={currentQuestion.reference} />
+            <ProgressPill label="Today" value="10 Available" />
             <ProgressPill label="Score" value={`${score}/${questions.length}`} />
           </div>
         </div>
