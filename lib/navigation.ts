@@ -6,7 +6,7 @@ export type NavItem = {
 
 export const desktopNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: "🏠" },
-  { label: "Explore", href: "/explore", icon: "🗺️" },
+  { label: "Training Arena", href: "/training", icon: "🏟️" },
   { label: "Flashcards", href: "/flashcards", icon: "🧠" },
   { label: "Quests", href: "/quests", icon: "⚔️" },
   { label: "Leaderboard", href: "/leaderboard", icon: "🏆" },
@@ -14,7 +14,7 @@ export const desktopNavItems: NavItem[] = [
 
 export const mobileNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: "🏠" },
-  { label: "Explore", href: "/explore", icon: "🗺️" },
+  { label: "Training Arena", href: "/training", icon: "🏟️" },
   { label: "Quests", href: "/quests", icon: "⚔️" },
   { label: "Flashcards", href: "/flashcards", icon: "🧠" },
   { label: "Profile", href: "/settings", icon: "⚙️" },

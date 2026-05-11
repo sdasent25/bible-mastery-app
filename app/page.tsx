@@ -126,10 +126,10 @@ export default function LandingPage() {
                   Start Training
                 </button>
                 <button
-                  onClick={() => router.push("/explore")}
+                  onClick={() => router.push("/training")}
                   className="mt-4 rounded-2xl border border-white/14 bg-white/[0.04] px-7 py-4 text-base font-bold text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)] transition hover:border-white/28 hover:bg-white/[0.07] sm:mt-0"
                 >
-                  Enter Explore
+                  Enter Training Arena
                 </button>
               </div>
 

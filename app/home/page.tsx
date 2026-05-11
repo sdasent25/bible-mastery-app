@@ -209,7 +209,7 @@ export default function HomePage() {
     ? !homeState.paidAccess
       ? `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=5`
       : `/quiz?program=genesis&segment=${homeState.currentSegmentSlug}&depth=10`
-    : "/explore"
+    : "/training"
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#1f2b47_0%,_#0d1321_34%,_#070a12_100%)] px-4 py-6 text-white">
@@ -315,10 +315,10 @@ export default function HomePage() {
                   Continue Mission
                 </button>
                 <button
-                  onClick={() => router.push("/explore/book/genesis")}
+                  onClick={() => router.push("/training")}
                   className="w-full rounded-full border border-white/12 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/14"
                 >
-                  Open Genesis Campaign
+                  Open Training Arena
                 </button>
               </div>
             </div>

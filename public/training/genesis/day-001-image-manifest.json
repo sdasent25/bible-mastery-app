@@ -1,0 +1,65 @@
+{
+  "day": 1,
+  "segment_key": "genesis-001-003",
+  "unlock_key": "genesis-1-3",
+  "images": [
+    {
+      "question_key": "day-001-genesis-001-003-010",
+      "prompt": "Which image best represents God separating light from darkness?",
+      "correct_image_filename": "light-darkness.png",
+      "image_filenames": [
+        "light-darkness.png",
+        "boat-water.png",
+        "city-gate.png",
+        "shepherd-sheep.png"
+      ],
+      "reasons": [
+        {
+          "filename": "light-darkness.png",
+          "reason": "Shows a strong visual division between radiant light and deep darkness, matching Genesis 1."
+        },
+        {
+          "filename": "boat-water.png",
+          "reason": "Provides a plausible but clearly different water-focused scene unrelated to the light and darkness separation."
+        },
+        {
+          "filename": "city-gate.png",
+          "reason": "Uses an ancient architectural subject that is visually distinct from the creation scene."
+        },
+        {
+          "filename": "shepherd-sheep.png",
+          "reason": "Offers a recognizable pastoral image that does not fit the Genesis 1 prompt."
+        }
+      ]
+    },
+    {
+      "question_key": "day-001-genesis-001-003-011",
+      "prompt": "Which image best represents the serpent speaking in the garden?",
+      "correct_image_filename": "serpent-tree-garden.png",
+      "image_filenames": [
+        "serpent-tree-garden.png",
+        "lion-river.png",
+        "farmer-field.png",
+        "altar-fire.png"
+      ],
+      "reasons": [
+        {
+          "filename": "serpent-tree-garden.png",
+          "reason": "Directly depicts a serpent near a fruit tree in a lush garden setting consistent with Genesis 3."
+        },
+        {
+          "filename": "lion-river.png",
+          "reason": "Uses an animal scene that is visually clear but unrelated to the serpent in Eden."
+        },
+        {
+          "filename": "farmer-field.png",
+          "reason": "Represents human work in a field, making it a plausible but incorrect distractor."
+        },
+        {
+          "filename": "altar-fire.png",
+          "reason": "Provides a strong symbolic object image that is clearly not the garden temptation scene."
+        }
+      ]
+    }
+  ]
+}

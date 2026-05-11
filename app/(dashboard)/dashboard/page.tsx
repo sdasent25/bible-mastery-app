@@ -238,7 +238,7 @@ export default function DashboardPage() {
           missionAtmosphere: currentMissionMeta.atmosphere,
           missionArt: getGenesisMissionArt(currentSegment.segment),
           continueHref,
-          currentCampaignHref: "/explore/book/genesis",
+          currentCampaignHref: "/training",
           dailyMissionComplete: hasCompletedToday(),
           xpEarned: profile.xp || 0,
           streak: profile.streak || 0,
@@ -455,7 +455,7 @@ export default function DashboardPage() {
     )
   }
 
-  const continueHref = dashboardState?.continueHref || "/explore"
+  const continueHref = dashboardState?.continueHref || "/training"
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#1a2440_0%,_#0c1220_38%,_#05070d_100%)] px-4 py-6 text-white sm:px-6">
@@ -585,10 +585,10 @@ export default function DashboardPage() {
                         Continue Mission
                       </button>
                       <button
-                        onClick={() => router.push(dashboardState?.currentCampaignHref || "/explore/book/genesis")}
+                        onClick={() => router.push(dashboardState?.currentCampaignHref || "/training")}
                         className="w-full rounded-full border border-white/12 bg-white/10 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/14 active:scale-95"
                       >
-                        Open Genesis Campaign
+                        Open Training Arena
                       </button>
                     </div>
 
@@ -698,17 +698,17 @@ export default function DashboardPage() {
                 </button>
 
                 <button
-                  onClick={() => router.push("/explore")}
+                  onClick={() => router.push("/training")}
                   className="rounded-[1.45rem] border border-white/10 bg-white/5 p-4 text-left transition hover:bg-white/8"
                 >
                   <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-200/80">
                     Discovery
                   </div>
                   <div className="mt-2 text-xl font-black text-white">
-                    Explore the World
+                    Enter Training Arena
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-300">
-                    Step back into the Bible world map and see the regions that await beyond Genesis.
+                    Review the new Genesis Day 1 pack in a premium content preview built for Training Arena.
                   </p>
                 </button>
               </div>
@@ -781,14 +781,14 @@ export default function DashboardPage() {
                   </div>
                 </button>
                 <button
-                  onClick={() => router.push("/explore")}
+                  onClick={() => router.push("/training")}
                   className="w-full rounded-[1.2rem] border border-white/10 bg-white/5 px-4 py-4 text-left transition hover:bg-white/8"
                 >
                   <div className="text-base font-black text-white">
-                    Open Explore
+                    Open Training Arena
                   </div>
                   <div className="mt-1 text-sm text-slate-300">
-                    Re-enter the Bible world and browse the wider campaign map.
+                    Open the Day 1 Genesis preview and inspect every Training Arena item.
                   </div>
                 </button>
               </div>
