@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
+import { isWhoSaidItBookUnlocked } from "@/lib/whoSaidItUnlock"
 
 const SESSION_SIZE = 10
 const allowedPlans = ["pro_plus", "family_pro_plus"]
@@ -24,6 +25,11 @@ type WhoSaidItQuestion = {
   option_d: string
   correct_answer: string
   source_key: string
+}
+
+type BookMetaRow = {
+  book: string
+  book_order: number
 }
 
 function shuffleQuestions<T>(items: T[]) {
@@ -57,6 +63,8 @@ export default function WhoSaidItPlayPage() {
   const [questions, setQuestions] = useState<WhoSaidItQuestion[]>([])
   const [loadingQuestions, setLoadingQuestions] = useState(false)
   const [loadError, setLoadError] = useState<string | null>(null)
+  const [bookExists, setBookExists] = useState(false)
+  const [bookUnlocked, setBookUnlocked] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [submittedAnswer, setSubmittedAnswer] = useState<string | null>(null)
@@ -105,8 +113,44 @@ export default function WhoSaidItPlayPage() {
     const loadQuestions = async () => {
       setLoadingQuestions(true)
       setLoadError(null)
+      setBookExists(false)
+      setBookUnlocked(false)
 
       const supabase = createClient()
+      const { data: bookMeta, error: bookMetaError } = await supabase
+        .from("who_said_it_questions")
+        .select("book, book_order")
+        .eq("type", "who_said_it")
+        .eq("book", requestedBook)
+        .limit(1)
+        .maybeSingle()
+
+      if (bookMetaError) {
+        setLoadError("This drill is being prepared.")
+        setQuestions([])
+        setLoadingQuestions(false)
+        return
+      }
+
+      if (!bookMeta) {
+        setLoadError("This drill is being prepared.")
+        setQuestions([])
+        setLoadingQuestions(false)
+        return
+      }
+
+      const selectedBook = bookMeta as BookMetaRow
+      const unlocked = isWhoSaidItBookUnlocked(selectedBook.book_order)
+      setBookExists(true)
+      setBookUnlocked(unlocked)
+
+      if (!unlocked) {
+        setLoadError("This drill is locked.")
+        setQuestions([])
+        setLoadingQuestions(false)
+        return
+      }
+
       const { data, error } = await supabase
         .from("who_said_it_questions")
         .select(
@@ -197,6 +241,8 @@ export default function WhoSaidItPlayPage() {
   }
 
   if (loadError || questions.length === 0) {
+    const isLockedState = loadError === "This drill is locked."
+
     return (
       <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
         <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
@@ -205,12 +251,14 @@ export default function WhoSaidItPlayPage() {
               Practice Mode
             </div>
             <h1 className="mt-3 text-3xl font-bold text-white">
-              This drill is being prepared.
+              {isLockedState ? "This drill is locked." : "This drill is being prepared."}
             </h1>
             <p className="mt-3 text-sm leading-6 text-zinc-300">
-              {requestedBook
-                ? `We could not load a Who Said It practice set for ${requestedBook}.`
-                : "Choose a book from the Who Said It hub to begin practice."}
+              {isLockedState
+                ? `Reach ${requestedBook} in Journey to unlock this practice.`
+                : requestedBook
+                  ? `We could not load a Who Said It practice set for ${requestedBook}.`
+                  : "Choose a book from the Who Said It hub to begin practice."}
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -220,6 +268,14 @@ export default function WhoSaidItPlayPage() {
             >
               Back to Who Said It
             </Link>
+            {isLockedState ? (
+              <Link
+                href="/journey"
+                className="rounded-2xl border border-amber-400/20 bg-amber-400/10 px-5 py-4 text-center font-semibold text-amber-100"
+              >
+                Go to Journey
+              </Link>
+            ) : null}
             <Link
               href="/quests"
               className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center font-semibold text-white"

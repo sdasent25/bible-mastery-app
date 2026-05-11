@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
+import { getWhoSaidItUnlockState, isWhoSaidItBookUnlocked } from "@/lib/whoSaidItUnlock"
 
 const allowedPlans = ["pro_plus", "family_pro_plus"]
 
@@ -66,44 +67,76 @@ function aggregateBooks(rows: BookRow[]) {
 function BookCard({ summary }: { summary: BookSummary }) {
   const accentClass =
     BOOK_ACCENTS[summary.book] ?? "from-zinc-800 via-zinc-900 to-black"
+  const unlocked = isWhoSaidItBookUnlocked(summary.book_order)
+
+  const cardContent = (
+    <div
+      className={`rounded-3xl border border-white/10 bg-zinc-950/90 p-5 shadow-2xl transition ${
+        unlocked ? "hover:scale-[1.01] active:scale-[0.99]" : "opacity-80"
+      }`}
+    >
+      <div
+        className={`rounded-2xl border border-white/10 bg-gradient-to-br ${accentClass} p-5 ${
+          unlocked ? "" : "saturate-75"
+        }`}
+      >
+        <div className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
+          Speaker Recognition Drill
+        </div>
+        <div className="mt-3 flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-bold text-white">{summary.book}</h2>
+            <p className="mt-2 text-sm leading-6 text-white/85">
+              {summary.total} questions available
+            </p>
+          </div>
+          <span
+            className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
+              unlocked
+                ? "border-white/15 bg-black/25 text-amber-200"
+                : "border-white/15 bg-black/35 text-zinc-200"
+            }`}
+          >
+            {unlocked ? "Available" : "Locked"}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+          <div className="text-sm font-semibold text-white">Practice Drill</div>
+          <div className="mt-1 text-sm text-zinc-400">
+            10 questions per session
+          </div>
+          {!unlocked ? (
+            <div className="mt-2 text-sm text-zinc-300">
+              Reach this book in Journey to unlock.
+            </div>
+          ) : null}
+        </div>
+        <div
+          className={`rounded-2xl px-4 py-3 text-center text-sm font-black ${
+            unlocked
+              ? "bg-amber-400 text-slate-950"
+              : "border border-white/10 bg-white/5 text-zinc-300"
+          }`}
+        >
+          {unlocked ? "Start Practice" : "Locked"}
+        </div>
+      </div>
+    </div>
+  )
+
+  if (!unlocked) {
+    return <div>{cardContent}</div>
+  }
 
   return (
     <Link
       href={`/quests/who-said-it/play?book=${encodeURIComponent(summary.book)}`}
       className="block"
     >
-      <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-5 shadow-2xl transition hover:scale-[1.01] active:scale-[0.99]">
-        <div
-          className={`rounded-2xl border border-white/10 bg-gradient-to-br ${accentClass} p-5`}
-        >
-          <div className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
-            Speaker Recognition Drill
-          </div>
-          <div className="mt-3 flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold text-white">{summary.book}</h2>
-              <p className="mt-2 text-sm leading-6 text-white/85">
-                {summary.total} questions available
-              </p>
-            </div>
-            <span className="rounded-full border border-white/15 bg-black/25 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-amber-200">
-              Available
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-            <div className="text-sm font-semibold text-white">Practice Drill</div>
-            <div className="mt-1 text-sm text-zinc-400">
-              10 questions per session
-            </div>
-          </div>
-          <div className="rounded-2xl bg-amber-400 px-4 py-3 text-center text-sm font-black text-slate-950">
-            Start Practice
-          </div>
-        </div>
-      </div>
+      {cardContent}
     </Link>
   )
 }
@@ -152,10 +185,20 @@ export default function WhoSaidItPage() {
   }, [loading, plan])
 
   const totals = useMemo(() => {
-    const questionCount = books.reduce((sum, book) => sum + book.total, 0)
+    const unlockState = getWhoSaidItUnlockState()
+    const unlockedBooks = books.filter((book) =>
+      isWhoSaidItBookUnlocked(book.book_order)
+    )
+    const unlockedQuestionCount = unlockedBooks.reduce(
+      (sum, book) => sum + book.total,
+      0
+    )
+
     return {
       bookCount: books.length,
-      questionCount,
+      unlockedBookCount: unlockedBooks.length,
+      unlockedQuestionCount,
+      reliableJourneySource: unlockState.reliableJourneySource,
     }
   }, [books])
 
@@ -219,15 +262,15 @@ export default function WhoSaidItPage() {
                 Available Books
               </div>
               <div className="mt-2 text-2xl font-bold text-white">
-                {totals.bookCount}
+                {totals.unlockedBookCount} / {totals.bookCount}
               </div>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
               <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                Question Bank
+                Unlocked Questions
               </div>
               <div className="mt-2 text-2xl font-bold text-white">
-                {totals.questionCount}
+                {totals.unlockedQuestionCount}
               </div>
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
@@ -243,6 +286,12 @@ export default function WhoSaidItPage() {
               <div className="mt-2 text-2xl font-bold text-white">No XP Yet</div>
             </div>
           </div>
+
+          {!totals.reliableJourneySource ? (
+            <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-6 text-zinc-300">
+              Journey unlocks are using a safe temporary fallback right now. Genesis is available by default, and later books will unlock as broader Journey progress wiring is connected.
+            </div>
+          ) : null}
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
