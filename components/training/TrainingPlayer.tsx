@@ -64,6 +64,24 @@ function statusIcon(wasCorrect: boolean) {
   return wasCorrect ? "✦" : "◌"
 }
 
+function imageCardBadge({
+  selected,
+  submitted,
+  isCorrect,
+}: {
+  selected: boolean
+  submitted: boolean
+  isCorrect: boolean
+}) {
+  if (submitted) {
+    if (isCorrect) return "Correct"
+    if (selected) return "Review"
+    return null
+  }
+
+  return selected ? "Selected" : "Tap to choose"
+}
+
 function arraysEqual(left: string[], right: string[]) {
   if (left.length !== right.length) return false
 
@@ -86,13 +104,14 @@ function ImageChoiceCard({
   onSelect: () => void
 }) {
   const [failed, setFailed] = useState(false)
+  const badge = imageCardBadge({ selected, submitted, isCorrect })
 
   const stateClass = submitted
     ? isCorrect
       ? "border-emerald-300/60 bg-emerald-300/14 shadow-[0_0_28px_rgba(52,211,153,0.16)]"
       : selected
         ? "border-rose-300/50 bg-rose-300/12 shadow-[0_0_24px_rgba(251,113,133,0.10)]"
-        : "border-white/10 bg-white/[0.03] opacity-75"
+        : "border-white/10 bg-white/[0.03] opacity-65 saturate-75"
     : selected
       ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)] -translate-y-0.5 scale-[1.01]"
       : "border-white/10 bg-white/[0.03] hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]"
@@ -102,40 +121,40 @@ function ImageChoiceCard({
       type="button"
       disabled={disabled}
       onClick={onSelect}
-      className={`overflow-hidden rounded-[1.25rem] border text-left transition duration-200 motion-reduce:transform-none ${stateClass} ${
+      className={`group overflow-hidden rounded-[1.35rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.02))] text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 motion-reduce:transform-none ${stateClass} ${
         disabled ? "cursor-default" : ""
       }`}
     >
-      {failed ? (
-        <div className="flex h-36 items-center justify-center bg-[linear-gradient(180deg,rgba(20,25,38,0.98),rgba(10,13,22,0.98))] px-4 text-center text-sm font-medium text-slate-300 sm:h-40 lg:h-44">
-          Image unavailable
-        </div>
-      ) : (
-        <img
-          src={option.image_url}
-          alt={option.alt}
-          className="h-36 w-full object-cover sm:h-40 lg:h-44"
-          loading="lazy"
-          onError={() => setFailed(true)}
-        />
-      )}
+      <div className="relative overflow-hidden">
+        {failed ? (
+          <div className="flex h-32 items-center justify-center bg-[linear-gradient(180deg,rgba(20,25,38,0.98),rgba(10,13,22,0.98))] px-4 text-center text-sm font-medium text-slate-300 sm:h-40 lg:h-48 xl:h-52">
+            Image unavailable
+          </div>
+        ) : (
+          <img
+            src={option.image_url}
+            alt={option.alt}
+            className={`h-32 w-full object-cover transition duration-300 sm:h-40 lg:h-48 xl:h-52 ${
+              selected && !submitted ? "scale-[1.04]" : "group-hover:scale-[1.03]"
+            }`}
+            loading="lazy"
+            onError={() => setFailed(true)}
+          />
+        )}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(4,8,16,0.02),rgba(4,8,16,0.14)_46%,rgba(4,8,16,0.62)_100%)]" />
+        {badge ? (
+          <div className="absolute left-3 top-3 rounded-full border border-black/10 bg-black/45 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+            {badge}
+          </div>
+        ) : null}
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-[linear-gradient(180deg,transparent,rgba(4,8,16,0.72))]" />
+      </div>
 
-      <div className="space-y-2 p-3 sm:p-4">
+      <div className="space-y-1.5 p-3 sm:p-4">
         <div className="flex items-start justify-between gap-2">
           <p className="text-sm font-semibold leading-5 text-white">{option.label}</p>
-          {submitted ? (
-            isCorrect ? (
-              <span className="rounded-full border border-emerald-300/40 bg-emerald-300/12 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100">
-                Correct
-              </span>
-            ) : selected ? (
-              <span className="rounded-full border border-rose-300/35 bg-rose-300/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-rose-100">
-                Chosen
-              </span>
-            ) : null
-          ) : null}
         </div>
-        <p className="hidden text-[11px] leading-4 text-slate-400 sm:block">
+        <p className="hidden text-[11px] leading-4 text-slate-400 md:block">
           {option.alt}
         </p>
       </div>
@@ -374,7 +393,7 @@ export default function TrainingPlayer({
         )
       case "image_choice":
         return (
-          <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2">
             {(item.content.options as TrainingImageChoiceOption[]).map((option) => (
               <ImageChoiceCard
                 key={option.image_url}
@@ -600,6 +619,13 @@ export default function TrainingPlayer({
     return getDisplaySelection() ?? "No answer selected"
   }
 
+  function getImageOptionByLabel(label: string | null) {
+    if (item.format !== "image_choice" || !label) return null
+
+    const options = item.content.options as TrainingImageChoiceOption[]
+    return options.find((option) => option.label === label) ?? null
+  }
+
   if (isComplete) {
     const percentage = Math.round((score / total) * 100)
 
@@ -714,7 +740,7 @@ export default function TrainingPlayer({
           >
             <div className="flex flex-wrap items-center gap-2">
               <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
-                {formatLabel(item.format)}
+                {item.format === "image_choice" ? "Visual Recognition" : formatLabel(item.format)}
               </div>
               <div
                 className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${difficultyClass(
@@ -780,18 +806,48 @@ export default function TrainingPlayer({
                       <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                         Your answer
                       </div>
-                      <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                        {getUserAnswerSummary()}
-                      </p>
+                      {item.format === "image_choice" ? (
+                        <div className="mt-2 flex items-center gap-3">
+                          {getImageOptionByLabel(selectedSingle) ? (
+                            <img
+                              src={getImageOptionByLabel(selectedSingle)?.image_url}
+                              alt={getImageOptionByLabel(selectedSingle)?.alt}
+                              className="h-14 w-14 rounded-xl border border-white/10 object-cover"
+                            />
+                          ) : null}
+                          <p className="text-sm font-semibold leading-6 text-white">
+                            {getUserAnswerSummary()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="mt-2 text-sm font-semibold leading-6 text-white">
+                          {getUserAnswerSummary()}
+                        </p>
+                      )}
                     </div>
 
                     <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
                       <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                         Correct answer
                       </div>
-                      <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                        {getCorrectAnswerSummary()}
-                      </p>
+                      {item.format === "image_choice" ? (
+                        <div className="mt-2 flex items-center gap-3">
+                          {getImageOptionByLabel(String(item.correct_answer.value)) ? (
+                            <img
+                              src={getImageOptionByLabel(String(item.correct_answer.value))?.image_url}
+                              alt={getImageOptionByLabel(String(item.correct_answer.value))?.alt}
+                              className="h-14 w-14 rounded-xl border border-white/10 object-cover"
+                            />
+                          ) : null}
+                          <p className="text-sm font-semibold leading-6 text-white">
+                            {getCorrectAnswerSummary()}
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="mt-2 text-sm font-semibold leading-6 text-white">
+                          {getCorrectAnswerSummary()}
+                        </p>
+                      )}
                     </div>
 
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
