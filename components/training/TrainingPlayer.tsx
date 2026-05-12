@@ -52,6 +52,14 @@ function difficultyClass(difficulty: TrainingItem["difficulty"]) {
   }
 }
 
+function statusTitle(wasCorrect: boolean) {
+  return wasCorrect ? "Nice work" : "Good rep — review this"
+}
+
+function statusEyebrow(wasCorrect: boolean) {
+  return wasCorrect ? "Training rep complete" : "Sharpen this detail"
+}
+
 function arraysEqual(left: string[], right: string[]) {
   if (left.length !== right.length) return false
 
@@ -77,10 +85,10 @@ function ImageChoiceCard({
 
   const stateClass = submitted
     ? isCorrect
-      ? "border-emerald-300/60 bg-emerald-300/12 shadow-[0_0_28px_rgba(52,211,153,0.12)]"
+      ? "border-emerald-300/60 bg-emerald-300/14 shadow-[0_0_28px_rgba(52,211,153,0.16)]"
       : selected
-        ? "border-rose-300/50 bg-rose-300/10 shadow-[0_0_24px_rgba(251,113,133,0.10)]"
-        : "border-white/10 bg-white/[0.03] opacity-85"
+        ? "border-rose-300/50 bg-rose-300/12 shadow-[0_0_24px_rgba(251,113,133,0.10)]"
+        : "border-white/10 bg-white/[0.03] opacity-75"
     : selected
       ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)]"
       : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
@@ -318,10 +326,10 @@ export default function TrainingPlayer({
           const isWrongSelected = submitted && active && !isCorrect
           const stateClass = submitted
             ? isCorrect
-              ? "border-emerald-300/55 bg-emerald-300/12 text-emerald-50 shadow-[0_0_24px_rgba(52,211,153,0.10)]"
+              ? "border-emerald-300/60 bg-emerald-300/14 text-emerald-50 shadow-[0_0_28px_rgba(52,211,153,0.16)]"
               : isWrongSelected
-                ? "border-rose-300/50 bg-rose-300/10 text-rose-50"
-                : "border-white/10 bg-white/[0.03] text-slate-200 opacity-85"
+                ? "border-rose-300/50 bg-rose-300/12 text-rose-50 shadow-[0_0_22px_rgba(251,113,133,0.08)]"
+                : "border-white/10 bg-white/[0.03] text-slate-200 opacity-75"
             : active
               ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
               : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
@@ -495,10 +503,10 @@ export default function TrainingPlayer({
               const isWrongSelected = submitted && active && !isCorrect
               const stateClass = submitted
                 ? isCorrect
-                  ? "border-emerald-300/55 bg-emerald-300/12 text-emerald-50 shadow-[0_0_24px_rgba(52,211,153,0.10)]"
+                  ? "border-emerald-300/60 bg-emerald-300/14 text-emerald-50 shadow-[0_0_28px_rgba(52,211,153,0.16)]"
                   : isWrongSelected
-                    ? "border-rose-300/50 bg-rose-300/10 text-rose-50"
-                    : "border-white/10 bg-white/[0.03] text-slate-200 opacity-85"
+                    ? "border-rose-300/50 bg-rose-300/12 text-rose-50 shadow-[0_0_22px_rgba(251,113,133,0.08)]"
+                    : "border-white/10 bg-white/[0.03] text-slate-200 opacity-75"
                 : active
                   ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
                   : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
@@ -541,13 +549,11 @@ export default function TrainingPlayer({
 
   function getDisplaySelection() {
     if (item.format === "true_false") {
-      return selectedSingle === "True" || selectedSingle === "False"
-        ? selectedSingle
-        : selectedSingle === "true"
-          ? "True"
-          : selectedSingle === "false"
-            ? "False"
-            : null
+      return selectedSingle === "true"
+        ? "True"
+        : selectedSingle === "false"
+          ? "False"
+          : null
     }
 
     return selectedSingle
@@ -708,32 +714,89 @@ export default function TrainingPlayer({
 
             {submitted && (
               <div
-                className={`mt-5 rounded-[1.3rem] border p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:p-5 ${
+                className={`mt-5 overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
                   wasCorrect
-                    ? "border-emerald-300/24 bg-[linear-gradient(180deg,rgba(16,45,34,0.34),rgba(9,18,17,0.9))]"
-                    : "border-amber-300/24 bg-[linear-gradient(180deg,rgba(54,33,18,0.34),rgba(18,12,10,0.92))]"
+                    ? "border-emerald-300/30 bg-[radial-gradient(circle_at_top,rgba(74,222,128,0.14),transparent_42%),linear-gradient(180deg,rgba(16,45,34,0.42),rgba(9,18,17,0.92))] shadow-[0_0_36px_rgba(52,211,153,0.10)]"
+                    : "border-amber-300/28 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_42%),linear-gradient(180deg,rgba(54,33,18,0.42),rgba(18,12,10,0.94))] shadow-[0_0_34px_rgba(251,191,36,0.08)]"
                 }`}
               >
-                <div
-                  className={`text-[11px] font-black uppercase tracking-[0.24em] ${
-                    wasCorrect ? "text-emerald-200" : "text-amber-200"
-                  }`}
-                >
-                  {wasCorrect ? "Correct" : "Not quite"}
+                <div className="flex items-start gap-3">
+                  <div
+                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg ${
+                      wasCorrect
+                        ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
+                        : "border-amber-300/35 bg-amber-300/12 text-amber-100"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {wasCorrect ? "✅" : "↺"}
+                  </div>
+                  <div className="min-w-0">
+                    <div
+                      className={`text-[11px] font-black uppercase tracking-[0.24em] ${
+                        wasCorrect ? "text-emerald-200" : "text-amber-200"
+                      }`}
+                    >
+                      {statusEyebrow(wasCorrect)}
+                    </div>
+                    <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                      {statusTitle(wasCorrect)}
+                    </h3>
+                    <p
+                      className={`mt-1 text-sm ${
+                        wasCorrect ? "text-emerald-100/85" : "text-amber-100/85"
+                      }`}
+                    >
+                      {wasCorrect
+                        ? "+ Focus locked in for this question."
+                        : "Take the correction and carry it into the next rep."}
+                    </p>
+                  </div>
                 </div>
-                {selectedDisplay && item.format !== "ordering" && item.format !== "matching" && (
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Your answer: <span className="font-semibold text-white">{selectedDisplay}</span>
-                  </p>
+
+                <div className="mt-4 h-px w-full bg-white/10" />
+
+                {selectedDisplay && item.format !== "ordering" && item.format !== "matching" ? (
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                        Your answer
+                      </div>
+                      <p className="mt-2 text-sm font-semibold leading-6 text-white">
+                        {selectedDisplay}
+                      </p>
+                    </div>
+                    <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                        Correct answer
+                      </div>
+                      <p className="mt-2 text-sm font-semibold leading-6 text-white">
+                        {getCorrectAnswerSummary()}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-4 rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+                    <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                      Correct answer
+                    </div>
+                    <p className="mt-2 text-sm font-semibold leading-6 text-white">
+                      {getCorrectAnswerSummary()}
+                    </p>
+                  </div>
                 )}
-                <p className="mt-3 text-sm leading-6 text-slate-300">
-                  Correct answer: <span className="font-semibold text-white">{getCorrectAnswerSummary()}</span>
-                </p>
-                <p className="mt-3 text-sm leading-6 text-slate-200">{item.explanation}</p>
+
+                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                  <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                    Explanation
+                  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">{item.explanation}</p>
+                </div>
+
                 <button
                   type="button"
                   onClick={handleContinue}
-                  className="mt-4 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
+                  className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition hover:scale-[1.01]"
                 >
                   Continue
                 </button>
