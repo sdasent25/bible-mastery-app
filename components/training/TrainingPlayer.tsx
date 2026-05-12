@@ -57,7 +57,7 @@ function statusTitle(wasCorrect: boolean) {
 }
 
 function statusEyebrow(wasCorrect: boolean) {
-  return wasCorrect ? "Training rep complete" : "Sharpen this detail"
+  return wasCorrect ? "Training rep complete" : "Review this detail"
 }
 
 function arraysEqual(left: string[], right: string[]) {
@@ -577,6 +577,25 @@ export default function TrainingPlayer({
     return String(item.correct_answer.value)
   }
 
+  function getUserAnswerSummary() {
+    if (item.format === "ordering") {
+      return selectedOrder.length > 0 ? selectedOrder.join(" → ") : "No answer selected"
+    }
+
+    if (item.format === "matching") {
+      const pairs = item.content.left_items as string[]
+      const selectedPairs = pairs
+        .filter((left) => matchingSelections[left])
+        .map((left) => `${left} → ${matchingSelections[left]}`)
+
+      return selectedPairs.length > 0
+        ? selectedPairs.join(" • ")
+        : "No answer selected"
+    }
+
+    return getDisplaySelection() ?? "No answer selected"
+  }
+
   if (isComplete) {
     const percentage = Math.round((score / total) * 100)
 
@@ -704,68 +723,50 @@ export default function TrainingPlayer({
               {item.prompt}
             </h2>
 
-            <div className="mt-4">{renderItem()}</div>
-
-            {submissionError && !submitted && (
-              <div className="mt-4 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
-                {submissionError}
-              </div>
-            )}
-
-            {submitted && (
-              <div
-                className={`mt-5 overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
-                  wasCorrect
-                    ? "border-emerald-300/30 bg-[radial-gradient(circle_at_top,rgba(74,222,128,0.14),transparent_42%),linear-gradient(180deg,rgba(16,45,34,0.42),rgba(9,18,17,0.92))] shadow-[0_0_36px_rgba(52,211,153,0.10)]"
-                    : "border-amber-300/28 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_42%),linear-gradient(180deg,rgba(54,33,18,0.42),rgba(18,12,10,0.94))] shadow-[0_0_34px_rgba(251,191,36,0.08)]"
-                }`}
-              >
-                <div className="flex items-start gap-3">
-                  <div
-                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg ${
-                      wasCorrect
-                        ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-                        : "border-amber-300/35 bg-amber-300/12 text-amber-100"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {wasCorrect ? "✅" : "↺"}
-                  </div>
-                  <div className="min-w-0">
+            <div className="mt-4">
+              {submitted ? (
+                <div
+                  className={`overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
+                    wasCorrect
+                      ? "border-emerald-300/30 bg-[radial-gradient(circle_at_top,rgba(74,222,128,0.14),transparent_42%),linear-gradient(180deg,rgba(16,45,34,0.42),rgba(9,18,17,0.92))] shadow-[0_0_36px_rgba(52,211,153,0.10)]"
+                      : "border-amber-300/28 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_42%),linear-gradient(180deg,rgba(54,33,18,0.42),rgba(18,12,10,0.94))] shadow-[0_0_34px_rgba(251,191,36,0.08)]"
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
                     <div
-                      className={`text-[11px] font-black uppercase tracking-[0.24em] ${
-                        wasCorrect ? "text-emerald-200" : "text-amber-200"
+                      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg ${
+                        wasCorrect
+                          ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
+                          : "border-amber-300/35 bg-amber-300/12 text-amber-100"
                       }`}
+                      aria-hidden="true"
                     >
-                      {statusEyebrow(wasCorrect)}
+                      {wasCorrect ? "✅" : "↺"}
                     </div>
-                    <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
-                      {statusTitle(wasCorrect)}
-                    </h3>
-                    <p
-                      className={`mt-1 text-sm ${
-                        wasCorrect ? "text-emerald-100/85" : "text-amber-100/85"
-                      }`}
-                    >
-                      {wasCorrect
-                        ? "+ Focus locked in for this question."
-                        : "Take the correction and carry it into the next rep."}
-                    </p>
+                    <div className="min-w-0">
+                      <div
+                        className={`text-[11px] font-black uppercase tracking-[0.24em] ${
+                          wasCorrect ? "text-emerald-200" : "text-amber-200"
+                        }`}
+                      >
+                        {statusEyebrow(wasCorrect)}
+                      </div>
+                      <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                        {wasCorrect ? "Nice work" : "Not quite"}
+                      </h3>
+                    </div>
                   </div>
-                </div>
 
-                <div className="mt-4 h-px w-full bg-white/10" />
-
-                {selectedDisplay && item.format !== "ordering" && item.format !== "matching" ? (
-                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="mt-4 grid gap-3">
                     <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
                       <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                         Your answer
                       </div>
                       <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                        {selectedDisplay}
+                        {getUserAnswerSummary()}
                       </p>
                     </div>
+
                     <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
                       <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                         Correct answer
@@ -774,32 +775,31 @@ export default function TrainingPlayer({
                         {getCorrectAnswerSummary()}
                       </p>
                     </div>
-                  </div>
-                ) : (
-                  <div className="mt-4 rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
-                    <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                      Correct answer
+
+                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                        Explanation
+                      </div>
+                      <p className="mt-2 text-sm leading-6 text-slate-200">{item.explanation}</p>
                     </div>
-                    <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                      {getCorrectAnswerSummary()}
-                    </p>
                   </div>
-                )}
 
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                  <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                    Explanation
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">{item.explanation}</p>
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition hover:scale-[1.01]"
+                  >
+                    Continue
+                  </button>
                 </div>
+              ) : (
+                renderItem()
+              )}
+            </div>
 
-                <button
-                  type="button"
-                  onClick={handleContinue}
-                  className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition hover:scale-[1.01]"
-                >
-                  Continue
-                </button>
+            {submissionError && !submitted && (
+              <div className="mt-4 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
+                {submissionError}
               </div>
             )}
 
