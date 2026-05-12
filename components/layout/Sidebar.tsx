@@ -110,15 +110,18 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   function navItem(label: string, href: string, icon?: string) {
     const active = isNavItemActive(pathname, href)
+    const isTraining = href === "/training"
 
     return (
       <Link
         href={href}
         onClick={() => closeMobile?.()}
-        className={`block px-4 py-3 rounded-xl transition font-medium ${
+        className={`block rounded-[1rem] px-4 py-3 transition font-medium ${
           active
-            ? "bg-blue-600 text-white shadow-md"
-            : "text-white hover:bg-neutral-800 hover:text-white"
+            ? isTraining
+              ? "border border-amber-200/18 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.16),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(13,12,14,0.98))] text-amber-50 shadow-[0_0_26px_rgba(251,191,36,0.12)]"
+              : "border border-cyan-200/16 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_42%),linear-gradient(180deg,rgba(14,22,36,0.96),rgba(8,12,20,0.98))] text-white shadow-[0_0_22px_rgba(34,211,238,0.10)]"
+            : "border border-transparent text-white/84 hover:border-white/10 hover:bg-white/[0.05] hover:text-white"
         }`}
       >
         {icon ? `${icon} ${label}` : label}
@@ -128,9 +131,9 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
 
   function bookItem(label: string, locked = false) {
     return (
-      <div className="flex items-center justify-between px-4 py-1.5 text-sm text-white hover:text-white transition">
+      <div className="flex items-center justify-between rounded-[0.85rem] px-4 py-2 text-sm text-white/78 transition hover:bg-white/[0.04] hover:text-white">
         <span>{label}</span>
-        {locked && <span className="text-xs">🔒</span>}
+        {locked && <span className="text-xs text-white/46">🔒</span>}
       </div>
     )
   }
@@ -144,7 +147,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
       <div>
         <div
           onClick={() => toggle(key)}
-          className="cursor-pointer text-sm text-white"
+          className="cursor-pointer rounded-[0.85rem] px-3 py-2 text-sm font-semibold text-white/84 transition hover:bg-white/[0.04] hover:text-white"
         >
           {label}
         </div>
@@ -185,11 +188,16 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
   }
 
   return (
-    <div className="flex flex-col h-full w-64 border-r border-neutral-800 p-4 overflow-y-auto scrollbar-thin scrollbar-thumb-neutral-700">
+    <div className="flex h-full w-64 flex-col overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] scrollbar-thin scrollbar-thumb-white/10">
       <div className="flex-1 space-y-4">
-        <h1 className="text-xl font-bold">Bible Athlete</h1>
-        <div className="mt-2 rounded-2xl border border-yellow-400/20 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.16),transparent_70%),rgba(250,204,21,0.08)] px-3 py-2 shadow-[0_0_24px_rgba(250,204,21,0.12)]">
-          <div className="text-xs text-gray-400">
+        <div className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_46px_rgba(0,0,0,0.18)]">
+          <h1 className="text-xl font-black tracking-[-0.03em] text-white">Bible Athlete</h1>
+          <p className="mt-2 text-sm leading-6 text-white/64">
+            Premium Scripture training with disciplined daily momentum.
+          </p>
+        </div>
+        <div className="mt-2 rounded-[1.35rem] border border-yellow-400/20 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.16),transparent_70%),rgba(250,204,21,0.08)] px-3 py-3 shadow-[0_0_24px_rgba(250,204,21,0.12)]">
+          <div className="text-xs uppercase tracking-[0.18em] text-gray-400">
             Total XP
           </div>
           <div className="text-sm font-semibold text-yellow-400">
@@ -199,7 +207,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
             🔥 {streak} Day Streak
           </div>
         </div>
-        <div className="text-xs mt-2 text-white">
+        <div className="rounded-[1rem] border border-emerald-300/14 bg-emerald-300/8 px-3 py-2 text-xs text-white/84">
           Plan:{" "}
           <span className="font-semibold text-green-400">
             {fullPlanLabel}
@@ -217,10 +225,10 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           <Link
             href="/quests"
             onClick={() => closeMobile?.()}
-            className={`flex items-center px-4 py-3 rounded-xl transition font-medium ${
+            className={`flex items-center rounded-[1rem] px-4 py-3 transition font-medium ${
               questsActive
-                ? "bg-blue-600 text-white shadow-md"
-                : "text-white hover:bg-neutral-800 hover:text-white"
+                ? "border border-cyan-200/16 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_42%),linear-gradient(180deg,rgba(14,22,36,0.96),rgba(8,12,20,0.98))] text-white shadow-[0_0_22px_rgba(34,211,238,0.10)]"
+                : "border border-transparent text-white/84 hover:border-white/10 hover:bg-white/[0.05] hover:text-white"
             }`}
           >
             <span>⚔️ Quests</span>
@@ -235,7 +243,7 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           ) : (
             <div
               onClick={() => router.push("/pricing?source=leaderboard_locked")}
-              className="block px-4 py-3 rounded-xl text-gray-200 cursor-pointer"
+              className="block cursor-pointer rounded-[1rem] border border-transparent px-4 py-3 text-gray-200 transition hover:border-white/10 hover:bg-white/[0.05]"
             >
               🏆 Leaderboard 🔒
             </div>
@@ -246,14 +254,14 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
           <Link
             href="/pricing"
             onClick={() => closeMobile?.()}
-            className="block rounded-xl bg-yellow-400 px-4 py-3 text-center font-bold text-black transition hover:bg-yellow-300"
+            className="block rounded-[1rem] bg-yellow-400 px-4 py-3 text-center font-bold text-black shadow-[0_16px_32px_rgba(250,204,21,0.14)] transition hover:bg-yellow-300"
           >
             Upgrade to Pro+
           </Link>
         )}
 
-        <div className="pt-4 space-y-2">
-          <p className="text-xs text-white uppercase tracking-wide">Sections</p>
+        <div className="rounded-[1.35rem] border border-white/8 bg-white/[0.03] p-3 pt-4 space-y-2">
+          <p className="px-3 text-xs text-white/48 uppercase tracking-[0.22em]">Sections</p>
 
           {sectionItem("pentateuch", "Pentateuch", (
             <>
@@ -308,20 +316,20 @@ export default function Sidebar({ closeMobile }: SidebarProps) {
         </div>
       </div>
 
-      <div className="pt-4 border-t border-neutral-800 space-y-2">
+      <div className="pt-4 border-t border-white/8 space-y-2">
         <button
           onClick={() => {
             closeMobile?.()
             router.push("/settings")
           }}
-          className="w-full text-left px-4 py-3 rounded-xl text-white hover:bg-neutral-800 hover:text-white transition"
+          className="w-full rounded-[1rem] px-4 py-3 text-left text-white/84 transition hover:bg-white/[0.05] hover:text-white"
         >
           ⚙️ Settings
         </button>
 
         <button
           onClick={handleLogout}
-          className="w-full text-left px-4 py-3 rounded-xl text-red-400 hover:bg-red-500/10 transition"
+          className="w-full rounded-[1rem] px-4 py-3 text-left text-red-400 transition hover:bg-red-500/10"
         >
           🚪 Logout
         </button>

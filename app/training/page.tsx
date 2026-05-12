@@ -15,19 +15,114 @@ type HubStatus = {
 
 type TrackVisual = {
   label: string
+  artPath: string
+  heroPanelPath: string
+}
+
+type BibleSectionCard = {
+  title: string
+  subtitle: string
+  href: string
   accentClass: string
   borderClass: string
   glowClass: string
   artPath: string
+  status: string
 }
 
-const SKILL_MODES = [
-  { label: "Recall", icon: "✦", tint: "from-amber-200/22 via-amber-300/10 to-transparent" },
-  { label: "Fill Blank", icon: "◌", tint: "from-cyan-200/22 via-cyan-300/10 to-transparent" },
-  { label: "Visual Recognition", icon: "◈", tint: "from-emerald-200/22 via-emerald-300/10 to-transparent" },
-  { label: "Sequence", icon: "→", tint: "from-sky-200/20 via-cyan-300/10 to-transparent" },
-  { label: "Matching", icon: "◇", tint: "from-amber-100/18 via-orange-300/10 to-transparent" },
-  { label: "Spot Error", icon: "△", tint: "from-rose-200/18 via-amber-300/10 to-transparent" },
+const DRILL_TYPE_COUNT = 6
+
+const BIBLE_SECTIONS: BibleSectionCard[] = [
+  {
+    title: "Pentateuch",
+    subtitle: "The foundations of everything",
+    href: "#training-days",
+    accentClass: "from-amber-200/26 via-yellow-300/16 to-cyan-300/10",
+    borderClass: "border-amber-200/18",
+    glowClass: "shadow-[0_0_32px_rgba(251,191,36,0.10)]",
+    artPath: "/training/sections/pentateuch.svg",
+    status: "Live now",
+  },
+  {
+    title: "Historical",
+    subtitle: "God's faithfulness in history",
+    href: "/training",
+    accentClass: "from-sky-200/24 via-blue-300/14 to-indigo-300/10",
+    borderClass: "border-sky-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(96,165,250,0.10)]",
+    artPath: "/training/sections/historical.svg",
+    status: "Building",
+  },
+  {
+    title: "Wisdom",
+    subtitle: "Living well under God's wisdom",
+    href: "/training",
+    accentClass: "from-fuchsia-200/24 via-violet-300/14 to-sky-300/10",
+    borderClass: "border-fuchsia-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(192,132,252,0.10)]",
+    artPath: "/training/sections/wisdom.svg",
+    status: "Building",
+  },
+  {
+    title: "Major Prophets",
+    subtitle: "Messages that move nations",
+    href: "/training",
+    accentClass: "from-fuchsia-200/22 via-purple-300/14 to-violet-300/10",
+    borderClass: "border-rose-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(244,114,182,0.10)]",
+    artPath: "/training/sections/major-prophets.svg",
+    status: "Building",
+  },
+  {
+    title: "Minor Prophets",
+    subtitle: "Voices of hope and warning",
+    href: "/training",
+    accentClass: "from-cyan-200/22 via-teal-300/14 to-emerald-300/10",
+    borderClass: "border-cyan-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(45,212,191,0.10)]",
+    artPath: "/training/sections/minor-prophets.svg",
+    status: "Building",
+  },
+  {
+    title: "Gospels",
+    subtitle: "The life, death, and resurrection",
+    href: "/training",
+    accentClass: "from-yellow-200/24 via-amber-300/14 to-orange-300/10",
+    borderClass: "border-yellow-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(253,224,71,0.10)]",
+    artPath: "/training/sections/gospels.svg",
+    status: "Building",
+  },
+  {
+    title: "Acts",
+    subtitle: "The Church on mission",
+    href: "/training",
+    accentClass: "from-orange-200/22 via-amber-300/14 to-orange-400/10",
+    borderClass: "border-orange-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(251,146,60,0.10)]",
+    artPath: "/training/sections/acts.svg",
+    status: "Building",
+  },
+  {
+    title: "Epistles",
+    subtitle: "Letters for life and faith",
+    href: "/training",
+    accentClass: "from-cyan-200/22 via-sky-300/14 to-teal-400/10",
+    borderClass: "border-cyan-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(34,211,238,0.10)]",
+    artPath: "/training/sections/epistles.svg",
+    status: "Building",
+  },
+  {
+    title: "Revelation & Apocalyptic",
+    subtitle: "The end, the hope, and the new beginning",
+    href: "/training",
+    accentClass: "from-rose-200/22 via-pink-300/14 to-red-400/10",
+    borderClass: "border-rose-200/16",
+    glowClass: "shadow-[0_0_32px_rgba(251,113,133,0.10)]",
+    artPath: "/training/sections/revelation.svg",
+    status: "Building",
+  },
 ] as const
 
 function formatTierLabel(tier: "free" | "pro" | "pro_plus") {
@@ -47,19 +142,15 @@ function getTrackVisual(segmentKey: string): TrackVisual {
   if (track === "exodus") {
     return {
       label: "Exodus Track",
-      accentClass: "from-orange-200/28 via-amber-300/16 to-cyan-300/10",
-      borderClass: "border-orange-200/18",
-      glowClass: "shadow-[0_0_34px_rgba(251,146,60,0.12)]",
-      artPath: "/explorer/pentateuch/region.png",
+      artPath: "/training/sections/pentateuch.svg",
+      heroPanelPath: "/training/sections/exodus-track.svg",
     }
   }
 
   return {
     label: "Genesis Track",
-    accentClass: "from-amber-100/28 via-yellow-300/16 to-cyan-300/10",
-    borderClass: "border-amber-200/18",
-    glowClass: "shadow-[0_0_34px_rgba(251,191,36,0.12)]",
-    artPath: "/explorer/pentateuch/region.png",
+    artPath: "/training/sections/pentateuch.svg",
+    heroPanelPath: "/training/sections/genesis-track.svg",
   }
 }
 
@@ -95,6 +186,15 @@ function getDayDescriptor(
   return `Core ${trackLabel.toLowerCase()} training with recall, fill blank, sequence, and matching drills.`
 }
 
+function getEstimatedTime(
+  itemCount: number,
+  tier: "free" | "pro" | "pro_plus"
+) {
+  if (tier === "free") return `${Math.max(2, Math.ceil(itemCount / 3))}-${Math.max(4, Math.ceil(itemCount / 2))} min`
+  if (tier === "pro") return `${Math.max(4, Math.ceil(itemCount / 3))}-${Math.max(6, Math.ceil(itemCount / 2))} min`
+  return `${Math.max(5, Math.ceil(itemCount / 4))}-${Math.max(8, Math.ceil(itemCount / 2.5))} min`
+}
+
 function getDayStatus(dayNumber: number, tier: "free" | "pro" | "pro_plus"): HubStatus {
   const isPreviewDay = dayNumber <= 3
   const isLockedForFree = tier === "free" && dayNumber > 3
@@ -103,7 +203,7 @@ function getDayStatus(dayNumber: number, tier: "free" | "pro" | "pro_plus"): Hub
     return {
       label: "Locked Preview",
       cardClass:
-        "border-white/10 bg-[linear-gradient(180deg,rgba(24,28,38,0.86),rgba(10,13,20,0.94))] opacity-90",
+        "border-white/10 bg-[linear-gradient(180deg,rgba(24,28,38,0.88),rgba(10,13,20,0.95))] opacity-90",
       badgeClass:
         "border-amber-200/18 bg-amber-200/10 text-amber-100/86",
       buttonClass:
@@ -189,25 +289,34 @@ export default async function TrainingPage() {
       <div className="relative mx-auto max-w-7xl">
         <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.10),transparent_30%),radial-gradient(circle_at_80%_18%,rgba(34,211,238,0.10),transparent_24%),linear-gradient(180deg,rgba(15,22,36,0.98),rgba(7,11,19,0.98))] shadow-[0_32px_100px_rgba(0,0,0,0.34)]">
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.18]"
+            className="pointer-events-none absolute inset-0 opacity-[0.92]"
             style={{
-              backgroundImage: `url('${currentTrackVisual.artPath}')`,
-              backgroundPosition: "50% 42%",
+              backgroundImage: "url('/training/hero/arena-hero-duo.svg')",
+              backgroundPosition: "50% 52%",
               backgroundSize: "cover",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(90deg,rgba(5,8,14,0.68),rgba(5,8,14,0.28)_48%,rgba(5,8,14,0.64)_100%)]" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.42]"
+            style={{
+              backgroundImage: "url('/training/hero/arena-hero-overlay.svg')",
+              backgroundPosition: "50% 50%",
+              backgroundSize: "cover",
+            }}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(90deg,rgba(5,8,14,0.80),rgba(5,8,14,0.34)_48%,rgba(5,8,14,0.70)_100%)]" />
+
           <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:p-7 xl:p-8">
             <div className="relative z-10 flex flex-col justify-between">
               <div>
                 <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/84">
                   Training Arena
                 </div>
-                <h1 className="mt-4 text-4xl font-black tracking-[-0.05em] text-white sm:text-5xl lg:max-w-xl">
+                <h1 className="mt-4 max-w-xl text-4xl font-black tracking-[-0.05em] text-white sm:text-5xl">
                   Build Scripture recall one rep at a time.
                 </h1>
                 <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
-                  Daily drills for recognition, recall, sequencing, matching, and careful reading.
+                  Daily drills for recall, recognition, sequencing, matching, and careful reading.
                 </p>
               </div>
 
@@ -226,18 +335,18 @@ export default async function TrainingPage() {
                 </Link>
               </div>
 
-              <div className="mt-6 overflow-hidden rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.38),rgba(8,12,20,0.68))] backdrop-blur-sm">
+              <div className="mt-6 overflow-hidden rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.42),rgba(8,12,20,0.70))] backdrop-blur-sm">
                 <div className="grid gap-3 p-4 sm:grid-cols-[1.15fr_0.85fr] sm:p-5">
                   <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4">
                     <div
-                      className="absolute inset-0 opacity-35"
+                      className="absolute inset-0 opacity-75"
                       style={{
-                        backgroundImage: `url('${currentTrackVisual.artPath}')`,
+                        backgroundImage: `url('${currentTrackVisual.heroPanelPath}')`,
                         backgroundPosition: "50% 42%",
                         backgroundSize: "cover",
                       }}
                     />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,221,153,0.20),transparent_30%),linear-gradient(180deg,rgba(7,10,16,0.10),rgba(7,10,16,0.70))]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,221,153,0.20),transparent_30%),linear-gradient(180deg,rgba(7,10,16,0.12),rgba(7,10,16,0.70))]" />
                     <div className="relative">
                       <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/70">
                         Arena Atmosphere
@@ -283,7 +392,7 @@ export default async function TrainingPage() {
               </div>
             </div>
 
-            <div className="relative z-10 rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,13,22,0.50),rgba(8,11,18,0.72))] p-4 backdrop-blur-sm sm:p-5">
+            <div className="relative z-10 rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,13,22,0.54),rgba(8,11,18,0.76))] p-4 backdrop-blur-sm sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
@@ -380,10 +489,10 @@ export default async function TrainingPage() {
           </article>
           <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-              Training Formats
+              Drill Types
             </div>
-            <div className="mt-2 text-2xl font-black text-white">{SKILL_MODES.length}</div>
-            <p className="mt-2 text-sm text-slate-300">Recognition, recall, sequence, matching, and correction reps.</p>
+            <div className="mt-2 text-2xl font-black text-white">{DRILL_TYPE_COUNT}</div>
+            <p className="mt-2 text-sm text-slate-300">Recall, fill blank, image, sequence, matching, and review reps.</p>
           </article>
           <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
@@ -398,24 +507,44 @@ export default async function TrainingPage() {
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-cyan-100/72">
-                Skill Modes
+                Train By Bible Section
               </div>
-              <h2 className="mt-2 text-2xl font-black text-white">Train the whole recall stack</h2>
+              <h2 className="mt-2 text-2xl font-black text-white">Step into the next section of Scripture</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+                The arena is expanding beyond the opening books. Pentateuch is live now, with the rest of Scripture staged for the next training worlds.
+              </p>
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
-            {SKILL_MODES.map((mode) => (
-              <div
-                key={mode.label}
-                className={`group overflow-hidden rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 hover:border-white/16`}
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {BIBLE_SECTIONS.map((section) => (
+              <Link
+                key={section.title}
+                href={section.href}
+                className={`group relative overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 ${section.borderClass} ${section.glowClass}`}
               >
-                <div className={`rounded-[0.95rem] bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_56%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))] px-3 py-3`}>
-                  <div className="text-lg text-white/92">{mode.icon}</div>
-                  <div className="mt-3 text-sm font-semibold leading-5 text-white">{mode.label}</div>
-                  <div className={`mt-3 h-1 w-full rounded-full bg-gradient-to-r ${mode.tint}`} />
+                <div
+                  className="absolute inset-0 opacity-[0.88]"
+                  style={{
+                    backgroundImage: `url('${section.artPath}')`,
+                    backgroundPosition: "50% 42%",
+                    backgroundSize: "cover",
+                  }}
+                />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_34%),linear-gradient(180deg,rgba(7,10,16,0.16),rgba(7,10,16,0.78))]" />
+
+                <div className="relative">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-lg text-white/92">✦</div>
+                    <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/78">
+                      {section.status}
+                    </div>
+                  </div>
+                  <div className="mt-4 text-lg font-black text-white">{section.title}</div>
+                  <div className="mt-2 text-sm leading-6 text-slate-300">{section.subtitle}</div>
+                  <div className={`mt-4 h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -424,7 +553,7 @@ export default async function TrainingPage() {
           <div className="mb-4 flex items-end justify-between gap-4">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
-                Training Days
+                {currentTrack} Training Days
               </div>
               <h2 className="mt-2 text-3xl font-black text-white">Choose your next drill</h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
@@ -433,13 +562,14 @@ export default async function TrainingPage() {
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.05fr)]">
             {days.map((day, index) => {
               const status = getDayStatus(day.day, access.tier)
               const lockedForFree = access.tier === "free" && day.day > 3
               const dayTrack = getTrackLabel(day.segmentKey)
               const trackVisual = getTrackVisual(day.segmentKey)
               const descriptor = getDayDescriptor(day.day, access.tier, dayTrack)
+              const estTime = getEstimatedTime(day.itemCount, access.tier)
 
               return (
                 <article
@@ -449,14 +579,14 @@ export default async function TrainingPage() {
                   } ${lockedForFree ? "" : "hover:-translate-y-1"}`}
                 >
                   <div
-                    className="pointer-events-none absolute inset-0 opacity-[0.18]"
+                    className="pointer-events-none absolute inset-0 opacity-[0.82]"
                     style={{
                       backgroundImage: `url('${trackVisual.artPath}')`,
                       backgroundPosition: "50% 42%",
                       backgroundSize: "cover",
                     }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.05),transparent_30%),linear-gradient(180deg,transparent,rgba(0,0,0,0.14))]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_30%),linear-gradient(180deg,rgba(8,11,18,0.12),rgba(8,11,18,0.66))]" />
 
                   <div className="relative z-10">
                     <div className="flex items-center justify-between gap-3">
@@ -475,6 +605,7 @@ export default async function TrainingPage() {
                     <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/62">
                       <span>{dayTrack} Track</span>
                       <span>{day.itemCount} prompts</span>
+                      <span>{estTime}</span>
                     </div>
 
                     <p className="mt-3 text-sm leading-6 text-slate-300">
@@ -496,30 +627,51 @@ export default async function TrainingPage() {
                 </article>
               )
             })}
-          </div>
-        </section>
 
-        <section className="mt-6 rounded-[1.85rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.10),transparent_26%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.12),transparent_30%),linear-gradient(180deg,rgba(18,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:p-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/76">
-                Pro+ Access
+            <aside
+              id="pro-plus-arena"
+              className="relative overflow-hidden rounded-[1.75rem] border border-cyan-200/16 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.12),transparent_24%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.14),transparent_28%),linear-gradient(180deg,rgba(18,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:row-span-2"
+            >
+              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%)]" />
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.26em] text-amber-100/82">
+                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-amber-100/20 bg-amber-100/10 text-[12px]">
+                    ✧
+                  </span>
+                  <span>Pro+ Arena</span>
+                </div>
+                <h3 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white">
+                  Unlock the full training experience.
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
+                  Hard drills, image recognition, full daily sets, and mastery tracking.
+                </p>
+
+                <div className="mt-5 space-y-3">
+                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">
+                    Full access to all days
+                  </div>
+                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">
+                    Advanced drill modes
+                  </div>
+                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">
+                    Performance insights
+                  </div>
+                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">
+                    Priority updates
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Link
+                    href="/pricing"
+                    className="inline-flex w-full items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_36px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
+                  >
+                    Go Pro+
+                  </Link>
+                </div>
               </div>
-              <h2 className="mt-3 text-3xl font-black tracking-[-0.04em] text-white">
-                Unlock the full arena
-              </h2>
-              <p className="mt-3 text-base leading-7 text-slate-300">
-                Hard drills, image recognition, full daily sets, and mastery tracking.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/pricing"
-                className="inline-flex items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_36px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
-              >
-                Upgrade to Pro+
-              </Link>
-            </div>
+            </aside>
           </div>
         </section>
       </div>
