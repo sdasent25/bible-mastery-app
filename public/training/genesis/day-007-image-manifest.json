@@ -1,0 +1,40 @@
+{
+  "day": 7,
+  "segment_key": "genesis-019-021",
+  "images": [
+    {
+      "question_key": "day-007-genesis-019-021-010",
+      "prompt": "Which image best represents Hagar finding water in the wilderness?",
+      "correct_image_filename": "hagar-wilderness-well.png",
+      "all_image_filenames": [
+        "hagar-wilderness-well.png",
+        "well-in-beersheba.png",
+        "desert-road-family.png",
+        "isaac-birth-joy.png"
+      ],
+      "reasons": {
+        "hagar-wilderness-well.png": "Shows Hagar and the boy by a newly seen water source, which matches Genesis 21 most directly.",
+        "well-in-beersheba.png": "Represents the well itself but leaves out Hagar finding it.",
+        "desert-road-family.png": "Suggests wilderness travel, but not the moment of seeing the water source.",
+        "isaac-birth-joy.png": "Represents a different Genesis 21 scene centered on Isaac's birth."
+      }
+    },
+    {
+      "question_key": "day-007-genesis-019-021-011",
+      "prompt": "Which image best represents Abraham and Abimelech making an agreement?",
+      "correct_image_filename": "abraham-abimelech-agreement.png",
+      "all_image_filenames": [
+        "abraham-abimelech-agreement.png",
+        "fleeing-sodom.png",
+        "zoar-distant-town.png",
+        "smoke-rising-plain.png"
+      ],
+      "reasons": {
+        "abraham-abimelech-agreement.png": "Shows two men making a peaceful agreement, matching Genesis 21 directly.",
+        "fleeing-sodom.png": "Represents Lot's family escaping, which belongs to Genesis 19 instead.",
+        "zoar-distant-town.png": "Represents the town Lot fled to, not the Beersheba agreement scene.",
+        "smoke-rising-plain.png": "Represents Abraham seeing smoke rise from the land after Sodom's destruction, not the treaty scene."
+      }
+    }
+  ]
+}

@@ -1,0 +1,691 @@
+{
+  "day": 18,
+  "segment_key": "exodus-004-006",
+  "unlock_key": "exodus-4-6",
+  "reading": {
+    "book": "Exodus",
+    "chapter_start": 4,
+    "chapter_end": 6,
+    "reference": "Exodus 4–6"
+  },
+  "items": [
+    {
+      "key": "day-018-exodus-004-006-001",
+      "format": "multiple_choice",
+      "prompt": "What concern did Moses raise about the people in Exodus 4?",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Exodus 4:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "They might not believe him",
+          "They might leave Egypt without him",
+          "They might ask for more food",
+          "They might refuse Aaron"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "They might not believe him"
+      },
+      "explanation": "Exodus 4 says Moses feared the people would not believe or listen to him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "moses", "belief", "signs"]
+    },
+    {
+      "key": "day-018-exodus-004-006-002",
+      "format": "multiple_choice",
+      "prompt": "What did Moses' staff become when he threw it on the ground?",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 3,
+      "verse_end": 4,
+      "reference": "Exodus 4:3-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "medium",
+      "content": {
+        "options": ["A serpent", "A branch", "A torch", "A chain"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A serpent"
+      },
+      "explanation": "Exodus 4 says the staff became a serpent when Moses threw it down.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "staff", "serpent", "sign"]
+    },
+    {
+      "key": "day-018-exodus-004-006-003",
+      "format": "multiple_choice",
+      "prompt": "Who was sent to meet Moses and speak with him?",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 14,
+      "verse_end": 16,
+      "reference": "Exodus 4:14-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Aaron", "Joshua", "Hur", "Eleazar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Aaron"
+      },
+      "explanation": "Exodus 4 says Aaron was coming to meet Moses and would help speak.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "aaron", "moses", "speaking"]
+    },
+    {
+      "key": "day-018-exodus-004-006-004",
+      "format": "multiple_choice",
+      "prompt": "What did the people do after Moses and Aaron spoke and the signs were shown?",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 29,
+      "verse_end": 31,
+      "reference": "Exodus 4:29-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": [
+          "They believed and bowed their heads in worship",
+          "They asked to remain in Egypt",
+          "They demanded more signs from Aaron",
+          "They went straight to Pharaoh alone"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "They believed and bowed their heads in worship"
+      },
+      "explanation": "Exodus 4 says the people believed and bowed their heads and worshiped.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "elders", "signs", "worship"]
+    },
+    {
+      "key": "day-018-exodus-004-006-005",
+      "format": "multiple_choice",
+      "prompt": "What were the Israelites still required to deliver after straw was no longer provided?",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Exodus 5:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": ["The same number of bricks", "The same amount of grain", "The same number of cattle", "The same amount of silver"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The same number of bricks"
+      },
+      "explanation": "Exodus 5 says the brick quota remained the same even without straw being given.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "bricks", "straw", "labor"]
+    },
+    {
+      "key": "day-018-exodus-004-006-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 4.",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 10,
+      "verse_end": 10,
+      "reference": "Exodus 4:10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Moses said he was not ____ in speech.",
+        "blank_count": 1,
+        "options": ["eloquent", "wealthy", "armed", "famous"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "eloquent"
+      },
+      "explanation": "Exodus 4 says Moses told the Lord he was not eloquent.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "moses", "speech", "fill-blank"]
+    },
+    {
+      "key": "day-018-exodus-004-006-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 4.",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 20,
+      "verse_end": 20,
+      "reference": "Exodus 4:20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "medium",
+      "content": {
+        "text": "Moses took the staff of ____ in his hand.",
+        "blank_count": 1,
+        "options": ["God", "Aaron", "Pharaoh", "Levi"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "God"
+      },
+      "explanation": "Exodus 4 says Moses took the staff of God in his hand.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "staff", "god", "moses"]
+    },
+    {
+      "key": "day-018-exodus-004-006-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 5.",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 11,
+      "verse_end": 11,
+      "reference": "Exodus 5:11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "medium",
+      "content": {
+        "text": "Pharaoh told the people to go and get their own ____.",
+        "blank_count": 1,
+        "options": ["straw", "water", "wood", "grain"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "straw"
+      },
+      "explanation": "Exodus 5 says Pharaoh told the people to get their own straw.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "straw", "pharaoh", "labor"]
+    },
+    {
+      "key": "day-018-exodus-004-006-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 6.",
+      "book": "Exodus",
+      "chapter": 6,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Exodus 6:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "God said he would bring Israel out from under the burdens of the ____.",
+        "blank_count": 1,
+        "options": ["Egyptians", "Midianites", "Philistines", "Amalekites"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Egyptians"
+      },
+      "explanation": "Exodus 6 says God would bring Israel out from under the burdens of the Egyptians.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "egyptians", "burdens", "deliverance"]
+    },
+    {
+      "key": "day-018-exodus-004-006-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Moses' staff becoming a serpent as a sign?",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 2,
+      "verse_end": 4,
+      "reference": "Exodus 4:2-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "An ancient wooden staff on the ground transforming into a serpent in the wilderness",
+            "image_url": "/training/exodus/staff-serpent-sign.png",
+            "alt": "An ancient wooden staff on the ground transforming into a serpent in a wilderness setting"
+          },
+          {
+            "label": "A respectful close view of a man's hand shown as a miraculous sign with a desert cloak nearby",
+            "image_url": "/training/exodus/hand-sign-moses.png",
+            "alt": "A respectful close view of a man's hand shown as part of a miraculous sign with a desert cloak nearby"
+          },
+          {
+            "label": "Water from the Nile turning red in an ancient Egypt setting",
+            "image_url": "/training/exodus/nile-water-blood-sign.png",
+            "alt": "Water from the Nile turning red in an ancient Egypt setting"
+          },
+          {
+            "label": "Two ancient brothers meeting in the wilderness near a mountain path",
+            "image_url": "/training/exodus/aaron-meets-moses.png",
+            "alt": "Two ancient brothers meeting in the wilderness near a mountain path"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "An ancient wooden staff on the ground transforming into a serpent in the wilderness"
+      },
+      "explanation": "Exodus 4 says Moses' staff became a serpent as a sign.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "staff", "serpent", "image"]
+    },
+    {
+      "key": "day-018-exodus-004-006-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Moses and Aaron speaking before Pharaoh?",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 1,
+      "verse_end": 3,
+      "reference": "Exodus 5:1-3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Two Hebrew men standing before Pharaoh in an ancient Egyptian court",
+            "image_url": "/training/exodus/moses-aaron-before-pharaoh.png",
+            "alt": "Two Hebrew men standing before Pharaoh in an ancient Egyptian court"
+          },
+          {
+            "label": "An ancient Egypt work scene showing bricks being made with little or no straw nearby",
+            "image_url": "/training/exodus/bricks-without-straw.png",
+            "alt": "An ancient Egypt work scene showing bricks being made with little or no straw nearby"
+          },
+          {
+            "label": "Israelite foremen speaking with Egyptian officials near brick-making work",
+            "image_url": "/training/exodus/israelite-foremen-egypt.png",
+            "alt": "Israelite foremen speaking with Egyptian officials near brick-making work"
+          },
+          {
+            "label": "Moses and Aaron speaking to Israel's elders while signs are shown nearby",
+            "image_url": "/training/exodus/elders-hear-signs.png",
+            "alt": "Moses and Aaron speaking to Israel's elders while signs are shown nearby"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Two Hebrew men standing before Pharaoh in an ancient Egyptian court"
+      },
+      "explanation": "Exodus 5 says Moses and Aaron went in and spoke before Pharaoh.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "pharaoh", "moses", "aaron", "image"]
+    },
+    {
+      "key": "day-018-exodus-004-006-012",
+      "format": "ordering",
+      "prompt": "Put these Exodus 4 sign events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 1,
+      "verse_end": 9,
+      "reference": "Exodus 4:1-9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Moses says the people may not believe him",
+          "Moses' hand is shown as a sign",
+          "The staff becomes a serpent",
+          "Water from the Nile is to become blood on dry ground"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Moses says the people may not believe him",
+          "The staff becomes a serpent",
+          "Moses' hand is shown as a sign",
+          "Water from the Nile is to become blood on dry ground"
+        ]
+      },
+      "explanation": "Exodus 4 gives Moses' concern first, then the staff sign, the hand sign, and the Nile water sign.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "signs", "ordering", "moses"]
+    },
+    {
+      "key": "day-018-exodus-004-006-013",
+      "format": "ordering",
+      "prompt": "Put these Exodus 5 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 1,
+      "verse_end": 21,
+      "reference": "Exodus 5:1-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Pharaoh says the people must gather their own straw",
+          "Israelite foremen cry out to Pharaoh",
+          "Moses and Aaron ask Pharaoh to let Israel go",
+          "Pharaoh refuses to let the people stop their work"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Moses and Aaron ask Pharaoh to let Israel go",
+          "Pharaoh refuses to let the people stop their work",
+          "Pharaoh says the people must gather their own straw",
+          "Israelite foremen cry out to Pharaoh"
+        ]
+      },
+      "explanation": "Exodus 5 moves from Moses and Aaron speaking to Pharaoh to the harder labor order and then the foremen's complaint.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "pharaoh", "straw", "ordering"]
+    },
+    {
+      "key": "day-018-exodus-004-006-014",
+      "format": "ordering",
+      "prompt": "Put these Exodus 5-6 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 22,
+      "verse_end": 6,
+      "reference": "Exodus 5:22-23; 6:1-9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God says he will bring Israel out from under Egyptian burdens",
+          "Moses speaks to the people",
+          "Moses brings his complaint before the Lord",
+          "The people do not listen because of discouragement and hard labor"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Moses brings his complaint before the Lord",
+          "God says he will bring Israel out from under Egyptian burdens",
+          "Moses speaks to the people",
+          "The people do not listen because of discouragement and hard labor"
+        ]
+      },
+      "explanation": "At the end of Exodus 5 Moses complains, and Exodus 6 follows with God's words and the people's response.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "moses", "burdens", "ordering"]
+    },
+    {
+      "key": "day-018-exodus-004-006-015",
+      "format": "matching",
+      "prompt": "Match each Exodus 4 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 2,
+      "verse_end": 17,
+      "reference": "Exodus 4:2-17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Staff", "Hand", "Nile water", "Aaron"],
+        "right_items": [
+          "Brother sent to help Moses speak",
+          "Object that became a serpent",
+          "What was to become blood on dry ground",
+          "Body part shown as a sign and then restored"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Staff", "right": "Object that became a serpent" },
+          { "left": "Hand", "right": "Body part shown as a sign and then restored" },
+          { "left": "Nile water", "right": "What was to become blood on dry ground" },
+          { "left": "Aaron", "right": "Brother sent to help Moses speak" }
+        ]
+      },
+      "explanation": "Exodus 4 connects these signs and Aaron's role in helping Moses speak.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "staff", "aaron", "matching"]
+    },
+    {
+      "key": "day-018-exodus-004-006-016",
+      "format": "matching",
+      "prompt": "Match each Exodus 5 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 6,
+      "verse_end": 21,
+      "reference": "Exodus 5:6-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Straw", "Bricks", "Foremen", "Pharaoh"],
+        "right_items": [
+          "Ruler who increased the labor burden",
+          "Material no longer given to the people",
+          "Daily work still required in full",
+          "Group that complained about the harsh order"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Straw", "right": "Material no longer given to the people" },
+          { "left": "Bricks", "right": "Daily work still required in full" },
+          { "left": "Foremen", "right": "Group that complained about the harsh order" },
+          { "left": "Pharaoh", "right": "Ruler who increased the labor burden" }
+        ]
+      },
+      "explanation": "Exodus 5 ties Pharaoh's order to straw, bricks, and the foremen's complaint.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "straw", "bricks", "matching"]
+    },
+    {
+      "key": "day-018-exodus-004-006-017",
+      "format": "matching",
+      "prompt": "Match each Exodus 6 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 6,
+      "verse_start": 16,
+      "verse_end": 20,
+      "reference": "Exodus 6:16-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Levi", "Kohath", "Amram", "Aaron"],
+        "right_items": [
+          "Brother who went with Moses",
+          "Son of Levi named in the genealogy",
+          "Father of Moses and Aaron",
+          "Ancestor connected to Moses and Aaron’s family line"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Levi", "right": "Ancestor connected to Moses and Aaron’s family line" },
+          { "left": "Kohath", "right": "Son of Levi named in the genealogy" },
+          { "left": "Amram", "right": "Father of Moses and Aaron" },
+          { "left": "Aaron", "right": "Brother who went with Moses" }
+        ]
+      },
+      "explanation": "Exodus 6 includes the family line of Levi and identifies Aaron with Moses.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "levi", "amram", "aaron", "matching"]
+    },
+    {
+      "key": "day-018-exodus-004-006-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 4.",
+      "book": "Exodus",
+      "chapter": 4,
+      "verse_start": 29,
+      "verse_end": 31,
+      "reference": "Exodus 4:29-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Exodus 4 says the people believed after Moses and Aaron spoke and the signs were shown."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Exodus 4 says the people believed after hearing and seeing the signs.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "people", "signs", "true-false"]
+    },
+    {
+      "key": "day-018-exodus-004-006-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 6.",
+      "book": "Exodus",
+      "chapter": 6,
+      "verse_start": 9,
+      "verse_end": 9,
+      "reference": "Exodus 6:9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Exodus 6 says the people listened to Moses gladly because their labor had become easier."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": false
+      },
+      "explanation": "Exodus 6 says they did not listen because of discouragement and hard labor.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "people", "hard-labor", "true-false"]
+    },
+    {
+      "key": "day-018-exodus-004-006-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Exodus 5 statement.",
+      "book": "Exodus",
+      "chapter": 5,
+      "verse_start": 11,
+      "verse_end": 19,
+      "reference": "Exodus 5:11-19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Pharaoh told the people to gather their own straw, but he reduced the number of bricks they had to make.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Pharaoh told the people to gather their own straw, but he did not reduce the number of bricks they had to make.",
+          "Pharaoh told the people to return to Goshen, and then Aaron gathered straw for them.",
+          "Pharaoh gave the people more straw, and the foremen refused to make bricks.",
+          "Pharaoh ordered Moses to build the bricks himself, and the elders left Egypt."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Pharaoh told the people to gather their own straw, but he did not reduce the number of bricks they had to make."
+      },
+      "explanation": "Exodus 5 says the people had to find straw themselves, but the brick quota stayed the same.",
+      "teaching_note": "This keeps the focus on the labor order in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-4-6",
+      "tags": ["exodus", "pharaoh", "straw", "bricks", "spot-error"]
+    }
+  ]
+}

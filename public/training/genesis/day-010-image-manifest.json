@@ -1,0 +1,70 @@
+{
+  "day": 10,
+  "segment_key": "genesis-028-030",
+  "images": [
+    {
+      "question_key": "day-010-genesis-028-030-010",
+      "image_filename": "jacob-dream-bethel.png",
+      "label": "Jacob resting at night with a glowing stairway to heaven",
+      "prompt_used": "Create a symbolic cinematic scene of Jacob's dream at Bethel: a lone ancient traveler resting at night in a desert landscape, with a glowing stairway or ladder reaching upward into heavenly light, and luminous angelic figures ascending and descending. Premium semi-realistic painterly style. Square or near-square composition. No text. No logos.",
+      "is_correct_answer": true,
+      "alt": "Ancient traveler resting at night while a glowing stairway rises into heaven"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-010",
+      "image_filename": "bethel-stone-marker.png",
+      "label": "An upright stone marker in the desert at dawn",
+      "prompt_used": "Create an ancient upright stone marker in a desert setting at dawn, suggesting Jacob setting up the stone at Bethel. Quiet sacred mood, warm light, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Upright stone marker in a desert setting at dawn"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-010",
+      "image_filename": "shepherds-at-well.png",
+      "label": "Shepherds and flocks gathered around a well",
+      "prompt_used": "Create an ancient well in open countryside with shepherds and flocks gathered nearby. Clear focal well. Warm natural light. Semi-realistic painterly Bible learning app style. Square or near-square composition. No text. No logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient well with shepherds and flocks nearby"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-010",
+      "image_filename": "flocks-speckled-spotted.png",
+      "label": "Flocks of speckled and spotted animals in pasture",
+      "prompt_used": "Create a visually clear image of speckled and spotted sheep and goats in an ancient pastoral setting. Premium semi-realistic painterly style, readable at small size, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Speckled and spotted sheep and goats in a pastoral setting"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-011",
+      "image_filename": "rachel-well-flocks.png",
+      "label": "A young woman approaching a well with flocks nearby",
+      "prompt_used": "Create a respectful symbolic scene of a young woman approaching a well with flocks nearby, representing Rachel coming with Laban's sheep. Ancient pastoral setting, warm light, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "Young woman approaching a well with flocks nearby"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-011",
+      "image_filename": "stone-pillow-bethel.png",
+      "label": "A single stone lying on the ground at night",
+      "prompt_used": "Create a nighttime desert scene with a single stone on the ground used as a pillow, subtle starry sky, quiet sacred mood, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Single stone on the ground under a night sky"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-011",
+      "image_filename": "laban-family-tents.png",
+      "label": "An ancient family tent encampment in the countryside",
+      "prompt_used": "Create an ancient family tent encampment in the countryside, suggesting Laban's household. Include tents and pastoral surroundings with warm evening light. Premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient family tent encampment with pastoral surroundings"
+    },
+    {
+      "question_key": "day-010-genesis-028-030-011",
+      "image_filename": "angels-stairway-heaven.png",
+      "label": "Luminous angels moving on a glowing stairway into heaven",
+      "prompt_used": "Create a symbolic scene of luminous angels ascending and descending on a glowing stairway or ladder reaching into heaven. Sacred cinematic atmosphere, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Luminous angels ascending and descending on a glowing stairway"
+    }
+  ]
+}

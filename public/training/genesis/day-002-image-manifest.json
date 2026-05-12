@@ -1,0 +1,65 @@
+{
+  "day": 2,
+  "segment_key": "genesis-004-006",
+  "unlock_key": "genesis-4-6",
+  "images": [
+    {
+      "question_key": "day-002-genesis-004-006-010",
+      "prompt": "Which image best represents Abel's offering from his flock?",
+      "correct_image_filename": "abel-flock-offering.png",
+      "image_filenames": [
+        "abel-flock-offering.png",
+        "crops-offering.png",
+        "stone-city.png",
+        "shepherd-field.png"
+      ],
+      "reasons": [
+        {
+          "filename": "abel-flock-offering.png",
+          "reason": "Shows a flock offering beside a simple altar, matching Genesis 4's description of Abel's offering."
+        },
+        {
+          "filename": "crops-offering.png",
+          "reason": "Provides a strong but incorrect offering scene connected to harvested produce rather than a flock."
+        },
+        {
+          "filename": "stone-city.png",
+          "reason": "Adds a visually distinct ancient settlement that does not match the offering prompt."
+        },
+        {
+          "filename": "shepherd-field.png",
+          "reason": "Keeps the shepherding theme nearby while omitting the offering action, making it plausible but still wrong."
+        }
+      ]
+    },
+    {
+      "question_key": "day-002-genesis-004-006-011",
+      "prompt": "Which image best represents Noah building the ark?",
+      "correct_image_filename": "noah-building-ark.png",
+      "image_filenames": [
+        "noah-building-ark.png",
+        "animals-near-ark.png",
+        "rain-floodwaters.png",
+        "mountain-tent.png"
+      ],
+      "reasons": [
+        {
+          "filename": "noah-building-ark.png",
+          "reason": "Directly represents the ark under construction on dry land, which fits Genesis 6."
+        },
+        {
+          "filename": "animals-near-ark.png",
+          "reason": "Connects to the ark story but emphasizes gathered animals rather than the building scene."
+        },
+        {
+          "filename": "rain-floodwaters.png",
+          "reason": "Relates to the broader flood account but not to the specific act of building the ark."
+        },
+        {
+          "filename": "mountain-tent.png",
+          "reason": "Provides a clear outdoor biblical-style scene that is visually distinct from the ark narrative."
+        }
+      ]
+    }
+  ]
+}

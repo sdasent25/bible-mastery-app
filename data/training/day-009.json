@@ -1,0 +1,686 @@
+{
+  "day": 9,
+  "segment_key": "genesis-025-027",
+  "unlock_key": "genesis-25-27",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 25,
+    "chapter_end": 27,
+    "reference": "Genesis 25–27"
+  },
+  "items": [
+    {
+      "key": "day-009-genesis-025-027-001",
+      "format": "multiple_choice",
+      "prompt": "Who prayed to the Lord for Rebekah because she was barren?",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 21,
+      "verse_end": 21,
+      "reference": "Genesis 25:21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Isaac", "Jacob", "Esau", "Abimelech"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Isaac"
+      },
+      "explanation": "Genesis 25 says Isaac prayed to the Lord for Rebekah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "rebekah", "prayer"]
+    },
+    {
+      "key": "day-009-genesis-025-027-002",
+      "format": "multiple_choice",
+      "prompt": "Which twin was born first?",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 25,
+      "verse_end": 26,
+      "reference": "Genesis 25:25-26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Esau", "Jacob", "Isaac", "Laban"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Esau"
+      },
+      "explanation": "Genesis 25 says Esau came out first, and Jacob followed holding his heel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "esau", "jacob", "twins"]
+    },
+    {
+      "key": "day-009-genesis-025-027-003",
+      "format": "multiple_choice",
+      "prompt": "What did Esau sell to Jacob for stew?",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 29,
+      "verse_end": 34,
+      "reference": "Genesis 25:29-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": ["His birthright", "His bow", "His flock", "His tent"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "His birthright"
+      },
+      "explanation": "Genesis 25 says Esau sold his birthright to Jacob for the stew.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "esau", "jacob", "birthright", "stew"]
+    },
+    {
+      "key": "day-009-genesis-025-027-004",
+      "format": "multiple_choice",
+      "prompt": "During the famine, where did Isaac go?",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 26:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Gerar", "Moriah", "Zoar", "Machpelah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Gerar"
+      },
+      "explanation": "Genesis 26 says Isaac went to Gerar during the famine.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "gerar", "famine"]
+    },
+    {
+      "key": "day-009-genesis-025-027-005",
+      "format": "multiple_choice",
+      "prompt": "What was true of Isaac when he called Esau in Genesis 27?",
+      "book": "Genesis",
+      "chapter": 27,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 27:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "His eyes were dim so that he could not see",
+          "He had just returned from Gerar",
+          "He was digging wells with his servants",
+          "He was living in Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "His eyes were dim so that he could not see"
+      },
+      "explanation": "Genesis 27 says Isaac was old and his eyes were dim.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "esau", "genesis-27"]
+    },
+    {
+      "key": "day-009-genesis-025-027-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 25.",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 26,
+      "verse_end": 26,
+      "reference": "Genesis 25:26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Jacob was grasping Esau's ____ at birth.",
+        "blank_count": 1,
+        "options": ["heel", "hand", "robe", "bow"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "heel"
+      },
+      "explanation": "Genesis 25 says Jacob came out with his hand holding Esau's heel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "jacob", "esau", "birth"]
+    },
+    {
+      "key": "day-009-genesis-025-027-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 26.",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 23,
+      "verse_end": 23,
+      "reference": "Genesis 26:23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Isaac went up from there to ____.",
+        "blank_count": 1,
+        "options": ["Beersheba", "Zoar", "Hebron", "Moriah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Beersheba"
+      },
+      "explanation": "Genesis 26 says Isaac went up to Beersheba.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "beersheba", "genesis-26"]
+    },
+    {
+      "key": "day-009-genesis-025-027-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 27.",
+      "book": "Genesis",
+      "chapter": 27,
+      "verse_start": 9,
+      "verse_end": 9,
+      "reference": "Genesis 27:9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Rebekah told Jacob to bring her two young ____ from the flock.",
+        "blank_count": 1,
+        "options": ["goats", "lambs", "camels", "doves"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "goats"
+      },
+      "explanation": "Genesis 27 says Rebekah told Jacob to bring two good young goats.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "rebekah", "jacob", "goats"]
+    },
+    {
+      "key": "day-009-genesis-025-027-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 26.",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 22,
+      "verse_end": 22,
+      "reference": "Genesis 26:22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Isaac called the well ____ because there was room for them.",
+        "blank_count": 1,
+        "options": ["Rehoboth", "Sitnah", "Esek", "Gerar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Rehoboth"
+      },
+      "explanation": "Genesis 26 says Isaac named the well Rehoboth because the Lord had made room for them.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "rehoboth", "well"]
+    },
+    {
+      "key": "day-009-genesis-025-027-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Esau selling his birthright for stew?",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 29,
+      "verse_end": 34,
+      "reference": "Genesis 25:29-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "birthright",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Two brothers in a stew-for-birthright exchange",
+            "image_url": "/training/genesis/birthright-stew-scene.png",
+            "alt": "Two brothers in an ancient camp scene centered on a stew exchange"
+          },
+          {
+            "label": "A bowl of red stew set out in camp",
+            "image_url": "/training/genesis/red-stew-bowl.png",
+            "alt": "Bowl of red stew in an ancient camp setting"
+          },
+          {
+            "label": "A hunter carrying a bow in open country",
+            "image_url": "/training/genesis/hunter-bow-field.png",
+            "alt": "Hunter with a bow in an open field landscape"
+          },
+          {
+            "label": "A quiet family tent camp in the open land",
+            "image_url": "/training/genesis/tents-family-camp.png",
+            "alt": "Ancient family tent camp in open country"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Two brothers in a stew-for-birthright exchange"
+      },
+      "explanation": "Genesis 25 says Esau sold his birthright to Jacob for the stew.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "esau", "jacob", "stew", "image"]
+    },
+    {
+      "key": "day-009-genesis-025-027-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Isaac's servants digging wells?",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 19,
+      "verse_end": 22,
+      "reference": "Genesis 26:19-22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "wells",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Servants digging a well in dry ground",
+            "image_url": "/training/genesis/isaac-well-digging.png",
+            "alt": "Servants digging a well in dry ground"
+          },
+          {
+            "label": "A broad well with open space around it",
+            "image_url": "/training/genesis/rehoboth-well.png",
+            "alt": "Broad well in an open place"
+          },
+          {
+            "label": "Two leaders making a peaceful agreement outdoors",
+            "image_url": "/training/genesis/beersheba-agreement.png",
+            "alt": "Two leaders making a peaceful agreement outdoors"
+          },
+          {
+            "label": "A son bringing prepared food to an older man",
+            "image_url": "/training/genesis/jacob-food-isaac.png",
+            "alt": "A son bringing prepared food to an older man"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Servants digging a well in dry ground"
+      },
+      "explanation": "Genesis 26 says Isaac's servants dug in the valley and found water there.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "wells", "image"]
+    },
+    {
+      "key": "day-009-genesis-025-027-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 25 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 21,
+      "verse_end": 34,
+      "reference": "Genesis 25:21-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Isaac prays for Rebekah",
+          "The twins struggle within Rebekah",
+          "Esau is born first",
+          "Esau sells his birthright"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Isaac prays for Rebekah",
+          "The twins struggle within Rebekah",
+          "Esau is born first",
+          "Esau sells his birthright"
+        ]
+      },
+      "explanation": "Genesis 25 moves from Isaac's prayer to the twins' struggle, their birth, and later the birthright sale.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "rebekah", "esau", "jacob", "ordering"]
+    },
+    {
+      "key": "day-009-genesis-025-027-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 26 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 1,
+      "verse_end": 31,
+      "reference": "Genesis 26:1-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "A famine comes in the land",
+          "Isaac goes to Gerar",
+          "Isaac names a well Rehoboth",
+          "Isaac and Abimelech make an agreement"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "A famine comes in the land",
+          "Isaac goes to Gerar",
+          "Isaac names a well Rehoboth",
+          "Isaac and Abimelech make an agreement"
+        ]
+      },
+      "explanation": "Genesis 26 records the famine, Isaac's move to Gerar, the naming of Rehoboth, and later the agreement with Abimelech.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "gerar", "rehoboth", "ordering"]
+    },
+    {
+      "key": "day-009-genesis-025-027-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 27 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 27,
+      "verse_start": 1,
+      "verse_end": 33,
+      "reference": "Genesis 27:1-33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Isaac asks Esau to hunt and prepare food",
+          "Rebekah hears Isaac's words",
+          "Jacob brings food to Isaac",
+          "Esau returns afterward"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Isaac asks Esau to hunt and prepare food",
+          "Rebekah hears Isaac's words",
+          "Jacob brings food to Isaac",
+          "Esau returns afterward"
+        ]
+      },
+      "explanation": "Genesis 27 moves from Isaac's request, to Rebekah hearing it, to Jacob bringing the food, and then Esau returning.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "rebekah", "esau", "jacob", "ordering"]
+    },
+    {
+      "key": "day-009-genesis-025-027-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 25 person with the correct description.",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 21,
+      "verse_end": 34,
+      "reference": "Genesis 25:21-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Isaac", "Rebekah", "Esau", "Jacob"],
+        "right_items": [
+          "Had twins after being unable to conceive",
+          "Prayed to the Lord for his wife",
+          "Skillful hunter and man of the field",
+          "Grasped his brother's heel at birth"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Isaac", "right": "Prayed to the Lord for his wife" },
+          { "left": "Rebekah", "right": "Had twins after being unable to conceive" },
+          { "left": "Esau", "right": "Skillful hunter and man of the field" },
+          { "left": "Jacob", "right": "Grasped his brother's heel at birth" }
+        ]
+      },
+      "explanation": "Genesis 25 gives these direct details about Isaac, Rebekah, Esau, and Jacob.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "rebekah", "esau", "jacob", "matching"]
+    },
+    {
+      "key": "day-009-genesis-025-027-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 26 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 1,
+      "verse_end": 33,
+      "reference": "Genesis 26:1-33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Gerar", "Abimelech", "Rebekah", "Rehoboth"],
+        "right_items": [
+          "King of the Philistines",
+          "Well named because there was room",
+          "Woman Isaac said was his sister",
+          "Place Isaac went during the famine"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Gerar", "right": "Place Isaac went during the famine" },
+          { "left": "Abimelech", "right": "King of the Philistines" },
+          { "left": "Rebekah", "right": "Woman Isaac said was his sister" },
+          { "left": "Rehoboth", "right": "Well named because there was room" }
+        ]
+      },
+      "explanation": "Genesis 26 connects these names and places to Isaac's time in Gerar and the wells.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "gerar", "abimelech", "matching"]
+    },
+    {
+      "key": "day-009-genesis-025-027-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 27 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 27,
+      "verse_start": 3,
+      "verse_end": 29,
+      "reference": "Genesis 27:3-29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Bow and quiver", "Two young goats", "Esau's garments", "Jacob"],
+        "right_items": [
+          "Taken by Esau to hunt game",
+          "Prepared by Rebekah for Isaac's food",
+          "Worn by Jacob before going to Isaac",
+          "Brought food and received the blessing"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Bow and quiver", "right": "Taken by Esau to hunt game" },
+          { "left": "Two young goats", "right": "Prepared by Rebekah for Isaac's food" },
+          { "left": "Esau's garments", "right": "Worn by Jacob before going to Isaac" },
+          { "left": "Jacob", "right": "Brought food and received the blessing" }
+        ]
+      },
+      "explanation": "Genesis 27 ties these objects and actions to Isaac, Esau, Rebekah, and Jacob.",
+      "teaching_note": "This question stays with direct actions and objects from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "jacob", "esau", "isaac", "matching"]
+    },
+    {
+      "key": "day-009-genesis-025-027-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 25.",
+      "book": "Genesis",
+      "chapter": 25,
+      "verse_start": 33,
+      "verse_end": 34,
+      "reference": "Genesis 25:33-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 25 says Esau sold his birthright to Jacob."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 25 says Esau sold his birthright to Jacob.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "esau", "jacob", "true-false"]
+    },
+    {
+      "key": "day-009-genesis-025-027-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 26.",
+      "book": "Genesis",
+      "chapter": 26,
+      "verse_start": 28,
+      "verse_end": 31,
+      "reference": "Genesis 26:28-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 26 says Isaac and Abimelech made an oath together."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 26 says Isaac and Abimelech made an oath and departed in peace.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "isaac", "abimelech", "true-false"]
+    },
+    {
+      "key": "day-009-genesis-025-027-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 27 statement.",
+      "book": "Genesis",
+      "chapter": 27,
+      "verse_start": 30,
+      "verse_end": 33,
+      "reference": "Genesis 27:30-33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After Jacob received the blessing, Esau arrived before Jacob had left Isaac.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Esau arrived shortly after Jacob left Isaac.",
+          "Esau arrived before Isaac called for him.",
+          "Jacob never received a blessing from Isaac.",
+          "Rebekah was the one who returned from the hunt."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Esau arrived shortly after Jacob left Isaac."
+      },
+      "explanation": "Genesis 27 says Esau returned shortly after Jacob left Isaac.",
+      "teaching_note": "This keeps the focus on the direct sequence in the blessing scene.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-25-27",
+      "tags": ["genesis", "jacob", "esau", "isaac", "spot-error"]
+    }
+  ]
+}

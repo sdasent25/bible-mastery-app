@@ -1,0 +1,40 @@
+{
+  "day": 9,
+  "segment_key": "genesis-025-027",
+  "images": [
+    {
+      "question_key": "day-009-genesis-025-027-010",
+      "prompt": "Which image best represents Esau selling his birthright for stew?",
+      "correct_image_filename": "birthright-stew-scene.png",
+      "all_image_filenames": [
+        "birthright-stew-scene.png",
+        "red-stew-bowl.png",
+        "hunter-bow-field.png",
+        "tents-family-camp.png"
+      ],
+      "reasons": {
+        "birthright-stew-scene.png": "Shows the actual exchange scene between two brothers around the stew.",
+        "red-stew-bowl.png": "Represents the stew itself but not the birthright exchange.",
+        "hunter-bow-field.png": "Represents Esau's hunting identity rather than the stew bargain.",
+        "tents-family-camp.png": "Represents the family setting but not the specific event."
+      }
+    },
+    {
+      "question_key": "day-009-genesis-025-027-011",
+      "prompt": "Which image best represents Isaac's servants digging wells?",
+      "correct_image_filename": "isaac-well-digging.png",
+      "all_image_filenames": [
+        "isaac-well-digging.png",
+        "rehoboth-well.png",
+        "beersheba-agreement.png",
+        "jacob-food-isaac.png"
+      ],
+      "reasons": {
+        "isaac-well-digging.png": "Directly depicts servants digging a well in dry ground.",
+        "rehoboth-well.png": "Shows a finished well and open space rather than the digging action.",
+        "beersheba-agreement.png": "Represents Isaac's later agreement scene, not the wells.",
+        "jacob-food-isaac.png": "Represents the Genesis 27 blessing scene, not Genesis 26 well digging."
+      }
+    }
+  ]
+}

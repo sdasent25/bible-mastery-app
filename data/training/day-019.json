@@ -1,0 +1,691 @@
+{
+  "day": 19,
+  "segment_key": "exodus-007-009",
+  "unlock_key": "exodus-7-9",
+  "reading": {
+    "book": "Exodus",
+    "chapter_start": 7,
+    "chapter_end": 9,
+    "reference": "Exodus 7–9"
+  },
+  "items": [
+    {
+      "key": "day-019-exodus-007-009-001",
+      "format": "multiple_choice",
+      "prompt": "Who cast down his staff before Pharaoh?",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 10,
+      "verse_end": 10,
+      "reference": "Exodus 7:10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Aaron", "Moses", "Joshua", "Hur"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Aaron"
+      },
+      "explanation": "Exodus 7 says Aaron cast down his staff before Pharaoh.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "aaron", "staff", "pharaoh"]
+    },
+    {
+      "key": "day-019-exodus-007-009-002",
+      "format": "multiple_choice",
+      "prompt": "What did Pharaoh's magicians do after Aaron's staff became a serpent?",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 11,
+      "verse_end": 12,
+      "reference": "Exodus 7:11-12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "They did a similar thing with their staffs",
+          "They left the court immediately",
+          "They asked Moses to teach them",
+          "They pleaded for the Nile to be healed"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "They did a similar thing with their staffs"
+      },
+      "explanation": "Exodus 7 says the magicians also cast down their staffs.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "magicians", "staffs", "pharaoh"]
+    },
+    {
+      "key": "day-019-exodus-007-009-003",
+      "format": "multiple_choice",
+      "prompt": "What happened to the magicians' staffs in Exodus 7?",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 12,
+      "verse_end": 12,
+      "reference": "Exodus 7:12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Aaron's staff swallowed them up",
+          "They turned into frogs",
+          "They were thrown into the Nile",
+          "They were carried into Goshen"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Aaron's staff swallowed them up"
+      },
+      "explanation": "Exodus 7 says Aaron's staff swallowed the others.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "aaron", "staff", "serpent"]
+    },
+    {
+      "key": "day-019-exodus-007-009-004",
+      "format": "multiple_choice",
+      "prompt": "What came up and covered the land of Egypt in Exodus 8?",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Exodus 8:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Frogs", "Hail", "Flies", "Locusts"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Frogs"
+      },
+      "explanation": "Exodus 8 says frogs came up and covered the land of Egypt.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "frogs", "egypt", "plague"]
+    },
+    {
+      "key": "day-019-exodus-007-009-005",
+      "format": "multiple_choice",
+      "prompt": "What land was not struck by the hail in Exodus 9?",
+      "book": "Exodus",
+      "chapter": 9,
+      "verse_start": 26,
+      "verse_end": 26,
+      "reference": "Exodus 9:26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Goshen", "Midian", "Canaan", "Rameses"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Goshen"
+      },
+      "explanation": "Exodus 9 says hail did not fall in the land of Goshen.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "goshen", "hail", "egypt"]
+    },
+    {
+      "key": "day-019-exodus-007-009-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 7.",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 20,
+      "verse_end": 20,
+      "reference": "Exodus 7:20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "The water in the Nile turned to ____.",
+        "blank_count": 1,
+        "options": ["blood", "oil", "mud", "wine"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "blood"
+      },
+      "explanation": "Exodus 7 says the water in the Nile turned to blood.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "nile", "blood", "water"]
+    },
+    {
+      "key": "day-019-exodus-007-009-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 8.",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 8,
+      "verse_end": 8,
+      "reference": "Exodus 8:8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Pharaoh asked Moses to plead with the ____ to take away the frogs.",
+        "blank_count": 1,
+        "options": ["LORD", "magicians", "elders", "people"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "LORD"
+      },
+      "explanation": "Exodus 8 says Pharaoh asked Moses to plead with the LORD about the frogs.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "pharaoh", "frogs", "lord"]
+    },
+    {
+      "key": "day-019-exodus-007-009-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 8.",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Exodus 8:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "When Aaron struck the dust, it became ____ throughout Egypt.",
+        "blank_count": 1,
+        "options": ["gnats/lice", "frogs", "hail", "flies"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "gnats/lice"
+      },
+      "explanation": "Exodus 8 says the dust became gnats or lice throughout the land.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "dust", "gnats", "lice"]
+    },
+    {
+      "key": "day-019-exodus-007-009-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 9.",
+      "book": "Exodus",
+      "chapter": 9,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Exodus 9:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "Pharaoh checked and found that not one of Israel's ____ had died.",
+        "blank_count": 1,
+        "options": ["livestock", "houses", "fields", "servants"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "livestock"
+      },
+      "explanation": "Exodus 9 says Pharaoh found that not one of Israel's livestock had died.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "livestock", "israel", "pharaoh"]
+    },
+    {
+      "key": "day-019-exodus-007-009-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents the Nile water turning red in Exodus 7?",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 20,
+      "verse_end": 21,
+      "reference": "Exodus 7:20-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "The Nile River turning red along an ancient Egyptian riverbank",
+            "image_url": "/training/exodus/nile-water-red.png",
+            "alt": "The Nile River turning red along an ancient Egyptian riverbank with reeds nearby"
+          },
+          {
+            "label": "A staff transformed into a serpent on the floor before Pharaoh",
+            "image_url": "/training/exodus/aaron-staff-serpent-pharaoh.png",
+            "alt": "A staff transformed into a serpent on the floor before Pharaoh in an Egyptian court"
+          },
+          {
+            "label": "Many frogs across an ancient Egyptian courtyard and riverbank",
+            "image_url": "/training/exodus/frogs-over-egypt.png",
+            "alt": "Many frogs across an ancient Egyptian courtyard and riverbank"
+          },
+          {
+            "label": "Hail falling over Egyptian fields under a stormy sky",
+            "image_url": "/training/exodus/hail-over-egypt-fields.png",
+            "alt": "Hail falling over Egyptian fields under a stormy sky"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The Nile River turning red along an ancient Egyptian riverbank"
+      },
+      "explanation": "Exodus 7 describes the Nile water turning to blood.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "nile", "red-water", "image"]
+    },
+    {
+      "key": "day-019-exodus-007-009-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents the land of Goshen being set apart and protected?",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 22,
+      "verse_end": 23,
+      "reference": "Exodus 8:22-23; 9:26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Dust rising from the ground with gnats or lice suggested as a haze",
+            "image_url": "/training/exodus/gnats-dust-egypt.png",
+            "alt": "Dust rising from the ground in ancient Egypt with gnats or lice suggested as a haze"
+          },
+          {
+            "label": "Swarms of flies over an ancient Egyptian setting",
+            "image_url": "/training/exodus/flies-over-egypt.png",
+            "alt": "Swarms of flies over an ancient Egyptian setting"
+          },
+          {
+            "label": "A calm ancient Egyptian livestock field with herds grazing",
+            "image_url": "/training/exodus/livestock-field-egypt.png",
+            "alt": "A calm ancient Egyptian livestock field with herds grazing"
+          },
+          {
+            "label": "A peaceful protected land scene representing Goshen with calm light",
+            "image_url": "/training/exodus/goshen-protected-land.png",
+            "alt": "A peaceful protected land scene representing Goshen with tents, livestock, and calm light"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A peaceful protected land scene representing Goshen with calm light"
+      },
+      "explanation": "Exodus 8 and 9 describe Goshen as set apart from the plagues.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "goshen", "protection", "image"]
+    },
+    {
+      "key": "day-019-exodus-007-009-012",
+      "format": "ordering",
+      "prompt": "Put these Exodus 7 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 10,
+      "verse_end": 25,
+      "reference": "Exodus 7:10-25",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Aaron's staff swallows the other staffs",
+          "Aaron casts down his staff before Pharaoh",
+          "The waters of Egypt turn to blood",
+          "Pharaoh's magicians also cast down their staffs"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Aaron casts down his staff before Pharaoh",
+          "Pharaoh's magicians also cast down their staffs",
+          "Aaron's staff swallows the other staffs",
+          "The waters of Egypt turn to blood"
+        ]
+      },
+      "explanation": "Exodus 7 moves from the staff sign in Pharaoh's court to the Nile turning to blood.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "staff", "nile", "ordering"]
+    },
+    {
+      "key": "day-019-exodus-007-009-013",
+      "format": "ordering",
+      "prompt": "Put these Exodus 8 plague events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 1,
+      "verse_end": 32,
+      "reference": "Exodus 8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Flies come on Egypt",
+          "Pharaoh asks Moses to plead about the frogs",
+          "Dust becomes gnats/lice",
+          "Frogs come up over Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Frogs come up over Egypt",
+          "Pharaoh asks Moses to plead about the frogs",
+          "Dust becomes gnats/lice",
+          "Flies come on Egypt"
+        ]
+      },
+      "explanation": "Exodus 8 records frogs first, then the plea about frogs, then gnats or lice, and then flies.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "frogs", "flies", "ordering"]
+    },
+    {
+      "key": "day-019-exodus-007-009-014",
+      "format": "ordering",
+      "prompt": "Put these Exodus 9 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 9,
+      "verse_start": 1,
+      "verse_end": 35,
+      "reference": "Exodus 9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Moses warns about hail",
+          "Boils come on people and animals",
+          "A plague falls on the livestock of Egypt",
+          "Pharaoh speaks after the hail"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "A plague falls on the livestock of Egypt",
+          "Boils come on people and animals",
+          "Moses warns about hail",
+          "Pharaoh speaks after the hail"
+        ]
+      },
+      "explanation": "Exodus 9 moves from livestock to boils, then the hail warning, and then Pharaoh's response after hail.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "livestock", "boils", "hail", "ordering"]
+    },
+    {
+      "key": "day-019-exodus-007-009-015",
+      "format": "matching",
+      "prompt": "Match each Exodus 7 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 10,
+      "verse_end": 24,
+      "reference": "Exodus 7:10-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Aaron's staff", "Nile", "Fish", "Magicians"],
+        "right_items": [
+          "River struck so its water turned to blood",
+          "Also did something similar with their staffs",
+          "Object that swallowed the other staffs",
+          "Died when the river was struck"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Aaron's staff", "right": "Object that swallowed the other staffs" },
+          { "left": "Nile", "right": "River struck so its water turned to blood" },
+          { "left": "Fish", "right": "Died when the river was struck" },
+          { "left": "Magicians", "right": "Also did something similar with their staffs" }
+        ]
+      },
+      "explanation": "Exodus 7 connects Aaron's staff, the Nile, the fish, and the magicians with these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "nile", "fish", "magicians", "matching"]
+    },
+    {
+      "key": "day-019-exodus-007-009-016",
+      "format": "matching",
+      "prompt": "Match each Exodus 8 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 6,
+      "verse_end": 24,
+      "reference": "Exodus 8:6-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Frogs", "Dust", "Flies", "Goshen"],
+        "right_items": [
+          "Place set apart from the swarm",
+          "Became gnats or lice",
+          "Covered the land of Egypt",
+          "Filled the houses and land later in the chapter"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Frogs", "right": "Covered the land of Egypt" },
+          { "left": "Dust", "right": "Became gnats or lice" },
+          { "left": "Flies", "right": "Filled the houses and land later in the chapter" },
+          { "left": "Goshen", "right": "Place set apart from the swarm" }
+        ]
+      },
+      "explanation": "Exodus 8 ties frogs, dust, flies, and Goshen to these facts.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "frogs", "flies", "goshen", "matching"]
+    },
+    {
+      "key": "day-019-exodus-007-009-017",
+      "format": "matching",
+      "prompt": "Match each Exodus 9 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 9,
+      "verse_start": 3,
+      "verse_end": 35,
+      "reference": "Exodus 9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Livestock", "Boils", "Hail", "Pharaoh"],
+        "right_items": [
+          "Ruler who checked on Israel's livestock",
+          "Plague that fell under a stormy sky",
+          "Plague that came from ashes thrown upward",
+          "Animals mentioned in the field plague"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Livestock", "right": "Animals mentioned in the field plague" },
+          { "left": "Boils", "right": "Plague that came from ashes thrown upward" },
+          { "left": "Hail", "right": "Plague that fell under a stormy sky" },
+          { "left": "Pharaoh", "right": "Ruler who checked on Israel's livestock" }
+        ]
+      },
+      "explanation": "Exodus 9 links livestock, boils, hail, and Pharaoh's inquiry with these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "livestock", "boils", "hail", "matching"]
+    },
+    {
+      "key": "day-019-exodus-007-009-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 7.",
+      "book": "Exodus",
+      "chapter": 7,
+      "verse_start": 22,
+      "verse_end": 22,
+      "reference": "Exodus 7:22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Exodus 7 says the magicians of Egypt did the same by their secret arts."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Exodus 7 says the magicians did the same by their secret arts.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "magicians", "true-false", "egypt"]
+    },
+    {
+      "key": "day-019-exodus-007-009-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 9.",
+      "book": "Exodus",
+      "chapter": 9,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Exodus 9:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Exodus 9 says Pharaoh checked and found that not one of Israel's livestock had died."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Exodus 9 says Pharaoh checked and found Israel's livestock unharmed.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "pharaoh", "livestock", "true-false"]
+    },
+    {
+      "key": "day-019-exodus-007-009-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Exodus 8 statement.",
+      "book": "Exodus",
+      "chapter": 8,
+      "verse_start": 22,
+      "verse_end": 24,
+      "reference": "Exodus 8:22-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "During the plague of flies, the land of Goshen was struck just like the rest of Egypt.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "During the plague of flies, Goshen was set apart and not struck like the rest of Egypt.",
+          "During the plague of flies, Moses stayed in Goshen and never spoke to Pharaoh.",
+          "During the plague of flies, the Nile alone was struck and no houses were affected.",
+          "During the plague of flies, Aaron gathered hail in the fields of Goshen."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "During the plague of flies, Goshen was set apart and not struck like the rest of Egypt."
+      },
+      "explanation": "Exodus 8 says Goshen was set apart when the flies came on Egypt.",
+      "teaching_note": "This keeps the focus on the distinction stated in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-7-9",
+      "tags": ["exodus", "flies", "goshen", "spot-error"]
+    }
+  ]
+}

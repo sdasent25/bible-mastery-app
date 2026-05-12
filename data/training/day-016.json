@@ -1,0 +1,659 @@
+{
+  "day": 16,
+  "segment_key": "genesis-047-050",
+  "unlock_key": "genesis-47-50",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 47,
+    "chapter_end": 50,
+    "reference": "Genesis 47–50"
+  },
+  "items": [
+    {
+      "key": "day-016-genesis-047-050-001",
+      "format": "multiple_choice",
+      "prompt": "What occupation did Joseph's brothers tell Pharaoh they had?",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 47:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Shepherds", "Farmers", "Builders", "Merchants"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shepherds"
+      },
+      "explanation": "Genesis 47 says Joseph's brothers told Pharaoh they were shepherds.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "pharaoh", "brothers", "occupation"]
+    },
+    {
+      "key": "day-016-genesis-047-050-002",
+      "format": "multiple_choice",
+      "prompt": "In what part of Egypt did Joseph settle his father and brothers?",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 11,
+      "verse_end": 11,
+      "reference": "Genesis 47:11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["The land of Rameses", "The hill country of Seir", "The Valley of Hebron", "The plains of Moab"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The land of Rameses"
+      },
+      "explanation": "Genesis 47 says Joseph settled them in the land of Rameses.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "rameses", "egypt"]
+    },
+    {
+      "key": "day-016-genesis-047-050-003",
+      "format": "multiple_choice",
+      "prompt": "Which two sons did Joseph bring to Jacob in Genesis 48?",
+      "book": "Genesis",
+      "chapter": 48,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 48:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Manasseh and Ephraim", "Judah and Benjamin", "Ephraim and Reuben", "Manasseh and Simeon"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Manasseh and Ephraim"
+      },
+      "explanation": "Genesis 48 says Joseph brought Manasseh and Ephraim to Jacob.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "manasseh", "ephraim"]
+    },
+    {
+      "key": "day-016-genesis-047-050-004",
+      "format": "multiple_choice",
+      "prompt": "Which grandson did Jacob place before Manasseh in Genesis 48?",
+      "book": "Genesis",
+      "chapter": 48,
+      "verse_start": 13,
+      "verse_end": 20,
+      "reference": "Genesis 48:13-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Ephraim", "Benjamin", "Judah", "Dan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Ephraim"
+      },
+      "explanation": "Genesis 48 says Jacob set Ephraim before Manasseh in the blessing.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "ephraim", "manasseh", "blessing"]
+    },
+    {
+      "key": "day-016-genesis-047-050-005",
+      "format": "multiple_choice",
+      "prompt": "Which son is compared with a lion in Genesis 49?",
+      "book": "Genesis",
+      "chapter": 49,
+      "verse_start": 9,
+      "verse_end": 9,
+      "reference": "Genesis 49:9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Judah", "Benjamin", "Joseph", "Levi"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Judah"
+      },
+      "explanation": "Genesis 49 compares Judah with a lion.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "judah", "lion", "sons"]
+    },
+    {
+      "key": "day-016-genesis-047-050-006",
+      "format": "multiple_choice",
+      "prompt": "How old was Joseph when he died?",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 26,
+      "verse_end": 26,
+      "reference": "Genesis 50:26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": ["110 years", "120 years", "130 years", "147 years"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "110 years"
+      },
+      "explanation": "Genesis 50 says Joseph lived to 110 years.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "death", "age"]
+    },
+    {
+      "key": "day-016-genesis-047-050-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 47.",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 9,
+      "verse_end": 9,
+      "reference": "Genesis 47:9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Jacob told Pharaoh that the years of his life were ____.",
+        "blank_count": 1,
+        "options": ["130", "110", "70", "147"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "130"
+      },
+      "explanation": "Genesis 47 says Jacob told Pharaoh he was 130 years old.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "pharaoh", "age"]
+    },
+    {
+      "key": "day-016-genesis-047-050-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 47.",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 13,
+      "verse_end": 13,
+      "reference": "Genesis 47:13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Genesis 47 says the famine was very ____.",
+        "blank_count": 1,
+        "options": ["severe", "brief", "late", "distant"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "severe"
+      },
+      "explanation": "Genesis 47 says the famine was very severe.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "famine", "egypt", "canaan"]
+    },
+    {
+      "key": "day-016-genesis-047-050-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 50.",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 25,
+      "verse_end": 25,
+      "reference": "Genesis 50:25",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Joseph asked that his ____ be carried up from Egypt later.",
+        "blank_count": 1,
+        "options": ["bones", "staff", "garments", "chariot"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "bones"
+      },
+      "explanation": "Genesis 50 says Joseph asked that his bones be carried up from Egypt.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "bones", "egypt"]
+    },
+    {
+      "key": "day-016-genesis-047-050-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 50.",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 13,
+      "verse_end": 13,
+      "reference": "Genesis 50:13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Jacob was buried in the cave of the field of ____.",
+        "blank_count": 1,
+        "options": ["Machpelah", "Goshen", "Rameses", "Beersheba"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Machpelah"
+      },
+      "explanation": "Genesis 50 says Jacob was buried in the cave of the field of Machpelah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "machpelah", "burial"]
+    },
+    {
+      "key": "day-016-genesis-047-050-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Jacob blessing Ephraim and Manasseh?",
+      "book": "Genesis",
+      "chapter": 48,
+      "verse_start": 13,
+      "verse_end": 20,
+      "reference": "Genesis 48:13-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "An elderly patriarch blessing two young boys with crossed hands suggested",
+            "image_url": "/training/genesis/jacob-blesses-ephraim-manasseh.png",
+            "alt": "An elderly patriarch blessing two young boys with crossed hands subtly suggested in an ancient family setting"
+          },
+          {
+            "label": "A large family settlement with tents and livestock in fertile Goshen",
+            "image_url": "/training/genesis/goshen-family-settlement.png",
+            "alt": "A large ancient family settlement with tents and livestock in fertile Goshen"
+          },
+          {
+            "label": "A solemn burial caravan traveling from Egypt toward Canaan",
+            "image_url": "/training/genesis/burial-journey-canaan.png",
+            "alt": "A solemn ancient burial procession traveling from Egypt toward Canaan through a desert landscape"
+          },
+          {
+            "label": "An aged man in Egypt speaking to family with a burial chest nearby",
+            "image_url": "/training/genesis/joseph-bones-request.png",
+            "alt": "An aged man in Egypt speaking to family with a small burial chest or memorial object nearby"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "An elderly patriarch blessing two young boys with crossed hands suggested"
+      },
+      "explanation": "Genesis 48 describes Jacob blessing Ephraim and Manasseh with crossed hands.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "ephraim", "manasseh", "image"]
+    },
+    {
+      "key": "day-016-genesis-047-050-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 47-48 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 1,
+      "verse_end": 31,
+      "reference": "Genesis 47:1-31; 48:1-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob blesses Pharaoh",
+          "Joseph brings Manasseh and Ephraim to Jacob",
+          "Pharaoh asks the brothers about their occupation",
+          "Jacob crosses his hands in blessing"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Pharaoh asks the brothers about their occupation",
+          "Jacob blesses Pharaoh",
+          "Joseph brings Manasseh and Ephraim to Jacob",
+          "Jacob crosses his hands in blessing"
+        ]
+      },
+      "explanation": "Genesis 47-48 moves from Pharaoh meeting the family to Jacob's blessing of Joseph's sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "pharaoh", "jacob", "blessing", "ordering"]
+    },
+    {
+      "key": "day-016-genesis-047-050-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 49-50 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 49,
+      "verse_start": 1,
+      "verse_end": 33,
+      "reference": "Genesis 49:1-33; 50:1-13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob dies",
+          "Jacob gathers his sons",
+          "Joseph and his brothers go to Canaan to bury Jacob",
+          "Jacob instructs his sons about his burial"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob gathers his sons",
+          "Jacob instructs his sons about his burial",
+          "Jacob dies",
+          "Joseph and his brothers go to Canaan to bury Jacob"
+        ]
+      },
+      "explanation": "Genesis 49-50 moves from Jacob gathering his sons to his burial in Canaan.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "burial", "canaan", "ordering"]
+    },
+    {
+      "key": "day-016-genesis-047-050-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 50 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 14,
+      "verse_end": 26,
+      "reference": "Genesis 50:14-26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph dies in Egypt",
+          "Joseph reassures his brothers",
+          "The brothers become concerned after Jacob's death",
+          "Joseph asks that his bones be carried up later"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The brothers become concerned after Jacob's death",
+          "Joseph reassures his brothers",
+          "Joseph asks that his bones be carried up later",
+          "Joseph dies in Egypt"
+        ]
+      },
+      "explanation": "Genesis 50 moves from the brothers' concern to Joseph's reassurance, his request, and his death.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "brothers", "bones", "ordering"]
+    },
+    {
+      "key": "day-016-genesis-047-050-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 47 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 1,
+      "verse_end": 31,
+      "reference": "Genesis 47",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Pharaoh", "Jacob", "Goshen", "Famine"],
+        "right_items": [
+          "Place where Israel's family settled",
+          "Ruler who asked about the brothers' occupation",
+          "Condition described as very severe",
+          "Man who blessed Pharaoh"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Pharaoh", "right": "Ruler who asked about the brothers' occupation" },
+          { "left": "Jacob", "right": "Man who blessed Pharaoh" },
+          { "left": "Goshen", "right": "Place where Israel's family settled" },
+          { "left": "Famine", "right": "Condition described as very severe" }
+        ]
+      },
+      "explanation": "Genesis 47 connects Pharaoh, Jacob, Goshen, and the famine to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "pharaoh", "jacob", "goshen", "matching"]
+    },
+    {
+      "key": "day-016-genesis-047-050-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 48-49 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 48,
+      "verse_start": 13,
+      "verse_end": 20,
+      "reference": "Genesis 48:13-20; 49:9,27",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Ephraim", "Manasseh", "Judah", "Benjamin"],
+        "right_items": [
+          "Grandson placed before his older brother",
+          "Son compared with a lion",
+          "Son mentioned after Joseph in Genesis 49",
+          "Older grandson brought by Joseph"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Ephraim", "right": "Grandson placed before his older brother" },
+          { "left": "Manasseh", "right": "Older grandson brought by Joseph" },
+          { "left": "Judah", "right": "Son compared with a lion" },
+          { "left": "Benjamin", "right": "Son mentioned after Joseph in Genesis 49" }
+        ]
+      },
+      "explanation": "Genesis 48-49 connects these names with Jacob's blessing scenes and later words to his sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "ephraim", "manasseh", "judah", "matching"]
+    },
+    {
+      "key": "day-016-genesis-047-050-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 50 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 12,
+      "verse_end": 26,
+      "reference": "Genesis 50:12-26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Machpelah", "Canaan", "Joseph's brothers", "Joseph's bones"],
+        "right_items": [
+          "Destination of the burial journey",
+          "Place where Jacob was buried",
+          "What Joseph said should be carried up later",
+          "Group that became concerned after Jacob died"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Machpelah", "right": "Place where Jacob was buried" },
+          { "left": "Canaan", "right": "Destination of the burial journey" },
+          { "left": "Joseph's brothers", "right": "Group that became concerned after Jacob died" },
+          { "left": "Joseph's bones", "right": "What Joseph said should be carried up later" }
+        ]
+      },
+      "explanation": "Genesis 50 connects Jacob's burial, the brothers' concern, and Joseph's request to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "machpelah", "canaan", "bones", "matching"]
+    },
+    {
+      "key": "day-016-genesis-047-050-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 48.",
+      "book": "Genesis",
+      "chapter": 48,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 48:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 48 says Jacob crossed his hands when blessing Ephraim and Manasseh."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 48 says Jacob crossed his hands when blessing them.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "ephraim", "manasseh", "true-false"]
+    },
+    {
+      "key": "day-016-genesis-047-050-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 47.",
+      "book": "Genesis",
+      "chapter": 47,
+      "verse_start": 16,
+      "verse_end": 17,
+      "reference": "Genesis 47:16-17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 47 says Joseph accepted livestock in exchange for food."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 47 says Joseph gave food in exchange for livestock.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "joseph", "livestock", "famine", "true-false"]
+    },
+    {
+      "key": "day-016-genesis-047-050-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 50 statement.",
+      "book": "Genesis",
+      "chapter": 50,
+      "verse_start": 12,
+      "verse_end": 14,
+      "reference": "Genesis 50:12-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Jacob told his sons to bury him in Egypt, and Joseph left him there.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Jacob told his sons to bury him with his fathers, and Joseph went to Canaan to bury him.",
+          "Jacob told his sons to stay in Goshen, and Pharaoh buried him there.",
+          "Jacob told only Benjamin about burial, and the brothers stayed in Rameses.",
+          "Jacob asked to be buried by the Nile, and Joseph sent no one with him."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jacob told his sons to bury him with his fathers, and Joseph went to Canaan to bury him."
+      },
+      "explanation": "Genesis 50 says Jacob was buried in Canaan with his fathers, not left in Egypt.",
+      "teaching_note": "This keeps the focus on direct burial details from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-47-50",
+      "tags": ["genesis", "jacob", "burial", "canaan", "spot-error"]
+    }
+  ]
+}

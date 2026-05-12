@@ -1,0 +1,681 @@
+{
+  "day": 6,
+  "segment_key": "genesis-016-018",
+  "unlock_key": "genesis-16-18",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 16,
+    "chapter_end": 18,
+    "reference": "Genesis 16–18"
+  },
+  "items": [
+    {
+      "key": "day-006-genesis-016-018-001",
+      "format": "multiple_choice",
+      "prompt": "Whom did Sarai give to Abram in Genesis 16?",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 16:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Hagar the Egyptian", "Sarah", "Rebekah", "Keturah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Hagar the Egyptian"
+      },
+      "explanation": "Genesis 16 says Sarai gave Hagar her Egyptian servant to Abram.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "sarai", "hagar", "abram"]
+    },
+    {
+      "key": "day-006-genesis-016-018-002",
+      "format": "multiple_choice",
+      "prompt": "What name was Hagar told to give her son?",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 11,
+      "verse_end": 11,
+      "reference": "Genesis 16:11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Ishmael", "Isaac", "Esau", "Jacob"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Ishmael"
+      },
+      "explanation": "Genesis 16 says Hagar's son was to be called Ishmael.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "hagar", "ishmael", "genesis-16"]
+    },
+    {
+      "key": "day-006-genesis-016-018-003",
+      "format": "multiple_choice",
+      "prompt": "What new name did God give Abram in Genesis 17?",
+      "book": "Genesis",
+      "chapter": 17,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Genesis 17:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Abraham", "Isaac", "Israel", "Nahor"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abraham"
+      },
+      "explanation": "Genesis 17 says Abram's name was changed to Abraham.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abram", "abraham", "name"]
+    },
+    {
+      "key": "day-006-genesis-016-018-004",
+      "format": "multiple_choice",
+      "prompt": "What sign was commanded for every male in Genesis 17?",
+      "book": "Genesis",
+      "chapter": 17,
+      "verse_start": 10,
+      "verse_end": 11,
+      "reference": "Genesis 17:10-11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "command",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Circumcision", "Burnt offering", "Sabbath rest", "Anointing with oil"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Circumcision"
+      },
+      "explanation": "Genesis 17 says circumcision was the sign commanded for the covenant.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "circumcision", "command", "genesis-17"]
+    },
+    {
+      "key": "day-006-genesis-016-018-005",
+      "format": "multiple_choice",
+      "prompt": "What did Abraham ask Sarah to make for the visitors?",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 18:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "hospitality",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Cakes from fine flour", "Fish by the river", "Oil and olives", "A basket of figs"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Cakes from fine flour"
+      },
+      "explanation": "Genesis 18 says Abraham told Sarah to make cakes from fine flour for the visitors.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abraham", "sarah", "visitors", "hospitality"]
+    },
+    {
+      "key": "day-006-genesis-016-018-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 16.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 16:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "text": "Hagar fled from ____.",
+        "blank_count": 1,
+        "options": ["Sarai", "Pharaoh", "Abraham", "Lot"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Sarai"
+      },
+      "explanation": "Genesis 16 says Hagar fled from Sarai.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "hagar", "sarai", "genesis-16"]
+    },
+    {
+      "key": "day-006-genesis-016-018-007",
+      "format": "fill_blank",
+      "prompt": "Complete the place name from Genesis 16.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 16:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "The well connected to Hagar was called ____.",
+        "blank_count": 1,
+        "options": ["Beer-lahai-roi", "Mamre", "Salem", "Haran"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Beer-lahai-roi"
+      },
+      "explanation": "Genesis 16 names the well Beer-lahai-roi.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "beer-lahai-roi", "hagar", "well"]
+    },
+    {
+      "key": "day-006-genesis-016-018-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 17.",
+      "book": "Genesis",
+      "chapter": 17,
+      "verse_start": 15,
+      "verse_end": 15,
+      "reference": "Genesis 17:15",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "God said Sarai's name would be ____.",
+        "blank_count": 1,
+        "options": ["Sarah", "Rebekah", "Miriam", "Hagar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Sarah"
+      },
+      "explanation": "Genesis 17 says Sarai's name was changed to Sarah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "sarai", "sarah", "name"]
+    },
+    {
+      "key": "day-006-genesis-016-018-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 16.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 16,
+      "verse_end": 16,
+      "reference": "Genesis 16:16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "Abram was ____ years old when Hagar bore Ishmael to him.",
+        "blank_count": 1,
+        "options": ["eighty-six", "ninety-nine", "one hundred", "seventy-five"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "eighty-six"
+      },
+      "explanation": "Genesis 16 says Abram was eighty-six years old when Ishmael was born.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abram", "ishmael", "age"]
+    },
+    {
+      "key": "day-006-genesis-016-018-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Hagar by the spring in the wilderness?",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Genesis 16:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "wilderness",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A woman beside a spring in a desert wilderness",
+            "image_url": "/training/genesis/hagar-spring-wilderness.png",
+            "alt": "Woman beside a spring in a dry wilderness setting"
+          },
+          {
+            "label": "A small spring in the desert with no people",
+            "image_url": "/training/genesis/desert-water-spring.png",
+            "alt": "Natural desert spring among rocks with no people"
+          },
+          {
+            "label": "A cluster of tents in a wilderness camp",
+            "image_url": "/training/genesis/tent-camp-wilderness.png",
+            "alt": "Ancient tents in a dry wilderness camp"
+          },
+          {
+            "label": "A desert road leading toward a distant land",
+            "image_url": "/training/genesis/road-to-egypt.png",
+            "alt": "Dusty road through desert country toward the horizon"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A woman beside a spring in a desert wilderness"
+      },
+      "explanation": "Genesis 16 says Hagar was found by a spring of water in the wilderness.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "hagar", "spring", "image"]
+    },
+    {
+      "key": "day-006-genesis-016-018-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abraham receiving visitors near Mamre?",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 1,
+      "verse_end": 2,
+      "reference": "Genesis 18:1-2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "hospitality",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Three visitors near a tent under large oaks",
+            "image_url": "/training/genesis/abraham-visitors-mamre.png",
+            "alt": "Three visitors near a tent beneath large oak trees"
+          },
+          {
+            "label": "A meal scene prepared beside a tent for guests",
+            "image_url": "/training/genesis/tent-meal-visitors.png",
+            "alt": "Hospitality meal scene beside a tent"
+          },
+          {
+            "label": "A distant city across a broad plain",
+            "image_url": "/training/genesis/sodom-distant-plain.png",
+            "alt": "Distant city on a plain viewed from afar"
+          },
+          {
+            "label": "Large oaks shading an ancient tented place",
+            "image_url": "/training/genesis/oaks-of-mamre.png",
+            "alt": "Large oak trees beside an ancient tented resting place"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Three visitors near a tent under large oaks"
+      },
+      "explanation": "Genesis 18 says three men appeared to Abraham by the oaks of Mamre.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abraham", "mamre", "visitors", "image"]
+    },
+    {
+      "key": "day-006-genesis-016-018-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 16 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 3,
+      "verse_end": 16,
+      "reference": "Genesis 16:3-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Hagar conceives",
+          "Hagar bears Ishmael to Abram",
+          "Sarai gives Hagar to Abram",
+          "Hagar flees from Sarai"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Sarai gives Hagar to Abram",
+          "Hagar conceives",
+          "Hagar flees from Sarai",
+          "Hagar bears Ishmael to Abram"
+        ]
+      },
+      "explanation": "Genesis 16 moves from Sarai giving Hagar to Abram, to Hagar's pregnancy, to her flight, and later Ishmael's birth.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "hagar", "ishmael", "ordering"]
+    },
+    {
+      "key": "day-006-genesis-016-018-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 17 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 17,
+      "verse_start": 5,
+      "verse_end": 27,
+      "reference": "Genesis 17:5-27",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Isaac is promised to Sarah",
+          "Abraham circumcises the males of his household",
+          "Abram is renamed Abraham",
+          "Sarai is renamed Sarah"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Abram is renamed Abraham",
+          "Sarai is renamed Sarah",
+          "Isaac is promised to Sarah",
+          "Abraham circumcises the males of his household"
+        ]
+      },
+      "explanation": "Genesis 17 gives Abram's new name, then Sarai's, then the promise of Isaac, and later the household circumcisions.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abraham", "sarah", "isaac", "ordering"]
+    },
+    {
+      "key": "day-006-genesis-016-018-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 18 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 1,
+      "verse_end": 22,
+      "reference": "Genesis 18:1-22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Sarah laughs in the tent",
+          "The men set out toward Sodom",
+          "Abraham prepares food for the visitors",
+          "Three men appear near Mamre"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Three men appear near Mamre",
+          "Abraham prepares food for the visitors",
+          "Sarah laughs in the tent",
+          "The men set out toward Sodom"
+        ]
+      },
+      "explanation": "Genesis 18 moves from the visitors' arrival, to Abraham's meal preparation, to Sarah's laughter, and then the men turning toward Sodom.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "mamre", "sarah", "sodom", "ordering"]
+    },
+    {
+      "key": "day-006-genesis-016-018-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 16-17 person or name with the correct description.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 1,
+      "verse_end": 16,
+      "reference": "Genesis 16:1-16; Genesis 17:5,15",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Hagar", "Ishmael", "Abraham", "Sarah"],
+        "right_items": [
+          "Name given to Abram in Genesis 17",
+          "Formerly called Sarai",
+          "Servant who fled into the wilderness",
+          "Name given before Hagar's son was born"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Hagar", "right": "Servant who fled into the wilderness" },
+          { "left": "Ishmael", "right": "Name given before Hagar's son was born" },
+          { "left": "Abraham", "right": "Name given to Abram in Genesis 17" },
+          { "left": "Sarah", "right": "Formerly called Sarai" }
+        ]
+      },
+      "explanation": "These people and names are directly identified across Genesis 16 and 17.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "hagar", "ishmael", "abraham", "matching"]
+    },
+    {
+      "key": "day-006-genesis-016-018-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 18 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 1,
+      "verse_end": 22,
+      "reference": "Genesis 18:1-22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Mamre", "Cakes", "Calf", "Abraham"],
+        "right_items": [
+          "Prepared from fine flour for the visitors",
+          "Tender and good animal prepared for the meal",
+          "Place of the oaks where the visitors appeared",
+          "Still stood before the Lord as the men turned toward Sodom"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Mamre", "right": "Place of the oaks where the visitors appeared" },
+          { "left": "Cakes", "right": "Prepared from fine flour for the visitors" },
+          { "left": "Calf", "right": "Tender and good animal prepared for the meal" },
+          { "left": "Abraham", "right": "Still stood before the Lord as the men turned toward Sodom" }
+        ]
+      },
+      "explanation": "Genesis 18 gives these details in Abraham's hospitality scene and the lead-in to Sodom.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "mamre", "abraham", "hospitality", "matching"]
+    },
+    {
+      "key": "day-006-genesis-016-018-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 16-17 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 16,
+      "verse_start": 11,
+      "verse_end": 16,
+      "reference": "Genesis 16:11-16; Genesis 17:10,19,24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Beer-lahai-roi", "Circumcision", "Isaac", "Ninety-nine years old"],
+        "right_items": [
+          "Age of Abraham when God spoke to him in Genesis 17",
+          "Promised name of Sarah's son",
+          "Well named by Hagar",
+          "Sign commanded for every male"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Beer-lahai-roi", "right": "Well named by Hagar" },
+          { "left": "Circumcision", "right": "Sign commanded for every male" },
+          { "left": "Isaac", "right": "Promised name of Sarah's son" },
+          { "left": "Ninety-nine years old", "right": "Age of Abraham when God spoke to him in Genesis 17" }
+        ]
+      },
+      "explanation": "Genesis 16 and 17 connect these names, signs, and age details directly.",
+      "teaching_note": "This question stays with factual details named in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "beer-lahai-roi", "isaac", "circumcision", "matching"]
+    },
+    {
+      "key": "day-006-genesis-016-018-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 17.",
+      "book": "Genesis",
+      "chapter": 17,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 17:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 17 says Abraham was ninety-nine years old when the Lord appeared to him."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 17 begins by saying Abram was ninety-nine years old when the Lord appeared to him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abraham", "age", "true-false"]
+    },
+    {
+      "key": "day-006-genesis-016-018-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 18.",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 12,
+      "verse_end": 12,
+      "reference": "Genesis 18:12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 18 says Sarah laughed to herself after hearing the promise about a son."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 18 says Sarah laughed to herself when she heard the promise.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "sarah", "laughter", "true-false"]
+    },
+    {
+      "key": "day-006-genesis-016-018-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 18 statement.",
+      "book": "Genesis",
+      "chapter": 18,
+      "verse_start": 23,
+      "verse_end": 32,
+      "reference": "Genesis 18:23-32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Abraham first asked whether Sodom would be spared for one hundred righteous people.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Abraham first asked about fifty righteous people, not one hundred.",
+          "Abraham never spoke about Sodom at all.",
+          "Abraham first asked about ten righteous people.",
+          "Abraham asked only about Gomorrah and not Sodom."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abraham first asked about fifty righteous people, not one hundred."
+      },
+      "explanation": "Genesis 18 shows Abraham beginning with fifty righteous people in his question about Sodom.",
+      "teaching_note": "This stays with the factual number sequence in Abraham's questions.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-16-18",
+      "tags": ["genesis", "abraham", "sodom", "spot-error"]
+    }
+  ]
+}

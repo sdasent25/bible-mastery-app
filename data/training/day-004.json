@@ -1,0 +1,696 @@
+{
+  "day": 4,
+  "segment_key": "genesis-010-012",
+  "unlock_key": "genesis-10-12",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 10,
+    "chapter_end": 12,
+    "reference": "Genesis 10–12"
+  },
+  "items": [
+    {
+      "key": "day-004-genesis-010-012-001",
+      "format": "multiple_choice",
+      "prompt": "Which three sons of Noah are named in Genesis 10?",
+      "book": "Genesis",
+      "chapter": 10,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 10:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "nations",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "Shem, Ham, and Japheth",
+          "Abram, Nahor, and Haran",
+          "Cain, Abel, and Seth",
+          "Terah, Lot, and Pharaoh"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shem, Ham, and Japheth"
+      },
+      "explanation": "Genesis 10 begins with the family lines of Noah's sons: Shem, Ham, and Japheth.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "noah", "sons", "nations"]
+    },
+    {
+      "key": "day-004-genesis-010-012-002",
+      "format": "multiple_choice",
+      "prompt": "In what land did the people settle when they began building the city and tower?",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 11:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Shinar", "Canaan", "Egypt", "Haran"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shinar"
+      },
+      "explanation": "Genesis 11 says the people settled on a plain in the land of Shinar.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "shinar", "places"]
+    },
+    {
+      "key": "day-004-genesis-010-012-003",
+      "format": "multiple_choice",
+      "prompt": "Who went with Abram and Sarai when Abram left Haran in Genesis 12?",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 4,
+      "verse_end": 5,
+      "reference": "Genesis 12:4-5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Lot", "Pharaoh", "Japheth", "Canaan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Lot"
+      },
+      "explanation": "Genesis 12 says Lot went with Abram when Abram departed from Haran.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "lot", "haran"]
+    },
+    {
+      "key": "day-004-genesis-010-012-004",
+      "format": "multiple_choice",
+      "prompt": "What happened to the people's language at Babel?",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 7,
+      "verse_end": 9,
+      "reference": "Genesis 11:7-9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "babel",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "It was confused so they could not understand one another",
+          "It was written on stone tablets",
+          "It became the language of Egypt",
+          "It was spoken only by Abram's family"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "It was confused so they could not understand one another"
+      },
+      "explanation": "Genesis 11 says the Lord confused their language so they could not understand one another's speech.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "language", "scattering"]
+    },
+    {
+      "key": "day-004-genesis-010-012-005",
+      "format": "multiple_choice",
+      "prompt": "Why did Abram go down to Egypt in Genesis 12?",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 10,
+      "verse_end": 10,
+      "reference": "Genesis 12:10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Because there was a famine in the land",
+          "Because Pharaoh invited him first",
+          "Because Haran had been destroyed",
+          "Because Lot had already settled there"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Because there was a famine in the land"
+      },
+      "explanation": "Genesis 12 says Abram went down to Egypt because the famine in the land was severe.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "egypt", "famine"]
+    },
+    {
+      "key": "day-004-genesis-010-012-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 11.",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 9,
+      "verse_end": 9,
+      "reference": "Genesis 11:9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "babel",
+      "difficulty": "easy",
+      "content": {
+        "text": "The city was called ____ because there the Lord confused the language of all the earth.",
+        "blank_count": 1,
+        "options": ["Babel", "Haran", "Bethel", "Egypt"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Babel"
+      },
+      "explanation": "Genesis 11 says the place was called Babel because the Lord confused the language there.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "language"]
+    },
+    {
+      "key": "day-004-genesis-010-012-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 12.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Genesis 12:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Abram set out to go to the land of ____.",
+        "blank_count": 1,
+        "options": ["Canaan", "Shinar", "Egypt", "Nod"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Canaan"
+      },
+      "explanation": "Genesis 12 says Abram and those with him set out for the land of Canaan.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "canaan", "travel"]
+    },
+    {
+      "key": "day-004-genesis-010-012-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 12.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Genesis 12:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "The Lord afflicted Pharaoh and his ____ because of Sarai.",
+        "blank_count": 1,
+        "options": ["house", "army", "city", "caravan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "house"
+      },
+      "explanation": "Genesis 12 says the Lord afflicted Pharaoh and his house because of Sarai.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "pharaoh", "sarai", "egypt"]
+    },
+    {
+      "key": "day-004-genesis-010-012-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 11.",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 31,
+      "verse_end": 31,
+      "reference": "Genesis 11:31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "text": "Terah took Abram, Lot, and Sarai and went out from Ur to go into the land of ____.",
+        "blank_count": 1,
+        "options": ["Canaan", "Egypt", "Shinar", "Seir"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Canaan"
+      },
+      "explanation": "Genesis 11 says Terah set out from Ur intending to go to the land of Canaan.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "terah", "canaan", "ur"]
+    },
+    {
+      "key": "day-004-genesis-010-012-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents the tower and city of Babel?",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 4,
+      "verse_end": 4,
+      "reference": "Genesis 11:4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "babel",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A rising tower above an ancient city on a plain",
+            "image_url": "/training/genesis/tower-of-babel.png",
+            "alt": "Ancient city with a prominent tower rising above it"
+          },
+          {
+            "label": "Small groups scattered across an open plain",
+            "image_url": "/training/genesis/scattered-people-babel.png",
+            "alt": "Groups of people moving away across a broad plain"
+          },
+          {
+            "label": "A fortified city gate in an ancient settlement",
+            "image_url": "/training/genesis/ancient-city-gate.png",
+            "alt": "Ancient city gate with walls and road"
+          },
+          {
+            "label": "A broad fertile plain with distant buildings",
+            "image_url": "/training/genesis/plain-of-shinar.png",
+            "alt": "Wide plain landscape with a distant settlement"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A rising tower above an ancient city on a plain"
+      },
+      "explanation": "Genesis 11 describes people building a city and a tower on the plain in Shinar.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "tower", "image"]
+    },
+    {
+      "key": "day-004-genesis-010-012-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abram traveling toward Canaan?",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 4,
+      "verse_end": 5,
+      "reference": "Genesis 12:4-5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "travel",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A caravan traveling toward distant hills",
+            "image_url": "/training/genesis/abram-traveling-canaan.png",
+            "alt": "Ancient caravan traveling toward the horizon"
+          },
+          {
+            "label": "A desert caravan moving across dry country",
+            "image_url": "/training/genesis/desert-caravan.png",
+            "alt": "Travelers and pack animals crossing arid land"
+          },
+          {
+            "label": "An Egyptian palace courtyard",
+            "image_url": "/training/genesis/egypt-palace.png",
+            "alt": "Ancient Egyptian palace or official house setting"
+          },
+          {
+            "label": "A simple stone altar in open hill country",
+            "image_url": "/training/genesis/stone-altar-canaan.png",
+            "alt": "Plain stone altar in an open landscape"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A caravan traveling toward distant hills"
+      },
+      "explanation": "Genesis 12 shows Abram departing as commanded and setting out toward Canaan.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "canaan", "image"]
+    },
+    {
+      "key": "day-004-genesis-010-012-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 11 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 2,
+      "verse_end": 9,
+      "reference": "Genesis 11:2-9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "The Lord scatters the people from there",
+          "The people settle in Shinar",
+          "The people begin building a city and tower",
+          "The Lord confuses their language"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The people settle in Shinar",
+          "The people begin building a city and tower",
+          "The Lord confuses their language",
+          "The Lord scatters the people from there"
+        ]
+      },
+      "explanation": "Genesis 11 moves from settling in Shinar, to building, to language confusion, and then scattering.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "ordering", "shinar"]
+    },
+    {
+      "key": "day-004-genesis-010-012-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 12 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 1,
+      "verse_end": 20,
+      "reference": "Genesis 12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Pharaoh sends Abram away",
+          "Abram goes down to Egypt",
+          "Abram leaves Haran",
+          "Abram builds an altar in Canaan"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Abram leaves Haran",
+          "Abram builds an altar in Canaan",
+          "Abram goes down to Egypt",
+          "Pharaoh sends Abram away"
+        ]
+      },
+      "explanation": "Genesis 12 moves from Abram's departure, to his altar in Canaan, to Egypt because of famine, and finally Pharaoh sending him away.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "ordering", "egypt"]
+    },
+    {
+      "key": "day-004-genesis-010-012-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 11–12 travel events in order.",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 31,
+      "verse_end": 5,
+      "reference": "Genesis 11:31; Genesis 12:1-5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these travel events in order.",
+        "items": [
+          "Terah takes his family out from Ur",
+          "Terah settles in Haran",
+          "God tells Abram to go from his country",
+          "Abram leaves Haran with Sarai and Lot"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Terah takes his family out from Ur",
+          "Terah settles in Haran",
+          "God tells Abram to go from his country",
+          "Abram leaves Haran with Sarai and Lot"
+        ]
+      },
+      "explanation": "Genesis 11 describes Terah leaving Ur and settling in Haran; Genesis 12 then describes God calling Abram and Abram leaving Haran.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "terah", "abram", "haran", "ordering"]
+    },
+    {
+      "key": "day-004-genesis-010-012-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 10-12 name or place with the correct description.",
+      "book": "Genesis",
+      "chapter": 10,
+      "verse_start": 1,
+      "verse_end": 32,
+      "reference": "Genesis 10-12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "nations",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Shinar", "Babel", "Terah", "Pharaoh"],
+        "right_items": [
+          "Plain where the people settled before building",
+          "King who later sent Abram away",
+          "Father of Abram",
+          "City connected with confused language"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Shinar", "right": "Plain where the people settled before building" },
+          { "left": "Babel", "right": "City connected with confused language" },
+          { "left": "Terah", "right": "Father of Abram" },
+          { "left": "Pharaoh", "right": "King who later sent Abram away" }
+        ]
+      },
+      "explanation": "Genesis 11 and 12 directly connect these names and places to these events.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "matching", "babel", "abram"]
+    },
+    {
+      "key": "day-004-genesis-010-012-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 12 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 6,
+      "verse_end": 20,
+      "reference": "Genesis 12:6-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Canaan", "Egypt", "Sarai", "Altar"],
+        "right_items": [
+          "Place where Abram went because of famine",
+          "Land Abram entered after leaving Haran",
+          "Built by Abram to the Lord",
+          "Taken into Pharaoh's house"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Canaan", "right": "Land Abram entered after leaving Haran" },
+          { "left": "Egypt", "right": "Place where Abram went because of famine" },
+          { "left": "Sarai", "right": "Taken into Pharaoh's house" },
+          { "left": "Altar", "right": "Built by Abram to the Lord" }
+        ]
+      },
+      "explanation": "Genesis 12 connects these people, places, and actions in Abram's travel account.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "egypt", "canaan", "matching"]
+    },
+    {
+      "key": "day-004-genesis-010-012-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 10–12 item with the correct passage detail.",
+      "book": "Genesis",
+      "chapter": 10,
+      "verse_start": 8,
+      "verse_end": 20,
+      "reference": "Genesis 10:8-20; Genesis 11:1-9; Genesis 12:10-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct passage detail.",
+        "left_items": ["Nimrod", "Babel", "Shinar", "Pharaoh"],
+        "right_items": [
+          "Connected with being a mighty one on the earth",
+          "City name connected with confused language",
+          "Land/plain where the people settled before building",
+          "Ruler who sent Abram away from Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Nimrod", "right": "Connected with being a mighty one on the earth" },
+          { "left": "Babel", "right": "City name connected with confused language" },
+          { "left": "Shinar", "right": "Land/plain where the people settled before building" },
+          { "left": "Pharaoh", "right": "Ruler who sent Abram away from Egypt" }
+        ]
+      },
+      "explanation": "These details are stated across Genesis 10, Genesis 11, and Genesis 12.",
+      "teaching_note": "This item uses distinct passage facts instead of repeated matching descriptions.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "nimrod", "babel", "shinar", "pharaoh", "matching"]
+    },
+    {
+      "key": "day-004-genesis-010-012-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 11.",
+      "book": "Genesis",
+      "chapter": 11,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 11:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "babel",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 11 says the whole earth had one language and the same words."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 11 opens by saying the whole earth had one language and the same words.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "babel", "language", "true-false"]
+    },
+    {
+      "key": "day-004-genesis-010-012-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 12.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 7,
+      "verse_end": 8,
+      "reference": "Genesis 12:7-8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "altars",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 12 says Abram built altars in Canaan."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 12 records Abram building altars after entering the land.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "abram", "altars", "true-false"]
+    },
+    {
+      "key": "day-004-genesis-010-012-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 12 statement.",
+      "book": "Genesis",
+      "chapter": 12,
+      "verse_start": 14,
+      "verse_end": 20,
+      "reference": "Genesis 12:14-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After learning about Sarai, Pharaoh kept Abram in Egypt and refused to send him away.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Pharaoh told Abram to leave and sent him away with what he had.",
+          "Pharaoh never heard anything about Sarai.",
+          "Abram had never gone down to Egypt.",
+          "Lot, not Pharaoh, took Sarai into his house."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Pharaoh told Abram to leave and sent him away with what he had."
+      },
+      "explanation": "Genesis 12 says Pharaoh commanded Abram to go and sent him away with his wife and all that he had.",
+      "teaching_note": "This stays factual and non-sensational about the Egypt account.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-10-12",
+      "tags": ["genesis", "pharaoh", "sarai", "spot-error"]
+    }
+  ]
+}

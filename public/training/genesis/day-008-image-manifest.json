@@ -1,0 +1,40 @@
+{
+  "day": 8,
+  "segment_key": "genesis-022-024",
+  "images": [
+    {
+      "question_key": "day-008-genesis-022-024-010",
+      "prompt": "Which image best represents the ram caught nearby in Genesis 22?",
+      "correct_image_filename": "ram-caught-thicket.png",
+      "all_image_filenames": [
+        "ram-caught-thicket.png",
+        "moriah-mountain.png",
+        "wood-and-fire-journey.png",
+        "altar-stones-moriah.png"
+      ],
+      "reasons": {
+        "ram-caught-thicket.png": "Shows the clearest visual of the ram caught nearby, which matches Genesis 22 directly.",
+        "moriah-mountain.png": "Represents the journey setting, but not the ram itself.",
+        "wood-and-fire-journey.png": "Represents the trip and supplies, but not the nearby ram.",
+        "altar-stones-moriah.png": "Represents the mountain altar setting, but not the animal Abraham saw."
+      }
+    },
+    {
+      "question_key": "day-008-genesis-022-024-011",
+      "prompt": "Which image best represents Rebekah giving water at the well?",
+      "correct_image_filename": "rebekah-well-water.png",
+      "all_image_filenames": [
+        "rebekah-well-water.png",
+        "camels-at-well.png",
+        "water-jar-near-well.png",
+        "desert-travel-camels.png"
+      ],
+      "reasons": {
+        "rebekah-well-water.png": "Shows the clearest action of a young woman giving water at a well, matching Genesis 24 directly.",
+        "camels-at-well.png": "Represents the camels at the well, but not Rebekah's action itself.",
+        "water-jar-near-well.png": "Represents an object from the scene, but not the person giving water.",
+        "desert-travel-camels.png": "Represents the servant's caravan journey, but not the well encounter."
+      }
+    }
+  ]
+}

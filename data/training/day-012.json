@@ -1,0 +1,669 @@
+{
+  "day": 12,
+  "segment_key": "genesis-034-036",
+  "unlock_key": "genesis-34-36",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 34,
+    "chapter_end": 36,
+    "reference": "Genesis 34-36"
+  },
+  "items": [
+    {
+      "key": "day-012-genesis-034-036-001",
+      "format": "multiple_choice",
+      "prompt": "In Genesis 34, why did Dinah go out?",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 34:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "To see the women of the land",
+          "To visit Bethel",
+          "To meet Esau's family",
+          "To bury the foreign gods"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "To see the women of the land"
+      },
+      "explanation": "Genesis 34 says Dinah went out to see the women of the land.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "dinah", "genesis-34"]
+    },
+    {
+      "key": "day-012-genesis-034-036-002",
+      "format": "multiple_choice",
+      "prompt": "Who told his father Hamor to get Dinah as a wife for him?",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 4,
+      "verse_end": 4,
+      "reference": "Genesis 34:4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Shechem", "Simeon", "Levi", "Jacob"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shechem"
+      },
+      "explanation": "Genesis 34 says Shechem asked his father Hamor to get Dinah for him as wife.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "shechem", "hamor", "dinah"]
+    },
+    {
+      "key": "day-012-genesis-034-036-003",
+      "format": "multiple_choice",
+      "prompt": "Who spoke with Jacob's family about a marriage arrangement in Genesis 34?",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 6,
+      "verse_end": 12,
+      "reference": "Genesis 34:6-12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Hamor", "Isaac", "Esau", "Deborah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Hamor"
+      },
+      "explanation": "Genesis 34 says Hamor went out to speak with Jacob and his family.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "hamor", "jacob", "genesis-34"]
+    },
+    {
+      "key": "day-012-genesis-034-036-004",
+      "format": "multiple_choice",
+      "prompt": "Which two sons of Jacob struck Shechem and Hamor?",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 25,
+      "verse_end": 26,
+      "reference": "Genesis 34:25-26",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Simeon and Levi",
+          "Reuben and Judah",
+          "Joseph and Benjamin",
+          "Dan and Naphtali"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Simeon and Levi"
+      },
+      "explanation": "Genesis 34 says Simeon and Levi struck Shechem and Hamor.",
+      "teaching_note": "This question keeps the focus on direct events and named people in the chapter.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "simeon", "levi", "shechem"]
+    },
+    {
+      "key": "day-012-genesis-034-036-005",
+      "format": "multiple_choice",
+      "prompt": "Where did God tell Jacob to go in Genesis 35?",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 35:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Bethel", "Seir", "Shechem", "Ephrath"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Bethel"
+      },
+      "explanation": "Genesis 35 says God told Jacob to arise and go to Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "jacob", "bethel", "genesis-35"]
+    },
+    {
+      "key": "day-012-genesis-034-036-006",
+      "format": "multiple_choice",
+      "prompt": "What other name is used for Esau in Genesis 36?",
+      "book": "Genesis",
+      "chapter": 36,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 36:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Edom", "Israel", "Seir", "Benjamin"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Edom"
+      },
+      "explanation": "Genesis 36 says Esau is Edom.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "esau", "edom", "genesis-36"]
+    },
+    {
+      "key": "day-012-genesis-034-036-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 35.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 35:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "text": "Rachel's son was named ____ by his father.",
+        "blank_count": 1,
+        "options": ["Benjamin", "Joseph", "Esau", "Isaac"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Benjamin"
+      },
+      "explanation": "Genesis 35 says Jacob called the child Benjamin.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "rachel", "benjamin", "birth"]
+    },
+    {
+      "key": "day-012-genesis-034-036-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 35.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 2,
+      "verse_end": 4,
+      "reference": "Genesis 35:2-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Jacob told his household to put away the foreign ____ among them.",
+        "blank_count": 1,
+        "options": ["gods", "kings", "animals", "tents"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "gods"
+      },
+      "explanation": "Genesis 35 says Jacob told his household to put away the foreign gods.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "jacob", "foreign-gods", "bethel"]
+    },
+    {
+      "key": "day-012-genesis-034-036-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 35.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 29,
+      "verse_end": 29,
+      "reference": "Genesis 35:29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "Isaac was buried by Esau and ____.",
+        "blank_count": 1,
+        "options": ["Jacob", "Joseph", "Benjamin", "Hamor"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jacob"
+      },
+      "explanation": "Genesis 35 says Esau and Jacob buried Isaac.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "isaac", "esau", "jacob"]
+    },
+    {
+      "key": "day-012-genesis-034-036-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 36.",
+      "book": "Genesis",
+      "chapter": 36,
+      "verse_start": 8,
+      "verse_end": 8,
+      "reference": "Genesis 36:8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Esau settled in the hill country of ____.",
+        "blank_count": 1,
+        "options": ["Seir", "Bethel", "Mamre", "Gilead"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seir"
+      },
+      "explanation": "Genesis 36 says Esau lived in the hill country of Seir.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "esau", "seir", "edom"]
+    },
+    {
+      "key": "day-012-genesis-034-036-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Jacob building an altar at Bethel?",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 6,
+      "verse_end": 7,
+      "reference": "Genesis 35:6-7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "bethel",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "An ancient stone altar in a quiet hill-country setting",
+            "image_url": "/training/genesis/altar-at-bethel.png",
+            "alt": "Ancient stone altar in a quiet hill-country setting"
+          },
+          {
+            "label": "Small foreign objects being buried under a tree",
+            "image_url": "/training/genesis/foreign-gods-buried.png",
+            "alt": "Small foreign objects being buried under a tree in an ancient setting"
+          },
+          {
+            "label": "A simple burial marker beside an ancient road",
+            "image_url": "/training/genesis/rachel-burial-marker.png",
+            "alt": "Simple burial marker beside an ancient road near distant hills"
+          },
+          {
+            "label": "A rugged hill-country landscape with distant tents",
+            "image_url": "/training/genesis/hill-country-seir.png",
+            "alt": "Rugged hill-country landscape with distant tents or travelers"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "An ancient stone altar in a quiet hill-country setting"
+      },
+      "explanation": "Genesis 35 says Jacob built an altar at Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "jacob", "bethel", "altar", "image"]
+    },
+    {
+      "key": "day-012-genesis-034-036-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 34 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 1,
+      "verse_end": 31,
+      "reference": "Genesis 34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob's sons return from the field",
+          "Dinah goes out to see the women of the land",
+          "Jacob hears about the incident involving Dinah",
+          "Hamor speaks with Jacob's family"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Dinah goes out to see the women of the land",
+          "Jacob hears about the incident involving Dinah",
+          "Jacob's sons return from the field",
+          "Hamor speaks with Jacob's family"
+        ]
+      },
+      "explanation": "Genesis 34 moves from Dinah going out to Jacob hearing, the sons returning, and Hamor speaking.",
+      "teaching_note": "This question keeps Genesis 34 factual and non-graphic.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "dinah", "hamor", "ordering"]
+    },
+    {
+      "key": "day-012-genesis-034-036-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 35 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 1,
+      "verse_end": 20,
+      "reference": "Genesis 35:1-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob builds an altar at Bethel",
+          "Rachel gives birth to Benjamin",
+          "God tells Jacob to go to Bethel",
+          "Jacob's household puts away foreign gods"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "God tells Jacob to go to Bethel",
+          "Jacob's household puts away foreign gods",
+          "Jacob builds an altar at Bethel",
+          "Rachel gives birth to Benjamin"
+        ]
+      },
+      "explanation": "Genesis 35 moves from God's command to Bethel, to the altar there, and later to Benjamin's birth.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "bethel", "rachel", "ordering"]
+    },
+    {
+      "key": "day-012-genesis-034-036-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 35-36 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 27,
+      "verse_end": 29,
+      "reference": "Genesis 35:27-29; Genesis 36",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Esau's descendants are listed",
+          "Isaac dies",
+          "Esau settles in Seir",
+          "Jacob comes to Isaac at Mamre"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob comes to Isaac at Mamre",
+          "Isaac dies",
+          "Esau settles in Seir",
+          "Esau's descendants are listed"
+        ]
+      },
+      "explanation": "The passage moves from Jacob coming to Isaac, to Isaac's death, and then to Esau in Seir and his descendants.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "isaac", "esau", "seir", "ordering"]
+    },
+    {
+      "key": "day-012-genesis-034-036-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 34 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 34,
+      "verse_start": 1,
+      "verse_end": 31,
+      "reference": "Genesis 34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Dinah", "Shechem", "Hamor", "Jacob's sons"],
+        "right_items": [
+          "Went out to see the women of the land",
+          "Returned from the field",
+          "Asked for Dinah to be given in marriage",
+          "Father who spoke with Jacob's family"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Dinah", "right": "Went out to see the women of the land" },
+          { "left": "Shechem", "right": "Asked for Dinah to be given in marriage" },
+          { "left": "Hamor", "right": "Father who spoke with Jacob's family" },
+          { "left": "Jacob's sons", "right": "Returned from the field" }
+        ]
+      },
+      "explanation": "Genesis 34 directly connects these people with these actions.",
+      "teaching_note": "This keeps the focus on direct facts and names from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "dinah", "shechem", "hamor", "matching"]
+    },
+    {
+      "key": "day-012-genesis-034-036-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 35 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 1,
+      "verse_end": 20,
+      "reference": "Genesis 35:1-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Bethel", "Deborah", "Benjamin", "Foreign gods"],
+        "right_items": [
+          "Buried under the oak near Shechem",
+          "Place Jacob was told to go and build an altar",
+          "Name Jacob gave Rachel's son",
+          "Woman buried below Bethel under the oak"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Bethel", "right": "Place Jacob was told to go and build an altar" },
+          { "left": "Deborah", "right": "Woman buried below Bethel under the oak" },
+          { "left": "Benjamin", "right": "Name Jacob gave Rachel's son" },
+          { "left": "Foreign gods", "right": "Buried under the oak near Shechem" }
+        ]
+      },
+      "explanation": "Genesis 35 ties these names and objects to Bethel, burial, and Benjamin's birth.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "bethel", "deborah", "benjamin", "matching"]
+    },
+    {
+      "key": "day-012-genesis-034-036-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 36 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 36,
+      "verse_start": 1,
+      "verse_end": 43,
+      "reference": "Genesis 36",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Esau", "Edom", "Seir", "Descendants"],
+        "right_items": [
+          "Listed in Genesis 36",
+          "Other name for Esau",
+          "Hill country where Esau lived",
+          "Man identified with Edom"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Esau", "right": "Man identified with Edom" },
+          { "left": "Edom", "right": "Other name for Esau" },
+          { "left": "Seir", "right": "Hill country where Esau lived" },
+          { "left": "Descendants", "right": "Listed in Genesis 36" }
+        ]
+      },
+      "explanation": "Genesis 36 identifies Esau with Edom, places him in Seir, and lists his descendants.",
+      "teaching_note": "This keeps Genesis 36 broad and readable without overloading obscure names.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "esau", "edom", "seir", "matching"]
+    },
+    {
+      "key": "day-012-genesis-034-036-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 35.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Genesis 35:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 35 says Jacob built an altar at Bethel."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 35 says Jacob built an altar there at Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "jacob", "bethel", "true-false"]
+    },
+    {
+      "key": "day-012-genesis-034-036-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 36.",
+      "book": "Genesis",
+      "chapter": 36,
+      "verse_start": 8,
+      "verse_end": 8,
+      "reference": "Genesis 36:8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 36 says Esau settled in the hill country of Seir."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 36 says Esau lived in the hill country of Seir.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "esau", "seir", "true-false"]
+    },
+    {
+      "key": "day-012-genesis-034-036-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 35 statement.",
+      "book": "Genesis",
+      "chapter": 35,
+      "verse_start": 18,
+      "verse_end": 20,
+      "reference": "Genesis 35:18-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Genesis 35 says Rachel named her son Benjamin before she died on the way to Ephrath.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Rachel called him Ben-oni, and Jacob called him Benjamin.",
+          "Rachel died after Isaac was buried.",
+          "The child born on the journey was Joseph.",
+          "Benjamin was born in the hill country of Seir."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Rachel called him Ben-oni, and Jacob called him Benjamin."
+      },
+      "explanation": "Genesis 35 says Rachel called him Ben-oni, but Jacob called him Benjamin.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-34-36",
+      "tags": ["genesis", "rachel", "benjamin", "spot-error"]
+    }
+  ]
+}

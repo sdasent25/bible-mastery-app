@@ -1,0 +1,659 @@
+{
+  "day": 17,
+  "segment_key": "exodus-001-003",
+  "unlock_key": "exodus-1-3",
+  "reading": {
+    "book": "Exodus",
+    "chapter_start": 1,
+    "chapter_end": 3,
+    "reference": "Exodus 1–3"
+  },
+  "items": [
+    {
+      "key": "day-017-exodus-001-003-001",
+      "format": "multiple_choice",
+      "prompt": "What did the new king over Egypt not know?",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 8,
+      "verse_end": 8,
+      "reference": "Exodus 1:8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Joseph", "Moses", "Abraham", "Aaron"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Joseph"
+      },
+      "explanation": "Exodus 1 says a new king arose over Egypt who did not know Joseph.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "egypt", "joseph", "pharaoh"]
+    },
+    {
+      "key": "day-017-exodus-001-003-002",
+      "format": "multiple_choice",
+      "prompt": "Which cities did the Israelites build for Pharaoh as store cities?",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 11,
+      "verse_end": 11,
+      "reference": "Exodus 1:11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Pithom and Raamses", "Goshen and Hebron", "Jericho and Ai", "Bethel and Shechem"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Pithom and Raamses"
+      },
+      "explanation": "Exodus 1 names Pithom and Raamses as the store cities built for Pharaoh.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "egypt", "store-cities", "labor"]
+    },
+    {
+      "key": "day-017-exodus-001-003-003",
+      "format": "multiple_choice",
+      "prompt": "What were the names of the two Hebrew midwives mentioned in Exodus 1?",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 15,
+      "verse_end": 15,
+      "reference": "Exodus 1:15",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Shiphrah and Puah", "Miriam and Zipporah", "Leah and Rachel", "Deborah and Huldah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shiphrah and Puah"
+      },
+      "explanation": "Exodus 1 names the Hebrew midwives as Shiphrah and Puah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "midwives", "shiphrah", "puah"]
+    },
+    {
+      "key": "day-017-exodus-001-003-004",
+      "format": "multiple_choice",
+      "prompt": "From what tribe was the family of Moses' birth?",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Exodus 2:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Levi", "Judah", "Benjamin", "Dan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Levi"
+      },
+      "explanation": "Exodus 2 says a man and woman from the house of Levi had Moses.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "levi", "birth"]
+    },
+    {
+      "key": "day-017-exodus-001-003-005",
+      "format": "multiple_choice",
+      "prompt": "What command did Pharaoh give concerning every Hebrew son?",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 22,
+      "verse_end": 22,
+      "reference": "Exodus 1:22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Cast him into the Nile", "Send him to Midian", "Train him for Pharaoh's house", "Hide him in Goshen"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Cast him into the Nile"
+      },
+      "explanation": "Exodus 1 says Pharaoh told his people to cast every Hebrew son into the Nile.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "pharaoh", "nile", "command"]
+    },
+    {
+      "key": "day-017-exodus-001-003-006",
+      "format": "multiple_choice",
+      "prompt": "What did God tell Moses to remove at the burning bush?",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Exodus 3:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "easy",
+      "content": {
+        "options": ["His sandals", "His staff", "His cloak", "His head covering"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "His sandals"
+      },
+      "explanation": "Exodus 3 says Moses was told to remove his sandals on holy ground.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "sandals", "bush"]
+    },
+    {
+      "key": "day-017-exodus-001-003-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 2.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Exodus 2:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Moses was hidden for ____ months.",
+        "blank_count": 1,
+        "options": ["three", "two", "seven", "twelve"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "three"
+      },
+      "explanation": "Exodus 2 says the child was hidden for three months.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "birth", "months"]
+    },
+    {
+      "key": "day-017-exodus-001-003-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 2.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Exodus 2:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Moses' mother placed the basket among the ____ by the riverbank.",
+        "blank_count": 1,
+        "options": ["reeds", "stones", "fig trees", "gates"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "reeds"
+      },
+      "explanation": "Exodus 2 says the basket was placed among the reeds by the Nile.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "basket", "reeds"]
+    },
+    {
+      "key": "day-017-exodus-001-003-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 2.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 15,
+      "verse_end": 15,
+      "reference": "Exodus 2:15",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "After leaving Egypt, Moses lived in ____.",
+        "blank_count": 1,
+        "options": ["Midian", "Canaan", "Moab", "Assyria"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Midian"
+      },
+      "explanation": "Exodus 2 says Moses fled from Pharaoh and lived in Midian.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "midian", "egypt"]
+    },
+    {
+      "key": "day-017-exodus-001-003-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Exodus 3.",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Exodus 3:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "God said the place where Moses stood was ____ ground.",
+        "blank_count": 1,
+        "options": ["holy", "rocky", "ordinary", "hidden"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "holy"
+      },
+      "explanation": "Exodus 3 says Moses was standing on holy ground.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "holy-ground", "horeb"]
+    },
+    {
+      "key": "day-017-exodus-001-003-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents the bush burning without being consumed at Horeb?",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 1,
+      "verse_end": 3,
+      "reference": "Exodus 3:1-3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A small woven basket resting among Nile reeds in soft morning light",
+            "image_url": "/training/exodus/basket-nile-reeds.png",
+            "alt": "A small woven basket resting among reeds by the Nile in soft morning light"
+          },
+          {
+            "label": "A bush burning brightly on a rugged mountain slope with no sign of being consumed",
+            "image_url": "/training/exodus/burning-bush-horeb.png",
+            "alt": "A bush burning brightly on a rugged mountain slope at Horeb without being consumed"
+          },
+          {
+            "label": "A desert well in Midian with flocks nearby and low hills behind it",
+            "image_url": "/training/exodus/midian-well-flocks.png",
+            "alt": "A desert well in Midian with flocks nearby and low hills in the background"
+          },
+          {
+            "label": "An ancient Egyptian store-city construction scene with workers carrying materials",
+            "image_url": "/training/exodus/egypt-store-city-labor.png",
+            "alt": "An ancient Egyptian store-city construction scene with workers carrying materials"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A bush burning brightly on a rugged mountain slope with no sign of being consumed"
+      },
+      "explanation": "Exodus 3 describes Moses seeing a bush that burned but was not consumed.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "bush", "horeb", "image"]
+    },
+    {
+      "key": "day-017-exodus-001-003-012",
+      "format": "ordering",
+      "prompt": "Put these Exodus 2 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 2,
+      "verse_end": 6,
+      "reference": "Exodus 2:2-6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Moses is hidden for three months",
+          "Pharaoh's daughter finds the basket",
+          "Moses' sister stands at a distance",
+          "The child is placed among the reeds by the Nile"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Moses is hidden for three months",
+          "The child is placed among the reeds by the Nile",
+          "Moses' sister stands at a distance",
+          "Pharaoh's daughter finds the basket"
+        ]
+      },
+      "explanation": "Exodus 2 moves from hiding the child to placing him in the basket and then Pharaoh's daughter finding him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "basket", "ordering"]
+    },
+    {
+      "key": "day-017-exodus-001-003-013",
+      "format": "ordering",
+      "prompt": "Put these Exodus 1-2 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 8,
+      "verse_end": 15,
+      "reference": "Exodus 1:8-15; 2:15",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Moses flees from Pharaoh",
+          "Taskmasters are set over the Israelites",
+          "A new king arises over Egypt",
+          "Pharaoh speaks to the Hebrew midwives"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "A new king arises over Egypt",
+          "Taskmasters are set over the Israelites",
+          "Pharaoh speaks to the Hebrew midwives",
+          "Moses flees from Pharaoh"
+        ]
+      },
+      "explanation": "Exodus 1 begins with the new king and oppression, and Exodus 2 later tells of Moses fleeing Egypt.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "pharaoh", "moses", "ordering"]
+    },
+    {
+      "key": "day-017-exodus-001-003-014",
+      "format": "ordering",
+      "prompt": "Put these Exodus 3 events in the order they appear.",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 1,
+      "verse_end": 10,
+      "reference": "Exodus 3:1-10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God says he has seen the affliction of his people",
+          "Moses turns aside to see the bush",
+          "God tells Moses to remove his sandals",
+          "God says he is sending Moses to Pharaoh"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Moses turns aside to see the bush",
+          "God tells Moses to remove his sandals",
+          "God says he has seen the affliction of his people",
+          "God says he is sending Moses to Pharaoh"
+        ]
+      },
+      "explanation": "Exodus 3 moves from Moses noticing the bush to God's words about holy ground, Israel's affliction, and Pharaoh.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "bush", "pharaoh", "ordering"]
+    },
+    {
+      "key": "day-017-exodus-001-003-015",
+      "format": "matching",
+      "prompt": "Match each Exodus 1 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 11,
+      "verse_end": 19,
+      "reference": "Exodus 1:11-19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Shiphrah", "Puah", "Pithom", "Raamses"],
+        "right_items": [
+          "Midwife named first in Exodus 1",
+          "Midwife named second in Exodus 1",
+          "Store city named first in Exodus 1:11",
+          "Store city named second in Exodus 1:11"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Shiphrah", "right": "Midwife named first in Exodus 1" },
+          { "left": "Puah", "right": "Midwife named second in Exodus 1" },
+          { "left": "Pithom", "right": "Store city named first in Exodus 1:11" },
+          { "left": "Raamses", "right": "Store city named second in Exodus 1:11" }
+        ]
+      },
+      "explanation": "Exodus 1 names Shiphrah and Puah as midwives and Pithom and Raamses as store cities.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "midwives", "store-cities", "matching"]
+    },
+    {
+      "key": "day-017-exodus-001-003-016",
+      "format": "matching",
+      "prompt": "Match each Exodus 2 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 3,
+      "verse_end": 21,
+      "reference": "Exodus 2:3-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Basket", "Nile", "Midian", "Reuel"],
+        "right_items": [
+          "Place where Moses lived after fleeing Egypt",
+          "River where the child was placed among the reeds",
+          "Container coated and set among the reeds",
+          "Priest whose daughters Moses helped at the well"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Basket", "right": "Container coated and set among the reeds" },
+          { "left": "Nile", "right": "River where the child was placed among the reeds" },
+          { "left": "Midian", "right": "Place where Moses lived after fleeing Egypt" },
+          { "left": "Reuel", "right": "Priest whose daughters Moses helped at the well" }
+        ]
+      },
+      "explanation": "Exodus 2 connects the basket and Nile with Moses' infancy and Midian and Reuel with his later flight.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "basket", "midian", "reuel", "matching"]
+    },
+    {
+      "key": "day-017-exodus-001-003-017",
+      "format": "matching",
+      "prompt": "Match each Exodus 3 item with the correct description.",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 1,
+      "verse_end": 12,
+      "reference": "Exodus 3:1-12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Horeb", "Sandals", "Bush", "Pharaoh"],
+        "right_items": [
+          "What Moses was told to remove",
+          "Mountain where Moses came with the flock",
+          "Ruler Moses was sent to confront",
+          "What burned without being consumed"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Horeb", "right": "Mountain where Moses came with the flock" },
+          { "left": "Sandals", "right": "What Moses was told to remove" },
+          { "left": "Bush", "right": "What burned without being consumed" },
+          { "left": "Pharaoh", "right": "Ruler Moses was sent to confront" }
+        ]
+      },
+      "explanation": "Exodus 3 links Horeb, the sandals, the bush, and Pharaoh in Moses' call.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "horeb", "sandals", "pharaoh", "matching"]
+    },
+    {
+      "key": "day-017-exodus-001-003-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 1.",
+      "book": "Exodus",
+      "chapter": 1,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Exodus 1:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Exodus 1 says the people of Israel were fruitful and multiplied greatly in Egypt."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Exodus 1 says the Israelites multiplied and grew very strong in the land.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "israel", "egypt", "true-false"]
+    },
+    {
+      "key": "day-017-exodus-001-003-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Exodus 2.",
+      "book": "Exodus",
+      "chapter": 2,
+      "verse_start": 15,
+      "verse_end": 17,
+      "reference": "Exodus 2:15-17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Exodus 2 says Moses first returned to Pharaoh before going to Midian."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": false
+      },
+      "explanation": "Exodus 2 says Moses fled from Pharaoh and then sat down by a well in Midian.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "moses", "midian", "true-false"]
+    },
+    {
+      "key": "day-017-exodus-001-003-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Exodus 3 statement.",
+      "book": "Exodus",
+      "chapter": 3,
+      "verse_start": 5,
+      "verse_end": 10,
+      "reference": "Exodus 3:5-10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "At Horeb, God told Moses to keep his sandals on because the ground was holy, and then he said Moses would be sent to Pharaoh.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "God told Moses to remove his sandals, and then he said Moses would be sent to Pharaoh.",
+          "God told Moses to gather stones, and then Moses sent Pharaoh to Midian.",
+          "God told Moses to water the flock, and then Reuel spoke from the bush.",
+          "God told Moses to enter Egypt at once, and Pharaoh removed his sandals."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "God told Moses to remove his sandals, and then he said Moses would be sent to Pharaoh."
+      },
+      "explanation": "Exodus 3 says Moses was told to remove his sandals, and God sent Moses to Pharaoh.",
+      "teaching_note": "This keeps the focus on direct details from Moses' call at Horeb.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "exodus-1-3",
+      "tags": ["exodus", "horeb", "sandals", "pharaoh", "spot-error"]
+    }
+  ]
+}

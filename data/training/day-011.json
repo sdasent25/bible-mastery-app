@@ -1,0 +1,674 @@
+{
+  "day": 11,
+  "segment_key": "genesis-031-033",
+  "unlock_key": "genesis-31-33",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 31,
+    "chapter_end": 33,
+    "reference": "Genesis 31–33"
+  },
+  "items": [
+    {
+      "key": "day-011-genesis-031-033-001",
+      "format": "multiple_choice",
+      "prompt": "How did Jacob leave Laban in Genesis 31?",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 20,
+      "verse_end": 21,
+      "reference": "Genesis 31:20-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "He left secretly without telling Laban",
+          "He asked Laban to send him away",
+          "He waited for Esau to arrive",
+          "He left after a public feast"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "He left secretly without telling Laban"
+      },
+      "explanation": "Genesis 31 says Jacob slipped away without telling Laban.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "laban", "departure"]
+    },
+    {
+      "key": "day-011-genesis-031-033-002",
+      "format": "multiple_choice",
+      "prompt": "Who took Laban's household gods?",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 19,
+      "verse_end": 19,
+      "reference": "Genesis 31:19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Rachel", "Leah", "Jacob", "Bilhah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Rachel"
+      },
+      "explanation": "Genesis 31 says Rachel took her father's household gods.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "rachel", "laban", "household-gods"]
+    },
+    {
+      "key": "day-011-genesis-031-033-003",
+      "format": "multiple_choice",
+      "prompt": "How did God warn Laban before he reached Jacob?",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 24,
+      "verse_end": 24,
+      "reference": "Genesis 31:24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "In a dream by night",
+          "By a written message",
+          "Through Esau's servants",
+          "At the heap of stones"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "In a dream by night"
+      },
+      "explanation": "Genesis 31 says God came to Laban in a dream by night.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "laban", "dream", "warning"]
+    },
+    {
+      "key": "day-011-genesis-031-033-004",
+      "format": "multiple_choice",
+      "prompt": "What name is connected with the watch-place in Jacob and Laban’s agreement?",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 48,
+      "verse_end": 49,
+      "reference": "Genesis 31:48-49",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Mizpah", "Jabbok", "Succoth", "Shechem"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Mizpah"
+      },
+      "explanation": "Genesis 31 connects the name Mizpah with the watch-place in Jacob and Laban’s agreement.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "mizpah", "laban", "jacob"]
+    },
+    {
+      "key": "day-011-genesis-031-033-005",
+      "format": "multiple_choice",
+      "prompt": "Before meeting Esau, what did Jacob send ahead to him?",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 13,
+      "verse_end": 21,
+      "reference": "Genesis 32:13-21",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "A gift from his livestock",
+          "A silver crown",
+          "A written covenant",
+          "A stone pillar"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A gift from his livestock"
+      },
+      "explanation": "Genesis 32 says Jacob selected animals from his possessions as a gift for Esau.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "esau", "gift"]
+    },
+    {
+      "key": "day-011-genesis-031-033-006",
+      "format": "multiple_choice",
+      "prompt": "What new name was given to Jacob after the night struggle?",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 27,
+      "verse_end": 28,
+      "reference": "Genesis 32:27-28",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Israel", "Jeshurun", "Benjamin", "Edom"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Israel"
+      },
+      "explanation": "Genesis 32 says Jacob's name was changed to Israel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "israel", "name"]
+    },
+    {
+      "key": "day-011-genesis-031-033-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 31.",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 23,
+      "verse_end": 23,
+      "reference": "Genesis 31:23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Laban pursued Jacob for a ____ days’ journey.",
+        "blank_count": 1,
+        "options": ["seven", "three", "twelve", "forty"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "seven"
+      },
+      "explanation": "Genesis 31 says Laban pursued Jacob for a seven days’ journey.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "laban", "jacob", "pursuit"]
+    },
+    {
+      "key": "day-011-genesis-031-033-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 32.",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 22,
+      "verse_end": 22,
+      "reference": "Genesis 32:22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "That night Jacob crossed the ford of the ____.",
+        "blank_count": 1,
+        "options": ["Jabbok", "Jordan", "Euphrates", "Arnon"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jabbok"
+      },
+      "explanation": "Genesis 32 says Jacob crossed the ford of the Jabbok.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jabbok", "jacob", "crossing"]
+    },
+    {
+      "key": "day-011-genesis-031-033-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 33.",
+      "book": "Genesis",
+      "chapter": 33,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Genesis 33:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Jacob journeyed to ____ and built booths for his livestock.",
+        "blank_count": 1,
+        "options": ["Succoth", "Bethel", "Mizpah", "Gerar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Succoth"
+      },
+      "explanation": "Genesis 33 says Jacob came to Succoth and made booths for his livestock.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "succoth", "jacob", "livestock"]
+    },
+    {
+      "key": "day-011-genesis-031-033-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 33.",
+      "book": "Genesis",
+      "chapter": 33,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 33:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Jacob came safely to the city of ____ in the land of Canaan.",
+        "blank_count": 1,
+        "options": ["Shechem", "Hebron", "Luz", "Gerar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shechem"
+      },
+      "explanation": "Genesis 33 says Jacob came safely to Shechem in the land of Canaan.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "shechem", "jacob", "canaan"]
+    },
+    {
+      "key": "day-011-genesis-031-033-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Jacob wrestling through the night before meeting Esau?",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 24,
+      "verse_end": 25,
+      "reference": "Genesis 32:24-25",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Two figures wrestling at night near a riverbank",
+            "image_url": "/training/genesis/jacob-wrestling-night.png",
+            "alt": "Two ancient figures wrestling at night near a riverbank"
+          },
+          {
+            "label": "A camp at night divided into two groups",
+            "image_url": "/training/genesis/camp-divided-night.png",
+            "alt": "Ancient camp at night divided into two groups with tents and animals"
+          },
+          {
+            "label": "Servants leading animals ahead as gifts on a journey",
+            "image_url": "/training/genesis/gifts-for-esau.png",
+            "alt": "Servants leading animals and gifts ahead on a journey"
+          },
+          {
+            "label": "A family bowing before an approaching group",
+            "image_url": "/training/genesis/family-bowing-esau.png",
+            "alt": "Ancient family bowing in greeting before another approaching group"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Two figures wrestling at night near a riverbank"
+      },
+      "explanation": "Genesis 32 says Jacob wrestled through the night before meeting Esau.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "wrestling", "image"]
+    },
+    {
+      "key": "day-011-genesis-031-033-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 31 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 17,
+      "verse_end": 55,
+      "reference": "Genesis 31:17-55",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Laban pursues Jacob",
+          "Rachel takes Laban's household gods",
+          "God warns Laban in a dream",
+          "Jacob and Laban make an agreement"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Rachel takes Laban's household gods",
+          "Laban pursues Jacob",
+          "God warns Laban in a dream",
+          "Jacob and Laban make an agreement"
+        ]
+      },
+      "explanation": "Genesis 31 moves from Rachel taking the household gods to the pursuit, the dream warning, and then the agreement.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "rachel", "laban", "ordering"]
+    },
+    {
+      "key": "day-011-genesis-031-033-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 32 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 3,
+      "verse_end": 31,
+      "reference": "Genesis 32:3-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob's name is changed to Israel",
+          "Jacob divides the people and flocks into two camps",
+          "Jacob sends gifts ahead to Esau",
+          "Jacob crosses the Jabbok"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob divides the people and flocks into two camps",
+          "Jacob sends gifts ahead to Esau",
+          "Jacob crosses the Jabbok",
+          "Jacob's name is changed to Israel"
+        ]
+      },
+      "explanation": "Genesis 32 records the divided camp, the gifts, the Jabbok crossing, and later the name Israel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "esau", "ordering"]
+    },
+    {
+      "key": "day-011-genesis-031-033-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 33 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 33,
+      "verse_start": 1,
+      "verse_end": 18,
+      "reference": "Genesis 33:1-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Esau embraces Jacob",
+          "Jacob goes to Succoth",
+          "Jacob bows before Esau",
+          "Jacob comes safely to Shechem"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob bows before Esau",
+          "Esau embraces Jacob",
+          "Jacob goes to Succoth",
+          "Jacob comes safely to Shechem"
+        ]
+      },
+      "explanation": "Genesis 33 moves from Jacob bowing and Esau embracing him to Succoth and then Shechem.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "esau", "ordering"]
+    },
+    {
+      "key": "day-011-genesis-031-033-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 31 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 19,
+      "verse_end": 55,
+      "reference": "Genesis 31:19-55",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Rachel", "Laban", "Mizpah", "Heap and pillar"],
+        "right_items": [
+          "Took the household gods",
+          "Name connected to the watch-place agreement",
+          "Pursued Jacob and was warned in a dream",
+          "Set up as a witness between Jacob and Laban"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Rachel", "right": "Took the household gods" },
+          { "left": "Laban", "right": "Pursued Jacob and was warned in a dream" },
+          { "left": "Mizpah", "right": "Name connected to the watch-place agreement" },
+          { "left": "Heap and pillar", "right": "Set up as a witness between Jacob and Laban" }
+        ]
+      },
+      "explanation": "Genesis 31 connects these names and objects to Jacob's departure and the agreement with Laban.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "rachel", "laban", "mizpah", "matching"]
+    },
+    {
+      "key": "day-011-genesis-031-033-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 32 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 3,
+      "verse_end": 31,
+      "reference": "Genesis 32:3-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Messengers", "Two camps", "Jabbok", "Israel"],
+        "right_items": [
+          "Place Jacob crossed that night",
+          "Name given to Jacob after the struggle",
+          "Sent ahead to Esau",
+          "How Jacob arranged the people and flocks"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Messengers", "right": "Sent ahead to Esau" },
+          { "left": "Two camps", "right": "How Jacob arranged the people and flocks" },
+          { "left": "Jabbok", "right": "Place Jacob crossed that night" },
+          { "left": "Israel", "right": "Name given to Jacob after the struggle" }
+        ]
+      },
+      "explanation": "Genesis 32 ties these names and actions to Jacob's preparation before meeting Esau.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "esau", "jabbok", "matching"]
+    },
+    {
+      "key": "day-011-genesis-031-033-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 33 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 33,
+      "verse_start": 1,
+      "verse_end": 18,
+      "reference": "Genesis 33:1-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Esau", "Jacob", "Succoth", "Shechem"],
+        "right_items": [
+          "Place where Jacob made booths for livestock",
+          "Place Jacob reached safely in Canaan",
+          "Ran to meet, embraced, and kissed Jacob",
+          "Bowed to the ground seven times"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Esau", "right": "Ran to meet, embraced, and kissed Jacob" },
+          { "left": "Jacob", "right": "Bowed to the ground seven times" },
+          { "left": "Succoth", "right": "Place where Jacob made booths for livestock" },
+          { "left": "Shechem", "right": "Place Jacob reached safely in Canaan" }
+        ]
+      },
+      "explanation": "Genesis 33 connects Esau, Jacob, Succoth, and Shechem to these direct details.",
+      "teaching_note": "This question stays with direct actions and places from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "esau", "jacob", "succoth", "matching"]
+    },
+    {
+      "key": "day-011-genesis-031-033-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 31.",
+      "book": "Genesis",
+      "chapter": 31,
+      "verse_start": 34,
+      "verse_end": 35,
+      "reference": "Genesis 31:34-35",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 31 says Rachel sat on the household gods while Laban searched."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 31 says Rachel put them in the saddle and sat on them while Laban searched.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "rachel", "laban", "true-false"]
+    },
+    {
+      "key": "day-011-genesis-031-033-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 33.",
+      "book": "Genesis",
+      "chapter": 33,
+      "verse_start": 4,
+      "verse_end": 4,
+      "reference": "Genesis 33:4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 33 says Esau ran to meet Jacob and embraced him."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 33 says Esau ran to meet Jacob, embraced him, and kissed him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "esau", "jacob", "true-false"]
+    },
+    {
+      "key": "day-011-genesis-031-033-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 32 statement.",
+      "book": "Genesis",
+      "chapter": 32,
+      "verse_start": 24,
+      "verse_end": 31,
+      "reference": "Genesis 32:24-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After the night struggle, Jacob left the place with his hip uninjured and no limp.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Jacob’s hip was touched, and he limped as he passed the place.",
+          "Jacob never crossed the Jabbok that night.",
+          "Jacob was renamed Laban after the struggle.",
+          "Esau was the one who injured Jacob before dawn."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jacob’s hip was touched, and he limped as he passed the place."
+      },
+      "explanation": "Genesis 32 says Jacob’s hip was touched in the struggle, and he limped afterward.",
+      "teaching_note": "This keeps the focus on direct facts from the wrestling scene without asking interpretive questions.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-31-33",
+      "tags": ["genesis", "jacob", "hip", "spot-error"]
+    }
+  ]
+}

@@ -1,0 +1,686 @@
+{
+  "day": 7,
+  "segment_key": "genesis-019-021",
+  "unlock_key": "genesis-19-21",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 19,
+    "chapter_end": 21,
+    "reference": "Genesis 19–21"
+  },
+  "items": [
+    {
+      "key": "day-007-genesis-019-021-001",
+      "format": "multiple_choice",
+      "prompt": "Where did the two visitors arrive in the evening?",
+      "book": "Genesis",
+      "chapter": 19,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 19:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Sodom", "Gerar", "Beersheba", "Hebron"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Sodom"
+      },
+      "explanation": "Genesis 19 says the two visitors came to Sodom in the evening.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "sodom", "visitors", "genesis-19"]
+    },
+    {
+      "key": "day-007-genesis-019-021-002",
+      "format": "multiple_choice",
+      "prompt": "What instruction was Lot given while fleeing the city?",
+      "book": "Genesis",
+      "chapter": 19,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Genesis 19:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Do not look back",
+          "Return to Sodom at sunrise",
+          "Wait at the city gate",
+          "Go to Egypt immediately"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Do not look back"
+      },
+      "explanation": "Genesis 19 says Lot was told to escape and not look back.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "lot", "sodom", "warning"]
+    },
+    {
+      "key": "day-007-genesis-019-021-003",
+      "format": "multiple_choice",
+      "prompt": "Who took Sarah when Abraham was in Gerar?",
+      "book": "Genesis",
+      "chapter": 20,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 20:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Abimelech", "Pharaoh", "Lot", "Ishmael"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abimelech"
+      },
+      "explanation": "Genesis 20 says Abimelech king of Gerar took Sarah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "abimelech", "sarah", "gerar"]
+    },
+    {
+      "key": "day-007-genesis-019-021-004",
+      "format": "multiple_choice",
+      "prompt": "What name did Abraham give to the son Sarah bore him?",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 21:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Isaac", "Ishmael", "Esau", "Jacob"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Isaac"
+      },
+      "explanation": "Genesis 21 says Abraham named his son Isaac.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "isaac", "abraham", "sarah"]
+    },
+    {
+      "key": "day-007-genesis-019-021-005",
+      "format": "multiple_choice",
+      "prompt": "What did Abraham set apart at Beersheba as a witness?",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 28,
+      "verse_end": 30,
+      "reference": "Genesis 21:28-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Seven ewe lambs", "Twelve stones", "A pair of doves", "Five loaves"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seven ewe lambs"
+      },
+      "explanation": "Genesis 21 says Abraham set apart seven ewe lambs as a witness.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "beersheba", "ewe-lambs", "abraham"]
+    },
+    {
+      "key": "day-007-genesis-019-021-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 19.",
+      "book": "Genesis",
+      "chapter": 19,
+      "verse_start": 22,
+      "verse_end": 22,
+      "reference": "Genesis 19:22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "text": "Lot asked to flee to ____.",
+        "blank_count": 1,
+        "options": ["Zoar", "Gerar", "Salem", "Mamre"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Zoar"
+      },
+      "explanation": "Genesis 19 says Lot was allowed to flee to Zoar.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "lot", "zoar", "genesis-19"]
+    },
+    {
+      "key": "day-007-genesis-019-021-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 20.",
+      "book": "Genesis",
+      "chapter": 20,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 20:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "God came to Abimelech in a ____ by night.",
+        "blank_count": 1,
+        "options": ["dream", "vision", "storm", "battle"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "dream"
+      },
+      "explanation": "Genesis 20 says God warned Abimelech in a dream by night.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "abimelech", "dream", "genesis-20"]
+    },
+    {
+      "key": "day-007-genesis-019-021-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 21.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 4,
+      "verse_end": 4,
+      "reference": "Genesis 21:4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Abraham circumcised Isaac on the ____ day.",
+        "blank_count": 1,
+        "options": ["eighth", "third", "seventh", "twelfth"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "eighth"
+      },
+      "explanation": "Genesis 21 says Abraham circumcised Isaac when he was eight days old.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "isaac", "circumcision", "genesis-21"]
+    },
+    {
+      "key": "day-007-genesis-019-021-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 21.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 21:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Hagar wandered in the wilderness of ____.",
+        "blank_count": 1,
+        "options": ["Beersheba", "Sodom", "Gerar", "Hebron"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Beersheba"
+      },
+      "explanation": "Genesis 21 says Hagar wandered in the wilderness of Beersheba.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "hagar", "beersheba", "wilderness"]
+    },
+    {
+      "key": "day-007-genesis-019-021-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Hagar finding water in the wilderness?",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 19,
+      "verse_end": 19,
+      "reference": "Genesis 21:19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "wilderness",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A woman and boy near a newly found wilderness well",
+            "image_url": "/training/genesis/hagar-wilderness-well.png",
+            "alt": "Woman and boy near a water source in the wilderness"
+          },
+          {
+            "label": "A lone well in the wilderness landscape",
+            "image_url": "/training/genesis/well-in-beersheba.png",
+            "alt": "Stone well in a dry wilderness landscape"
+          },
+          {
+            "label": "A family traveling along a desert road",
+            "image_url": "/training/genesis/desert-road-family.png",
+            "alt": "Family traveling along a desert road"
+          },
+          {
+            "label": "A joyful household scene after a child's birth",
+            "image_url": "/training/genesis/isaac-birth-joy.png",
+            "alt": "Joyful household scene with a newborn child"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A woman and boy near a newly found wilderness well"
+      },
+      "explanation": "Genesis 21 says God opened Hagar's eyes and she saw a well of water.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "hagar", "well", "image"]
+    },
+    {
+      "key": "day-007-genesis-019-021-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abraham and Abimelech making an agreement?",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 27,
+      "verse_end": 32,
+      "reference": "Genesis 21:27-32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "agreement",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Two men making a formal agreement in an open place",
+            "image_url": "/training/genesis/abraham-abimelech-agreement.png",
+            "alt": "Two men making a peaceful formal agreement outdoors"
+          },
+          {
+            "label": "A family fleeing from a distant city",
+            "image_url": "/training/genesis/fleeing-sodom.png",
+            "alt": "Family fleeing from a distant city through rocky land"
+          },
+          {
+            "label": "A small distant town across dry hills",
+            "image_url": "/training/genesis/zoar-distant-town.png",
+            "alt": "Small distant town across dry hills"
+          },
+          {
+            "label": "Smoke rising over a distant plain",
+            "image_url": "/training/genesis/smoke-rising-plain.png",
+            "alt": "Smoke rising over a broad distant plain"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Two men making a formal agreement in an open place"
+      },
+      "explanation": "Genesis 21 records Abraham and Abimelech making an agreement at Beersheba.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "abraham", "abimelech", "image"]
+    },
+    {
+      "key": "day-007-genesis-019-021-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 19 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 19,
+      "verse_start": 1,
+      "verse_end": 28,
+      "reference": "Genesis 19:1-28",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Lot urges the visitors to stay with him",
+          "The visitors arrive in Sodom",
+          "Lot's wife looks back",
+          "Lot is told to flee"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The visitors arrive in Sodom",
+          "Lot urges the visitors to stay with him",
+          "Lot is told to flee",
+          "Lot's wife looks back"
+        ]
+      },
+      "explanation": "Genesis 19 moves from the visitors arriving, to Lot urging them to stay, to the warning to flee, and then Lot's wife looking back.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "lot", "sodom", "ordering"]
+    },
+    {
+      "key": "day-007-genesis-019-021-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 20 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 20,
+      "verse_start": 2,
+      "verse_end": 18,
+      "reference": "Genesis 20:2-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God warns Abimelech in a dream",
+          "Abimelech returns Sarah",
+          "Abimelech takes Sarah",
+          "Abraham says Sarah is his sister"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Abraham says Sarah is his sister",
+          "Abimelech takes Sarah",
+          "God warns Abimelech in a dream",
+          "Abimelech returns Sarah"
+        ]
+      },
+      "explanation": "Genesis 20 moves from Abraham's statement, to Abimelech taking Sarah, to the dream warning, and then Sarah's return.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "abimelech", "sarah", "ordering"]
+    },
+    {
+      "key": "day-007-genesis-019-021-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 21 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 2,
+      "verse_end": 32,
+      "reference": "Genesis 21:2-32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Hagar and Ishmael are sent away",
+          "Abraham and Abimelech make an agreement",
+          "Isaac is born",
+          "Isaac is circumcised"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Isaac is born",
+          "Isaac is circumcised",
+          "Hagar and Ishmael are sent away",
+          "Abraham and Abimelech make an agreement"
+        ]
+      },
+      "explanation": "Genesis 21 records Isaac's birth, then his circumcision, then Hagar and Ishmael being sent away, and later the agreement at Beersheba.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "isaac", "hagar", "abimelech", "ordering"]
+    },
+    {
+      "key": "day-007-genesis-019-021-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 19 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 19,
+      "verse_start": 1,
+      "verse_end": 28,
+      "reference": "Genesis 19:1-28",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Sodom", "Zoar", "Lot's wife", "Abraham"],
+        "right_items": [
+          "Town Lot was allowed to flee to",
+          "City the visitors entered in the evening",
+          "Looked back while fleeing",
+          "Later saw smoke rising from the land"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Sodom", "right": "City the visitors entered in the evening" },
+          { "left": "Zoar", "right": "Town Lot was allowed to flee to" },
+          { "left": "Lot's wife", "right": "Looked back while fleeing" },
+          { "left": "Abraham", "right": "Later saw smoke rising from the land" }
+        ]
+      },
+      "explanation": "Genesis 19 connects these people and places to these events.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "sodom", "zoar", "matching"]
+    },
+    {
+      "key": "day-007-genesis-019-021-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 20 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 20,
+      "verse_start": 1,
+      "verse_end": 18,
+      "reference": "Genesis 20:1-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Gerar", "Abimelech", "Sarah", "Dream"],
+        "right_items": [
+          "How God warned the king",
+          "Woman returned to Abraham",
+          "Place where Abraham was staying",
+          "King who took Sarah"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Gerar", "right": "Place where Abraham was staying" },
+          { "left": "Abimelech", "right": "King who took Sarah" },
+          { "left": "Sarah", "right": "Woman returned to Abraham" },
+          { "left": "Dream", "right": "How God warned the king" }
+        ]
+      },
+      "explanation": "Genesis 20 gives these details about Abraham, Sarah, and Abimelech in Gerar.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "gerar", "abimelech", "matching"]
+    },
+    {
+      "key": "day-007-genesis-019-021-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 21 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 3,
+      "verse_end": 31,
+      "reference": "Genesis 21:3-31",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Isaac", "Beersheba", "Seven ewe lambs", "Well of water"],
+        "right_items": [
+          "Set apart by Abraham as a witness",
+          "Name given to Abraham and Sarah's son",
+          "Shown to Hagar in the wilderness",
+          "Place connected with Abraham's agreement with Abimelech"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Isaac", "right": "Name given to Abraham and Sarah's son" },
+          { "left": "Beersheba", "right": "Place connected with Abraham's agreement with Abimelech" },
+          { "left": "Seven ewe lambs", "right": "Set apart by Abraham as a witness" },
+          { "left": "Well of water", "right": "Shown to Hagar in the wilderness" }
+        ]
+      },
+      "explanation": "Genesis 21 ties these names and objects to Isaac's birth, Hagar's rescue, and the agreement at Beersheba.",
+      "teaching_note": "This question stays with direct details from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "isaac", "beersheba", "matching"]
+    },
+    {
+      "key": "day-007-genesis-019-021-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 21.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 21:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 21 says Sarah said God had made laughter for her."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 21 records Sarah saying that God had made laughter for her.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "sarah", "laughter", "true-false"]
+    },
+    {
+      "key": "day-007-genesis-019-021-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 21.",
+      "book": "Genesis",
+      "chapter": 21,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Genesis 21:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 21 says God heard the boy in the wilderness."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 21 says God heard the boy while Hagar and the boy were in the wilderness.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "hagar", "ishmael", "true-false"]
+    },
+    {
+      "key": "day-007-genesis-019-021-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 20 statement.",
+      "book": "Genesis",
+      "chapter": 20,
+      "verse_start": 3,
+      "verse_end": 14,
+      "reference": "Genesis 20:3-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After the dream, Abimelech kept Sarah and did not return her to Abraham.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Abimelech returned Sarah to Abraham after God warned him in a dream.",
+          "Abimelech was never warned by God at all.",
+          "Sarah was in Beersheba and not in Gerar.",
+          "Abraham had said Isaac was his sister."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abimelech returned Sarah to Abraham after God warned him in a dream."
+      },
+      "explanation": "Genesis 20 says Abimelech returned Sarah after God warned him in a dream.",
+      "teaching_note": "This keeps the focus on the direct sequence in the Gerar account.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-19-21",
+      "tags": ["genesis", "abimelech", "sarah", "spot-error"]
+    }
+  ]
+}

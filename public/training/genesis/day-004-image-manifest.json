@@ -1,0 +1,65 @@
+{
+  "day": 4,
+  "segment_key": "genesis-010-012",
+  "unlock_key": "genesis-10-12",
+  "images": [
+    {
+      "question_key": "day-004-genesis-010-012-010",
+      "prompt": "Which image best represents the tower and city of Babel?",
+      "correct_image_filename": "tower-of-babel.png",
+      "image_filenames": [
+        "tower-of-babel.png",
+        "scattered-people-babel.png",
+        "ancient-city-gate.png",
+        "plain-of-shinar.png"
+      ],
+      "reasons": [
+        {
+          "filename": "tower-of-babel.png",
+          "reason": "Directly shows the city and prominent tower described in Genesis 11."
+        },
+        {
+          "filename": "scattered-people-babel.png",
+          "reason": "Relates to the Babel account but focuses on the later scattering rather than the tower itself."
+        },
+        {
+          "filename": "ancient-city-gate.png",
+          "reason": "Offers a plausible ancient urban scene that is still distinct from the tower prompt."
+        },
+        {
+          "filename": "plain-of-shinar.png",
+          "reason": "Connects to the right region but emphasizes the plain rather than the city and tower."
+        }
+      ]
+    },
+    {
+      "question_key": "day-004-genesis-010-012-011",
+      "prompt": "Which image best represents Abram traveling toward Canaan?",
+      "correct_image_filename": "abram-traveling-canaan.png",
+      "image_filenames": [
+        "abram-traveling-canaan.png",
+        "desert-caravan.png",
+        "egypt-palace.png",
+        "stone-altar-canaan.png"
+      ],
+      "reasons": [
+        {
+          "filename": "abram-traveling-canaan.png",
+          "reason": "Best matches Genesis 12's travel scene of Abram setting out toward Canaan."
+        },
+        {
+          "filename": "desert-caravan.png",
+          "reason": "Provides a travel-related distractor that is visually close but less specific to the prompt."
+        },
+        {
+          "filename": "egypt-palace.png",
+          "reason": "Belongs to a later Egypt scene in Genesis 12 rather than Abram's earlier journey toward Canaan."
+        },
+        {
+          "filename": "stone-altar-canaan.png",
+          "reason": "Connects to Abram's later altar-building in Canaan, not to the travel action itself."
+        }
+      ]
+    }
+  ]
+}

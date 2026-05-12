@@ -1,0 +1,34 @@
+{
+  "day": 17,
+  "question_key": "day-017-exodus-001-003-011",
+  "images": [
+    {
+      "image_filename": "basket-nile-reeds.png",
+      "label": "A small woven basket resting among Nile reeds in soft morning light",
+      "prompt": "Create a respectful symbolic scene of a small woven basket among reeds along the Nile, ancient Egypt atmosphere, soft morning light, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A small woven basket resting among reeds by the Nile in soft morning light"
+    },
+    {
+      "image_filename": "burning-bush-horeb.png",
+      "label": "A bush burning brightly on a rugged mountain slope with no sign of being consumed",
+      "prompt": "Create a symbolic scene of a bush burning with bright flame but not consumed on a rugged mountain slope, sacred atmosphere, warm glowing light, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "A bush burning brightly on a rugged mountain slope at Horeb without being consumed"
+    },
+    {
+      "image_filename": "midian-well-flocks.png",
+      "label": "A desert well in Midian with flocks nearby and low hills behind it",
+      "prompt": "Create an ancient Midian well scene with flocks nearby and desert hills in the background, calm pastoral atmosphere, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A desert well in Midian with flocks nearby and low hills in the background"
+    },
+    {
+      "image_filename": "egypt-store-city-labor.png",
+      "label": "An ancient Egyptian store-city construction scene with workers carrying materials",
+      "prompt": "Create a respectful symbolic scene of ancient Egypt with large store-city construction and workers carrying materials, not graphic or harsh, cinematic but respectful, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "An ancient Egyptian store-city construction scene with workers carrying materials"
+    }
+  ]
+}

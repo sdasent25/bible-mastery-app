@@ -1,0 +1,701 @@
+{
+  "day": 2,
+  "segment_key": "genesis-004-006",
+  "unlock_key": "genesis-4-6",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 4,
+    "chapter_end": 6,
+    "reference": "Genesis 4–6"
+  },
+  "items": [
+    {
+      "key": "day-002-genesis-004-006-001",
+      "format": "multiple_choice",
+      "prompt": "What kind of work did Cain do in Genesis 4?",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 4:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "He worked the ground",
+          "He kept sheep",
+          "He built the ark",
+          "He forged bronze"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "He worked the ground"
+      },
+      "explanation": "Genesis 4 says Cain was a worker of the ground, while Abel kept flocks.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "cain", "people"]
+    },
+    {
+      "key": "day-002-genesis-004-006-002",
+      "format": "multiple_choice",
+      "prompt": "What did Abel bring as his offering?",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 3,
+      "verse_end": 4,
+      "reference": "Genesis 4:3-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "offerings",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "The firstborn of his flock",
+          "Fruit from the garden",
+          "Timber from the hills",
+          "Water from a spring"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The firstborn of his flock"
+      },
+      "explanation": "Genesis 4 says Abel brought an offering from the firstborn of his flock.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "abel", "offering"]
+    },
+    {
+      "key": "day-002-genesis-004-006-003",
+      "format": "multiple_choice",
+      "prompt": "After Cain killed Abel, what did God say was crying out from the ground?",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 10,
+      "verse_end": 10,
+      "reference": "Genesis 4:10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Abel's blood",
+          "Cain's harvest",
+          "The voice of the serpent",
+          "The animals of the field"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abel's blood"
+      },
+      "explanation": "God tells Cain that his brother's blood is crying out from the ground.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "cain", "abel", "ground"]
+    },
+    {
+      "key": "day-002-genesis-004-006-004",
+      "format": "multiple_choice",
+      "prompt": "According to Eve, who was appointed in place of Abel?",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 25,
+      "verse_end": 25,
+      "reference": "Genesis 4:25",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Seth", "Enoch", "Jabal", "Lamech"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seth"
+      },
+      "explanation": "Genesis 4 says Seth was appointed in place of Abel, whom Cain killed.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "seth", "abel", "eve"]
+    },
+    {
+      "key": "day-002-genesis-004-006-005",
+      "format": "multiple_choice",
+      "prompt": "Which names are given for Noah's three sons?",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 32,
+      "verse_end": 32,
+      "reference": "Genesis 5:32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Shem, Ham, and Japheth",
+          "Cain, Abel, and Seth",
+          "Jabal, Jubal, and Tubal-cain",
+          "Enoch, Lamech, and Noah"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Shem, Ham, and Japheth"
+      },
+      "explanation": "Genesis 5 names Shem, Ham, and Japheth as Noah's sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "noah", "sons", "genealogy"]
+    },
+    {
+      "key": "day-002-genesis-004-006-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 4.",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 16,
+      "verse_end": 16,
+      "reference": "Genesis 4:16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "text": "Cain settled in the land of ____.",
+        "blank_count": 1,
+        "options": ["Nod", "Eden", "Cush", "Havilah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Nod"
+      },
+      "explanation": "Genesis 4 says Cain settled in the land of Nod, east of Eden.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "cain", "nod", "places"]
+    },
+    {
+      "key": "day-002-genesis-004-006-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 5.",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 22,
+      "verse_end": 24,
+      "reference": "Genesis 5:22-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "medium",
+      "content": {
+        "text": "Enoch walked with ____.",
+        "blank_count": 1,
+        "options": ["God", "Noah", "Adam", "Cain"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "God"
+      },
+      "explanation": "Genesis 5 repeats that Enoch walked with God.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "enoch", "genealogy"]
+    },
+    {
+      "key": "day-002-genesis-004-006-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 5.",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 32,
+      "verse_end": 32,
+      "reference": "Genesis 5:32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "medium",
+      "content": {
+        "text": "Noah became the father of Shem, Ham, and ____.",
+        "blank_count": 1,
+        "options": ["Japheth", "Seth", "Enosh", "Abel"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Japheth"
+      },
+      "explanation": "Genesis 5 names Japheth with Shem and Ham as Noah's sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "noah", "japheth", "sons"]
+    },
+    {
+      "key": "day-002-genesis-004-006-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 6.",
+      "book": "Genesis",
+      "chapter": 6,
+      "verse_start": 11,
+      "verse_end": 11,
+      "reference": "Genesis 6:11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "Genesis 6 says the earth was filled with ____.",
+        "blank_count": 1,
+        "options": ["violence", "peace", "music", "harvest"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "violence"
+      },
+      "explanation": "Genesis 6 describes the earth as corrupt and filled with violence.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "violence", "earth", "noah"]
+    },
+    {
+      "key": "day-002-genesis-004-006-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abel's offering from his flock?",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 3,
+      "verse_end": 4,
+      "reference": "Genesis 4:3-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "offerings",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A flock offering beside a simple stone altar",
+            "image_url": "/training/genesis/abel-flock-offering.png",
+            "alt": "Symbolic scene of a flock offering beside a stone altar"
+          },
+          {
+            "label": "Baskets of harvested crops near an altar",
+            "image_url": "/training/genesis/crops-offering.png",
+            "alt": "Harvested crops gathered near a plain altar"
+          },
+          {
+            "label": "An ancient stone city with high walls",
+            "image_url": "/training/genesis/stone-city.png",
+            "alt": "Ancient stone city with walls and buildings"
+          },
+          {
+            "label": "A shepherd standing with sheep in an open field",
+            "image_url": "/training/genesis/shepherd-field.png",
+            "alt": "Shepherd with sheep in an open field"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A flock offering beside a simple stone altar"
+      },
+      "explanation": "Genesis 4 says Abel brought an offering from the firstborn of his flock.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "abel", "offering", "image"]
+    },
+    {
+      "key": "day-002-genesis-004-006-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Noah building the ark?",
+      "book": "Genesis",
+      "chapter": 6,
+      "verse_start": 14,
+      "verse_end": 16,
+      "reference": "Genesis 6:14-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "ark",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A large wooden ark under construction on dry land",
+            "image_url": "/training/genesis/noah-building-ark.png",
+            "alt": "Symbolic image of a large wooden ark under construction"
+          },
+          {
+            "label": "Pairs of animals gathering near a large ark",
+            "image_url": "/training/genesis/animals-near-ark.png",
+            "alt": "Animals approaching a large ark on dry land"
+          },
+          {
+            "label": "Heavy rain falling over rising floodwaters",
+            "image_url": "/training/genesis/rain-floodwaters.png",
+            "alt": "Storm rain over spreading floodwaters"
+          },
+          {
+            "label": "A lone tent near a mountain ridge",
+            "image_url": "/training/genesis/mountain-tent.png",
+            "alt": "Tent on rocky ground near a mountain landscape"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A large wooden ark under construction on dry land"
+      },
+      "explanation": "Genesis 6 records God instructing Noah to make the ark before the flood came.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "noah", "ark", "image"]
+    },
+    {
+      "key": "day-002-genesis-004-006-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 4 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 3,
+      "verse_end": 10,
+      "reference": "Genesis 4:3-10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God asks Cain where Abel is",
+          "Cain becomes very angry",
+          "Cain and Abel bring offerings",
+          "Cain kills Abel in the field"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Cain and Abel bring offerings",
+          "Cain becomes very angry",
+          "Cain kills Abel in the field",
+          "God asks Cain where Abel is"
+        ]
+      },
+      "explanation": "Genesis 4 moves from the offerings to Cain's anger, then Abel's murder, and then God's question.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "cain", "abel", "ordering"]
+    },
+    {
+      "key": "day-002-genesis-004-006-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 5 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 3,
+      "verse_end": 32,
+      "reference": "Genesis 5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Noah becomes father to three sons",
+          "Enoch walks with God",
+          "Adam fathers Seth",
+          "Seth fathers Enosh"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Adam fathers Seth",
+          "Seth fathers Enosh",
+          "Enoch walks with God",
+          "Noah becomes father to three sons"
+        ]
+      },
+      "explanation": "Genesis 5 traces the line from Adam to Noah in that sequence.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "genealogy", "ordering", "noah"]
+    },
+    {
+      "key": "day-002-genesis-004-006-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 6 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 6,
+      "verse_start": 11,
+      "verse_end": 22,
+      "reference": "Genesis 6:11-22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God tells Noah to bring animals into the ark",
+          "God says the earth is corrupt and filled with violence",
+          "God tells Noah to make an ark",
+          "God says he will establish his covenant with Noah"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "God says the earth is corrupt and filled with violence",
+          "God tells Noah to make an ark",
+          "God says he will establish his covenant with Noah",
+          "God tells Noah to bring animals into the ark"
+        ]
+      },
+      "explanation": "Genesis 6 moves from the earth's corruption to the ark command, then the covenant statement, then the animal instructions.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "noah", "ark", "ordering"]
+    },
+    {
+      "key": "day-002-genesis-004-006-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 4-6 figure with the correct description.",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 2,
+      "verse_end": 25,
+      "reference": "Genesis 4-6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Cain", "Abel", "Seth", "Noah"],
+        "right_items": [
+          "Appointed in place of Abel",
+          "Killed his brother",
+          "Brought an offering from his flock",
+          "Father of Shem, Ham, and Japheth"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Cain", "right": "Killed his brother" },
+          { "left": "Abel", "right": "Brought an offering from his flock" },
+          { "left": "Seth", "right": "Appointed in place of Abel" },
+          { "left": "Noah", "right": "Father of Shem, Ham, and Japheth" }
+        ]
+      },
+      "explanation": "These details are directly stated across Genesis 4-6.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "people", "matching"]
+    },
+    {
+      "key": "day-002-genesis-004-006-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 4-5 name with the correct description.",
+      "book": "Genesis",
+      "chapter": 4,
+      "verse_start": 20,
+      "verse_end": 24,
+      "reference": "Genesis 4:20-24; Genesis 5:21-29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Enoch", "Lamech, father of Noah", "Jabal", "Jubal"],
+        "right_items": [
+          "Father of Noah",
+          "Lived in tents and had livestock",
+          "Played the lyre and pipe",
+          "Walked with God and was taken"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Enoch", "right": "Walked with God and was taken" },
+          { "left": "Lamech, father of Noah", "right": "Father of Noah" },
+          { "left": "Jabal", "right": "Lived in tents and had livestock" },
+          { "left": "Jubal", "right": "Played the lyre and pipe" }
+        ]
+      },
+      "explanation": "Genesis 4 and 5 give these specific family details and roles.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "genealogy", "matching", "names"]
+    },
+    {
+      "key": "day-002-genesis-004-006-017",
+      "format": "matching",
+      "prompt": "Match each ark detail with the correct description.",
+      "book": "Genesis",
+      "chapter": 6,
+      "verse_start": 14,
+      "verse_end": 16,
+      "reference": "Genesis 6:14-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "ark",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Length", "Width", "Height", "Covering material"],
+        "right_items": [
+          "30 cubits",
+          "50 cubits",
+          "Cover the ark inside and out with it",
+          "300 cubits"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Length", "right": "300 cubits" },
+          { "left": "Width", "right": "50 cubits" },
+          { "left": "Height", "right": "30 cubits" },
+          { "left": "Covering material", "right": "Cover the ark inside and out with it" }
+        ]
+      },
+      "explanation": "Genesis 6 gives these specific ark details in Noah's instructions.",
+      "teaching_note": "This focuses only on details stated directly in Genesis 6.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "ark", "matching", "dimensions"]
+    },
+    {
+      "key": "day-002-genesis-004-006-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 5.",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 24,
+      "verse_end": 24,
+      "reference": "Genesis 5:24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 5 says Enoch was no more because God took him."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 5 states that Enoch walked with God, and then he was no more because God took him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "enoch", "true-false"]
+    },
+    {
+      "key": "day-002-genesis-004-006-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 5.",
+      "book": "Genesis",
+      "chapter": 5,
+      "verse_start": 32,
+      "verse_end": 32,
+      "reference": "Genesis 5:32",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "genealogy",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 5 says Noah had sons named Shem, Ham, and Japheth."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 5 names Shem, Ham, and Japheth as Noah's sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "noah", "sons", "true-false"]
+    },
+    {
+      "key": "day-002-genesis-004-006-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 6 statement.",
+      "book": "Genesis",
+      "chapter": 6,
+      "verse_start": 14,
+      "verse_end": 16,
+      "reference": "Genesis 6:14-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "ark",
+      "difficulty": "hard",
+      "content": {
+        "statement": "God told Noah to cover the ark inside and out and make it fifty cubits long.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "The ark was to be 300 cubits long, not 50 cubits long.",
+          "Noah was told to build a stone tower, not an ark.",
+          "God told Noah to leave the ark uncovered.",
+          "The ark was to be 30 cubits wide and 50 cubits high."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The ark was to be 300 cubits long, not 50 cubits long."
+      },
+      "explanation": "Genesis 6 gives the ark's length as 300 cubits, while 50 cubits is its width.",
+      "teaching_note": "This tests careful reading of the ark dimensions in Genesis 6.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-4-6",
+      "tags": ["genesis", "ark", "dimensions", "spot-error"]
+    }
+  ]
+}

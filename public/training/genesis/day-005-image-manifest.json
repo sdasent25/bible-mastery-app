@@ -1,0 +1,40 @@
+{
+  "day": 5,
+  "segment_key": "genesis-013-015",
+  "images": [
+    {
+      "question_key": "day-005-genesis-013-015-010",
+      "prompt": "Which image best represents Abram and Lot separating?",
+      "correct_image_filename": "abram-lot-separate.png",
+      "all_image_filenames": [
+        "abram-lot-separate.png",
+        "jordan-valley.png",
+        "tents-and-flocks.png",
+        "altar-near-hebron.png"
+      ],
+      "reasons": {
+        "abram-lot-separate.png": "Shows the clearest visual of two groups separating, which matches Genesis 13 directly.",
+        "jordan-valley.png": "Represents the land Lot chose, but not the act of separation itself.",
+        "tents-and-flocks.png": "Suggests the wealth and livestock context behind the dispute, but not the actual parting.",
+        "altar-near-hebron.png": "Represents Abram's later altar near Hebron, which happens after the separation."
+      }
+    },
+    {
+      "question_key": "day-005-genesis-013-015-011",
+      "prompt": "Which image best represents Abram looking at the stars?",
+      "correct_image_filename": "abram-stars.png",
+      "all_image_filenames": [
+        "abram-stars.png",
+        "melchizedek-bread-wine.png",
+        "rescue-of-lot.png",
+        "covenant-animals.png"
+      ],
+      "reasons": {
+        "abram-stars.png": "Directly reflects Genesis 15, where Abram is told to look toward heaven and count the stars.",
+        "melchizedek-bread-wine.png": "Represents a different Genesis 14 scene involving Melchizedek.",
+        "rescue-of-lot.png": "Represents Abram's military rescue of Lot rather than the vision scene.",
+        "covenant-animals.png": "Represents a later covenant detail in Genesis 15, but not the stars scene."
+      }
+    }
+  ]
+}

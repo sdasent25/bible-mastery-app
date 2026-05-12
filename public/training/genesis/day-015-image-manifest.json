@@ -1,0 +1,38 @@
+{
+  "day": 15,
+  "segment_key": "genesis-043-046",
+  "images": [
+    {
+      "question_key": "day-015-genesis-043-046-011",
+      "image_filename": "silver-cup-sack.png",
+      "label": "A silver cup partly visible inside an opened grain sack",
+      "prompt_used": "Create a symbolic close scene of a silver cup partly visible inside an opened grain sack, ancient Egyptian setting, dramatic but respectful lighting, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "A silver cup partly visible inside an opened grain sack in an ancient Egyptian setting"
+    },
+    {
+      "question_key": "day-015-genesis-043-046-011",
+      "image_filename": "joseph-reveals-brothers.png",
+      "label": "An Egyptian official revealing himself to shocked brothers",
+      "prompt_used": "Create a respectful symbolic scene of an Egyptian official revealing himself to a group of shocked brothers in a palace room, emotional but non-sensational, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "An Egyptian official revealing himself to a group of shocked brothers in a palace room"
+    },
+    {
+      "question_key": "day-015-genesis-043-046-011",
+      "image_filename": "jacob-family-egypt-journey.png",
+      "label": "An ancient family caravan traveling toward Egypt with carts and animals",
+      "prompt_used": "Create a symbolic scene of an ancient family caravan traveling toward Egypt with carts/wagons, animals, and household goods, warm desert light, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "An ancient family caravan traveling toward Egypt with carts, animals, and household goods"
+    },
+    {
+      "question_key": "day-015-genesis-043-046-011",
+      "image_filename": "joseph-jacob-goshen.png",
+      "label": "An older father and long-lost son reuniting in Goshen",
+      "prompt_used": "Create a respectful symbolic scene of an emotional reunion between an older father and his long-lost son in the land of Goshen, ancient pastoral Egyptian border setting, warm light, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "An older father and his long-lost son reuniting in the land of Goshen"
+    }
+  ]
+}

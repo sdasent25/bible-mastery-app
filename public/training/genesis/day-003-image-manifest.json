@@ -1,0 +1,65 @@
+{
+  "day": 3,
+  "segment_key": "genesis-007-009",
+  "unlock_key": "genesis-7-9",
+  "images": [
+    {
+      "question_key": "day-003-genesis-007-009-010",
+      "prompt": "Which image best represents the ark floating during the flood?",
+      "correct_image_filename": "ark-on-floodwaters.png",
+      "image_filenames": [
+        "ark-on-floodwaters.png",
+        "rainbow-over-earth.png",
+        "noah-altar.png",
+        "vineyard-tent.png"
+      ],
+      "reasons": [
+        {
+          "filename": "ark-on-floodwaters.png",
+          "reason": "Directly depicts the ark afloat on the waters, matching Genesis 7."
+        },
+        {
+          "filename": "rainbow-over-earth.png",
+          "reason": "Connects to the post-flood covenant but not to the ark floating during the flood."
+        },
+        {
+          "filename": "noah-altar.png",
+          "reason": "Represents Noah's later altar after leaving the ark, making it related but incorrect."
+        },
+        {
+          "filename": "vineyard-tent.png",
+          "reason": "Refers to a later Genesis 9 setting and is clearly distinct from the flood scene."
+        }
+      ]
+    },
+    {
+      "question_key": "day-003-genesis-007-009-011",
+      "prompt": "Which image best represents the dove returning with an olive leaf?",
+      "correct_image_filename": "dove-olive-leaf.png",
+      "image_filenames": [
+        "dove-olive-leaf.png",
+        "raven-over-water.png",
+        "mountain-ararat.png",
+        "animals-entering-ark.png"
+      ],
+      "reasons": [
+        {
+          "filename": "dove-olive-leaf.png",
+          "reason": "Directly represents the dove returning with a fresh olive leaf from Genesis 8."
+        },
+        {
+          "filename": "raven-over-water.png",
+          "reason": "Uses the other bird from the ark account, making it a plausible but incorrect distractor."
+        },
+        {
+          "filename": "mountain-ararat.png",
+          "reason": "Relates to the ark account but focuses on the resting place rather than the dove."
+        },
+        {
+          "filename": "animals-entering-ark.png",
+          "reason": "Connects to the broader flood story while clearly depicting a different event."
+        }
+      ]
+    }
+  ]
+}

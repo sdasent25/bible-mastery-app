@@ -1,0 +1,691 @@
+{
+  "day": 8,
+  "segment_key": "genesis-022-024",
+  "unlock_key": "genesis-22-24",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 22,
+    "chapter_end": 24,
+    "reference": "Genesis 22–24"
+  },
+  "items": [
+    {
+      "key": "day-008-genesis-022-024-001",
+      "format": "multiple_choice",
+      "prompt": "Whom did God test in Genesis 22?",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 22:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Abraham", "Isaac", "Laban", "Ephron"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abraham"
+      },
+      "explanation": "Genesis 22 begins by saying God tested Abraham.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "abraham", "test", "genesis-22"]
+    },
+    {
+      "key": "day-008-genesis-022-024-002",
+      "format": "multiple_choice",
+      "prompt": "To what land was Abraham told to go with Isaac?",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 22:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Moriah", "Beersheba", "Gerar", "Zoar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Moriah"
+      },
+      "explanation": "Genesis 22 says Abraham was told to go to the land of Moriah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "moriah", "abraham", "isaac"]
+    },
+    {
+      "key": "day-008-genesis-022-024-003",
+      "format": "multiple_choice",
+      "prompt": "Where did Abraham tell his servant to go to find a wife for Isaac?",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 4,
+      "verse_end": 4,
+      "reference": "Genesis 24:4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "To Abraham's country and relatives",
+          "To Egypt and Pharaoh's house",
+          "To Sodom and Gomorrah",
+          "To the land of Moriah"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "To Abraham's country and relatives"
+      },
+      "explanation": "Genesis 24 says Abraham sent his servant to his country and kindred to find a wife for Isaac.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "isaac", "servant", "relatives"]
+    },
+    {
+      "key": "day-008-genesis-022-024-004",
+      "format": "multiple_choice",
+      "prompt": "What sign did Abraham's servant ask for at the well?",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 24:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "That a young woman would offer water for him and his camels",
+          "That a woman would bring him bread and silver",
+          "That a man would show him the cave of Machpelah",
+          "That a woman would invite him to live in Gerar"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "That a young woman would offer water for him and his camels"
+      },
+      "explanation": "Genesis 24 says the servant asked for a sign involving water for himself and the camels.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "servant", "well", "camels"]
+    },
+    {
+      "key": "day-008-genesis-022-024-005",
+      "format": "multiple_choice",
+      "prompt": "Who sold the field and cave to Abraham for Sarah's burial?",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 10,
+      "verse_end": 11,
+      "reference": "Genesis 23:10-11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Ephron", "Bethuel", "Laban", "Abimelech"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Ephron"
+      },
+      "explanation": "Genesis 23 says Ephron sold the field and cave to Abraham.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "ephron", "machpelah", "burial"]
+    },
+    {
+      "key": "day-008-genesis-022-024-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 22.",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 7,
+      "verse_end": 7,
+      "reference": "Genesis 22:7",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Isaac asked, \"Where is the ____ for a burnt offering?\"",
+        "blank_count": 1,
+        "options": ["lamb", "silver", "field", "jar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "lamb"
+      },
+      "explanation": "Genesis 22 records Isaac asking where the lamb was for the burnt offering.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "isaac", "lamb", "genesis-22"]
+    },
+    {
+      "key": "day-008-genesis-022-024-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 23.",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 23:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Sarah died at Kiriath-arba, that is, ____.",
+        "blank_count": 1,
+        "options": ["Hebron", "Beersheba", "Salem", "Moriah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Hebron"
+      },
+      "explanation": "Genesis 23 says Sarah died at Kiriath-arba, that is, Hebron.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "sarah", "hebron", "genesis-23"]
+    },
+    {
+      "key": "day-008-genesis-022-024-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 23.",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 16,
+      "verse_end": 16,
+      "reference": "Genesis 23:16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Abraham weighed out ____ shekels of silver to Ephron.",
+        "blank_count": 1,
+        "options": ["four hundred", "seventy", "one hundred", "twelve"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "four hundred"
+      },
+      "explanation": "Genesis 23 says Abraham weighed out four hundred shekels of silver to Ephron.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "abraham", "silver", "ephron"]
+    },
+    {
+      "key": "day-008-genesis-022-024-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 23.",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 19,
+      "verse_end": 19,
+      "reference": "Genesis 23:19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "The cave Abraham bought for burial was the cave of ____.",
+        "blank_count": 1,
+        "options": ["Machpelah", "Gerar", "Zoar", "Beer-lahai-roi"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Machpelah"
+      },
+      "explanation": "Genesis 23 says Sarah was buried in the cave of Machpelah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "machpelah", "burial", "genesis-23"]
+    },
+    {
+      "key": "day-008-genesis-022-024-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents the ram caught nearby in Genesis 22?",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 13,
+      "verse_end": 13,
+      "reference": "Genesis 22:13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A ram caught by its horns in a thicket",
+            "image_url": "/training/genesis/ram-caught-thicket.png",
+            "alt": "Ram caught by its horns in nearby brush"
+          },
+          {
+            "label": "A mountain path in a rugged landscape",
+            "image_url": "/training/genesis/moriah-mountain.png",
+            "alt": "Mountain ridge and path in a rugged landscape"
+          },
+          {
+            "label": "Wood and fire supplies carried on a journey",
+            "image_url": "/training/genesis/wood-and-fire-journey.png",
+            "alt": "Bundle of wood and journey supplies in ancient travel"
+          },
+          {
+            "label": "A simple stone altar on a mountain",
+            "image_url": "/training/genesis/altar-stones-moriah.png",
+            "alt": "Stone altar on a mountain setting"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A ram caught by its horns in a thicket"
+      },
+      "explanation": "Genesis 22 says Abraham saw a ram caught in a thicket nearby.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "ram", "moriah", "image"]
+    },
+    {
+      "key": "day-008-genesis-022-024-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Rebekah giving water at the well?",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 18,
+      "verse_end": 20,
+      "reference": "Genesis 24:18-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "well",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A young woman drawing and offering water at a well",
+            "image_url": "/training/genesis/rebekah-well-water.png",
+            "alt": "Young woman offering water at a stone well"
+          },
+          {
+            "label": "Camels gathered beside a well at evening",
+            "image_url": "/training/genesis/camels-at-well.png",
+            "alt": "Camels gathered near a stone well"
+          },
+          {
+            "label": "A water jar set beside an ancient well",
+            "image_url": "/training/genesis/water-jar-near-well.png",
+            "alt": "Clay water jar beside a stone well"
+          },
+          {
+            "label": "A camel caravan traveling through the desert",
+            "image_url": "/training/genesis/desert-travel-camels.png",
+            "alt": "Traveling camels on a desert journey"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A young woman drawing and offering water at a well"
+      },
+      "explanation": "Genesis 24 says Rebekah gave water at the well and also watered the camels.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "rebekah", "well", "image"]
+    },
+    {
+      "key": "day-008-genesis-022-024-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 22 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 1,
+      "verse_end": 14,
+      "reference": "Genesis 22:1-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "The angel calls to Abraham from heaven",
+          "Abraham journeys to Moriah with Isaac",
+          "God tests Abraham",
+          "Abraham sees the ram caught nearby"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "God tests Abraham",
+          "Abraham journeys to Moriah with Isaac",
+          "The angel calls to Abraham from heaven",
+          "Abraham sees the ram caught nearby"
+        ]
+      },
+      "explanation": "Genesis 22 moves from God's test to the journey, then the call from heaven, and then Abraham seeing the ram.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "abraham", "isaac", "ordering"]
+    },
+    {
+      "key": "day-008-genesis-022-024-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 23 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 1,
+      "verse_end": 20,
+      "reference": "Genesis 23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Sarah is buried in the cave",
+          "Abraham weighs out silver to Ephron",
+          "Sarah dies in Hebron",
+          "Abraham asks for a burial place"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Sarah dies in Hebron",
+          "Abraham asks for a burial place",
+          "Abraham weighs out silver to Ephron",
+          "Sarah is buried in the cave"
+        ]
+      },
+      "explanation": "Genesis 23 records Sarah's death, Abraham's request, the silver being weighed, and then the burial.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "sarah", "machpelah", "ordering"]
+    },
+    {
+      "key": "day-008-genesis-022-024-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 24 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 12,
+      "verse_end": 67,
+      "reference": "Genesis 24:12-67",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Rebekah agrees to go",
+          "Isaac meets Rebekah",
+          "The servant prays at the well",
+          "Rebekah gives water"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The servant prays at the well",
+          "Rebekah gives water",
+          "Rebekah agrees to go",
+          "Isaac meets Rebekah"
+        ]
+      },
+      "explanation": "Genesis 24 moves from the servant's prayer to Rebekah's actions, then her agreement to go, and finally Isaac meeting her.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "rebekah", "isaac", "ordering"]
+    },
+    {
+      "key": "day-008-genesis-022-024-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 22 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 1,
+      "verse_end": 14,
+      "reference": "Genesis 22:1-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Abraham", "Isaac", "Angel", "Ram"],
+        "right_items": [
+          "Asked about the lamb for the offering",
+          "Called from heaven to Abraham",
+          "Was being tested by God",
+          "Caught nearby in a thicket"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Abraham", "right": "Was being tested by God" },
+          { "left": "Isaac", "right": "Asked about the lamb for the offering" },
+          { "left": "Angel", "right": "Called from heaven to Abraham" },
+          { "left": "Ram", "right": "Caught nearby in a thicket" }
+        ]
+      },
+      "explanation": "Genesis 22 gives these direct details about Abraham, Isaac, the angel, and the ram.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "abraham", "isaac", "matching"]
+    },
+    {
+      "key": "day-008-genesis-022-024-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 23 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 23,
+      "verse_start": 1,
+      "verse_end": 20,
+      "reference": "Genesis 23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Sarah", "Ephron", "Machpelah", "Silver"],
+        "right_items": [
+          "Burial cave Abraham bought",
+          "Woman who died in Hebron",
+          "Weighed out for the purchase",
+          "Man who sold the field"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Sarah", "right": "Woman who died in Hebron" },
+          { "left": "Ephron", "right": "Man who sold the field" },
+          { "left": "Machpelah", "right": "Burial cave Abraham bought" },
+          { "left": "Silver", "right": "Weighed out for the purchase" }
+        ]
+      },
+      "explanation": "Genesis 23 ties these names and objects to Sarah's burial and Abraham's purchase.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "sarah", "machpelah", "matching"]
+    },
+    {
+      "key": "day-008-genesis-022-024-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 24 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 15,
+      "verse_end": 61,
+      "reference": "Genesis 24:15-61",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Rebekah", "Laban", "Bethuel", "Camels"],
+        "right_items": [
+          "Also received water at the well",
+          "Brother who ran out to meet the man",
+          "Father named in the household discussion",
+          "Young woman who gave water"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Rebekah", "right": "Young woman who gave water" },
+          { "left": "Laban", "right": "Brother who ran out to meet the man" },
+          { "left": "Bethuel", "right": "Father named in the household discussion" },
+          { "left": "Camels", "right": "Also received water at the well" }
+        ]
+      },
+      "explanation": "Genesis 24 connects Rebekah, Laban, Bethuel, and the camels to these details.",
+      "teaching_note": "This question stays with direct events and named people from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "rebekah", "laban", "bethuel", "matching"]
+    },
+    {
+      "key": "day-008-genesis-022-024-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 22.",
+      "book": "Genesis",
+      "chapter": 22,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 22:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 22 says Abraham named the place after the Lord's provision."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 22 says Abraham gave the place a name connected to the Lord providing.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "abraham", "moriah", "true-false"]
+    },
+    {
+      "key": "day-008-genesis-022-024-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 24.",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 58,
+      "verse_end": 58,
+      "reference": "Genesis 24:58",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 24 says Rebekah agreed to go with the man."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 24 says Rebekah agreed to go with Abraham's servant.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "rebekah", "servant", "true-false"]
+    },
+    {
+      "key": "day-008-genesis-022-024-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 24 statement.",
+      "book": "Genesis",
+      "chapter": 24,
+      "verse_start": 28,
+      "verse_end": 61,
+      "reference": "Genesis 24:28-61",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After meeting Rebekah at the well, the servant left without speaking to her family or taking Rebekah with him.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "The servant spoke to Rebekah's family, and later Rebekah agreed to go with him.",
+          "The servant never met anyone at a well.",
+          "Rebekah refused to leave her home.",
+          "Isaac was the one who drew water for the camels."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The servant spoke to Rebekah's family, and later Rebekah agreed to go with him."
+      },
+      "explanation": "Genesis 24 says the servant went to Rebekah's household, and later Rebekah agreed to go with him.",
+      "teaching_note": "This keeps the focus on the direct sequence of events in Genesis 24.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-22-24",
+      "tags": ["genesis", "rebekah", "servant", "spot-error"]
+    }
+  ]
+}

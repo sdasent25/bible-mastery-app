@@ -1,0 +1,40 @@
+{
+  "day": 6,
+  "segment_key": "genesis-016-018",
+  "images": [
+    {
+      "question_key": "day-006-genesis-016-018-010",
+      "prompt": "Which image best represents Hagar by the spring in the wilderness?",
+      "correct_image_filename": "hagar-spring-wilderness.png",
+      "all_image_filenames": [
+        "hagar-spring-wilderness.png",
+        "desert-water-spring.png",
+        "tent-camp-wilderness.png",
+        "road-to-egypt.png"
+      ],
+      "reasons": {
+        "hagar-spring-wilderness.png": "Shows the clearest scene of a woman by a spring in the wilderness, matching Genesis 16 directly.",
+        "desert-water-spring.png": "Represents the wilderness spring but leaves out Hagar herself.",
+        "tent-camp-wilderness.png": "Suggests an ancient camp setting but not the spring encounter.",
+        "road-to-egypt.png": "Suggests wilderness travel direction, but not Hagar by the water source."
+      }
+    },
+    {
+      "question_key": "day-006-genesis-016-018-011",
+      "prompt": "Which image best represents Abraham receiving visitors near Mamre?",
+      "correct_image_filename": "abraham-visitors-mamre.png",
+      "all_image_filenames": [
+        "abraham-visitors-mamre.png",
+        "tent-meal-visitors.png",
+        "sodom-distant-plain.png",
+        "oaks-of-mamre.png"
+      ],
+      "reasons": {
+        "abraham-visitors-mamre.png": "Shows the three visitors arriving near a tent under the oaks, which matches Genesis 18 most directly.",
+        "tent-meal-visitors.png": "Represents Abraham's hospitality meal, but not the initial arrival scene.",
+        "sodom-distant-plain.png": "Represents the later direction toward Sodom rather than the visit at Mamre.",
+        "oaks-of-mamre.png": "Represents the place itself, but not Abraham receiving the three visitors."
+      }
+    }
+  ]
+}

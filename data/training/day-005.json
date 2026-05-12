@@ -1,0 +1,681 @@
+{
+  "day": 5,
+  "segment_key": "genesis-013-015",
+  "unlock_key": "genesis-13-15",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 13,
+    "chapter_end": 15,
+    "reference": "Genesis 13–15"
+  },
+  "items": [
+    {
+      "key": "day-005-genesis-013-015-001",
+      "format": "multiple_choice",
+      "prompt": "Who returned from Egypt with Abram in Genesis 13?",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 13:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Sarai and Lot", "Melchizedek and Lot", "Pharaoh and Sarai", "Eliezer and Lot"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Sarai and Lot"
+      },
+      "explanation": "Genesis 13 says Abram went up from Egypt with his wife and with Lot.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "sarai", "lot"]
+    },
+    {
+      "key": "day-005-genesis-013-015-002",
+      "format": "multiple_choice",
+      "prompt": "Which region did Lot choose for himself?",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 10,
+      "verse_end": 11,
+      "reference": "Genesis 13:10-11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "options": ["The Jordan Valley", "The hill country of Seir", "The land of Egypt", "The plain of Shinar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The Jordan Valley"
+      },
+      "explanation": "Genesis 13 says Lot chose the whole Jordan Valley for himself.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "lot", "jordan-valley", "land"]
+    },
+    {
+      "key": "day-005-genesis-013-015-003",
+      "format": "multiple_choice",
+      "prompt": "Where did Abram settle and build an altar after Lot separated from him?",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 13:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["By the oaks of Mamre at Hebron", "Near the tower of Babel", "In the Jordan Valley near Sodom", "At the border of Egypt"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "By the oaks of Mamre at Hebron"
+      },
+      "explanation": "Genesis 13 says Abram settled by the oaks of Mamre, which are at Hebron, and built an altar there.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "mamre", "hebron", "altar"]
+    },
+    {
+      "key": "day-005-genesis-013-015-004",
+      "format": "multiple_choice",
+      "prompt": "Melchizedek was king of which place?",
+      "book": "Genesis",
+      "chapter": 14,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 14:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Salem", "Hebron", "Sodom", "Damascus"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Salem"
+      },
+      "explanation": "Genesis 14 identifies Melchizedek as king of Salem.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "melchizedek", "salem", "genesis-14"]
+    },
+    {
+      "key": "day-005-genesis-013-015-005",
+      "format": "multiple_choice",
+      "prompt": "What did Melchizedek bring out to Abram?",
+      "book": "Genesis",
+      "chapter": 14,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 14:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Bread and wine", "Oil and grain", "Silver and gold", "Sheep and cattle"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Bread and wine"
+      },
+      "explanation": "Genesis 14 says Melchizedek brought out bread and wine.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "melchizedek", "bread", "wine"]
+    },
+    {
+      "key": "day-005-genesis-013-015-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 13.",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 13:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "The land could not ____ them while they lived together.",
+        "blank_count": 1,
+        "options": ["support", "hide", "feed", "separate"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "support"
+      },
+      "explanation": "Genesis 13 says the land could not support Abram and Lot together because their possessions were so great.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "lot", "land"]
+    },
+    {
+      "key": "day-005-genesis-013-015-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 13.",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 12,
+      "verse_end": 12,
+      "reference": "Genesis 13:12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "text": "Lot moved his tent as far as ____.",
+        "blank_count": 1,
+        "options": ["Sodom", "Salem", "Bethel", "Damascus"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Sodom"
+      },
+      "explanation": "Genesis 13 says Lot moved his tent as far as Sodom.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "lot", "sodom", "jordan-valley"]
+    },
+    {
+      "key": "day-005-genesis-013-015-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 15.",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Genesis 15:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "vision",
+      "difficulty": "medium",
+      "content": {
+        "text": "God brought Abram outside and told him to count the ____.",
+        "blank_count": 1,
+        "options": ["stars", "animals", "sandals", "tents"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "stars"
+      },
+      "explanation": "Genesis 15 says God told Abram to look toward heaven and number the stars.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "stars", "vision"]
+    },
+    {
+      "key": "day-005-genesis-013-015-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 15.",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 15:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "text": "Abram said the steward of his house was Eliezer of ____.",
+        "blank_count": 1,
+        "options": ["Damascus", "Hebron", "Salem", "Sodom"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Damascus"
+      },
+      "explanation": "Genesis 15 names Eliezer of Damascus in Abram's question about an heir.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "eliezer", "damascus"]
+    },
+    {
+      "key": "day-005-genesis-013-015-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abram and Lot separating?",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 8,
+      "verse_end": 11,
+      "reference": "Genesis 13:8-11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "separation",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Two family groups parting with flocks between them",
+            "image_url": "/training/genesis/abram-lot-separate.png",
+            "alt": "Two ancient family groups separating with flocks and tents nearby"
+          },
+          {
+            "label": "A green valley with water and distant towns",
+            "image_url": "/training/genesis/jordan-valley.png",
+            "alt": "Well-watered valley landscape with distant settlement"
+          },
+          {
+            "label": "Many tents and grazing animals spread across open land",
+            "image_url": "/training/genesis/tents-and-flocks.png",
+            "alt": "Camp of tents and flocks spread across open country"
+          },
+          {
+            "label": "A stone altar on a hillside near trees",
+            "image_url": "/training/genesis/altar-near-hebron.png",
+            "alt": "Simple stone altar in hill country near trees"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Two family groups parting with flocks between them"
+      },
+      "explanation": "Genesis 13 describes Abram and Lot separating because the land could not support both groups together.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "lot", "image"]
+    },
+    {
+      "key": "day-005-genesis-013-015-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Abram looking at the stars?",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 5,
+      "verse_end": 5,
+      "reference": "Genesis 15:5",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "vision",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A man standing beneath a wide star-filled sky",
+            "image_url": "/training/genesis/abram-stars.png",
+            "alt": "Ancient figure looking up beneath a wide sky full of stars"
+          },
+          {
+            "label": "A king bringing bread and wine outdoors",
+            "image_url": "/training/genesis/melchizedek-bread-wine.png",
+            "alt": "Ancient ruler bringing bread and wine"
+          },
+          {
+            "label": "Armed men rescuing captives and goods",
+            "image_url": "/training/genesis/rescue-of-lot.png",
+            "alt": "Rescue scene with armed men and recovered people"
+          },
+          {
+            "label": "Prepared covenant animals laid out for a ceremony",
+            "image_url": "/training/genesis/covenant-animals.png",
+            "alt": "Respectful symbolic arrangement of covenant animals"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A man standing beneath a wide star-filled sky"
+      },
+      "explanation": "Genesis 15 says God brought Abram outside and told him to count the stars.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "stars", "image"]
+    },
+    {
+      "key": "day-005-genesis-013-015-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 13 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 1,
+      "verse_end": 18,
+      "reference": "Genesis 13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Lot chooses the Jordan Valley",
+          "Abram returns from Egypt",
+          "Strife arises between their herdsmen",
+          "Abram settles by Mamre and builds an altar"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Abram returns from Egypt",
+          "Strife arises between their herdsmen",
+          "Lot chooses the Jordan Valley",
+          "Abram settles by Mamre and builds an altar"
+        ]
+      },
+      "explanation": "Genesis 13 moves from Abram's return, to the dispute, to Lot's choice, and then Abram's settlement near Mamre.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "lot", "ordering"]
+    },
+    {
+      "key": "day-005-genesis-013-015-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 14 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 14,
+      "verse_start": 12,
+      "verse_end": 24,
+      "reference": "Genesis 14:12-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "The king of Sodom speaks with Abram",
+          "Abram pursues and rescues Lot",
+          "Lot is taken captive",
+          "Melchizedek brings out bread and wine"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Lot is taken captive",
+          "Abram pursues and rescues Lot",
+          "Melchizedek brings out bread and wine",
+          "The king of Sodom speaks with Abram"
+        ]
+      },
+      "explanation": "Genesis 14 first records Lot's capture, then Abram's rescue, then Melchizedek's meeting, and after that the king of Sodom speaks.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "lot", "melchizedek", "ordering"]
+    },
+    {
+      "key": "day-005-genesis-013-015-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 15 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 1,
+      "verse_end": 18,
+      "reference": "Genesis 15:1-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "God tells Abram to count the stars",
+          "A deep sleep falls on Abram",
+          "The word of the Lord comes to Abram in a vision",
+          "Abram brings the animals God named"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The word of the Lord comes to Abram in a vision",
+          "God tells Abram to count the stars",
+          "Abram brings the animals God named",
+          "A deep sleep falls on Abram"
+        ]
+      },
+      "explanation": "Genesis 15 begins with the vision, then the stars, then the animals Abram brings, and later a deep sleep falls on him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "vision", "ordering"]
+    },
+    {
+      "key": "day-005-genesis-013-015-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 13 name or place with the correct description.",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 8,
+      "verse_end": 18,
+      "reference": "Genesis 13:8-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Abram", "Lot", "Jordan Valley", "Hebron"],
+        "right_items": [
+          "Gave the other man the first choice of land",
+          "Place where Abram settled afterward",
+          "Region chosen by Lot",
+          "Chose the well-watered land"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Abram", "right": "Gave the other man the first choice of land" },
+          { "left": "Lot", "right": "Chose the well-watered land" },
+          { "left": "Jordan Valley", "right": "Region chosen by Lot" },
+          { "left": "Hebron", "right": "Place where Abram settled afterward" }
+        ]
+      },
+      "explanation": "Genesis 13 records Abram giving Lot the choice, Lot choosing the Jordan Valley, and Abram settling near Hebron.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "lot", "matching"]
+    },
+    {
+      "key": "day-005-genesis-013-015-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 14 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 14,
+      "verse_start": 18,
+      "verse_end": 24,
+      "reference": "Genesis 14:18-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Melchizedek", "Salem", "King of Sodom", "Tenth"],
+        "right_items": [
+          "Portion Abram gave",
+          "City connected with Melchizedek",
+          "Spoke with Abram after the rescue",
+          "Brought out bread and wine"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Melchizedek", "right": "Brought out bread and wine" },
+          { "left": "Salem", "right": "City connected with Melchizedek" },
+          { "left": "King of Sodom", "right": "Spoke with Abram after the rescue" },
+          { "left": "Tenth", "right": "Portion Abram gave" }
+        ]
+      },
+      "explanation": "Genesis 14 connects Melchizedek, Salem, the king of Sodom, and Abram's tenth to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "melchizedek", "sodom", "matching"]
+    },
+    {
+      "key": "day-005-genesis-013-015-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 15 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 1,
+      "verse_end": 16,
+      "reference": "Genesis 15:1-16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Vision", "Eliezer", "Deep sleep", "Four hundred years"],
+        "right_items": [
+          "How the word of the Lord came to Abram",
+          "Length of affliction mentioned for Abram's descendants",
+          "State that fell upon Abram during the covenant scene",
+          "Name Abram mentioned as steward of his house"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Vision", "right": "How the word of the Lord came to Abram" },
+          { "left": "Eliezer", "right": "Name Abram mentioned as steward of his house" },
+          { "left": "Deep sleep", "right": "State that fell upon Abram during the covenant scene" },
+          { "left": "Four hundred years", "right": "Length of affliction mentioned for Abram's descendants" }
+        ]
+      },
+      "explanation": "Genesis 15 gives these details in Abram's conversation and covenant scene.",
+      "teaching_note": "This stays with the direct details stated in Genesis 15.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "eliezer", "matching", "vision"]
+    },
+    {
+      "key": "day-005-genesis-013-015-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 13.",
+      "book": "Genesis",
+      "chapter": 13,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 13:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "possessions",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 13 says Abram was very rich in livestock, silver, and gold."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 13 directly says Abram was very rich in livestock, silver, and gold.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "possessions", "true-false"]
+    },
+    {
+      "key": "day-005-genesis-013-015-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 15.",
+      "book": "Genesis",
+      "chapter": 15,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 15:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 15 says Abram believed the Lord."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 15 directly states that Abram believed the Lord.",
+      "teaching_note": "This stays with the factual statement in the passage without moving into later interpretation.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "belief", "true-false"]
+    },
+    {
+      "key": "day-005-genesis-013-015-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 14 statement.",
+      "book": "Genesis",
+      "chapter": 14,
+      "verse_start": 21,
+      "verse_end": 24,
+      "reference": "Genesis 14:21-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After rescuing Lot, Abram accepted the goods the king of Sodom offered him.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Abram refused the goods offered by the king of Sodom.",
+          "Abram never rescued Lot from captivity.",
+          "Melchizedek, not the king of Sodom, ruled over Egypt.",
+          "Lot had stayed in Hebron and was never taken."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Abram refused the goods offered by the king of Sodom."
+      },
+      "explanation": "Genesis 14 says Abram refused the goods offered by the king of Sodom.",
+      "teaching_note": "This keeps the focus on Abram's direct reply in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-13-15",
+      "tags": ["genesis", "abram", "sodom", "spot-error"]
+    }
+  ]
+}

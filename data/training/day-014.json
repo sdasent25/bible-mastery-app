@@ -1,0 +1,674 @@
+{
+  "day": 14,
+  "segment_key": "genesis-040-042",
+  "unlock_key": "genesis-40-42",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 40,
+    "chapter_end": 42,
+    "reference": "Genesis 40–42"
+  },
+  "items": [
+    {
+      "key": "day-014-genesis-040-042-001",
+      "format": "multiple_choice",
+      "prompt": "Which two of Pharaoh's officials were in prison with Joseph?",
+      "book": "Genesis",
+      "chapter": 40,
+      "verse_start": 1,
+      "verse_end": 3,
+      "reference": "Genesis 40:1-3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "The cupbearer and the baker",
+          "The steward and the jailer",
+          "The butcher and the guard",
+          "The shepherd and the baker"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The cupbearer and the baker"
+      },
+      "explanation": "Genesis 40 says Pharaoh's cupbearer and baker were confined with Joseph.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "cupbearer", "baker"]
+    },
+    {
+      "key": "day-014-genesis-040-042-002",
+      "format": "multiple_choice",
+      "prompt": "What happened to the cupbearer after Joseph interpreted his dream?",
+      "book": "Genesis",
+      "chapter": 40,
+      "verse_start": 12,
+      "verse_end": 13,
+      "reference": "Genesis 40:12-13",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "He was restored to his office",
+          "He was sent back to Canaan",
+          "He was placed over Egypt",
+          "He was kept in prison"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "He was restored to his office"
+      },
+      "explanation": "Genesis 40 says the cupbearer was restored to serving Pharaoh.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "cupbearer", "joseph", "dream"]
+    },
+    {
+      "key": "day-014-genesis-040-042-003",
+      "format": "multiple_choice",
+      "prompt": "How many healthy cows appeared in Pharaoh's first dream?",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 2,
+      "verse_end": 4,
+      "reference": "Genesis 41:2-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Seven", "Three", "Ten", "Twelve"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seven"
+      },
+      "explanation": "Genesis 41 says seven healthy cows came up from the Nile.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "pharaoh", "cows", "dream"]
+    },
+    {
+      "key": "day-014-genesis-040-042-004",
+      "format": "multiple_choice",
+      "prompt": "What did Joseph say the seven years of abundance would be followed by?",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 29,
+      "verse_end": 30,
+      "reference": "Genesis 41:29-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Seven years of famine",
+          "Seven years of war",
+          "Seven years of peace",
+          "Seven years of exile"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seven years of famine"
+      },
+      "explanation": "Genesis 41 says seven years of famine would follow the years of plenty.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "pharaoh", "famine"]
+    },
+    {
+      "key": "day-014-genesis-040-042-005",
+      "format": "multiple_choice",
+      "prompt": "Which brother stayed behind with Jacob when the others went to Egypt for grain?",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 3,
+      "verse_end": 4,
+      "reference": "Genesis 42:3-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Benjamin", "Simeon", "Judah", "Reuben"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Benjamin"
+      },
+      "explanation": "Genesis 42 says Jacob did not send Benjamin with his brothers.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "benjamin", "jacob", "egypt"]
+    },
+    {
+      "key": "day-014-genesis-040-042-006",
+      "format": "multiple_choice",
+      "prompt": "What did Joseph accuse his brothers of being when they came to Egypt?",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 9,
+      "verse_end": 14,
+      "reference": "Genesis 42:9-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": ["Spies", "Shepherds", "Prisoners", "Merchants"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Spies"
+      },
+      "explanation": "Genesis 42 says Joseph accused his brothers of being spies.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "brothers", "spies"]
+    },
+    {
+      "key": "day-014-genesis-040-042-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 40.",
+      "book": "Genesis",
+      "chapter": 40,
+      "verse_start": 23,
+      "verse_end": 23,
+      "reference": "Genesis 40:23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "The chief cupbearer did not remember Joseph, but ____ him.",
+        "blank_count": 1,
+        "options": ["forgot", "praised", "rewarded", "released"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "forgot"
+      },
+      "explanation": "Genesis 40 says the chief cupbearer forgot Joseph.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "cupbearer", "joseph", "prison"]
+    },
+    {
+      "key": "day-014-genesis-040-042-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 41.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 14,
+      "verse_end": 14,
+      "reference": "Genesis 41:14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Joseph was hurriedly brought up from the ____.",
+        "blank_count": 1,
+        "options": ["dungeon", "field", "palace", "storehouse"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "dungeon"
+      },
+      "explanation": "Genesis 41 says Joseph was brought quickly out of the dungeon.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "dungeon", "pharaoh"]
+    },
+    {
+      "key": "day-014-genesis-040-042-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 41.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 51,
+      "verse_end": 52,
+      "reference": "Genesis 41:51-52",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "text": "Joseph named his two sons ____ and Ephraim.",
+        "blank_count": 1,
+        "options": ["Manasseh", "Benjamin", "Judah", "Simeon"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Manasseh"
+      },
+      "explanation": "Genesis 41 says Joseph's sons were Manasseh and Ephraim.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "manasseh", "ephraim"]
+    },
+    {
+      "key": "day-014-genesis-040-042-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 42.",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 24,
+      "verse_end": 24,
+      "reference": "Genesis 42:24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "Joseph took ____ from among his brothers and bound him before their eyes.",
+        "blank_count": 1,
+        "options": ["Simeon", "Benjamin", "Reuben", "Judah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Simeon"
+      },
+      "explanation": "Genesis 42 says Joseph took Simeon and bound him before them.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "simeon", "joseph", "brothers"]
+    },
+    {
+      "key": "day-014-genesis-040-042-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Pharaoh's dream of cows?",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 1,
+      "verse_end": 4,
+      "reference": "Genesis 41:1-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "dreams",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Healthy and thin cows near the Nile in Pharaoh's dream",
+            "image_url": "/training/genesis/pharaoh-cows-dream.png",
+            "alt": "Healthy and thin cows near the Nile in an ancient Egyptian dream scene"
+          },
+          {
+            "label": "Full and thin grain in an Egyptian field scene",
+            "image_url": "/training/genesis/grain-dream-egypt.png",
+            "alt": "Full healthy grain and thin scorched grain in an ancient Egyptian setting"
+          },
+          {
+            "label": "Joseph listening to two officials in an ancient prison",
+            "image_url": "/training/genesis/joseph-prison-dreams.png",
+            "alt": "Ancient prison scene with a young servant figure listening to two troubled officials"
+          },
+          {
+            "label": "Travelers arriving in Egypt to buy grain",
+            "image_url": "/training/genesis/brothers-egypt-grain.png",
+            "alt": "Travelers from Canaan arriving in Egypt to buy grain near storehouses"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Healthy and thin cows near the Nile in Pharaoh's dream"
+      },
+      "explanation": "Genesis 41 says Pharaoh dreamed of healthy cows and thin cows by the Nile.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "pharaoh", "cows", "dream", "image"]
+    },
+    {
+      "key": "day-014-genesis-040-042-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 40 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 40,
+      "verse_start": 1,
+      "verse_end": 23,
+      "reference": "Genesis 40",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph interprets the officials' dreams",
+          "Joseph notices the officials are troubled",
+          "Pharaoh's birthday comes",
+          "The cupbearer forgets Joseph"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Joseph notices the officials are troubled",
+          "Joseph interprets the officials' dreams",
+          "Pharaoh's birthday comes",
+          "The cupbearer forgets Joseph"
+        ]
+      },
+      "explanation": "Genesis 40 moves from the troubled officials to Joseph interpreting their dreams, Pharaoh's birthday, and the cupbearer forgetting Joseph.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "cupbearer", "baker", "ordering"]
+    },
+    {
+      "key": "day-014-genesis-040-042-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 41 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 1,
+      "verse_end": 57,
+      "reference": "Genesis 41",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph is brought from prison",
+          "The years of famine begin",
+          "Pharaoh dreams about cows and grain",
+          "Pharaoh puts Joseph over Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Pharaoh dreams about cows and grain",
+          "Joseph is brought from prison",
+          "Pharaoh puts Joseph over Egypt",
+          "The years of famine begin"
+        ]
+      },
+      "explanation": "Genesis 41 moves from Pharaoh's dreams to Joseph being brought out, set over Egypt, and then the famine beginning.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "pharaoh", "joseph", "ordering"]
+    },
+    {
+      "key": "day-014-genesis-040-042-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 42 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 1,
+      "verse_end": 38,
+      "reference": "Genesis 42",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph recognizes his brothers",
+          "The brothers find their money returned",
+          "Jacob sends his sons to Egypt for grain",
+          "Simeon is held back"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob sends his sons to Egypt for grain",
+          "Joseph recognizes his brothers",
+          "Simeon is held back",
+          "The brothers find their money returned"
+        ]
+      },
+      "explanation": "Genesis 42 moves from Jacob sending them, to Joseph recognizing them, Simeon being held, and the returned money.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "brothers", "simeon", "ordering"]
+    },
+    {
+      "key": "day-014-genesis-040-042-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 40 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 40,
+      "verse_start": 1,
+      "verse_end": 23,
+      "reference": "Genesis 40",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Cupbearer", "Baker", "Joseph", "Prison"],
+        "right_items": [
+          "Place where these events happened",
+          "Official restored to service",
+          "Official whose dream had a different outcome",
+          "Interpreted the two dreams"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Cupbearer", "right": "Official restored to service" },
+          { "left": "Baker", "right": "Official whose dream had a different outcome" },
+          { "left": "Joseph", "right": "Interpreted the two dreams" },
+          { "left": "Prison", "right": "Place where these events happened" }
+        ]
+      },
+      "explanation": "Genesis 40 connects these people and places to Joseph's prison dream interpretations.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "cupbearer", "baker", "matching"]
+    },
+    {
+      "key": "day-014-genesis-040-042-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 41 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 14,
+      "verse_end": 57,
+      "reference": "Genesis 41:14-57",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Ring", "Second chariot", "Manasseh", "Ephraim"],
+        "right_items": [
+          "Son whose name reflected forgetting trouble",
+          "Son whose name reflected fruitfulness",
+          "Vehicle used in Joseph's public honor",
+          "Placed on Joseph's hand by Pharaoh"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Ring", "right": "Placed on Joseph's hand by Pharaoh" },
+          { "left": "Second chariot", "right": "Vehicle used in Joseph's public honor" },
+          { "left": "Manasseh", "right": "Son whose name reflected forgetting trouble" },
+          { "left": "Ephraim", "right": "Son whose name reflected fruitfulness" }
+        ]
+      },
+      "explanation": "Genesis 41 connects Pharaoh's honors and Joseph's sons to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "pharaoh", "manasseh", "ephraim", "matching"]
+    },
+    {
+      "key": "day-014-genesis-040-042-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 42 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 1,
+      "verse_end": 38,
+      "reference": "Genesis 42",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Benjamin", "Simeon", "Joseph", "Money in sacks"],
+        "right_items": [
+          "Stayed behind with Jacob",
+          "Was found returned on the journey home",
+          "Recognized his brothers though they did not recognize him",
+          "Was held back in Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Benjamin", "right": "Stayed behind with Jacob" },
+          { "left": "Simeon", "right": "Was held back in Egypt" },
+          { "left": "Joseph", "right": "Recognized his brothers though they did not recognize him" },
+          { "left": "Money in sacks", "right": "Was found returned on the journey home" }
+        ]
+      },
+      "explanation": "Genesis 42 connects Benjamin, Simeon, Joseph, and the returned money to these events.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "benjamin", "simeon", "joseph", "matching"]
+    },
+    {
+      "key": "day-014-genesis-040-042-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 41.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 46,
+      "verse_end": 46,
+      "reference": "Genesis 41:46",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 41 says Joseph was thirty years old when he stood before Pharaoh."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 41 says Joseph was thirty years old when he entered Pharaoh's service.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "pharaoh", "true-false"]
+    },
+    {
+      "key": "day-014-genesis-040-042-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 42.",
+      "book": "Genesis",
+      "chapter": 42,
+      "verse_start": 8,
+      "verse_end": 8,
+      "reference": "Genesis 42:8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 42 says Joseph recognized his brothers, but they did not recognize him."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 42 says Joseph recognized his brothers, but they did not recognize him.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "joseph", "brothers", "true-false"]
+    },
+    {
+      "key": "day-014-genesis-040-042-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 41 statement.",
+      "book": "Genesis",
+      "chapter": 41,
+      "verse_start": 17,
+      "verse_end": 24,
+      "reference": "Genesis 41:17-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Pharaoh's dreams were only about cows and did not include grain.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Pharaoh also dreamed about full and thin grain.",
+          "Pharaoh never had any dreams in Genesis 41.",
+          "Joseph heard the dreams only in Canaan.",
+          "The cupbearer interpreted Pharaoh's grain dream."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Pharaoh also dreamed about full and thin grain."
+      },
+      "explanation": "Genesis 41 says Pharaoh had dreams about cows and also about grain.",
+      "teaching_note": "This stays with direct details from Pharaoh's dreams.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-40-42",
+      "tags": ["genesis", "pharaoh", "dreams", "grain", "spot-error"]
+    }
+  ]
+}

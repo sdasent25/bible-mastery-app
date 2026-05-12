@@ -1,0 +1,38 @@
+{
+  "day": 16,
+  "segment_key": "genesis-047-050",
+  "images": [
+    {
+      "question_key": "day-016-genesis-047-050-011",
+      "image_filename": "jacob-blesses-ephraim-manasseh.png",
+      "label": "An elderly patriarch blessing two young boys with crossed hands suggested",
+      "prompt_used": "Create a respectful symbolic scene of an elderly patriarch blessing two young boys, with crossed hands subtly suggested, ancient family setting, warm reverent light, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "An elderly patriarch blessing two young boys with crossed hands subtly suggested in an ancient family setting"
+    },
+    {
+      "question_key": "day-016-genesis-047-050-011",
+      "image_filename": "goshen-family-settlement.png",
+      "label": "A large family settlement with tents and livestock in fertile Goshen",
+      "prompt_used": "Create a symbolic scene of a large ancient family settlement in Goshen, with tents, livestock, and fertile Egyptian land in the distance, warm light, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A large ancient family settlement with tents and livestock in fertile Goshen"
+    },
+    {
+      "question_key": "day-016-genesis-047-050-011",
+      "image_filename": "burial-journey-canaan.png",
+      "label": "A solemn burial caravan traveling from Egypt toward Canaan",
+      "prompt_used": "Create a respectful symbolic scene of an ancient burial procession traveling from Egypt toward Canaan, with a solemn caravan and desert landscape, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A solemn ancient burial procession traveling from Egypt toward Canaan through a desert landscape"
+    },
+    {
+      "question_key": "day-016-genesis-047-050-011",
+      "image_filename": "joseph-bones-request.png",
+      "label": "An aged man in Egypt speaking to family with a burial chest nearby",
+      "prompt_used": "Create a symbolic respectful scene of an aged Joseph speaking to his family in Egypt with a small burial chest or memorial object nearby, representing his request about his bones being carried up later. Premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "An aged man in Egypt speaking to family with a small burial chest or memorial object nearby"
+    }
+  ]
+}

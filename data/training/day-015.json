@@ -1,0 +1,679 @@
+{
+  "day": 15,
+  "segment_key": "genesis-043-046",
+  "unlock_key": "genesis-43-46",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 43,
+    "chapter_end": 46,
+    "reference": "Genesis 43–46"
+  },
+  "items": [
+    {
+      "key": "day-015-genesis-043-046-001",
+      "format": "multiple_choice",
+      "prompt": "Who pledged responsibility for Benjamin before the brothers returned to Egypt?",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 8,
+      "verse_end": 9,
+      "reference": "Genesis 43:8-9",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Judah", "Reuben", "Joseph", "Simeon"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Judah"
+      },
+      "explanation": "Genesis 43 says Judah pledged himself as responsible for Benjamin.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "judah", "benjamin", "egypt"]
+    },
+    {
+      "key": "day-015-genesis-043-046-002",
+      "format": "multiple_choice",
+      "prompt": "What did Jacob tell his sons to take back to Egypt along with Benjamin?",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 11,
+      "verse_end": 12,
+      "reference": "Genesis 43:11-12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "A gift and double money",
+          "Only grain sacks",
+          "Sheep and cattle",
+          "Pharaoh's ring"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A gift and double money"
+      },
+      "explanation": "Genesis 43 says Jacob sent a gift and double money with his sons.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "jacob", "gift", "money"]
+    },
+    {
+      "key": "day-015-genesis-043-046-003",
+      "format": "multiple_choice",
+      "prompt": "How were Joseph's brothers seated at the meal in Genesis 43?",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 33,
+      "verse_end": 33,
+      "reference": "Genesis 43:33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "By birth order",
+          "By height",
+          "By tribe",
+          "At random"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "By birth order"
+      },
+      "explanation": "Genesis 43 says the brothers sat before Joseph by birth order.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "joseph", "brothers", "meal"]
+    },
+    {
+      "key": "day-015-genesis-043-046-004",
+      "format": "multiple_choice",
+      "prompt": "What was placed in Benjamin's sack in Genesis 44?",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 44:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "Joseph's silver cup",
+          "A gold crown",
+          "A letter from Pharaoh",
+          "A staff"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Joseph's silver cup"
+      },
+      "explanation": "Genesis 44 says Joseph's silver cup was put in Benjamin's sack.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "benjamin", "silver-cup", "sack"]
+    },
+    {
+      "key": "day-015-genesis-043-046-005",
+      "format": "multiple_choice",
+      "prompt": "What did Judah offer in place of Benjamin?",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 33,
+      "verse_end": 33,
+      "reference": "Genesis 44:33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": [
+          "To remain as a servant himself",
+          "To return all the grain",
+          "To send Reuben back instead",
+          "To leave Egypt forever"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "To remain as a servant himself"
+      },
+      "explanation": "Genesis 44 says Judah offered to remain in place of Benjamin.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "judah", "benjamin", "plea"]
+    },
+    {
+      "key": "day-015-genesis-043-046-006",
+      "format": "multiple_choice",
+      "prompt": "Where did Joseph meet Israel after he came into Egypt?",
+      "book": "Genesis",
+      "chapter": 46,
+      "verse_start": 28,
+      "verse_end": 29,
+      "reference": "Genesis 46:28-29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Goshen", "Beersheba", "Hebron", "Canaan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Goshen"
+      },
+      "explanation": "Genesis 46 says Joseph met Israel in Goshen.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "joseph", "israel", "goshen"]
+    },
+    {
+      "key": "day-015-genesis-043-046-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 43.",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 16,
+      "verse_end": 16,
+      "reference": "Genesis 43:16",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "text": "When Joseph saw ____ with them, he told his steward to prepare a meal.",
+        "blank_count": 1,
+        "options": ["Benjamin", "Judah", "Jacob", "Pharaoh"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Benjamin"
+      },
+      "explanation": "Genesis 43 says Joseph saw Benjamin with them and prepared a meal.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "joseph", "benjamin", "meal"]
+    },
+    {
+      "key": "day-015-genesis-043-046-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 43.",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 33,
+      "verse_end": 33,
+      "reference": "Genesis 43:33",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "The brothers were seated from the ____ to the youngest.",
+        "blank_count": 1,
+        "options": ["oldest", "wisest", "strongest", "richest"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "oldest"
+      },
+      "explanation": "Genesis 43 says the brothers were seated from the oldest to the youngest.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "brothers", "birth-order", "meal"]
+    },
+    {
+      "key": "day-015-genesis-043-046-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence about Joseph revealing himself.",
+      "book": "Genesis",
+      "chapter": 45,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 45:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "Joseph revealed himself to his brothers by saying he was ____.",
+        "blank_count": 1,
+        "options": ["Joseph", "Benjamin", "Judah", "Pharaoh"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Joseph"
+      },
+      "explanation": "Genesis 45 says Joseph revealed himself to his brothers.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "joseph", "brothers", "reveal"]
+    },
+    {
+      "key": "day-015-genesis-043-046-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 46.",
+      "book": "Genesis",
+      "chapter": 46,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 46:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "hard",
+      "content": {
+        "text": "Israel came to ____ and offered sacrifices to the God of his father Isaac.",
+        "blank_count": 1,
+        "options": ["Beersheba", "Goshen", "Memphis", "Dothan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Beersheba"
+      },
+      "explanation": "Genesis 46 says Israel came to Beersheba and offered sacrifices there.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "israel", "beersheba", "egypt"]
+    },
+    {
+      "key": "day-015-genesis-043-046-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Joseph's silver cup in Benjamin's sack?",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 1,
+      "verse_end": 2,
+      "reference": "Genesis 44:1-2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "objects",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A silver cup partly visible inside an opened grain sack",
+            "image_url": "/training/genesis/silver-cup-sack.png",
+            "alt": "A silver cup partly visible inside an opened grain sack in an ancient Egyptian setting"
+          },
+          {
+            "label": "An Egyptian official revealing himself to shocked brothers",
+            "image_url": "/training/genesis/joseph-reveals-brothers.png",
+            "alt": "An Egyptian official revealing himself to a group of shocked brothers in a palace room"
+          },
+          {
+            "label": "An ancient family caravan traveling toward Egypt with carts and animals",
+            "image_url": "/training/genesis/jacob-family-egypt-journey.png",
+            "alt": "An ancient family caravan traveling toward Egypt with carts, animals, and household goods"
+          },
+          {
+            "label": "An older father and long-lost son reuniting in Goshen",
+            "image_url": "/training/genesis/joseph-jacob-goshen.png",
+            "alt": "An older father and his long-lost son reuniting in the land of Goshen"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A silver cup partly visible inside an opened grain sack"
+      },
+      "explanation": "Genesis 44 says Joseph's silver cup was placed in Benjamin's sack.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "silver-cup", "benjamin", "image"]
+    },
+    {
+      "key": "day-015-genesis-043-046-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 43 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 8,
+      "verse_end": 34,
+      "reference": "Genesis 43:8-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph prepares a meal for his brothers",
+          "Judah pledges responsibility for Benjamin",
+          "The brothers are seated by birth order",
+          "Benjamin receives a larger portion"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Judah pledges responsibility for Benjamin",
+          "Joseph prepares a meal for his brothers",
+          "The brothers are seated by birth order",
+          "Benjamin receives a larger portion"
+        ]
+      },
+      "explanation": "Genesis 43 moves from Judah's pledge to the meal, the seating order, and Benjamin's larger portion.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "judah", "benjamin", "ordering"]
+    },
+    {
+      "key": "day-015-genesis-043-046-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 44-45 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 1,
+      "verse_end": 34,
+      "reference": "Genesis 44:1-34; 45:1-3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Judah offers himself in Benjamin's place",
+          "Joseph reveals himself to his brothers",
+          "The steward overtakes the brothers",
+          "The silver cup is found in Benjamin's sack"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "The steward overtakes the brothers",
+          "The silver cup is found in Benjamin's sack",
+          "Judah offers himself in Benjamin's place",
+          "Joseph reveals himself to his brothers"
+        ]
+      },
+      "explanation": "The passage moves from the steward's pursuit to the cup being found, Judah's plea, and Joseph's reveal.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "judah", "joseph", "silver-cup", "ordering"]
+    },
+    {
+      "key": "day-015-genesis-043-046-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 45-46 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 45,
+      "verse_start": 16,
+      "verse_end": 28,
+      "reference": "Genesis 45:16-28; 46:1-29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph meets Israel in Goshen",
+          "Pharaoh provides carts for the journey",
+          "Jacob hears that Joseph is alive",
+          "Israel travels to Beersheba"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Pharaoh provides carts for the journey",
+          "Jacob hears that Joseph is alive",
+          "Israel travels to Beersheba",
+          "Joseph meets Israel in Goshen"
+        ]
+      },
+      "explanation": "Genesis 45-46 moves from Pharaoh's carts to Jacob hearing the news, traveling by way of Beersheba, and Joseph meeting him in Goshen.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "jacob", "joseph", "goshen", "ordering"]
+    },
+    {
+      "key": "day-015-genesis-043-046-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 43 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 43,
+      "verse_start": 8,
+      "verse_end": 34,
+      "reference": "Genesis 43:8-34",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Judah", "Benjamin", "Joseph", "Double money"],
+        "right_items": [
+          "Brother for whom responsibility was pledged",
+          "Man who prepared a meal for his brothers",
+          "What Jacob told his sons to take back",
+          "Brother who pledged responsibility"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Judah", "right": "Brother who pledged responsibility" },
+          { "left": "Benjamin", "right": "Brother for whom responsibility was pledged" },
+          { "left": "Joseph", "right": "Man who prepared a meal for his brothers" },
+          { "left": "Double money", "right": "What Jacob told his sons to take back" }
+        ]
+      },
+      "explanation": "Genesis 43 connects Judah, Benjamin, Joseph, and the double money to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "judah", "benjamin", "joseph", "matching"]
+    },
+    {
+      "key": "day-015-genesis-043-046-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 44 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 1,
+      "verse_end": 34,
+      "reference": "Genesis 44",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Silver cup", "Steward", "Benjamin", "Judah"],
+        "right_items": [
+          "Brother whose sack held the cup",
+          "Object hidden in a grain sack",
+          "Man who followed and stopped the brothers",
+          "Brother who spoke on Benjamin's behalf"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Silver cup", "right": "Object hidden in a grain sack" },
+          { "left": "Steward", "right": "Man who followed and stopped the brothers" },
+          { "left": "Benjamin", "right": "Brother whose sack held the cup" },
+          { "left": "Judah", "right": "Brother who spoke on Benjamin's behalf" }
+        ]
+      },
+      "explanation": "Genesis 44 ties the cup, the steward, Benjamin, and Judah to these events.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "silver-cup", "benjamin", "judah", "matching"]
+    },
+    {
+      "key": "day-015-genesis-043-046-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 45-46 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 45,
+      "verse_start": 3,
+      "verse_end": 28,
+      "reference": "Genesis 45:3-28; 46:1-29",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Pharaoh", "Beersheba", "Goshen", "Visions of the night"],
+        "right_items": [
+          "Place where Joseph met Israel",
+          "Place where Israel offered sacrifices",
+          "What God used when speaking to Israel",
+          "Ruler who provided carts for the journey"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Pharaoh", "right": "Ruler who provided carts for the journey" },
+          { "left": "Beersheba", "right": "Place where Israel offered sacrifices" },
+          { "left": "Goshen", "right": "Place where Joseph met Israel" },
+          { "left": "Visions of the night", "right": "What God used when speaking to Israel" }
+        ]
+      },
+      "explanation": "Genesis 45-46 connects Pharaoh, Beersheba, Goshen, and the visions of the night to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "pharaoh", "beersheba", "goshen", "matching"]
+    },
+    {
+      "key": "day-015-genesis-043-046-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 45.",
+      "book": "Genesis",
+      "chapter": 45,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 45:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 45 says Joseph asked whether his father was still alive."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 45 says Joseph asked, \"Is my father still alive?\"",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "joseph", "father", "true-false"]
+    },
+    {
+      "key": "day-015-genesis-043-046-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 46.",
+      "book": "Genesis",
+      "chapter": 46,
+      "verse_start": 2,
+      "verse_end": 4,
+      "reference": "Genesis 46:2-4",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 46 says God spoke to Israel in visions of the night."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 46 says God spoke to Israel in visions of the night.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "israel", "visions", "true-false"]
+    },
+    {
+      "key": "day-015-genesis-043-046-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 44 statement.",
+      "book": "Genesis",
+      "chapter": 44,
+      "verse_start": 12,
+      "verse_end": 18,
+      "reference": "Genesis 44:12-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Joseph's cup was found in Reuben's sack, and Judah said nothing.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "The cup was found in Benjamin's sack, and Judah spoke on his behalf.",
+          "The cup was found in Egypt's storehouse, and Benjamin stayed in Canaan.",
+          "The cup was found in Simeon's hand, and Joseph returned to Goshen.",
+          "The cup was found in Jacob's tent, and Pharaoh sent the steward away."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "The cup was found in Benjamin's sack, and Judah spoke on his behalf."
+      },
+      "explanation": "Genesis 44 says the cup was found in Benjamin's sack, and Judah then spoke.",
+      "teaching_note": "This keeps the focus on direct events from Judah's plea scene.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-43-46",
+      "tags": ["genesis", "benjamin", "judah", "silver-cup", "spot-error"]
+    }
+  ]
+}

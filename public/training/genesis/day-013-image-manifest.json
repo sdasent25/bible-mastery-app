@@ -1,0 +1,38 @@
+{
+  "day": 13,
+  "segment_key": "genesis-037-039",
+  "images": [
+    {
+      "question_key": "day-013-genesis-037-039-011",
+      "image_filename": "joseph-special-robe.png",
+      "label": "A distinctive ancient robe in a pastoral family setting",
+      "prompt_used": "Create a respectful symbolic image of a distinctive ancient robe laid out or held up in a pastoral family setting, representing Joseph’s special robe. Premium semi-realistic painterly Bible learning app style, warm light, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "Distinctive ancient robe laid out or held up in a pastoral family setting"
+    },
+    {
+      "question_key": "day-013-genesis-037-039-011",
+      "image_filename": "joseph-dream-sheaves.png",
+      "label": "Gathered grain sheaves with one standing prominently",
+      "prompt_used": "Create a symbolic scene of gathered grain sheaves in a field, with one central sheaf standing prominently among others, representing Joseph’s dream about sheaves. Premium semi-realistic painterly style, ancient agrarian setting, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Gathered grain sheaves in a field with one central sheaf standing prominently"
+    },
+    {
+      "question_key": "day-013-genesis-037-039-011",
+      "image_filename": "joseph-dothan-flocks.png",
+      "label": "Flocks near distant hills in the Dothan area",
+      "prompt_used": "Create an ancient pastoral scene with flocks near distant hills, representing Joseph going to find his brothers near Dothan. Premium semi-realistic painterly Bible learning app style, clear mobile-card composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient pastoral scene with flocks near distant hills"
+    },
+    {
+      "question_key": "day-013-genesis-037-039-011",
+      "image_filename": "joseph-egypt-household.png",
+      "label": "An Egyptian household courtyard with a young overseer",
+      "prompt_used": "Create a respectful symbolic scene of an ancient Egyptian household courtyard with a young servant/manager figure overseeing work, representing Joseph serving in Potiphar’s house. Premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient Egyptian household courtyard with a young overseer figure"
+    }
+  ]
+}

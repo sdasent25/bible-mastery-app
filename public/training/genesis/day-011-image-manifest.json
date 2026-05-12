@@ -1,0 +1,38 @@
+{
+  "day": 11,
+  "segment_key": "genesis-031-033",
+  "images": [
+    {
+      "question_key": "day-011-genesis-031-033-011",
+      "image_filename": "jacob-wrestling-night.png",
+      "label": "Two figures wrestling at night near a riverbank",
+      "prompt_used": "Create a symbolic cinematic nighttime scene of two ancient figures wrestling near a riverbank, representing Jacob wrestling through the night before meeting Esau. Sacred dramatic atmosphere, semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "Two ancient figures wrestling at night near a riverbank"
+    },
+    {
+      "question_key": "day-011-genesis-031-033-011",
+      "image_filename": "camp-divided-night.png",
+      "label": "A camp at night divided into two groups",
+      "prompt_used": "Create an ancient camp at night divided into two groups, with tents, animals, and supplies separated, representing Jacob dividing his camp before meeting Esau. Semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient camp at night divided into two groups with tents and animals"
+    },
+    {
+      "question_key": "day-011-genesis-031-033-011",
+      "image_filename": "gifts-for-esau.png",
+      "label": "Servants leading animals ahead as gifts on a journey",
+      "prompt_used": "Create a scene of servants leading animals and gifts ahead on a journey, representing Jacob sending gifts to Esau. Ancient pastoral setting, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Servants leading animals and gifts ahead on a journey"
+    },
+    {
+      "question_key": "day-011-genesis-031-033-011",
+      "image_filename": "family-bowing-esau.png",
+      "label": "A family bowing before an approaching group",
+      "prompt_used": "Create a respectful ancient scene of a family bowing in greeting before another approaching group, representing Jacob bowing before Esau. Warm natural light, semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient family bowing in greeting before another approaching group"
+    }
+  ]
+}

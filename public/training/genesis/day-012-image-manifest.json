@@ -1,0 +1,38 @@
+{
+  "day": 12,
+  "segment_key": "genesis-034-036",
+  "images": [
+    {
+      "question_key": "day-012-genesis-034-036-011",
+      "image_filename": "altar-at-bethel.png",
+      "label": "An ancient stone altar in a quiet hill-country setting",
+      "prompt_used": "Create a respectful symbolic scene of an ancient stone altar at Bethel, with a quiet sacred atmosphere, warm light, hill country setting, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "Ancient stone altar in a quiet hill-country setting"
+    },
+    {
+      "question_key": "day-012-genesis-034-036-011",
+      "image_filename": "foreign-gods-buried.png",
+      "label": "Small foreign objects being buried under a tree",
+      "prompt_used": "Create a symbolic scene of small household idols or foreign objects being buried under a tree, handled respectfully and not sensationally, ancient setting, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Small foreign objects being buried under a tree in an ancient setting"
+    },
+    {
+      "question_key": "day-012-genesis-034-036-011",
+      "image_filename": "rachel-burial-marker.png",
+      "label": "A simple burial marker beside an ancient road",
+      "prompt_used": "Create a respectful symbolic scene of a simple burial marker beside an ancient road near distant hills, representing Rachel's burial on the way to Ephrath/Bethlehem. Quiet, reverent atmosphere, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Simple burial marker beside an ancient road near distant hills"
+    },
+    {
+      "question_key": "day-012-genesis-034-036-011",
+      "image_filename": "hill-country-seir.png",
+      "label": "A rugged hill-country landscape with distant tents",
+      "prompt_used": "Create a rugged ancient hill-country landscape representing Seir/Edom, with warm desert tones, distant tents or travelers, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Rugged hill-country landscape with distant tents or travelers"
+    }
+  ]
+}

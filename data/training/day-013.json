@@ -1,0 +1,669 @@
+{
+  "day": 13,
+  "segment_key": "genesis-037-039",
+  "unlock_key": "genesis-37-39",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 37,
+    "chapter_end": 39,
+    "reference": "Genesis 37-39"
+  },
+  "items": [
+    {
+      "key": "day-013-genesis-037-039-001",
+      "format": "multiple_choice",
+      "prompt": "How old was Joseph in Genesis 37?",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 2,
+      "verse_end": 2,
+      "reference": "Genesis 37:2",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Seventeen", "Twenty", "Twelve", "Thirty"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Seventeen"
+      },
+      "explanation": "Genesis 37 says Joseph was seventeen years old.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "age"]
+    },
+    {
+      "key": "day-013-genesis-037-039-002",
+      "format": "multiple_choice",
+      "prompt": "Who loved Joseph more than all his children?",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 37:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Israel", "Judah", "Reuben", "Potiphar"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Israel"
+      },
+      "explanation": "Genesis 37 says Israel loved Joseph more than all his children.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "israel", "joseph", "family"]
+    },
+    {
+      "key": "day-013-genesis-037-039-003",
+      "format": "multiple_choice",
+      "prompt": "How did Joseph's brothers react after he told them his dreams?",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 5,
+      "verse_end": 11,
+      "reference": "Genesis 37:5-11",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "options": [
+          "They hated him even more",
+          "They sent him to Egypt",
+          "They gave him another robe",
+          "They asked Potiphar for help"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "They hated him even more"
+      },
+      "explanation": "Genesis 37 says Joseph's brothers hated him even more because of his dreams.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "dreams", "brothers"]
+    },
+    {
+      "key": "day-013-genesis-037-039-004",
+      "format": "multiple_choice",
+      "prompt": "Where did Joseph find his brothers in Genesis 37?",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 17,
+      "verse_end": 17,
+      "reference": "Genesis 37:17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Dothan", "Bethel", "Hebron", "Mamre"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Dothan"
+      },
+      "explanation": "Genesis 37 says Joseph went after his brothers and found them in Dothan.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "dothan", "brothers"]
+    },
+    {
+      "key": "day-013-genesis-037-039-005",
+      "format": "multiple_choice",
+      "prompt": "Who bought Joseph in Egypt?",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 1,
+      "verse_end": 1,
+      "reference": "Genesis 39:1",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Potiphar", "Pharaoh", "Judah", "Reuben"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Potiphar"
+      },
+      "explanation": "Genesis 39 says Potiphar bought Joseph in Egypt.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "potiphar", "egypt"]
+    },
+    {
+      "key": "day-013-genesis-037-039-006",
+      "format": "multiple_choice",
+      "prompt": "What pledge items did Judah give Tamar?",
+      "book": "Genesis",
+      "chapter": 38,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 38:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "options": [
+          "His signet/seal, cord, and staff",
+          "His robe, sandals, and ring",
+          "His bow, quiver, and staff",
+          "His silver, cup, and chain"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "His signet/seal, cord, and staff"
+      },
+      "explanation": "Genesis 38 says Judah gave Tamar his signet or seal, cord, and staff as a pledge.",
+      "teaching_note": "This stays with direct objects named in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "judah", "tamar", "pledge"]
+    },
+    {
+      "key": "day-013-genesis-037-039-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 37.",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 37:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "text": "Israel made Joseph a special ____.",
+        "blank_count": 1,
+        "options": ["robe", "staff", "tent", "sandal"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "robe"
+      },
+      "explanation": "Genesis 37 says Israel made Joseph a special robe.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "robe", "israel"]
+    },
+    {
+      "key": "day-013-genesis-037-039-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 37.",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 24,
+      "verse_end": 24,
+      "reference": "Genesis 37:24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "Joseph was thrown into a ____.",
+        "blank_count": 1,
+        "options": ["pit", "house", "prison", "field"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "pit"
+      },
+      "explanation": "Genesis 37 says Joseph was cast into a pit.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "pit", "brothers"]
+    },
+    {
+      "key": "day-013-genesis-037-039-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 38.",
+      "book": "Genesis",
+      "chapter": 38,
+      "verse_start": 29,
+      "verse_end": 30,
+      "reference": "Genesis 38:29-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "Tamar gave birth to Perez and ____.",
+        "blank_count": 1,
+        "options": ["Zerah", "Shelah", "Er", "Onan"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Zerah"
+      },
+      "explanation": "Genesis 38 says Tamar's twins were Perez and Zerah.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "tamar", "perez", "zerah"]
+    },
+    {
+      "key": "day-013-genesis-037-039-010",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 39.",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 22,
+      "verse_end": 23,
+      "reference": "Genesis 39:22-23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "The keeper of the prison put Joseph in charge of all the ____.",
+        "blank_count": 1,
+        "options": ["prisoners", "camels", "fields", "brothers"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "prisoners"
+      },
+      "explanation": "Genesis 39 says the keeper put Joseph in charge of all the prisoners.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "prison", "keeper"]
+    },
+    {
+      "key": "day-013-genesis-037-039-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Joseph's special robe?",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 3,
+      "verse_end": 3,
+      "reference": "Genesis 37:3",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "robe",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A distinctive ancient robe in a pastoral family setting",
+            "image_url": "/training/genesis/joseph-special-robe.png",
+            "alt": "Distinctive ancient robe laid out or held up in a pastoral family setting"
+          },
+          {
+            "label": "Gathered grain sheaves with one standing prominently",
+            "image_url": "/training/genesis/joseph-dream-sheaves.png",
+            "alt": "Gathered grain sheaves in a field with one central sheaf standing prominently"
+          },
+          {
+            "label": "Flocks near distant hills in the Dothan area",
+            "image_url": "/training/genesis/joseph-dothan-flocks.png",
+            "alt": "Ancient pastoral scene with flocks near distant hills"
+          },
+          {
+            "label": "An Egyptian household courtyard with a young overseer",
+            "image_url": "/training/genesis/joseph-egypt-household.png",
+            "alt": "Ancient Egyptian household courtyard with a young overseer figure"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A distinctive ancient robe in a pastoral family setting"
+      },
+      "explanation": "Genesis 37 says Israel gave Joseph a special robe.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "robe", "image"]
+    },
+    {
+      "key": "day-013-genesis-037-039-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 37 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 3,
+      "verse_end": 36,
+      "reference": "Genesis 37:3-36",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph is thrown into the pit",
+          "Israel sends Joseph to check on his brothers",
+          "Joseph tells his dreams",
+          "Joseph is taken toward Egypt"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Joseph tells his dreams",
+          "Israel sends Joseph to check on his brothers",
+          "Joseph is thrown into the pit",
+          "Joseph is taken toward Egypt"
+        ]
+      },
+      "explanation": "Genesis 37 moves from Joseph's dreams to his mission, the pit, and then his journey toward Egypt.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "egypt", "ordering"]
+    },
+    {
+      "key": "day-013-genesis-037-039-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 38 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 38,
+      "verse_start": 11,
+      "verse_end": 30,
+      "reference": "Genesis 38:11-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Tamar receives Judah's pledge items",
+          "Judah says, \"She is more righteous than I\"",
+          "Perez is born",
+          "Judah goes up to shear his sheep"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Judah goes up to shear his sheep",
+          "Tamar receives Judah's pledge items",
+          "Judah says, \"She is more righteous than I\"",
+          "Perez is born"
+        ]
+      },
+      "explanation": "Genesis 38 records the sheep-shearing trip, the pledge, Judah's later statement, and then the birth of Perez.",
+      "teaching_note": "This stays with sequence and named facts in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "judah", "tamar", "perez", "ordering"]
+    },
+    {
+      "key": "day-013-genesis-037-039-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 39 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 1,
+      "verse_end": 23,
+      "reference": "Genesis 39",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Joseph is put in prison",
+          "Potiphar buys Joseph",
+          "The keeper of the prison puts Joseph in charge",
+          "Potiphar puts Joseph over his house"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Potiphar buys Joseph",
+          "Potiphar puts Joseph over his house",
+          "Joseph is put in prison",
+          "The keeper of the prison puts Joseph in charge"
+        ]
+      },
+      "explanation": "Genesis 39 moves from Potiphar's purchase to Joseph's household role, then prison, then prison responsibility.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "potiphar", "prison", "ordering"]
+    },
+    {
+      "key": "day-013-genesis-037-039-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 37 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 2,
+      "verse_end": 36,
+      "reference": "Genesis 37",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Joseph", "Israel", "Reuben", "Dothan"],
+        "right_items": [
+          "Place where Joseph found his brothers",
+          "Tried to rescue Joseph from the pit",
+          "Father who sent Joseph to check on his brothers",
+          "Seventeen-year-old son with the special robe"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Joseph", "right": "Seventeen-year-old son with the special robe" },
+          { "left": "Israel", "right": "Father who sent Joseph to check on his brothers" },
+          { "left": "Reuben", "right": "Tried to rescue Joseph from the pit" },
+          { "left": "Dothan", "right": "Place where Joseph found his brothers" }
+        ]
+      },
+      "explanation": "Genesis 37 connects Joseph, Israel, Reuben, and Dothan to these details.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "israel", "reuben", "matching"]
+    },
+    {
+      "key": "day-013-genesis-037-039-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 38 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 38,
+      "verse_start": 13,
+      "verse_end": 30,
+      "reference": "Genesis 38:13-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Judah", "Tamar", "Perez", "Zerah"],
+        "right_items": [
+          "Twin born before Zerah",
+          "Twin with the scarlet thread",
+          "Woman who kept the pledge items",
+          "Man who later identified the pledge"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Judah", "right": "Man who later identified the pledge" },
+          { "left": "Tamar", "right": "Woman who kept the pledge items" },
+          { "left": "Perez", "right": "Twin born before Zerah" },
+          { "left": "Zerah", "right": "Twin with the scarlet thread" }
+        ]
+      },
+      "explanation": "Genesis 38 connects Judah, Tamar, Perez, and Zerah to these direct details.",
+      "teaching_note": "This question stays with named people and objects from the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "judah", "tamar", "perez", "zerah", "matching"]
+    },
+    {
+      "key": "day-013-genesis-037-039-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 39 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 1,
+      "verse_end": 23,
+      "reference": "Genesis 39",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Potiphar", "Joseph", "Prison keeper", "Prison"],
+        "right_items": [
+          "Bought Joseph in Egypt",
+          "Place Joseph was sent after the accusation",
+          "Put Joseph in charge there",
+          "Served successfully in the house and later in prison"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Potiphar", "right": "Bought Joseph in Egypt" },
+          { "left": "Joseph", "right": "Served successfully in the house and later in prison" },
+          { "left": "Prison keeper", "right": "Put Joseph in charge there" },
+          { "left": "Prison", "right": "Place Joseph was sent after the accusation" }
+        ]
+      },
+      "explanation": "Genesis 39 ties Potiphar, Joseph, the prison keeper, and the prison to these actions.",
+      "teaching_note": "This keeps the focus on direct events and roles in Genesis 39.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "potiphar", "prison", "matching"]
+    },
+    {
+      "key": "day-013-genesis-037-039-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 39.",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 21,
+      "verse_end": 23,
+      "reference": "Genesis 39:21-23",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "statement": "Genesis 39 says the Lord was with Joseph in prison."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 39 says the Lord was with Joseph in the prison.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "prison", "true-false"]
+    },
+    {
+      "key": "day-013-genesis-037-039-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 37.",
+      "book": "Genesis",
+      "chapter": 37,
+      "verse_start": 13,
+      "verse_end": 14,
+      "reference": "Genesis 37:13-14",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 37 says Israel sent Joseph from the Valley of Hebron to check on his brothers."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 37 says Joseph was sent from the Valley of Hebron to see if it was well with his brothers.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "hebron", "true-false"]
+    },
+    {
+      "key": "day-013-genesis-037-039-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 39 statement.",
+      "book": "Genesis",
+      "chapter": 39,
+      "verse_start": 19,
+      "verse_end": 20,
+      "reference": "Genesis 39:19-20",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "After the accusation against Joseph, Potiphar rewarded him with a higher place in the house.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "After the accusation, Joseph was put into prison.",
+          "After the accusation, Joseph returned to Jacob.",
+          "After the accusation, Joseph was sent to Dothan.",
+          "After the accusation, Judah identified his pledge items."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "After the accusation, Joseph was put into prison."
+      },
+      "explanation": "Genesis 39 says Joseph was put into the prison after the accusation.",
+      "teaching_note": "This keeps the wording neutral and focuses on the direct outcome in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-37-39",
+      "tags": ["genesis", "joseph", "potiphar", "spot-error"]
+    }
+  ]
+}

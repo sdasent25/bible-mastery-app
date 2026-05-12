@@ -1,0 +1,38 @@
+{
+  "day": 14,
+  "segment_key": "genesis-040-042",
+  "images": [
+    {
+      "question_key": "day-014-genesis-040-042-011",
+      "image_filename": "pharaoh-cows-dream.png",
+      "label": "Healthy and thin cows near the Nile in Pharaoh's dream",
+      "prompt_used": "Create a symbolic cinematic scene of Pharaoh’s dream with seven healthy cows and seven thin cows near the Nile, ancient Egypt atmosphere, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "Healthy and thin cows near the Nile in an ancient Egyptian dream scene"
+    },
+    {
+      "question_key": "day-014-genesis-040-042-011",
+      "image_filename": "grain-dream-egypt.png",
+      "label": "Full and thin grain in an Egyptian field scene",
+      "prompt_used": "Create a symbolic image of full healthy grain and thin scorched grain in an ancient Egyptian setting, representing Pharaoh’s grain dream. Premium semi-realistic painterly style, readable at small mobile-card size, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Full healthy grain and thin scorched grain in an ancient Egyptian setting"
+    },
+    {
+      "question_key": "day-014-genesis-040-042-011",
+      "image_filename": "joseph-prison-dreams.png",
+      "label": "Joseph listening to two officials in an ancient prison",
+      "prompt_used": "Create a respectful symbolic scene in an ancient prison where a young servant figure listens to two troubled officials, representing Joseph interpreting dreams in prison. No modern prison elements. Premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Ancient prison scene with a young servant figure listening to two troubled officials"
+    },
+    {
+      "question_key": "day-014-genesis-040-042-011",
+      "image_filename": "brothers-egypt-grain.png",
+      "label": "Travelers arriving in Egypt to buy grain",
+      "prompt_used": "Create a symbolic scene of travelers from Canaan arriving in Egypt to buy grain, with sacks, ancient Egyptian storehouses, and a respectful historical atmosphere. Premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Travelers from Canaan arriving in Egypt to buy grain near storehouses"
+    }
+  ]
+}

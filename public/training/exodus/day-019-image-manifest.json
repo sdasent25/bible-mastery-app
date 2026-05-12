@@ -1,0 +1,69 @@
+{
+  "day": 19,
+  "images": [
+    {
+      "question_key": "day-019-exodus-007-009-010",
+      "image_filename": "nile-water-red.png",
+      "label": "The Nile River turning red along an ancient Egyptian riverbank",
+      "prompt": "Create a symbolic cinematic scene of the Nile River turning red in ancient Egypt, with reeds and Egyptian riverbank details, no gore, no suffering people, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "The Nile River turning red along an ancient Egyptian riverbank with reeds nearby"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-010",
+      "image_filename": "aaron-staff-serpent-pharaoh.png",
+      "label": "A staff transformed into a serpent on the floor before Pharaoh",
+      "prompt": "Create a respectful symbolic scene in an ancient Egyptian court showing a staff on the floor transformed into a serpent before Pharaoh, with two Hebrew men standing nearby, cinematic but clear, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A staff transformed into a serpent on the floor before Pharaoh in an Egyptian court"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-010",
+      "image_filename": "frogs-over-egypt.png",
+      "label": "Many frogs across an ancient Egyptian courtyard and riverbank",
+      "prompt": "Create a symbolic scene of many frogs across an ancient Egyptian courtyard and riverbank, visually clear but not gross, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Many frogs across an ancient Egyptian courtyard and riverbank"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-010",
+      "image_filename": "hail-over-egypt-fields.png",
+      "label": "Hail falling over Egyptian fields under a stormy sky",
+      "prompt": "Create a dramatic but non-graphic scene of hail falling over Egyptian fields under a stormy sky, crops visible, no injured people or animals, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Hail falling over Egyptian fields under a stormy sky"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-011",
+      "image_filename": "gnats-dust-egypt.png",
+      "label": "Dust rising from the ground with gnats or lice suggested as a haze",
+      "prompt": "Create a symbolic scene of dust rising from the ground in ancient Egypt with tiny gnats/lice suggested as a haze, visually clear and non-gross, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Dust rising from the ground in ancient Egypt with gnats or lice suggested as a haze"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-011",
+      "image_filename": "flies-over-egypt.png",
+      "label": "Swarms of flies over an ancient Egyptian setting",
+      "prompt": "Create a symbolic scene of swarms of flies over an ancient Egyptian setting, non-graphic, readable at mobile-card size, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "Swarms of flies over an ancient Egyptian setting"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-011",
+      "image_filename": "livestock-field-egypt.png",
+      "label": "A calm ancient Egyptian livestock field with herds grazing",
+      "prompt": "Create a calm ancient Egyptian livestock field scene with cattle and herds, symbolic and respectful, no suffering animals, premium semi-realistic painterly Bible learning app style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": false,
+      "alt": "A calm ancient Egyptian livestock field with herds grazing"
+    },
+    {
+      "question_key": "day-019-exodus-007-009-011",
+      "image_filename": "goshen-protected-land.png",
+      "label": "A peaceful protected land scene representing Goshen with calm light",
+      "prompt": "Create a peaceful protected land scene representing Goshen, with Hebrew tents, livestock, and calm light contrasted against distant stormy Egypt, symbolic and respectful, premium semi-realistic painterly style, square or near-square composition, no text, no logos.",
+      "is_correct_answer": true,
+      "alt": "A peaceful protected land scene representing Goshen with tents, livestock, and calm light"
+    }
+  ]
+}

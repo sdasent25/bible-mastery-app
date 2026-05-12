@@ -1,0 +1,691 @@
+{
+  "day": 10,
+  "segment_key": "genesis-028-030",
+  "unlock_key": "genesis-28-30",
+  "reading": {
+    "book": "Genesis",
+    "chapter_start": 28,
+    "chapter_end": 30,
+    "reference": "Genesis 28–30"
+  },
+  "items": [
+    {
+      "key": "day-010-genesis-028-030-001",
+      "format": "multiple_choice",
+      "prompt": "What did Jacob see in his dream?",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 12,
+      "verse_end": 12,
+      "reference": "Genesis 28:12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "A ladder reaching to heaven",
+          "A burning bush",
+          "A great river",
+          "A mountain"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A ladder reaching to heaven"
+      },
+      "explanation": "Genesis 28 says Jacob saw a ladder set up on the earth with its top reaching to heaven.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "dream", "bethel"]
+    },
+    {
+      "key": "day-010-genesis-028-030-002",
+      "format": "multiple_choice",
+      "prompt": "What did Jacob say after waking from the dream?",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 16,
+      "verse_end": 17,
+      "reference": "Genesis 28:16-17",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "easy",
+      "content": {
+        "options": [
+          "Surely the Lord is in this place",
+          "This is my permanent home",
+          "I should return to Egypt",
+          "There is no one here"
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Surely the Lord is in this place"
+      },
+      "explanation": "Genesis 28 says Jacob realized the Lord was in that place.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "bethel", "dream"]
+    },
+    {
+      "key": "day-010-genesis-028-030-003",
+      "format": "multiple_choice",
+      "prompt": "Whom did Jacob love?",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 18,
+      "verse_end": 18,
+      "reference": "Genesis 29:18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Rachel", "Leah", "Rebekah", "Sarah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Rachel"
+      },
+      "explanation": "Genesis 29 says Jacob loved Rachel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "rachel", "people"]
+    },
+    {
+      "key": "day-010-genesis-028-030-004",
+      "format": "multiple_choice",
+      "prompt": "Whom did Laban give Jacob first?",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 23,
+      "verse_end": 25,
+      "reference": "Genesis 29:23-25",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "options": ["Leah", "Rachel", "Bilhah", "Zilpah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Leah"
+      },
+      "explanation": "Genesis 29 says Laban gave Leah to Jacob first.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "leah", "laban"]
+    },
+    {
+      "key": "day-010-genesis-028-030-005",
+      "format": "multiple_choice",
+      "prompt": "What name did Jacob give the place where he set up the stone?",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 18,
+      "verse_end": 19,
+      "reference": "Genesis 28:18-19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "places",
+      "difficulty": "medium",
+      "content": {
+        "options": ["Bethel", "Hebron", "Gerar", "Beersheba"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Bethel"
+      },
+      "explanation": "Genesis 28 says Jacob called the place Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "bethel", "jacob", "stone"]
+    },
+    {
+      "key": "day-010-genesis-028-030-006",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 29.",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 6,
+      "verse_end": 6,
+      "reference": "Genesis 29:6",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "easy",
+      "content": {
+        "text": "At the well, Jacob learned that ____ was coming with Laban's sheep.",
+        "blank_count": 1,
+        "options": ["Rachel", "Leah", "Bilhah", "Dinah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Rachel"
+      },
+      "explanation": "Rachel came to the well with Laban's sheep.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "rachel", "well"]
+    },
+    {
+      "key": "day-010-genesis-028-030-007",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 29.",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 27,
+      "verse_end": 27,
+      "reference": "Genesis 29:27",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "text": "After the wedding week, Jacob served Laban another ____ years for Rachel.",
+        "blank_count": 1,
+        "options": ["seven", "three", "ten", "two"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "seven"
+      },
+      "explanation": "Genesis 29 says Jacob served another seven years for Rachel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "rachel", "laban"]
+    },
+    {
+      "key": "day-010-genesis-028-030-008",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 30.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 7,
+      "verse_end": 8,
+      "reference": "Genesis 30:7-8",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "text": "Rachel named Bilhah's second son ____.",
+        "blank_count": 1,
+        "options": ["Naphtali", "Dan", "Joseph", "Asher"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Naphtali"
+      },
+      "explanation": "Genesis 30 says Rachel named Bilhah's second son Naphtali.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "rachel", "bilhah", "naphtali"]
+    },
+    {
+      "key": "day-010-genesis-028-030-009",
+      "format": "fill_blank",
+      "prompt": "Complete the sentence from Genesis 30.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 17,
+      "verse_end": 18,
+      "reference": "Genesis 30:17-18",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "text": "Leah named the son born after hiring Jacob ____.",
+        "blank_count": 1,
+        "options": ["Issachar", "Zebulun", "Levi", "Judah"]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Issachar"
+      },
+      "explanation": "Genesis 30 says Leah named that son Issachar.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "leah", "issachar", "jacob"]
+    },
+    {
+      "key": "day-010-genesis-028-030-010",
+      "format": "image_choice",
+      "prompt": "Which image best represents Jacob's dream at Bethel?",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 12,
+      "verse_end": 12,
+      "reference": "Genesis 28:12",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "bethel",
+      "difficulty": "medium",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "Jacob resting at night with a glowing stairway to heaven",
+            "image_url": "/training/genesis/jacob-dream-bethel.png",
+            "alt": "Ancient traveler resting at night while a glowing stairway rises into heaven"
+          },
+          {
+            "label": "An upright stone marker in the desert at dawn",
+            "image_url": "/training/genesis/bethel-stone-marker.png",
+            "alt": "Upright stone marker in a desert setting at dawn"
+          },
+          {
+            "label": "Shepherds and flocks gathered around a well",
+            "image_url": "/training/genesis/shepherds-at-well.png",
+            "alt": "Ancient well with shepherds and flocks nearby"
+          },
+          {
+            "label": "Flocks of speckled and spotted animals in pasture",
+            "image_url": "/training/genesis/flocks-speckled-spotted.png",
+            "alt": "Speckled and spotted sheep and goats in a pastoral setting"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jacob resting at night with a glowing stairway to heaven"
+      },
+      "explanation": "Genesis 28 says Jacob dreamed of a ladder reaching to heaven.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "bethel", "dream", "image"]
+    },
+    {
+      "key": "day-010-genesis-028-030-011",
+      "format": "image_choice",
+      "prompt": "Which image best represents Rachel coming with Laban's sheep?",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 9,
+      "verse_end": 10,
+      "reference": "Genesis 29:9-10",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "hard",
+      "content": {
+        "question_image_type": "answer_cards",
+        "options": [
+          {
+            "label": "A young woman approaching a well with flocks nearby",
+            "image_url": "/training/genesis/rachel-well-flocks.png",
+            "alt": "Young woman approaching a well with flocks nearby"
+          },
+          {
+            "label": "A single stone lying on the ground at night",
+            "image_url": "/training/genesis/stone-pillow-bethel.png",
+            "alt": "Single stone on the ground under a night sky"
+          },
+          {
+            "label": "An ancient family tent encampment in the countryside",
+            "image_url": "/training/genesis/laban-family-tents.png",
+            "alt": "Ancient family tent encampment with pastoral surroundings"
+          },
+          {
+            "label": "Luminous angels moving on a glowing stairway into heaven",
+            "image_url": "/training/genesis/angels-stairway-heaven.png",
+            "alt": "Luminous angels ascending and descending on a glowing stairway"
+          }
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "A young woman approaching a well with flocks nearby"
+      },
+      "explanation": "Genesis 29 says Rachel came with her father's flock while Jacob was still speaking.",
+      "teaching_note": null,
+      "image_accuracy_note": "Images are symbolic teaching aids and are not exact historical reconstructions.",
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "rachel", "well", "laban", "image"]
+    },
+    {
+      "key": "day-010-genesis-028-030-012",
+      "format": "ordering",
+      "prompt": "Put these Genesis 28 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 11,
+      "verse_end": 19,
+      "reference": "Genesis 28:11-19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob dreams of the ladder",
+          "Jacob takes one of the stones for his head",
+          "Jacob sets up the stone as a pillar",
+          "Jacob names the place Bethel"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Jacob takes one of the stones for his head",
+          "Jacob dreams of the ladder",
+          "Jacob sets up the stone as a pillar",
+          "Jacob names the place Bethel"
+        ]
+      },
+      "explanation": "Genesis 28 moves from Jacob lying down with a stone, to the dream, to setting up the stone, and then naming the place Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "bethel", "ordering"]
+    },
+    {
+      "key": "day-010-genesis-028-030-013",
+      "format": "ordering",
+      "prompt": "Put these Genesis 29 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 2,
+      "verse_end": 28,
+      "reference": "Genesis 29:2-28",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Jacob serves seven years for Rachel",
+          "Jacob rolls the stone from the well's mouth",
+          "Rachel comes with the sheep",
+          "Laban gives Leah to Jacob"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Rachel comes with the sheep",
+          "Jacob rolls the stone from the well's mouth",
+          "Jacob serves seven years for Rachel",
+          "Laban gives Leah to Jacob"
+        ]
+      },
+      "explanation": "Genesis 29 records Rachel arriving, Jacob rolling the stone, the seven years of service, and then Laban giving Leah first.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "rachel", "laban", "ordering"]
+    },
+    {
+      "key": "day-010-genesis-028-030-014",
+      "format": "ordering",
+      "prompt": "Put these Genesis 30 events in the order they appear.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 1,
+      "verse_end": 24,
+      "reference": "Genesis 30:1-24",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "sequence",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Arrange these events in order.",
+        "items": [
+          "Leah hires Jacob with mandrakes",
+          "Rachel says, \"Give me children\"",
+          "God remembers Rachel",
+          "Bilhah bears Naphtali"
+        ]
+      },
+      "correct_answer": {
+        "type": "ordered_list",
+        "value": [
+          "Rachel says, \"Give me children\"",
+          "Bilhah bears Naphtali",
+          "Leah hires Jacob with mandrakes",
+          "God remembers Rachel"
+        ]
+      },
+      "explanation": "Genesis 30 moves from Rachel's plea, to Bilhah's children, to Leah hiring Jacob, and later to God remembering Rachel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "rachel", "leah", "ordering"]
+    },
+    {
+      "key": "day-010-genesis-028-030-015",
+      "format": "matching",
+      "prompt": "Match each Genesis 28 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 11,
+      "verse_end": 22,
+      "reference": "Genesis 28:11-22",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Ladder", "Stone", "Bethel", "Tenth"],
+        "right_items": [
+          "Place Jacob named after the dream",
+          "Set up by Jacob as a pillar",
+          "Reached toward heaven in the dream",
+          "Jacob vowed to give this to God"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Ladder", "right": "Reached toward heaven in the dream" },
+          { "left": "Stone", "right": "Set up by Jacob as a pillar" },
+          { "left": "Bethel", "right": "Place Jacob named after the dream" },
+          { "left": "Tenth", "right": "Jacob vowed to give this to God" }
+        ]
+      },
+      "explanation": "Genesis 28 connects the ladder, the stone pillar, Bethel, and Jacob's vow of a tenth.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "bethel", "matching"]
+    },
+    {
+      "key": "day-010-genesis-028-030-016",
+      "format": "matching",
+      "prompt": "Match each Genesis 29 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 29,
+      "verse_start": 2,
+      "verse_end": 30,
+      "reference": "Genesis 29:2-30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "people",
+      "difficulty": "medium",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Rachel", "Leah", "Laban", "Jacob"],
+        "right_items": [
+          "Man who rolled the stone from the well",
+          "Woman Jacob loved",
+          "Father who switched daughters at the wedding",
+          "Older daughter given first"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Rachel", "right": "Woman Jacob loved" },
+          { "left": "Leah", "right": "Older daughter given first" },
+          { "left": "Laban", "right": "Father who switched daughters at the wedding" },
+          { "left": "Jacob", "right": "Man who rolled the stone from the well" }
+        ]
+      },
+      "explanation": "Genesis 29 ties Rachel, Leah, Laban, and Jacob to these events at the well and the marriage arrangement.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "rachel", "leah", "matching"]
+    },
+    {
+      "key": "day-010-genesis-028-030-017",
+      "format": "matching",
+      "prompt": "Match each Genesis 30 item with the correct description.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 1,
+      "verse_end": 43,
+      "reference": "Genesis 30",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "instruction": "Match each item with the correct description.",
+        "left_items": ["Bilhah", "Naphtali", "Issachar", "Joseph"],
+        "right_items": [
+          "Son born after God remembered Rachel",
+          "Son Leah named after hiring Jacob",
+          "Rachel's servant who bore children for her",
+          "Name Rachel gave about her wrestlings"
+        ]
+      },
+      "correct_answer": {
+        "type": "pairs",
+        "value": [
+          { "left": "Bilhah", "right": "Rachel's servant who bore children for her" },
+          { "left": "Naphtali", "right": "Name Rachel gave about her wrestlings" },
+          { "left": "Issachar", "right": "Son Leah named after hiring Jacob" },
+          { "left": "Joseph", "right": "Son born after God remembered Rachel" }
+        ]
+      },
+      "explanation": "Genesis 30 connects Bilhah, Naphtali, Issachar, and Joseph to these direct details.",
+      "teaching_note": "This question stays with named people and children directly mentioned in the passage.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "rachel", "leah", "children", "matching"]
+    },
+    {
+      "key": "day-010-genesis-028-030-018",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 28.",
+      "book": "Genesis",
+      "chapter": 28,
+      "verse_start": 19,
+      "verse_end": 19,
+      "reference": "Genesis 28:19",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 28 says Jacob called the place Bethel."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 28 says Jacob named the place Bethel.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "bethel", "true-false"]
+    },
+    {
+      "key": "day-010-genesis-028-030-019",
+      "format": "true_false",
+      "prompt": "Evaluate this statement from Genesis 30.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 43,
+      "verse_end": 43,
+      "reference": "Genesis 30:43",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "medium",
+      "content": {
+        "statement": "Genesis 30 says Jacob increased greatly."
+      },
+      "correct_answer": {
+        "type": "boolean",
+        "value": true
+      },
+      "explanation": "Genesis 30 says the man increased exceedingly and gained many flocks and servants.",
+      "teaching_note": null,
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "flocks", "true-false"]
+    },
+    {
+      "key": "day-010-genesis-028-030-020",
+      "format": "spot_error",
+      "prompt": "Find the factual mistake in this Genesis 30 statement.",
+      "book": "Genesis",
+      "chapter": 30,
+      "verse_start": 32,
+      "verse_end": 35,
+      "reference": "Genesis 30:32-35",
+      "testament": "old_testament",
+      "category": "pentateuch",
+      "skill": "careful_reading",
+      "difficulty": "hard",
+      "content": {
+        "statement": "Genesis 30 says Jacob's wages were plain white animals from the flocks.",
+        "instruction": "Spot the error in this statement.",
+        "options": [
+          "Jacob's wages were not plain white animals; they involved marked or dark animals.",
+          "Jacob had no agreement at all with Laban.",
+          "Jacob was paid only with silver.",
+          "Rachel was the one setting Jacob's wages."
+        ]
+      },
+      "correct_answer": {
+        "type": "single",
+        "value": "Jacob's wages were not plain white animals; they involved marked or dark animals."
+      },
+      "explanation": "Jacob's wages were tied to marked or dark animals from the flocks, not plain white animals.",
+      "teaching_note": "This keeps the focus on the direct description of Jacob's wages in Genesis 30.",
+      "image_accuracy_note": null,
+      "unlock_type": "journey_segment",
+      "unlock_key": "genesis-28-30",
+      "tags": ["genesis", "jacob", "laban", "flocks", "spot-error"]
+    }
+  ]
+}
