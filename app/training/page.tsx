@@ -160,6 +160,12 @@ function getModeHint(tier: "free" | "pro" | "pro_plus") {
   return "Careful reading, recall, and fast warmup reps"
 }
 
+function getFocusTags(tier: "free" | "pro" | "pro_plus") {
+  if (tier === "pro_plus") return ["Recall", "Recognition", "Matching"]
+  if (tier === "pro") return ["Recall", "Sequence", "Review"]
+  return ["Recall", "Reading", "Warmup"]
+}
+
 function getAccessNote(tier: "free" | "pro" | "pro_plus") {
   if (tier === "pro_plus") return "Full arena access is live."
   if (tier === "pro") return "Core drills unlocked across the arena."
@@ -263,6 +269,41 @@ function getDayStatus(dayNumber: number, tier: "free" | "pro" | "pro_plus"): Hub
   }
 }
 
+function getDayArtPath(segmentKey: string, dayNumber: number) {
+  const track = getTrackLabel(segmentKey).toLowerCase()
+
+  if (track === "exodus") {
+    const exodusArt: Record<number, string> = {
+      17: "/training/exodus/basket-nile-reeds.png",
+      18: "/training/exodus/staff-serpent-sign.png",
+      19: "/training/exodus/nile-water-red.png",
+    }
+
+    return exodusArt[dayNumber] ?? "/training/exodus/burning-bush-horeb.png"
+  }
+
+  const genesisArt: Record<number, string> = {
+    1: "/training/genesis/light-darkness.png",
+    2: "/training/genesis/serpent-tree-garden.png",
+    3: "/training/genesis/abel-flock-offering.png",
+    4: "/training/genesis/ark-on-floodwaters.png",
+    5: "/training/genesis/tower-of-babel.png",
+    6: "/training/genesis/abram-traveling-canaan.png",
+    7: "/training/genesis/abram-stars.png",
+    8: "/training/genesis/abraham-visitors-mamre.png",
+    9: "/training/genesis/fleeing-sodom.png",
+    10: "/training/genesis/altar-stones-moriah.png",
+    11: "/training/genesis/camels-at-well.png",
+    12: "/training/genesis/jacob-dream-bethel.png",
+    13: "/training/genesis/jacob-wrestling-night.png",
+    14: "/training/genesis/joseph-special-robe.png",
+    15: "/training/genesis/pharaoh-cows-dream.png",
+    16: "/training/genesis/joseph-reveals-brothers.png",
+  }
+
+  return genesisArt[dayNumber] ?? "/training/genesis/light-darkness.png"
+}
+
 export default async function TrainingPage() {
   const [days, access] = await Promise.all([
     listTrainingDays(),
@@ -278,6 +319,8 @@ export default async function TrainingPage() {
     ? getTrackVisual(firstDay.segmentKey)
     : getTrackVisual("genesis-1-3")
   const previewLabel = days.length > 0 ? `Days 1-${Math.min(3, days.length)}` : "Days 1-3"
+  const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
+  const todayTags = getFocusTags(access.tier)
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#283a64_0%,_#121a2c_28%,_#070b14_100%)] px-4 py-4 text-white sm:px-6 sm:py-6">
@@ -411,7 +454,7 @@ export default async function TrainingPage() {
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/62">
-                      Main Action
+                      Today&apos;s Mission
                     </div>
                     <p className="mt-2 text-lg font-black text-white sm:text-xl">
                       {todayDay?.reference ?? "No training packs found"}
@@ -424,7 +467,7 @@ export default async function TrainingPage() {
                   ) : null}
                 </div>
 
-                <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-200">
+                <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-200 lg:grid-cols-3">
                   <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3">
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
                       Drill Count
@@ -435,10 +478,18 @@ export default async function TrainingPage() {
                   </div>
                   <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3">
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
-                      Mode Hint
+                      Focus
                     </div>
                     <div className="mt-2 text-xs font-semibold leading-5 text-white sm:text-sm">
                       {getModeHint(access.tier)}
+                    </div>
+                  </div>
+                  <div className="col-span-2 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3 lg:col-span-1">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
+                      Estimated Time
+                    </div>
+                    <div className="mt-2 text-lg font-black text-white">
+                      {todayEstimate}
                     </div>
                   </div>
                 </div>
@@ -452,6 +503,16 @@ export default async function TrainingPage() {
                       ? `${todayDay.reference} is ready for a disciplined pass through recall, recognition, and careful reading.`
                       : "Training day data is not available yet."}
                   </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {todayTags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-cyan-200/16 bg-cyan-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-50"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -516,12 +577,12 @@ export default async function TrainingPage() {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="-mx-4 mt-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 sm:pb-0 xl:grid-cols-3">
             {BIBLE_SECTIONS.map((section) => (
               <Link
                 key={section.title}
                 href={section.href}
-                className={`group relative overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 ${section.borderClass} ${section.glowClass}`}
+                className={`group relative min-h-[13rem] min-w-[17.5rem] flex-1 overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 sm:min-h-[14rem] sm:min-w-0 ${section.borderClass} ${section.glowClass}`}
               >
                 <div
                   className="absolute inset-0 opacity-[0.88]"
@@ -531,18 +592,24 @@ export default async function TrainingPage() {
                     backgroundSize: "cover",
                   }}
                 />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_34%),linear-gradient(180deg,rgba(7,10,16,0.16),rgba(7,10,16,0.78))]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_34%),linear-gradient(180deg,rgba(7,10,16,0.10),rgba(7,10,16,0.82))]" />
 
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div className="flex items-center justify-between gap-3">
                     <div className="text-lg text-white/92">✦</div>
                     <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/78">
                       {section.status}
                     </div>
                   </div>
-                  <div className="mt-4 text-base font-black text-white sm:text-lg">{section.title}</div>
-                  <div className="mt-2 text-sm leading-6 text-slate-300">{section.subtitle}</div>
-                  <div className={`mt-4 h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
+                  <div className="mt-6 text-base font-black text-white sm:text-lg">{section.title}</div>
+                  <div className="mt-2 max-w-[16rem] text-sm leading-6 text-slate-300">{section.subtitle}</div>
+                  <div className="mt-auto pt-6">
+                    <div className={`h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
+                    <div className="mt-4 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.22em] text-white/72">
+                      <span>Open Section</span>
+                      <span className="transition duration-200 group-hover:translate-x-1">→</span>
+                    </div>
+                  </div>
                 </div>
               </Link>
             ))}
@@ -568,6 +635,7 @@ export default async function TrainingPage() {
               const lockedForFree = access.tier === "free" && day.day > 3
               const dayTrack = getTrackLabel(day.segmentKey)
               const trackVisual = getTrackVisual(day.segmentKey)
+              const dayArtPath = getDayArtPath(day.segmentKey, day.day)
               const descriptor = getDayDescriptor(day.day, access.tier, dayTrack)
               const estTime = getEstimatedTime(day.itemCount, access.tier)
 
@@ -579,14 +647,23 @@ export default async function TrainingPage() {
                   } ${lockedForFree ? "" : "hover:-translate-y-1"}`}
                 >
                   <div
-                    className="pointer-events-none absolute inset-0 opacity-[0.82]"
+                    className="pointer-events-none absolute inset-x-0 top-0 h-32 opacity-[0.92]"
+                    style={{
+                      backgroundImage: `url('${dayArtPath}')`,
+                      backgroundPosition: "50% 42%",
+                      backgroundSize: "cover",
+                    }}
+                  />
+                  <div
+                    className="pointer-events-none absolute inset-x-0 top-0 h-32 opacity-[0.35]"
                     style={{
                       backgroundImage: `url('${trackVisual.artPath}')`,
                       backgroundPosition: "50% 42%",
                       backgroundSize: "cover",
                     }}
                   />
-                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_30%),linear-gradient(180deg,rgba(8,11,18,0.12),rgba(8,11,18,0.66))]" />
+                  <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_26%),linear-gradient(180deg,rgba(8,11,18,0.02),rgba(8,11,18,0.46)_30%,rgba(8,11,18,0.82)_100%)]" />
+                  <div className="pointer-events-none absolute inset-x-0 top-[7.65rem] h-px bg-white/10" />
 
                   <div className="relative z-10">
                     <div className="flex items-center justify-between gap-3">
@@ -598,7 +675,10 @@ export default async function TrainingPage() {
                       </div>
                     </div>
 
-                    <h3 className="mt-4 text-xl font-black tracking-[-0.03em] text-white sm:text-2xl">
+                    <div className="mt-14 text-[10px] font-bold uppercase tracking-[0.24em] text-white/56">
+                      Mission Reading
+                    </div>
+                    <h3 className="mt-2 text-xl font-black tracking-[-0.03em] text-white sm:text-2xl">
                       {day.reference}
                     </h3>
 
@@ -608,7 +688,7 @@ export default async function TrainingPage() {
                       <span>{estTime}</span>
                     </div>
 
-                    <p className="mt-3 text-sm leading-6 text-slate-300">
+                    <p className="mt-3 min-h-[4.5rem] text-sm leading-6 text-slate-300">
                       {descriptor}
                     </p>
 
@@ -635,8 +715,8 @@ export default async function TrainingPage() {
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%)]" />
               <div className="relative">
                 <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.26em] text-amber-100/82">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-amber-100/20 bg-amber-100/10 text-[12px]">
-                    ✧
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-amber-100/20 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%),rgba(251,191,36,0.12)] text-[13px] shadow-[0_0_24px_rgba(251,191,36,0.18)]">
+                    🛡
                   </span>
                   <span>Pro+ Arena</span>
                 </div>
@@ -644,7 +724,7 @@ export default async function TrainingPage() {
                   Unlock the full training experience.
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
-                  Hard drills, image recognition, full daily sets, and mastery tracking.
+                  Step into the elite lane of the arena with deeper drills, fuller day packs, and a premium mastery path.
                 </p>
 
                 <div className="mt-5 space-y-3">
