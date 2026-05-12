@@ -25,13 +25,13 @@ function Shell({
   actions: React.ReactNode
 }) {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
-      <div className="mx-auto max-w-xl rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-6 shadow-[0_28px_90px_rgba(0,0,0,0.3)] sm:p-8">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-4 text-white sm:px-5 sm:py-6">
+      <div className="mx-auto max-w-2xl rounded-[1.9rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.08),transparent_34%),linear-gradient(180deg,rgba(18,24,38,0.98),rgba(8,12,20,0.98))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-7">
         <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-200/78">
           {eyebrow}
         </div>
-        <h1 className="mt-4 text-3xl font-black text-white">{title}</h1>
-        <p className="mt-4 text-base leading-7 text-slate-300">{description}</p>
+        <h1 className="mt-4 text-3xl font-black text-white sm:text-4xl">{title}</h1>
+        <p className="mt-3 text-base leading-7 text-slate-300">{description}</p>
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">{actions}</div>
       </div>
     </main>

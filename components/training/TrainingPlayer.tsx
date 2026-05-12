@@ -61,43 +61,71 @@ function arraysEqual(left: string[], right: string[]) {
 function ImageChoiceCard({
   option,
   selected,
+  submitted,
+  isCorrect,
   disabled,
   onSelect,
 }: {
   option: TrainingImageChoiceOption
   selected: boolean
+  submitted: boolean
+  isCorrect: boolean
   disabled: boolean
   onSelect: () => void
 }) {
   const [failed, setFailed] = useState(false)
+
+  const stateClass = submitted
+    ? isCorrect
+      ? "border-emerald-300/60 bg-emerald-300/12 shadow-[0_0_28px_rgba(52,211,153,0.12)]"
+      : selected
+        ? "border-rose-300/50 bg-rose-300/10 shadow-[0_0_24px_rgba(251,113,133,0.10)]"
+        : "border-white/10 bg-white/[0.03] opacity-85"
+    : selected
+      ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)]"
+      : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
 
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onSelect}
-      className={`overflow-hidden rounded-[1.35rem] border text-left transition ${
-        selected
-          ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)]"
-          : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
-      } ${disabled ? "cursor-default" : ""}`}
+      className={`overflow-hidden rounded-[1.25rem] border text-left transition ${stateClass} ${
+        disabled ? "cursor-default" : ""
+      }`}
     >
       {failed ? (
-        <div className="flex aspect-square items-center justify-center bg-[linear-gradient(180deg,rgba(20,25,38,0.98),rgba(10,13,22,0.98))] px-4 text-center text-sm font-medium text-slate-300">
+        <div className="flex h-36 items-center justify-center bg-[linear-gradient(180deg,rgba(20,25,38,0.98),rgba(10,13,22,0.98))] px-4 text-center text-sm font-medium text-slate-300 sm:h-40 lg:h-44">
           Image unavailable
         </div>
       ) : (
         <img
           src={option.image_url}
           alt={option.alt}
-          className="aspect-square w-full object-cover"
+          className="h-36 w-full object-cover sm:h-40 lg:h-44"
           loading="lazy"
           onError={() => setFailed(true)}
         />
       )}
-      <div className="p-4">
-        <p className="text-sm font-semibold text-white">{option.label}</p>
-        <p className="mt-2 text-xs leading-5 text-slate-400">{option.alt}</p>
+
+      <div className="space-y-2 p-3 sm:p-4">
+        <div className="flex items-start justify-between gap-2">
+          <p className="text-sm font-semibold leading-5 text-white">{option.label}</p>
+          {submitted ? (
+            isCorrect ? (
+              <span className="rounded-full border border-emerald-300/40 bg-emerald-300/12 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-emerald-100">
+                Correct
+              </span>
+            ) : selected ? (
+              <span className="rounded-full border border-rose-300/35 bg-rose-300/10 px-2 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-rose-100">
+                Chosen
+              </span>
+            ) : null
+          ) : null}
+        </div>
+        <p className="hidden text-[11px] leading-4 text-slate-400 sm:block">
+          {option.alt}
+        </p>
       </div>
     </button>
   )
@@ -113,8 +141,8 @@ function EmptyState({
   signedIn: boolean
 }) {
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
-      <div className="mx-auto max-w-xl rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-6 shadow-[0_28px_90px_rgba(0,0,0,0.3)]">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-4 text-white sm:px-5 sm:py-6">
+      <div className="mx-auto max-w-2xl rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.3)] sm:p-6">
         <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-200/78">
           Training Arena
         </div>
@@ -128,7 +156,7 @@ function EmptyState({
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           <Link
             href="/training"
-            className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] transition hover:scale-[1.01]"
+            className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
           >
             Back to Training
           </Link>
@@ -286,6 +314,17 @@ export default function TrainingPlayer({
       <div className="grid gap-3">
         {options.map((option) => {
           const active = selectedSingle === option
+          const isCorrect = submitted && option === item.correct_answer.value
+          const isWrongSelected = submitted && active && !isCorrect
+          const stateClass = submitted
+            ? isCorrect
+              ? "border-emerald-300/55 bg-emerald-300/12 text-emerald-50 shadow-[0_0_24px_rgba(52,211,153,0.10)]"
+              : isWrongSelected
+                ? "border-rose-300/50 bg-rose-300/10 text-rose-50"
+                : "border-white/10 bg-white/[0.03] text-slate-200 opacity-85"
+            : active
+              ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
+              : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
 
           return (
             <button
@@ -296,11 +335,9 @@ export default function TrainingPlayer({
                 setSelectedSingle(option)
                 setSubmissionError(null)
               }}
-              className={`rounded-[1.2rem] border px-4 py-4 text-left text-sm leading-6 transition ${
-                active
-                  ? "border-cyan-300/60 bg-cyan-300/12 text-white"
-                  : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
-              } ${submitted ? "cursor-default" : ""}`}
+              className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition sm:py-4 ${stateClass} ${
+                submitted ? "cursor-default" : ""
+              }`}
             >
               {option}
             </button>
@@ -317,7 +354,7 @@ export default function TrainingPlayer({
       case "fill_blank":
         return (
           <div className="space-y-4">
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
+            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
               {item.content.text}
             </div>
             {renderChoiceButtons(item.content.options as string[])}
@@ -325,12 +362,14 @@ export default function TrainingPlayer({
         )
       case "image_choice":
         return (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
             {(item.content.options as TrainingImageChoiceOption[]).map((option) => (
               <ImageChoiceCard
                 key={option.image_url}
                 option={option}
                 selected={selectedSingle === option.label}
+                submitted={submitted}
+                isCorrect={option.label === item.correct_answer.value}
                 disabled={submitted}
                 onSelect={() => {
                   setSelectedSingle(option.label)
@@ -346,7 +385,7 @@ export default function TrainingPlayer({
 
         return (
           <div className="space-y-5">
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
               {item.content.instruction}
             </div>
 
@@ -354,7 +393,7 @@ export default function TrainingPlayer({
               <div className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">
                 Your Order
               </div>
-              <div className="mt-3 flex min-h-[4.5rem] flex-wrap gap-2 rounded-[1.2rem] border border-dashed border-white/12 bg-black/15 p-3">
+              <div className="mt-3 flex min-h-[4.25rem] flex-wrap gap-2 rounded-[1.15rem] border border-dashed border-white/12 bg-black/15 p-3">
                 {selectedOrder.length > 0 ? (
                   selectedOrder.map((entry, index) => (
                     <div
@@ -411,14 +450,14 @@ export default function TrainingPlayer({
 
         return (
           <div className="space-y-5">
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
               {item.content.instruction}
             </div>
             <div className="space-y-4">
               {pairs.map((pair) => (
                 <div
                   key={pair.left}
-                  className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4"
+                  className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4"
                 >
                   <div className="text-sm font-semibold text-white">{pair.left}</div>
                   <select
@@ -450,6 +489,19 @@ export default function TrainingPlayer({
               { label: "False", value: "false" },
             ].map((option) => {
               const active = selectedSingle === option.value
+              const isCorrect =
+                submitted &&
+                Boolean(item.correct_answer.value) === (option.value === "true")
+              const isWrongSelected = submitted && active && !isCorrect
+              const stateClass = submitted
+                ? isCorrect
+                  ? "border-emerald-300/55 bg-emerald-300/12 text-emerald-50 shadow-[0_0_24px_rgba(52,211,153,0.10)]"
+                  : isWrongSelected
+                    ? "border-rose-300/50 bg-rose-300/10 text-rose-50"
+                    : "border-white/10 bg-white/[0.03] text-slate-200 opacity-85"
+                : active
+                  ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
+                  : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
 
               return (
                 <button
@@ -460,11 +512,9 @@ export default function TrainingPlayer({
                     setSelectedSingle(option.value)
                     setSubmissionError(null)
                   }}
-                  className={`rounded-[1.2rem] border px-4 py-4 text-left text-sm leading-6 transition ${
-                    active
-                      ? "border-cyan-300/60 bg-cyan-300/12 text-white"
-                      : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
-                  } ${submitted ? "cursor-default" : ""}`}
+                  className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition sm:py-4 ${stateClass} ${
+                    submitted ? "cursor-default" : ""
+                  }`}
                 >
                   {option.label}
                 </button>
@@ -475,10 +525,10 @@ export default function TrainingPlayer({
       case "spot_error":
         return (
           <div className="space-y-4">
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
+            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
               {item.content.statement}
             </div>
-            <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
               {item.content.instruction}
             </div>
             {renderChoiceButtons(item.content.options as string[])}
@@ -525,19 +575,20 @@ export default function TrainingPlayer({
     const percentage = Math.round((score / total) * 100)
 
     return (
-      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
-        <div className="mx-auto max-w-2xl rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-6 shadow-[0_28px_90px_rgba(0,0,0,0.3)] sm:p-8">
-          <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.26em] text-amber-100/84">
+      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-4 text-white sm:px-5 sm:py-6">
+        <div className="mx-auto max-w-3xl rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-7">
+          <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/84">
             Training Arena
           </div>
-          <h1 className="mt-4 text-4xl font-black tracking-[-0.04em] text-white">
+          <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
             Training Complete
           </h1>
-          <p className="mt-3 text-lg font-semibold text-amber-100/84">
+          <p className="mt-2 text-base font-semibold text-amber-100/84 sm:text-lg">
             Day {day.day} · {day.reading.reference}
           </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 Score
               </div>
@@ -545,7 +596,7 @@ export default function TrainingPlayer({
                 {score}/{total}
               </div>
             </div>
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 Accuracy
               </div>
@@ -553,7 +604,7 @@ export default function TrainingPlayer({
                 {percentage}%
               </div>
             </div>
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 Access
               </div>
@@ -576,7 +627,7 @@ export default function TrainingPlayer({
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/training"
-              className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] transition hover:scale-[1.01]"
+              className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
             >
               Continue Training
             </Link>
@@ -603,62 +654,68 @@ export default function TrainingPlayer({
   const selectedDisplay = getDisplaySelection()
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
-      <div className="mx-auto max-w-3xl">
-        <div className="rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-5 shadow-[0_28px_90px_rgba(0,0,0,0.3)] sm:p-7">
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.26em] text-amber-100/84">
+    <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-3 text-white sm:px-5 sm:py-5">
+      <div className="mx-auto max-w-[920px]">
+        <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,24,38,0.98),rgba(8,12,20,0.98))] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-6 lg:p-7">
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/84">
               Training Arena
             </div>
-            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-200">
+            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-200">
               Question {currentIndex + 1} of {total}
             </div>
           </div>
 
-          <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+          <h1 className="mt-3 text-[1.7rem] font-black tracking-[-0.04em] text-white sm:text-3xl lg:text-[2rem]">
             Day {day.day} · {day.reading.reference}
           </h1>
 
-          <div className="mt-5 h-[6px] overflow-hidden rounded-full bg-white/10">
+          <div className="mt-4 h-[5px] overflow-hidden rounded-full bg-white/10">
             <div
               className="h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_28px_rgba(251,191,36,0.18)]"
               style={{ width: `${percent}%` }}
             />
           </div>
 
-          <article className="mt-6 rounded-[1.8rem] border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-100">
+          <article className="mt-5 rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] sm:p-5 lg:p-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
                 {formatLabel(item.format)}
               </div>
               <div
-                className={`rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] ${difficultyClass(
+                className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${difficultyClass(
                   item.difficulty
                 )}`}
               >
                 {item.difficulty}
               </div>
-              <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-200">
+              <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-200">
                 {item.reference}
               </div>
             </div>
 
-            <h2 className="mt-5 text-2xl font-black leading-tight text-white">
+            <h2 className="mt-4 text-2xl font-black leading-tight text-white sm:text-[1.9rem]">
               {item.prompt}
             </h2>
 
-            <div className="mt-5">{renderItem()}</div>
+            <div className="mt-4">{renderItem()}</div>
 
             {submissionError && !submitted && (
-              <div className="mt-5 rounded-[1.15rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
+              <div className="mt-4 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
                 {submissionError}
               </div>
             )}
 
             {submitted && (
-              <div className="mt-6 rounded-[1.35rem] border border-white/10 bg-black/18 p-4">
+              <div
+                className={`mt-5 rounded-[1.3rem] border p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:p-5 ${
+                  wasCorrect
+                    ? "border-emerald-300/24 bg-[linear-gradient(180deg,rgba(16,45,34,0.34),rgba(9,18,17,0.9))]"
+                    : "border-amber-300/24 bg-[linear-gradient(180deg,rgba(54,33,18,0.34),rgba(18,12,10,0.92))]"
+                }`}
+              >
                 <div
-                  className={`text-sm font-black uppercase tracking-[0.24em] ${
+                  className={`text-[11px] font-black uppercase tracking-[0.24em] ${
                     wasCorrect ? "text-emerald-200" : "text-amber-200"
                   }`}
                 >
@@ -672,11 +729,11 @@ export default function TrainingPlayer({
                 <p className="mt-3 text-sm leading-6 text-slate-300">
                   Correct answer: <span className="font-semibold text-white">{getCorrectAnswerSummary()}</span>
                 </p>
-                <p className="mt-4 text-sm leading-6 text-slate-200">{item.explanation}</p>
+                <p className="mt-3 text-sm leading-6 text-slate-200">{item.explanation}</p>
                 <button
                   type="button"
                   onClick={handleContinue}
-                  className="mt-5 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] transition hover:scale-[1.01]"
+                  className="mt-4 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
                 >
                   Continue
                 </button>
@@ -687,14 +744,14 @@ export default function TrainingPlayer({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="mt-6 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] transition hover:scale-[1.01]"
+                className="mt-5 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
               >
                 Submit
               </button>
             )}
           </article>
 
-          <div className="mt-5">
+          <div className="mt-4">
             <Link
               href="/training"
               className="text-sm font-semibold text-amber-100/84 transition hover:text-white"
