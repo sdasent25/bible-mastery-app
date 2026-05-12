@@ -64,6 +64,61 @@ function statusIcon(wasCorrect: boolean) {
   return wasCorrect ? "✦" : "◌"
 }
 
+function getFocusRank(percentage: number) {
+  if (percentage === 100) {
+    return {
+      label: "Perfect Focus",
+      summary: "Flawless session. Every rep locked in.",
+      ringClass: "text-emerald-300",
+      glowClass: "shadow-[0_0_40px_rgba(52,211,153,0.14)]",
+      badgeClass: "border-emerald-300/35 bg-emerald-300/14 text-emerald-100",
+      icon: "✦",
+    }
+  }
+
+  if (percentage >= 90) {
+    return {
+      label: "Gold Focus",
+      summary: "Strong session. Your recall is sharp.",
+      ringClass: "text-amber-300",
+      glowClass: "shadow-[0_0_40px_rgba(251,191,36,0.14)]",
+      badgeClass: "border-amber-300/35 bg-amber-300/14 text-amber-100",
+      icon: "◈",
+    }
+  }
+
+  if (percentage >= 75) {
+    return {
+      label: "Silver Focus",
+      summary: "Good work. A few details are ready for review.",
+      ringClass: "text-slate-200",
+      glowClass: "shadow-[0_0_38px_rgba(226,232,240,0.10)]",
+      badgeClass: "border-slate-200/25 bg-slate-200/10 text-slate-100",
+      icon: "◇",
+    }
+  }
+
+  if (percentage >= 50) {
+    return {
+      label: "Bronze Focus",
+      summary: "Solid effort. Keep building recall.",
+      ringClass: "text-amber-500",
+      glowClass: "shadow-[0_0_34px_rgba(245,158,11,0.12)]",
+      badgeClass: "border-amber-500/30 bg-amber-500/12 text-amber-100",
+      icon: "⬢",
+    }
+  }
+
+  return {
+    label: "Review Needed",
+    summary: "Good start. Review the passage and run the drill again.",
+    ringClass: "text-rose-300",
+    glowClass: "shadow-[0_0_34px_rgba(251,113,133,0.12)]",
+    badgeClass: "border-rose-300/30 bg-rose-300/12 text-rose-100",
+    icon: "◌",
+  }
+}
+
 function imageCardBadge({
   selected,
   submitted,
@@ -337,6 +392,12 @@ export default function TrainingPlayer({
     }
 
     setCurrentIndex((current) => current + 1)
+    resetQuestionState()
+  }
+
+  function handleTrainAgain() {
+    setCurrentIndex(0)
+    setScore(0)
     resetQuestionState()
   }
 
@@ -628,10 +689,16 @@ export default function TrainingPlayer({
 
   if (isComplete) {
     const percentage = Math.round((score / total) * 100)
+    const focusRank = getFocusRank(percentage)
+    const ringSize = 160
+    const strokeWidth = 12
+    const radius = (ringSize - strokeWidth) / 2
+    const circumference = 2 * Math.PI * radius
+    const dashOffset = circumference - (percentage / 100) * circumference
 
     return (
       <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-4 text-white sm:px-5 sm:py-6">
-        <div className="mx-auto max-w-3xl rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(18,24,38,0.96),rgba(8,12,20,0.98))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-7">
+        <div className="mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.10),transparent_34%),linear-gradient(180deg,rgba(18,24,38,0.97),rgba(8,12,20,0.99))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-7">
           <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/84">
             Training Arena
           </div>
@@ -642,53 +709,116 @@ export default function TrainingPlayer({
             Day {day.day} · {day.reading.reference}
           </p>
 
-          <div className="mt-6 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                Score
-              </div>
-              <div className="mt-2 text-3xl font-black text-white">
-                {score}/{total}
+          <div className="mt-6 grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
+            <div className={`mx-auto flex w-full max-w-[220px] items-center justify-center rounded-[1.8rem] border border-white/10 bg-black/15 p-4 ${focusRank.glowClass}`}>
+              <div className="relative flex h-40 w-40 items-center justify-center">
+                <svg
+                  viewBox={`0 0 ${ringSize} ${ringSize}`}
+                  className="h-40 w-40 -rotate-90"
+                  aria-hidden="true"
+                >
+                  <circle
+                    cx={ringSize / 2}
+                    cy={ringSize / 2}
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    className="text-white/10"
+                    fill="none"
+                  />
+                  <circle
+                    cx={ringSize / 2}
+                    cy={ringSize / 2}
+                    r={radius}
+                    stroke="currentColor"
+                    strokeWidth={strokeWidth}
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={dashOffset}
+                    className={`${focusRank.ringClass} motion-safe:transition-all motion-safe:duration-700`}
+                    fill="none"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-lg ${focusRank.badgeClass}`}>
+                    {focusRank.icon}
+                  </div>
+                  <div className="mt-2 text-3xl font-black text-white">{percentage}%</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                    Accuracy
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                Accuracy
+
+            <div>
+              <div className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] ${focusRank.badgeClass}`}>
+                {focusRank.label}
               </div>
-              <div className="mt-2 text-3xl font-black text-white">
-                {percentage}%
-              </div>
-            </div>
-            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                Access
-              </div>
-              <div className="mt-2 text-3xl font-black text-white">
-                {accessTier === "pro_plus" ? "Pro+" : accessTier === "pro" ? "Pro" : "Free"}
+              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
+                {focusRank.summary}
+              </p>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                    Score
+                  </div>
+                  <div className="mt-2 text-3xl font-black text-white">
+                    {score} / {total}
+                  </div>
+                  <div className="mt-1 text-sm text-slate-400">correct</div>
+                </div>
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                    Accuracy
+                  </div>
+                  <div className="mt-2 text-3xl font-black text-white">
+                    {percentage}%
+                  </div>
+                  <div className="mt-1 text-sm text-slate-400">session rate</div>
+                </div>
+                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                    Focus Rank
+                  </div>
+                  <div className="mt-2 text-2xl font-black text-white">
+                    {focusRank.label}
+                  </div>
+                  <div className="mt-1 text-sm text-slate-400">
+                    {accessTier === "pro_plus" ? "Pro+" : accessTier === "pro" ? "Pro" : "Free"}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {accessTier === "free" ? (
-            <p className="mt-6 text-base leading-7 text-slate-300">
-              You completed today’s free Training Arena drill. Upgrade to unlock deeper drills, more formats, and full Bible mastery.
-            </p>
+            <div className="mt-6 rounded-[1.35rem] border border-amber-300/18 bg-amber-300/10 p-4">
+              <p className="text-base leading-7 text-slate-100">
+                You completed today’s free Training Arena drill.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-amber-100/84">
+                Upgrade to unlock deeper drills, more formats, and full mastery tracking.
+              </p>
+            </div>
           ) : (
             <p className="mt-6 text-base leading-7 text-slate-300">
-              You completed this Training Arena day. More progression, XP, and mastery tracking can plug into this route in the next pass.
+              Training day complete. Mastery tracking, deeper review layers, and long-term progression can plug into this route in the next pass.
             </p>
           )}
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={handleTrainAgain}
+              className="rounded-full border border-white/12 bg-white/10 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/14"
+            >
+              Train Again
+            </button>
             <Link
               href="/training"
               className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
-            >
-              Continue Training
-            </Link>
-            <Link
-              href="/training"
-              className="rounded-full border border-white/12 bg-white/10 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/14"
             >
               Back to Training
             </Link>
