@@ -281,13 +281,13 @@ export default async function TrainingPage() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#283a64_0%,_#121a2c_28%,_#070b14_100%)] px-4 py-4 text-white sm:px-6 sm:py-6">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.18),transparent_56%)]" />
-      <div className="pointer-events-none absolute left-[-4rem] top-24 h-48 w-48 rounded-full bg-amber-300/10 blur-3xl" />
-      <div className="pointer-events-none absolute right-[-4rem] top-40 h-64 w-64 rounded-full bg-cyan-300/10 blur-3xl" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-[radial-gradient(circle_at_bottom,rgba(22,163,74,0.08),transparent_58%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.18),transparent_56%)] sm:h-72" />
+      <div className="pointer-events-none absolute left-[-4rem] top-24 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl sm:h-48 sm:w-48" />
+      <div className="pointer-events-none absolute right-[-4rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(circle_at_bottom,rgba(22,163,74,0.08),transparent_58%)] sm:h-64" />
 
       <div className="relative mx-auto max-w-7xl">
-        <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.10),transparent_30%),radial-gradient(circle_at_80%_18%,rgba(34,211,238,0.10),transparent_24%),linear-gradient(180deg,rgba(15,22,36,0.98),rgba(7,11,19,0.98))] shadow-[0_32px_100px_rgba(0,0,0,0.34)]">
+        <section className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.10),transparent_30%),radial-gradient(circle_at_80%_18%,rgba(34,211,238,0.10),transparent_24%),linear-gradient(180deg,rgba(15,22,36,0.98),rgba(7,11,19,0.98))] shadow-[0_32px_100px_rgba(0,0,0,0.34)] sm:rounded-[2rem]">
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.92]"
             style={{
@@ -306,21 +306,21 @@ export default async function TrainingPage() {
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(90deg,rgba(5,8,14,0.80),rgba(5,8,14,0.34)_48%,rgba(5,8,14,0.70)_100%)]" />
 
-          <div className="grid gap-5 p-5 sm:p-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:p-7 xl:p-8">
+          <div className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:p-7 xl:p-8">
             <div className="relative z-10 flex flex-col justify-between">
               <div>
                 <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/84">
                   Training Arena
                 </div>
-                <h1 className="mt-4 max-w-xl text-4xl font-black tracking-[-0.05em] text-white sm:text-5xl">
+                <h1 className="mt-3 max-w-xl text-[2rem] font-black tracking-[-0.05em] text-white sm:mt-4 sm:text-5xl">
                   Build Scripture recall one rep at a time.
                 </h1>
-                <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-4 sm:text-lg sm:leading-7">
                   Daily drills for recall, recognition, sequencing, matching, and careful reading.
                 </p>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
                   className="inline-flex items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_36px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
@@ -335,8 +335,8 @@ export default async function TrainingPage() {
                 </Link>
               </div>
 
-              <div className="mt-6 overflow-hidden rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.42),rgba(8,12,20,0.70))] backdrop-blur-sm">
-                <div className="grid gap-3 p-4 sm:grid-cols-[1.15fr_0.85fr] sm:p-5">
+              <div className="mt-5 overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.42),rgba(8,12,20,0.70))] backdrop-blur-sm sm:mt-6 sm:rounded-[1.65rem]">
+                <div className="grid gap-3 p-3 sm:grid-cols-[1.15fr_0.85fr] sm:p-5">
                   <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4">
                     <div
                       className="absolute inset-0 opacity-75"
@@ -351,10 +351,10 @@ export default async function TrainingPage() {
                       <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/70">
                         Arena Atmosphere
                       </div>
-                      <p className="mt-3 max-w-sm text-lg font-black tracking-[-0.03em] text-white">
+                      <p className="mt-2 max-w-sm text-base font-black tracking-[-0.03em] text-white sm:mt-3 sm:text-lg">
                         Daily mission rhythm with sacred atmosphere and disciplined repetition.
                       </p>
-                      <div className="mt-4 flex flex-wrap gap-2">
+                      <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
                         <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
                           Recognition
                         </span>
@@ -368,7 +368,7 @@ export default async function TrainingPage() {
                     </div>
                   </div>
 
-                  <div className="grid gap-3">
+                  <div className="hidden gap-3 sm:grid">
                     <div className="rounded-[1.25rem] border border-cyan-200/16 bg-[linear-gradient(180deg,rgba(10,16,28,0.92),rgba(8,11,20,0.96))] p-4">
                       <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/74">
                         Track
@@ -392,13 +392,13 @@ export default async function TrainingPage() {
               </div>
             </div>
 
-            <div className="relative z-10 rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,13,22,0.54),rgba(8,11,18,0.76))] p-4 backdrop-blur-sm sm:p-5">
+            <div className="relative z-10 rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,13,22,0.54),rgba(8,11,18,0.76))] p-4 backdrop-blur-sm sm:rounded-[1.7rem] sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
                     Today&apos;s Training
                   </div>
-                  <h2 className="mt-2 text-2xl font-black text-white">
+                  <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
                     {todayDay ? `Day ${todayDay.day}` : "Training ready"}
                   </h2>
                 </div>
@@ -407,13 +407,13 @@ export default async function TrainingPage() {
                 </div>
               </div>
 
-              <div className="mt-4 rounded-[1.35rem] border border-amber-200/14 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.10),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.88),rgba(12,11,13,0.92))] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.24),0_0_34px_rgba(251,191,36,0.08)]">
+              <div className="mt-4 rounded-[1.2rem] border border-amber-200/14 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.10),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.88),rgba(12,11,13,0.92))] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.24),0_0_34px_rgba(251,191,36,0.08)] sm:rounded-[1.35rem]">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/62">
                       Main Action
                     </div>
-                    <p className="mt-2 text-xl font-black text-white">
+                    <p className="mt-2 text-lg font-black text-white sm:text-xl">
                       {todayDay?.reference ?? "No training packs found"}
                     </p>
                   </div>
@@ -437,7 +437,7 @@ export default async function TrainingPage() {
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
                       Mode Hint
                     </div>
-                    <div className="mt-2 text-sm font-semibold leading-5 text-white">
+                    <div className="mt-2 text-xs font-semibold leading-5 text-white sm:text-sm">
                       {getModeHint(access.tier)}
                     </div>
                   </div>
@@ -455,7 +455,7 @@ export default async function TrainingPage() {
                 </div>
 
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm leading-6 text-slate-300">
+                  <p className="text-sm leading-6 text-slate-300 sm:max-w-[16rem]">
                     {getAccessNote(access.tier)}
                   </p>
                   {todayDay ? (
@@ -472,7 +472,7 @@ export default async function TrainingPage() {
           </div>
         </section>
 
-        <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 xl:grid-cols-4">
           <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Available Days
@@ -503,13 +503,13 @@ export default async function TrainingPage() {
           </article>
         </section>
 
-        <section className="mt-5 rounded-[1.8rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.08),transparent_30%),linear-gradient(180deg,rgba(12,19,31,0.97),rgba(8,11,20,0.97))] p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] sm:p-5">
+        <section className="mt-5 rounded-[1.55rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.08),transparent_30%),linear-gradient(180deg,rgba(12,19,31,0.97),rgba(8,11,20,0.97))] p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] sm:rounded-[1.8rem] sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-cyan-100/72">
                 Train By Bible Section
               </div>
-              <h2 className="mt-2 text-2xl font-black text-white">Step into the next section of Scripture</h2>
+              <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Step into the next section of Scripture</h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
                 The arena is expanding beyond the opening books. Pentateuch is live now, with the rest of Scripture staged for the next training worlds.
               </p>
@@ -540,7 +540,7 @@ export default async function TrainingPage() {
                       {section.status}
                     </div>
                   </div>
-                  <div className="mt-4 text-lg font-black text-white">{section.title}</div>
+                  <div className="mt-4 text-base font-black text-white sm:text-lg">{section.title}</div>
                   <div className="mt-2 text-sm leading-6 text-slate-300">{section.subtitle}</div>
                   <div className={`mt-4 h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
                 </div>
@@ -555,7 +555,7 @@ export default async function TrainingPage() {
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
                 {currentTrack} Training Days
               </div>
-              <h2 className="mt-2 text-3xl font-black text-white">Choose your next drill</h2>
+              <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Choose your next drill</h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
                 Compact mission cards keep the next rep close, while future days stay visible as the arena expands.
               </p>
@@ -574,7 +574,7 @@ export default async function TrainingPage() {
               return (
                 <article
                   key={day.day}
-                  className={`group relative overflow-hidden rounded-[1.6rem] border p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] transition duration-200 sm:p-5 ${status.cardClass} ${
+                  className={`group relative overflow-hidden rounded-[1.45rem] border p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] transition duration-200 sm:rounded-[1.6rem] sm:p-5 ${status.cardClass} ${
                     index % 3 === 1 ? "xl:translate-y-4" : ""
                   } ${lockedForFree ? "" : "hover:-translate-y-1"}`}
                 >
@@ -598,7 +598,7 @@ export default async function TrainingPage() {
                       </div>
                     </div>
 
-                    <h3 className="mt-4 text-2xl font-black tracking-[-0.03em] text-white">
+                    <h3 className="mt-4 text-xl font-black tracking-[-0.03em] text-white sm:text-2xl">
                       {day.reference}
                     </h3>
 
@@ -630,7 +630,7 @@ export default async function TrainingPage() {
 
             <aside
               id="pro-plus-arena"
-              className="relative overflow-hidden rounded-[1.75rem] border border-cyan-200/16 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.12),transparent_24%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.14),transparent_28%),linear-gradient(180deg,rgba(18,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.28)] xl:row-span-2"
+              className="relative overflow-hidden rounded-[1.55rem] border border-cyan-200/16 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.12),transparent_24%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.14),transparent_28%),linear-gradient(180deg,rgba(18,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:rounded-[1.75rem] xl:row-span-2"
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%)]" />
               <div className="relative">
@@ -640,7 +640,7 @@ export default async function TrainingPage() {
                   </span>
                   <span>Pro+ Arena</span>
                 </div>
-                <h3 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white">
+                <h3 className="mt-4 text-2xl font-black tracking-[-0.04em] text-white sm:text-3xl">
                   Unlock the full training experience.
                 </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
