@@ -60,6 +60,10 @@ function statusEyebrow(wasCorrect: boolean) {
   return wasCorrect ? "Training rep complete" : "Review this detail"
 }
 
+function statusIcon(wasCorrect: boolean) {
+  return wasCorrect ? "✦" : "◌"
+}
+
 function arraysEqual(left: string[], right: string[]) {
   if (left.length !== right.length) return false
 
@@ -90,15 +94,15 @@ function ImageChoiceCard({
         ? "border-rose-300/50 bg-rose-300/12 shadow-[0_0_24px_rgba(251,113,133,0.10)]"
         : "border-white/10 bg-white/[0.03] opacity-75"
     : selected
-      ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)]"
-      : "border-white/10 bg-white/[0.03] hover:border-white/20 hover:bg-white/[0.06]"
+      ? "border-cyan-300/60 bg-cyan-300/12 shadow-[0_0_28px_rgba(34,211,238,0.12)] -translate-y-0.5 scale-[1.01]"
+      : "border-white/10 bg-white/[0.03] hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]"
 
   return (
     <button
       type="button"
       disabled={disabled}
       onClick={onSelect}
-      className={`overflow-hidden rounded-[1.25rem] border text-left transition ${stateClass} ${
+      className={`overflow-hidden rounded-[1.25rem] border text-left transition duration-200 motion-reduce:transform-none ${stateClass} ${
         disabled ? "cursor-default" : ""
       }`}
     >
@@ -331,8 +335,8 @@ export default function TrainingPlayer({
                 ? "border-rose-300/50 bg-rose-300/12 text-rose-50 shadow-[0_0_22px_rgba(251,113,133,0.08)]"
                 : "border-white/10 bg-white/[0.03] text-slate-200 opacity-75"
             : active
-              ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
-              : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
+              ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)] -translate-y-0.5 scale-[1.01]"
+              : "border-white/10 bg-white/[0.03] text-slate-100 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]"
 
           return (
             <button
@@ -343,7 +347,7 @@ export default function TrainingPlayer({
                 setSelectedSingle(option)
                 setSubmissionError(null)
               }}
-              className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition sm:py-4 ${stateClass} ${
+              className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
                 submitted ? "cursor-default" : ""
               }`}
             >
@@ -430,7 +434,7 @@ export default function TrainingPlayer({
                     type="button"
                     disabled={submitted}
                     onClick={() => handleOrderPick(entry)}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm font-semibold text-slate-100 transition hover:border-white/20 hover:bg-white/[0.06]"
+                    className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm font-semibold text-slate-100 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 hover:text-white motion-reduce:transform-none"
                   >
                     {entry}
                   </button>
@@ -474,7 +478,7 @@ export default function TrainingPlayer({
                     onChange={(event) =>
                       handleMatchingChange(pair.left, event.target.value)
                     }
-                    className="mt-3 w-full rounded-xl border border-white/10 bg-[#0d1524] px-3 py-3 text-sm text-white outline-none focus:border-cyan-300/50"
+                    className="mt-3 w-full rounded-xl border border-white/10 bg-[#0d1524] px-3 py-3 text-sm text-white outline-none transition duration-200 focus:-translate-y-0.5 focus:border-cyan-300/50 focus:bg-[#101a2d] motion-reduce:transform-none"
                   >
                     <option value="">Select a match</option>
                     {rightItems.map((entry) => (
@@ -508,8 +512,8 @@ export default function TrainingPlayer({
                     ? "border-rose-300/50 bg-rose-300/12 text-rose-50 shadow-[0_0_22px_rgba(251,113,133,0.08)]"
                     : "border-white/10 bg-white/[0.03] text-slate-200 opacity-75"
                 : active
-                  ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)]"
-                  : "border-white/10 bg-white/[0.03] text-slate-100 hover:border-white/20 hover:bg-white/[0.06]"
+                  ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)] -translate-y-0.5 scale-[1.01]"
+                  : "border-white/10 bg-white/[0.03] text-slate-100 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]"
 
               return (
                 <button
@@ -520,7 +524,7 @@ export default function TrainingPlayer({
                     setSelectedSingle(option.value)
                     setSubmissionError(null)
                   }}
-                  className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition sm:py-4 ${stateClass} ${
+                  className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
                     submitted ? "cursor-default" : ""
                   }`}
                 >
@@ -697,12 +701,17 @@ export default function TrainingPlayer({
 
           <div className="mt-4 h-[5px] overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_28px_rgba(251,191,36,0.18)]"
+              className="relative h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_28px_rgba(251,191,36,0.18)]"
               style={{ width: `${percent}%` }}
-            />
+            >
+              <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-60 blur-[1px] motion-safe:animate-pulse" />
+            </div>
           </div>
 
-          <article className="mt-5 rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] sm:p-5 lg:p-6">
+          <article
+            key={item.key}
+            className="mt-5 rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-5 lg:p-6"
+          >
             <div className="flex flex-wrap items-center gap-2">
               <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
                 {formatLabel(item.format)}
@@ -733,17 +742,17 @@ export default function TrainingPlayer({
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div
-                      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg ${
-                        wasCorrect
-                          ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100"
-                          : "border-amber-300/35 bg-amber-300/12 text-amber-100"
-                      }`}
-                      aria-hidden="true"
-                    >
-                      {wasCorrect ? "✅" : "↺"}
-                    </div>
-                    <div className="min-w-0">
+                  <div
+                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg motion-safe:animate-pulse ${
+                      wasCorrect
+                        ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100 shadow-[0_0_24px_rgba(52,211,153,0.14)]"
+                        : "border-amber-300/35 bg-amber-300/12 text-amber-100 shadow-[0_0_24px_rgba(251,191,36,0.10)]"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    {statusIcon(wasCorrect)}
+                  </div>
+                  <div className="min-w-0">
                       <div
                         className={`text-[11px] font-black uppercase tracking-[0.24em] ${
                           wasCorrect ? "text-emerald-200" : "text-amber-200"
@@ -751,11 +760,20 @@ export default function TrainingPlayer({
                       >
                         {statusEyebrow(wasCorrect)}
                       </div>
-                      <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
-                        {wasCorrect ? "Nice work" : "Not quite"}
-                      </h3>
-                    </div>
+                    <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                      {wasCorrect ? "Nice work" : "Not quite"}
+                    </h3>
+                    <p
+                      className={`mt-1 text-sm ${
+                        wasCorrect ? "text-emerald-100/85" : "text-amber-100/85"
+                      }`}
+                    >
+                      {wasCorrect
+                        ? "Locked in. Carry that rhythm forward."
+                        : "Small correction now, stronger recall on the next rep."}
+                    </p>
                   </div>
+                </div>
 
                   <div className="mt-4 grid gap-3">
                     <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
@@ -787,7 +805,7 @@ export default function TrainingPlayer({
                   <button
                     type="button"
                     onClick={handleContinue}
-                    className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition hover:scale-[1.01]"
+                    className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition duration-200 hover:scale-[1.02] active:scale-[0.99] motion-reduce:transform-none"
                   >
                     Continue
                   </button>
@@ -807,7 +825,7 @@ export default function TrainingPlayer({
               <button
                 type="button"
                 onClick={handleSubmit}
-                className="mt-5 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
+                className="mt-5 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition duration-200 hover:scale-[1.01] active:scale-[0.99] motion-reduce:transform-none"
               >
                 Submit
               </button>
