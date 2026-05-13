@@ -238,8 +238,7 @@ export default function SegmentIntro() {
     },
   ]
 
-  const backHref =
-    program === "genesis" ? "/explore/book/genesis" : "/explore"
+  const backHref = "/training"
   const actionLabel =
     currentMissionIndex <= 0 ? "Begin Mission" : "Continue Mission"
   const missionActionLabel =

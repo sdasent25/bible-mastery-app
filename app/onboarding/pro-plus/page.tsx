@@ -22,7 +22,7 @@ export default function ProPlusOnboarding() {
       })
       .eq("id", user.id)
 
-    router.push("/explore")
+    router.push("/training")
   }
 
   return (
@@ -59,7 +59,7 @@ export default function ProPlusOnboarding() {
           onClick={handleContinue}
           className="w-full bg-green-500 py-4 rounded-xl font-bold text-black"
         >
-          Enter Explore
+          Enter Training Arena
         </button>
 
       </div>

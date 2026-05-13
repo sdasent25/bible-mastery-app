@@ -854,7 +854,7 @@ export default function QuizPage() {
           <div className="space-y-3">
             {next && !isPreviewMode && (
               <button
-                onClick={() => router.push("/explore?completed=true")}
+                onClick={() => router.push("/training")}
                 className={`${MISSION_CTA_CLASS} flex w-full py-3 text-lg`}
               >
                 Continue Campaign →
@@ -863,10 +863,10 @@ export default function QuizPage() {
 
             {isPreviewMode && (
               <button
-                onClick={() => router.push("/explore?completed=true")}
+                onClick={() => router.push("/training")}
                 className={`${MISSION_CTA_CLASS} flex w-full py-3 text-lg`}
               >
-                Continue Explore
+                Continue Training Arena
               </button>
             )}
 
@@ -889,10 +889,10 @@ export default function QuizPage() {
             )}
 
             <button
-              onClick={() => router.push('/explore?completed=true')}
+              onClick={() => router.push('/training')}
               className="w-full rounded-full border border-white/10 bg-black/18 py-3 text-white/84 font-semibold backdrop-blur-sm transition hover:bg-black/26 hover:scale-[1.01] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Return to Explore
+              Back to Training Arena
             </button>
           </div>
           </div>
@@ -946,7 +946,7 @@ export default function QuizPage() {
               <div className="mb-2 flex items-start justify-between gap-3 md:mb-3 md:gap-4">
                 <div className="flex items-start gap-3 md:gap-4">
                   <button
-                    onClick={() => router.push('/explore')}
+                    onClick={() => router.push('/training')}
                     className="
                       rounded-[1.1rem]
                       border border-white/10

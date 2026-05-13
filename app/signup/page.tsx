@@ -26,7 +26,7 @@ export default function SignupPage() {
       return
     }
 
-    setMessage("Account created. Continue to Explore.")
+    setMessage("Account created. Continue to Training Arena.")
     setLoading(false)
   }
 
@@ -63,7 +63,7 @@ export default function SignupPage() {
             disabled={loading}
             className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-500"
           >
-            {loading ? "Creating account..." : "Enter Explore"}
+            {loading ? "Creating account..." : "Enter Training Arena"}
           </button>
 
           {message && (
