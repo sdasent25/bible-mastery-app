@@ -143,6 +143,37 @@ function arraysEqual(left: string[], right: string[]) {
   return left.every((value, index) => value === right[index])
 }
 
+function SequencePreview({
+  values,
+  tone,
+}: {
+  values: string[]
+  tone: "neutral" | "correct" | "review"
+}) {
+  const toneClass =
+    tone === "correct"
+      ? "border-emerald-300/28 bg-emerald-300/10 text-emerald-50"
+      : tone === "review"
+        ? "border-amber-300/28 bg-amber-300/10 text-amber-50"
+        : "border-white/10 bg-white/[0.03] text-slate-100"
+
+  return (
+    <div className="grid gap-2.5">
+      {values.map((value, index) => (
+        <div
+          key={`${value}-${index}`}
+          className={`flex items-start gap-3 rounded-[1.05rem] border px-3 py-3 ${toneClass}`}
+        >
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-amber-300/35 bg-amber-300/12 text-xs font-black uppercase tracking-[0.18em] text-amber-100">
+            {index + 1}
+          </div>
+          <div className="min-w-0 text-sm font-semibold leading-6">{value}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function ImageChoiceCard({
   option,
   selected,
@@ -477,62 +508,80 @@ export default function TrainingPlayer({
 
         return (
           <div className="space-y-5">
-            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
-              {item.content.instruction}
+            <div className="rounded-[1.2rem] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(34,211,238,0.08),rgba(255,255,255,0.03))] p-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-100/88">
+                Sequence Drill
+              </div>
+              <div className="mt-1 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+                {item.content.instruction}
+              </div>
             </div>
 
             <div>
-              <div className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">
-                Your Order
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">
+                  Build The Sequence
+                </div>
+                <button
+                  type="button"
+                  disabled={submitted || selectedOrder.length === 0}
+                  onClick={() => {
+                    setSelectedOrder([])
+                    setSubmissionError(null)
+                  }}
+                  className="rounded-full border border-white/12 bg-white/[0.08] px-3 py-1.5 text-[11px] font-semibold text-white transition hover:bg-white/14 disabled:opacity-50"
+                >
+                  Reset sequence
+                </button>
               </div>
-              <div className="mt-3 flex min-h-[4.25rem] flex-wrap gap-2 rounded-[1.15rem] border border-dashed border-white/12 bg-black/15 p-3">
-                {selectedOrder.length > 0 ? (
-                  selectedOrder.map((entry, index) => (
+              <div className="mt-3 grid gap-2.5">
+                {allItems.map((_, index) => {
+                  const value = selectedOrder[index]
+
+                  return (
                     <div
-                      key={`${entry}-${index}`}
-                      className="rounded-full border border-cyan-300/30 bg-cyan-300/12 px-3 py-2 text-sm font-semibold text-cyan-50"
+                      key={`slot-${index}`}
+                      className={`flex items-start gap-3 rounded-[1.15rem] border px-3 py-3.5 transition duration-200 ${
+                        value
+                          ? "border-cyan-300/28 bg-cyan-300/10 shadow-[0_0_22px_rgba(34,211,238,0.08)]"
+                          : "border-dashed border-white/12 bg-black/15"
+                      }`}
                     >
-                      {index + 1}. {entry}
+                      <div className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-300/35 bg-amber-300/12 text-xs font-black uppercase tracking-[0.18em] text-amber-100">
+                        {index + 1}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                          Step {index + 1}
+                        </div>
+                        <div className={`mt-1 text-sm font-semibold leading-6 ${value ? "text-white" : "text-slate-500"}`}>
+                          {value ?? "Choose the next event"}
+                        </div>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="text-sm text-slate-400">
-                    Tap the items below in the order they appear.
-                  </div>
-                )}
+                  )
+                })}
               </div>
             </div>
 
             <div>
               <div className="text-xs font-bold uppercase tracking-[0.22em] text-slate-400">
-                Tap To Build
+                Available Events
               </div>
-              <div className="mt-3 flex flex-wrap gap-2">
+              <div className="mt-3 grid gap-2 sm:grid-cols-2">
                 {remaining.map((entry) => (
                   <button
                     key={entry}
                     type="button"
                     disabled={submitted}
                     onClick={() => handleOrderPick(entry)}
-                    className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-2 text-sm font-semibold text-slate-100 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 hover:text-white motion-reduce:transform-none"
+                    className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] px-4 py-3 text-left text-sm font-semibold leading-6 text-slate-100 transition duration-200 hover:-translate-y-0.5 hover:border-cyan-300/30 hover:bg-cyan-300/10 hover:text-white motion-reduce:transform-none"
                   >
                     {entry}
                   </button>
                 ))}
               </div>
             </div>
-
-            <button
-              type="button"
-              disabled={submitted || selectedOrder.length === 0}
-              onClick={() => {
-                setSelectedOrder([])
-                setSubmissionError(null)
-              }}
-              className="rounded-full border border-white/12 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/14 disabled:opacity-50"
-            >
-              Reset
-            </button>
           </div>
         )
       }
@@ -542,40 +591,66 @@ export default function TrainingPlayer({
 
         return (
           <div className="space-y-5">
-            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
-              {item.content.instruction}
+            <div className="rounded-[1.2rem] border border-cyan-300/14 bg-[linear-gradient(180deg,rgba(34,211,238,0.08),rgba(255,255,255,0.03))] p-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-cyan-100/88">
+                Connection Drill
+              </div>
+              <div className="mt-1 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+                {item.content.instruction}
+              </div>
             </div>
             <div className="space-y-4">
-              {pairs.map((pair) => (
-                <div
-                  key={pair.left}
-                  className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4"
-                >
-                  <div className="text-sm font-semibold text-white">{pair.left}</div>
-                  <select
-                    disabled={submitted}
-                    value={matchingSelections[pair.left] || ""}
-                    onChange={(event) =>
-                      handleMatchingChange(pair.left, event.target.value)
-                    }
-                    className="mt-3 w-full rounded-xl border border-white/10 bg-[#0d1524] px-3 py-3 text-sm text-white outline-none transition duration-200 focus:-translate-y-0.5 focus:border-cyan-300/50 focus:bg-[#101a2d] motion-reduce:transform-none"
+              {pairs.map((pair) => {
+                const selectedRight = matchingSelections[pair.left] || ""
+                const hasSelection = Boolean(selectedRight)
+
+                return (
+                  <div
+                    key={pair.left}
+                    className={`rounded-[1.2rem] border p-4 transition duration-200 ${
+                      hasSelection
+                        ? "border-cyan-300/28 bg-cyan-300/10 shadow-[0_0_24px_rgba(34,211,238,0.08)]"
+                        : "border-white/10 bg-white/[0.03]"
+                    }`}
                   >
-                    <option value="">Select a match</option>
-                    {rightItems.map((entry) => (
-                      <option key={entry} value={entry}>
-                        {entry}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
+                    <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-center">
+                      <div className="rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                          Match this item
+                        </div>
+                        <div className="mt-1 text-sm font-semibold leading-6 text-white">{pair.left}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                          Choose the connection
+                        </div>
+                        <select
+                          disabled={submitted}
+                          value={selectedRight}
+                          onChange={(event) =>
+                            handleMatchingChange(pair.left, event.target.value)
+                          }
+                          className="mt-2 w-full rounded-xl border border-white/10 bg-[#0d1524] px-3 py-3 text-sm text-white outline-none transition duration-200 focus:-translate-y-0.5 focus:border-cyan-300/50 focus:bg-[#101a2d] motion-reduce:transform-none"
+                        >
+                          <option value="">Select a match</option>
+                          {rightItems.map((entry) => (
+                            <option key={entry} value={entry}>
+                              {entry}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
           </div>
         )
       }
       case "true_false":
         return (
-          <div className="grid gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {[
               { label: "True", value: "true" },
               { label: "False", value: "false" },
@@ -604,11 +679,19 @@ export default function TrainingPlayer({
                     setSelectedSingle(option.value)
                     setSubmissionError(null)
                   }}
-                  className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
+                  className={`rounded-[1.25rem] border px-4 py-4 text-left transition duration-200 motion-reduce:transform-none sm:py-5 ${stateClass} ${
                     submitted ? "cursor-default" : ""
                   }`}
                 >
-                  {option.label}
+                  <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                    Fast decision
+                  </div>
+                  <div className="mt-2 text-xl font-black text-white sm:text-2xl">
+                    {option.label}
+                  </div>
+                  <div className="mt-2 text-sm text-slate-300">
+                    Lock in your call.
+                  </div>
                 </button>
               )
             })}
@@ -617,13 +700,56 @@ export default function TrainingPlayer({
       case "spot_error":
         return (
           <div className="space-y-4">
+            <div className="rounded-[1.2rem] border border-amber-300/18 bg-[linear-gradient(180deg,rgba(251,191,36,0.08),rgba(255,255,255,0.03))] p-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-amber-100/88">
+                Correction Drill
+              </div>
+              <div className="mt-1 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
+                Spot the weak detail
+              </div>
+            </div>
             <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
               {item.content.statement}
             </div>
             <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-sm font-medium uppercase tracking-[0.18em] text-slate-300">
               {item.content.instruction}
             </div>
-            {renderChoiceButtons(item.content.options as string[])}
+            <div className="grid gap-3">
+              {(item.content.options as string[]).map((option) => {
+                const active = selectedSingle === option
+                const isCorrect = submitted && option === item.correct_answer.value
+                const isWrongSelected = submitted && active && !isCorrect
+                const stateClass = submitted
+                  ? isCorrect
+                    ? "border-emerald-300/60 bg-emerald-300/14 text-emerald-50 shadow-[0_0_28px_rgba(52,211,153,0.16)]"
+                    : isWrongSelected
+                      ? "border-rose-300/50 bg-rose-300/12 text-rose-50 shadow-[0_0_22px_rgba(251,113,133,0.08)]"
+                      : "border-white/10 bg-white/[0.03] text-slate-200 opacity-75"
+                  : active
+                    ? "border-cyan-300/60 bg-cyan-300/12 text-white shadow-[0_0_24px_rgba(34,211,238,0.10)] -translate-y-0.5 scale-[1.01]"
+                    : "border-white/10 bg-white/[0.03] text-slate-100 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]"
+
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    disabled={submitted}
+                    onClick={() => {
+                      setSelectedSingle(option)
+                      setSubmissionError(null)
+                    }}
+                    className={`rounded-[1.15rem] border px-4 py-3.5 text-left transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
+                      submitted ? "cursor-default" : ""
+                    }`}
+                  >
+                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                      Correction option
+                    </div>
+                    <div className="mt-2 text-sm font-semibold leading-6">{option}</div>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         )
       default:
@@ -836,8 +962,6 @@ export default function TrainingPlayer({
     )
   }
 
-  const selectedDisplay = getDisplaySelection()
-
   return (
     <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-3 text-white sm:px-5 sm:py-5">
       <div className="mx-auto max-w-[920px]">
@@ -949,6 +1073,38 @@ export default function TrainingPlayer({
                             {getUserAnswerSummary()}
                           </p>
                         </div>
+                      ) : item.format === "ordering" ? (
+                        <div className="mt-2">
+                          <SequencePreview
+                            values={selectedOrder}
+                            tone={wasCorrect ? "correct" : "review"}
+                          />
+                        </div>
+                      ) : item.format === "matching" ? (
+                        <div className="mt-2 grid gap-2.5">
+                          {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => {
+                            const selectedRight = matchingSelections[pair.left]
+                            const pairCorrect = selectedRight === pair.right
+
+                            return (
+                              <div
+                                key={`selected-${pair.left}`}
+                                className={`rounded-[1rem] border px-3 py-3 ${
+                                  pairCorrect
+                                    ? "border-emerald-300/28 bg-emerald-300/10 text-emerald-50"
+                                    : "border-amber-300/28 bg-amber-300/10 text-amber-50"
+                                }`}
+                              >
+                                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                                  {pair.left}
+                                </div>
+                                <div className="mt-1 text-sm font-semibold">
+                                  {selectedRight ?? "No answer selected"}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
                       ) : (
                         <p className="mt-2 text-sm font-semibold leading-6 text-white">
                           {getUserAnswerSummary()}
@@ -973,6 +1129,27 @@ export default function TrainingPlayer({
                             {getCorrectAnswerSummary()}
                           </p>
                         </div>
+                      ) : item.format === "ordering" ? (
+                        <div className="mt-2">
+                          <SequencePreview
+                            values={item.correct_answer.value as string[]}
+                            tone="correct"
+                          />
+                        </div>
+                      ) : item.format === "matching" ? (
+                        <div className="mt-2 grid gap-2.5">
+                          {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => (
+                            <div
+                              key={`correct-${pair.left}`}
+                              className="rounded-[1rem] border border-emerald-300/28 bg-emerald-300/10 px-3 py-3 text-emerald-50"
+                            >
+                              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-100/72">
+                                {pair.left}
+                              </div>
+                              <div className="mt-1 text-sm font-semibold">{pair.right}</div>
+                            </div>
+                          ))}
+                        </div>
                       ) : (
                         <p className="mt-2 text-sm font-semibold leading-6 text-white">
                           {getCorrectAnswerSummary()}
@@ -988,33 +1165,37 @@ export default function TrainingPlayer({
                     </div>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleContinue}
-                    className="mt-4 inline-flex min-h-12 items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition duration-200 hover:scale-[1.02] active:scale-[0.99] motion-reduce:transform-none"
-                  >
-                    Continue
-                  </button>
+                  <div className="mt-4 rounded-[1.25rem] border border-white/10 bg-black/15 p-3">
+                    <button
+                      type="button"
+                      onClick={handleContinue}
+                      className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition duration-200 hover:scale-[1.02] active:scale-[0.99] motion-reduce:transform-none sm:w-auto"
+                    >
+                      Continue
+                    </button>
+                  </div>
                 </div>
               ) : (
                 renderItem()
               )}
             </div>
 
-            {submissionError && !submitted && (
-              <div className="mt-4 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
-                {submissionError}
-              </div>
-            )}
-
             {!submitted && (
-              <button
-                type="button"
-                onClick={handleSubmit}
-                className="mt-5 rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition duration-200 hover:scale-[1.01] active:scale-[0.99] motion-reduce:transform-none"
-              >
-                Submit
-              </button>
+              <div className="mt-4 rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.12))] p-3">
+                {submissionError && (
+                  <div className="mb-3 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
+                    {submissionError}
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleSubmit}
+                  className="min-h-12 w-full rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition duration-200 hover:scale-[1.01] active:scale-[0.99] motion-reduce:transform-none sm:w-auto"
+                >
+                  Submit
+                </button>
+              </div>
             )}
           </article>
 
