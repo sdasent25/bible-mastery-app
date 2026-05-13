@@ -218,9 +218,9 @@ export default function FlashcardsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-6">
-        <div className="mx-auto max-w-7xl animate-pulse space-y-6">
-          <div className="grid gap-6 xl:grid-cols-[1.18fr_0.82fr]">
+      <div className="min-h-screen bg-slate-950 px-4 py-8 text-white md:px-0 md:py-4">
+        <div className="w-full max-w-[96rem] md:mr-auto md:ml-0 xl:mx-auto animate-pulse space-y-6">
+          <div className="grid items-start gap-6 xl:grid-cols-[1.12fr_0.88fr]">
             <div className="h-64 rounded-[2rem] bg-white/5" />
             <div className="h-64 rounded-[2rem] bg-white/5" />
           </div>
@@ -230,8 +230,8 @@ export default function FlashcardsPage() {
             <div className="h-24 rounded-[1.75rem] bg-white/5" />
             <div className="h-24 rounded-[1.75rem] bg-white/5" />
           </div>
-          <div className="grid gap-6 xl:grid-cols-[1fr_0.92fr]">
-            <div className="h-64 rounded-[2rem] bg-white/5" />
+          <div className="grid items-start gap-6 xl:grid-cols-[1.08fr_0.92fr]">
+            <div className="h-52 rounded-[2rem] bg-white/5" />
             <div className="h-64 rounded-[2rem] bg-white/5" />
           </div>
         </div>
@@ -249,9 +249,9 @@ export default function FlashcardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_18%),radial-gradient(circle_at_right,rgba(34,211,238,0.08),transparent_24%),linear-gradient(180deg,#0f172a_0%,#020617_58%,#000000_100%)] px-4 py-8 text-white md:px-6 md:py-10">
-      <div className="mx-auto max-w-7xl">
-        <section className="grid gap-6 xl:grid-cols-[1.18fr_0.82fr]">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_18%),radial-gradient(circle_at_right,rgba(34,211,238,0.08),transparent_24%),linear-gradient(180deg,#0f172a_0%,#020617_58%,#000000_100%)] px-4 py-8 text-white md:px-0 md:py-4">
+      <div className="w-full max-w-[96rem] md:mr-auto md:ml-0 xl:mx-auto">
+        <section className="grid items-start gap-6 xl:grid-cols-[1.12fr_0.88fr]">
           <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.14),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.08),transparent_32%),linear-gradient(180deg,rgba(15,23,42,0.94),rgba(2,6,23,0.98))] p-6 shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur lg:p-7">
             <div className="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
               Verse Memory
@@ -403,7 +403,7 @@ export default function FlashcardsPage() {
           ))}
         </section>
 
-        <section className="mt-8 grid gap-6 xl:grid-cols-[1fr_0.92fr]">
+        <section className="mt-8 grid items-start gap-6 xl:grid-cols-[1.08fr_0.92fr]">
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.32)] md:p-7">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -416,7 +416,7 @@ export default function FlashcardsPage() {
               </div>
             </div>
 
-            <div className="mt-6 overflow-x-auto pb-2">
+            <div className="mt-5 overflow-x-auto pb-1">
               <div className="flex min-w-max items-stretch gap-3">
                 {memoryRailSteps.map((step, index) => {
                   const isCurrent = index === 2
@@ -426,7 +426,7 @@ export default function FlashcardsPage() {
                   return (
                     <div key={step.title} className="flex items-center gap-3">
                       <div
-                        className={`w-[10.5rem] rounded-[1.35rem] border p-4 transition duration-300 ${getStepClasses(
+                        className={`w-[10rem] rounded-[1.35rem] border p-4 transition duration-300 ${getStepClasses(
                           step.tone,
                           isCurrent,
                           isComplete
