@@ -6,7 +6,6 @@ import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import {
   type Flashcard,
-  getFlashcardVisibilityStatus,
   getFlashcards,
   hasDueDate,
   isFlashcardDue,
@@ -15,49 +14,73 @@ import {
   isFlashcardNeedingReview,
 } from "@/lib/flashcards"
 import { getUserPlan } from "@/lib/getUserPlan"
-import { createClient } from "@/lib/supabase/client"
-
-type RecommendedAction = {
-  eyebrow: string
-  title: string
-  description: string
-  cta: string
-  href: string
-}
 
 type StatCard = {
   label: string
   value: string
-  detail?: string
-  tone?: "gold" | "slate"
+  detail: string
+  tone?: "gold" | "cyan" | "emerald" | "slate"
 }
 
-type ModeCard = {
+type ActionCard = {
   title: string
   description: string
   href: string
+  cta: string
 }
 
-const trainingModes: ModeCard[] = [
+type PracticeMode = {
+  title: string
+  description: string
+  href: string
+  badge: string
+}
+
+const mainActions: ActionCard[] = [
   {
-    title: "Review Cards",
-    description: "Strengthen recall with your saved verses.",
-    href: "/flashcards/review",
+    title: "Add Verse",
+    description: "Create a personal memory card from the Scripture passage you want to keep close.",
+    href: "/flashcards/create",
+    cta: "Add a Verse",
   },
   {
-    title: "Fill the Blank",
-    description: "Train exact wording through missing-word recall.",
+    title: "My Verses",
+    description: "See every verse in training, review what is due, and manage your memory library.",
+    href: "/flashcards/list",
+    cta: "Open Library",
+  },
+  {
+    title: "Review Due Cards",
+    description: "Return to the verses that need another rep before they drift out of reach.",
+    href: "/flashcards/review",
+    cta: "Start Review",
+  },
+]
+
+const practiceModes: PracticeMode[] = [
+  {
+    title: "Review",
+    description: "Read, reveal, and rate your memory.",
+    href: "/flashcards/review",
+    badge: "Core",
+  },
+  {
+    title: "Verse Match",
+    description: "Match references with the right verse.",
+    href: "/games/matching",
+    badge: "Practice",
+  },
+  {
+    title: "Hide Words",
+    description: "Fill in missing words as the verse disappears.",
     href: "/games/fill-in-the-blank",
+    badge: "Recall",
   },
   {
-    title: "Sprint",
-    description: "Fast recall under pressure.",
-    href: "/games/flashcard-sprint",
-  },
-  {
-    title: "Weak Verses",
-    description: "Focus where your memory needs reinforcement.",
-    href: "/flashcards/review",
+    title: "Build Verse",
+    description: "Put the verse back together in order.",
+    href: "/games/build-the-verse",
+    badge: "Advanced",
   },
 ]
 
@@ -65,8 +88,6 @@ export default function FlashcardsPage() {
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
   const [cards, setCards] = useState<Flashcard[]>([])
-  const [xp, setXp] = useState(0)
-  const [streak, setStreak] = useState(0)
 
   useEffect(() => {
     const run = async () => {
@@ -78,31 +99,8 @@ export default function FlashcardsPage() {
           return
         }
 
-        const [loadedCards, profile] = await Promise.all([
-          getFlashcards().catch(() => [] as Flashcard[]),
-          (async () => {
-            const client = createClient()
-            const {
-              data: { user },
-            } = await client.auth.getUser()
-
-            if (!user) {
-              return null
-            }
-
-            const { data } = await client
-              .from("profiles")
-              .select("xp, streak")
-              .eq("id", user.id)
-              .maybeSingle<{ xp: number | null; streak: number | null }>()
-
-            return data
-          })(),
-        ])
-
+        const loadedCards = await getFlashcards().catch(() => [] as Flashcard[])
         setCards(loadedCards)
-        setXp(profile?.xp || 0)
-        setStreak(profile?.streak || 0)
       } finally {
         setLoading(false)
       }
@@ -116,6 +114,7 @@ export default function FlashcardsPage() {
     const learningCount = cards.filter((card) => isFlashcardLearning(card)).length
     const masteredCount = cards.filter((card) => isFlashcardMastered(card)).length
     const needsReviewCount = cards.filter((card) => isFlashcardNeedingReview(card)).length
+    const workoutCount = Math.max(dueTodayCount, needsReviewCount, 0)
 
     return {
       totalCards: cards.length,
@@ -123,78 +122,76 @@ export default function FlashcardsPage() {
       learningCount,
       masteredCount,
       needsReviewCount,
-      xp,
-      streak,
+      workoutCount,
     }
-  }, [cards, streak, xp])
+  }, [cards])
 
-  const recommendedAction = useMemo<RecommendedAction>(() => {
-    if (stats.dueTodayCount > 0) {
-      return {
-        eyebrow: "Recommended Today",
-        title: "Review Due Verses",
-        description: "You have verses scheduled for review today. Keep recall sharp and stay disciplined.",
-        cta: "Review Due Verses",
-        href: "/flashcards/review",
-      }
-    }
+  const workoutHref = stats.totalCards > 0 ? "/flashcards/review" : "/flashcards/create"
+  const workoutCta = stats.totalCards > 0 ? "Start Workout" : "Add First Verse"
+  const workoutTitle =
+    stats.totalCards > 0 ? "Today’s Memory Workout" : "Begin Your Memory Path"
+  const workoutSummary =
+    stats.totalCards > 0
+      ? stats.dueTodayCount > 0
+        ? `${stats.dueTodayCount} verse${stats.dueTodayCount === 1 ? "" : "s"} are due for review today.`
+        : stats.needsReviewCount > 0
+          ? `${stats.needsReviewCount} verse${stats.needsReviewCount === 1 ? "" : "s"} need reinforcement even if nothing is formally due today.`
+          : "No verses are due right now. A review round will keep recall warm and ready."
+      : "Add your first verse to begin your memory path."
 
-    if (stats.needsReviewCount > 0) {
-      return {
-        eyebrow: "Recommended Today",
-        title: "Strengthen Weak Verses",
-        description: "Some verses need reinforcement. Return to the places where memory is slipping.",
-        cta: "Strengthen Weak Verses",
-        href: "/flashcards/review",
-      }
-    }
-
-    if (stats.totalCards === 0) {
-      return {
-        eyebrow: "Recommended Today",
-        title: "Add Your First Verse",
-        description: "Start your memory library with a verse you want to carry into daily life.",
-        cta: "Add Verse",
-        href: "/flashcards/create",
-      }
-    }
-
-    return {
-      eyebrow: "Recommended Today",
-      title: "Memory Sprint",
-      description: "Your deck is in a strong place. Run a fast recall session and keep momentum alive.",
-      cta: "Open Memory Sprint",
-      href: "/games/flashcard-sprint",
-    }
-  }, [stats.dueTodayCount, stats.needsReviewCount, stats.totalCards])
+  const workoutDetail =
+    stats.totalCards > 0
+      ? stats.workoutCount > 0
+        ? `${stats.workoutCount} focused rep${stats.workoutCount === 1 ? "" : "s"} ready now`
+        : `${stats.totalCards} saved verse${stats.totalCards === 1 ? "" : "s"} ready for practice`
+      : "You provide the verse text you want to memorize."
 
   const statCards: StatCard[] = [
-    { label: "Due Today", value: String(stats.dueTodayCount), detail: "Scheduled for review now.", tone: "gold" },
-    { label: "Learning", value: String(stats.learningCount), detail: "Still in active repetition." },
-    { label: "Mastered", value: String(stats.masteredCount), detail: "Holding on longer intervals." },
-    { label: "Needs Review", value: String(stats.needsReviewCount), detail: "Lapsed verses needing attention." },
+    {
+      label: "My Verses",
+      value: String(stats.totalCards),
+      detail: "Saved in your personal verse library.",
+      tone: "gold",
+    },
+    {
+      label: "Due Today",
+      value: String(stats.dueTodayCount),
+      detail: "Scheduled for review right now.",
+      tone: "cyan",
+    },
+    {
+      label: "Learning",
+      value: String(stats.learningCount),
+      detail: "Still in active repetition.",
+      tone: "slate",
+    },
+    {
+      label: "Mastered",
+      value: String(stats.masteredCount),
+      detail: "Holding on longer intervals.",
+      tone: "emerald",
+    },
   ]
-
-  const desktopStatusPreview = useMemo(() => {
-    return cards.slice(0, 3).map((card) => ({
-      id: card.id,
-      reference: card.reference,
-      status: getFlashcardVisibilityStatus(card),
-    }))
-  }, [cards])
 
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-950 px-4 py-10 text-white md:px-6">
-        <div className="mx-auto max-w-6xl animate-pulse space-y-6">
-          <div className="h-40 rounded-[2rem] bg-white/5" />
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="h-28 rounded-3xl bg-white/5" />
-            <div className="h-28 rounded-3xl bg-white/5" />
-            <div className="h-28 rounded-3xl bg-white/5" />
-            <div className="h-28 rounded-3xl bg-white/5" />
+        <div className="mx-auto max-w-7xl animate-pulse space-y-6">
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+            <div className="h-64 rounded-[2rem] bg-white/5" />
+            <div className="h-64 rounded-[2rem] bg-white/5" />
           </div>
-          <div className="h-48 rounded-[2rem] bg-white/5" />
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            <div className="h-28 rounded-[1.75rem] bg-white/5" />
+            <div className="h-28 rounded-[1.75rem] bg-white/5" />
+            <div className="h-28 rounded-[1.75rem] bg-white/5" />
+            <div className="h-28 rounded-[1.75rem] bg-white/5" />
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="h-40 rounded-[1.75rem] bg-white/5" />
+            <div className="h-40 rounded-[1.75rem] bg-white/5" />
+            <div className="h-40 rounded-[1.75rem] bg-white/5" />
+          </div>
         </div>
       </div>
     )
@@ -210,95 +207,110 @@ export default function FlashcardsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(245,158,11,0.12),_transparent_24%),linear-gradient(180deg,_#0f172a_0%,_#020617_52%,_#000000_100%)] px-4 py-8 text-white md:px-6 md:py-10">
-      <div className="mx-auto max-w-6xl">
-        <section className="overflow-hidden rounded-[2rem] border border-amber-400/20 bg-white/[0.04] shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur">
-          <div className="grid gap-8 p-6 md:grid-cols-[1.4fr_0.8fr] md:p-8">
-            <div>
-              <div className="inline-flex rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
-                Scripture Memory Training
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.13),transparent_18%),radial-gradient(circle_at_right,rgba(34,211,238,0.10),transparent_24%),linear-gradient(180deg,#0f172a_0%,#020617_56%,#000000_100%)] px-4 py-8 text-white md:px-6 md:py-10">
+      <div className="mx-auto max-w-7xl">
+        <section className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur">
+          <div className="grid gap-6 p-6 lg:grid-cols-[1.18fr_0.82fr] lg:p-8">
+            <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(251,191,36,0.15),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(34,211,238,0.10),transparent_34%),linear-gradient(180deg,rgba(15,23,42,0.92),rgba(2,6,23,0.96))] p-6 lg:p-7">
+              <div className="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+                Verse Memory
               </div>
               <h1 className="mt-5 max-w-3xl text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-                Build recall, strengthen retention, and train God&apos;s Word into memory.
+                Memorize the verses that matter to you.
               </h1>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300 md:text-lg">
-                Create your own verse library, review what is due, and keep memory training disciplined day after day.
+                Add your own Scripture, then train through guided memory reps until it sticks.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/flashcards/review"
+                  href={workoutHref}
                   className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3.5 text-base font-semibold text-slate-950 transition hover:bg-amber-300"
                 >
-                  Start Training
+                  Start Today’s Memory Workout
                 </Link>
                 <Link
                   href="/flashcards/create"
                   className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3.5 text-base font-semibold text-white transition hover:bg-white/10"
                 >
-                  Add Verse
+                  Add a Verse
                 </Link>
+              </div>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                    Scripture Memory
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    Your verses move from new to learning to mastered as you return to them over time.
+                  </p>
+                </div>
+                <div className="rounded-[1.25rem] border border-cyan-200/14 bg-cyan-200/8 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100">
+                    Personal Verse Text
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-200">
+                    You provide the verse text you want to memorize.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="rounded-[1.75rem] border border-white/10 bg-slate-950/60 p-5">
-              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
-                {recommendedAction.eyebrow}
-              </p>
-              <h2 className="mt-4 text-2xl font-bold text-white">
-                {recommendedAction.title}
-              </h2>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                {recommendedAction.description}
-              </p>
-
-              <div className="mt-6 rounded-2xl border border-amber-400/15 bg-amber-300/10 p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-amber-100">
-                  Daily Training
-                </p>
-                <p className="mt-2 text-sm text-amber-50/90">
-                  {stats.dueTodayCount > 0
-                    ? `${stats.dueTodayCount} verse${stats.dueTodayCount === 1 ? "" : "s"} due for review today.`
-                    : stats.needsReviewCount > 0
-                      ? `${stats.needsReviewCount} verse${stats.needsReviewCount === 1 ? "" : "s"} need reinforcement even if none are due today.`
-                    : stats.totalCards === 0
-                      ? "No verses saved yet. Start your training library today."
-                      : "No verses are due right now. A sprint or fresh review round will keep recall warm."}
-                </p>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
-                  Memory XP {stats.xp}
-                </span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-300">
-                  Streak {stats.streak}
-                </span>
-              </div>
-
-              {desktopStatusPreview.length > 0 && (
-                <div className="mt-5 hidden rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:block">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
-                    Library Snapshot
+            <div className="rounded-[1.75rem] border border-amber-400/18 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_35%),linear-gradient(180deg,rgba(13,18,30,0.96),rgba(7,10,18,0.98))] p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200">
+                    Main Action
                   </p>
-                  <div className="mt-3 space-y-3">
-                    {desktopStatusPreview.map((card) => (
-                      <div key={card.id} className="flex items-center justify-between gap-3 text-sm">
-                        <span className="font-semibold text-white">{card.reference}</span>
-                        <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100">
-                          {card.status.replace("_", " ")}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  <h2 className="mt-3 text-2xl font-bold text-white">
+                    {workoutTitle}
+                  </h2>
                 </div>
-              )}
+                <span className="rounded-full border border-amber-300/18 bg-amber-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100">
+                  {stats.totalCards > 0 ? "Ready" : "New"}
+                </span>
+              </div>
+
+              <p className="mt-4 text-sm leading-6 text-slate-300">
+                {workoutSummary}
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.05] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    Workout Focus
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-white">
+                    {stats.totalCards > 0 ? "Review, recall, and strengthen" : "Start your first memory path"}
+                  </p>
+                </div>
+                <div className="rounded-[1.2rem] border border-white/10 bg-white/[0.05] p-4">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    Ready Now
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-white">
+                    {workoutDetail}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 rounded-[1.2rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  Memory Path
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  {stats.totalCards > 0
+                    ? "Return to the verses that are due, then move into matching and missing-word reps when you want more challenge."
+                    : "Add a verse, review it until it feels familiar, then build it through guided repetition."}
+                </p>
+              </div>
 
               <Link
-                href={recommendedAction.href}
-                className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
+                href={workoutHref}
+                className="mt-6 inline-flex w-full items-center justify-center rounded-2xl bg-white px-5 py-3.5 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
               >
-                {recommendedAction.cta}
+                {workoutCta}
               </Link>
             </div>
           </div>
@@ -311,7 +323,11 @@ export default function FlashcardsPage() {
               className={`rounded-[1.75rem] border p-4 md:p-5 ${
                 card.tone === "gold"
                   ? "border-amber-400/20 bg-amber-300/10"
-                  : "border-white/10 bg-white/[0.04]"
+                  : card.tone === "cyan"
+                    ? "border-cyan-300/18 bg-cyan-300/8"
+                    : card.tone === "emerald"
+                      ? "border-emerald-400/18 bg-emerald-400/8"
+                      : "border-white/10 bg-white/[0.04]"
               }`}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-400">
@@ -320,11 +336,9 @@ export default function FlashcardsPage() {
               <p className="mt-3 text-3xl font-extrabold text-white">
                 {card.value}
               </p>
-              {card.detail && (
-                <p className="mt-2 text-sm leading-6 text-slate-400">
-                  {card.detail}
-                </p>
-              )}
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                {card.detail}
+              </p>
             </div>
           ))}
         </section>
@@ -333,64 +347,99 @@ export default function FlashcardsPage() {
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
-                Training Modes
+                Main Actions
               </p>
               <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
-                Choose your memory discipline
+                Keep your memory path moving
               </h2>
             </div>
           </div>
 
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {trainingModes.map((mode) => (
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {mainActions.map((action) => (
               <Link
-                key={mode.title}
-                href={mode.href}
+                key={action.title}
+                href={action.href}
                 className="group rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-5 transition hover:border-amber-300/35 hover:bg-white/[0.07]"
               >
                 <div className="flex items-center justify-between gap-3">
-                  <h3 className="text-xl font-semibold text-white">{mode.title}</h3>
+                  <h3 className="text-xl font-semibold text-white">{action.title}</h3>
                   <span className="text-sm font-semibold text-amber-200 transition group-hover:text-amber-100">
                     Open
                   </span>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-slate-300">
-                  {mode.description}
+                  {action.description}
                 </p>
+                <div className="mt-5 text-sm font-semibold text-white/82">
+                  {action.cta}
+                </div>
               </Link>
             ))}
           </div>
         </section>
 
-        <section className="mt-8 rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 md:p-7">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <section className="mt-8 grid gap-6 xl:grid-cols-[1fr_0.92fr]">
+          <div className="rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 md:p-7">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
-                Your Verse Library
+                Practice Modes
               </p>
               <h2 className="mt-2 text-2xl font-bold text-white md:text-3xl">
-                Keep your saved verses ready for review
+                Train the same verses in different ways
               </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-                {stats.totalCards > 0
-                  ? `You currently have ${stats.totalCards} saved verse${stats.totalCards === 1 ? "" : "s"} in training.`
-                  : "Your verse library is empty. Add a verse to begin building recall and retention."}
-              </p>
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/flashcards/list"
-                className="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-              >
-                View Cards
-              </Link>
-              <Link
-                href="/flashcards/create"
-                className="inline-flex items-center justify-center rounded-2xl bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-300"
-              >
-                Add Verse
-              </Link>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {practiceModes.map((mode) => (
+                <Link
+                  key={mode.title}
+                  href={mode.href}
+                  className="group rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-5 transition hover:border-cyan-300/28 hover:bg-white/[0.07]"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="text-lg font-semibold text-white">{mode.title}</h3>
+                    <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-100">
+                      {mode.badge}
+                    </span>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                    {mode.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[2rem] border border-cyan-200/14 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.10),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(251,191,36,0.10),transparent_26%),linear-gradient(180deg,rgba(10,15,28,0.96),rgba(7,10,18,0.98))] p-6 md:p-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100">
+              How Verse Memory Works
+            </p>
+            <ol className="mt-5 space-y-4">
+              <li className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-semibold text-white">1. Add a verse.</p>
+              </li>
+              <li className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-semibold text-white">2. Review it until it feels familiar.</p>
+              </li>
+              <li className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-semibold text-white">3. Train with matching and missing words.</p>
+              </li>
+              <li className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-semibold text-white">4. Build the verse from memory.</p>
+              </li>
+              <li className="rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-sm font-semibold text-white">5. Review it again before you forget.</p>
+              </li>
+            </ol>
+
+            <div className="mt-5 rounded-[1.25rem] border border-amber-300/16 bg-amber-300/10 p-4">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-100">
+                Copyright Note
+              </p>
+              <p className="mt-2 text-sm leading-6 text-slate-200">
+                You provide the verse text you want to memorize.
+              </p>
             </div>
           </div>
         </section>
