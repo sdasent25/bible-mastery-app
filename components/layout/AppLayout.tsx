@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 
 import Sidebar from "@/components/layout/Sidebar"
-import { isNavItemActive, mobileNavItems } from "@/lib/navigation"
+import { isNavItemActive, mobileNavItems, renderNavIcon } from "@/lib/navigation"
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -41,7 +41,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     >
       {open && !isGameMode ? (
         <div
-          className="fixed inset-0 z-[900] bg-black/60 md:hidden"
+          className="fixed inset-0 z-[900] bg-black/65 md:hidden"
           onClick={() => setOpen(false)}
           aria-hidden="true"
         />
@@ -76,7 +76,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 aria-label="Close navigation menu"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/84"
               >
-                ✕
+                {renderNavIcon("close", "h-[1.05rem] w-[1.05rem]")}
               </button>
             </div>
             <Sidebar variant="mobile" closeMobile={() => setOpen(false)} />
@@ -91,9 +91,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open navigation menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-lg text-white"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
             >
-              ☰
+              {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
             </button>
 
             <div className="text-center">
@@ -107,7 +107,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             <Link
               href="/training"
-              className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200/14 bg-amber-200/10 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-50"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200/14 bg-amber-200/10 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.08)]"
             >
               Arena
             </Link>
@@ -116,11 +116,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
         <div className={`flex-1 transition ${open ? "md:blur-0" : ""}`}>
           <div className="md:hidden bg-[#0B1220]">
-            <div className={showMobileNav ? "pb-[92px]" : ""}>{children}</div>
+            <div className={showMobileNav ? "pb-[104px]" : ""}>{children}</div>
 
             {showMobileNav ? (
-              <div className="fixed inset-x-0 bottom-0 z-40 h-[80px] border-t border-white/10 bg-black/95">
-                <div className="grid h-full grid-cols-5">
+              <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[linear-gradient(180deg,rgba(4,8,16,0.9),rgba(1,3,8,0.98))] shadow-[0_-12px_36px_rgba(0,0,0,0.32)] backdrop-blur">
+                <div className="grid h-[84px] grid-cols-5">
                   {mobileNavItems.map((item) => {
                     const active = isNavItemActive(pathname, item.href)
 
@@ -129,23 +129,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         key={item.href}
                         href={item.href}
                         className={`flex flex-col items-center justify-center gap-1 px-1 text-[11px] font-medium transition ${
-                          active ? "text-white" : "text-white/70 hover:text-white"
+                          active ? "text-amber-50" : "text-white/62 hover:text-white"
                         }`}
                       >
                         <span
-                          className={`inline-flex h-8 w-8 items-center justify-center rounded-full ${
+                          className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
                             active
-                              ? item.href === "/training"
-                                ? "bg-amber-200/12 text-amber-50"
-                                : "bg-cyan-200/10 text-cyan-50"
-                              : ""
+                              ? "border-amber-200/22 bg-amber-200/10 text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.12)]"
+                              : "border-transparent bg-white/[0.02] text-white/62"
                           }`}
                         >
-                          <span className={`text-base ${active ? "scale-105" : ""}`}>
-                            {item.icon}
-                          </span>
+                          {renderNavIcon(item.icon, "h-[1.05rem] w-[1.05rem]")}
                         </span>
-                        <span className="leading-none">{item.label}</span>
+                        <span className={`leading-none ${active ? "font-semibold" : ""}`}>{item.label}</span>
                       </Link>
                     )
                   })}
