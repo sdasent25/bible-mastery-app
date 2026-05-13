@@ -2,6 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+
+import {
+  BooksQuestHero,
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestStatusBadge,
+  BooksQuestTopBar,
+} from "@/components/BooksQuestShell"
 import { createClient } from "@/lib/supabase/client"
 import { useXPStore } from "@/lib/xpStore"
 
@@ -143,6 +151,7 @@ export default function BooksTestModePage() {
   const [correctAnswer, setCorrectAnswer] = useState("")
   const [score, setScore] = useState(0)
   const [questionIndex, setQuestionIndex] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [xpEarned, setXpEarned] = useState<number | null>(null)
@@ -211,10 +220,10 @@ export default function BooksTestModePage() {
   }, [])
 
   useEffect(() => {
-    if (focusedBooks.length >= 4 && !currentQuestion && !isComplete) {
+    if (hasStarted && focusedBooks.length >= 4 && !currentQuestion && !isComplete) {
       loadQuestion()
     }
-  }, [focusedBooks, currentQuestion, isComplete, loadQuestion])
+  }, [focusedBooks, currentQuestion, hasStarted, isComplete, loadQuestion])
 
   useEffect(() => {
     if (!isComplete) return
@@ -246,7 +255,7 @@ export default function BooksTestModePage() {
       if (!cancelled) {
         if (data.awarded) {
           await supabase.rpc("update_streak", {
-            user_id_input: user.id
+            user_id_input: user.id,
           })
           setXpEarned(data.xp)
           setIsPractice(false)
@@ -288,7 +297,20 @@ export default function BooksTestModePage() {
     loadQuestion()
   }
 
+  const handleStart = () => {
+    setHasStarted(true)
+    setScore(0)
+    setQuestionIndex(0)
+    setCurrentQuestion("")
+    setChoices([])
+    setSelectedAnswer(null)
+    setCorrectAnswer("")
+    setXpEarned(null)
+    setIsPractice(false)
+  }
+
   const handleRetry = () => {
+    setHasStarted(true)
     setScore(0)
     setQuestionIndex(0)
     setCurrentQuestion("")
@@ -301,116 +323,135 @@ export default function BooksTestModePage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        Loading test mode...
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>Loading test mode...</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        {error}
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>{error}</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!sortedBooks.length) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        No books loaded
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>No books loaded</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (isComplete) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-          <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-            <h2 className="text-2xl font-bold">Test Complete</h2>
+      <BooksQuestPageShell>
+        <BooksQuestPanel className="text-center">
+          <div className="ba-badge-gold">Test Complete</div>
+          <h2 className="mt-4 text-3xl font-black text-white">Focused challenge complete</h2>
+          <p className="mt-4 text-lg text-slate-200">Score: {score} / 10</p>
 
-            <p className="text-lg">Score: {score} / 10</p>
+          {xpEarned !== null ? (
+            <>
+              <div className="mt-4 text-2xl font-black text-emerald-300">+{xpEarned} XP</div>
+              <div className="text-xs text-slate-400">Daily reward earned</div>
+            </>
+          ) : isPractice ? (
+            <>
+              <div className="mt-4 font-semibold text-amber-200">Practice Mode</div>
+              <div className="text-xs text-slate-400">
+                You already earned today&apos;s XP. Keep improving your score.
+              </div>
+            </>
+          ) : (
+            <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
+          )}
 
-            {xpEarned !== null ? (
-              <>
-                <div className="mt-4 text-green-400 font-semibold">
-                  +{xpEarned} XP
-                </div>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <button
+              onClick={handleRetry}
+              className="ba-button-primary px-5 py-3 text-base font-black"
+            >
+              Retry Test
+            </button>
 
-                <div className="text-xs text-gray-400">
-                  Daily reward earned
-                </div>
-              </>
-            ) : isPractice ? (
-              <>
-                <div className="mt-4 text-yellow-400 font-semibold">
-                  Practice Mode
-                </div>
+            <Link
+              href="/quests/books"
+              className="ba-button-secondary px-5 py-3 text-base font-semibold"
+            >
+              Back to Books
+            </Link>
+          </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
+    )
+  }
 
-                <div className="text-xs text-gray-400">
-                  🔥 You already earned today&apos;s XP
-                  <br />
-                  Keep improving your score
-                </div>
-              </>
-            ) : (
-              <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
-            )}
-
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+  if (!hasStarted) {
+    return (
+      <BooksQuestPageShell maxWidth="max-w-4xl">
+        <BooksQuestHero
+          eyebrow="Books Quest"
+          title="Test Mode"
+          subtitle="Prove your mastery through a focused challenge that checks order, categories, and structural recall. Daily reward rules stay exactly as they are."
+          actions={
+            <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
               <button
-                onClick={handleRetry}
-                className="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+                onClick={handleStart}
+                className="ba-button-primary flex-1 px-5 py-4 text-base font-black lg:flex-none"
               >
-                Retry Test
+                Start Test
               </button>
-
               <Link
                 href="/quests/books"
-                className="rounded-2xl bg-gray-700 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+                className="ba-button-secondary flex-1 px-5 py-4 text-center font-semibold lg:flex-none"
               >
                 Back to Books
               </Link>
             </div>
-          </div>
-        </div>
-      </div>
+          }
+          stats={
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-2xl font-black text-white">10</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Questions</div>
+              </div>
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-2xl font-black text-white">4</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Choices</div>
+              </div>
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-lg font-black text-white">{challengeLabel}</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Today&apos;s Focus</div>
+              </div>
+            </div>
+          }
+        />
+      </BooksQuestPageShell>
     )
   }
 
   return (
-    <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-      <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-        <div className="mb-6 flex items-center justify-between gap-3">
+    <BooksQuestPageShell>
+      <BooksQuestPanel>
+        <BooksQuestTopBar
+          backHref="/quests/books"
+          meta={<span>Question {questionIndex + 1} / {TOTAL_QUESTIONS}</span>}
+        />
+
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-white">Test Mode</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              🔥 Today&apos;s Focus: {challengeLabel}
-            </p>
+            <div className="ba-badge-gold">Test Mode</div>
+            <h1 className="mt-3 text-3xl font-black text-white">Focused challenge</h1>
+            <p className="mt-2 text-sm text-slate-400">Today&apos;s focus: {challengeLabel}</p>
           </div>
-          <Link
-            href="/quests/books"
-            className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"
-          >
-            Back
-          </Link>
+          <BooksQuestStatusBadge tone="ready">Daily XP Rules Active</BooksQuestStatusBadge>
         </div>
 
-        <div className="text-xs text-gray-400 mb-4">
-          🧠 Daily XP available
-          <br />
-          Earn rewards on your first test
-          <br />
-          Practice to improve your score
-        </div>
-
-        <div className="mb-6 rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3 text-sm font-medium text-gray-300">
-          Question {questionIndex + 1} / {TOTAL_QUESTIONS}
-        </div>
-
-        <div className="rounded-3xl border border-white/10 bg-gray-900/80 px-5 py-10 text-center">
-          <div className="text-3xl font-bold text-white">{currentQuestion}</div>
+        <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] px-5 py-10 text-center">
+          <div className="text-3xl font-black text-white">{currentQuestion}</div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-3">
@@ -424,14 +465,14 @@ export default function BooksTestModePage() {
                 key={choice}
                 onClick={() => handleAnswer(choice)}
                 disabled={hasAnswered}
-                className={`w-full rounded-2xl border px-4 py-4 text-left transition transform active:scale-95 ${
+                className={`w-full rounded-2xl border px-4 py-4 text-left transition active:scale-95 ${
                   shouldHighlightCorrect
-                    ? "border-green-500 bg-green-600 text-white"
+                    ? "border-emerald-400 bg-emerald-500/80 text-slate-950"
                     : shouldHighlightWrong
-                      ? "border-red-500 bg-red-600 text-white"
+                      ? "border-rose-400 bg-rose-500/80 text-white"
                       : hasAnswered
-                        ? "cursor-not-allowed border-white/10 bg-gray-800/70 text-gray-400"
-                        : "border-white/10 bg-gray-800 text-white hover:scale-105"
+                        ? "cursor-not-allowed border-white/10 bg-white/[0.03] text-slate-500"
+                        : "border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.06]"
                 }`}
               >
                 <div className="text-lg font-semibold">{choice}</div>
@@ -444,8 +485,8 @@ export default function BooksTestModePage() {
           <div
             className={`mt-6 rounded-2xl border px-4 py-4 text-center ${
               isCorrect
-                ? "border-green-500/40 bg-green-500/10 text-green-300"
-                : "border-red-500/40 bg-red-500/10 text-red-200"
+                ? "border-emerald-300/40 bg-emerald-500/10 text-emerald-200"
+                : "border-rose-400/40 bg-rose-500/10 text-rose-100"
             }`}
           >
             <div className="text-lg font-semibold">
@@ -454,13 +495,13 @@ export default function BooksTestModePage() {
 
             <button
               onClick={handleNextQuestion}
-              className="mt-4 rounded-2xl bg-white px-5 py-3 font-semibold text-slate-950 transition transform active:scale-95 hover:scale-105"
+              className="ba-button-primary mt-4 px-5 py-3 font-semibold"
             >
               Next Question
             </button>
           </div>
         )}
-      </div>
-    </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }

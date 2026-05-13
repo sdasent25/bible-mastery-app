@@ -2,81 +2,101 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+
+import {
+  BooksQuestHero,
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestStatusBadge,
+} from "@/components/BooksQuestShell"
+import { renderNavIcon } from "@/lib/navigation"
 import { createClient } from "@/lib/supabase/client"
 
 type HubCardProps = {
   title: string
   description: string
-  rewardNote?: React.ReactNode
-  badge: string
   href?: string
   disabled?: boolean
-  statusBadge?: React.ReactNode
-  highlightClassName?: string
-  buttonClassName?: string
+  status: "Ready" | "Practice" | "Daily XP" | "Locked"
+  detail: string
+  ctaLabel: string
+  accentClass: string
+  icon: "home" | "quests" | "upgrade" | "verse-memory"
 }
 
-function HubCard({
+function ModeCard({
   title,
   description,
-  rewardNote,
-  badge,
   href,
   disabled = false,
-  statusBadge,
-  highlightClassName,
-  buttonClassName,
+  status,
+  detail,
+  ctaLabel,
+  accentClass,
+  icon,
 }: HubCardProps) {
-  const content = (
-    <div className={`ba-card relative rounded-3xl p-5 transition-all duration-200 ease-out hover:scale-[1.02] hover:shadow-2xl hover:shadow-black/30 ${
-      disabled
-        ? "opacity-60 cursor-not-allowed"
-        : `${highlightClassName || ""} cursor-pointer hover:border-cyan-300/18 hover:shadow-[0_24px_48px_rgba(0,0,0,0.34)] active:scale-[0.98]`
-    }`}>
-      {statusBadge}
+  const statusTone =
+    status === "Ready" || status === "Daily XP"
+      ? "ready"
+      : status === "Practice"
+        ? "practice"
+        : "locked"
+
+  const card = (
+    <article
+      className={`relative overflow-hidden rounded-[1.8rem] p-5 transition duration-200 sm:p-6 ${
+        disabled
+          ? "border border-white/8 bg-[linear-gradient(180deg,rgba(41,37,36,0.92),rgba(24,24,27,0.96))] opacity-85 shadow-[0_18px_46px_rgba(0,0,0,0.26)]"
+          : "ba-card hover:-translate-y-0.5 hover:shadow-[0_24px_56px_rgba(0,0,0,0.34)] active:scale-[0.99]"
+      }`}
+    >
+      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accentClass}`} />
 
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <div className="flex flex-wrap items-center gap-2">
-            <h2 className="text-xl md:text-2xl font-semibold text-white">
-              {title}
-            </h2>
-            {!disabled && title === "Order Builder" && (
-              <span className="ba-badge-cyan ml-2">
-                Recommended
-              </span>
-            )}
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-white/6 text-white">
+            {renderNavIcon(icon, "h-5 w-5")}
           </div>
-          <p className="mt-2 text-sm text-gray-300">
-            {description}
-          </p>
-          {rewardNote ? (
-            <div className="mt-2">
-              {rewardNote}
+          <div>
+            <div className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-300/76">
+              Books Quest
             </div>
-          ) : null}
+            <h2 className="mt-1 text-2xl font-black text-white">{title}</h2>
+          </div>
         </div>
+
+        <BooksQuestStatusBadge tone={statusTone}>{status}</BooksQuestStatusBadge>
       </div>
 
-      <div className="mt-4">
-        <div className={`inline-flex w-full justify-center px-4 py-2.5 text-sm font-semibold ${
-          disabled
-            ? "ba-button-locked"
-            : buttonClassName || "ba-button-primary"
-        }`}>
-          {disabled ? "Coming Soon" : "Play Now"}
+      <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-base">
+        {description}
+      </p>
+
+      <div className="mt-5 rounded-[1.15rem] border border-white/8 bg-white/[0.03] px-4 py-3">
+        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+          Focus
+        </div>
+        <div className="mt-2 text-sm font-semibold text-white">{detail}</div>
+      </div>
+
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="text-sm text-slate-400">
+          {disabled ? "This mode is not currently available." : "Focused structure and recall training."}
+        </div>
+        <div className={disabled ? "ba-button-locked px-4 py-3 text-sm font-black" : "ba-button-primary px-4 py-3 text-sm font-black"}>
+          {ctaLabel}
         </div>
       </div>
-    </div>
+    </article>
   )
 
   if (disabled || !href) {
-    return <div>{content}</div>
+    return <div>{card}</div>
   }
 
   return (
     <Link href={href} className="block">
-      {content}
+      {card}
     </Link>
   )
 }
@@ -103,11 +123,7 @@ export default function BooksQuestHubPage() {
         .eq("mode", "speed_round")
         .eq("activity_date", today)
 
-      if (speedData && speedData.length > 0) {
-        setSpeedStatus("practice")
-      } else {
-        setSpeedStatus("xp")
-      }
+      setSpeedStatus(speedData && speedData.length > 0 ? "practice" : "xp")
 
       const { data: testData } = await supabase
         .from("user_daily_activity")
@@ -116,141 +132,121 @@ export default function BooksQuestHubPage() {
         .eq("mode", "test_mode")
         .eq("activity_date", today)
 
-      if (testData && testData.length > 0) {
-        setTestStatus("practice")
-      } else {
-        setTestStatus("xp")
-      }
+      setTestStatus(testData && testData.length > 0 ? "practice" : "xp")
     }
 
     void checkStatus()
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-gray-950 to-black px-4 py-6 text-white">
-      <style jsx global>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-      <div className="mx-auto flex w-full max-w-xl flex-col gap-6">
-        <div className="ba-card rounded-3xl p-6">
-          <div className="text-sm uppercase tracking-[0.28em] text-amber-300">
-            Quest Hub
-          </div>
-          <h1 className="mt-3 text-3xl font-bold text-white">
-            Books of the Bible
-          </h1>
-          <p className="mt-3 text-base text-gray-300">
-            Train your mastery in multiple ways
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-4 animate-[fadeIn_0.4s_ease-out]">
-          <HubCard
-            title="Order Builder"
-            description="Tap through the books in their correct canonical order and build recall fast."
-            badge="Play"
+    <BooksQuestPageShell maxWidth="max-w-6xl">
+      <BooksQuestHero
+        eyebrow="Books Quest"
+        title="Books of the Bible"
+        subtitle="Master Bible order, structure, categories, and speed recall through focused challenge modes built for long-term mastery."
+        actions={
+          <Link
             href="/quests/books/order"
-          />
-
-          <HubCard
-            title="Category Sort"
-            description="Group books by section and sharpen your understanding of the Bible's structure."
-            badge="Play"
-            href="/quests/books/sort"
-          />
-
-          <HubCard
-            title="Speed Round"
-            description="Race the clock and lock in faster recognition under pressure."
-            rewardNote={
-              speedStatus === "xp" ? (
-                <p className="text-green-400 text-sm font-semibold mt-2">
-                  🔥 Daily XP Ready
-                </p>
-              ) : speedStatus === "practice" ? (
-                <p className="text-yellow-400 text-sm mt-2">
-                  🧪 Practice Mode — XP already earned
-                </p>
-              ) : undefined
-            }
-            statusBadge={
-              <div className="absolute top-3 right-3">
-                {speedStatus === "xp" && (
-                  <span className="ba-badge-success animate-pulse">
-                    🔥 XP Ready
-                  </span>
-                )}
-                {speedStatus === "practice" && (
-                  <span className="ba-badge-gold">
-                    Practice
-                  </span>
-                )}
+            className="ba-button-primary w-full px-5 py-4 text-base font-black lg:w-auto"
+          >
+            Start Challenge
+          </Link>
+        }
+        stats={
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                Modes
               </div>
-            }
-            highlightClassName={
-              speedStatus === "xp"
-                ? "ring-1 ring-emerald-300/34 shadow-[0_0_30px_rgba(52,211,153,0.18)]"
-                : speedStatus === "practice"
-                  ? "opacity-80"
-                  : ""
-            }
-            buttonClassName={
-              speedStatus === "practice"
-                ? "ba-button-secondary"
-                : "ba-button-primary"
-            }
-            badge="Play"
-            href="/quests/books/speed"
-          />
-
-          <HubCard
-            title="Test Mode"
-            description="Challenge yourself with a more demanding mastery check across all books."
-            rewardNote={
-              testStatus === "xp" ? (
-                <p className="text-green-400 text-sm font-semibold mt-2">
-                  🔥 Daily XP Ready
-                </p>
-              ) : testStatus === "practice" ? (
-                <p className="text-yellow-400 text-sm mt-2">
-                  🧪 Practice Mode — XP already earned
-                </p>
-              ) : undefined
-            }
-            statusBadge={
-              <div className="absolute top-3 right-3">
-                {testStatus === "xp" && (
-                  <span className="ba-badge-success animate-pulse">
-                    🔥 XP Ready
-                  </span>
-                )}
-                {testStatus === "practice" && (
-                  <span className="ba-badge-gold">
-                    Practice
-                  </span>
-                )}
+              <div className="mt-2 text-2xl font-black text-white">4</div>
+            </div>
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                Skills
               </div>
-            }
-            highlightClassName={
-              testStatus === "xp"
-                ? "ring-1 ring-emerald-300/34 shadow-[0_0_30px_rgba(52,211,153,0.18)]"
-                : testStatus === "practice"
-                  ? "opacity-80"
-                  : ""
-            }
-            buttonClassName={
-              testStatus === "practice"
-                ? "ba-button-secondary"
-                : "ba-button-primary"
-            }
-            badge="Play"
-            href="/quests/books/test"
-          />
-        </div>
+              <div className="mt-2 text-lg font-black text-white">Order and structure</div>
+            </div>
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                Daily XP
+              </div>
+              <div className="mt-2 text-lg font-black text-white">Speed and test modes</div>
+            </div>
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                Focus
+              </div>
+              <div className="mt-2 text-lg font-black text-white">Recall under pressure</div>
+            </div>
+          </div>
+        }
+      />
+
+      <div className="grid gap-5 xl:grid-cols-2">
+        <ModeCard
+          title="Order Builder"
+          description="Place the books in the correct order."
+          href="/quests/books/order"
+          status="Ready"
+          detail="Canonical order and sequence recall"
+          ctaLabel="Enter Quest"
+          accentClass="from-cyan-300 via-sky-400 to-blue-500"
+          icon="home"
+        />
+
+        <ModeCard
+          title="Category Sort"
+          description="Group books by section and genre."
+          href="/quests/books/sort"
+          status="Ready"
+          detail="Sections, genres, and Bible structure"
+          ctaLabel="Start Challenge"
+          accentClass="from-emerald-300 via-teal-400 to-cyan-500"
+          icon="verse-memory"
+        />
+
+        <ModeCard
+          title="Speed Round"
+          description="Race the clock and sharpen recall."
+          href="/quests/books/speed"
+          status={speedStatus === "xp" ? "Daily XP" : "Practice"}
+          detail="Fast recognition across order and position prompts"
+          ctaLabel={speedStatus === "xp" ? "Claim XP Run" : "Practice"}
+          accentClass="from-amber-300 via-yellow-400 to-orange-500"
+          icon="quests"
+        />
+
+        <ModeCard
+          title="Test Mode"
+          description="Prove your mastery with a focused challenge."
+          href="/quests/books/test"
+          status={testStatus === "xp" ? "Daily XP" : "Practice"}
+          detail="Focused accuracy checks across multiple prompt types"
+          ctaLabel={testStatus === "xp" ? "Start Test" : "Practice"}
+          accentClass="from-violet-300 via-fuchsia-400 to-pink-500"
+          icon="upgrade"
+        />
       </div>
-    </div>
+
+      <BooksQuestPanel className="rounded-[1.7rem]">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <div className="ba-badge">Quest Structure</div>
+            <h2 className="mt-3 text-2xl font-black text-white">
+              Train the full map of the Bible
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-300">
+              Build confidence in canonical order, categories, and rapid recall without changing your daily arena flow.
+            </p>
+          </div>
+          <Link
+            href="/quests"
+            className="ba-button-secondary w-full px-5 py-4 text-base font-semibold lg:w-auto"
+          >
+            Back to Quests
+          </Link>
+        </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }

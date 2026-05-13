@@ -2,6 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import Link from "next/link"
+
+import {
+  BooksQuestHero,
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestStatusBadge,
+  BooksQuestTopBar,
+} from "@/components/BooksQuestShell"
 import { createClient } from "@/lib/supabase/client"
 import { useXPStore } from "@/lib/xpStore"
 
@@ -249,7 +257,7 @@ export default function BooksSpeedRoundPage() {
 
         console.log("XP RPC RESULT:", {
           data,
-          error
+          error,
         })
 
         if (error) {
@@ -264,7 +272,7 @@ export default function BooksSpeedRoundPage() {
         if (!cancelled) {
           if (data.awarded) {
             await supabase.rpc("update_streak", {
-              user_id_input: user.id
+              user_id_input: user.id,
             })
             incrementXP(data.xp)
             setXpEarned(data.xp)
@@ -337,44 +345,45 @@ export default function BooksSpeedRoundPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        Loading speed round...
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>Loading speed round...</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        {error}
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>{error}</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!sortedBooks.length) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        No books loaded
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>No books loaded</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (gameOver) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-          <h2 className="text-2xl font-bold">Time&apos;s Up!</h2>
-          <p className="mt-4 text-lg">Score: {score}</p>
-          <p className="mt-2 text-sm text-gray-400">Best today: {bestScore}</p>
+      <BooksQuestPageShell>
+        <BooksQuestPanel className="text-center">
+          <div className="ba-badge-gold">Speed Round Complete</div>
+          <h2 className="mt-4 text-3xl font-black text-white">Time&apos;s up</h2>
+          <p className="mt-4 text-lg text-slate-200">Score: {score}</p>
+          <p className="mt-2 text-sm text-slate-400">Best today: {bestScore}</p>
           {xpEarned !== null ? (
             <>
-              <div className="mt-4 font-semibold text-green-400">+{xpEarned} XP</div>
-              <div className="text-xs text-gray-400">Daily reward earned</div>
+              <div className="mt-4 text-2xl font-black text-emerald-300">+{xpEarned} XP</div>
+              <div className="text-xs text-slate-400">Daily reward earned</div>
             </>
           ) : isPractice ? (
             <>
-              <div className="mt-4 font-semibold text-yellow-400">Practice Mode</div>
-              <div className="text-xs text-gray-400">No XP — new rewards tomorrow</div>
+              <div className="mt-4 font-semibold text-amber-200">Practice Mode</div>
+              <div className="text-xs text-slate-400">No XP. New rewards refresh tomorrow.</div>
             </>
           ) : (
             <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
@@ -383,182 +392,155 @@ export default function BooksSpeedRoundPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
               onClick={startGame}
-              className="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-primary px-5 py-3 text-base font-black"
             >
               Play Again
             </button>
 
             <Link
               href="/quests/books"
-              className="rounded-2xl bg-gray-700 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-secondary px-5 py-3 text-base font-semibold"
             >
               Back to Books
             </Link>
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!hasStarted) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-          <div className="rounded-[2rem] border border-amber-300/20 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.16),transparent_55%),linear-gradient(180deg,rgba(17,24,39,0.98),rgba(3,7,18,0.98))] p-6">
-            <div className="text-center">
-              <div className="text-xs font-black uppercase tracking-[0.28em] text-amber-200/80">
-                Books Quest
-              </div>
-              <h1 className="mt-3 text-4xl font-black text-white">Speed Round</h1>
-              <p className="text-sm text-gray-400 mt-1">
-                🔥 Today&apos;s Challenge: {challengeLabel}
-              </p>
-              <p className="mt-4 text-sm leading-6 text-gray-300">
-                Answer as many books-of-the-Bible questions as you can in 30 seconds.
-                Expect order, before, and after prompts with four fast choices each round.
-              </p>
-            </div>
-
-            <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">
-                <div className="text-2xl font-black text-white">30s</div>
-                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-400">
-                  Clock
-                </div>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">
-                <div className="text-2xl font-black text-white">3</div>
-                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-400">
-                  Modes
-                </div>
-              </div>
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-3 py-4">
-                <div className="text-2xl font-black text-white">4</div>
-                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-gray-400">
-                  Choices
-                </div>
-              </div>
-            </div>
-
-            {modeStatus === "xp" && (
-              <div className="mt-6 text-green-400 text-sm mb-2 font-semibold">
-                🔥 Daily XP Available
-              </div>
-            )}
-
-            {modeStatus === "practice" && (
-              <div className="mt-6 text-yellow-400 text-sm mb-2 font-semibold">
-                🧪 Practice Mode — XP already earned today
-              </div>
-            )}
-
-            <div className="flex flex-col gap-3 sm:flex-row">
+      <BooksQuestPageShell maxWidth="max-w-4xl">
+        <BooksQuestHero
+          eyebrow="Books Quest"
+          title="Speed Round"
+          subtitle="Race the clock and sharpen recall through fast order, before, and position prompts. Your first run each day keeps the reward rules already in place."
+          actions={
+            <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
               <button
                 onClick={startGame}
-                className="flex-1 rounded-2xl bg-amber-400 px-5 py-4 text-base font-black text-slate-950 transition hover:scale-[1.02] hover:bg-amber-300 active:scale-[0.98]"
+                className="ba-button-primary flex-1 px-5 py-4 text-base font-black lg:flex-none"
               >
                 Start Speed Round
               </button>
               <Link
                 href="/quests/books"
-                className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center font-semibold text-white transition hover:bg-white/10 active:scale-[0.98]"
+                className="ba-button-secondary flex-1 px-5 py-4 text-center font-semibold lg:flex-none"
               >
                 Back to Books
               </Link>
             </div>
+          }
+          stats={
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-2xl font-black text-white">30s</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Clock</div>
+              </div>
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-2xl font-black text-white">3</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Prompt Types</div>
+              </div>
+              <div className="ba-card-soft rounded-[1.2rem] px-4 py-4 text-center">
+                <div className="text-2xl font-black text-white">4</div>
+                <div className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Choices</div>
+              </div>
+            </div>
+          }
+        />
+
+        <BooksQuestPanel>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                Today&apos;s Challenge
+              </div>
+              <div className="mt-2 text-xl font-black text-white">{challengeLabel}</div>
+            </div>
+            {modeStatus === "xp" ? (
+              <BooksQuestStatusBadge tone="ready">Daily XP Ready</BooksQuestStatusBadge>
+            ) : modeStatus === "practice" ? (
+              <BooksQuestStatusBadge tone="practice">Practice Mode</BooksQuestStatusBadge>
+            ) : null}
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   return (
-    <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-      <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-        <div className="mb-2 flex justify-between text-sm text-gray-300">
-          <span>⚡ Speed Round</span>
-          <span>🔥 {score} Score</span>
-        </div>
-        <div className="mb-6 flex items-center justify-between gap-3">
+    <BooksQuestPageShell>
+      <BooksQuestPanel>
+        <BooksQuestTopBar
+          backHref="/quests/books"
+          meta={
+            <div className="text-right">
+              <div>Time {timeLeft}s</div>
+              <div>Score {score}</div>
+            </div>
+          }
+        />
+
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h1 className="text-3xl font-bold text-white">Speed Round</h1>
-            <p className="text-sm text-gray-400 mt-1">
-              🔥 Today&apos;s Challenge: {challengeLabel}
-            </p>
+            <div className="ba-badge-gold">Speed Round</div>
+            <h1 className="mt-3 text-3xl font-black text-white">Fast recall challenge</h1>
+            <p className="mt-2 text-sm text-slate-400">Today&apos;s challenge: {challengeLabel}</p>
           </div>
-          <Link
-            href="/quests/books"
-            className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"
-          >
-            Back
-          </Link>
-        </div>
-
-        <div className="mb-4 text-xs text-gray-400">
-          ⚡ Earn XP on your first run today
-          <br />
-          Play as many times as you want
-        </div>
-
-        <div className="mb-6 flex items-center justify-between rounded-2xl border border-white/10 bg-gray-900/80 px-4 py-3">
-          <div className="text-sm font-medium text-gray-300">
-            Time: <span className="text-white">{timeLeft}s</span>
-          </div>
-          <div className="text-sm font-medium text-gray-300">
-            Score: <span className="text-white">{score}</span>
-          </div>
+          {modeStatus === "xp" ? (
+            <BooksQuestStatusBadge tone="ready">Daily XP Available</BooksQuestStatusBadge>
+          ) : modeStatus === "practice" ? (
+            <BooksQuestStatusBadge tone="practice">Practice Mode</BooksQuestStatusBadge>
+          ) : null}
         </div>
 
         <div className="mb-6 h-2 overflow-hidden rounded-full bg-white/10">
           <div
-            className="h-full rounded-full bg-amber-400 transition-[width] duration-1000 ease-linear"
+            className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-amber-300 to-emerald-300 transition-[width] duration-1000 ease-linear"
             style={{ width: `${(timeLeft / 30) * 100}%` }}
           />
         </div>
 
-        <div className={`rounded-3xl border px-5 py-8 text-center transition ${
-          feedback === "correct"
-            ? "border-green-400 bg-green-600/20"
-            : feedback === "wrong"
-              ? "border-red-400 bg-red-600/20"
-              : "border-white/10 bg-gray-900/80"
-        }`}>
-          <div className="text-xs uppercase tracking-[0.24em] text-gray-400">
-            Question
-          </div>
-          <div className="mt-4 text-3xl font-bold text-white">
+        <div
+          className={`rounded-[1.6rem] border px-5 py-8 text-center transition ${
+            feedback === "correct"
+              ? "border-emerald-300/40 bg-emerald-400/12"
+              : feedback === "wrong"
+                ? "border-rose-400/40 bg-rose-500/14"
+                : "border-white/10 bg-white/[0.03]"
+          }`}
+        >
+          <div className="text-xs uppercase tracking-[0.24em] text-slate-400">Question</div>
+          <div className="mt-4 text-3xl font-black text-white">
             {currentQuestion?.prompt || "Get ready..."}
           </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-3">
           {showPoint && (
-            <div className="text-center text-lg font-bold text-green-400 animate-pulse">
-              +1
-            </div>
+            <div className="text-center text-lg font-bold text-emerald-300 animate-pulse">+1</div>
           )}
-          {choices.map((book) => {
-            return (
-              <button
-                key={book.id}
-                onClick={() => handleAnswer(book)}
-                disabled={selectedId !== null}
-                className={`w-full rounded-2xl border px-4 py-4 text-left transition-all duration-150 active:scale-95 ${
-                  feedback === "correct"
-                    ? "border-green-500 bg-green-500 text-black"
-                    : feedback === "wrong"
-                      ? "border-red-500 bg-red-500 text-white"
-                      : selectedId !== null
-                        ? "cursor-not-allowed border-white/10 bg-gray-800/70 text-gray-400"
-                        : "border-white/10 bg-gray-800 text-white hover:scale-105"
-                }`}
-              >
-                <div className="text-lg font-semibold">{book.book}</div>
-              </button>
-            )
-          })}
+          {choices.map((book) => (
+            <button
+              key={book.id}
+              onClick={() => handleAnswer(book)}
+              disabled={selectedId !== null}
+              className={`w-full rounded-2xl border px-4 py-4 text-left transition-all duration-150 active:scale-95 ${
+                feedback === "correct"
+                  ? "border-emerald-400 bg-emerald-400/80 text-slate-950"
+                  : feedback === "wrong"
+                    ? "border-rose-400 bg-rose-500/80 text-white"
+                    : selectedId !== null
+                      ? "cursor-not-allowed border-white/10 bg-white/[0.03] text-slate-500"
+                      : "border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.06]"
+              }`}
+            >
+              <div className="text-lg font-semibold">{book.book}</div>
+            </button>
+          ))}
         </div>
-      </div>
-    </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }

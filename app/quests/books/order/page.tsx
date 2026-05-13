@@ -3,6 +3,12 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 
+import {
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestTopBar,
+} from "@/components/BooksQuestShell"
+
 type BookRow = {
   id: string
   book: string
@@ -84,7 +90,6 @@ export default function BooksOrderBuilderPage() {
   }, [selectedBooks, canonicalRound])
 
   const completed = selectedBooks.length === canonicalRound.length && canonicalRound.length > 0
-
   const progressText = `${selectedBooks.length} / ${canonicalRound.length || 5}`
 
   const handlePick = (book: BookRow) => {
@@ -130,77 +135,76 @@ export default function BooksOrderBuilderPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        Loading books quest...
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>Loading books quest...</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        {error}
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>{error}</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!books.length) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        No books loaded
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>No books loaded</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (completed) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-          <h1 className="text-3xl font-bold">Quest Complete 🎉</h1>
-          <p className="mt-4 text-2xl font-semibold text-green-400">+20 XP</p>
-          <p className="mt-3 text-sm text-gray-400">
+      <BooksQuestPageShell>
+        <BooksQuestPanel className="text-center">
+          <div className="ba-badge-success">Quest Complete</div>
+          <h1 className="mt-4 text-3xl font-black text-white">Order Builder complete</h1>
+          <p className="mt-4 text-2xl font-black text-emerald-300">+20 XP</p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
             You placed all five books in the correct order.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
               onClick={handleRestart}
-              className="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-primary px-5 py-3 text-base font-black"
             >
               Play Again
             </button>
 
             <Link
               href="/quests/books"
-              className="rounded-2xl bg-gray-700 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-secondary px-5 py-3 text-base font-semibold"
             >
               Back to Books
             </Link>
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   return (
-    <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-      <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <Link
-            href="/quests/books"
-            className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"
-          >
-            ← Back to Books
-          </Link>
-          <div className="text-sm font-medium text-gray-400">
-            Round Progress {progressText}
+    <BooksQuestPageShell>
+      <BooksQuestPanel>
+        <BooksQuestTopBar
+          backHref="/quests/books"
+          meta={<span>Round Progress {progressText}</span>}
+        />
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <div className="ba-badge-gold">Books Quest</div>
+            <h1 className="mt-3 text-3xl font-black text-white">Order Builder</h1>
+            <p className="mt-2 text-sm leading-6 text-slate-300 sm:text-base">
+              Place the books in the correct order and build canonical recall.
+            </p>
           </div>
         </div>
-
-        <h1 className="text-3xl font-bold text-white">Order Builder</h1>
-        <p className="mt-2 text-base text-gray-300">
-          Tap the books in the correct order
-        </p>
 
         <div className="mt-6 flex items-center justify-center gap-2">
           {canonicalRound.map((book, index) => {
@@ -209,27 +213,29 @@ export default function BooksOrderBuilderPage() {
               <div
                 key={book.id}
                 className={`h-2.5 flex-1 rounded-full ${
-                  reached ? "bg-blue-500" : "bg-gray-800"
+                  reached
+                    ? "bg-gradient-to-r from-cyan-300 via-amber-300 to-emerald-300"
+                    : "bg-white/10"
                 }`}
               />
             )
           })}
         </div>
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-gray-900/80 p-4">
-          <h2 className="text-xl font-semibold text-white">Selected Order</h2>
+        <div className="mt-6 rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+          <h2 className="text-xl font-black text-white">Selected Order</h2>
           <div className="mt-4 flex min-h-24 flex-wrap gap-3">
             {selectedBooks.length > 0 ? (
               selectedBooks.map((book, index) => (
                 <div
                   key={book.id}
-                  className="rounded-2xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg"
+                  className="rounded-2xl border border-amber-200/14 bg-amber-200/10 px-4 py-3 text-sm font-semibold text-amber-50 shadow-[0_10px_26px_rgba(245,158,11,0.12)]"
                 >
                   {index + 1}. {book.book}
                 </div>
               ))
             ) : (
-              <div className="rounded-2xl border border-dashed border-gray-700 px-4 py-3 text-sm text-gray-500">
+              <div className="rounded-2xl border border-dashed border-white/12 px-4 py-3 text-sm text-slate-400">
                 Start tapping books below
               </div>
             )}
@@ -239,13 +245,13 @@ export default function BooksOrderBuilderPage() {
             <button
               onClick={handleUndo}
               disabled={!selectedBooks.length}
-              className="rounded-2xl bg-gray-800 px-4 py-3 text-sm font-semibold text-white transition transform active:scale-95 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-40"
+              className="ba-button-secondary px-4 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-40"
             >
               Undo
             </button>
             <button
               onClick={handleRestart}
-              className="rounded-2xl bg-gray-800 px-4 py-3 text-sm font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-secondary px-4 py-3 text-sm font-semibold"
             >
               Restart
             </button>
@@ -253,7 +259,7 @@ export default function BooksOrderBuilderPage() {
         </div>
 
         <div className="mt-6">
-          <h2 className="text-xl font-semibold text-white">Tap to Build</h2>
+          <h2 className="text-xl font-black text-white">Tap to Build</h2>
           <div className="mt-4 grid grid-cols-1 gap-3">
             {roundBooks.map((book) => {
               const isSelected = selectedBooks.some((selected) => selected.id === book.id)
@@ -264,26 +270,24 @@ export default function BooksOrderBuilderPage() {
                   key={book.id}
                   onClick={() => handlePick(book)}
                   disabled={isSelected}
-                  className={`w-full rounded-2xl border px-4 py-4 text-left transition transform active:scale-95 ${
+                  className={`w-full rounded-2xl border px-4 py-4 text-left transition active:scale-95 ${
                     isSelected
-                      ? "cursor-not-allowed border-blue-500/30 bg-blue-500/10 text-blue-200 opacity-50"
+                      ? "cursor-not-allowed border-amber-300/24 bg-amber-300/10 text-amber-100 opacity-55"
                       : isWrong
-                        ? "border-red-500 bg-red-600 text-white animate-shake"
+                        ? "border-rose-400 bg-rose-500/80 text-white animate-shake"
                         : flashState === "success"
-                          ? "border-white/10 bg-gray-800 text-white hover:scale-105"
-                          : "border-white/10 bg-gray-800 text-white hover:scale-105"
+                          ? "border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.06]"
+                          : "border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.06]"
                   }`}
                 >
                   <div className="text-lg font-semibold">{book.book}</div>
-                  <div className="mt-1 text-sm text-gray-400">
-                    {book.category}
-                  </div>
+                  <div className="mt-1 text-sm text-slate-400">{book.category}</div>
                 </button>
               )
             })}
           </div>
         </div>
-      </div>
-    </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }

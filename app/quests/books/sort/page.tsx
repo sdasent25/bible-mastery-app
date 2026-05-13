@@ -3,6 +3,12 @@
 import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 
+import {
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestTopBar,
+} from "@/components/BooksQuestShell"
+
 type BookRow = {
   id: string
   book: string
@@ -139,91 +145,92 @@ export default function BooksCategorySortPage() {
 
   if (loading) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        Loading category sort...
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>Loading category sort...</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (error) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        {error}
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>{error}</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!usableBooks.length) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        No books loaded
-      </div>
+      <BooksQuestPageShell>
+        <BooksQuestPanel>No books loaded</BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (completed) {
     return (
-      <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-        <div className="rounded-3xl border border-white/10 bg-gray-900 p-8 text-center shadow-2xl">
-          <h1 className="text-3xl font-bold">Complete!</h1>
-          <p className="mt-4 text-2xl font-semibold text-green-400">+20 XP</p>
-          <p className="mt-3 text-sm text-gray-400">
+      <BooksQuestPageShell>
+        <BooksQuestPanel className="text-center">
+          <div className="ba-badge-success">Challenge Complete</div>
+          <h1 className="mt-4 text-3xl font-black text-white">Category Sort complete</h1>
+          <p className="mt-4 text-2xl font-black text-emerald-300">+20 XP</p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
             You matched all 6 books to the correct sections.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
               onClick={startRound}
-              className="rounded-2xl bg-blue-600 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-primary px-5 py-3 text-base font-black"
             >
               Play Again
             </button>
 
             <Link
               href="/quests/books"
-              className="rounded-2xl bg-gray-700 px-5 py-3 font-semibold text-white transition transform active:scale-95 hover:scale-105"
+              className="ba-button-secondary px-5 py-3 text-base font-semibold"
             >
               Back to Books
             </Link>
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   return (
-    <div className="mx-auto max-w-lg p-6 text-white md:p-10">
-      <div className="rounded-3xl border border-white/10 bg-gray-950 p-6 shadow-2xl">
-        <div className="mb-6 flex items-center justify-between gap-3">
-          <Link
-            href="/quests/books"
-            className="text-sm text-gray-300 transition transform active:scale-95 hover:text-white"
-          >
-            ← Back to Books
-          </Link>
-          <div className="text-sm font-medium text-gray-400">
-            {correctCount} / {roundBooks.length || 6} sorted
-          </div>
+    <BooksQuestPageShell>
+      <BooksQuestPanel>
+        <BooksQuestTopBar
+          backHref="/quests/books"
+          meta={<span>{correctCount} / {roundBooks.length || 6} sorted</span>}
+        />
+
+        <div>
+          <div className="ba-badge-gold">Books Quest</div>
+          <h1 className="mt-3 text-3xl font-black text-white">Category Sort</h1>
+          <p className="mt-2 text-sm leading-6 text-slate-300 sm:text-base">
+            Match each book to its correct section and sharpen Bible structure recall.
+          </p>
         </div>
 
-        <h1 className="text-3xl font-bold text-white">Category Sort</h1>
-        <p className="mt-2 text-base text-gray-300">
-          Match each book to its correct section
-        </p>
-
-        <div className={`mt-6 rounded-3xl border px-5 py-8 text-center transition ${
-          feedback === "correct"
-            ? "border-green-400 bg-green-600/20"
-            : feedback === "wrong"
-              ? "border-red-400 bg-red-600/20"
-              : "border-white/10 bg-gray-900/80"
-        }`}>
-          <div className="text-xs uppercase tracking-[0.24em] text-gray-400">
+        <div
+          className={`mt-6 rounded-[1.6rem] border px-5 py-8 text-center transition ${
+            feedback === "correct"
+              ? "border-emerald-300/40 bg-emerald-400/12"
+              : feedback === "wrong"
+                ? "border-rose-400/40 bg-rose-500/14"
+                : "border-white/10 bg-white/[0.03]"
+          }`}
+        >
+          <div className="text-xs uppercase tracking-[0.24em] text-slate-400">
             Active Book
           </div>
-          <div className={`mt-3 text-3xl font-bold text-white ${
-            feedback === "wrong" ? "animate-shake" : ""
-          }`}>
+          <div
+            className={`mt-3 text-3xl font-black text-white ${
+              feedback === "wrong" ? "animate-shake" : ""
+            }`}
+          >
             {currentBook?.book}
           </div>
         </div>
@@ -233,19 +240,17 @@ export default function BooksCategorySortPage() {
             <button
               key={category}
               onClick={() => handleCategoryTap(category)}
-              className={`rounded-2xl border px-4 py-4 text-left transition transform active:scale-95 ${
+              className={`rounded-2xl border px-4 py-4 text-left transition active:scale-95 ${
                 wrongCategory === category
-                  ? "border-red-500 bg-red-600 text-white animate-shake"
-                  : "border-white/10 bg-gray-800 text-white hover:scale-105"
+                  ? "border-rose-400 bg-rose-500/80 text-white animate-shake"
+                  : "border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.06]"
               }`}
             >
-              <div className="text-sm font-semibold">
-                {formatCategory(category)}
-              </div>
+              <div className="text-sm font-semibold">{formatCategory(category)}</div>
             </button>
           ))}
         </div>
-      </div>
-    </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }
