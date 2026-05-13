@@ -69,7 +69,7 @@ export default function CreateFlashcardPage() {
 
           <div className="mt-8 max-w-3xl">
             <CreateFlashcard
-              onCreated={() => router.push("/flashcards/list")}
+              onCreated={() => router.push("/flashcards/list?created=1")}
               submitLabel="Save Verse"
               savingLabel="Saving Verse..."
             />

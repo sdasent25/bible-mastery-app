@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
+import { useSearchParams } from "next/navigation"
 import FlashcardList from "@/components/flashcards/FlashcardList"
 import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
@@ -9,6 +10,7 @@ import { deleteFlashcard, getFlashcards, type Flashcard } from "@/lib/flashcards
 import { getUserPlan } from "@/lib/getUserPlan"
 
 export default function FlashcardListPage() {
+  const searchParams = useSearchParams()
   const [cards, setCards] = useState<Flashcard[]>([])
   const [plan, setPlan] = useState("free")
   const [loading, setLoading] = useState(true)
@@ -48,6 +50,7 @@ export default function FlashcardListPage() {
       due,
     }
   }, [cards])
+  const wasJustCreated = searchParams.get("created") === "1"
 
   async function handleDelete(card: Flashcard) {
     const confirmed = window.confirm(`Delete ${card.reference} from your verse library?`)
@@ -109,11 +112,11 @@ export default function FlashcardListPage() {
               Your Verse Library
             </p>
             <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-white md:text-5xl">
-              Review, organize, and strengthen the verses you are training.
+              Keep every verse moving toward memory.
             </h1>
             <p className="mt-4 text-base leading-7 text-slate-300">
-              Keep your memory library visible, stay honest about what is due, and return to the
-              verses that need reinforcement.
+              Review what is due, see where each verse sits on the memory path, and return to the
+              next drill that keeps recall strong.
             </p>
           </div>
 
@@ -132,6 +135,27 @@ export default function FlashcardListPage() {
             </Link>
           </div>
         </div>
+
+        {wasJustCreated && (
+          <section className="mt-6 rounded-[1.75rem] border border-emerald-300/18 bg-emerald-400/10 p-5 shadow-[0_18px_40px_rgba(0,0,0,0.22)]">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                  Verse Added
+                </p>
+                <p className="mt-2 text-base font-semibold text-white">
+                  Verse added. Start learning it now?
+                </p>
+              </div>
+              <Link
+                href="/flashcards/review"
+                className="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
+              >
+                Start Review
+              </Link>
+            </div>
+          </section>
+        )}
 
         <section className="mt-6 grid gap-4 md:grid-cols-3">
           <div className="rounded-[1.75rem] border border-amber-400/20 bg-amber-300/10 p-5">

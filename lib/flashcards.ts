@@ -26,6 +26,14 @@ export type FlashcardVisibilityStatus =
   | "mastered"
   | "needs_review"
 
+export type MemoryStage = {
+  status: FlashcardVisibilityStatus
+  stageLabel: string
+  nextDrill: string
+  progressValue: number
+  progressLabel: string
+}
+
 export function getDifficulty(card: Pick<Flashcard, "lapses" | "interval">) {
   if ((card.lapses ?? 0) > 0 || (card.interval ?? 0) <= 2) return "easy" as const
   if ((card.interval ?? 0) <= 7) return "medium" as const
@@ -74,6 +82,58 @@ export function getFlashcardVisibilityStatus(card: Pick<Flashcard, "status" | "d
   }
 
   return "new"
+}
+
+export function getMemoryStage(card: Pick<Flashcard, "status" | "due_date" | "lapses">): MemoryStage {
+  const status = getFlashcardVisibilityStatus(card)
+
+  if (status === "needs_review") {
+    return {
+      status,
+      stageLabel: "Needs Review",
+      nextDrill: "Verse Match",
+      progressValue: 48,
+      progressLabel: "Return to reinforcement",
+    }
+  }
+
+  if (status === "due") {
+    return {
+      status,
+      stageLabel: "Due",
+      nextDrill: "Review",
+      progressValue: 62,
+      progressLabel: "Ready for another rep",
+    }
+  }
+
+  if (status === "mastered") {
+    return {
+      status,
+      stageLabel: "Mastered",
+      nextDrill: "Quick Review",
+      progressValue: 100,
+      progressLabel: "Holding strong",
+    }
+  }
+
+  if (status === "learning") {
+    return {
+      status,
+      stageLabel: "Learning",
+      nextDrill: "Hide Words",
+      progressValue: 34,
+      progressLabel: "Still getting familiar",
+    }
+  }
+
+  return {
+    status,
+    stageLabel: "New",
+    nextDrill: "Review",
+    progressValue: 14,
+    progressLabel: "Just getting started",
+  }
 }
 
 function mapStudyResultToStatus(status: "new" | "learning" | "mastered" | "again" | "hard" | "easy") {

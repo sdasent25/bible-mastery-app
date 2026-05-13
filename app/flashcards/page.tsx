@@ -6,6 +6,7 @@ import Paywall from "@/components/Paywall"
 import { FLASHCARD_PAYWALL_COPY, canAccessFlashcards } from "@/lib/flashcardAccess"
 import {
   type Flashcard,
+  getMemoryStage,
   getFlashcards,
   hasDueDate,
   isFlashcardDue,
@@ -172,6 +173,13 @@ export default function FlashcardsPage() {
       tone: "emerald",
     },
   ]
+
+  const memoryPathSteps = ["Read", "Match", "Hide Words", "Build", "Recall", "Mastered"]
+  const versePreview = cards.slice(0, 3).map((card) => ({
+    id: card.id,
+    reference: card.reference,
+    stage: getMemoryStage(card),
+  }))
 
   if (loading) {
     return (
@@ -412,6 +420,31 @@ export default function FlashcardsPage() {
           </div>
 
           <div className="rounded-[2rem] border border-cyan-200/14 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.10),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(251,191,36,0.10),transparent_26%),linear-gradient(180deg,rgba(10,15,28,0.96),rgba(7,10,18,0.98))] p-6 md:p-7">
+            <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-4">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
+                Memory Path
+              </p>
+              <h3 className="mt-2 text-xl font-bold text-white">
+                Move each verse from familiar to memorized.
+              </h3>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {memoryPathSteps.map((step, index) => (
+                  <span
+                    key={step}
+                    className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
+                      index === memoryPathSteps.length - 1
+                        ? "border-emerald-300/20 bg-emerald-400/10 text-emerald-100"
+                        : index % 2 === 0
+                          ? "border-amber-300/20 bg-amber-300/10 text-amber-100"
+                          : "border-cyan-300/18 bg-cyan-300/10 text-cyan-100"
+                    }`}
+                  >
+                    {step}
+                  </span>
+                ))}
+              </div>
+            </div>
+
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-100">
               How Verse Memory Works
             </p>
@@ -441,6 +474,32 @@ export default function FlashcardsPage() {
                 You provide the verse text you want to memorize.
               </p>
             </div>
+
+            {versePreview.length > 0 && (
+              <div className="mt-5 rounded-[1.25rem] border border-white/10 bg-white/[0.04] p-4">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  Verse Stages
+                </p>
+                <div className="mt-3 space-y-3">
+                  {versePreview.map((card) => (
+                    <div
+                      key={card.id}
+                      className="rounded-[1rem] border border-white/10 bg-slate-950/45 p-3"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="font-semibold text-white">{card.reference}</p>
+                        <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-200">
+                          {card.stage.stageLabel}
+                        </span>
+                      </div>
+                      <p className="mt-2 text-sm text-cyan-100">
+                        Next: {card.stage.nextDrill}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </div>
