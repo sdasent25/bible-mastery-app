@@ -925,7 +925,7 @@ export default function TrainingPlayer({
                 You completed today’s free Training Arena drill.
               </p>
               <p className="mt-2 text-sm leading-6 text-amber-100/84">
-                Upgrade to unlock deeper drills, more formats, and full mastery tracking.
+                Free preview includes the first 3 Training Days. Upgrade to continue with full drills and mastery.
               </p>
             </div>
           ) : (

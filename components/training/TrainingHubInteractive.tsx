@@ -175,7 +175,7 @@ function getFocusTags(tier: TrainingAccessTier) {
 function getAccessNote(tier: TrainingAccessTier) {
   if (tier === "pro_plus") return "Full arena access is live."
   if (tier === "pro") return "Core drills unlocked across the arena."
-  return "Days 1-3 open as your free preview."
+  return "Train the first 3 days on us. 5 focused reps per day."
 }
 
 function getDayDescriptor(
@@ -188,7 +188,7 @@ function getDayDescriptor(
   }
 
   if (tier === "free" && dayNumber > 3) {
-    return `A deeper ${trackLabel.toLowerCase()} lane waits here with richer drill formats and longer sets.`
+    return `Upgrade to unlock full drills, image recognition, hard questions, and mastery tracking across ${trackLabel.toLowerCase()}.`
   }
 
   if (tier === "pro_plus") {
@@ -210,14 +210,14 @@ function getDayStatus(dayNumber: number, tier: TrainingAccessTier): HubStatus {
 
   if (isLockedForFree) {
     return {
-      label: "Locked Preview",
+      label: "Locked for Free",
       cardClass:
         "border-white/10 bg-[linear-gradient(180deg,rgba(24,28,38,0.88),rgba(10,13,20,0.95))] opacity-90",
       badgeClass:
         "border-amber-200/18 bg-amber-200/10 text-amber-100/86",
       buttonClass:
         "border border-white/12 bg-white/[0.06] text-white/86 hover:bg-white/[0.1]",
-      buttonLabel: "Locked",
+      buttonLabel: "View Lock",
     }
   }
 
@@ -507,7 +507,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   </div>
                   {todayDay ? (
                     <div className="rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-50">
-                      Ready
+                      {access.tier === "free" ? "Free Preview" : "Ready"}
                     </div>
                   ) : null}
                 </div>
@@ -545,7 +545,9 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-200">
                     {todayDay
-                      ? `${todayDay.reference} is ready for a disciplined pass through recall, recognition, and careful reading.`
+                      ? access.tier === "free"
+                        ? `${todayDay.reference} is open as part of your free preview with 5 focused reps and a clean warmup pass.`
+                        : `${todayDay.reference} is ready for a disciplined pass through recall, recognition, and careful reading.`
                       : "Training day data is not available yet."}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
@@ -825,10 +827,10 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
                                 <div className="mt-5 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
                                   <div className="text-xs uppercase tracking-[0.2em] text-white/48">
-                                    {lockedForFree ? "Upgrade for access" : "Ready to train"}
+                                    {lockedForFree ? "Free preview ends after day 3" : access.tier === "free" ? "5 focused reps per day" : "Ready to train"}
                                   </div>
                                   <Link
-                                    href={lockedForFree ? "/pricing" : `/training/day/${day.day}/play`}
+                                    href={`/training/day/${day.day}/play`}
                                     className={`inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition ${status.buttonClass}`}
                                   >
                                     {status.buttonLabel}
