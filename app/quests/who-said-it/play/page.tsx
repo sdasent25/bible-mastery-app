@@ -3,6 +3,13 @@
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "next/navigation"
+
+import {
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestStatusBadge,
+  BooksQuestTopBar,
+} from "@/components/BooksQuestShell"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { createClient } from "@/lib/supabase/client"
@@ -72,8 +79,8 @@ function selectDailyQuestions<T extends { source_key: string }>(
 
 function ProgressPill({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+    <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
+      <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
         {label}
       </div>
       <div className="mt-2 text-lg font-bold text-white">{value}</div>
@@ -265,156 +272,147 @@ export default function WhoSaidItPlayPage() {
   if (!allowedPlans.includes(plan)) {
     return (
       <Paywall
-        title="🔒 Quests Locked"
-        message="Upgrade to Pro+ to unlock advanced quests and deep learning systems."
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock premium Bible skill challenges, focused practice modes, and deeper mastery paths."
       />
     )
   }
 
   if (loadingQuestions) {
-    return <div className="p-6 text-white">Preparing drill...</div>
+    return (
+      <BooksQuestPageShell maxWidth="max-w-3xl">
+        <BooksQuestPanel>Preparing drill...</BooksQuestPanel>
+      </BooksQuestPageShell>
+    )
   }
 
   if (loadError || questions.length === 0) {
     const isLockedState = loadError === "This drill is locked."
 
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
-        <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
-          <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
-            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Daily Practice Set
-            </div>
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              {isLockedState ? "This drill is locked." : "This drill is being prepared."}
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-zinc-300">
-              {isLockedState
-                ? `Reach ${requestedBook} in Journey to unlock this practice.`
-                : requestedBook
-                  ? `We could not load a Who Said It practice set for ${requestedBook}.`
-                  : "Choose a book from the Who Said It hub to begin practice."}
-            </p>
-          </div>
-          <div className="flex flex-col gap-3">
+      <BooksQuestPageShell maxWidth="max-w-3xl">
+        <BooksQuestPanel>
+          <div className="ba-badge-gold">Daily Practice Set</div>
+          <h1 className="mt-4 text-3xl font-black text-white">
+            {isLockedState ? "This drill is locked." : "This drill is being prepared."}
+          </h1>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            {isLockedState
+              ? `Reach ${requestedBook} in Journey to unlock this practice.`
+              : requestedBook
+                ? `We could not load a Who Said It practice set for ${requestedBook}.`
+                : "Choose a book from the Who Said It hub to begin practice."}
+          </p>
+          <div className="mt-5 flex flex-col gap-3">
             <Link
               href="/quests/who-said-it"
-              className="rounded-2xl bg-amber-400 px-5 py-4 text-center text-base font-black text-slate-950"
+              className="ba-button-primary px-5 py-4 text-center text-base font-black"
             >
               Back to Who Said It
             </Link>
             {isLockedState ? (
               <Link
                 href="/journey"
-                className="rounded-2xl border border-amber-400/20 bg-amber-400/10 px-5 py-4 text-center font-semibold text-amber-100"
+                className="ba-button-secondary px-5 py-4 text-center font-semibold"
               >
                 Go to Journey
               </Link>
             ) : null}
             <Link
               href="/quests"
-              className="rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center font-semibold text-white"
+              className="ba-button-secondary px-5 py-4 text-center font-semibold"
             >
               Back to Quests
             </Link>
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (isSummary) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.16),transparent_34%),linear-gradient(180deg,#020617_0%,#09090b_45%,#000000_100%)] px-4 py-6 text-white">
-        <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-          <div className="rounded-[28px] border border-amber-400/15 bg-black/55 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur">
-            <div className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">
-              Practice Summary
-            </div>
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              Training Complete
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-zinc-300">
-              Daily Practice Set • XP coming later.
-            </p>
-          </div>
+      <BooksQuestPageShell maxWidth="max-w-4xl">
+        <BooksQuestPanel>
+          <div className="ba-badge-gold">Practice Summary</div>
+          <h1 className="mt-4 text-3xl font-black text-white">Training Complete</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            Daily practice set complete. XP is still coming later for this mode.
+          </p>
 
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
             <ProgressPill label="Book" value={requestedBook} />
             <ProgressPill label="Score" value={`${score}/${questions.length}`} />
             <ProgressPill label="Accuracy" value={`${accuracy}%`} />
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               type="button"
               onClick={handlePracticeAgain}
-              className="flex-1 rounded-2xl bg-amber-400 px-5 py-4 text-base font-black text-slate-950"
+              className="ba-button-primary flex-1 px-5 py-4 text-base font-black"
             >
               Practice Again
             </button>
             <Link
               href="/quests/who-said-it"
-              className="flex-1 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-center font-semibold text-white"
+              className="ba-button-secondary flex-1 px-5 py-4 text-center font-semibold"
             >
               Back to Who Said It
             </Link>
           </div>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   if (!currentQuestion) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.14),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
-        <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
-          <div className="rounded-3xl border border-white/10 bg-zinc-950/90 p-6 shadow-2xl">
-              <div className="text-xs font-semibold uppercase tracking-[0.3em] text-zinc-400">
-              Daily Practice Set
-            </div>
-            <h1 className="mt-3 text-3xl font-bold text-white">
-              This drill is being prepared.
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-zinc-300">
-              We could not finish loading this practice question.
-            </p>
-          </div>
+      <BooksQuestPageShell maxWidth="max-w-3xl">
+        <BooksQuestPanel>
+          <div className="ba-badge-gold">Daily Practice Set</div>
+          <h1 className="mt-4 text-3xl font-black text-white">This drill is being prepared.</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            We could not finish loading this practice question.
+          </p>
           <Link
             href="/quests/who-said-it"
-            className="rounded-2xl bg-amber-400 px-5 py-4 text-center text-base font-black text-slate-950"
+            className="ba-button-primary mt-5 inline-flex px-5 py-4 text-base font-black"
           >
             Back to Who Said It
           </Link>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   const isCorrect = submittedAnswer === currentQuestion.correct_answer
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.16),transparent_32%),linear-gradient(180deg,#020617_0%,#09090b_42%,#000000_100%)] px-4 py-6 text-white">
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-5">
-        <div className="flex flex-col gap-4 rounded-[28px] border border-amber-400/15 bg-black/55 p-5 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur sm:p-6">
+    <BooksQuestPageShell maxWidth="max-w-4xl">
+      <BooksQuestPanel>
+        <BooksQuestTopBar
+          backHref="/quests/who-said-it"
+          meta={
+            <BooksQuestStatusBadge tone="practice">
+              Question {currentIndex + 1} of {questions.length}
+            </BooksQuestStatusBadge>
+          }
+        />
+
+        <div className="flex flex-col gap-4 rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 sm:p-6">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-[0.3em] text-amber-300">
-                Speaker Recognition Drill
-              </div>
-              <h1 className="mt-2 text-3xl font-bold text-white">
-                Who Said It?
-              </h1>
-              <p className="mt-2 text-sm leading-6 text-zinc-300">
-                Daily Practice Set • 10 questions available today • XP coming later
+              <div className="ba-badge-gold">Speaker Recognition Drill</div>
+              <h1 className="mt-3 text-3xl font-black text-white">Who Said It?</h1>
+              <p className="mt-2 text-sm leading-6 text-slate-300">
+                Daily practice set. 10 questions available today. XP is still coming later.
               </p>
             </div>
-            <div className="rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-sky-200">
-              Question {currentIndex + 1} of {questions.length}
-            </div>
+            <BooksQuestStatusBadge tone="practice">Practice Mode</BooksQuestStatusBadge>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-4">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <ProgressPill label="Book" value={currentQuestion.book} />
             <ProgressPill label="Reference" value={currentQuestion.reference} />
             <ProgressPill label="Today" value="10 Available" />
@@ -422,19 +420,19 @@ export default function WhoSaidItPlayPage() {
           </div>
         </div>
 
-        <div className="rounded-[28px] border border-white/10 bg-zinc-950/90 p-5 shadow-2xl sm:p-6">
+        <div className="mt-5 rounded-[1.7rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_18px_44px_rgba(0,0,0,0.18)] sm:p-6">
           <div className="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4">
             <div className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
               Prompt Context
             </div>
-            <p className="mt-3 text-sm leading-6 text-zinc-200">
+            <p className="mt-3 text-sm leading-6 text-slate-200">
               {currentQuestion.prompt_context}
             </p>
           </div>
 
           {currentQuestion.quote_text?.trim() ? (
-            <div className="mt-4 rounded-2xl border border-sky-300/15 bg-sky-400/5 p-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-200">
+            <div className="mt-4 rounded-2xl border border-cyan-300/15 bg-cyan-400/5 p-4">
+              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
                 Quoted Words
               </div>
               <p className="mt-3 text-base font-medium leading-7 text-white">
@@ -443,7 +441,7 @@ export default function WhoSaidItPlayPage() {
             </div>
           ) : null}
 
-          <h2 className="mt-5 text-2xl font-bold leading-tight text-white">
+          <h2 className="mt-5 text-2xl font-black leading-tight text-white">
             {currentQuestion.question}
           </h2>
 
@@ -486,7 +484,7 @@ export default function WhoSaidItPlayPage() {
               disabled={!selectedAnswer}
               className={`mt-5 w-full rounded-2xl px-5 py-4 text-base font-black transition ${
                 selectedAnswer
-                  ? "bg-amber-400 text-slate-950 active:scale-[0.99]"
+                  ? "ba-button-primary"
                   : "cursor-not-allowed border border-white/10 bg-white/5 text-zinc-500"
               }`}
             >
@@ -506,14 +504,14 @@ export default function WhoSaidItPlayPage() {
               <button
                 type="button"
                 onClick={handleContinue}
-                className="mt-4 w-full rounded-2xl bg-amber-400 px-5 py-4 text-base font-black text-slate-950 active:scale-[0.99]"
+                className="ba-button-primary mt-4 w-full px-5 py-4 text-base font-black"
               >
                 Continue
               </button>
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </BooksQuestPanel>
+    </BooksQuestPageShell>
   )
 }

@@ -2,8 +2,16 @@
 
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
+
+import {
+  BooksQuestHero,
+  BooksQuestPageShell,
+  BooksQuestPanel,
+  BooksQuestStatusBadge,
+} from "@/components/BooksQuestShell"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { renderNavIcon } from "@/lib/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { getWhoSaidItUnlockState, isWhoSaidItBookUnlocked } from "@/lib/whoSaidItUnlock"
 
@@ -70,61 +78,62 @@ function BookCard({ summary }: { summary: BookSummary }) {
   const unlocked = isWhoSaidItBookUnlocked(summary.book_order)
 
   const cardContent = (
-    <div
-      className={`rounded-3xl border border-white/10 bg-zinc-950/90 p-5 shadow-2xl transition ${
-        unlocked ? "hover:scale-[1.01] active:scale-[0.99]" : "opacity-80"
+    <article
+      className={`relative overflow-hidden rounded-[1.8rem] p-5 transition duration-200 sm:p-6 ${
+        unlocked
+          ? "ba-card hover:-translate-y-0.5 hover:shadow-[0_24px_56px_rgba(0,0,0,0.34)] active:scale-[0.99]"
+          : "border border-white/8 bg-[linear-gradient(180deg,rgba(41,37,36,0.92),rgba(24,24,27,0.96))] opacity-88 shadow-[0_18px_46px_rgba(0,0,0,0.26)]"
       }`}
     >
-        <div
-          className={`rounded-2xl border border-white/10 bg-gradient-to-br ${accentClass} p-5 ${
-            unlocked ? "" : "saturate-75"
-          }`}
-        >
-        <div className="text-xs font-semibold uppercase tracking-[0.28em] text-white/70">
-          Speaker Recognition Drill
-        </div>
-          <div className="mt-3 flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold text-white">{summary.book}</h2>
-              <p className="mt-2 text-sm leading-6 text-white/85">
-                {summary.total}-question bank
-              </p>
+      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accentClass}`} />
+
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-white/6 text-white">
+            {renderNavIcon("quests", "h-5 w-5")}
+          </div>
+          <div>
+            <div className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-300/76">
+              Speaker Recognition
             </div>
-            <span
-              className={`rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${
-              unlocked
-                ? "border-white/15 bg-black/25 text-amber-200"
-                : "border-white/15 bg-black/35 text-zinc-200"
-            }`}
-          >
-            {unlocked ? "Available" : "Locked"}
-          </span>
+            <h2 className="mt-1 text-2xl font-black text-white">{summary.book}</h2>
+          </div>
+        </div>
+
+        <BooksQuestStatusBadge tone={unlocked ? "ready" : "locked"}>
+          {unlocked ? "Ready" : "Locked"}
+        </BooksQuestStatusBadge>
+      </div>
+
+      <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-base">
+        Train speaker recognition through key moments in {summary.book}.
+      </p>
+
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
+        <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            Session Type
+          </div>
+          <div className="mt-2 text-sm font-semibold text-white">Daily practice set</div>
+        </div>
+
+        <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+            Question Bank
+          </div>
+          <div className="mt-2 text-sm font-semibold text-white">{summary.total} prompts</div>
         </div>
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-          <div className="text-sm font-semibold text-white">Daily Practice Set</div>
-          <div className="mt-1 text-sm text-zinc-400">
-            10 questions available today
-          </div>
-          {!unlocked ? (
-            <div className="mt-2 text-sm text-zinc-300">
-              Reach this book in Journey to unlock.
-            </div>
-          ) : null}
+      <div className="mt-5 flex items-center justify-between gap-3">
+        <div className="text-sm text-slate-400">
+          {unlocked ? "10 questions available today." : "Reach this book in Journey to unlock."}
         </div>
-        <div
-          className={`rounded-2xl px-4 py-3 text-center text-sm font-black ${
-            unlocked
-              ? "bg-amber-400 text-slate-950"
-              : "border border-white/10 bg-white/5 text-zinc-300"
-          }`}
-        >
+        <div className={unlocked ? "ba-button-primary px-4 py-3 text-sm font-black" : "ba-button-locked px-4 py-3 text-sm font-black"}>
           {unlocked ? "Start Practice" : "Locked"}
         </div>
       </div>
-    </div>
+    </article>
   )
 
   if (!unlocked) {
@@ -209,97 +218,94 @@ export default function WhoSaidItPage() {
   if (!allowedPlans.includes(plan)) {
     return (
       <Paywall
-        title="🔒 Quests Locked"
-        message="Upgrade to Pro+ to unlock advanced quests and deep learning systems."
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock premium Bible skill challenges, focused practice modes, and deeper mastery paths."
       />
     )
   }
 
   if (loadError || books.length === 0) {
     return (
-      <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.16),transparent_36%),linear-gradient(180deg,#020617_0%,#09090b_45%,#000000_100%)] px-4 py-6 text-white">
-        <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
-          <div className="rounded-[28px] border border-amber-400/15 bg-black/50 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur">
-            <div className="text-xs font-semibold uppercase tracking-[0.34em] text-amber-300">
-              Practice Mode
-            </div>
-            <h1 className="mt-3 text-3xl font-bold text-white">Who Said It?</h1>
-            <p className="mt-3 text-sm leading-6 text-zinc-300">
-              This drill is being prepared.
-            </p>
-          </div>
+      <BooksQuestPageShell maxWidth="max-w-3xl">
+        <BooksQuestPanel>
+          <div className="ba-badge-gold">Who Said It?</div>
+          <h1 className="mt-4 text-3xl font-black text-white">This drill is being prepared.</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            We could not load the speaker-recognition practice set right now.
+          </p>
           <Link
             href="/quests"
-            className="rounded-2xl bg-amber-400 px-5 py-4 text-center text-base font-black text-slate-950"
+            className="ba-button-primary mt-5 inline-flex px-5 py-4 text-base font-black"
           >
             Back to Quests
           </Link>
-        </div>
-      </div>
+        </BooksQuestPanel>
+      </BooksQuestPageShell>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,rgba(245,158,11,0.16),transparent_36%),linear-gradient(180deg,#020617_0%,#09090b_45%,#000000_100%)] px-4 py-6 text-white">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-        <div className="rounded-[28px] border border-amber-400/15 bg-black/50 p-6 shadow-[0_24px_80px_rgba(0,0,0,0.45)] backdrop-blur">
-          <div className="text-xs font-semibold uppercase tracking-[0.34em] text-amber-300">
-            Practice Mode
-          </div>
-          <h1 className="mt-3 text-3xl font-bold text-white sm:text-4xl">
-            Who Said It?
-          </h1>
-          <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300 sm:text-base">
-            Train speaker recognition through key moments in Scripture.
-          </p>
-          <div className="mt-5 inline-flex rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-sky-200">
-            Practice Mode • No XP yet
-          </div>
-
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+    <BooksQuestPageShell maxWidth="max-w-6xl">
+      <BooksQuestHero
+        eyebrow="Who Said It?"
+        title="Train speaker recognition through key moments in Scripture."
+        subtitle="Recognize voices, speakers, and pivotal moments across the Bible through focused daily practice sets."
+        actions={
+          <Link
+            href={`/quests/who-said-it/play?book=${encodeURIComponent(books[0]?.book || "Genesis")}`}
+            className="ba-button-primary w-full px-5 py-4 text-base font-black lg:w-auto"
+          >
+            Start Practice
+          </Link>
+        }
+        stats={
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                 Available Books
               </div>
-              <div className="mt-2 text-2xl font-bold text-white">
+              <div className="mt-2 text-2xl font-black text-white">
                 {totals.unlockedBookCount} / {totals.bookCount}
               </div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                 Unlocked Questions
               </div>
-              <div className="mt-2 text-2xl font-bold text-white">
+              <div className="mt-2 text-2xl font-black text-white">
                 {totals.unlockedQuestionCount}
               </div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                 Session Size
               </div>
-              <div className="mt-2 text-2xl font-bold text-white">10</div>
+              <div className="mt-2 text-2xl font-black text-white">10</div>
             </div>
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-400">
+            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                 Reward
               </div>
-              <div className="mt-2 text-2xl font-bold text-white">XP Coming Later</div>
+              <div className="mt-2 text-lg font-black text-white">Practice Mode</div>
             </div>
           </div>
+        }
+      />
 
-          {!totals.reliableJourneySource ? (
-            <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-4 text-sm leading-6 text-zinc-300">
-              Journey unlocks are using a safe temporary fallback right now. Genesis is available by default, and later books will unlock as broader Journey progress wiring is connected.
-            </div>
-          ) : null}
-        </div>
+      {!totals.reliableJourneySource ? (
+        <BooksQuestPanel className="rounded-[1.6rem]">
+          <div className="ba-badge">Unlock Notice</div>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            Journey unlocks are using a safe temporary fallback right now. Genesis is available by default, and later books will unlock as broader Journey progress wiring is connected.
+          </p>
+        </BooksQuestPanel>
+      ) : null}
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {books.map((book) => (
-            <BookCard key={book.book} summary={book} />
-          ))}
-        </div>
+      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        {books.map((book) => (
+          <BookCard key={book.book} summary={book} />
+        ))}
       </div>
-    </div>
+    </BooksQuestPageShell>
   )
 }
