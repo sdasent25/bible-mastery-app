@@ -1,14 +1,38 @@
 "use client"
 
-import { supabase } from "@/lib/supabase"
-import PricingContextBanner from "@/components/PricingContext"
 import { Suspense, useState } from "react"
 import { useRouter } from "next/navigation"
+
+import PricingContextBanner from "@/components/PricingContext"
+import { renderNavIcon } from "@/lib/navigation"
+import { supabase } from "@/lib/supabase"
+
+type SelectablePlan = "pro" | "pro_plus" | "free" | null
+
+const freeFeatures = [
+  "Preview the Bible learning path",
+  "See the arena before you commit",
+  "Limited access only",
+]
+
+const proFeatures = (isFamily: boolean) => [
+  "Verse Memory and flashcards included",
+  "Core learning tools for daily consistency",
+  "XP, streaks, and progress tracking",
+  isFamily ? "Shared access for up to 4 members" : "Best for steady daily practice",
+]
+
+const proPlusFeatures = (isFamily: boolean) => [
+  "Everything in Pro",
+  "Full Training Arena access",
+  "Deeper drills, image recognition, and hard questions",
+  isFamily ? "Household access for the strongest family plan" : "Best individual experience",
+]
 
 export default function PricingSection() {
   const router = useRouter()
   const [isFamily, setIsFamily] = useState(false)
-  const [selectedPlan, setSelectedPlan] = useState<"pro" | "pro_plus" | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<SelectablePlan>("pro_plus")
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -47,170 +71,192 @@ export default function PricingSection() {
     window.location.href = data.url
   }
 
-  const handleProPlusCheckout = async () => {
-    await handleSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")
-  }
-
   return (
-    <section className="max-w-5xl mx-auto px-4 py-12">
+    <section className="mx-auto max-w-6xl px-4 py-12">
       <Suspense fallback={null}>
         <PricingContextBanner />
       </Suspense>
 
-      <h1 className="text-3xl font-bold text-white text-center mb-3">
-        Start Your Training
-      </h1>
-      <p className="text-center text-gray-300 mb-8">
-        Pick how serious you are about mastering scripture
-      </p>
-
-      <div className="sticky top-0 z-20 bg-[#0B1220] py-3 mb-6 flex justify-center">
-        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-lg p-1 flex">
-          <button
-            onClick={() => setIsFamily(false)}
-            className={`px-6 py-2 rounded-lg text-sm font-semibold ${
-              !isFamily ? "bg-blue-600 text-white" : "text-white"
-            }`}
-          >
-            Individual
-          </button>
-
-          <button
-            onClick={() => setIsFamily(true)}
-            className={`px-6 py-2 rounded-lg text-sm font-semibold ${
-              isFamily ? "bg-blue-600 text-white" : "text-white"
-            }`}
-          >
-            Family
-          </button>
-        </div>
+      <div className="mx-auto max-w-4xl text-center">
+        <div className="ba-badge-gold">Start Your Training</div>
+        <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
+          Choose the level of Bible mastery you want to build
+        </h1>
+        <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-lg sm:leading-8">
+          Free gives you a preview. Pro unlocks Verse Memory and core tools. Pro+ opens the full arena and the strongest training path.
+        </p>
       </div>
 
-      <div className="space-y-4 md:space-y-0">
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-3">
-        <div
-          id="pro-plus"
-          onClick={() => setSelectedPlan("pro_plus")}
-          className={`relative bg-[#0B1220] border border-green-500 rounded-2xl p-6 text-white opacity-100 shadow-[0_0_30px_rgba(34,197,94,0.35)] transition-all duration-200 active:scale-[0.97] cursor-pointer ${
-            selectedPlan === "pro_plus" ? "scale-[1.04] ring-2 ring-green-400" : ""
+      <div className="ba-card-soft sticky top-0 z-20 mx-auto mt-8 flex w-full max-w-md rounded-2xl p-2 backdrop-blur">
+        <button
+          onClick={() => setIsFamily(false)}
+          className={`flex-1 px-5 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
+            !isFamily ? "ba-button-primary" : "text-slate-200"
           }`}
         >
-          <div className="text-white">
-          <div className="absolute top-2 right-2 text-xs bg-green-500 text-black px-2 py-1 rounded">
-            RECOMMENDED
+          Individual
+        </button>
+
+        <button
+          onClick={() => setIsFamily(true)}
+          className={`flex-1 px-5 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
+            isFamily ? "ba-button-primary" : "text-slate-200"
+          }`}
+        >
+          Family
+        </button>
+      </div>
+
+      <div className="mt-8 grid gap-5 xl:grid-cols-[0.9fr_1fr_1.08fr]">
+        <div
+          onClick={() => setSelectedPlan("free")}
+          className={`ba-card cursor-pointer rounded-[1.9rem] p-5 transition duration-200 active:scale-[0.98] sm:p-6 ${
+            selectedPlan === "free" ? "ring-1 ring-white/14" : ""
+          }`}
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="ba-badge">Free</div>
+              <h2 className="mt-3 text-2xl font-black text-white">
+                Preview the system
+              </h2>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] border border-white/10 bg-white/5 text-slate-100">
+              {renderNavIcon("home", "h-5 w-5")}
+            </div>
           </div>
 
-          <h2 className="text-xl font-bold !text-white mb-2">
-            Pro+ {isFamily && "Family"} 🚀
-          </h2>
-          <p className="text-sm !text-white mb-2">
-            Master Scripture with a deeper training system
-          </p>
-          <p className="!text-white font-semibold mb-4">
-            {isFamily ? "$29.99 / month" : "$12.99 / month"}
-          </p>
-
-          {isFamily && (
-            <p className="text-sm !text-white mb-4 text-center">
-              Up to 4 members included
-            </p>
-          )}
-
-          <div className="text-sm !text-white mt-3 mb-4">
-            <p>• Build discipline</p>
-            <p>• Master scripture</p>
-            <p>• Stay consistent long-term</p>
+          <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-black/20 px-4 py-4">
+            <div className="text-4xl font-black text-white">$0</div>
+            <div className="mt-1 text-sm text-slate-300">preview access</div>
           </div>
 
-          <ul className="!text-white text-sm space-y-2 mb-6">
-            <li>✅ Everything in Pro</li>
-            <li>🗓️ Choose your daily depth (5 / 10 / 15)</li>
-            <li>🧭 Quests (Who said it, Characters, Books)</li>
-            <li>🧠 Scholar Mode for advanced recall</li>
-          </ul>
-
-          <p className="text-xs !text-white mb-2">
-            Start in under 2 minutes
-          </p>
+          <div className="mt-5 space-y-3">
+            {freeFeatures.map((feature) => (
+              <div
+                key={feature}
+                className="ba-card-soft flex items-center gap-3 rounded-[1.1rem] px-4 py-3 text-sm text-slate-100"
+              >
+                <span className="h-2 w-2 rounded-full bg-slate-300/80" />
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
 
           <button
-            onClick={handleProPlusCheckout}
-            onMouseDown={(e) => e.currentTarget.classList.add("scale-95")}
-            onMouseUp={(e) => e.currentTarget.classList.remove("scale-95")}
-            className="w-full py-3 rounded-lg bg-green-500 text-white font-bold animate-pulse"
+            onClick={() => router.push("/signup")}
+            className="ba-button-secondary mt-6 w-full px-4 py-4 text-base font-semibold"
           >
-            Start My Full Journey
+            Get Started
           </button>
-
-          <p className="text-xs !text-white text-center mt-2">
-            Built for deeper daily training
-          </p>
-          </div>
         </div>
 
         <div
           onClick={() => setSelectedPlan("pro")}
-          className={`bg-[#0B1220] border border-blue-500 rounded-2xl p-6 text-white opacity-100 transition-all duration-200 active:scale-[0.97] cursor-pointer ${
-            selectedPlan === "pro" ? "border-blue-400 scale-[1.02]" : ""
+          className={`ba-card-pro cursor-pointer rounded-[1.9rem] p-5 transition duration-200 active:scale-[0.98] sm:p-6 ${
+            selectedPlan === "pro" ? "ring-1 ring-emerald-300/26" : ""
           }`}
         >
-          <div className="text-white">
-          <h2 className="text-xl font-bold !text-white mb-4">
-            Pro {isFamily && "Family"}
-          </h2>
-          <p className="text-sm !text-white mb-2">
-            Build consistency in your walk with God
-          </p>
-          <p className="!text-white font-semibold mb-4">
-            {isFamily ? "$19.99 / month" : "$6.99 / month"}
-          </p>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="ba-badge-success">Pro</div>
+              <h2 className="mt-3 text-2xl font-black text-white">
+                Verse Memory and core access
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-200">
+                A strong daily plan for memory, review, and consistent Scripture training.
+              </p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] border border-emerald-300/16 bg-emerald-300/10 text-emerald-100">
+              {renderNavIcon("verse-memory", "h-5 w-5")}
+            </div>
+          </div>
 
-          {isFamily && (
-            <p className="text-sm !text-white mb-4 text-center">
-              Up to 4 members included
-            </p>
-          )}
+          <div className="mt-5 rounded-[1.4rem] border border-white/8 bg-black/20 px-4 py-4">
+            <div className="text-sm font-semibold text-slate-200">
+              {isFamily ? "Up to 4 members" : "Individual plan"}
+            </div>
+            <div className="mt-3 text-4xl font-black text-white">
+              {isFamily ? "$19.99" : "$6.99"}
+            </div>
+            <div className="mt-1 text-sm text-slate-300">per month</div>
+          </div>
 
-          <ul className="text-sm !text-white space-y-2 mb-6">
-            <li>📖 Full Bible Journey</li>
-            <li>🗓️ 10 questions per day</li>
-            <li>📚 Flashcards for memorization</li>
-            <li>🔥 XP, streaks, and progress tracking</li>
-          </ul>
+          <div className="mt-5 space-y-3">
+            {proFeatures(isFamily).map((feature) => (
+              <div
+                key={feature}
+                className="ba-card-soft flex items-center gap-3 rounded-[1.1rem] px-4 py-3 text-sm text-slate-100"
+              >
+                <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
 
           <button
             onClick={() => handleSelectPlan(isFamily ? "family_pro" : "pro")}
-            className="w-full py-3 rounded-lg bg-blue-600 text-white"
+            className="ba-button-primary mt-6 w-full px-4 py-4 text-base font-black"
           >
-            Start Training
+            {isFamily ? "Start Family Pro" : "Start Pro"}
           </button>
-
-          <p className="text-xs !text-white mt-4 text-center">
-            Best for quick daily practice
-          </p>
-          </div>
         </div>
 
-        <div className="bg-[#0B1220] border border-[#1F2A44] rounded-2xl p-6 text-white opacity-100 transition-all duration-200 active:scale-[0.97] cursor-pointer">
-          <div className="text-white">
-          <h2 className="text-xl font-bold !text-white mb-4">Free</h2>
+        <div
+          id="pro-plus"
+          onClick={() => setSelectedPlan("pro_plus")}
+          className={`ba-card-pro-plus relative cursor-pointer rounded-[1.9rem] p-5 transition duration-200 active:scale-[0.98] sm:p-6 ${
+            selectedPlan === "pro_plus" ? "ring-1 ring-amber-300/28" : ""
+          }`}
+        >
+          <div className="absolute right-5 top-5">
+            <div className="ba-badge-gold">Best Value</div>
+          </div>
 
-          <ul className="text-sm !text-white space-y-2 mb-6">
-            <li>👁️ View full Bible journey</li>
-            <li>🔒 Locked experience (preview only)</li>
-            <li>🚫 No flashcards</li>
-            <li>🚫 No training</li>
-          </ul>
+          <div className="flex items-start justify-between gap-4 pr-24">
+            <div>
+              <div className="ba-badge-gold">Pro+</div>
+              <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">
+                Full Training Arena
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-slate-200">
+                Unlock the full arena, deeper drills, and the strongest Bible Athlete experience.
+              </p>
+            </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] border border-amber-200/16 bg-amber-200/10 text-amber-100">
+              {renderNavIcon("upgrade", "h-5 w-5")}
+            </div>
+          </div>
+
+          <div className="mt-5 rounded-[1.4rem] border border-amber-200/10 bg-black/20 px-4 py-4">
+            <div className="text-sm font-semibold text-slate-200">
+              {isFamily ? "Up to 4 members" : "Individual plan"}
+            </div>
+            <div className="mt-3 text-4xl font-black text-white">
+              {isFamily ? "$29.99" : "$12.99"}
+            </div>
+            <div className="mt-1 text-sm text-slate-300">per month</div>
+          </div>
+
+          <div className="mt-5 space-y-3">
+            {proPlusFeatures(isFamily).map((feature) => (
+              <div
+                key={feature}
+                className="ba-card-soft flex items-center gap-3 rounded-[1.1rem] px-4 py-3 text-sm text-slate-100"
+              >
+                <span className="h-2 w-2 rounded-full bg-amber-300" />
+                <span>{feature}</span>
+              </div>
+            ))}
+          </div>
 
           <button
-            onClick={() => router.push("/signup")}
-            className="w-full py-3 rounded-lg bg-gray-700 text-white"
+            onClick={() => handleSelectPlan(isFamily ? "family_pro_plus" : "pro_plus")}
+            className="ba-button-primary mt-6 w-full px-4 py-4 text-base font-black"
           >
-            Get Started
+            {isFamily ? "Start Family Pro+" : "Start Pro+"}
           </button>
-          </div>
         </div>
-      </div>
       </div>
     </section>
   )
