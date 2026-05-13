@@ -10,78 +10,10 @@ import { createClient } from "@/lib/supabase/client"
 import { supabase } from "@/lib/supabase"
 import { useXPStore } from "@/lib/xpStore"
 
-type SectionKey =
-  | "pentateuch"
-  | "history"
-  | "wisdom"
-  | "prophets"
-  | "gospels"
-  | "epistles"
-
 type SidebarProps = {
   closeMobile?: () => void
   variant?: "desktop" | "mobile"
 }
-
-const SCRIPTURE_MODULE = [
-  {
-    key: "pentateuch" as const,
-    label: "Pentateuch",
-    items: [
-      { label: "Genesis", locked: false },
-      { label: "Exodus", locked: true },
-      { label: "Leviticus", locked: true },
-      { label: "Numbers", locked: true },
-      { label: "Deuteronomy", locked: true },
-    ],
-  },
-  {
-    key: "history" as const,
-    label: "History",
-    items: [
-      { label: "Joshua", locked: true },
-      { label: "Judges", locked: true },
-      { label: "Ruth", locked: true },
-    ],
-  },
-  {
-    key: "wisdom" as const,
-    label: "Wisdom",
-    items: [
-      { label: "Job", locked: true },
-      { label: "Psalms", locked: true },
-      { label: "Proverbs", locked: true },
-    ],
-  },
-  {
-    key: "prophets" as const,
-    label: "Prophets",
-    items: [
-      { label: "Isaiah", locked: true },
-      { label: "Jeremiah", locked: true },
-      { label: "Ezekiel", locked: true },
-    ],
-  },
-  {
-    key: "gospels" as const,
-    label: "Gospels",
-    items: [
-      { label: "Matthew", locked: true },
-      { label: "Mark", locked: true },
-      { label: "Luke", locked: true },
-      { label: "John", locked: true },
-    ],
-  },
-  {
-    key: "epistles" as const,
-    label: "Epistles",
-    items: [
-      { label: "Romans", locked: true },
-      { label: "1 Corinthians", locked: true },
-      { label: "Hebrews", locked: true },
-    ],
-  },
-]
 
 export default function Sidebar({
   closeMobile,
@@ -96,15 +28,6 @@ export default function Sidebar({
   const xp = useXPStore((s) => s.xp)
   const setXP = useXPStore((s) => s.setXP)
   const hasAvailableQuests = true
-
-  const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>({
-    pentateuch: true,
-    history: false,
-    wisdom: false,
-    prophets: false,
-    gospels: false,
-    epistles: false,
-  })
 
   const isMobile = variant === "mobile"
 
@@ -166,13 +89,6 @@ export default function Sidebar({
     router.push("/")
   }
 
-  function toggle(section: SectionKey) {
-    setOpenSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }))
-  }
-
   function navItem(label: string, href: string, icon?: string) {
     const active = isNavItemActive(pathname, href)
     const isTraining = href === "/training"
@@ -213,46 +129,6 @@ export default function Sidebar({
           </div>
         </div>
       </Link>
-    )
-  }
-
-  function bookItem(label: string, locked = false) {
-    return (
-      <div className="flex items-center justify-between rounded-[0.9rem] border border-white/6 bg-white/[0.02] px-3 py-2 text-sm text-white/78 transition hover:bg-white/[0.04] hover:text-white">
-        <span>{label}</span>
-        <span
-          className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${
-            locked ? "text-amber-100/52" : "text-emerald-200/70"
-          }`}
-        >
-          {locked ? "Locked" : "Live"}
-        </span>
-      </div>
-    )
-  }
-
-  function sectionItem(
-    key: SectionKey,
-    label: string,
-    items: React.ReactNode
-  ) {
-    const isOpen = openSections[key]
-
-    return (
-      <div className="rounded-[1rem] border border-white/6 bg-white/[0.02] p-2">
-        <button
-          type="button"
-          onClick={() => toggle(key)}
-          className="flex w-full items-center justify-between rounded-[0.85rem] px-3 py-2 text-left text-sm font-semibold text-white/84 transition hover:bg-white/[0.04] hover:text-white"
-        >
-          <span>{label}</span>
-          <span className={`text-base transition ${isOpen ? "rotate-180" : ""}`}>
-            ⌄
-          </span>
-        </button>
-
-        {isOpen ? <div className="mt-2 space-y-2 px-1 pb-1">{items}</div> : null}
-      </div>
     )
   }
 
@@ -396,29 +272,6 @@ export default function Sidebar({
                 </div>
               </div>
             </button>
-          )}
-        </div>
-
-        <div className="rounded-[1.35rem] border border-white/8 bg-white/[0.03] p-3 pt-4 space-y-3">
-          <div className="px-1">
-            <p className="text-xs uppercase tracking-[0.22em] text-white/48">
-              Scripture Module
-            </p>
-            <p className="mt-2 text-sm leading-6 text-white/62">
-              Move through the books of Scripture as the arena expands.
-            </p>
-          </div>
-
-          {SCRIPTURE_MODULE.map((section) =>
-            sectionItem(
-              section.key,
-              section.label,
-              <>
-                {section.items.map((item) => (
-                  <div key={item.label}>{bookItem(item.label, item.locked)}</div>
-                ))}
-              </>
-            )
           )}
         </div>
 
