@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 
 import type {
   TrainingAccessState,
@@ -26,7 +26,7 @@ type TrackVisual = {
 type BibleSectionCard = {
   title: string
   subtitle: string
-  href?: string
+  action?: "open-drills" | "locked"
   accentClass: string
   borderClass: string
   glowClass: string
@@ -50,84 +50,92 @@ const BIBLE_SECTIONS: BibleSectionCard[] = [
   {
     title: "Pentateuch",
     subtitle: "The foundations of everything",
-    href: "#choose-your-drill",
+    action: "open-drills",
     accentClass: "from-amber-200/26 via-yellow-300/16 to-cyan-300/10",
     borderClass: "border-amber-200/18",
     glowClass: "shadow-[0_0_32px_rgba(251,191,36,0.10)]",
     artPath: "/training/sections/pentateuch.png",
-    status: "Live now",
+    status: "Ready",
   },
   {
     title: "Historical",
     subtitle: "God's faithfulness in history",
+    action: "locked",
     accentClass: "from-sky-200/24 via-blue-300/14 to-indigo-300/10",
     borderClass: "border-sky-200/16",
     glowClass: "shadow-[0_0_32px_rgba(96,165,250,0.10)]",
     artPath: "/training/sections/historical.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Wisdom",
     subtitle: "Living well under God's wisdom",
+    action: "locked",
     accentClass: "from-fuchsia-200/24 via-violet-300/14 to-sky-300/10",
     borderClass: "border-fuchsia-200/16",
     glowClass: "shadow-[0_0_32px_rgba(192,132,252,0.10)]",
     artPath: "/training/sections/wisdom.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Major Prophets",
     subtitle: "Messages that move nations",
+    action: "locked",
     accentClass: "from-fuchsia-200/22 via-purple-300/14 to-violet-300/10",
     borderClass: "border-rose-200/16",
     glowClass: "shadow-[0_0_32px_rgba(244,114,182,0.10)]",
     artPath: "/training/sections/major-prophets.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Minor Prophets",
     subtitle: "Voices of hope and warning",
+    action: "locked",
     accentClass: "from-cyan-200/22 via-teal-300/14 to-emerald-300/10",
     borderClass: "border-cyan-200/16",
     glowClass: "shadow-[0_0_32px_rgba(45,212,191,0.10)]",
     artPath: "/training/sections/minor-prophets.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Gospels",
     subtitle: "The life, death, and resurrection",
+    action: "locked",
     accentClass: "from-yellow-200/24 via-amber-300/14 to-orange-300/10",
     borderClass: "border-yellow-200/16",
     glowClass: "shadow-[0_0_32px_rgba(253,224,71,0.10)]",
     artPath: "/training/sections/gospels.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Acts",
     subtitle: "The Church on mission",
+    action: "locked",
     accentClass: "from-orange-200/22 via-amber-300/14 to-orange-400/10",
     borderClass: "border-orange-200/16",
     glowClass: "shadow-[0_0_32px_rgba(251,146,60,0.10)]",
     artPath: "/training/sections/acts.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Epistles",
     subtitle: "Letters for life and faith",
+    action: "locked",
     accentClass: "from-cyan-200/22 via-sky-300/14 to-teal-400/10",
     borderClass: "border-cyan-200/16",
     glowClass: "shadow-[0_0_32px_rgba(34,211,238,0.10)]",
     artPath: "/training/sections/epistles.png",
-    status: "Building",
+    status: "Locked",
   },
   {
     title: "Revelation & Apocalyptic",
     subtitle: "The end, the hope, and the new beginning",
+    action: "locked",
     accentClass: "from-rose-200/22 via-pink-300/14 to-red-400/10",
     borderClass: "border-rose-200/16",
     glowClass: "shadow-[0_0_32px_rgba(251,113,133,0.10)]",
     artPath: "/training/sections/revelation-apocalyptic.png",
-    status: "Building",
+    status: "Locked",
   },
 ]
 
@@ -324,6 +332,7 @@ function Chevron({ open }: { open: boolean }) {
 }
 
 export default function TrainingHubInteractive({ days, access }: Props) {
+  const drillsSectionRef = useRef<HTMLElement | null>(null)
   const firstDay = days[0] ?? null
   const todayDay =
     days.find((day) => access.tier !== "free" || day.day <= 3) ?? firstDay
@@ -350,12 +359,12 @@ export default function TrainingHubInteractive({ days, access }: Props) {
       .sort((a, b) => getBookOrder(a.book) - getBookOrder(b.book))
   }, [days])
 
-  const [sectionsOpen, setSectionsOpen] = useState(true)
-  const [drillsOpen, setDrillsOpen] = useState(true)
+  const [sectionsOpen, setSectionsOpen] = useState(false)
+  const [drillsOpen, setDrillsOpen] = useState(false)
   const [openBooks, setOpenBooks] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
     for (const group of bookGroups) {
-      initial[group.book] = group.book === "Genesis" || group.book === "Exodus"
+      initial[group.book] = false
     }
     return initial
   })
@@ -365,6 +374,30 @@ export default function TrainingHubInteractive({ days, access }: Props) {
       ...current,
       [book]: !current[book],
     }))
+  }
+
+  function handlePentateuchOpen() {
+    setDrillsOpen(true)
+    setOpenBooks((current) => {
+      const next = { ...current }
+
+      if ("Genesis" in next) {
+        next.Genesis = true
+      }
+
+      if ("Exodus" in next) {
+        next.Exodus = true
+      }
+
+      return next
+    })
+
+    requestAnimationFrame(() => {
+      drillsSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    })
   }
 
   return (
@@ -615,7 +648,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           <button
             type="button"
             onClick={() => setSectionsOpen((value) => !value)}
-            className="flex w-full items-center justify-between gap-3 text-left"
+            className="flex w-full items-center justify-between gap-3 rounded-[1.25rem] border border-white/8 bg-white/[0.02] px-1 py-1 text-left transition hover:bg-white/[0.04]"
           >
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-cyan-100/72">
@@ -633,46 +666,19 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
           {sectionsOpen ? (
             <div className="-mx-4 mt-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 sm:pb-0 xl:grid-cols-3">
-              {BIBLE_SECTIONS.map((section) =>
-                section.href ? (
-                  <Link
-                    key={section.title}
-                    href={section.href}
-                    className={`group relative min-h-[13rem] min-w-[17.5rem] flex-1 overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 sm:min-h-[14rem] sm:min-w-0 ${section.borderClass} ${section.glowClass}`}
-                  >
-                    <div
-                      className="absolute inset-0 opacity-[0.92]"
-                      style={{
-                        backgroundImage: `url('${section.artPath}')`,
-                        backgroundPosition: "50% 50%",
-                        backgroundSize: "cover",
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.10),transparent_34%),linear-gradient(180deg,rgba(7,10,16,0.10),rgba(7,10,16,0.84))]" />
+              {BIBLE_SECTIONS.map((section) => {
+                const isReady = section.action === "open-drills"
 
-                    <div className="relative flex h-full flex-col">
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="text-lg text-white/92">✦</div>
-                        <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/78">
-                          {section.status}
-                        </div>
-                      </div>
-                      <div className="mt-6 text-base font-black text-white sm:text-lg">{section.title}</div>
-                      <div className="mt-2 max-w-[16rem] text-sm leading-6 text-slate-300">{section.subtitle}</div>
-                      <div className="mt-auto pt-6">
-                        <div className={`h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
-                        <div className="mt-4 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.22em] text-white/72">
-                          <span>Open Section</span>
-                          <span className="transition duration-200 group-hover:translate-x-1">→</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ) : (
+                return (
                   <button
                     key={section.title}
                     type="button"
-                    className={`group relative min-h-[13rem] min-w-[17.5rem] flex-1 overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 hover:-translate-y-1 sm:min-h-[14rem] sm:min-w-0 ${section.borderClass} ${section.glowClass}`}
+                    onClick={isReady ? handlePentateuchOpen : undefined}
+                    className={`group relative min-h-[13rem] min-w-[17.5rem] flex-1 overflow-hidden rounded-[1.4rem] border bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition duration-200 sm:min-h-[14rem] sm:min-w-0 ${section.borderClass} ${section.glowClass} ${
+                      isReady
+                        ? "hover:-translate-y-1"
+                        : "cursor-default opacity-90 saturate-75"
+                    }`}
                   >
                     <div
                       className="absolute inset-0 opacity-[0.92]"
@@ -686,7 +692,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
                     <div className="relative flex h-full flex-col">
                       <div className="flex items-center justify-between gap-3">
-                        <div className="text-lg text-white/92">✦</div>
+                        <div className="text-lg text-white/92">{isReady ? "✦" : "🔒"}</div>
                         <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/78">
                           {section.status}
                         </div>
@@ -696,26 +702,29 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                       <div className="mt-auto pt-6">
                         <div className={`h-1 w-full rounded-full bg-gradient-to-r ${section.accentClass}`} />
                         <div className="mt-4 flex items-center justify-between text-[11px] font-bold uppercase tracking-[0.22em] text-white/72">
-                          <span>Coming Soon</span>
-                          <span className="transition duration-200 group-hover:translate-x-1">→</span>
+                          <span>{isReady ? "Open Section" : "Locked"}</span>
+                          <span className={`transition duration-200 ${isReady ? "group-hover:translate-x-1" : ""}`}>
+                            {isReady ? "→" : "•"}
+                          </span>
                         </div>
                       </div>
                     </div>
                   </button>
                 )
-              )}
+              })}
             </div>
           ) : null}
         </section>
 
         <section
           id="choose-your-drill"
+          ref={drillsSectionRef}
           className="mt-6 rounded-[1.55rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.08),transparent_30%),linear-gradient(180deg,rgba(12,18,29,0.98),rgba(8,11,20,0.98))] p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] sm:rounded-[1.8rem] sm:p-5"
         >
           <button
             type="button"
             onClick={() => setDrillsOpen((value) => !value)}
-            className="flex w-full items-center justify-between gap-3 text-left"
+            className="flex w-full items-center justify-between gap-3 rounded-[1.25rem] border border-white/8 bg-white/[0.02] px-1 py-1 text-left transition hover:bg-white/[0.04]"
           >
             <div>
               <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
