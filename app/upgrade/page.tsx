@@ -72,11 +72,11 @@ export default function UpgradePage() {
           </div>
         </div>
 
-        <div className="mx-auto flex w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-2">
+        <div className="ba-card-soft mx-auto flex w-full max-w-md rounded-2xl p-2">
           <button
             onClick={() => setIsFamily(false)}
-            className={`flex-1 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
-              !isFamily ? "bg-cyan-400 text-black" : "text-zinc-300"
+            className={`flex-1 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
+              !isFamily ? "ba-button-primary" : "text-zinc-300"
             }`}
           >
             Individual
@@ -84,8 +84,8 @@ export default function UpgradePage() {
 
           <button
             onClick={() => setIsFamily(true)}
-            className={`flex-1 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
-              isFamily ? "bg-cyan-400 text-black" : "text-zinc-300"
+            className={`flex-1 px-4 py-3 text-sm font-black uppercase tracking-[0.18em] transition ${
+              isFamily ? "ba-button-primary" : "text-zinc-300"
             }`}
           >
             Family
@@ -93,7 +93,7 @@ export default function UpgradePage() {
         </div>
 
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-          <div className="rounded-[28px] border border-emerald-300/25 bg-emerald-400/10 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+          <div className="ba-card-pro rounded-[28px] p-5">
             <div className="mb-5">
               <div className="text-xs font-black uppercase tracking-[0.24em] text-emerald-200">
                 Pro
@@ -114,7 +114,7 @@ export default function UpgradePage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-100"
+                  className="ba-card-soft rounded-2xl px-4 py-3 text-sm text-zinc-100"
                 >
                   {feature}
                 </div>
@@ -125,14 +125,14 @@ export default function UpgradePage() {
               {isPro ? (
                 <button
                   onClick={() => handleCheckout(isFamily ? "family_pro_plus" : "pro_plus")}
-                  className="block w-full rounded-2xl bg-emerald-400 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+                  className="ba-button-primary block w-full px-4 py-4 text-center text-base font-black active:scale-[0.99]"
                 >
                   {proButtonLabel}
                 </button>
               ) : (
                 <button
                   onClick={() => handleCheckout(isFamily ? "family_pro" : "pro")}
-                  className="block w-full rounded-2xl bg-emerald-400 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+                  className="ba-button-primary block w-full px-4 py-4 text-center text-base font-black active:scale-[0.99]"
                 >
                   Upgrade to Pro
                 </button>
@@ -140,7 +140,7 @@ export default function UpgradePage() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-amber-300/35 bg-amber-300/10 p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+          <div className="ba-card-pro-plus rounded-[28px] p-5">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <div className="text-xs font-black uppercase tracking-[0.24em] text-amber-100">
@@ -152,7 +152,7 @@ export default function UpgradePage() {
                 </p>
               </div>
 
-              <div className="rounded-full bg-amber-300 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black">
+              <div className="ba-badge-gold">
                 Best Value
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function UpgradePage() {
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-zinc-100"
+                  className="ba-card-soft rounded-2xl px-4 py-3 text-sm text-zinc-100"
                 >
                   {feature}
                 </div>
@@ -179,13 +179,13 @@ export default function UpgradePage() {
 
             <div className="mt-6">
               {isProPlus ? (
-                <div className="rounded-2xl border border-white/10 bg-zinc-900 px-4 py-4 text-center text-base font-black uppercase tracking-[0.2em] text-zinc-400">
+                <div className="ba-button-locked w-full px-4 py-4 text-center text-base font-black uppercase tracking-[0.2em] text-zinc-300">
                   Current Plan
                 </div>
               ) : (
                 <button
                   onClick={() => handleCheckout(isFamily ? "family_pro_plus" : "pro_plus")}
-                  className="block w-full rounded-2xl bg-amber-300 px-4 py-4 text-center text-base font-black text-black transition active:scale-[0.99]"
+                  className="ba-button-primary block w-full px-4 py-4 text-center text-base font-black active:scale-[0.99]"
                 >
                   {plusButtonLabel}
                 </button>
@@ -196,7 +196,7 @@ export default function UpgradePage() {
 
         <div className="text-center text-sm text-zinc-400">
           Need to compare again?{" "}
-          <Link href="/pricing" className="font-bold text-cyan-300 underline underline-offset-4">
+          <Link href="/pricing" className="font-bold text-amber-200 underline underline-offset-4">
             View full plan breakdown
           </Link>
         </div>

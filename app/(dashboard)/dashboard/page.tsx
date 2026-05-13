@@ -816,32 +816,32 @@ export default function DashboardPage() {
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
             {upgradeMessage && (
-              <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4 text-emerald-200 xl:col-span-2">
+              <div className="ba-card-success rounded-2xl p-4 text-emerald-100 xl:col-span-2">
                 {upgradeMessage}
               </div>
             )}
 
             {plan === "free" && (
-              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-4 text-red-200">
+              <div className="rounded-2xl border border-rose-400/25 bg-rose-500/10 p-4 text-rose-100">
                 Free Plan - Limited access remains active.
               </div>
             )}
 
             {plan === "pro" && (
-              <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-4 text-green-200">
+              <div className="ba-card-success rounded-2xl p-4 text-emerald-100">
                 Pro Plan - Full access is active.
               </div>
             )}
 
             {(plan === "pro_plus" || plan === "family_pro_plus") && (
-              <div className="rounded-2xl border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-200">
+              <div className="ba-card-pro-plus rounded-2xl p-4 text-amber-100">
                 Pro+ access is active across your mastery system.
               </div>
             )}
 
             {memberCount !== null && memberLimit !== null && (
               isFamilyFull ? (
-                <div className="rounded-2xl border border-amber-400/30 bg-amber-500/10 px-5 py-6 text-center">
+                <div className="ba-card-warning rounded-2xl px-5 py-6 text-center">
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-200">
                     Family is Full
                   </p>
@@ -853,13 +853,13 @@ export default function DashboardPage() {
                   </p>
                   <button
                     onClick={() => router.push("/pricing")}
-                    className="mt-4 inline-flex items-center justify-center rounded-xl bg-amber-300 px-4 py-3 text-sm font-black text-black transition hover:bg-amber-200"
+                    className="ba-button-primary mt-4 inline-flex items-center justify-center px-4 py-3 text-sm font-black"
                   >
                     Upgrade to Add More Members
                   </button>
                 </div>
               ) : (
-                <div className="rounded-2xl border border-cyan-400/25 bg-cyan-400/10 px-5 py-6 text-center">
+                <div className="ba-card-soft rounded-2xl px-5 py-6 text-center">
                   <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200">
                     Family Usage
                   </p>
@@ -904,7 +904,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => removeMember(member.id, member.user_id)}
                             disabled={isRemoving}
-                            className="rounded-xl bg-red-500 px-3 py-2 text-sm font-semibold text-white transition hover:bg-red-400 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="rounded-xl border border-rose-400/25 bg-rose-500/12 px-3 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/18 disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             {isRemoving ? "Removing..." : "Remove"}
                           </button>
@@ -917,7 +917,7 @@ export default function DashboardPage() {
             )}
 
             {isOwner && (
-              <div className="rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-5">
+              <div className="ba-card-success rounded-2xl p-5">
                 <h3 className="text-lg font-bold text-white">
                   Invite Family Member
                 </h3>
@@ -933,7 +933,7 @@ export default function DashboardPage() {
 
                   <button
                     onClick={handleInvite}
-                    className="w-full rounded-xl bg-emerald-300 px-4 py-3 text-sm font-black text-black transition hover:bg-emerald-200"
+                    className="ba-button-primary w-full px-4 py-3 text-sm font-black"
                   >
                     Send Invite
                   </button>
@@ -948,7 +948,7 @@ export default function DashboardPage() {
             )}
 
             {!isOwner && membershipId && (
-              <div className="rounded-2xl border border-orange-400/25 bg-orange-500/10 p-5">
+              <div className="ba-card-warning rounded-2xl p-5">
                 <h3 className="text-lg font-bold text-white">
                   Leave Family
                 </h3>
@@ -958,7 +958,7 @@ export default function DashboardPage() {
                 <button
                   onClick={leaveFamily}
                   disabled={isLeavingFamily}
-                  className="mt-4 w-full rounded-xl bg-orange-400 px-4 py-3 text-sm font-black text-black transition hover:bg-orange-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="ba-button-warning mt-4 w-full px-4 py-3 text-sm font-black disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isLeavingFamily ? "Leaving Family..." : "Leave Family"}
                 </button>

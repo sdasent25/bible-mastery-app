@@ -40,12 +40,12 @@ function QuestCard({
           event.preventDefault()
         }
       }}
-      className={`block w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950 shadow-lg transition active:scale-[0.99] ${locked ? "opacity-50 pointer-events-none relative" : ""}`}
+      className={`ba-card block w-full overflow-hidden rounded-3xl transition active:scale-[0.99] ${locked ? "pointer-events-none relative opacity-50" : ""}`}
     >
       {locked && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-sm">
           <div className="text-center text-white">
-            {overlayMessage || "🔒 Locked"}
+            {overlayMessage || "Locked"}
           </div>
         </div>
       )}
@@ -75,7 +75,7 @@ function QuestCard({
             <>
               <div className="mt-3 h-2 w-44 overflow-hidden rounded-full bg-white/10">
                 <div
-                  className="h-full rounded-full bg-green-400 transition-all"
+                  className="h-full rounded-full bg-gradient-to-r from-emerald-300 via-cyan-300 to-amber-200 transition-all"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
@@ -85,7 +85,7 @@ function QuestCard({
             </>
           )}
         </div>
-        <div className="rounded-full border border-white/15 px-3 py-1 text-sm text-zinc-200">
+        <div className={locked ? "ba-badge-locked" : "ba-badge"}>
           {statusLabel || (locked ? "Locked" : "Open")}
         </div>
       </div>
