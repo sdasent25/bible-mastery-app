@@ -6,6 +6,7 @@ type DashboardStatCardProps = {
   title: string
   value: string
   supporting: string
+  caption?: string
   accent: "cyan" | "amber" | "violet" | "sapphire"
   icon?: never
 }
@@ -37,6 +38,7 @@ export default function DashboardStatCard({
   title,
   value,
   supporting,
+  caption,
   accent,
 }: DashboardStatCardProps) {
   const tone = accentMap[accent]
@@ -65,7 +67,7 @@ export default function DashboardStatCard({
 
       <div className="relative mt-5 flex justify-center">
         <div
-          className={`relative flex h-[8.75rem] w-[8.75rem] items-center justify-center rounded-full ${tone.aura}`}
+          className={`relative flex h-[7.75rem] w-[7.75rem] items-center justify-center rounded-full ${tone.aura} sm:h-[8.75rem] sm:w-[8.75rem]`}
           style={{ background: ringStyle }}
         >
           <div className="absolute inset-[11px] rounded-full bg-[radial-gradient(circle_at_top,rgba(12,19,31,0.96),rgba(7,10,16,0.98))] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" />
@@ -73,10 +75,15 @@ export default function DashboardStatCard({
         </div>
       </div>
 
-      <div className="relative z-10 mt-4 text-[2rem] font-semibold leading-none tracking-[-0.045em] text-white">
+      <div className="relative z-10 mt-4 text-[1.7rem] font-semibold leading-none tracking-[-0.045em] text-white sm:text-[2rem]">
         {value}
       </div>
-      <div className="relative z-10 mt-2 text-[0.95rem] leading-6 text-white/70">{supporting}</div>
+      <div className="relative z-10 mt-2 text-[0.92rem] leading-6 text-white/82">{supporting}</div>
+      {caption ? (
+        <div className="relative z-10 mt-1 text-[0.78rem] leading-5 uppercase tracking-[0.16em] text-white/46">
+          {caption}
+        </div>
+      ) : null}
     </article>
   )
 }

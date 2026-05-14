@@ -450,6 +450,10 @@ export default function DashboardPage() {
     "Let your heart be steady, your mind be renewed, and your steps reflect His love."
   const referenceLine = dashboardState?.currentSegmentLabel || "Micah 6:8"
   const focusPassage = dashboardState?.currentSegmentLabel || "Psalm 119:105"
+  const heroImageSrc =
+    dashboardState?.missionArt && !dashboardState.missionArt.startsWith("/icons/")
+      ? dashboardState.missionArt
+      : "/dashboard/mission-hero.svg"
   const focusRankLabel = "SAPPHIRE II"
   const focusRankMeta = "Top 18%"
   const weeklySummary = {
@@ -473,25 +477,29 @@ export default function DashboardPage() {
     {
       title: "XP",
       value: (dashboardState?.xpEarned || 0).toLocaleString(),
-      supporting: "/ 15,000",
+      supporting: `${xpToNextLevel.toLocaleString()} XP to Level ${athleteLevel + 1}`,
+      caption: "Current experience",
       accent: "cyan" as const,
     },
     {
       title: "STREAK",
       value: String(dashboardState?.streak || 0),
-      supporting: "Days • Keep it going!",
+      supporting: `${dashboardState?.streak || 0} Days`,
+      caption: "Keep it going",
       accent: "amber" as const,
     },
     {
       title: "MASTERY",
       value: `${dashboardState?.masteryPercent || 0}%`,
-      supporting: "Overall Mastery",
+      supporting: `${dashboardState?.masteryCount || 0} of ${dashboardState?.totalSegments || 0} segments`,
+      caption: "Overall mastery",
       accent: "violet" as const,
     },
     {
       title: "FOCUS RANK",
       value: focusRankLabel,
       supporting: focusRankMeta,
+      caption: "Seasonal rank placeholder",
       accent: "sapphire" as const,
     },
   ]
@@ -518,6 +526,9 @@ export default function DashboardPage() {
 
             <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/66">
+                  {dashboardState?.playerName || "Athlete"} • Genesis Campaign
+                </p>
                 <h1 className="text-[2.65rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-5xl xl:text-[3.85rem]">
                   Welcome back.
                 </h1>
@@ -545,6 +556,10 @@ export default function DashboardPage() {
               focusPassage={focusPassage}
               onContinue={() => router.push(continueHref)}
               progressPercent={dashboardState?.genesisProgressPercent || 0}
+              imageSrc={heroImageSrc}
+              atmosphere={dashboardState?.missionAtmosphere || "Sacred mission"}
+              missionProgressLabel={`Mission ${dashboardState?.segmentNumber || 1} of ${dashboardState?.totalSegments || 1}`}
+              dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
             />
 
             <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
@@ -554,6 +569,7 @@ export default function DashboardPage() {
                   title={card.title}
                   value={card.value}
                   supporting={card.supporting}
+                  caption={card.caption}
                   accent={card.accent}
                 />
               ))}
@@ -599,6 +615,39 @@ export default function DashboardPage() {
                 />
               </div>
             </section>
+
+            <section className="ba-glass-panel rounded-[2rem] border border-white/10 p-5 sm:p-6">
+              <div className="ba-section-header">
+                <div>
+                  <p className="ba-section-kicker">Access & Progress</p>
+                  <h2 className="mt-2 text-[1.9rem] font-semibold tracking-[-0.045em] text-white sm:text-[2.25rem]">
+                    Your covenant track
+                  </h2>
+                </div>
+                <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white/78 sm:inline-flex">
+                  {getPlanBadge(plan)}
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="ba-glass-panel ba-xp-aura rounded-[1.35rem] px-4 py-4">
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/72">Current Plan</div>
+                  <div className="mt-2 text-xl font-black text-white">{getPlanBadge(plan)}</div>
+                </div>
+                <div className="ba-glass-panel ba-streak-aura rounded-[1.35rem] px-4 py-4">
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-amber-100/72">Campaign Progress</div>
+                  <div className="mt-2 text-xl font-black text-white">
+                    {dashboardState?.genesisProgressPercent || 0}%
+                  </div>
+                </div>
+                <div className="ba-glass-panel ba-mastery-aura rounded-[1.35rem] px-4 py-4">
+                  <div className="text-[10px] uppercase tracking-[0.22em] text-fuchsia-100/72">Family Seats</div>
+                  <div className="mt-2 text-xl font-black text-white">
+                    {memberCount !== null && memberLimit !== null ? `${memberCount}/${memberLimit}` : "Solo"}
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
 
           <div className="hidden xl:block">
@@ -630,14 +679,14 @@ export default function DashboardPage() {
           />
         </div>
 
-        <section className="mt-8 rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,19,30,0.96),rgba(9,11,19,0.98))] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] sm:p-6">
+        <section className="ba-right-rail-card mt-8 rounded-[2rem] p-5 sm:p-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.26em] text-amber-200/80">
                 Account & Family
               </p>
-              <h2 className="mt-2 text-3xl font-black text-white">
-                Account tools stay within reach
+              <h2 className="mt-2 text-[2rem] font-black tracking-[-0.04em] text-white sm:text-4xl">
+                Support systems stay within reach
               </h2>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
                 Manage access, family membership, and plan details here without pulling focus from your active mission.
@@ -649,6 +698,12 @@ export default function DashboardPage() {
           </div>
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
+            {message && (
+              <div className="ba-glass-panel rounded-2xl border border-cyan-300/16 p-4 text-cyan-100 xl:col-span-2">
+                {message}
+              </div>
+            )}
+
             {upgradeMessage && (
               <div className="ba-card-success rounded-2xl p-4 text-emerald-100 xl:col-span-2">
                 {upgradeMessage}
@@ -708,7 +763,7 @@ export default function DashboardPage() {
             )}
 
             {members.length > 0 && (
-              <div className="rounded-2xl border border-white/10 bg-black/20 p-5 xl:col-span-2">
+              <div className="ba-glass-panel rounded-2xl p-5 xl:col-span-2">
                 <h3 className="text-lg font-bold text-white">
                   Family Members
                 </h3>
@@ -722,7 +777,7 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={member.id}
-                        className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+                        className="ba-glass-panel flex items-center justify-between gap-3 rounded-xl px-4 py-3"
                       >
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-white">
@@ -773,11 +828,6 @@ export default function DashboardPage() {
                   </button>
                 </div>
 
-                {message && (
-                  <p className="mt-3 text-sm text-emerald-100">
-                    {message}
-                  </p>
-                )}
               </div>
             )}
 

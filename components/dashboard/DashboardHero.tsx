@@ -11,6 +11,10 @@ type DashboardHeroProps = {
   focusPassage: string
   onContinue: () => void
   progressPercent: number
+  imageSrc: string
+  atmosphere: string
+  missionProgressLabel: string
+  dailyMissionComplete: boolean
 }
 
 export default function DashboardHero({
@@ -20,12 +24,16 @@ export default function DashboardHero({
   focusPassage,
   onContinue,
   progressPercent,
+  imageSrc,
+  atmosphere,
+  missionProgressLabel,
+  dailyMissionComplete,
 }: DashboardHeroProps) {
   return (
     <section className="ba-hero-card ba-soft-aura rounded-[2.35rem]">
       <div className="absolute inset-0">
         <Image
-          src="/dashboard/mission-hero.svg"
+          src={imageSrc}
           alt=""
           fill
           priority
@@ -33,25 +41,34 @@ export default function DashboardHero({
           sizes="(max-width: 1280px) 100vw, 900px"
         />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,16,0.96)_0%,rgba(4,10,18,0.92)_28%,rgba(8,12,18,0.62)_48%,rgba(8,11,18,0.16)_72%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,16,0.97)_0%,rgba(4,10,18,0.93)_26%,rgba(8,12,18,0.68)_48%,rgba(8,11,18,0.18)_74%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,220,138,0.05),rgba(10,12,20,0.05)_36%,rgba(7,10,16,0.52)_100%)]" />
 
-      <div className="relative z-10 flex min-h-[34.5rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[39rem] lg:px-9">
+      <div className="relative z-10 flex min-h-[33.5rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[38rem] lg:px-9">
         <div className="flex items-start justify-between gap-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/24 bg-[linear-gradient(180deg,rgba(65,44,17,0.54),rgba(28,18,10,0.44))] px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-amber-100/84 shadow-[0_0_24px_rgba(251,191,36,0.08)]">
-            <span className="text-amber-100">{renderNavIcon("brand", "h-3.5 w-3.5")}</span>
-            TODAY&apos;S MISSION
+          <div className="flex flex-wrap items-center gap-2.5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/24 bg-[linear-gradient(180deg,rgba(65,44,17,0.54),rgba(28,18,10,0.44))] px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-amber-100/84 shadow-[0_0_24px_rgba(251,191,36,0.08)]">
+              <span className="text-amber-100">{renderNavIcon("brand", "h-3.5 w-3.5")}</span>
+              TODAY&apos;S MISSION
+            </div>
+            <div className="rounded-full border border-white/12 bg-black/18 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100/82 backdrop-blur-sm">
+              {missionProgressLabel}
+            </div>
+            {dailyMissionComplete ? (
+              <div className="rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100">
+                Completed Today
+              </div>
+            ) : null}
           </div>
-          <button
-            type="button"
-            aria-label="Mission details"
-            className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-black/26 text-white/86 shadow-[0_12px_30px_rgba(0,0,0,0.22)] backdrop-blur-md"
-          >
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-black/26 text-white/86 shadow-[0_12px_30px_rgba(0,0,0,0.22)] backdrop-blur-md">
             {renderNavIcon("info", "h-[1.05rem] w-[1.05rem]")}
-          </button>
+          </div>
         </div>
 
         <div className="max-w-[35rem]">
+          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-100/74">
+            {atmosphere}
+          </div>
           <h2 className="mt-2 text-[2.75rem] font-semibold leading-[0.94] tracking-[-0.055em] text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.48)] sm:text-[3.6rem] lg:text-[4.35rem]">
             {title}
           </h2>
@@ -66,29 +83,36 @@ export default function DashboardHero({
         </div>
 
         <div className="rounded-[1.8rem] border border-amber-200/10 bg-[linear-gradient(180deg,rgba(7,11,18,0.08),rgba(7,11,18,0.16))] p-4 backdrop-blur-[6px] sm:p-5">
-          <div className="flex flex-col gap-5">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/22 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/22 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
                 {renderNavIcon("verse-memory", "h-5 w-5")}
               </span>
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/64">
-                  Focus Passage
-                </div>
-                <div className="mt-1 text-[1.75rem] font-semibold tracking-[-0.035em] text-white">
-                  {focusPassage}
+                <div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/64">
+                    Focus Passage
+                  </div>
+                  <div className="mt-1 text-[1.5rem] font-semibold tracking-[-0.035em] text-white sm:text-[1.75rem]">
+                    {focusPassage}
+                  </div>
                 </div>
               </div>
+              <div className="ba-progress-track mt-4 h-[6px]">
+                <div
+                  className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(250,204,21,0.98),rgba(103,232,249,0.82),rgba(244,114,182,0.7))]"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+              <div className="mt-2 flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em] text-white/48">
+                <span>Genesis progression</span>
+                <span>{progressPercent}% complete</span>
+              </div>
             </div>
-            <div className="h-[6px] overflow-hidden rounded-full bg-white/10">
-              <div
-                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(250,204,21,0.98),rgba(103,232,249,0.82),rgba(244,114,182,0.7))]"
-                style={{ width: `${progressPercent}%` }}
-              />
-            </div>
+
             <button
               onClick={onContinue}
-              className="ba-gold-cta ba-shimmer ba-float-cta motion-safe mx-auto inline-flex w-full items-center justify-center gap-3 rounded-[1.45rem] px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2a1600] shadow-[0_0_40px_rgba(251,191,36,0.34)] sm:max-w-[33rem] sm:text-[0.95rem]"
+              className="ba-gold-cta ba-shimmer ba-float-cta motion-safe mx-auto inline-flex w-full items-center justify-center gap-3 rounded-[1.45rem] px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2a1600] shadow-[0_0_40px_rgba(251,191,36,0.34)] lg:mx-0 lg:w-auto lg:min-w-[20rem] sm:text-[0.95rem]"
             >
               <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#8a5a05]/18 bg-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.24)]">
                 {renderNavIcon("brand", "h-5 w-5")}

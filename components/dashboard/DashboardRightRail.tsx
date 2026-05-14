@@ -28,7 +28,7 @@ export default function DashboardRightRail({
   return (
     <aside className="space-y-5">
       <section className="ba-right-rail-card rounded-[1.9rem] p-5">
-        <div className="flex items-center justify-between gap-3">
+        <div className="ba-section-header">
           <div>
             <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-amber-100/72">
               MISSION AVAILABLE
@@ -41,7 +41,7 @@ export default function DashboardRightRail({
             {renderNavIcon("chevron-right", "h-4.5 w-4.5")}
           </div>
         </div>
-        <div className="mt-4 rounded-[1.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4">
+        <div className="ba-glass-panel mt-4 rounded-[1.2rem] p-4">
           <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">REFERENCE</div>
           <div className="mt-2 text-lg font-semibold text-white">{referenceLine}</div>
           <div className="mt-3 text-sm text-amber-100/84">{rewardLine}</div>
@@ -66,16 +66,16 @@ export default function DashboardRightRail({
           ].map((item) => (
             <div
               key={item.label}
-              className="flex items-center justify-between rounded-[1.05rem] border border-white/10 bg-white/[0.03] px-4 py-3"
+              className="ba-glass-panel flex items-center justify-between rounded-[1.05rem] px-4 py-3"
             >
               <div className="flex items-center gap-3">
                 <span
-                  className={`inline-flex h-8 w-8 items-center justify-center rounded-full border ${
+                  className={`ba-icon-badge inline-flex h-8 w-8 items-center justify-center rounded-full ${
                     item.state === "amber"
-                      ? "border-amber-300/22 bg-amber-300/12 text-amber-100"
+                      ? "ba-streak-aura border-amber-300/22 bg-amber-300/12 text-amber-100"
                       : item.state === "cyan"
-                        ? "border-cyan-300/22 bg-cyan-300/12 text-cyan-100"
-                        : "border-white/10 bg-white/[0.04] text-white/56"
+                        ? "ba-xp-aura border-cyan-300/22 bg-cyan-300/12 text-cyan-100"
+                        : "text-white/56"
                   }`}
                 >
                   {renderNavIcon(item.state === "slate" ? "sun" : "brand", "h-3.5 w-3.5")}
@@ -89,7 +89,7 @@ export default function DashboardRightRail({
       </section>
 
       <section className="ba-right-rail-card rounded-[1.85rem] p-5">
-        <div className="flex items-center justify-between gap-3">
+        <div className="ba-section-header">
           <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-violet-100/72">
             THIS WEEK&apos;S SUMMARY
           </div>
@@ -106,10 +106,12 @@ export default function DashboardRightRail({
           ].map(([label, value]) => (
             <div
               key={String(label)}
-              className="flex items-center justify-between rounded-[1.05rem] border border-white/10 bg-white/[0.03] px-4 py-3"
+              className="ba-glass-panel flex items-center justify-between rounded-[1.05rem] px-4 py-3"
             >
               <span className="text-sm text-white/68">{label}</span>
-              <span className="text-base font-black text-white">{value}</span>
+              <span className="text-base font-black text-white">
+                {typeof value === "number" ? value.toLocaleString() : value}
+              </span>
             </div>
           ))}
         </div>
