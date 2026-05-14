@@ -488,14 +488,11 @@ export default function DashboardPage() {
 
             <section className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
+                <h1 className="text-[2.65rem] font-black tracking-[-0.055em] text-white sm:text-5xl xl:text-[3.8rem]">
                   Welcome back.
-                </p>
-                <h1 className="mt-2 text-[2.35rem] font-black tracking-[-0.055em] text-white sm:text-5xl xl:text-[3.6rem]">
-                  Train today. Grow stronger daily.
                 </h1>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
-                  Build discipline. Strengthen your spirit.
+                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300 sm:text-[1.15rem] sm:leading-8">
+                  Train today. Grow stronger daily.
                 </p>
               </div>
               <div className="ba-glass-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-semibold text-white/84">
@@ -514,9 +511,6 @@ export default function DashboardPage() {
               referenceLine={referenceLine}
               focusPassage={focusPassage}
               onContinue={() => router.push(continueHref)}
-              onOpenTraining={() => router.push(dashboardState?.currentCampaignHref || "/training")}
-              nextTitle={dashboardState?.nextMissionTitle || "The First Family"}
-              nextLabel={dashboardState?.nextMissionLabel || "Genesis 4–6"}
               progressPercent={dashboardState?.genesisProgressPercent || 0}
             />
 
@@ -553,24 +547,20 @@ export default function DashboardPage() {
 
             <section>
               <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
-                    Recommended for you
-                  </p>
-                  <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">
-                    Keep your momentum moving.
-                  </h2>
-                </div>
+                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
+                  Recommended for you
+                </p>
                 <button
                   type="button"
                   onClick={() => router.push("/training")}
-                  className="text-sm font-semibold text-white/72 transition hover:text-white"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-100/88 transition hover:text-white"
                 >
                   View All
+                  <span>{renderNavIcon("chevron-right", "h-4 w-4")}</span>
                 </button>
               </div>
 
-              <div className="mt-5 grid gap-4 xl:grid-cols-2">
+              <div className="mt-5 grid gap-4">
                 <DashboardRecommendationCard
                   title="TRAINING ARENA"
                   eyebrow="Flagship Lane"
