@@ -103,16 +103,16 @@ export default function Sidebar({
         onClick={() => closeMobile?.()}
         className={`group block rounded-[1rem] border px-4 py-3 transition duration-200 ${
           active
-            ? "border-amber-200/22 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
+            ? "ba-gold-edge bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
             : "border-white/0 bg-white/[0.02] text-white/84 hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white hover:shadow-[0_0_24px_rgba(34,211,238,0.08)]"
         }`}
       >
         <div className="flex items-center gap-3">
           <span
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
+            className={`ba-icon-badge inline-flex h-9 w-9 items-center justify-center rounded-full transition ${
               active
-                ? "border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
-                : "border-white/10 bg-white/[0.04] text-white/62 group-hover:border-cyan-200/18 group-hover:bg-cyan-200/10 group-hover:text-cyan-50"
+                ? "ba-gold-edge text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
+                : "text-white/62 group-hover:border-cyan-200/18 group-hover:bg-cyan-200/10 group-hover:text-cyan-50"
             }`}
           >
             {renderNavIcon(icon, "h-[1.05rem] w-[1.05rem]")}
@@ -184,7 +184,7 @@ export default function Sidebar({
       <div className="flex-1 space-y-4">
         <div className="ba-sidebar-panel rounded-[1.55rem] p-5">
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
+            <div className="ba-icon-badge ba-gold-edge inline-flex h-12 w-12 items-center justify-center rounded-2xl text-amber-50">
               {renderNavIcon("brand", "h-5.5 w-5.5")}
             </div>
             <div>
@@ -215,7 +215,7 @@ export default function Sidebar({
               {renderNavIcon("upgrade", "h-4.5 w-4.5")}
             </div>
           </div>
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+          <div className="ba-progress-track mt-4 h-2">
             <div
               className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(103,232,249,0.95),rgba(250,204,21,0.95),rgba(244,114,182,0.9))]"
               style={{ width: `${levelProgress}%` }}
@@ -226,13 +226,13 @@ export default function Sidebar({
             <span>{xpToNextLevel} XP to next</span>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+            <div className="ba-glass-panel ba-xp-aura rounded-[1rem] px-3 py-3">
               <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
                 XP
               </div>
               <div className="mt-2 text-lg font-black text-white">{xp}</div>
             </div>
-            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+            <div className="ba-glass-panel ba-streak-aura rounded-[1rem] px-3 py-3">
               <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
                 Streak
               </div>
@@ -240,19 +240,21 @@ export default function Sidebar({
             </div>
           </div>
           <div className="mt-3 grid grid-cols-2 gap-3">
-            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+            <div className="ba-glass-panel ba-mastery-aura rounded-[1rem] px-3 py-3">
               <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
                 Mastery
               </div>
-              <div className="mt-2 text-lg font-black text-white">{Math.max(18, Math.min(96, Math.round(xp / 45)))}%</div>
+              <div className="mt-2 text-lg font-black text-white">
+                {Math.max(18, Math.min(96, Math.round(xp / 45)))}%
+              </div>
             </div>
-            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
-              Focus Rank
+            <div className="ba-glass-panel ba-xp-aura rounded-[1rem] px-3 py-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
+                Focus Rank
+              </div>
+              <div className="mt-2 text-lg font-black text-white">Sapphire II</div>
             </div>
-            <div className="mt-2 text-lg font-black text-white">Sapphire II</div>
           </div>
-        </div>
           <div className="mt-3 rounded-[1rem] border border-emerald-300/14 bg-emerald-300/8 px-3 py-2 text-xs text-white/84">
             Plan: <span className="font-semibold text-emerald-300">{fullPlanLabel}</span>
           </div>
@@ -272,17 +274,17 @@ export default function Sidebar({
             onClick={() => closeMobile?.()}
             className={`group block rounded-[1rem] border px-4 py-3 transition duration-200 ${
               questsActive
-                ? "border-amber-200/22 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
+                ? "ba-gold-edge bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
                 : "border-white/0 bg-white/[0.02] text-white/84 hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white hover:shadow-[0_0_24px_rgba(34,211,238,0.08)]"
             }`}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <span
-                  className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
+                  className={`ba-icon-badge inline-flex h-9 w-9 items-center justify-center rounded-full transition ${
                     questsActive
-                      ? "border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
-                      : "border-white/10 bg-white/[0.04] text-white/62 group-hover:border-cyan-200/18 group-hover:bg-cyan-200/10 group-hover:text-cyan-50"
+                      ? "ba-gold-edge text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
+                      : "text-white/62 group-hover:border-cyan-200/18 group-hover:bg-cyan-200/10 group-hover:text-cyan-50"
                   }`}
                 >
                   {renderNavIcon("quests", "h-[1.05rem] w-[1.05rem]")}
@@ -309,7 +311,7 @@ export default function Sidebar({
               className="block w-full cursor-pointer rounded-[1rem] border border-white/0 bg-white/[0.02] px-4 py-3 text-left text-white/84 transition hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white hover:shadow-[0_0_24px_rgba(34,211,238,0.08)]"
             >
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/62">
+                <span className="ba-icon-badge inline-flex h-9 w-9 items-center justify-center rounded-full text-white/62">
                   {renderNavIcon("leaderboard", "h-[1.05rem] w-[1.05rem]")}
                 </span>
                 <div>
@@ -362,14 +364,14 @@ export default function Sidebar({
           }}
           className={`flex w-full items-center gap-3 rounded-[1rem] border px-4 py-3 text-left transition ${
             profileActive
-              ? "border-amber-200/22 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
+              ? "ba-gold-edge bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
               : "border-white/0 bg-white/[0.02] text-white/84 hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white"
           }`}
         >
-          <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${
+          <span className={`ba-icon-badge inline-flex h-9 w-9 items-center justify-center rounded-full ${
             profileActive
-              ? "border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
-              : "border-white/10 bg-white/[0.04] text-white/62"
+              ? "ba-gold-edge text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
+              : "text-white/62"
           }`}>
             {renderNavIcon("settings", "h-[1.05rem] w-[1.05rem]")}
           </span>
@@ -380,7 +382,7 @@ export default function Sidebar({
           onClick={handleLogout}
           className="flex w-full items-center gap-3 rounded-[1rem] border border-red-400/0 bg-red-500/[0.04] px-4 py-3 text-left text-red-300 transition hover:border-red-400/12 hover:bg-red-500/10"
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-red-400/10 bg-red-500/[0.06] text-red-200">
+          <span className="ba-icon-badge inline-flex h-9 w-9 items-center justify-center rounded-full border-red-400/10 bg-red-500/[0.06] text-red-200">
             {renderNavIcon("close", "h-[1.05rem] w-[1.05rem]")}
           </span>
           <span className="text-sm font-semibold">Logout</span>

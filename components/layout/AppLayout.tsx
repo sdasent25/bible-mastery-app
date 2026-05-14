@@ -46,7 +46,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`ba-page-bg flex min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}
+      className={`ba-page-bg ba-auth-shell flex min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}
     >
       {open && !isGameMode ? (
         <div
@@ -69,7 +69,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           aria-modal="true"
           aria-label="Navigation menu"
         >
-          <div className="flex h-full flex-col bg-[#070b14] shadow-[0_24px_80px_rgba(0,0,0,0.4)]">
+          <div className="ba-sacred-surface flex h-full flex-col rounded-r-[1.75rem] border-l-0 shadow-[0_24px_80px_rgba(0,0,0,0.4)]">
             <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
               <div>
                 <div className="text-sm font-black tracking-[-0.02em] text-white">
@@ -93,13 +93,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         </div>
       ) : null}
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="ba-content-frame flex min-w-0 flex-1 flex-col">
         {showMobileNav ? (
           <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 md:hidden">
-            <div className="flex items-center justify-between gap-3">
+            <div className="ba-cinematic-container flex items-center justify-between gap-3">
               <div className="min-w-0">
                 <div className="flex items-center gap-2.5">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-200/16 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.1)]">
+                  <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 items-center justify-center rounded-2xl text-amber-50">
                     {renderNavIcon("brand", "h-[1.05rem] w-[1.05rem]")}
                   </div>
                   <div className="min-w-0">
@@ -114,7 +114,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </div>
                   </div>
                 </div>
-                <div className="mt-2 h-1.5 w-[9.75rem] overflow-hidden rounded-full bg-white/10">
+                <div className="ba-progress-track mt-2 h-1.5 w-[9.75rem]">
                   <div
                     className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(241,185,63,1),rgba(250,214,117,0.98),rgba(147,229,255,0.42))]"
                     style={{ width: `${levelProgress}%` }}
@@ -144,11 +144,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         ) : null}
 
         <div className={`flex-1 transition ${open ? "md:blur-0" : ""}`}>
-          <div className="md:hidden bg-[#0B1220]">
-            <div className={showMobileNav ? "pb-[104px]" : ""}>{children}</div>
+          <div className="md:hidden">
+            <div className={`ba-cinematic-container ${showMobileNav ? "ba-page-with-nav" : ""}`}>
+              {children}
+            </div>
 
             {showMobileNav ? (
-              <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[calc(env(safe-area-inset-bottom,0px)+0.65rem)] pt-2">
+              <div className="ba-mobile-safe-bottom fixed inset-x-0 bottom-0 z-40 px-3 pt-2">
                 <div className="ba-bottom-nav mx-auto grid h-[82px] max-w-[32rem] grid-cols-5 rounded-[1.8rem] px-1">
                   {mobileNavItems.map((item) => {
                     const active = isNavItemActive(pathname, item.href)
@@ -183,7 +185,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
 
-          <div className="hidden md:block md:overflow-y-auto md:p-8">{children}</div>
+          <div className="hidden md:block md:overflow-y-auto md:px-8 md:py-7">
+            <div className="mx-auto w-full max-w-[1560px]">{children}</div>
+          </div>
         </div>
       </div>
     </div>
