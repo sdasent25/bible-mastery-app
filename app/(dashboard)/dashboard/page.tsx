@@ -476,7 +476,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
               <div>
-                <h1 className="text-4xl font-black tracking-[-0.04em] text-white sm:text-5xl">
+                <h1 className="text-[2.25rem] font-black tracking-[-0.04em] text-white sm:text-5xl">
                   Welcome back, Athlete.
                 </h1>
                 <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
@@ -538,7 +538,7 @@ export default function DashboardPage() {
                   <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/74 drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
                     {dashboardState?.missionAtmosphere || "The Foundations of Creation"}
                   </p>
-                  <h2 className="mt-4 text-4xl font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-5xl">
+                  <h2 className="mt-4 text-[2.25rem] font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-5xl">
                     {dashboardState?.missionTitle || "In the Beginning"}
                   </h2>
                   <p className="mt-3 text-lg font-semibold text-amber-100/82">

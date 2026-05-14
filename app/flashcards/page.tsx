@@ -298,7 +298,7 @@ export default function FlashcardsPage() {
             <div className="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-amber-200">
               Verse Memory
             </div>
-            <h1 className="mt-4 max-w-3xl text-[2rem] font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
+            <h1 className="mt-4 max-w-3xl text-[1.9rem] font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
               Memorize the verses that matter to you.
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7 md:text-lg">

@@ -160,7 +160,7 @@ export default function QuestsPage() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
               <div className="ba-badge-gold">Quests</div>
-              <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
+              <h1 className="mt-4 text-[2.1rem] font-black tracking-[-0.04em] text-white sm:text-5xl">
                 Sharpen specialized Bible skills.
               </h1>
               <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-lg sm:leading-8">

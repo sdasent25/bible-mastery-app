@@ -105,11 +105,11 @@ export default function RootLayout({
   // Show loading state while checking authentication
   if (isAuthenticated === null && !isPublicRoute) {
     return (
-      <html
+        <html
         lang={locale}
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
-        <body className="min-h-full flex flex-col items-center justify-center">
+        <body className="min-h-full flex flex-col items-center justify-center font-sans">
           <div className="text-gray-200">Loading...</div>
         </body>
       </html>
@@ -121,7 +121,7 @@ export default function RootLayout({
       lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col font-sans">
         <div className={`fixed top-4 right-4 z-50 flex flex-col items-end gap-2 ${isPublicRoute ? "flex" : "hidden sm:flex"}`}>
           <LanguageToggle />
           <SoundToggle />

@@ -58,7 +58,7 @@ export default function PricingPage() {
         <section className="ba-card rounded-[2rem] px-5 py-7 sm:px-8 sm:py-9">
           <div className="mx-auto max-w-4xl text-center">
             <div className="ba-badge-gold">Choose Your Plan</div>
-            <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-white sm:text-5xl">
+            <h1 className="mt-4 text-[2.15rem] font-black leading-[1.02] tracking-[-0.04em] text-white sm:text-5xl">
               Unlock the Bible Athlete system at the depth you want to train
             </h1>
             <p className="mx-auto mt-4 max-w-3xl text-sm leading-6 text-slate-300 sm:text-lg sm:leading-8">

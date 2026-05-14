@@ -107,14 +107,14 @@ export default function LandingPage() {
                 Premium Bible training for real growth
               </div>
 
-              <h1 className="mt-6 max-w-3xl text-4xl font-black leading-tight tracking-[-0.05em] text-white md:text-6xl">
+              <h1 className="mt-6 max-w-3xl text-[2.85rem] font-black leading-[0.96] tracking-[-0.05em] text-white sm:text-5xl md:text-6xl">
                 Train your Bible knowledge
                 <span className="mt-2 block bg-[linear-gradient(135deg,#9BFFB6_0%,#52E0FF_100%)] bg-clip-text text-transparent">
                   like an athlete trains to win.
                 </span>
               </h1>
 
-              <p className="mt-6 max-w-xl text-base leading-8 text-white sm:text-lg">
+              <p className="mt-6 max-w-xl text-base leading-7 text-white sm:text-lg sm:leading-8">
                 Build streaks, master scripture, and move through the Bible with a training system designed to make retention feel rewarding.
               </p>
 
@@ -253,7 +253,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl">
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Core Training</p>
-            <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl md:text-5xl">
+            <h2 className="mt-4 text-[2.1rem] font-black tracking-[-0.04em] text-white sm:text-4xl md:text-5xl">
               A premium system built to turn study into momentum.
             </h2>
             <p className="mt-4 text-base leading-8 text-white sm:text-lg">
@@ -280,7 +280,7 @@ export default function LandingPage() {
         <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,#091223_0%,#060A16_100%)] p-6 shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-8 md:p-10">
           <div className="max-w-2xl">
             <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">How It Works</p>
-            <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+            <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] text-white sm:text-4xl">
               A simple system that feels smooth from the first session.
             </h2>
           </div>
@@ -303,7 +303,7 @@ export default function LandingPage() {
       <section className="px-5 py-20 sm:px-6 md:px-8 md:py-24">
         <div className="mx-auto max-w-5xl rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(155,255,182,0.12),transparent_36%),linear-gradient(180deg,#0A1325_0%,#060A16_100%)] p-8 text-center shadow-[0_28px_80px_rgba(0,0,0,0.28)] sm:p-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#9BFFB6]">Built For Real Growth</p>
-          <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+          <h2 className="mt-4 text-[2rem] font-black tracking-[-0.04em] text-white sm:text-4xl">
             Everything you need to build a stronger Bible habit.
           </h2>
 
@@ -343,7 +343,7 @@ export default function LandingPage() {
       <section className="px-5 pb-20 pt-20 text-center sm:px-6 md:px-8 md:py-24">
         <div className="mx-auto max-w-5xl rounded-[2.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(14,21,39,0.98),rgba(7,10,19,0.98))] px-6 py-12 shadow-[0_32px_90px_rgba(0,0,0,0.34)] sm:px-10">
           <p className="text-sm font-black uppercase tracking-[0.28em] text-[#52E0FF]">Start Now</p>
-          <h2 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
+          <h2 className="mt-4 text-[2.1rem] font-black tracking-[-0.04em] text-white sm:text-5xl">
             Your Bible world starts here.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-8 text-white sm:text-lg">

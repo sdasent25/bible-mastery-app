@@ -21,13 +21,38 @@
 
 html {
   font-size: 18px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-geist-sans),
+    "Inter",
+    "Segoe UI",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   letter-spacing: 0.2px;
+  line-height: 1.5;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(250, 204, 21, 0.24);
+  color: rgb(255 251 235);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -161,8 +186,9 @@ body {
   justify-content: center;
   gap: 0.5rem;
   border-radius: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.25;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
@@ -251,9 +277,46 @@ body {
   padding: 0.38rem 0.7rem;
   font-size: 0.69rem;
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.18em;
+  line-height: 1.1;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ba-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.ba-heading-hero {
+  font-size: clamp(2rem, 4vw, 3.75rem);
+  font-weight: 900;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.ba-heading-section {
+  font-size: clamp(1.7rem, 3vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+.ba-copy {
+  font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+  line-height: 1.75;
+  color: rgb(203 213 225);
+}
+
+.ba-copy-compact {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgb(203 213 225);
 }
 
 .ba-badge {

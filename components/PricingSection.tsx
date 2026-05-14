@@ -79,7 +79,7 @@ export default function PricingSection() {
 
       <div className="mx-auto max-w-4xl text-center">
         <div className="ba-badge-gold">Start Your Training</div>
-        <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-5xl">
+        <h1 className="mt-4 text-[2.15rem] font-black tracking-[-0.04em] text-white sm:text-5xl">
           Choose the level of Bible mastery you want to build
         </h1>
         <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-lg sm:leading-8">

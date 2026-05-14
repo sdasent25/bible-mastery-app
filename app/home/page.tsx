@@ -222,7 +222,7 @@ export default function HomePage() {
           <p className="text-sm font-bold uppercase tracking-[0.28em] text-amber-200/82">
             Daily Re-Entry
           </p>
-          <h1 className="mt-3 text-4xl font-black tracking-[-0.04em] text-white">
+          <h1 className="mt-3 text-[2.1rem] font-black tracking-[-0.04em] text-white sm:text-4xl">
             Continue your campaign
           </h1>
         </div>
@@ -255,7 +255,7 @@ export default function HomePage() {
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/74 drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
                 {homeState?.missionAtmosphere || "The Foundations of Creation"}
               </p>
-              <h2 className="mt-4 text-4xl font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)]">
+              <h2 className="mt-4 text-[2.2rem] font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-4xl">
                 {homeState?.missionTitle || "In the Beginning"}
               </h2>
               <p className="mt-3 text-lg font-semibold text-amber-100/80">
