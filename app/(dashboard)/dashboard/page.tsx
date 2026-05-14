@@ -526,9 +526,6 @@ export default function DashboardPage() {
 
             <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/66">
-                  {dashboardState?.playerName || "Athlete"} • Genesis Campaign
-                </p>
                 <h1 className="text-[2.65rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-5xl xl:text-[3.85rem]">
                   Welcome back.
                 </h1>
@@ -557,7 +554,6 @@ export default function DashboardPage() {
               onContinue={() => router.push(continueHref)}
               progressPercent={dashboardState?.genesisProgressPercent || 0}
               imageSrc={heroImageSrc}
-              atmosphere={dashboardState?.missionAtmosphere || "Sacred mission"}
               missionProgressLabel={`Mission ${dashboardState?.segmentNumber || 1} of ${dashboardState?.totalSegments || 1}`}
               dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
             />
@@ -576,7 +572,7 @@ export default function DashboardPage() {
             </section>
 
             <section>
-              <div className="flex items-center justify-between gap-3">
+              <div className="ba-section-header">
                 <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-[#f0e6d9]">
                   RECOMMENDED FOR YOU
                 </p>
@@ -615,39 +611,6 @@ export default function DashboardPage() {
                 />
               </div>
             </section>
-
-            <section className="ba-glass-panel rounded-[2rem] border border-white/10 p-5 sm:p-6">
-              <div className="ba-section-header">
-                <div>
-                  <p className="ba-section-kicker">Access & Progress</p>
-                  <h2 className="mt-2 text-[1.9rem] font-semibold tracking-[-0.045em] text-white sm:text-[2.25rem]">
-                    Your covenant track
-                  </h2>
-                </div>
-                <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white/78 sm:inline-flex">
-                  {getPlanBadge(plan)}
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <div className="ba-glass-panel ba-xp-aura rounded-[1.35rem] px-4 py-4">
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-cyan-100/72">Current Plan</div>
-                  <div className="mt-2 text-xl font-black text-white">{getPlanBadge(plan)}</div>
-                </div>
-                <div className="ba-glass-panel ba-streak-aura rounded-[1.35rem] px-4 py-4">
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-amber-100/72">Campaign Progress</div>
-                  <div className="mt-2 text-xl font-black text-white">
-                    {dashboardState?.genesisProgressPercent || 0}%
-                  </div>
-                </div>
-                <div className="ba-glass-panel ba-mastery-aura rounded-[1.35rem] px-4 py-4">
-                  <div className="text-[10px] uppercase tracking-[0.22em] text-fuchsia-100/72">Family Seats</div>
-                  <div className="mt-2 text-xl font-black text-white">
-                    {memberCount !== null && memberLimit !== null ? `${memberCount}/${memberLimit}` : "Solo"}
-                  </div>
-                </div>
-              </div>
-            </section>
           </div>
 
           <div className="hidden xl:block">
@@ -665,20 +628,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="mt-6 xl:hidden">
-          <DashboardRightRail
-            missionTitle={missionTitle}
-            referenceLine={referenceLine}
-            rewardLine={rewardLine}
-            sessionsCompleted={weeklySummary.sessionsCompleted}
-            versesMemorized={weeklySummary.versesMemorized}
-            questsCompleted={weeklySummary.questsCompleted}
-            totalXpEarned={weeklySummary.totalXpEarned}
-            onContinue={() => router.push(continueHref)}
-            onViewProgress={() => router.push("/leaderboard")}
-          />
-        </div>
-
         <section className="ba-right-rail-card mt-8 rounded-[2rem] p-5 sm:p-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -692,8 +641,16 @@ export default function DashboardPage() {
                 Manage access, family membership, and plan details here without pulling focus from your active mission.
               </p>
             </div>
-            <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200">
-              Current Plan: {getPlanBadge(plan)}
+            <div className="flex flex-wrap gap-2">
+              <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200">
+                Current Plan: {getPlanBadge(plan)}
+              </div>
+              <div className="inline-flex rounded-full border border-cyan-300/14 bg-cyan-300/8 px-4 py-2 text-sm font-semibold text-cyan-100">
+                Genesis Progress: {dashboardState?.genesisProgressPercent || 0}%
+              </div>
+              <div className="inline-flex rounded-full border border-fuchsia-300/14 bg-fuchsia-300/8 px-4 py-2 text-sm font-semibold text-fuchsia-100">
+                Family Seats: {memberCount !== null && memberLimit !== null ? `${memberCount}/${memberLimit}` : "Solo"}
+              </div>
             </div>
           </div>
 

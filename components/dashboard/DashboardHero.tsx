@@ -12,7 +12,6 @@ type DashboardHeroProps = {
   onContinue: () => void
   progressPercent: number
   imageSrc: string
-  atmosphere: string
   missionProgressLabel: string
   dailyMissionComplete: boolean
 }
@@ -25,7 +24,6 @@ export default function DashboardHero({
   onContinue,
   progressPercent,
   imageSrc,
-  atmosphere,
   missionProgressLabel,
   dailyMissionComplete,
 }: DashboardHeroProps) {
@@ -51,11 +49,11 @@ export default function DashboardHero({
               <span className="text-amber-100">{renderNavIcon("brand", "h-3.5 w-3.5")}</span>
               TODAY&apos;S MISSION
             </div>
-            <div className="rounded-full border border-white/12 bg-black/18 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100/82 backdrop-blur-sm">
+            <div className="hidden rounded-full border border-white/12 bg-black/18 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100/82 backdrop-blur-sm lg:inline-flex">
               {missionProgressLabel}
             </div>
             {dailyMissionComplete ? (
-              <div className="rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100">
+              <div className="hidden rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100 lg:inline-flex">
                 Completed Today
               </div>
             ) : null}
@@ -66,9 +64,6 @@ export default function DashboardHero({
         </div>
 
         <div className="max-w-[35rem]">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-amber-100/74">
-            {atmosphere}
-          </div>
           <h2 className="mt-2 text-[2.75rem] font-semibold leading-[0.94] tracking-[-0.055em] text-white drop-shadow-[0_10px_30px_rgba(0,0,0,0.48)] sm:text-[3.6rem] lg:text-[4.35rem]">
             {title}
           </h2>

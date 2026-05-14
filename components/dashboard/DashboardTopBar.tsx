@@ -18,7 +18,7 @@ export default function DashboardTopBar({
   onSettings,
 }: DashboardTopBarProps) {
   return (
-    <section className="ba-dashboard-topbar ba-card-aura rounded-[2rem] px-4 py-4 sm:px-5 lg:px-6">
+    <section className="ba-dashboard-topbar ba-card-aura hidden rounded-[2rem] px-4 py-4 sm:px-5 lg:block lg:px-6">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
         <div className="flex items-center gap-3 sm:gap-4">
           <div className="ba-icon-badge ba-gold-edge flex h-14 w-14 items-center justify-center rounded-[1.2rem] text-amber-50 sm:h-16 sm:w-16 sm:rounded-[1.35rem]">
