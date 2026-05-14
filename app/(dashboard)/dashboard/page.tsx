@@ -97,41 +97,6 @@ function getDailyRhythmLabel(date: Date) {
   return "Night Reflection"
 }
 
-function getFocusRankLabel(progressPercent: number, masteryPercent: number) {
-  const combined = Math.round((progressPercent + masteryPercent) / 2)
-
-  if (combined >= 90) return "Crowned Focus"
-  if (combined >= 75) return "Steady Focus"
-  if (combined >= 55) return "Growing Focus"
-  return "Early Focus"
-}
-
-function getFocusRankTone(progressPercent: number, masteryPercent: number) {
-  const combined = Math.round((progressPercent + masteryPercent) / 2)
-
-  if (combined >= 90) {
-    return {
-      border: "border-cyan-300/28",
-      bg: "bg-cyan-300/10",
-      text: "text-cyan-100",
-    }
-  }
-
-  if (combined >= 75) {
-    return {
-      border: "border-violet-300/24",
-      bg: "bg-violet-300/10",
-      text: "text-violet-100",
-    }
-  }
-
-  return {
-    border: "border-amber-300/24",
-    bg: "bg-amber-300/10",
-    text: "text-amber-100",
-  }
-}
-
 export default function DashboardPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -501,14 +466,8 @@ export default function DashboardPage() {
   const xpIntoLevel = (dashboardState?.xpEarned || 0) % 250
   const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
-  const focusRankLabel = getFocusRankLabel(
-    dashboardState?.genesisProgressPercent || 0,
-    dashboardState?.masteryPercent || 0
-  )
-  const focusRankTone = getFocusRankTone(
-    dashboardState?.genesisProgressPercent || 0,
-    dashboardState?.masteryPercent || 0
-  )
+  const focusRankLabel = "SAPPHIRE II"
+  const focusRankMeta = "Top 18%"
 
   if (loading) {
     return (
@@ -521,14 +480,14 @@ export default function DashboardPage() {
   const continueHref = dashboardState?.continueHref || "/training"
 
   return (
-    <main className="ba-shell-bg min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
+    <main className="ba-page-bg min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.18),transparent_58%)]" />
       <div className="pointer-events-none absolute left-[-4rem] top-32 h-44 w-44 rounded-full bg-amber-300/10 blur-3xl" />
       <div className="pointer-events-none absolute right-[-3rem] top-[24rem] h-56 w-56 rounded-full bg-cyan-400/8 blur-3xl" />
       <div className="pointer-events-none absolute right-[8%] top-[9rem] h-44 w-44 rounded-full bg-violet-400/8 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl">
-        <section className="ba-sacred-surface rounded-[2rem] p-4 sm:p-5">
+        <section className="ba-sacred-surface hidden rounded-[2rem] p-4 sm:p-5 md:block">
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0">
               <div className="flex items-center gap-3">
@@ -601,12 +560,17 @@ export default function DashboardPage() {
                   Build discipline. Strengthen your spirit.
                 </p>
               </div>
-              <div className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white/84">
+            <div className="ba-glass-panel inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white/84">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
+                {renderNavIcon("brand", "h-3.5 w-3.5")}
+              </span>
+              <span>
                 {formattedDate} · {rhythmLabel}
-              </div>
+              </span>
             </div>
+          </div>
 
-            <section className="ba-card-aura relative overflow-hidden rounded-[2.2rem] border border-amber-200/18 shadow-[0_30px_100px_rgba(0,0,0,0.34)]">
+            <section className="ba-hero-card ba-card-aura relative overflow-hidden rounded-[2.2rem] shadow-[0_30px_100px_rgba(0,0,0,0.34)]">
               <div className="absolute inset-0">
                 <Image
                   src={dashboardState?.missionArt || "/explorer/pentateuch/region.png"}
@@ -625,36 +589,55 @@ export default function DashboardPage() {
                   <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.26em] text-amber-100/82">
                     Today&apos;s Mission
                   </div>
-                  <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">
-                    {dashboardState?.dailyMissionComplete ? "Replay Ready" : "Ready Now"}
+                  <div className="flex items-center gap-2">
+                    <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">
+                      {dashboardState?.dailyMissionComplete ? "Replay Ready" : "Ready Now"}
+                    </div>
+                    <button
+                      type="button"
+                      aria-label="Mission details"
+                      className="ba-glass-panel inline-flex h-10 w-10 items-center justify-center rounded-full text-white/82"
+                    >
+                      {renderNavIcon("settings", "h-4 w-4")}
+                    </button>
                   </div>
                 </div>
 
                 <div className="max-w-2xl">
                   <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/74 drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
-                    {dashboardState?.missionAtmosphere || "The Foundations of Creation"}
+                    {dashboardState?.missionAtmosphere || "Morning Watch"}
                   </p>
                   <h2 className="mt-4 text-[2.25rem] font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-5xl">
-                    {dashboardState?.missionTitle || "In the Beginning"}
+                    {dashboardState?.missionTitle || "Walk in Faith"}
                   </h2>
+                  <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/72">
+                    {dashboardState?.currentSegmentLabel || "Micah 6:8"}
+                  </p>
                   <p className="mt-3 text-lg font-semibold text-amber-100/82">
                     {dashboardState?.dailyMissionComplete
                       ? "Return for a steadier second pass."
                       : "Step back into Scripture and keep the mission moving."}
                   </p>
                   <p className="mt-4 max-w-xl text-base leading-7 text-slate-100/84 drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)]">
-                    {dashboardState?.missionSubtitle || "The foundations of creation. Understand where it all began."}
+                    {dashboardState?.missionSubtitle || "Let your heart be steady, your mind be renewed, and your steps reflect His love."}
                   </p>
                 </div>
 
                 <div className="rounded-[1.8rem] border border-white/10 bg-black/24 p-4 backdrop-blur-sm sm:p-5">
                   <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_230px]">
                     <div>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/60">
-                        Focus Passage
-                      </div>
-                      <div className="mt-2 text-2xl font-black text-white">
-                        {dashboardState?.currentSegmentLabel || "Genesis 1–3"}
+                      <div className="flex items-center gap-3">
+                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
+                          {renderNavIcon("verse-memory", "h-4.5 w-4.5")}
+                        </span>
+                        <div>
+                          <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/60">
+                            Focus Passage
+                          </div>
+                          <div className="mt-1 text-2xl font-black text-white">
+                            {dashboardState?.currentSegmentLabel || "Psalm 119:105"}
+                          </div>
+                        </div>
                       </div>
                       <p className="mt-2 max-w-xl text-sm leading-6 text-slate-200">
                         {dashboardState?.dailyMissionComplete
@@ -710,7 +693,7 @@ export default function DashboardPage() {
             </section>
 
             <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-              <article className="ba-glass-card rounded-[1.45rem] p-4">
+              <article className="ba-stat-card rounded-[1.45rem] p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/72">
@@ -719,6 +702,7 @@ export default function DashboardPage() {
                     <div className="mt-2 text-2xl font-black text-white">
                       {dashboardState?.xpEarned || 0}
                     </div>
+                    <div className="mt-1 text-xs text-white/58">XP earned</div>
                   </div>
                   <div className="ba-rank-gem inline-flex h-10 w-10 items-center justify-center rounded-full text-cyan-100">
                     {renderNavIcon("brand", "h-4.5 w-4.5")}
@@ -729,15 +713,16 @@ export default function DashboardPage() {
                 </div>
               </article>
 
-              <article className="ba-glass-card rounded-[1.45rem] p-4">
+              <article className="ba-stat-card rounded-[1.45rem] p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/72">
                       Streak
                     </div>
                     <div className="mt-2 text-2xl font-black text-white">
-                      {dashboardState?.streak || 0} days
+                      {dashboardState?.streak || 0}
                     </div>
+                    <div className="mt-1 text-xs text-white/58">Days in rhythm</div>
                   </div>
                   <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-300/20 bg-amber-300/10 text-amber-100">
                     {renderNavIcon("training", "h-4.5 w-4.5")}
@@ -757,7 +742,7 @@ export default function DashboardPage() {
                 </div>
               </article>
 
-              <article className="ba-glass-card rounded-[1.45rem] p-4">
+              <article className="ba-stat-card rounded-[1.45rem] p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-violet-100/72">
@@ -766,6 +751,7 @@ export default function DashboardPage() {
                     <div className="mt-2 text-2xl font-black text-white">
                       {dashboardState?.masteryPercent || 0}%
                     </div>
+                    <div className="mt-1 text-xs text-white/58">Scripture retained</div>
                   </div>
                   <div className="ba-rank-gem inline-flex h-10 w-10 items-center justify-center rounded-full text-violet-100">
                     {renderNavIcon("leaderboard", "h-4.5 w-4.5")}
@@ -779,7 +765,7 @@ export default function DashboardPage() {
                 </div>
               </article>
 
-              <article className="ba-glass-card rounded-[1.45rem] p-4">
+              <article className="ba-stat-card rounded-[1.45rem] p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/72">
@@ -788,13 +774,14 @@ export default function DashboardPage() {
                     <div className="mt-2 text-xl font-black text-white">
                       {focusRankLabel}
                     </div>
+                    <div className="mt-1 text-xs text-white/58">{focusRankMeta}</div>
                   </div>
-                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-full border ${focusRankTone.border} ${focusRankTone.bg} ${focusRankTone.text}`}>
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/24 bg-cyan-300/10 text-cyan-100">
                     {renderNavIcon("upgrade", "h-4.5 w-4.5")}
                   </div>
                 </div>
                 <div className="mt-4 text-sm text-white/72">
-                  {dashboardState?.genesisProgressPercent || 0}% campaign focus
+                  Focused and ready for today
                 </div>
               </article>
             </section>
@@ -803,12 +790,19 @@ export default function DashboardPage() {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
-                    Recommended
+                    Recommended for you
                   </p>
                   <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">
                     Keep your momentum moving.
                   </h2>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => router.push("/training")}
+                  className="text-sm font-semibold text-white/72 transition hover:text-white"
+                >
+                  View All
+                </button>
               </div>
 
               <div className="mt-5 grid gap-4 lg:grid-cols-2">
@@ -822,15 +816,18 @@ export default function DashboardPage() {
                       {renderNavIcon("training", "h-5 w-5")}
                     </div>
                     <div className="rounded-full border border-cyan-300/18 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
-                      Flagship
+                      Challenging • 5 Rounds
                     </div>
                   </div>
-                  <h3 className="mt-5 text-2xl font-black text-white">Training Arena</h3>
+                  <h3 className="mt-5 text-2xl font-black uppercase tracking-[-0.03em] text-white">Training Arena</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Step back into your daily drills, sharpen recall, and keep building long-term mastery.
+                    Build discipline. Strengthen your spirit.
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    Level up through guided challenges.
                   </p>
                   <div className="mt-5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-cyan-100">Continue the arena</span>
+                    <span className="text-sm font-semibold text-cyan-100">Enter Training Arena</span>
                     <span className="text-white/72">→</span>
                   </div>
                 </button>
@@ -845,15 +842,18 @@ export default function DashboardPage() {
                       {renderNavIcon("verse-memory", "h-5 w-5")}
                     </div>
                     <div className="rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-100">
-                      Warm Focus
+                      Daily Workout • 10 Verses
                     </div>
                   </div>
-                  <h3 className="mt-5 text-2xl font-black text-white">Verse Memory</h3>
+                  <h3 className="mt-5 text-2xl font-black uppercase tracking-[-0.03em] text-white">Verse Memory</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Hide God&apos;s Word in your heart with guided review, repetition, and calm recall workouts.
+                    Hide God&apos;s Word in your heart.
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-300">
+                    Let it guide you every day.
                   </p>
                   <div className="mt-5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-amber-100">Open memory workout</span>
+                    <span className="text-sm font-semibold text-amber-100">Open Verse Memory</span>
                     <span className="text-white/72">→</span>
                   </div>
                 </button>

@@ -379,6 +379,34 @@ textarea {
   backdrop-filter: blur(16px);
 }
 
+.ba-page-bg {
+  background:
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.12), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.1), transparent 22%),
+    radial-gradient(circle at 18% 82%, rgba(168, 85, 247, 0.08), transparent 20%),
+    linear-gradient(180deg, #07101a 0%, #090e17 42%, #04070f 100%);
+}
+
+.ba-top-shell {
+  background:
+    linear-gradient(180deg, rgba(10, 15, 24, 0.97), rgba(7, 11, 20, 0.94));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(18px);
+}
+
+.ba-glass-panel {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+}
+
 .ba-gold-cta {
   position: relative;
   overflow: hidden;
@@ -389,6 +417,19 @@ textarea {
     0 18px 40px rgba(245, 158, 11, 0.2),
     0 0 30px rgba(250, 204, 21, 0.12),
     inset 0 1px 0 rgba(255, 251, 235, 0.32);
+}
+
+.ba-hero-card {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(255, 226, 153, 0.16), transparent 24%),
+    radial-gradient(circle at 84% 18%, rgba(34, 211, 238, 0.12), transparent 22%),
+    linear-gradient(180deg, rgba(25, 18, 12, 0.3), rgba(9, 11, 17, 0.78));
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  box-shadow:
+    0 28px 80px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
 }
 
 .ba-card-aura {
@@ -409,6 +450,27 @@ textarea {
 }
 
 .ba-card-aura > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ba-soft-aura {
+  position: relative;
+}
+
+.ba-soft-aura::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at top left, rgba(244, 114, 182, 0.08), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(34, 211, 238, 0.08), transparent 24%);
+  pointer-events: none;
+}
+
+.ba-soft-aura > * {
   position: relative;
   z-index: 1;
 }
@@ -450,11 +512,32 @@ textarea {
   backdrop-filter: blur(20px);
 }
 
+.ba-nav-item {
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.ba-nav-item:hover {
+  transform: translateY(-1px);
+}
+
 .ba-nav-active {
   color: rgb(255 251 235);
   box-shadow:
     0 0 22px rgba(251, 191, 36, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.ba-stat-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
 }
 
 @keyframes float {

@@ -159,7 +159,7 @@ export const desktopNavItems: NavItem[] = [
 
 export const mobileNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: "home" },
-  { label: "Training Arena", href: "/training", icon: "training" },
+  { label: "Training", href: "/training", icon: "training" },
   { label: "Quests", href: "/quests", icon: "quests" },
   { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
   { label: "Profile", href: "/settings", icon: "profile" },
