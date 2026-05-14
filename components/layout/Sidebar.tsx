@@ -135,6 +135,10 @@ export default function Sidebar({
   const isProPlusMember = hasLeaderboardAccess
   const showUpgradeCta =
     planType === "free" || planType === "pro" || planType === "family_pro"
+  const athleteLevel = Math.max(1, Math.floor(xp / 250) + 1)
+  const xpIntoLevel = xp % 250
+  const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
+  const levelProgress = Math.max(8, Math.min(100, (xpIntoLevel / 250) * 100))
   const fullPlanLabel =
     planType === "family_pro_plus"
       ? "Pro+ (Family)"
@@ -177,7 +181,7 @@ export default function Sidebar({
       className={`flex h-full flex-col ${isMobile ? "w-full" : "w-64"} overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] scrollbar-thin scrollbar-thumb-white/10`}
     >
       <div className="flex-1 space-y-4">
-        <div className="rounded-[1.45rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.08),transparent_40%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_46px_rgba(0,0,0,0.18)]">
+        <div className="ba-sacred-surface rounded-[1.45rem] p-4">
           <div className="flex items-center gap-3">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
               {renderNavIcon("brand", "h-5 w-5")}
@@ -196,11 +200,34 @@ export default function Sidebar({
           </p>
         </div>
 
-        <div className="rounded-[1.3rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-3">
-          <div className="grid grid-cols-2 gap-3">
+        <div className="ba-glass-card rounded-[1.35rem] p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.18em] text-white/48">
+                Athlete Level
+              </div>
+              <div className="mt-2 text-2xl font-black text-white">
+                Level {athleteLevel}
+              </div>
+            </div>
+            <div className="ba-rank-gem inline-flex h-10 w-10 items-center justify-center rounded-full text-cyan-50">
+              {renderNavIcon("upgrade", "h-4.5 w-4.5")}
+            </div>
+          </div>
+          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(103,232,249,0.95),rgba(250,204,21,0.95),rgba(244,114,182,0.9))]"
+              style={{ width: `${levelProgress}%` }}
+            />
+          </div>
+          <div className="mt-3 flex items-center justify-between text-xs text-white/68">
+            <span>{xp} XP total</span>
+            <span>{xpToNextLevel} XP to next</span>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
               <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
-                Total XP
+                XP
               </div>
               <div className="mt-2 text-lg font-black text-white">{xp}</div>
             </div>
@@ -281,7 +308,7 @@ export default function Sidebar({
           )}
         </div>
 
-        <div className="rounded-[1.4rem] border border-cyan-200/14 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.10),transparent_28%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.12),transparent_28%),linear-gradient(180deg,rgba(17,22,34,0.98),rgba(8,11,20,0.98))] p-4 shadow-[0_18px_46px_rgba(0,0,0,0.2)]">
+        <div className="ba-sacred-surface rounded-[1.4rem] p-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/82">
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-amber-100/20 bg-amber-100/10 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
               {renderNavIcon("upgrade", "h-3.5 w-3.5")}
@@ -302,7 +329,7 @@ export default function Sidebar({
             <Link
               href="/pricing"
               onClick={() => closeMobile?.()}
-              className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-amber-200 px-4 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_32px_rgba(250,204,21,0.14)] transition hover:bg-amber-100"
+              className="ba-gold-cta mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-sm font-black transition hover:bg-amber-100"
             >
               Go Pro+
             </Link>

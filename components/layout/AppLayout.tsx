@@ -91,7 +91,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open navigation menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
+              className="ba-glass-card inline-flex h-10 w-10 items-center justify-center rounded-full text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
             >
               {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
             </button>
@@ -101,13 +101,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 Bible Athlete
               </div>
               <div className="text-[10px] uppercase tracking-[0.24em] text-white/48">
-                Training Command
+                Daily Rhythm
               </div>
             </div>
 
             <Link
               href="/training"
-              className="inline-flex h-10 items-center justify-center rounded-full border border-amber-200/14 bg-amber-200/10 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.08)]"
+              className="ba-glass-card inline-flex h-10 items-center justify-center rounded-full border-amber-200/14 px-3 text-[11px] font-bold uppercase tracking-[0.18em] text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.08)]"
             >
               Arena
             </Link>
@@ -119,10 +119,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className={showMobileNav ? "pb-[104px]" : ""}>{children}</div>
 
             {showMobileNav ? (
-              <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[linear-gradient(180deg,rgba(4,8,16,0.9),rgba(1,3,8,0.98))] shadow-[0_-12px_36px_rgba(0,0,0,0.32)] backdrop-blur">
-                <div className="grid h-[84px] grid-cols-5">
+              <div className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[calc(env(safe-area-inset-bottom,0px)+0.65rem)] pt-2">
+                <div className="ba-bottom-nav mx-auto grid h-[82px] max-w-[32rem] grid-cols-5 rounded-[1.8rem] px-1">
                   {mobileNavItems.map((item) => {
                     const active = isNavItemActive(pathname, item.href)
+                    const showDot = item.href === "/quests"
 
                     return (
                       <Link
@@ -133,13 +134,16 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         }`}
                       >
                         <span
-                          className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
+                          className={`relative inline-flex h-9 w-9 items-center justify-center rounded-full border transition ${
                             active
-                              ? "border-amber-200/22 bg-amber-200/10 text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.12)]"
+                              ? "ba-nav-active border-amber-200/22 bg-amber-200/10 text-amber-50"
                               : "border-transparent bg-white/[0.02] text-white/62"
                           }`}
                         >
                           {renderNavIcon(item.icon, "h-[1.05rem] w-[1.05rem]")}
+                          {showDot ? (
+                            <span className="absolute right-0.5 top-0.5 h-2 w-2 rounded-full bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.5)]" />
+                          ) : null}
                         </span>
                         <span className={`leading-none ${active ? "font-semibold" : ""}`}>{item.label}</span>
                       </Link>

@@ -349,6 +349,114 @@ textarea {
   color: rgb(228 228 231);
 }
 
+.ba-shell-bg {
+  background:
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.12), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.1), transparent 22%),
+    radial-gradient(circle at 18% 82%, rgba(168, 85, 247, 0.08), transparent 20%),
+    linear-gradient(180deg, #07101a 0%, #090e17 42%, #04070f 100%);
+}
+
+.ba-sacred-surface {
+  background:
+    radial-gradient(circle at top left, rgba(255, 221, 153, 0.12), transparent 28%),
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.09), transparent 22%),
+    linear-gradient(180deg, rgba(16, 22, 36, 0.96), rgba(7, 11, 19, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+}
+
+.ba-glass-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+}
+
+.ba-gold-cta {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(250, 215, 101, 0.99), rgba(244, 181, 44, 0.96));
+  border: 1px solid rgba(255, 236, 168, 0.3);
+  color: #241300;
+  box-shadow:
+    0 18px 40px rgba(245, 158, 11, 0.2),
+    0 0 30px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 251, 235, 0.32);
+}
+
+.ba-card-aura {
+  position: relative;
+}
+
+.ba-card-aura::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.1), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(34, 211, 238, 0.08), transparent 28%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.ba-card-aura > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ba-progress-glow {
+  box-shadow:
+    0 0 18px rgba(250, 204, 21, 0.18),
+    0 0 28px rgba(34, 211, 238, 0.1);
+}
+
+.ba-premium-lock {
+  background:
+    radial-gradient(circle at top, rgba(245, 158, 11, 0.08), transparent 32%),
+    linear-gradient(180deg, rgba(47, 33, 20, 0.92), rgba(24, 24, 27, 0.96));
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.24),
+    0 0 26px rgba(251, 191, 36, 0.08);
+}
+
+.ba-rank-gem {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.34), transparent 30%),
+    linear-gradient(135deg, rgba(34, 211, 238, 0.2), rgba(244, 114, 182, 0.16));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.ba-bottom-nav {
+  background:
+    linear-gradient(180deg, rgba(6, 10, 18, 0.92), rgba(2, 5, 12, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 -10px 30px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+}
+
+.ba-nav-active {
+  color: rgb(255 251 235);
+  box-shadow:
+    0 0 22px rgba(251, 191, 36, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
 @keyframes float {
   0% { transform: translateY(0px); }
   50% { transform: translateY(-6px); }
@@ -483,8 +591,71 @@ textarea {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes baShimmer {
+  0% {
+    transform: translateX(-140%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.16;
+  }
+  60% {
+    opacity: 0.28;
+  }
+  100% {
+    transform: translateX(220%);
+    opacity: 0;
+  }
+}
+
+@keyframes baFloatCta {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
 .animate-fade-in {
   animation: fade-in 0.3s ease-out;
+}
+
+.ba-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 22%, rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.34) 50%, rgba(255, 255, 255, 0.05) 58%, transparent 78%);
+  transform: translateX(-140%);
+  pointer-events: none;
+}
+
+.motion-safe .ba-shimmer::after,
+.ba-shimmer.motion-safe::after {
+  animation: baShimmer 2.9s ease-in-out infinite;
+}
+
+.motion-safe .ba-float-cta,
+.ba-float-cta.motion-safe {
+  animation: baFloatCta 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-bounce-soft,
+  .animate-pulse-glow,
+  .animate-pop,
+  .animate-correct,
+  .animate-shake,
+  .animate-xp-pop,
+  .animate-xp,
+  .animate-fade-in,
+  .ba-float-cta,
+  .ba-shimmer::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .perspective {

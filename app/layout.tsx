@@ -8,6 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { getLocale, getMessages } from "@/lib/i18n";
 import LanguageToggle from "@/components/LanguageToggle";
 import AppLayout from "@/components/layout/AppLayout";
+import { renderNavIcon } from "@/lib/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,9 +38,12 @@ function SoundToggle() {
   return (
     <button
       onClick={toggle}
-      className="bg-black/40 text-white px-3 py-2 rounded-lg backdrop-blur"
+      className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-white backdrop-blur"
     >
-      {enabled ? "🔊" : "🔇"}
+      {renderNavIcon("settings", "h-4 w-4")}
+      <span className="text-xs font-semibold uppercase tracking-[0.18em]">
+        {enabled ? "Sound On" : "Sound Off"}
+      </span>
     </button>
   );
 }
