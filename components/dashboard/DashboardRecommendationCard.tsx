@@ -52,18 +52,28 @@ export default function DashboardRecommendationCard({
       <div
         className={`absolute inset-0 ${
           accent === "training"
-            ? "bg-[linear-gradient(90deg,rgba(8,11,18,0.12)_0%,rgba(8,11,18,0.18)_20%,rgba(8,11,18,0.56)_52%,rgba(8,11,18,0.94)_100%)]"
-            : "bg-[linear-gradient(90deg,rgba(17,11,14,0.08)_0%,rgba(17,11,14,0.18)_20%,rgba(11,11,17,0.58)_52%,rgba(9,10,16,0.95)_100%)]"
+            ? "bg-[linear-gradient(90deg,rgba(8,11,18,0.04)_0%,rgba(8,11,18,0.16)_18%,rgba(8,11,18,0.58)_48%,rgba(8,11,18,0.95)_100%)]"
+            : "bg-[linear-gradient(90deg,rgba(17,11,14,0.04)_0%,rgba(17,11,14,0.14)_18%,rgba(11,11,17,0.62)_48%,rgba(9,10,16,0.95)_100%)]"
         }`}
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_28%,rgba(7,10,16,0.24)_100%)]" />
 
-      <div className="relative z-10 flex min-h-[230px] flex-col p-5 sm:p-6 lg:min-h-[252px] lg:pl-[42%]">
+      <div className="relative z-10 flex min-h-[230px] flex-col p-5 sm:p-6 lg:min-h-[252px] lg:pl-[44%]">
         <div className="flex items-start justify-between gap-4">
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/12 bg-white/[0.08] text-white shadow-[0_0_18px_rgba(255,255,255,0.04)]">
+          <div
+            className={`inline-flex h-14 w-14 items-center justify-center rounded-[1.1rem] border bg-white/[0.08] text-white shadow-[0_0_18px_rgba(255,255,255,0.04)] ${
+              accent === "training" ? "border-amber-200/18" : "border-rose-200/18"
+            }`}
+          >
             {renderNavIcon(icon, "h-5 w-5")}
           </div>
-          <div className="rounded-full border border-white/10 bg-black/22 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/84 backdrop-blur-sm">
+          <div
+            className={`rounded-full border px-3 py-1 text-[10px] font-medium uppercase tracking-[0.18em] backdrop-blur-sm ${
+              accent === "training"
+                ? "border-cyan-300/20 bg-cyan-400/10 text-cyan-100"
+                : "border-fuchsia-300/18 bg-fuchsia-400/8 text-fuchsia-100"
+            }`}
+          >
             {badge}
           </div>
         </div>
@@ -71,10 +81,10 @@ export default function DashboardRecommendationCard({
         <div className="mt-6 flex flex-1 items-end">
           <div className="grid w-full gap-5 lg:grid-cols-[minmax(0,1fr)_72px] lg:items-end">
             <div>
-              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/52">{eyebrow}</div>
-              <h3 className="mt-3 text-2xl font-black uppercase tracking-[-0.03em] text-white sm:text-[2.15rem]">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-slate-200">{copyPrimary}</p>
-              <p className="mt-1 text-sm leading-6 text-slate-300">{copySecondary}</p>
+              <div className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/52">{eyebrow}</div>
+              <h3 className="mt-3 text-[2rem] font-semibold uppercase tracking-[-0.03em] text-white sm:text-[2.2rem]">{title}</h3>
+              <p className="mt-3 text-[1rem] leading-7 text-slate-100">{copyPrimary}</p>
+              <p className="mt-1 text-[1rem] leading-7 text-slate-300">{copySecondary}</p>
             </div>
 
             <div className="flex items-center justify-start lg:justify-center">

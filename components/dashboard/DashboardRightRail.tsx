@@ -30,18 +30,20 @@ export default function DashboardRightRail({
       <section className="ba-right-rail-card rounded-[1.9rem] p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
-              Mission Available
+            <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-amber-100/72">
+              MISSION AVAILABLE
             </p>
-            <h3 className="mt-2 text-2xl font-black text-white">{missionTitle}</h3>
+            <h3 className="mt-2 text-[1.9rem] font-semibold tracking-[-0.04em] text-white">
+              {missionTitle}
+            </h3>
           </div>
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/10 text-amber-100">
-            {renderNavIcon("training", "h-4.5 w-4.5")}
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.1)]">
+            {renderNavIcon("chevron-right", "h-4.5 w-4.5")}
           </div>
         </div>
-        <div className="mt-4 rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4">
-          <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">Scripture</div>
-          <div className="mt-2 text-lg font-black text-white">{referenceLine}</div>
+        <div className="mt-4 rounded-[1.2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] p-4">
+          <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">REFERENCE</div>
+          <div className="mt-2 text-lg font-semibold text-white">{referenceLine}</div>
           <div className="mt-3 text-sm text-amber-100/84">{rewardLine}</div>
         </div>
         <button
@@ -54,7 +56,7 @@ export default function DashboardRightRail({
       </section>
 
       <section className="ba-right-rail-card rounded-[1.85rem] p-5">
-        <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Daily Rhythm</div>
+        <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-cyan-100/72">DAILY RHYTHM</div>
         <div className="mt-4 space-y-3">
           {[
             { label: "Morning Watch", value: "Complete", state: "cyan" },
@@ -88,8 +90,8 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card rounded-[1.85rem] p-5">
         <div className="flex items-center justify-between gap-3">
-          <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-violet-100/72">
-            This Week&apos;s Summary
+          <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-violet-100/72">
+            THIS WEEK&apos;S SUMMARY
           </div>
           <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-violet-300/18 bg-violet-300/10 text-violet-100">
             {renderNavIcon("leaderboard", "h-4.5 w-4.5")}

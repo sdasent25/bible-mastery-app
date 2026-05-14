@@ -11,6 +11,7 @@ export type NavIconKey =
   | "profile"
   | "settings"
   | "upgrade"
+  | "crown"
   | "bell"
   | "info"
   | "sun"
@@ -116,6 +117,14 @@ function ShieldIcon(props: IconProps) {
   ])
 }
 
+function CrownIcon(props: IconProps) {
+  return iconBase(props, [
+    createElement("path", { key: "base", d: "M5 18h14" }),
+    createElement("path", { key: "body", d: "m6.5 18 1.4-8 4.1 3.2L16.1 10l1.4 8" }),
+    createElement("path", { key: "tips", d: "M7.9 10 10 6.5 12 9l2-2.5 2.1 3.5" }),
+  ])
+}
+
 function BellIcon(props: IconProps) {
   return iconBase(props, [
     createElement("path", { key: "body", d: "M6.5 16.5h11a1 1 0 0 0 .8-1.6l-1.3-1.8V10a5 5 0 1 0-10 0v3.1l-1.3 1.8a1 1 0 0 0 .8 1.6Z" }),
@@ -181,6 +190,7 @@ const iconMap: Record<NavIconKey, (props: IconProps) => ReactElement> = {
   profile: UserIcon,
   settings: SettingsIcon,
   upgrade: ShieldIcon,
+  crown: CrownIcon,
   bell: BellIcon,
   info: InfoIcon,
   sun: SunIcon,
@@ -193,9 +203,11 @@ const iconMap: Record<NavIconKey, (props: IconProps) => ReactElement> = {
 export const desktopNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: "home" },
   { label: "Training", href: "/training", icon: "training" },
-  { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
   { label: "Quests", href: "/quests", icon: "quests" },
+  { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
   { label: "Leaderboard", href: "/leaderboard", icon: "leaderboard" },
+  { label: "Profile", href: "/settings", icon: "profile" },
+  { label: "Settings", href: "/settings", icon: "settings" },
 ]
 
 export const mobileNavItems: NavItem[] = [

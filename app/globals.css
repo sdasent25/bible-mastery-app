@@ -381,16 +381,17 @@ textarea {
 
 .ba-page-bg {
   background:
-    radial-gradient(circle at top, rgba(250, 204, 21, 0.12), transparent 24%),
-    radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.1), transparent 22%),
-    radial-gradient(circle at 18% 82%, rgba(168, 85, 247, 0.08), transparent 20%),
-    linear-gradient(180deg, #07101a 0%, #090e17 42%, #04070f 100%);
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.09), transparent 22%),
+    radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.07), transparent 20%),
+    radial-gradient(circle at 18% 82%, rgba(168, 85, 247, 0.06), transparent 18%),
+    linear-gradient(180deg, #030913 0%, #050b14 44%, #02060d 100%);
 }
 
 .ba-dashboard-shell {
   position: relative;
-  max-width: 1540px;
+  max-width: 1520px;
   margin-inline: auto;
+  padding-bottom: 1rem;
 }
 
 .ba-dashboard-grid {
@@ -407,10 +408,10 @@ textarea {
 
 .ba-top-shell {
   background:
-    linear-gradient(180deg, rgba(10, 15, 24, 0.97), rgba(7, 11, 20, 0.94));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    linear-gradient(180deg, rgba(6, 11, 19, 0.97), rgba(5, 9, 16, 0.94));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.18),
+    0 18px 40px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(18px);
 }
@@ -427,12 +428,40 @@ textarea {
 
 .ba-dashboard-topbar {
   background:
-    linear-gradient(180deg, rgba(11, 16, 28, 0.94), rgba(7, 11, 19, 0.96));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    linear-gradient(180deg, rgba(8, 13, 22, 0.98), rgba(5, 9, 16, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow:
-    0 22px 56px rgba(0, 0, 0, 0.28),
+    0 28px 68px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
+}
+
+.ba-topbar-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+.ba-topbar-icon:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 228, 164, 0.18);
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.24),
+    0 0 24px rgba(250, 204, 21, 0.08);
 }
 
 .ba-glass-panel {
@@ -447,8 +476,8 @@ textarea {
 
 .ba-sidebar-panel {
   background:
-    radial-gradient(circle at top left, rgba(255, 221, 153, 0.1), transparent 24%),
-    linear-gradient(180deg, rgba(14, 20, 33, 0.98), rgba(8, 11, 20, 0.98));
+    radial-gradient(circle at top left, rgba(255, 221, 153, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(11, 17, 28, 0.98), rgba(6, 10, 18, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.28),
@@ -459,12 +488,13 @@ textarea {
 .ba-gold-cta {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(250, 215, 101, 0.99), rgba(244, 181, 44, 0.96));
+  background:
+    linear-gradient(135deg, rgba(247, 203, 92, 0.99), rgba(244, 181, 44, 0.96));
   border: 1px solid rgba(255, 236, 168, 0.3);
   color: #241300;
   box-shadow:
-    0 18px 40px rgba(245, 158, 11, 0.2),
-    0 0 30px rgba(250, 204, 21, 0.12),
+    0 18px 40px rgba(245, 158, 11, 0.22),
+    0 0 36px rgba(250, 204, 21, 0.16),
     inset 0 1px 0 rgba(255, 251, 235, 0.32);
 }
 
@@ -472,14 +502,14 @@ textarea {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(circle at top left, rgba(255, 226, 153, 0.14), transparent 26%),
-    radial-gradient(circle at 84% 18%, rgba(34, 211, 238, 0.1), transparent 24%),
-    linear-gradient(180deg, rgba(25, 18, 12, 0.14), rgba(9, 11, 17, 0.5));
-  border: 1px solid rgba(251, 191, 36, 0.2);
+    radial-gradient(circle at top left, rgba(255, 226, 153, 0.12), transparent 26%),
+    radial-gradient(circle at 84% 18%, rgba(34, 211, 238, 0.08), transparent 24%),
+    linear-gradient(180deg, rgba(25, 18, 12, 0.12), rgba(9, 11, 17, 0.5));
+  border: 1px solid rgba(251, 191, 36, 0.24);
   box-shadow:
-    0 28px 80px rgba(0, 0, 0, 0.34),
+    0 32px 92px rgba(0, 0, 0, 0.38),
     0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 0 34px rgba(251, 191, 36, 0.08);
+    0 0 38px rgba(251, 191, 36, 0.08);
 }
 
 .ba-card-aura {
@@ -553,10 +583,10 @@ textarea {
 
 .ba-bottom-nav {
   background:
-    linear-gradient(180deg, rgba(6, 10, 18, 0.92), rgba(2, 5, 12, 0.98));
+    linear-gradient(180deg, rgba(8, 12, 20, 0.94), rgba(4, 7, 14, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 -10px 30px rgba(0, 0, 0, 0.28),
+    0 -12px 36px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(255, 255, 255, 0.02),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(20px);
@@ -581,11 +611,14 @@ textarea {
 }
 
 .ba-stat-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+    linear-gradient(180deg, rgba(14, 19, 31, 0.96), rgba(8, 11, 20, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 20px 48px rgba(0, 0, 0, 0.22),
+    0 24px 56px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
 }
@@ -593,9 +626,9 @@ textarea {
 .ba-recommendation-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 26px 72px rgba(0, 0, 0, 0.32),
+    0 28px 76px rgba(0, 0, 0, 0.34),
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
     0 0 28px rgba(34, 211, 238, 0.06);
   backdrop-filter: blur(18px);
@@ -603,10 +636,10 @@ textarea {
 
 .ba-right-rail-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+    linear-gradient(180deg, rgba(14, 19, 31, 0.96), rgba(8, 11, 20, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 22px 54px rgba(0, 0, 0, 0.24),
+    0 24px 58px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
 }

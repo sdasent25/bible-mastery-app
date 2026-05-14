@@ -91,7 +91,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true)
   const [plan, setPlan] = useState("free")
   const [dashboardState, setDashboardState] = useState<DashboardState | null>(null)
-  const [trainingEnabled, setTrainingEnabled] = useState(true)
+  const [, setTrainingEnabled] = useState(true)
   const [memberCount, setMemberCount] = useState<number | null>(null)
   const [memberLimit, setMemberLimit] = useState<number | null>(null)
   const [members, setMembers] = useState<FamilyMember[]>([])
@@ -437,6 +437,7 @@ export default function DashboardPage() {
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     month: "long",
     day: "numeric",
+    year: "numeric",
   }).format(now)
   const rhythmLabel = getDailyRhythmLabel(now)
   const athleteLevel = Math.max(1, Math.floor((dashboardState?.xpEarned || 0) / 250) + 1)
@@ -446,7 +447,7 @@ export default function DashboardPage() {
   const missionTitle = dashboardState?.missionTitle || "Walk in Faith"
   const missionSubtitle =
     dashboardState?.missionSubtitle ||
-    "Understand the foundation of all things. Let God’s Word be the beginning of your wisdom and walk."
+    "Let your heart be steady, your mind be renewed, and your steps reflect His love."
   const referenceLine = dashboardState?.currentSegmentLabel || "Micah 6:8"
   const focusPassage = dashboardState?.currentSegmentLabel || "Psalm 119:105"
   const focusRankLabel = "SAPPHIRE II"
@@ -468,8 +469,37 @@ export default function DashboardPage() {
 
   const continueHref = dashboardState?.continueHref || "/training"
 
+  const statCards = [
+    {
+      title: "XP",
+      value: (dashboardState?.xpEarned || 0).toLocaleString(),
+      supporting: "/ 15,000",
+      accent: "cyan" as const,
+    },
+    {
+      title: "STREAK",
+      value: String(dashboardState?.streak || 0),
+      supporting: "Days • Keep it going!",
+      accent: "amber" as const,
+    },
+    {
+      title: "MASTERY",
+      value: `${dashboardState?.masteryPercent || 0}%`,
+      supporting: "Overall Mastery",
+      accent: "violet" as const,
+    },
+    {
+      title: "FOCUS RANK",
+      value: focusRankLabel,
+      supporting: focusRankMeta,
+      accent: "sapphire" as const,
+    },
+  ]
+
+  const rewardLine = `Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`
+
   return (
-    <main className="ba-page-bg min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
+    <main className="relative min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.18),transparent_58%)]" />
       <div className="pointer-events-none absolute left-[-4rem] top-32 h-44 w-44 rounded-full bg-amber-300/10 blur-3xl" />
       <div className="pointer-events-none absolute right-[-3rem] top-[24rem] h-56 w-56 rounded-full bg-cyan-400/8 blur-3xl" />
@@ -486,22 +516,25 @@ export default function DashboardPage() {
               onSettings={() => router.push("/settings")}
             />
 
-            <section className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <h1 className="text-[2.65rem] font-black tracking-[-0.055em] text-white sm:text-5xl xl:text-[3.8rem]">
+                <h1 className="text-[2.65rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-5xl xl:text-[3.85rem]">
                   Welcome back.
                 </h1>
-                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300 sm:text-[1.15rem] sm:leading-8">
+                <p className="mt-3 max-w-2xl text-base leading-7 text-[#d1c3b5] sm:text-[1.18rem] sm:leading-8">
                   Train today. Grow stronger daily.
                 </p>
               </div>
-              <div className="ba-glass-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-semibold text-white/84">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
-                  {renderNavIcon("sun", "h-4 w-4")}
+              <div className="ba-glass-panel inline-flex items-center gap-3 rounded-[1.35rem] px-4 py-3 text-sm text-white/84">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
+                  {renderNavIcon("sun", "h-4.5 w-4.5")}
                 </span>
-                <span>
-                  {formattedDate} · {rhythmLabel}
-                </span>
+                <div>
+                  <div className="text-right text-[1rem] font-medium text-[#e8ddd1]">{formattedDate}</div>
+                  <div className="mt-0.5 text-right text-[0.98rem] font-medium text-cyan-200">
+                    {rhythmLabel}
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -515,45 +548,26 @@ export default function DashboardPage() {
             />
 
             <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-              <DashboardStatCard
-                title="XP"
-                value={(dashboardState?.xpEarned || 0).toLocaleString()}
-                supporting="/ 15,000"
-                accent="cyan"
-                icon="brand"
-              />
-              <DashboardStatCard
-                title="Streak"
-                value={String(dashboardState?.streak || 0)}
-                supporting="Days · Keep it going!"
-                accent="amber"
-                icon="training"
-              />
-              <DashboardStatCard
-                title="Mastery"
-                value={`${dashboardState?.masteryPercent || 0}%`}
-                supporting="Overall Mastery"
-                accent="violet"
-                icon="leaderboard"
-              />
-              <DashboardStatCard
-                title="Focus Rank"
-                value={focusRankLabel}
-                supporting={focusRankMeta}
-                accent="sapphire"
-                icon="upgrade"
-              />
+              {statCards.map((card) => (
+                <DashboardStatCard
+                  key={card.title}
+                  title={card.title}
+                  value={card.value}
+                  supporting={card.supporting}
+                  accent={card.accent}
+                />
+              ))}
             </section>
 
             <section>
               <div className="flex items-center justify-between gap-3">
-                <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
-                  Recommended for you
+                <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-[#f0e6d9]">
+                  RECOMMENDED FOR YOU
                 </p>
                 <button
                   type="button"
                   onClick={() => router.push("/training")}
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-100/88 transition hover:text-white"
+                  className="inline-flex items-center gap-2 text-sm font-medium text-cyan-100/88 transition hover:text-white"
                 >
                   View All
                   <span>{renderNavIcon("chevron-right", "h-4 w-4")}</span>
@@ -563,7 +577,7 @@ export default function DashboardPage() {
               <div className="mt-5 grid gap-4">
                 <DashboardRecommendationCard
                   title="TRAINING ARENA"
-                  eyebrow="Flagship Lane"
+                  eyebrow="Arena Focus"
                   copyPrimary="Build discipline. Strengthen your spirit."
                   copySecondary="Level up through guided challenges."
                   badge="Challenging • 5 Rounds"
@@ -574,7 +588,7 @@ export default function DashboardPage() {
                 />
                 <DashboardRecommendationCard
                   title="VERSE MEMORY"
-                  eyebrow="Warm Focus"
+                  eyebrow="Scripture Focus"
                   copyPrimary="Hide God’s Word in your heart."
                   copySecondary="Let it guide you every day."
                   badge="Daily Workout • 10 Verses"
@@ -591,7 +605,7 @@ export default function DashboardPage() {
             <DashboardRightRail
               missionTitle={missionTitle}
               referenceLine={referenceLine}
-              rewardLine={`Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`}
+              rewardLine={rewardLine}
               sessionsCompleted={weeklySummary.sessionsCompleted}
               versesMemorized={weeklySummary.versesMemorized}
               questsCompleted={weeklySummary.questsCompleted}
@@ -606,7 +620,7 @@ export default function DashboardPage() {
           <DashboardRightRail
             missionTitle={missionTitle}
             referenceLine={referenceLine}
-            rewardLine={`Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`}
+            rewardLine={rewardLine}
             sessionsCompleted={weeklySummary.sessionsCompleted}
             versesMemorized={weeklySummary.versesMemorized}
             questsCompleted={weeklySummary.questsCompleted}

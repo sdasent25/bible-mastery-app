@@ -184,15 +184,15 @@ export default function Sidebar({
       <div className="flex-1 space-y-4">
         <div className="ba-sidebar-panel rounded-[1.55rem] p-5">
           <div className="flex items-center gap-3">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
-              {renderNavIcon("brand", "h-5 w-5")}
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
+              {renderNavIcon("brand", "h-5.5 w-5.5")}
             </div>
             <div>
-              <h1 className="text-xl font-black tracking-[-0.03em] text-white">
+              <h1 className="text-xl font-semibold tracking-[0.08em] text-amber-50">
                 Bible Athlete
               </h1>
               <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/48">
-                Training Command
+                Sacred Training
               </p>
             </div>
           </div>
@@ -247,12 +247,12 @@ export default function Sidebar({
               <div className="mt-2 text-lg font-black text-white">{Math.max(18, Math.min(96, Math.round(xp / 45)))}%</div>
             </div>
             <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
-              <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
-                Focus Rank
-              </div>
-              <div className="mt-2 text-lg font-black text-white">Sapphire II</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
+              Focus Rank
             </div>
+            <div className="mt-2 text-lg font-black text-white">Sapphire II</div>
           </div>
+        </div>
           <div className="mt-3 rounded-[1rem] border border-emerald-300/14 bg-emerald-300/8 px-3 py-2 text-xs text-white/84">
             Plan: <span className="font-semibold text-emerald-300">{fullPlanLabel}</span>
           </div>
@@ -260,7 +260,7 @@ export default function Sidebar({
 
         <div className="space-y-2">
           {desktopNavItems
-            .filter((item) => item.href !== "/quests" && item.href !== "/leaderboard")
+            .filter((item) => item.href !== "/settings" && item.href !== "/leaderboard" && item.href !== "/profile")
             .map((item) => (
               <div key={item.href}>
                 {navItem(item.label, item.href, item.icon, item.href === "/training")}
@@ -328,7 +328,7 @@ export default function Sidebar({
         <div className="ba-sidebar-panel rounded-[1.45rem] p-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/82">
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-amber-100/20 bg-amber-100/10 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
-              {renderNavIcon("upgrade", "h-3.5 w-3.5")}
+              {renderNavIcon("crown", "h-3.5 w-3.5")}
             </span>
             <span>{isProPlusMember ? "Pro+ Member" : "Pro+ Arena"}</span>
           </div>
