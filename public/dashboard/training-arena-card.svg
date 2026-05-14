@@ -1,27 +1,48 @@
-<svg width="760" height="520" viewBox="0 0 760 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1200" height="420" viewBox="0 0 1200 420" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="bg" x1="380" y1="0" x2="380" y2="520" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#0E1827"/>
-      <stop offset="1" stop-color="#07101A"/>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111C"/>
+      <stop offset="0.4" stop-color="#0B1623"/>
+      <stop offset="1" stop-color="#090D15"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(562 149) rotate(90) scale(124 150)">
-      <stop stop-color="#67E8F9" stop-opacity="0.58"/>
+    <radialGradient id="beamGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(330 174) rotate(90) scale(180 170)">
+      <stop stop-color="#FFF1B5"/>
+      <stop offset="0.45" stop-color="#F3C969" stop-opacity="0.82"/>
       <stop offset="1" stop-color="#67E8F9" stop-opacity="0"/>
     </radialGradient>
-    <linearGradient id="floor" x1="380" y1="309" x2="380" y2="520" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#162237"/>
-      <stop offset="1" stop-color="#070B14"/>
+    <linearGradient id="floor" x1="340" y1="252" x2="340" y2="420" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#172538"/>
+      <stop offset="1" stop-color="#09111B"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="340" y1="22" x2="340" y2="274" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF4C2" stop-opacity="0"/>
+      <stop offset="0.32" stop-color="#FFF4C2" stop-opacity="0.88"/>
+      <stop offset="1" stop-color="#F3C969" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeRight" x1="420" y1="0" x2="1020" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#08111C" stop-opacity="0"/>
+      <stop offset="1" stop-color="#070C14" stop-opacity="0.92"/>
     </linearGradient>
   </defs>
-  <rect width="760" height="520" rx="36" fill="url(#bg)"/>
-  <rect width="760" height="520" rx="36" fill="url(#glow)"/>
-  <path d="M0 344C120 322 180 298 282 304C374 309 424 357 525 362C612 366 691 336 760 322V520H0V344Z" fill="url(#floor)"/>
-  <circle cx="228" cy="256" r="72" fill="#12304A" fill-opacity="0.82"/>
-  <circle cx="228" cy="256" r="58" fill="#0B1626"/>
-  <path d="M187 256H269" stroke="#F6C35B" stroke-width="16" stroke-linecap="round"/>
-  <path d="M162 228V284" stroke="#67E8F9" stroke-width="16" stroke-linecap="round"/>
-  <path d="M294 228V284" stroke="#67E8F9" stroke-width="16" stroke-linecap="round"/>
-  <path d="M118 240V272" stroke="#67E8F9" stroke-width="10" stroke-linecap="round"/>
-  <path d="M338 240V272" stroke="#67E8F9" stroke-width="10" stroke-linecap="round"/>
-  <path d="M514 126C558 174 583 214 610 294" stroke="#F6C35B" stroke-opacity="0.38" stroke-width="5" stroke-linecap="round"/>
+
+  <rect width="1200" height="420" rx="40" fill="url(#bg)"/>
+  <rect width="1200" height="420" rx="40" fill="url(#beamGlow)"/>
+
+  <path d="M0 300C90 268 166 250 244 250C321 250 392 273 471 284C553 296 612 289 692 276C775 262 849 245 1200 244V420H0V300Z" fill="url(#floor)"/>
+
+  <ellipse cx="330" cy="286" rx="170" ry="54" fill="#0B121C"/>
+  <ellipse cx="330" cy="282" rx="140" ry="43" stroke="#2B3747" stroke-width="10"/>
+  <ellipse cx="330" cy="282" rx="100" ry="30" stroke="#374759" stroke-width="9"/>
+  <ellipse cx="330" cy="282" rx="55" ry="17" stroke="#4E6074" stroke-width="7"/>
+
+  <rect x="316" y="142" width="28" height="120" rx="10" fill="#6F5029"/>
+  <rect x="290" y="176" width="80" height="18" rx="8" fill="#866130"/>
+  <rect x="0" y="0" width="1200" height="420" rx="40" fill="url(#beam)"/>
+
+  <path d="M72 120C109 88 151 62 200 44" stroke="#132435" stroke-width="12" stroke-linecap="round"/>
+  <path d="M86 340C133 362 177 374 234 380" stroke="#132435" stroke-width="10" stroke-linecap="round"/>
+  <path d="M522 88C569 138 593 185 606 256" stroke="#6DE6FF" stroke-opacity="0.2" stroke-width="4" stroke-linecap="round"/>
+  <path d="M468 80C513 131 540 177 558 238" stroke="#F6C35B" stroke-opacity="0.2" stroke-width="3" stroke-linecap="round"/>
+
+  <rect width="1200" height="420" rx="40" fill="url(#fadeRight)"/>
 </svg>

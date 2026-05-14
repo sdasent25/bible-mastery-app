@@ -40,40 +40,55 @@ export default function DashboardRecommendationCard({
       className={`ba-recommendation-card group relative overflow-hidden rounded-[1.95rem] text-left transition duration-200 hover:-translate-y-0.5 active:scale-[0.99] ${accentStyles[accent]}`}
     >
       <div className="absolute inset-x-0 top-0 h-1 before:absolute before:inset-0 before:content-['']" />
-      <div className="grid gap-0 lg:grid-cols-[250px_minmax(0,1fr)_72px]">
-        <div className="relative min-h-[230px] overflow-hidden lg:min-h-full">
-          <Image
-            src={imageSrc}
-            alt=""
-            fill
-            className="object-cover object-[72%_center] opacity-94"
-            sizes="(max-width: 1024px) 100vw, 250px"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,10,16,0.24),transparent_38%),linear-gradient(180deg,transparent,rgba(7,10,16,0.34))]" />
-        </div>
+      <div className="absolute inset-0">
+        <Image
+          src={imageSrc}
+          alt=""
+          fill
+          className="object-cover object-left-center opacity-[0.98]"
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 560px"
+        />
+      </div>
+      <div
+        className={`absolute inset-0 ${
+          accent === "training"
+            ? "bg-[linear-gradient(90deg,rgba(8,11,18,0.12)_0%,rgba(8,11,18,0.18)_20%,rgba(8,11,18,0.56)_52%,rgba(8,11,18,0.94)_100%)]"
+            : "bg-[linear-gradient(90deg,rgba(17,11,14,0.08)_0%,rgba(17,11,14,0.18)_20%,rgba(11,11,17,0.58)_52%,rgba(9,10,16,0.95)_100%)]"
+        }`}
+      />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_28%,rgba(7,10,16,0.24)_100%)]" />
 
-        <div className="relative z-10 flex flex-col justify-between p-5 sm:p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/12 bg-white/[0.08] text-white shadow-[0_0_18px_rgba(255,255,255,0.04)]">
-              {renderNavIcon(icon, "h-5 w-5")}
-            </div>
-            <div className="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/84">
-              {badge}
-            </div>
+      <div className="relative z-10 flex min-h-[230px] flex-col p-5 sm:p-6 lg:min-h-[252px] lg:pl-[42%]">
+        <div className="flex items-start justify-between gap-4">
+          <div className="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-white/12 bg-white/[0.08] text-white shadow-[0_0_18px_rgba(255,255,255,0.04)]">
+            {renderNavIcon(icon, "h-5 w-5")}
           </div>
-
-          <div className="mt-5">
-            <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/52">{eyebrow}</div>
-            <h3 className="mt-3 text-2xl font-black uppercase tracking-[-0.03em] text-white">{title}</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-300">{copyPrimary}</p>
-            <p className="mt-1 text-sm leading-6 text-slate-300">{copySecondary}</p>
+          <div className="rounded-full border border-white/10 bg-black/22 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-white/84 backdrop-blur-sm">
+            {badge}
           </div>
         </div>
 
-        <div className="flex items-center justify-center px-5 pb-5 lg:px-0 lg:pb-0">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/12 bg-white/[0.06] text-white transition group-hover:border-amber-200/24 group-hover:text-amber-50">
-            {renderNavIcon("chevron-right", "h-5 w-5")}
-          </span>
+        <div className="mt-6 flex flex-1 items-end">
+          <div className="grid w-full gap-5 lg:grid-cols-[minmax(0,1fr)_72px] lg:items-end">
+            <div>
+              <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/52">{eyebrow}</div>
+              <h3 className="mt-3 text-2xl font-black uppercase tracking-[-0.03em] text-white sm:text-[2.15rem]">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-200">{copyPrimary}</p>
+              <p className="mt-1 text-sm leading-6 text-slate-300">{copySecondary}</p>
+            </div>
+
+            <div className="flex items-center justify-start lg:justify-center">
+              <span
+                className={`inline-flex h-12 w-12 items-center justify-center rounded-full border ${
+                  accent === "training"
+                    ? "border-amber-200/28 bg-amber-200/10 text-amber-50 shadow-[0_0_28px_rgba(251,191,36,0.18)]"
+                    : "border-fuchsia-200/24 bg-fuchsia-200/10 text-rose-50 shadow-[0_0_28px_rgba(244,114,182,0.16)]"
+                } transition group-hover:scale-[1.04]`}
+              >
+                {renderNavIcon("chevron-right", "h-5 w-5")}
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </button>

@@ -31,16 +31,16 @@ export default function DashboardHero({
     <section className="ba-hero-card ba-soft-aura rounded-[2.4rem]">
       <div className="absolute inset-0">
         <Image
-          src="/dashboard/mission-hero.png"
+          src="/dashboard/mission-hero.svg"
           alt=""
           fill
           priority
-          className="object-cover object-[68%_center]"
+          className="object-cover object-center"
           sizes="(max-width: 1280px) 100vw, 900px"
         />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,17,0.82),rgba(8,10,17,0.46)_48%,rgba(8,10,17,0.22)_74%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,215,118,0.02),rgba(8,10,17,0.14)_38%,rgba(8,10,17,0.72))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,9,16,0.94)_0%,rgba(6,10,18,0.86)_28%,rgba(8,11,18,0.56)_48%,rgba(8,11,18,0.18)_72%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,220,138,0.06),rgba(10,12,20,0.05)_34%,rgba(7,10,16,0.42)_100%)]" />
 
       <div className="relative z-10 flex min-h-[34rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[38rem] lg:px-8">
         <div className="flex items-start justify-between gap-4">
@@ -66,8 +66,8 @@ export default function DashboardHero({
           </p>
         </div>
 
-        <div className="rounded-[1.85rem] border border-white/10 bg-black/28 p-4 backdrop-blur-sm sm:p-5">
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_250px]">
+        <div className="rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(7,11,18,0.14),rgba(7,11,18,0.22))] p-4 backdrop-blur-[8px] sm:p-5">
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_220px]">
             <div>
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/10 text-amber-50">
@@ -80,30 +80,30 @@ export default function DashboardHero({
                   <div className="mt-1 text-2xl font-black text-white">{focusPassage}</div>
                 </div>
               </div>
-              <div className="mt-5 h-[7px] overflow-hidden rounded-full bg-white/10">
+              <div className="mt-5 h-[6px] overflow-hidden rounded-full bg-white/10">
                 <div
                   className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(250,204,21,0.98),rgba(103,232,249,0.92),rgba(244,114,182,0.84))]"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center">
                 <button
                   onClick={onContinue}
-                  className="ba-gold-cta ba-shimmer ba-float-cta motion-safe inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2a1600] sm:w-auto sm:min-w-[18rem]"
+                  className="ba-gold-cta ba-shimmer motion-safe inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2a1600] shadow-[0_0_34px_rgba(251,191,36,0.28)] sm:w-full lg:max-w-[28rem]"
                 >
                   {renderNavIcon("brand", "h-4 w-4")}
                   Continue Training
                 </button>
                 <button
                   onClick={onOpenTraining}
-                  className="ba-glass-panel inline-flex w-full items-center justify-center rounded-full px-5 py-4 text-sm font-semibold text-white transition hover:bg-white/[0.08] sm:w-auto"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-white/10 bg-black/18 px-5 py-4 text-sm font-semibold text-white/90 transition hover:bg-white/[0.08] sm:w-auto"
                 >
                   Open Training Arena
                 </button>
               </div>
             </div>
 
-            <div className="ba-glass-panel rounded-[1.45rem] p-4">
+            <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.05] p-4">
               <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/68">
                 Next Step
               </div>
