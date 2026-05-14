@@ -1,9 +1,13 @@
 "use client"
 
-import Image from "next/image"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 
+import DashboardHero from "@/components/dashboard/DashboardHero"
+import DashboardRecommendationCard from "@/components/dashboard/DashboardRecommendationCard"
+import DashboardRightRail from "@/components/dashboard/DashboardRightRail"
+import DashboardStatCard from "@/components/dashboard/DashboardStatCard"
+import DashboardTopBar from "@/components/dashboard/DashboardTopBar"
 import {
   getGenesisMissionArt,
   getGenesisMissionMeta,
@@ -12,10 +16,10 @@ import { getUserPlan as getPlanType } from "@/lib/getUserPlan"
 import { getProgramById } from "@/lib/programs"
 import { getCompletedProgramSegmentCount } from "@/lib/campaignProgress"
 import { getProgramProgress, getResumeSegmentIndex } from "@/lib/programProgress"
+import { renderNavIcon } from "@/lib/navigation"
 import { hasCompletedToday } from "@/lib/streak"
 import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/userPlan"
-import { renderNavIcon } from "@/lib/navigation"
 
 type FamilyMember = {
   id: string
@@ -64,28 +68,11 @@ function getProfileName(profile: FamilyMember["profiles"]) {
 }
 
 function getPlanBadge(plan: string) {
-  if (plan === "pro_plus") {
-    return "Pro+"
-  }
-
-  if (plan === "family_pro_plus") {
-    return "Family Pro+"
-  }
-
-  if (plan === "pro") {
-    return "Pro"
-  }
-
-  if (plan === "family_pro") {
-    return "Family Pro"
-  }
-
+  if (plan === "pro_plus") return "Pro+"
+  if (plan === "family_pro_plus") return "Family Pro+"
+  if (plan === "pro") return "Pro"
+  if (plan === "family_pro") return "Family Pro"
   return "Free"
-}
-
-function weeklyDots(streak: number) {
-  const litCount = Math.max(0, Math.min(streak, 7))
-  return Array.from({ length: 7 }, (_, index) => index < litCount)
 }
 
 function getDailyRhythmLabel(date: Date) {
@@ -155,11 +142,7 @@ export default function DashboardPage() {
           .eq("id", user.id)
           .single()
 
-        if (
-          profileError ||
-          !profile ||
-          profile.onboarding_complete !== true
-        ) {
+        if (profileError || !profile || profile.onboarding_complete !== true) {
           router.replace("/onboarding")
           return
         }
@@ -178,8 +161,8 @@ export default function DashboardPage() {
             .is("removed_at", null)
             .maybeSingle(),
         ])
-        const membership = membershipRes.data
 
+        const membership = membershipRes.data
         const resolvedPlan = userPlan || {
           ...fallbackPlan,
           userId: user.id,
@@ -300,9 +283,7 @@ export default function DashboardPage() {
         setMemberLimit(family?.member_limit || 4)
         setMembers((familyMembers || []) as FamilyMember[])
       } finally {
-        if (active) {
-          setLoading(false)
-        }
+        if (active) setLoading(false)
       }
     }
 
@@ -452,10 +433,6 @@ export default function DashboardPage() {
     memberLimit !== null &&
     memberCount >= memberLimit
 
-  const weeklyStreakDots = useMemo(
-    () => weeklyDots(dashboardState?.streak || 0),
-    [dashboardState?.streak]
-  )
   const now = new Date()
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     month: "long",
@@ -466,8 +443,20 @@ export default function DashboardPage() {
   const xpIntoLevel = (dashboardState?.xpEarned || 0) % 250
   const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
+  const missionTitle = dashboardState?.missionTitle || "In the Beginning"
+  const missionSubtitle =
+    dashboardState?.missionSubtitle ||
+    "Understand the foundation of all things. Let God’s Word be the beginning of your wisdom and walk."
+  const referenceLine = dashboardState?.currentSegmentLabel || "Genesis 1:1"
+  const focusPassage = dashboardState?.currentSegmentLabel || "Psalm 119:105"
   const focusRankLabel = "SAPPHIRE II"
   const focusRankMeta = "Top 18%"
+  const weeklySummary = {
+    sessionsCompleted: dashboardState?.completedMissionCount || 5,
+    versesMemorized: dashboardState?.masteryCount || 23,
+    questsCompleted: Math.max(1, Math.floor((dashboardState?.segmentNumber || 1) / 3)),
+    totalXpEarned: dashboardState?.xpEarned || 2150,
+  }
 
   if (loading) {
     return (
@@ -486,304 +475,82 @@ export default function DashboardPage() {
       <div className="pointer-events-none absolute right-[-3rem] top-[24rem] h-56 w-56 rounded-full bg-cyan-400/8 blur-3xl" />
       <div className="pointer-events-none absolute right-[8%] top-[9rem] h-44 w-44 rounded-full bg-violet-400/8 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl">
-        <section className="ba-sacred-surface hidden rounded-[2rem] p-4 sm:p-5 md:block">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <div className="flex items-center gap-3">
-                <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
-                  {renderNavIcon("brand", "h-5 w-5")}
-                </div>
-                <div className="min-w-0">
-                  <div className="text-lg font-black tracking-[-0.03em] text-white">
-                    Bible Athlete
-                  </div>
-                  <div className="text-[10px] uppercase tracking-[0.24em] text-white/44">
-                    Training Command
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-cyan-200/14 bg-cyan-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan-100">
-                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-cyan-50">
-                  {renderNavIcon("upgrade", "h-3.5 w-3.5")}
-                </span>
-                Athlete Level {athleteLevel}
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={() => router.push("/settings")}
-              className="ba-glass-card inline-flex h-11 w-11 items-center justify-center rounded-full text-white/84 transition hover:text-white"
-              aria-label="Open settings"
-            >
-              {renderNavIcon("settings", "h-[1.05rem] w-[1.05rem]")}
-            </button>
-          </div>
-
-          <div className="mt-4 rounded-[1.4rem] border border-white/8 bg-white/[0.03] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">
-                  XP to Next Level
-                </div>
-                <div className="mt-2 text-xl font-black text-white">{xpToNextLevel} XP</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">
-                  Current Plan
-                </div>
-                <div className="mt-2 text-sm font-semibold text-amber-100">{getPlanBadge(plan)}</div>
-              </div>
-            </div>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-              <div
-                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(103,232,249,0.95),rgba(250,204,21,0.95),rgba(244,114,182,0.92))]"
-                style={{ width: `${levelProgress}%` }}
-              />
-            </div>
-          </div>
-        </section>
-
-        <section className="mt-5 flex flex-col gap-4 xl:grid xl:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.8fr)]">
+      <div className="ba-dashboard-shell">
+        <div className="ba-dashboard-grid">
           <div className="space-y-5">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <DashboardTopBar
+              athleteLevel={athleteLevel}
+              xpToNextLevel={xpToNextLevel}
+              levelProgress={levelProgress}
+              onUpgrade={() => router.push("/upgrade")}
+              onSettings={() => router.push("/settings")}
+            />
+
+            <section className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
                   Welcome back.
                 </p>
-                <h1 className="mt-2 text-[2.15rem] font-black tracking-[-0.05em] text-white sm:text-5xl">
+                <h1 className="mt-2 text-[2.35rem] font-black tracking-[-0.055em] text-white sm:text-5xl xl:text-[3.6rem]">
                   Train today. Grow stronger daily.
                 </h1>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
                   Build discipline. Strengthen your spirit.
                 </p>
               </div>
-            <div className="ba-glass-panel inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white/84">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
-                {renderNavIcon("brand", "h-3.5 w-3.5")}
-              </span>
-              <span>
-                {formattedDate} · {rhythmLabel}
-              </span>
-            </div>
-          </div>
-
-            <section className="ba-hero-card ba-card-aura relative overflow-hidden rounded-[2.2rem] shadow-[0_30px_100px_rgba(0,0,0,0.34)]">
-              <div className="absolute inset-0">
-                <Image
-                  src={dashboardState?.missionArt || "/explorer/pentateuch/region.png"}
-                  alt=""
-                  fill
-                  priority
-                  className="object-cover object-center brightness-[1.06] saturate-[1.08]"
-                  sizes="(max-width: 1280px) 100vw, 70vw"
-                />
-              </div>
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,226,153,0.24),transparent_26%),linear-gradient(180deg,rgba(13,10,6,0.06),rgba(13,10,6,0.16)_40%,rgba(7,6,4,0.72))]" />
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_14%,rgba(103,232,249,0.16),transparent_22%),radial-gradient(circle_at_18%_28%,rgba(0,0,0,0.34),transparent_34%),linear-gradient(90deg,rgba(7,6,4,0.58),rgba(7,6,4,0.18)_46%,transparent_76%),linear-gradient(180deg,transparent_0%,rgba(7,6,4,0.08)_46%,rgba(7,6,4,0.34)_100%)]" />
-
-              <div className="relative z-10 flex min-h-[33rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-black uppercase tracking-[0.26em] text-amber-100/82">
-                    Today&apos;s Mission
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/78">
-                      {dashboardState?.dailyMissionComplete ? "Replay Ready" : "Ready Now"}
-                    </div>
-                    <button
-                      type="button"
-                      aria-label="Mission details"
-                      className="ba-glass-panel inline-flex h-10 w-10 items-center justify-center rounded-full text-white/82"
-                    >
-                      {renderNavIcon("settings", "h-4 w-4")}
-                    </button>
-                  </div>
-                </div>
-
-                <div className="max-w-2xl">
-                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-amber-100/74 drop-shadow-[0_1px_10px_rgba(0,0,0,0.45)]">
-                    {dashboardState?.missionAtmosphere || "Morning Watch"}
-                  </p>
-                  <h2 className="mt-4 text-[2.25rem] font-black leading-[0.94] tracking-[-0.04em] text-white drop-shadow-[0_6px_24px_rgba(0,0,0,0.45)] sm:text-5xl">
-                    {dashboardState?.missionTitle || "Walk in Faith"}
-                  </h2>
-                  <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-white/72">
-                    {dashboardState?.currentSegmentLabel || "Micah 6:8"}
-                  </p>
-                  <p className="mt-3 text-lg font-semibold text-amber-100/82">
-                    {dashboardState?.dailyMissionComplete
-                      ? "Return for a steadier second pass."
-                      : "Step back into Scripture and keep the mission moving."}
-                  </p>
-                  <p className="mt-4 max-w-xl text-base leading-7 text-slate-100/84 drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)]">
-                    {dashboardState?.missionSubtitle || "Let your heart be steady, your mind be renewed, and your steps reflect His love."}
-                  </p>
-                </div>
-
-                <div className="rounded-[1.8rem] border border-white/10 bg-black/24 p-4 backdrop-blur-sm sm:p-5">
-                  <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_230px]">
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
-                          {renderNavIcon("verse-memory", "h-4.5 w-4.5")}
-                        </span>
-                        <div>
-                          <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/60">
-                            Focus Passage
-                          </div>
-                          <div className="mt-1 text-2xl font-black text-white">
-                            {dashboardState?.currentSegmentLabel || "Psalm 119:105"}
-                          </div>
-                        </div>
-                      </div>
-                      <p className="mt-2 max-w-xl text-sm leading-6 text-slate-200">
-                        {dashboardState?.dailyMissionComplete
-                          ? "You cleared today’s mission. Run it again for stronger recall and cleaner retention."
-                          : "Today’s passage is ready. Continue where you left off and build fresh momentum."}
-                      </p>
-
-                      <div className="mt-5 h-[7px] overflow-hidden rounded-full bg-white/10">
-                        <div
-                          className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(103,232,249,0.92),rgba(250,204,21,0.96),rgba(244,114,182,0.88))]"
-                          style={{ width: `${dashboardState?.genesisProgressPercent || 0}%` }}
-                        />
-                      </div>
-
-                      <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                        <button
-                          onClick={() => router.push(continueHref)}
-                          className="ba-gold-cta ba-shimmer ba-float-cta motion-safe w-full rounded-full px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2c1600] sm:w-auto sm:min-w-[16rem]"
-                        >
-                          Continue Training
-                        </button>
-                        <button
-                          onClick={() => router.push(dashboardState?.currentCampaignHref || "/training")}
-                          className="ba-glass-card inline-flex w-full items-center justify-center rounded-full px-5 py-4 text-sm font-semibold text-white transition hover:bg-white/[0.08] sm:w-auto"
-                        >
-                          Open Training Arena
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="ba-glass-card rounded-[1.45rem] p-4">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/60">
-                        Next Step
-                      </div>
-                      <div className="mt-2 text-xl font-black text-white">
-                        {dashboardState?.nextMissionTitle || "The First Family"}
-                      </div>
-                      <div className="mt-2 text-sm text-slate-300">
-                        {dashboardState?.nextMissionLabel || "Genesis 4–6"}
-                      </div>
-                      <div className="mt-4 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3">
-                        <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
-                          Campaign Progress
-                        </div>
-                        <div className="mt-2 text-2xl font-black text-white">
-                          {dashboardState?.genesisProgressPercent || 0}%
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="ba-glass-panel inline-flex items-center gap-3 rounded-full px-4 py-2.5 text-sm font-semibold text-white/84">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/10 text-amber-50">
+                  {renderNavIcon("sun", "h-4 w-4")}
+                </span>
+                <span>
+                  {formattedDate} · {rhythmLabel}
+                </span>
               </div>
             </section>
 
+            <DashboardHero
+              title={missionTitle}
+              subtitle={missionSubtitle}
+              referenceLine={referenceLine}
+              focusPassage={focusPassage}
+              continueHref={continueHref}
+              onContinue={() => router.push(continueHref)}
+              onOpenTraining={() => router.push(dashboardState?.currentCampaignHref || "/training")}
+              nextTitle={dashboardState?.nextMissionTitle || "The First Family"}
+              nextLabel={dashboardState?.nextMissionLabel || "Genesis 4–6"}
+              progressPercent={dashboardState?.genesisProgressPercent || 0}
+              missionArt={dashboardState?.missionArt}
+            />
+
             <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-              <article className="ba-stat-card rounded-[1.45rem] p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/72">
-                      XP
-                    </div>
-                    <div className="mt-2 text-2xl font-black text-white">
-                      {dashboardState?.xpEarned || 0}
-                    </div>
-                    <div className="mt-1 text-xs text-white/58">XP earned</div>
-                  </div>
-                  <div className="ba-rank-gem inline-flex h-10 w-10 items-center justify-center rounded-full text-cyan-100">
-                    {renderNavIcon("brand", "h-4.5 w-4.5")}
-                  </div>
-                </div>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-                  <div className="ba-progress-glow h-full w-[72%] rounded-full bg-[linear-gradient(90deg,rgba(103,232,249,0.95),rgba(59,130,246,0.92))]" />
-                </div>
-              </article>
-
-              <article className="ba-stat-card rounded-[1.45rem] p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/72">
-                      Streak
-                    </div>
-                    <div className="mt-2 text-2xl font-black text-white">
-                      {dashboardState?.streak || 0}
-                    </div>
-                    <div className="mt-1 text-xs text-white/58">Days in rhythm</div>
-                  </div>
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-300/20 bg-amber-300/10 text-amber-100">
-                    {renderNavIcon("training", "h-4.5 w-4.5")}
-                  </div>
-                </div>
-                <div className="mt-4 flex items-center gap-2">
-                  {weeklyStreakDots.map((active, index) => (
-                    <div
-                      key={index}
-                      className={`h-2.5 flex-1 rounded-full ${
-                        active
-                          ? "bg-[linear-gradient(90deg,rgba(250,204,21,0.96),rgba(251,146,60,0.92))] shadow-[0_0_14px_rgba(251,191,36,0.18)]"
-                          : "bg-white/10"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </article>
-
-              <article className="ba-stat-card rounded-[1.45rem] p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-violet-100/72">
-                      Mastery
-                    </div>
-                    <div className="mt-2 text-2xl font-black text-white">
-                      {dashboardState?.masteryPercent || 0}%
-                    </div>
-                    <div className="mt-1 text-xs text-white/58">Scripture retained</div>
-                  </div>
-                  <div className="ba-rank-gem inline-flex h-10 w-10 items-center justify-center rounded-full text-violet-100">
-                    {renderNavIcon("leaderboard", "h-4.5 w-4.5")}
-                  </div>
-                </div>
-                <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full bg-[linear-gradient(90deg,rgba(244,114,182,0.9),rgba(196,181,253,0.95),rgba(250,204,21,0.84))]"
-                    style={{ width: `${dashboardState?.masteryPercent || 0}%` }}
-                  />
-                </div>
-              </article>
-
-              <article className="ba-stat-card rounded-[1.45rem] p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/72">
-                      Focus Rank
-                    </div>
-                    <div className="mt-2 text-xl font-black text-white">
-                      {focusRankLabel}
-                    </div>
-                    <div className="mt-1 text-xs text-white/58">{focusRankMeta}</div>
-                  </div>
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/24 bg-cyan-300/10 text-cyan-100">
-                    {renderNavIcon("upgrade", "h-4.5 w-4.5")}
-                  </div>
-                </div>
-                <div className="mt-4 text-sm text-white/72">
-                  Focused and ready for today
-                </div>
-              </article>
+              <DashboardStatCard
+                title="XP"
+                value={(dashboardState?.xpEarned || 0).toLocaleString()}
+                supporting="XP earned"
+                accent="cyan"
+                icon="brand"
+              />
+              <DashboardStatCard
+                title="Streak"
+                value={String(dashboardState?.streak || 0)}
+                supporting="Days in rhythm"
+                accent="amber"
+                icon="training"
+              />
+              <DashboardStatCard
+                title="Mastery"
+                value={`${dashboardState?.masteryPercent || 0}%`}
+                supporting="Scripture retained"
+                accent="violet"
+                icon="leaderboard"
+              />
+              <DashboardStatCard
+                title="Focus Rank"
+                value={focusRankLabel}
+                supporting={focusRankMeta}
+                accent="sapphire"
+                icon="upgrade"
+              />
             </section>
 
             <section>
@@ -805,119 +572,61 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <div className="mt-5 grid gap-4 lg:grid-cols-2">
-                <button
+              <div className="mt-5 grid gap-4 xl:grid-cols-2">
+                <DashboardRecommendationCard
+                  title="TRAINING ARENA"
+                  eyebrow="Flagship Lane"
+                  copyPrimary="Build discipline. Strengthen your spirit."
+                  copySecondary="Level up through guided challenges."
+                  badge="Challenging • 5 Rounds"
+                  accent="training"
+                  imageSrc="/dashboard/training-arena-card.svg"
+                  icon="training"
                   onClick={() => router.push("/training")}
-                  className="ba-card-aura ba-sacred-surface relative overflow-hidden rounded-[1.85rem] p-5 text-left transition duration-200 hover:-translate-y-0.5 active:scale-[0.99]"
-                >
-                  <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,rgba(103,232,249,0.94),rgba(250,204,21,0.92))]" />
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
-                      {renderNavIcon("training", "h-5 w-5")}
-                    </div>
-                    <div className="rounded-full border border-cyan-300/18 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
-                      Challenging • 5 Rounds
-                    </div>
-                  </div>
-                  <h3 className="mt-5 text-2xl font-black uppercase tracking-[-0.03em] text-white">Training Arena</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Build discipline. Strengthen your spirit.
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">
-                    Level up through guided challenges.
-                  </p>
-                  <div className="mt-5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-cyan-100">Enter Training Arena</span>
-                    <span className="text-white/72">→</span>
-                  </div>
-                </button>
-
-                <button
+                />
+                <DashboardRecommendationCard
+                  title="VERSE MEMORY"
+                  eyebrow="Warm Focus"
+                  copyPrimary="Hide God’s Word in your heart."
+                  copySecondary="Let it guide you every day."
+                  badge="Daily Workout • 10 Verses"
+                  accent="memory"
+                  imageSrc="/dashboard/verse-memory-card.svg"
+                  icon="verse-memory"
                   onClick={() => router.push("/flashcards")}
-                  className="ba-card-aura relative overflow-hidden rounded-[1.85rem] border border-amber-200/12 bg-[radial-gradient(circle_at_top_left,rgba(255,221,153,0.14),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.10),transparent_24%),linear-gradient(180deg,rgba(24,18,16,0.96),rgba(12,12,18,0.98))] p-5 text-left shadow-[0_24px_60px_rgba(0,0,0,0.3)] transition duration-200 hover:-translate-y-0.5 active:scale-[0.99]"
-                >
-                  <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,rgba(251,191,36,0.92),rgba(244,114,182,0.88),rgba(34,211,238,0.84))]" />
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-[1rem] border border-amber-200/18 bg-amber-200/10 text-amber-100">
-                      {renderNavIcon("verse-memory", "h-5 w-5")}
-                    </div>
-                    <div className="rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-amber-100">
-                      Daily Workout • 10 Verses
-                    </div>
-                  </div>
-                  <h3 className="mt-5 text-2xl font-black uppercase tracking-[-0.03em] text-white">Verse Memory</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
-                    Hide God&apos;s Word in your heart.
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">
-                    Let it guide you every day.
-                  </p>
-                  <div className="mt-5 flex items-center justify-between">
-                    <span className="text-sm font-semibold text-amber-100">Open Verse Memory</span>
-                    <span className="text-white/72">→</span>
-                  </div>
-                </button>
+                />
               </div>
             </section>
           </div>
 
-          <aside className="space-y-5">
-            <section className="ba-sacred-surface rounded-[1.9rem] p-5">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/72">
-                    Today&apos;s Rhythm
-                  </p>
-                  <h3 className="mt-2 text-2xl font-black text-white">
-                    {dashboardState?.dailyMissionComplete ? "Mission complete" : "Mission available"}
-                  </h3>
-                </div>
-                <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/10 text-amber-100">
-                  {renderNavIcon("training", "h-4.5 w-4.5")}
-                </div>
-              </div>
-              <p className="mt-3 text-sm leading-6 text-slate-300">
-                {dashboardState?.dailyMissionComplete
-                  ? "Today’s mission is complete. Return for another disciplined pass or move into Verse Memory."
-                  : "Your mission is open now. A short, focused session keeps the rhythm alive."}
-              </p>
-              <button
-                onClick={() => router.push(continueHref)}
-                className="ba-gold-cta mt-5 inline-flex w-full items-center justify-center rounded-full px-5 py-3.5 text-sm font-black uppercase tracking-[0.18em]"
-              >
-                {dashboardState?.dailyMissionComplete ? "Replay mission" : "Continue mission"}
-              </button>
-            </section>
+          <div className="hidden xl:block">
+            <DashboardRightRail
+              missionTitle={missionTitle}
+              referenceLine={referenceLine}
+              rewardLine={`Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`}
+              sessionsCompleted={weeklySummary.sessionsCompleted}
+              versesMemorized={weeklySummary.versesMemorized}
+              questsCompleted={weeklySummary.questsCompleted}
+              totalXpEarned={weeklySummary.totalXpEarned}
+              onContinue={() => router.push(continueHref)}
+              onViewProgress={() => router.push("/leaderboard")}
+            />
+          </div>
+        </div>
 
-            <section className="ba-glass-card rounded-[1.85rem] p-5">
-              <div className="text-[11px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">
-                Focus Summary
-              </div>
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4">
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">Current Passage</div>
-                  <div className="mt-2 text-lg font-black text-white">{dashboardState?.currentSegmentLabel || "Genesis 1–3"}</div>
-                </div>
-                <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4">
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">Missions Cleared</div>
-                  <div className="mt-2 text-lg font-black text-white">{dashboardState?.completedMissionCount || 0}</div>
-                </div>
-                <button
-                  onClick={() => router.push("/quiz?mode=quick")}
-                  className="ba-glass-card rounded-[1.15rem] p-4 text-left transition hover:bg-white/[0.08]"
-                >
-                  <div className="text-[10px] uppercase tracking-[0.18em] text-cyan-100/72">Quick Burst</div>
-                  <div className="mt-2 text-lg font-black text-white">Protect the rhythm fast</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-300">
-                    {trainingEnabled
-                      ? "Take a short training burst when you only have a minute."
-                      : "Quick training stays available any time you want a focused review."}
-                  </p>
-                </button>
-              </div>
-            </section>
-          </aside>
-        </section>
+        <div className="mt-6 xl:hidden">
+          <DashboardRightRail
+            missionTitle={missionTitle}
+            referenceLine={referenceLine}
+            rewardLine={`Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`}
+            sessionsCompleted={weeklySummary.sessionsCompleted}
+            versesMemorized={weeklySummary.versesMemorized}
+            questsCompleted={weeklySummary.questsCompleted}
+            totalXpEarned={weeklySummary.totalXpEarned}
+            onContinue={() => router.push(continueHref)}
+            onViewProgress={() => router.push("/leaderboard")}
+          />
+        </div>
 
         <section className="mt-8 rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(16,19,30,0.96),rgba(9,11,19,0.98))] p-5 shadow-[0_24px_80px_rgba(0,0,0,0.28)] sm:p-6">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">

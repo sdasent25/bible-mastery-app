@@ -1,0 +1,36 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="600" y1="0" x2="600" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101A2B"/>
+      <stop offset="0.58" stop-color="#0A101B"/>
+      <stop offset="1" stop-color="#05070E"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(860 188) rotate(90) scale(182 206)">
+      <stop stop-color="#FDE68A"/>
+      <stop offset="0.48" stop-color="#F6C35B" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#F6C35B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hill" x1="786" y1="282" x2="786" y2="618" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A2536"/>
+      <stop offset="1" stop-color="#070B14"/>
+    </linearGradient>
+    <linearGradient id="path" x1="778" y1="760" x2="883" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C4892E"/>
+      <stop offset="1" stop-color="#F3D185"/>
+    </linearGradient>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(935 332) rotate(90) scale(160 146)">
+      <stop stop-color="#5EEAD4" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#5EEAD4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <rect width="1200" height="760" fill="url(#sun)"/>
+  <rect width="1200" height="760" fill="url(#aura)"/>
+  <path d="M0 468C126 429 217 398 334 406C465 414 565 515 694 534C827 554 923 478 1049 482C1118 484 1168 500 1200 516V760H0V468Z" fill="url(#hill)"/>
+  <path d="M867 760C853 650 853 590 875 530C891 486 917 450 945 416C899 436 860 459 828 490C771 545 726 631 708 760H867Z" fill="url(#path)" fill-opacity="0.88"/>
+  <path d="M929 288V394" stroke="#F8E7A8" stroke-width="12" stroke-linecap="round"/>
+  <path d="M889 324H969" stroke="#F8E7A8" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="929" cy="340" r="106" fill="#F6C35B" fill-opacity="0.07"/>
+  <path d="M110 675C188 655 230 617 289 559" stroke="#EEC86F" stroke-opacity="0.18" stroke-width="4" stroke-linecap="round"/>
+  <path d="M165 714C247 691 312 642 366 595" stroke="#F2D997" stroke-opacity="0.11" stroke-width="3" stroke-linecap="round"/>
+</svg>

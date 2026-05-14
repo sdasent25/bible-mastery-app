@@ -11,6 +11,10 @@ export type NavIconKey =
   | "profile"
   | "settings"
   | "upgrade"
+  | "bell"
+  | "info"
+  | "sun"
+  | "chevron-right"
   | "menu"
   | "close"
   | "brand"
@@ -112,6 +116,39 @@ function ShieldIcon(props: IconProps) {
   ])
 }
 
+function BellIcon(props: IconProps) {
+  return iconBase(props, [
+    createElement("path", { key: "body", d: "M6.5 16.5h11a1 1 0 0 0 .8-1.6l-1.3-1.8V10a5 5 0 1 0-10 0v3.1l-1.3 1.8a1 1 0 0 0 .8 1.6Z" }),
+    createElement("path", { key: "clapper", d: "M10 19a2 2 0 0 0 4 0" }),
+  ])
+}
+
+function InfoIcon(props: IconProps) {
+  return iconBase(props, [
+    createElement("circle", { key: "ring", cx: "12", cy: "12", r: "8.5" }),
+    createElement("path", { key: "stem", d: "M12 10.5V16" }),
+    createElement("path", { key: "dot", d: "M12 7.8h.01" }),
+  ])
+}
+
+function SunIcon(props: IconProps) {
+  return iconBase(props, [
+    createElement("circle", { key: "core", cx: "12", cy: "12", r: "3.4" }),
+    createElement("path", { key: "t", d: "M12 3.5v2.2" }),
+    createElement("path", { key: "b", d: "M12 18.3v2.2" }),
+    createElement("path", { key: "l", d: "M3.5 12h2.2" }),
+    createElement("path", { key: "r", d: "M18.3 12h2.2" }),
+    createElement("path", { key: "tl", d: "m6.3 6.3 1.6 1.6" }),
+    createElement("path", { key: "tr", d: "m16.1 6.3-1.6 1.6" }),
+    createElement("path", { key: "bl", d: "m6.3 17.7 1.6-1.6" }),
+    createElement("path", { key: "br", d: "m16.1 17.7-1.6-1.6" }),
+  ])
+}
+
+function ChevronRightIcon(props: IconProps) {
+  return iconBase(props, [createElement("path", { key: "arrow", d: "m9 6 6 6-6 6" })])
+}
+
 function MenuIcon(props: IconProps) {
   return iconBase(props, [
     createElement("path", { key: "top", d: "M4 7h16" }),
@@ -144,6 +181,10 @@ const iconMap: Record<NavIconKey, (props: IconProps) => ReactElement> = {
   profile: UserIcon,
   settings: SettingsIcon,
   upgrade: ShieldIcon,
+  bell: BellIcon,
+  info: InfoIcon,
+  sun: SunIcon,
+  "chevron-right": ChevronRightIcon,
   menu: MenuIcon,
   close: CloseIcon,
   brand: BrandIcon,
@@ -151,7 +192,7 @@ const iconMap: Record<NavIconKey, (props: IconProps) => ReactElement> = {
 
 export const desktopNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: "home" },
-  { label: "Training Arena", href: "/training", icon: "training" },
+  { label: "Training", href: "/training", icon: "training" },
   { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
   { label: "Quests", href: "/quests", icon: "quests" },
   { label: "Leaderboard", href: "/leaderboard", icon: "leaderboard" },

@@ -1,0 +1,29 @@
+<svg width="760" height="520" viewBox="0 0 760 520" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="380" y1="0" x2="380" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1A1414"/>
+      <stop offset="1" stop-color="#0B0D15"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(238 168) rotate(90) scale(148 170)">
+      <stop stop-color="#FDE68A" stop-opacity="0.64"/>
+      <stop offset="1" stop-color="#FDE68A" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="book" x1="225" y1="195" x2="225" y2="364" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7E7C2"/>
+      <stop offset="1" stop-color="#D6B983"/>
+    </linearGradient>
+  </defs>
+  <rect width="760" height="520" rx="36" fill="url(#bg)"/>
+  <rect width="760" height="520" rx="36" fill="url(#lamp)"/>
+  <path d="M0 356C104 330 197 302 305 310C391 316 470 350 560 365C633 376 699 371 760 360V520H0V356Z" fill="#101420"/>
+  <path d="M129 214C129 191 147 173 170 173H219V364H170C147 364 129 382 129 405V214Z" fill="url(#book)"/>
+  <path d="M311 214C311 191 293 173 270 173H221V364H270C293 364 311 382 311 405V214Z" fill="#E7C98F"/>
+  <path d="M221 173V364" stroke="#B28B4A" stroke-width="6"/>
+  <path d="M185 214H205" stroke="#B28B4A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M241 214H261" stroke="#A774C8" stroke-width="4" stroke-linecap="round"/>
+  <path d="M181 250H202" stroke="#B28B4A" stroke-width="4" stroke-linecap="round"/>
+  <path d="M241 250H267" stroke="#A774C8" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="542" cy="155" r="10" fill="#F3C969" fill-opacity="0.4"/>
+  <circle cx="582" cy="185" r="7" fill="#F472B6" fill-opacity="0.28"/>
+  <circle cx="516" cy="206" r="6" fill="#67E8F9" fill-opacity="0.24"/>
+</svg>

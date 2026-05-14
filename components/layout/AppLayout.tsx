@@ -42,7 +42,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`flex min-h-screen bg-[#020617] text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}
+      className={`ba-page-bg flex min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}
     >
       {open && !isGameMode ? (
         <div
@@ -52,7 +52,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       ) : null}
 
-      <aside className="hidden md:block md:relative md:z-[999] md:h-screen md:w-64 md:shrink-0">
+      <aside className="hidden md:block md:relative md:z-[999] md:h-screen md:w-72 md:shrink-0">
         <Sidebar variant="desktop" />
       </aside>
 
@@ -176,7 +176,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             ) : null}
           </div>
 
-          <div className="hidden md:block md:overflow-y-auto md:p-6">{children}</div>
+          <div className="hidden md:block md:overflow-y-auto md:p-8">{children}</div>
         </div>
       </div>
     </div>

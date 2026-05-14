@@ -156,11 +156,12 @@ export default function Sidebar({
               ? "Free (Family)"
               : "Free (Individual)"
   const questsActive = pathname.startsWith("/quests")
+  const profileActive = pathname === "/settings"
 
   if (!isPlanLoaded) {
     return (
       <div
-        className={`flex h-full flex-col ${isMobile ? "w-full" : "w-64"} overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)]`}
+        className={`flex h-full flex-col ${isMobile ? "w-full" : "w-72"} overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)]`}
       >
         <div className="animate-pulse space-y-4">
           <div className="h-24 rounded-[1.4rem] border border-white/10 bg-white/[0.04]" />
@@ -178,10 +179,10 @@ export default function Sidebar({
 
   return (
     <div
-      className={`flex h-full flex-col ${isMobile ? "w-full" : "w-64"} overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] scrollbar-thin scrollbar-thumb-white/10`}
+      className={`flex h-full flex-col ${isMobile ? "w-full" : "w-72"} overflow-y-auto border-r border-white/8 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.06),transparent_32%),linear-gradient(180deg,rgba(11,16,26,0.98),rgba(7,10,18,0.98))] p-4 shadow-[inset_-1px_0_0_rgba(255,255,255,0.03)] scrollbar-thin scrollbar-thumb-white/10`}
     >
       <div className="flex-1 space-y-4">
-        <div className="ba-sacred-surface rounded-[1.45rem] p-4">
+        <div className="ba-sidebar-panel rounded-[1.55rem] p-5">
           <div className="flex items-center gap-3">
             <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-amber-200/18 bg-amber-200/10 text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
               {renderNavIcon("brand", "h-5 w-5")}
@@ -200,7 +201,7 @@ export default function Sidebar({
           </p>
         </div>
 
-        <div className="ba-glass-card rounded-[1.35rem] p-4">
+        <div className="ba-sidebar-panel rounded-[1.45rem] p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
               <div className="text-[10px] uppercase tracking-[0.18em] text-white/48">
@@ -236,6 +237,20 @@ export default function Sidebar({
                 Streak
               </div>
               <div className="mt-2 text-lg font-black text-white">{streak} days</div>
+            </div>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
+                Mastery
+              </div>
+              <div className="mt-2 text-lg font-black text-white">{Math.max(18, Math.min(96, Math.round(xp / 45)))}%</div>
+            </div>
+            <div className="rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-white/44">
+                Focus Rank
+              </div>
+              <div className="mt-2 text-lg font-black text-white">Sapphire II</div>
             </div>
           </div>
           <div className="mt-3 rounded-[1rem] border border-emerald-300/14 bg-emerald-300/8 px-3 py-2 text-xs text-white/84">
@@ -306,9 +321,11 @@ export default function Sidebar({
               </div>
             </button>
           )}
+
+          {navItem("Profile", "/settings", "profile")}
         </div>
 
-        <div className="ba-sacred-surface rounded-[1.4rem] p-4">
+        <div className="ba-sidebar-panel rounded-[1.45rem] p-4">
           <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.24em] text-amber-100/82">
             <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-amber-100/20 bg-amber-100/10 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
               {renderNavIcon("upgrade", "h-3.5 w-3.5")}
@@ -331,7 +348,7 @@ export default function Sidebar({
               onClick={() => closeMobile?.()}
               className="ba-gold-cta mt-4 inline-flex w-full items-center justify-center rounded-full px-4 py-3 text-sm font-black transition hover:bg-amber-100"
             >
-              Go Pro+
+              Upgrade Now
             </Link>
           ) : null}
         </div>
@@ -343,9 +360,17 @@ export default function Sidebar({
             closeMobile?.()
             router.push("/settings")
           }}
-          className="flex w-full items-center gap-3 rounded-[1rem] border border-white/0 bg-white/[0.02] px-4 py-3 text-left text-white/84 transition hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white"
+          className={`flex w-full items-center gap-3 rounded-[1rem] border px-4 py-3 text-left transition ${
+            profileActive
+              ? "border-amber-200/22 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.18),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.96),rgba(12,14,22,0.98))] text-amber-50 shadow-[0_0_34px_rgba(251,191,36,0.12)]"
+              : "border-white/0 bg-white/[0.02] text-white/84 hover:border-cyan-200/12 hover:bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.03))] hover:text-white"
+          }`}
         >
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/62">
+          <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${
+            profileActive
+              ? "border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_22px_rgba(251,191,36,0.14)]"
+              : "border-white/10 bg-white/[0.04] text-white/62"
+          }`}>
             {renderNavIcon("settings", "h-[1.05rem] w-[1.05rem]")}
           </span>
           <span className="text-sm font-semibold">Settings</span>

@@ -387,6 +387,24 @@ textarea {
     linear-gradient(180deg, #07101a 0%, #090e17 42%, #04070f 100%);
 }
 
+.ba-dashboard-shell {
+  position: relative;
+  max-width: 1540px;
+  margin-inline: auto;
+}
+
+.ba-dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1280px) {
+  .ba-dashboard-grid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.72fr);
+    align-items: start;
+  }
+}
+
 .ba-top-shell {
   background:
     linear-gradient(180deg, rgba(10, 15, 24, 0.97), rgba(7, 11, 20, 0.94));
@@ -394,6 +412,26 @@ textarea {
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(18px);
+}
+
+.ba-topbar {
+  background:
+    linear-gradient(180deg, rgba(11, 16, 28, 0.94), rgba(7, 11, 19, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 22px 56px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.ba-dashboard-topbar {
+  background:
+    linear-gradient(180deg, rgba(11, 16, 28, 0.94), rgba(7, 11, 19, 0.96));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 22px 56px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(18px);
 }
 
@@ -405,6 +443,17 @@ textarea {
     0 20px 48px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
+}
+
+.ba-sidebar-panel {
+  background:
+    radial-gradient(circle at top left, rgba(255, 221, 153, 0.1), transparent 24%),
+    linear-gradient(180deg, rgba(14, 20, 33, 0.98), rgba(8, 11, 20, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
 }
 
 .ba-gold-cta {
@@ -536,6 +585,26 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     0 20px 48px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+}
+
+.ba-recommendation-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 26px 72px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px);
+}
+
+.ba-right-rail-card {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
 }
