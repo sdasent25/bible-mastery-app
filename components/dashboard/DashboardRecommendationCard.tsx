@@ -42,8 +42,14 @@ export default function DashboardRecommendationCard({
       <div className="absolute inset-x-0 top-0 h-1 before:absolute before:inset-0 before:content-['']" />
       <div className="grid gap-0 lg:grid-cols-[250px_minmax(0,1fr)_72px]">
         <div className="relative min-h-[230px] overflow-hidden lg:min-h-full">
-          <Image src={imageSrc} alt="" fill className="object-cover object-center opacity-92" sizes="(max-width: 1024px) 100vw, 250px" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(7,10,16,0.34))]" />
+          <Image
+            src={imageSrc}
+            alt=""
+            fill
+            className="object-cover object-[72%_center] opacity-94"
+            sizes="(max-width: 1024px) 100vw, 250px"
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,10,16,0.24),transparent_38%),linear-gradient(180deg,transparent,rgba(7,10,16,0.34))]" />
         </div>
 
         <div className="relative z-10 flex flex-col justify-between p-5 sm:p-6">

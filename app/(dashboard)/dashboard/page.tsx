@@ -443,11 +443,11 @@ export default function DashboardPage() {
   const xpIntoLevel = (dashboardState?.xpEarned || 0) % 250
   const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
-  const missionTitle = dashboardState?.missionTitle || "In the Beginning"
+  const missionTitle = dashboardState?.missionTitle || "Walk in Faith"
   const missionSubtitle =
     dashboardState?.missionSubtitle ||
     "Understand the foundation of all things. Let God’s Word be the beginning of your wisdom and walk."
-  const referenceLine = dashboardState?.currentSegmentLabel || "Genesis 1:1"
+  const referenceLine = dashboardState?.currentSegmentLabel || "Micah 6:8"
   const focusPassage = dashboardState?.currentSegmentLabel || "Psalm 119:105"
   const focusRankLabel = "SAPPHIRE II"
   const focusRankMeta = "Top 18%"
@@ -513,34 +513,32 @@ export default function DashboardPage() {
               subtitle={missionSubtitle}
               referenceLine={referenceLine}
               focusPassage={focusPassage}
-              continueHref={continueHref}
               onContinue={() => router.push(continueHref)}
               onOpenTraining={() => router.push(dashboardState?.currentCampaignHref || "/training")}
               nextTitle={dashboardState?.nextMissionTitle || "The First Family"}
               nextLabel={dashboardState?.nextMissionLabel || "Genesis 4–6"}
               progressPercent={dashboardState?.genesisProgressPercent || 0}
-              missionArt={dashboardState?.missionArt}
             />
 
             <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
               <DashboardStatCard
                 title="XP"
                 value={(dashboardState?.xpEarned || 0).toLocaleString()}
-                supporting="XP earned"
+                supporting="/ 15,000"
                 accent="cyan"
                 icon="brand"
               />
               <DashboardStatCard
                 title="Streak"
                 value={String(dashboardState?.streak || 0)}
-                supporting="Days in rhythm"
+                supporting="Days · Keep it going!"
                 accent="amber"
                 icon="training"
               />
               <DashboardStatCard
                 title="Mastery"
                 value={`${dashboardState?.masteryPercent || 0}%`}
-                supporting="Scripture retained"
+                supporting="Overall Mastery"
                 accent="violet"
                 icon="leaderboard"
               />

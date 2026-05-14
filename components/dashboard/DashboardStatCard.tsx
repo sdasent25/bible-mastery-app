@@ -56,6 +56,11 @@ export default function DashboardStatCard({
           {renderNavIcon(icon, "h-5 w-5")}
         </div>
       </div>
+      <div className="mt-3 flex justify-end">
+        <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/58">
+          {renderNavIcon("info", "h-3.5 w-3.5")}
+        </span>
+      </div>
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/10">
         <div className={`h-full rounded-full ${tone.bar}`} style={{ width: "72%" }} />
       </div>

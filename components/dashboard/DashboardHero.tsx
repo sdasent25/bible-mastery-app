@@ -9,13 +9,11 @@ type DashboardHeroProps = {
   subtitle: string
   referenceLine: string
   focusPassage: string
-  continueHref: string
   onContinue: () => void
   onOpenTraining: () => void
   nextTitle: string
   nextLabel: string
   progressPercent: number
-  missionArt?: string
 }
 
 export default function DashboardHero({
@@ -28,29 +26,21 @@ export default function DashboardHero({
   nextTitle,
   nextLabel,
   progressPercent,
-  missionArt,
 }: DashboardHeroProps) {
   return (
     <section className="ba-hero-card ba-soft-aura rounded-[2.4rem]">
       <div className="absolute inset-0">
         <Image
-          src="/dashboard/mission-hero.svg"
+          src="/dashboard/mission-hero.png"
           alt=""
           fill
           priority
-          className="object-cover object-center"
+          className="object-cover object-[68%_center]"
           sizes="(max-width: 1280px) 100vw, 900px"
         />
       </div>
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,10,17,0.82),rgba(8,10,17,0.46)_48%,rgba(8,10,17,0.22)_74%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,215,118,0.02),rgba(8,10,17,0.14)_38%,rgba(8,10,17,0.72))]" />
-
-      {missionArt ? (
-        <div className="absolute right-6 top-6 hidden h-32 w-32 overflow-hidden rounded-[1.8rem] border border-white/14 bg-black/25 shadow-[0_18px_42px_rgba(0,0,0,0.3)] lg:block">
-          <Image src={missionArt} alt="" fill className="object-cover object-center opacity-78" sizes="128px" />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent,rgba(7,10,16,0.48))]" />
-        </div>
-      ) : null}
 
       <div className="relative z-10 flex min-h-[34rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[38rem] lg:px-8">
         <div className="flex items-start justify-between gap-4">
@@ -101,7 +91,7 @@ export default function DashboardHero({
                   onClick={onContinue}
                   className="ba-gold-cta ba-shimmer ba-float-cta motion-safe inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-4 text-sm font-black uppercase tracking-[0.18em] text-[#2a1600] sm:w-auto sm:min-w-[18rem]"
                 >
-                  {renderNavIcon("upgrade", "h-4 w-4")}
+                  {renderNavIcon("brand", "h-4 w-4")}
                   Continue Training
                 </button>
                 <button
