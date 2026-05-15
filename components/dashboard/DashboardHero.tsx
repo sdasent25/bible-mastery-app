@@ -28,7 +28,7 @@ export default function DashboardHero({
   dailyMissionComplete,
 }: DashboardHeroProps) {
   return (
-    <section className="ba-hero-card ba-soft-aura rounded-[2.35rem]">
+    <section className="ba-hero-card ba-soft-aura rounded-[2rem] sm:rounded-[2.35rem]">
       <div className="absolute inset-0">
         <Image
           src={imageSrc}
@@ -39,10 +39,10 @@ export default function DashboardHero({
           sizes="(max-width: 1280px) 100vw, 900px"
         />
       </div>
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,16,0.97)_0%,rgba(4,10,18,0.93)_26%,rgba(8,12,18,0.68)_48%,rgba(8,11,18,0.18)_74%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,16,0.98)_0%,rgba(4,10,18,0.94)_24%,rgba(7,11,18,0.8)_44%,rgba(8,11,18,0.28)_74%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,220,138,0.05),rgba(10,12,20,0.05)_36%,rgba(7,10,16,0.52)_100%)]" />
 
-      <div className="relative z-10 flex min-h-[33.5rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[38rem] lg:px-9">
+      <div className="relative z-10 flex min-h-[33rem] flex-col justify-between px-5 py-6 sm:px-7 sm:py-8 lg:min-h-[38rem] lg:px-9">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2.5">
             <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/24 bg-[linear-gradient(180deg,rgba(65,44,17,0.54),rgba(28,18,10,0.44))] px-3.5 py-1.5 text-[11px] font-black uppercase tracking-[0.28em] text-amber-100/84 shadow-[0_0_24px_rgba(251,191,36,0.08)]">
@@ -58,9 +58,11 @@ export default function DashboardHero({
               </div>
             ) : null}
           </div>
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-white/18 bg-black/26 text-white/86 shadow-[0_12px_30px_rgba(0,0,0,0.22)] backdrop-blur-md">
-            {renderNavIcon("info", "h-[1.05rem] w-[1.05rem]")}
-          </div>
+          {dailyMissionComplete ? (
+            <div className="inline-flex rounded-full border border-emerald-300/18 bg-emerald-300/10 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-100">
+              Completed Today
+            </div>
+          ) : null}
         </div>
 
         <div className="max-w-[35rem]">
@@ -74,10 +76,12 @@ export default function DashboardHero({
           <p className="mt-5 max-w-[28rem] text-[1.02rem] leading-8 text-slate-100/88 lg:text-[1.16rem] lg:leading-9">
             {subtitle}
           </p>
-          <p className="mt-4 text-[1.2rem] text-cyan-200/94">{referenceLine}</p>
+          <p className="mt-4 text-[1.02rem] font-medium uppercase tracking-[0.14em] text-cyan-200/94">
+            {referenceLine}
+          </p>
         </div>
 
-        <div className="rounded-[1.8rem] border border-amber-200/10 bg-[linear-gradient(180deg,rgba(7,11,18,0.08),rgba(7,11,18,0.16))] p-4 backdrop-blur-[6px] sm:p-5">
+        <div className="rounded-[1.8rem] border border-amber-200/16 bg-[linear-gradient(180deg,rgba(7,11,18,0.18),rgba(7,11,18,0.26))] p-4 backdrop-blur-[6px] sm:p-5">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-3">

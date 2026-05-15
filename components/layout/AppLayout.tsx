@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
@@ -21,6 +22,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const showMobileNav = !isGameMode
   const athleteLevel = Math.max(1, Math.floor(xp / 250) + 1)
   const xpIntoLevel = xp % 250
+  const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
 
   useEffect(() => {
@@ -96,48 +98,60 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div className="ba-content-frame flex min-w-0 flex-1 flex-col">
         {showMobileNav ? (
           <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 md:hidden">
-            <div className="ba-cinematic-container flex items-center justify-between gap-3">
-              <div className="min-w-0">
-                <div className="flex items-center gap-2.5">
+            <div className="ba-cinematic-container">
+              <div className="flex items-center justify-between gap-3 rounded-[1.6rem] border border-white/8 bg-[linear-gradient(180deg,rgba(10,16,28,0.9),rgba(5,10,18,0.86))] px-3.5 py-3 shadow-[0_18px_44px_rgba(0,0,0,0.24)] backdrop-blur-[18px]">
+                <div className="flex min-w-0 items-center gap-2.5">
                   <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 items-center justify-center rounded-2xl text-amber-50">
                     {renderNavIcon("brand", "h-[1.05rem] w-[1.05rem]")}
                   </div>
-                  <div className="min-w-0">
+                  <div className="min-w-0 max-w-[7rem]">
                     <div className="truncate text-sm font-semibold tracking-[0.08em] text-amber-50">
                       Bible Athlete
                     </div>
-                    <div className="mt-0.5 flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] text-white/58">
-                      <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/10 px-1 text-[9px] text-amber-50">
-                        {athleteLevel}
-                      </span>
-                      <span>Athlete Level</span>
+                    <div className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-white/58">
+                      Dashboard
                     </div>
                   </div>
                 </div>
-                <div className="ba-progress-track mt-2 h-1.5 w-[9.75rem]">
-                  <div
-                    className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(241,185,63,1),rgba(250,214,117,0.98),rgba(147,229,255,0.42))]"
-                    style={{ width: `${levelProgress}%` }}
-                  />
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/upgrade"
-                  className="ba-topbar-icon h-11 w-11 text-amber-50"
-                  aria-label="Open upgrade options"
-                >
-                  {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setOpen(true)}
-                  aria-label="Open navigation menu"
-                  className="ba-topbar-icon h-11 w-11 text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
-                >
-                  {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
-                </button>
+                <div className="flex min-w-0 flex-1 items-center gap-3">
+                  <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[1.1rem] border border-amber-300/22 bg-[linear-gradient(180deg,rgba(35,26,14,0.98),rgba(14,11,11,0.98))] text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.1)]">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/8 text-[0.95rem] font-black">
+                      {athleteLevel}
+                    </div>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[0.8rem] font-medium text-white/82">Athlete Level</div>
+                    <div className="truncate text-[0.92rem] font-semibold tracking-[-0.02em] text-white">
+                      {xpToNextLevel} XP to next level
+                    </div>
+                    <div className="ba-progress-track mt-2 h-1.5">
+                      <div
+                        className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(241,185,63,1),rgba(250,214,117,0.98),rgba(147,229,255,0.42))]"
+                        style={{ width: `${levelProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/upgrade"
+                    className="ba-topbar-icon h-11 w-11 text-amber-50"
+                    aria-label="Open upgrade options"
+                  >
+                    {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    aria-label="Open navigation menu"
+                    className="ba-topbar-icon h-11 w-11 text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
+                  >
+                    {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -171,7 +185,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                               : "border-transparent bg-white/[0.02] text-white/62"
                           }`}
                         >
-                          {renderNavIcon(item.icon, "h-[1.05rem] w-[1.05rem]")}
+                          {item.imageSrc ? (
+                            <Image
+                              src={item.imageSrc}
+                              alt=""
+                              width={36}
+                              height={36}
+                              className={`h-[1.8rem] w-[1.8rem] object-contain transition ${
+                                active
+                                  ? "brightness-110 drop-shadow-[0_0_10px_rgba(251,191,36,0.35)]"
+                                  : "opacity-78"
+                              }`}
+                            />
+                          ) : (
+                            renderNavIcon(item.icon, "h-[1.05rem] w-[1.05rem]")
+                          )}
                           {showDot ? (
                             <span className="absolute right-0.5 top-0.5 h-2 w-2 rounded-full bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.5)]" />
                           ) : null}

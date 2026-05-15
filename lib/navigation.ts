@@ -24,6 +24,7 @@ export type NavItem = {
   label: string
   href: string
   icon: NavIconKey
+  imageSrc?: string
 }
 
 function iconBase(props: IconProps, children: ReactElement[] | ReactElement) {
@@ -211,11 +212,36 @@ export const desktopNavItems: NavItem[] = [
 ]
 
 export const mobileNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: "home" },
-  { label: "Training", href: "/training", icon: "training" },
-  { label: "Quests", href: "/quests", icon: "quests" },
-  { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
-  { label: "Profile", href: "/settings", icon: "profile" },
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: "home",
+    imageSrc: "/icons/navigation/nav-dashboard-shield.png",
+  },
+  {
+    label: "Training",
+    href: "/training",
+    icon: "training",
+    imageSrc: "/icons/navigation/nav-training-dumbbell.png",
+  },
+  {
+    label: "Quests",
+    href: "/quests",
+    icon: "quests",
+    imageSrc: "/icons/navigation/nav-quests-banner.png",
+  },
+  {
+    label: "Verse Memory",
+    href: "/flashcards",
+    icon: "verse-memory",
+    imageSrc: "/icons/navigation/nav-verse-memory-book.png",
+  },
+  {
+    label: "Profile",
+    href: "/settings",
+    icon: "profile",
+    imageSrc: "/icons/navigation/nav-profile-headset.png",
+  },
 ]
 
 export function renderNavIcon(icon: NavIconKey, className?: string) {

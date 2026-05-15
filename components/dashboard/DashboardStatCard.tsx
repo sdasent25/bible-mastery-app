@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 import { renderNavIcon } from "@/lib/navigation"
 
 type DashboardStatCardProps = {
@@ -8,7 +10,7 @@ type DashboardStatCardProps = {
   supporting: string
   caption?: string
   accent: "cyan" | "amber" | "violet" | "sapphire"
-  icon?: never
+  iconSrc: string
 }
 
 const accentMap = {
@@ -40,6 +42,7 @@ export default function DashboardStatCard({
   supporting,
   caption,
   accent,
+  iconSrc,
 }: DashboardStatCardProps) {
   const tone = accentMap[accent]
   const ringStyle = {
@@ -71,7 +74,15 @@ export default function DashboardStatCard({
           style={{ background: ringStyle }}
         >
           <div className="absolute inset-[11px] rounded-full bg-[radial-gradient(circle_at_top,rgba(12,19,31,0.96),rgba(7,10,16,0.98))] shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]" />
-          <div className="relative z-10">{renderCenterArt(accent)}</div>
+          <div className="relative z-10 flex h-16 w-16 items-center justify-center sm:h-[4.4rem] sm:w-[4.4rem]">
+            <Image
+              src={iconSrc}
+              alt=""
+              width={88}
+              height={88}
+              className="h-full w-full object-contain drop-shadow-[0_0_18px_rgba(255,255,255,0.16)]"
+            />
+          </div>
         </div>
       </div>
 
@@ -85,57 +96,5 @@ export default function DashboardStatCard({
         </div>
       ) : null}
     </article>
-  )
-}
-
-function renderCenterArt(accent: DashboardStatCardProps["accent"]) {
-  if (accent === "cyan") {
-    return (
-      <svg viewBox="0 0 80 80" className="h-16 w-16 text-amber-300" aria-hidden="true">
-        <path d="M28 54c6-9 8-17 8-28 0-1 1-2 2-2h4c1 0 2 1 2 2 0 11 2 19 8 28" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <path d="M25 52c4-3 7-8 8-14M55 52c-4-3-7-8-8-14" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-        <path d="M34 56c2 3 4 4 6 4s4-1 6-4" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    )
-  }
-
-  if (accent === "amber") {
-    return (
-      <svg viewBox="0 0 80 80" className="h-16 w-16 text-amber-300" aria-hidden="true">
-        <path d="M40 16c7 11 16 16 16 29 0 10-7 17-16 17s-16-7-16-17c0-13 9-18 16-29Z" fill="currentColor" fillOpacity="0.2" stroke="currentColor" strokeWidth="3" />
-        <path d="M40 28c4 7 8 10 8 18 0 5-3 9-8 9s-8-4-8-9c0-8 4-11 8-18Z" fill="currentColor" />
-      </svg>
-    )
-  }
-
-  if (accent === "violet") {
-    return (
-      <svg viewBox="0 0 88 88" className="h-[4.25rem] w-[4.25rem]" aria-hidden="true">
-        <defs>
-          <linearGradient id="crestMetal" x1="0%" x2="100%">
-            <stop offset="0%" stopColor="#f6c7ef" />
-            <stop offset="45%" stopColor="#d8b4fe" />
-            <stop offset="100%" stopColor="#f3c768" />
-          </linearGradient>
-        </defs>
-        <path d="M44 11 24 18v18c0 16 8 29 20 35 12-6 20-19 20-35V18Z" fill="#201627" stroke="url(#crestMetal)" strokeWidth="3" />
-        <path d="M44 24v25M35 34h18" stroke="url(#crestMetal)" strokeWidth="4" strokeLinecap="round" />
-        <path d="M23 57c-7-4-12-11-14-19M65 57c7-4 12-11 14-19" stroke="url(#crestMetal)" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    )
-  }
-
-  return (
-    <svg viewBox="0 0 88 88" className="h-[4.15rem] w-[4.15rem]" aria-hidden="true">
-      <defs>
-        <linearGradient id="gemTone" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#b7ecff" />
-          <stop offset="45%" stopColor="#4cc9ff" />
-          <stop offset="100%" stopColor="#2f63ff" />
-        </linearGradient>
-      </defs>
-      <path d="m44 12 22 12v24L44 76 22 48V24Z" fill="url(#gemTone)" stroke="#d5f3ff" strokeWidth="3" />
-      <path d="M44 12v64M22 24h44M22 48h44M31 18l13 30 13-30M31 60l13-12 13 12" stroke="#dff7ff" strokeOpacity="0.72" strokeWidth="2" />
-    </svg>
   )
 }

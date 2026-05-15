@@ -448,12 +448,9 @@ export default function DashboardPage() {
   const missionSubtitle =
     dashboardState?.missionSubtitle ||
     "Let your heart be steady, your mind be renewed, and your steps reflect His love."
-  const referenceLine = dashboardState?.currentSegmentLabel || "Micah 6:8"
-  const focusPassage = dashboardState?.currentSegmentLabel || "Psalm 119:105"
-  const heroImageSrc =
-    dashboardState?.missionArt && !dashboardState.missionArt.startsWith("/icons/")
-      ? dashboardState.missionArt
-      : "/dashboard/mission-hero.svg"
+  const referenceLine = dashboardState?.currentSegmentLabel || "Genesis 1"
+  const focusPassage = dashboardState?.currentSegmentLabel || "Genesis 1"
+  const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
   const focusRankLabel = "SAPPHIRE II"
   const focusRankMeta = "Top 18%"
   const weeklySummary = {
@@ -478,29 +475,33 @@ export default function DashboardPage() {
       title: "XP",
       value: (dashboardState?.xpEarned || 0).toLocaleString(),
       supporting: `${xpToNextLevel.toLocaleString()} XP to Level ${athleteLevel + 1}`,
-      caption: "Current experience",
+      caption: `${(dashboardState?.xpEarned || 0).toLocaleString()} / 15,000`,
       accent: "cyan" as const,
+      iconSrc: "/images/icons/dashboard/xp-laurel-ring.png",
     },
     {
       title: "STREAK",
       value: String(dashboardState?.streak || 0),
-      supporting: `${dashboardState?.streak || 0} Days`,
-      caption: "Keep it going",
+      supporting: `${dashboardState?.streak || 0} Day${dashboardState?.streak === 1 ? "" : "s"}`,
+      caption: "Keep it going!",
       accent: "amber" as const,
+      iconSrc: "/images/icons/dashboard/streak-flame-ring.png",
     },
     {
       title: "MASTERY",
       value: `${dashboardState?.masteryPercent || 0}%`,
-      supporting: `${dashboardState?.masteryCount || 0} of ${dashboardState?.totalSegments || 0} segments`,
-      caption: "Overall mastery",
+      supporting: "Overall Mastery",
+      caption: `${dashboardState?.masteryCount || 0} of ${dashboardState?.totalSegments || 0} segments`,
       accent: "violet" as const,
+      iconSrc: "/images/icons/dashboard/mastery-purple-shield.png",
     },
     {
       title: "FOCUS RANK",
       value: focusRankLabel,
       supporting: focusRankMeta,
-      caption: "Seasonal rank placeholder",
+      caption: "Seasonal rank",
       accent: "sapphire" as const,
+      iconSrc: "/images/icons/dashboard/focus-rank-sapphire.png",
     },
   ]
 
@@ -526,6 +527,10 @@ export default function DashboardPage() {
 
             <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+                  <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
+                  {rhythmLabel}
+                </div>
                 <h1 className="text-[2.65rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-5xl xl:text-[3.85rem]">
                   Welcome back.
                 </h1>
@@ -539,8 +544,8 @@ export default function DashboardPage() {
                 </span>
                 <div>
                   <div className="text-right text-[1rem] font-medium text-[#e8ddd1]">{formattedDate}</div>
-                  <div className="mt-0.5 text-right text-[0.98rem] font-medium text-cyan-200">
-                    {rhythmLabel}
+                  <div className="mt-0.5 text-right text-[0.88rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
+                    Daily Rhythm
                   </div>
                 </div>
               </div>
@@ -558,7 +563,7 @@ export default function DashboardPage() {
               dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
             />
 
-            <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+            <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
               {statCards.map((card) => (
                 <DashboardStatCard
                   key={card.title}
@@ -567,6 +572,7 @@ export default function DashboardPage() {
                   supporting={card.supporting}
                   caption={card.caption}
                   accent={card.accent}
+                  iconSrc={card.iconSrc}
                 />
               ))}
             </section>
@@ -588,25 +594,19 @@ export default function DashboardPage() {
 
               <div className="mt-5 grid gap-4">
                 <DashboardRecommendationCard
-                  title="TRAINING ARENA"
-                  eyebrow="Arena Focus"
-                  copyPrimary="Build discipline. Strengthen your spirit."
-                  copySecondary="Level up through guided challenges."
+                  title="Training Arena"
+                  copy="Build discipline. Strengthen your spirit. Level up through guided challenges."
                   badge="Challenging • 5 Rounds"
                   accent="training"
-                  imageSrc="/dashboard/training-arena-card.svg"
-                  icon="training"
+                  imageSrc="/images/dashboard/training-arena-hero-sanctum.png"
                   onClick={() => router.push("/training")}
                 />
                 <DashboardRecommendationCard
-                  title="VERSE MEMORY"
-                  eyebrow="Scripture Focus"
-                  copyPrimary="Hide God’s Word in your heart."
-                  copySecondary="Let it guide you every day."
+                  title="Verse Memory"
+                  copy="Hide God’s Word in your heart. Let it guide you every day."
                   badge="Daily Workout • 10 Verses"
                   accent="memory"
-                  imageSrc="/dashboard/verse-memory-card.svg"
-                  icon="verse-memory"
+                  imageSrc="/images/dashboard/verse-memory-hero-gods-word.png"
                   onClick={() => router.push("/flashcards")}
                 />
               </div>
