@@ -56,9 +56,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       ) : null}
 
-      <div className="mx-auto min-h-screen w-full md:h-screen md:w-[calc(100vw-16px)] md:max-w-[1368px] md:px-0 md:py-2 xl:w-[calc(100vw-20px)] xl:max-w-[1408px] xl:py-2.5">
-        <div className="flex min-h-screen w-full md:sticky md:top-2.5 md:h-[calc(100vh-20px)] md:min-h-0 md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:top-3 xl:h-[calc(100vh-24px)]">
-          <aside className="hidden md:block md:relative md:z-[2] md:w-[196px] md:shrink-0 xl:w-[202px]">
+      <div className="min-h-screen w-full md:h-screen md:px-2 md:py-2 xl:px-2.5 xl:py-2.5">
+        <div className="flex min-h-screen w-full md:h-[calc(100vh-16px)] md:min-h-0 md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:h-[calc(100vh-20px)]">
+          <aside className="hidden md:block md:relative md:z-[2] md:w-[220px] md:shrink-0 xl:w-[228px]">
             <Sidebar variant="desktop" />
           </aside>
 
@@ -213,7 +213,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full md:block md:overflow-hidden md:px-[18px] md:py-[18px] xl:px-5 xl:py-5">
+              <div className="hidden h-full md:block md:overflow-hidden md:px-[16px] md:py-[16px] xl:px-[18px] xl:py-[18px]">
                 <div className="h-full w-full">{children}</div>
               </div>
             </div>

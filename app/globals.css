@@ -473,8 +473,9 @@ textarea {
 .ba-dashboard-shell {
   position: relative;
   width: 100%;
-  max-width: 976px;
+  max-width: none;
   margin-inline: 0;
+  height: 100%;
 }
 
 .ba-dashboard-grid {
@@ -490,11 +491,12 @@ textarea {
 
 @media (min-width: 1240px) {
   .ba-dashboard-grid {
-    grid-template-columns: minmax(0, 692px) 252px;
+    grid-template-columns: minmax(0, 1fr) 286px;
     align-items: start;
-    justify-content: start;
+    justify-content: stretch;
     height: 100%;
     min-height: 0;
+    width: 100%;
   }
 }
 
@@ -824,12 +826,16 @@ textarea {
     overflow-y: auto;
     padding-right: 0;
     scrollbar-gutter: auto;
+    width: min(100%, 820px);
+    justify-self: center;
   }
 
   .ba-dashboard-right-rail {
     position: sticky;
     top: 0;
     align-self: start;
+    justify-self: end;
+    width: 100%;
   }
 }
 
