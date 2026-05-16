@@ -517,7 +517,7 @@ export default function DashboardPage() {
     <main className="ba-dashboard-page md:h-full">
       <div className="ba-dashboard-shell md:h-full">
         <div className="ba-dashboard-grid md:h-full">
-          <div className="ba-dashboard-main-column space-y-3.5 lg:space-y-4">
+          <div className="ba-dashboard-main-column ba-scrollbar-hidden space-y-3 lg:space-y-3.5">
             <DashboardTopBar
               athleteLevel={athleteLevel}
               xpToNextLevel={xpToNextLevel}
@@ -594,7 +594,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <div className="mt-3.5 grid gap-3 lg:grid-cols-2">
+              <div className="mt-3 grid gap-3 lg:grid-cols-2">
                 <DashboardRecommendationCard
                   title="Training Arena"
                   copy="Build discipline. Strengthen your spirit. Level up through guided challenges."

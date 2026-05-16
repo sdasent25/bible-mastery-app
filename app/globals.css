@@ -87,6 +87,15 @@ textarea {
   scrollbar-width: none;
 }
 
+.ba-scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.ba-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
 /* readability overrides for dark surfaces */
 [class*="text-gray-400"],
 [class*="text-gray-500"],
@@ -813,8 +822,8 @@ textarea {
     height: 100%;
     min-height: 0;
     overflow-y: auto;
-    padding-right: 0.15rem;
-    scrollbar-gutter: stable;
+    padding-right: 0;
+    scrollbar-gutter: auto;
   }
 
   .ba-dashboard-right-rail {
