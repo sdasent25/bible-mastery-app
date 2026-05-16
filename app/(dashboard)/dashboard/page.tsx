@@ -514,10 +514,10 @@ export default function DashboardPage() {
   const rewardXp = Math.max(150, Math.round((dashboardState?.segmentNumber || 1) * 25))
 
   return (
-    <main className="ba-dashboard-page">
-      <div className="ba-dashboard-shell">
-        <div className="ba-dashboard-grid">
-          <div className="space-y-3.5 lg:space-y-4">
+    <main className="ba-dashboard-page md:h-full">
+      <div className="ba-dashboard-shell md:h-full">
+        <div className="ba-dashboard-grid md:h-full">
+          <div className="ba-dashboard-main-column space-y-3.5 lg:space-y-4">
             <DashboardTopBar
               athleteLevel={athleteLevel}
               xpToNextLevel={xpToNextLevel}
@@ -755,7 +755,7 @@ export default function DashboardPage() {
             </section>
           </div>
 
-          <div className="hidden xl:block">
+          <div className="ba-dashboard-right-rail hidden xl:block">
             <DashboardRightRail
               missionRewardXp={rewardXp}
               memberCount={memberCount}

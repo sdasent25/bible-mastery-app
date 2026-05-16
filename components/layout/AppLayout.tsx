@@ -56,8 +56,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       ) : null}
 
-      <div className="mx-auto min-h-screen w-full md:w-[calc(100vw-32px)] md:max-w-[1280px] md:px-0 md:py-3 xl:w-[calc(100vw-40px)] xl:max-w-[1300px] xl:py-4">
-        <div className="flex min-h-screen w-full md:min-h-[calc(100vh-2rem)] md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:min-h-[calc(100vh-2.5rem)]">
+      <div className="mx-auto min-h-screen w-full md:h-screen md:w-[calc(100vw-20px)] md:max-w-[1270px] md:px-0 md:py-2.5 xl:w-[calc(100vw-28px)] xl:max-w-[1286px] xl:py-3">
+        <div className="flex min-h-screen w-full md:sticky md:top-2.5 md:h-[calc(100vh-20px)] md:min-h-0 md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:top-3 xl:h-[calc(100vh-24px)]">
           <aside className="hidden md:block md:relative md:z-[2] md:w-[196px] md:shrink-0 xl:w-[202px]">
             <Sidebar variant="desktop" />
           </aside>
@@ -95,7 +95,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           ) : null}
 
-          <div className="ba-content-frame flex min-w-0 flex-1 flex-col">
+          <div className="ba-content-frame flex min-w-0 flex-1 flex-col md:min-h-0">
             {showMobileNav ? (
               <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 md:hidden">
                 <div className="ba-cinematic-container">
@@ -157,7 +157,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
             ) : null}
 
-            <div className={`flex-1 transition ${open ? "md:blur-0" : ""}`}>
+            <div className={`flex-1 transition md:min-h-0 ${open ? "md:blur-0" : ""}`}>
               <div className="md:hidden">
                 <div className={`ba-cinematic-container ${showMobileNav ? "ba-page-with-nav" : ""}`}>
                   {children}
@@ -213,7 +213,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full md:block md:overflow-y-auto md:px-3 md:py-3 xl:px-4 xl:py-4">
+              <div className="hidden h-full md:block md:overflow-hidden md:px-[18px] md:py-[18px] xl:px-5 xl:py-5">
                 <div className="h-full w-full">{children}</div>
               </div>
             </div>
