@@ -42,7 +42,7 @@ export default function DashboardHero({
       <div className="ba-hero-overlay" />
       <div className="ba-hero-vignette" />
 
-      <div className="relative z-10 flex h-full min-h-[17.2rem] flex-col px-4.5 py-4 sm:px-5 lg:min-h-[16.6rem] lg:px-5 lg:py-4.5">
+      <div className="relative z-10 flex h-full min-h-[17.8rem] flex-col px-4.5 py-4 sm:px-5 lg:min-h-[17.4rem] lg:px-5 lg:py-4.5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">
@@ -64,7 +64,7 @@ export default function DashboardHero({
           </button>
         </div>
 
-        <div className="mt-3.5 max-w-[17.75rem] lg:mt-3.5 lg:max-w-[18rem]">
+        <div className="mt-3.5 max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
           <h2 className="ba-serif-display text-[1.8rem] leading-[0.98] text-[#fff6e9] sm:text-[2.05rem] lg:text-[2.5rem]">
             {title}
           </h2>
@@ -76,7 +76,7 @@ export default function DashboardHero({
           </p>
         </div>
 
-        <div className="mt-auto rounded-[1rem] border border-amber-200/12 bg-[linear-gradient(180deg,rgba(8,12,18,0.82),rgba(7,10,16,0.72))] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-[10px]">
+        <div className="mt-auto rounded-[1rem] border border-amber-200/12 bg-[linear-gradient(180deg,rgba(8,12,18,0.82),rgba(7,10,16,0.72))] px-3 py-2.25 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-[10px]">
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex min-w-0 items-center gap-3">
               <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
