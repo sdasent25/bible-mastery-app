@@ -473,7 +473,7 @@ textarea {
 .ba-dashboard-shell {
   position: relative;
   width: 100%;
-  max-width: 948px;
+  max-width: 976px;
   margin-inline: 0;
 }
 
@@ -490,7 +490,7 @@ textarea {
 
 @media (min-width: 1240px) {
   .ba-dashboard-grid {
-    grid-template-columns: minmax(0, 666px) 252px;
+    grid-template-columns: minmax(0, 692px) 252px;
     align-items: start;
     justify-content: start;
     height: 100%;
