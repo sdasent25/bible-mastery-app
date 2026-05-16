@@ -56,7 +56,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       ) : null}
 
-      <div className="mx-auto min-h-screen w-full md:w-[calc(100vw-32px)] md:max-w-[1280px] md:px-0 md:py-4 xl:w-[calc(100vw-40px)] xl:max-w-[1300px] xl:py-5">
+      <div className="mx-auto min-h-screen w-full md:w-[calc(100vw-32px)] md:max-w-[1280px] md:px-0 md:py-3 xl:w-[calc(100vw-40px)] xl:max-w-[1300px] xl:py-4">
         <div className="flex min-h-screen w-full md:min-h-[calc(100vh-2rem)] md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:min-h-[calc(100vh-2.5rem)]">
           <aside className="hidden md:block md:relative md:z-[2] md:w-[196px] md:shrink-0 xl:w-[202px]">
             <Sidebar variant="desktop" />
@@ -213,7 +213,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full md:block md:overflow-y-auto md:px-4 md:py-4 xl:px-5 xl:py-5">
+              <div className="hidden h-full md:block md:overflow-y-auto md:px-3 md:py-3 xl:px-4 xl:py-4">
                 <div className="h-full w-full">{children}</div>
               </div>
             </div>

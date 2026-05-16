@@ -38,10 +38,10 @@ export default function DashboardRightRail({
       : "Solo Plan"
 
   return (
-    <aside className="space-y-4">
+    <aside className="space-y-3">
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Daily Rhythm</div>
-        <div className="mt-3 space-y-2.5">
+        <div className="mt-2.5 space-y-2">
           {[
             {
               title: "Morning Watch",
@@ -68,8 +68,8 @@ export default function DashboardRightRail({
                   {renderNavIcon(item.accent === "amber" ? "sun" : item.accent === "violet" ? "verse-memory" : "brand", "h-3.5 w-3.5")}
                 </span>
                 <div>
-                  <div className="text-[0.82rem] font-medium text-white">{item.title}</div>
-                  <div className="text-[0.62rem] leading-4 text-white/48">{item.meta}</div>
+                  <div className="text-[0.78rem] font-medium text-white">{item.title}</div>
+                  <div className="text-[0.58rem] leading-4 text-white/48">{item.meta}</div>
                 </div>
               </div>
               {item.complete ? (
@@ -82,15 +82,15 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Mission Reward</div>
-        <div className="mt-4 flex items-start gap-3">
+        <div className="mt-3 flex items-start gap-3">
           <span className="ba-reward-icon">
-            {renderNavIcon("crown", "h-4.5 w-4.5")}
+            {renderNavIcon("crown", "h-4 w-4")}
           </span>
           <div>
-            <div className="text-[1.45rem] font-semibold tracking-[-0.03em] text-[#ffe7a8]">
+            <div className="ba-serif-display text-[1.3rem] text-[#ffe7a8]">
               +{missionRewardXp} XP
             </div>
-            <div className="mt-1 text-[0.72rem] leading-5 text-white/50">
+            <div className="mt-1 text-[0.68rem] leading-5 text-white/50">
               Stay consistent. Grow daily.
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function DashboardRightRail({
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           {memberNames.length > 0 ? (
             memberNames.slice(0, 5).map((name) => (
               <span key={name} className="ba-family-avatar" title={name}>
@@ -120,7 +120,7 @@ export default function DashboardRightRail({
         <button
           type="button"
           onClick={onInviteMember}
-          className="mt-4 inline-flex items-center gap-2 text-[0.74rem] font-medium text-cyan-200 transition hover:text-white"
+          className="mt-3 inline-flex items-center gap-2 text-[0.72rem] font-medium text-cyan-200 transition hover:text-white"
         >
           <span className="text-[0.92rem] leading-none">+</span>
           Invite Member
@@ -129,10 +129,10 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Plan Status</div>
-        <div className="mt-4 flex items-start justify-between gap-3">
+        <div className="mt-3 flex items-start justify-between gap-3">
           <div>
-            <div className="text-[1rem] font-semibold text-white">{planLabel}</div>
-            <div className="mt-1 text-[0.68rem] leading-5 text-white/46">
+            <div className="ba-serif-brand text-[0.96rem] text-white">{planLabel}</div>
+            <div className="mt-1 text-[0.64rem] leading-5 text-white/46">
               {planMeta}
             </div>
           </div>
@@ -143,7 +143,7 @@ export default function DashboardRightRail({
         <button
           type="button"
           onClick={onManagePlan}
-          className="ba-rail-button mt-4"
+          className="ba-rail-button mt-3"
         >
           Manage Plan
         </button>

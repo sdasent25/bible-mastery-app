@@ -54,6 +54,18 @@ body {
     linear-gradient(180deg, #030913 0%, #050b14 44%, #02060d 100%);
 }
 
+.ba-serif-display {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.ba-serif-brand {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
 button,
 input,
 select,
@@ -748,14 +760,14 @@ textarea {
     0 18px 42px rgba(0, 0, 0, 0.24),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(16px);
-  min-height: 9.6rem;
-  padding: 0.78rem 0.85rem 0.8rem;
+  min-height: 8.9rem;
+  padding: 0.72rem 0.8rem 0.74rem;
 }
 
 .ba-recommendation-card {
   position: relative;
   overflow: hidden;
-  min-height: 10rem;
+  min-height: 9.4rem;
   border-radius: 1rem;
   border: 1px solid rgba(255, 214, 138, 0.1);
   box-shadow:
@@ -793,6 +805,7 @@ textarea {
   height: 100%;
   flex-direction: column;
   padding: 0.9rem 0.78rem 0.9rem;
+  overflow: hidden;
   background:
     linear-gradient(180deg, rgba(6, 11, 20, 0.98), rgba(5, 9, 16, 0.99));
   border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -823,7 +836,7 @@ textarea {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.62rem;
   border-radius: 0.95rem;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.015);
@@ -890,7 +903,7 @@ textarea {
   border: 1px solid rgba(255, 214, 138, 0.08);
   background:
     linear-gradient(180deg, rgba(10, 15, 25, 0.78), rgba(5, 9, 16, 0.96));
-  padding: 1rem;
+  padding: 0.9rem;
 }
 
 .ba-sidebar-devotion-art {
@@ -937,7 +950,7 @@ textarea {
   border: 1px solid rgba(255, 214, 138, 0.14);
   background:
     linear-gradient(180deg, rgba(20, 26, 38, 0.92), rgba(11, 15, 24, 0.98));
-  padding: 0.35rem 0.55rem 0.35rem 0.35rem;
+  padding: 0.28rem 0.48rem 0.28rem 0.3rem;
   box-shadow:
     0 18px 32px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -977,8 +990,8 @@ textarea {
   align-items: center;
   gap: 0.4rem;
   border-radius: 9999px;
-  padding: 0.32rem 0.55rem;
-  font-size: 0.52rem;
+  padding: 0.28rem 0.5rem;
+  font-size: 0.48rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1005,8 +1018,8 @@ textarea {
 
 .ba-hero-info {
   display: inline-flex;
-  height: 2rem;
-  width: 2rem;
+  height: 1.75rem;
+  width: 1.75rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -1027,9 +1040,9 @@ textarea {
   border: 1px solid rgba(255, 236, 168, 0.34);
   background:
     linear-gradient(135deg, rgba(247, 208, 101, 0.99), rgba(244, 181, 44, 0.98));
-  padding: 0.7rem 1.25rem;
+  padding: 0.58rem 1rem;
   color: #2a1600;
-  font-size: 0.86rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1041,8 +1054,8 @@ textarea {
 
 @media (min-width: 1024px) {
   .ba-hero-cta {
-    width: 22.5rem;
-    max-width: 22.5rem;
+    width: 20.75rem;
+    max-width: 20.75rem;
   }
 }
 
@@ -1069,7 +1082,7 @@ textarea {
   border-radius: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
   background: rgba(255, 255, 255, 0.02);
-  padding: 0.75rem 0.8rem;
+  padding: 0.62rem 0.72rem;
 }
 
 .ba-rhythm-row.is-complete {
@@ -1079,8 +1092,8 @@ textarea {
 
 .ba-rhythm-icon {
   display: inline-flex;
-  height: 2rem;
-  width: 2rem;
+  height: 1.8rem;
+  width: 1.8rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -1116,8 +1129,8 @@ textarea {
 
 .ba-reward-icon {
   display: inline-flex;
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 2.2rem;
+  width: 2.2rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -1129,8 +1142,8 @@ textarea {
 
 .ba-family-avatar {
   display: inline-flex;
-  height: 2rem;
-  width: 2rem;
+  height: 1.85rem;
+  width: 1.85rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -1150,8 +1163,8 @@ textarea {
   border-radius: 0.9rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.03);
-  padding: 0.78rem 1rem;
-  font-size: 0.78rem;
+  padding: 0.7rem 0.95rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.84);
   transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;

@@ -517,7 +517,7 @@ export default function DashboardPage() {
     <main className="ba-dashboard-page">
       <div className="ba-dashboard-shell">
         <div className="ba-dashboard-grid">
-          <div className="space-y-4 lg:space-y-5">
+          <div className="space-y-3.5 lg:space-y-4">
             <DashboardTopBar
               athleteLevel={athleteLevel}
               xpToNextLevel={xpToNextLevel}
@@ -527,26 +527,26 @@ export default function DashboardPage() {
               onSettings={() => router.push("/settings")}
             />
 
-            <section className="flex flex-col gap-4 border-b border-amber-200/10 pb-4 sm:flex-row sm:items-end sm:justify-between">
+            <section className="flex flex-col gap-3 border-b border-amber-200/10 pb-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+                <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
                   <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
                   {rhythmLabel}
                 </div>
-                <h1 className="text-[2.25rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-[2.75rem] xl:text-[3.1rem]">
+                <h1 className="ba-serif-display text-[2rem] text-[#f8f1e8] sm:text-[2.35rem] xl:text-[2.7rem]">
                   Welcome back.
                 </h1>
-                <p className="mt-2 max-w-2xl text-[0.95rem] leading-7 text-[#d1c3b5] sm:text-[1rem]">
+                <p className="mt-1.5 max-w-2xl text-[0.9rem] leading-6 text-[#d1c3b5] sm:text-[0.94rem]">
                   Train today. Grow stronger daily.
                 </p>
               </div>
-              <div className="inline-flex items-center gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2.5 text-sm text-white/84 shadow-[0_16px_34px_rgba(0,0,0,0.18)]">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
-                  {renderNavIcon("sun", "h-4 w-4")}
+              <div className="inline-flex items-center gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2 text-sm text-white/84 shadow-[0_14px_28px_rgba(0,0,0,0.16)]">
+                <span className="inline-flex h-8.5 w-8.5 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
+                  {renderNavIcon("sun", "h-3.5 w-3.5")}
                 </span>
                 <div>
-                  <div className="text-right text-[0.78rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
-                  <div className="mt-0.5 text-right text-[0.65rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
+                  <div className="text-right text-[0.72rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
+                  <div className="mt-0.5 text-right text-[0.6rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
                     Morning Watch
                   </div>
                 </div>
@@ -594,7 +594,7 @@ export default function DashboardPage() {
                 </button>
               </div>
 
-              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+              <div className="mt-3.5 grid gap-3 lg:grid-cols-2">
                 <DashboardRecommendationCard
                   title="Training Arena"
                   copy="Build discipline. Strengthen your spirit. Level up through guided challenges."
@@ -769,7 +769,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <section className="ba-account-panel mt-5 hidden xl:block">
+        <section className="hidden">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-200/76">

@@ -42,26 +42,23 @@ export default function DashboardRecommendationCard({
       </div>
       <div className="ba-recommendation-overlay" />
 
-      <div className="relative z-10 flex min-h-[10.7rem] flex-col justify-between px-4 py-4 lg:px-4.5 lg:py-4.5">
-        <div className="flex justify-end">
-          <div className={`rounded-full border px-2.5 py-1 text-[0.52rem] font-semibold uppercase tracking-[0.18em] ${badgeClass}`}>
-            {badge}
-          </div>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_2.8rem] md:items-end">
+      <div className="relative z-10 flex min-h-[10rem] flex-col justify-end px-4 py-3.5">
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_2.6rem] md:items-end">
           <div className="min-w-0">
-            <h3 className="text-[1.2rem] font-semibold tracking-[-0.03em] text-white">
+            <h3 className="ba-serif-display text-[1.05rem] text-white">
               {title}
             </h3>
-            <p className="mt-2 max-w-[15rem] text-[0.78rem] leading-5 text-white/74">
+            <p className="mt-1.5 max-w-[13rem] text-[0.72rem] leading-4.5 text-white/74">
               {copy}
             </p>
+            <div className={`mt-2.5 inline-flex rounded-full border px-2.5 py-1 text-[0.48rem] font-semibold uppercase tracking-[0.18em] ${badgeClass}`}>
+              {badge}
+            </div>
           </div>
 
           <div className="flex items-center justify-start md:justify-end">
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-amber-200/20 bg-black/28 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.14)] transition group-hover:scale-[1.05]">
-              {renderNavIcon("chevron-right", "h-4 w-4")}
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-amber-200/20 bg-black/28 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.14)] transition group-hover:scale-[1.05]">
+              {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
             </span>
           </div>
         </div>

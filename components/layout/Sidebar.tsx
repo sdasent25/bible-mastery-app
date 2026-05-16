@@ -12,7 +12,6 @@ import {
   renderNavIcon,
   type NavIconKey,
 } from "@/lib/navigation"
-import { supabase } from "@/lib/supabase"
 
 type SidebarProps = {
   closeMobile?: () => void
@@ -39,12 +38,6 @@ export default function Sidebar({
 
     void loadPlan()
   }, [])
-
-  async function handleLogout() {
-    await supabase.auth.signOut()
-    closeMobile?.()
-    router.push("/")
-  }
 
   function navItem(
     label: string,
@@ -76,7 +69,7 @@ export default function Sidebar({
             renderNavIcon(icon, "h-[1rem] w-[1rem]")
           )}
         </span>
-        <span className="truncate text-[0.92rem] font-medium">{label}</span>
+        <span className="text-[0.84rem] font-medium leading-none">{label}</span>
         {showAlert ? <span className="ba-sidebar-nav-dot" /> : null}
       </Link>
     )
@@ -106,14 +99,14 @@ export default function Sidebar({
 
   return (
     <div className={`ba-sidebar ${isMobile ? "w-full" : "w-full"}`}>
-      <div className="flex-1 space-y-5">
+      <div className="flex flex-1 flex-col gap-4">
         <div className="ba-sidebar-brand">
           <div className="flex items-center gap-3">
             <span className="ba-sidebar-brand-mark">
               {renderNavIcon("brand", "h-[1.15rem] w-[1.15rem]")}
             </span>
             <div className="min-w-0">
-              <div className="text-[1.04rem] font-semibold tracking-[0.08em] text-[#f5e7c8]">
+              <div className="ba-serif-brand text-[0.98rem] text-[#f5e7c8]">
                 Bible Athlete
               </div>
               <div className="mt-0.5 text-[0.56rem] uppercase tracking-[0.28em] text-white/42">
@@ -160,7 +153,7 @@ export default function Sidebar({
           {navItem("Profile", "/settings", "profile", "/icons/navigation/nav-profile-headset.png")}
         </div>
 
-        <div className="ba-sidebar-devotion">
+        <div className="ba-sidebar-devotion mt-auto">
           <div className="ba-sidebar-devotion-art" />
           <div className="relative z-10">
             <div className="text-[0.62rem] uppercase tracking-[0.24em] text-amber-100/70">
@@ -178,7 +171,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      <div className="mt-5 space-y-2 border-t border-white/8 pt-4">
+      <div className="mt-4 space-y-2 border-t border-white/8 pt-3">
         <button
           onClick={() => {
             closeMobile?.()
@@ -189,17 +182,7 @@ export default function Sidebar({
           <span className={`ba-sidebar-nav-icon ${profileActive ? "is-active" : ""}`}>
             {renderNavIcon("settings", "h-[1rem] w-[1rem]")}
           </span>
-          <span className="truncate text-[0.92rem] font-medium">Settings</span>
-        </button>
-
-        <button
-          onClick={handleLogout}
-          className="ba-sidebar-nav-item w-full text-left text-rose-200 hover:text-white"
-        >
-          <span className="ba-sidebar-nav-icon text-rose-200">
-            {renderNavIcon("close", "h-[1rem] w-[1rem]")}
-          </span>
-          <span className="truncate text-[0.92rem] font-medium">Logout</span>
+          <span className="text-[0.84rem] font-medium">Settings</span>
         </button>
       </div>
     </div>
