@@ -823,11 +823,20 @@ textarea {
   .ba-dashboard-main-column {
     height: 100%;
     min-height: 0;
-    overflow-y: auto;
-    padding-right: 0;
-    scrollbar-gutter: auto;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
     width: min(100%, 820px);
     justify-self: center;
+  }
+
+  .ba-dashboard-main-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+    padding-right: 0;
+    scrollbar-gutter: auto;
   }
 
   .ba-dashboard-right-rail {
