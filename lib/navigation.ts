@@ -202,12 +202,37 @@ const iconMap: Record<NavIconKey, (props: IconProps) => ReactElement> = {
 }
 
 export const desktopNavItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: "home" },
-  { label: "Training", href: "/training", icon: "training" },
-  { label: "Quests", href: "/quests", icon: "quests" },
-  { label: "Verse Memory", href: "/flashcards", icon: "verse-memory" },
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: "home",
+    imageSrc: "/icons/navigation/nav-dashboard-shield.png",
+  },
+  {
+    label: "Training Arena",
+    href: "/training",
+    icon: "training",
+    imageSrc: "/icons/navigation/nav-training-dumbbell.png",
+  },
+  {
+    label: "Quests",
+    href: "/quests",
+    icon: "quests",
+    imageSrc: "/icons/navigation/nav-quests-banner.png",
+  },
+  {
+    label: "Verse Memory",
+    href: "/flashcards",
+    icon: "verse-memory",
+    imageSrc: "/icons/navigation/nav-verse-memory-book.png",
+  },
   { label: "Leaderboard", href: "/leaderboard", icon: "leaderboard" },
-  { label: "Profile", href: "/settings", icon: "profile" },
+  {
+    label: "Profile",
+    href: "/settings",
+    icon: "profile",
+    imageSrc: "/icons/navigation/nav-profile-headset.png",
+  },
   { label: "Settings", href: "/settings", icon: "settings" },
 ]
 

@@ -6,6 +6,7 @@ type DashboardTopBarProps = {
   athleteLevel: number
   xpToNextLevel: number
   levelProgress: number
+  playerName: string
   onUpgrade: () => void
   onSettings: () => void
 }
@@ -14,71 +15,89 @@ export default function DashboardTopBar({
   athleteLevel,
   xpToNextLevel,
   levelProgress,
+  playerName,
   onUpgrade,
   onSettings,
 }: DashboardTopBarProps) {
   return (
-    <section className="ba-dashboard-topbar ba-card-aura hidden rounded-[2rem] px-5 py-4 lg:block lg:px-6">
-      <div className="flex items-center justify-between gap-6">
-        <div className="flex min-w-0 items-center gap-3">
-          <div className="ba-icon-badge ba-gold-edge flex h-14 w-14 items-center justify-center rounded-[1.2rem] text-amber-50">
-            {renderNavIcon("brand", "h-6 w-6 sm:h-7 sm:w-7")}
-          </div>
-          <div className="min-w-0 flex-1">
-            <div className="text-lg font-semibold tracking-[0.08em] text-amber-50 xl:text-[1.45rem]">
-              BIBLE ATHLETE
+    <section className="ba-dashboard-topbar hidden lg:block">
+      <div className="flex items-center gap-5">
+        <div className="flex min-w-0 items-center gap-3 pr-2 xl:min-w-[12.5rem]">
+          <span className="ba-header-brand-mark">
+            {renderNavIcon("brand", "h-[1.15rem] w-[1.15rem]")}
+          </span>
+          <div className="min-w-0">
+            <div className="truncate text-[0.98rem] font-semibold tracking-[0.08em] text-[#f5e7c7]">
+              Bible Athlete
             </div>
-            <div className="mt-1 text-[10px] uppercase tracking-[0.28em] text-white/46 sm:text-[11px]">
+            <div className="mt-0.5 text-[0.56rem] uppercase tracking-[0.28em] text-white/42">
               Sacred Athletic Dashboard
             </div>
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-1 items-center justify-center gap-4">
-          <div className="inline-flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.35rem] border border-amber-300/22 bg-[linear-gradient(180deg,rgba(35,26,14,0.98),rgba(14,11,11,0.98))] text-amber-50 shadow-[0_0_24px_rgba(251,191,36,0.12)]">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/8 text-xl font-black">
+        <div className="flex min-w-0 flex-1 items-center gap-3 rounded-[1.15rem] border border-amber-200/10 bg-white/[0.02] px-3 py-2.5">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] border border-amber-300/24 bg-[linear-gradient(180deg,rgba(54,38,18,0.98),rgba(18,14,12,0.98))] text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.12)]">
+            <div className="flex h-8.5 w-8.5 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/8 text-[0.95rem] font-black">
               {athleteLevel}
             </div>
           </div>
 
-          <div className="min-w-0 max-w-[34rem] flex-1">
-            <div className="flex flex-wrap items-end justify-between gap-x-5 gap-y-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-end justify-between gap-3">
               <div>
-                <p className="text-[0.92rem] font-medium text-white/88">Athlete Level</p>
-                <p className="mt-1 text-[1.15rem] font-semibold tracking-[-0.03em] text-white xl:text-[1.45rem]">
+                <div className="text-[0.74rem] font-medium text-white/70">Athlete Level</div>
+                <div className="text-[0.92rem] font-semibold tracking-[-0.02em] text-white">
                   {xpToNextLevel.toLocaleString()} XP to next level
-                </p>
+                </div>
               </div>
             </div>
-            <div className="ba-progress-track mt-3 h-2.5">
+            <div className="ba-progress-track mt-2.5 h-[4px]">
               <div
-                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(241,185,63,1),rgba(250,214,117,0.98),rgba(147,229,255,0.4))]"
+                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(245,194,76,0.98),rgba(243,211,104,0.98),rgba(103,232,249,0.34))]"
                 style={{ width: `${levelProgress}%` }}
               />
             </div>
-            <div className="mt-2 flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em] text-white/44">
+            <div className="mt-1.5 flex items-center justify-between text-[0.56rem] uppercase tracking-[0.18em] text-white/36">
               <span>Progression Track</span>
               <span>{Math.round(levelProgress)}% charged</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2">
           <button
             type="button"
             onClick={onUpgrade}
-            className="ba-topbar-icon h-11 w-11 text-amber-50 sm:h-12 sm:w-12"
+            className="ba-header-action text-amber-50"
             aria-label="Open upgrade options"
           >
-            {renderNavIcon("crown", "h-4.5 w-4.5")}
+            {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
+          </button>
+          <button
+            type="button"
+            className="ba-header-action text-white/80"
+            aria-label="Open notifications"
+          >
+            <span className="absolute right-[0.38rem] top-[0.34rem] h-1.5 w-1.5 rounded-full bg-rose-400 shadow-[0_0_10px_rgba(251,113,133,0.5)]" />
+            {renderNavIcon("bell", "h-[1rem] w-[1rem]")}
           </button>
           <button
             type="button"
             onClick={onSettings}
-            className="ba-topbar-icon h-11 w-11 text-white/84 sm:h-12 sm:w-12"
+            className="ba-profile-pill"
             aria-label="Open profile settings"
           >
-            {renderNavIcon("profile", "h-4.5 w-4.5")}
+            <span className="ba-profile-avatar">{playerName.charAt(0).toUpperCase()}</span>
+            <span className="min-w-0 text-left">
+              <span className="block truncate text-[0.82rem] font-semibold text-white">
+                {playerName}
+              </span>
+              <span className="block truncate text-[0.62rem] text-white/52">
+                Faithful Athlete
+              </span>
+            </span>
+            {renderNavIcon("chevron-right", "h-[0.85rem] w-[0.85rem] text-amber-200/78")}
           </button>
         </div>
       </div>

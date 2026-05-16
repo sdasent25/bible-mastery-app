@@ -75,6 +75,14 @@ function getPlanBadge(plan: string) {
   return "Free"
 }
 
+function getPlanMeta(plan: string, hasFamily: boolean) {
+  if (plan === "family_pro_plus") return "Family access currently active."
+  if (plan === "family_pro") return "Family plan access is active."
+  if (plan === "pro_plus") return hasFamily ? "Shared with your family access." : "Premium training access is active."
+  if (plan === "pro") return hasFamily ? "Shared plan access is active." : "Your training plan is active."
+  return "Upgrade anytime for deeper training access."
+}
+
 function getDailyRhythmLabel(date: Date) {
   const hour = date.getHours()
 
@@ -434,8 +442,8 @@ export default function DashboardPage() {
     memberCount >= memberLimit
 
   const now = new Date()
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    month: "long",
+  const shortFormattedDate = new Intl.DateTimeFormat("en-US", {
+    month: "short",
     day: "numeric",
     year: "numeric",
   }).format(now)
@@ -444,21 +452,19 @@ export default function DashboardPage() {
   const xpIntoLevel = (dashboardState?.xpEarned || 0) % 250
   const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
-  const missionTitle = dashboardState?.missionTitle || "Walk in Faith"
+  const missionTitle = "Walk in Faith"
   const missionSubtitle =
-    dashboardState?.missionSubtitle ||
-    "Let your heart be steady, your mind be renewed, and your steps reflect His love."
-  const referenceLine = dashboardState?.currentSegmentLabel || "Genesis 1"
+    "Let your heart be steady,\nyour mind be renewed,\nand your steps reflect His love."
+  const referenceLine = "Micah 6:8"
   const focusPassage = dashboardState?.currentSegmentLabel || "Genesis 1"
   const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
   const focusRankLabel = "SAPPHIRE II"
   const focusRankMeta = "Top 18%"
-  const weeklySummary = {
-    sessionsCompleted: dashboardState?.completedMissionCount || 5,
-    versesMemorized: dashboardState?.masteryCount || 23,
-    questsCompleted: Math.max(1, Math.floor((dashboardState?.segmentNumber || 1) / 3)),
-    totalXpEarned: dashboardState?.xpEarned || 2150,
-  }
+  const memberNames = members.map((member) =>
+    member.user_id === userId ? "You" : getProfileName(member.profiles)
+  )
+  const planBadge = getPlanBadge(plan)
+  const planMeta = getPlanMeta(plan, Boolean(familyId))
 
   if (loading) {
     return (
@@ -505,47 +511,43 @@ export default function DashboardPage() {
     },
   ]
 
-  const rewardLine = `Complete to earn ${Math.max(200, Math.round((dashboardState?.segmentNumber || 1) * 25))} XP`
+  const rewardXp = Math.max(150, Math.round((dashboardState?.segmentNumber || 1) * 25))
 
   return (
-    <main className="relative min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.18),transparent_58%)]" />
-      <div className="pointer-events-none absolute left-[-4rem] top-32 h-44 w-44 rounded-full bg-amber-300/10 blur-3xl" />
-      <div className="pointer-events-none absolute right-[-3rem] top-[24rem] h-56 w-56 rounded-full bg-cyan-400/8 blur-3xl" />
-      <div className="pointer-events-none absolute right-[8%] top-[9rem] h-44 w-44 rounded-full bg-violet-400/8 blur-3xl" />
-
+    <main className="ba-dashboard-page">
       <div className="ba-dashboard-shell">
         <div className="ba-dashboard-grid">
-          <div className="space-y-5">
+          <div className="space-y-4 lg:space-y-5">
             <DashboardTopBar
               athleteLevel={athleteLevel}
               xpToNextLevel={xpToNextLevel}
               levelProgress={levelProgress}
+              playerName={dashboardState?.playerName || "Athlete"}
               onUpgrade={() => router.push("/upgrade")}
               onSettings={() => router.push("/settings")}
             />
 
-            <section className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <section className="flex flex-col gap-4 border-b border-amber-200/10 pb-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
                   <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
                   {rhythmLabel}
                 </div>
-                <h1 className="text-[2.65rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-5xl xl:text-[3.85rem]">
+                <h1 className="text-[2.25rem] font-semibold tracking-[-0.06em] text-[#f8f1e8] sm:text-[2.75rem] xl:text-[3.1rem]">
                   Welcome back.
                 </h1>
-                <p className="mt-3 max-w-2xl text-base leading-7 text-[#d1c3b5] sm:text-[1.18rem] sm:leading-8">
+                <p className="mt-2 max-w-2xl text-[0.95rem] leading-7 text-[#d1c3b5] sm:text-[1rem]">
                   Train today. Grow stronger daily.
                 </p>
               </div>
-              <div className="ba-glass-panel inline-flex items-center gap-3 rounded-[1.35rem] px-4 py-3 text-sm text-white/84">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
-                  {renderNavIcon("sun", "h-4.5 w-4.5")}
+              <div className="inline-flex items-center gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2.5 text-sm text-white/84 shadow-[0_16px_34px_rgba(0,0,0,0.18)]">
+                <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
+                  {renderNavIcon("sun", "h-4 w-4")}
                 </span>
                 <div>
-                  <div className="text-right text-[1rem] font-medium text-[#e8ddd1]">{formattedDate}</div>
-                  <div className="mt-0.5 text-right text-[0.88rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
-                    Daily Rhythm
+                  <div className="text-right text-[0.78rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
+                  <div className="mt-0.5 text-right text-[0.65rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
+                    Morning Watch
                   </div>
                 </div>
               </div>
@@ -563,7 +565,7 @@ export default function DashboardPage() {
               dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
             />
 
-            <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
               {statCards.map((card) => (
                 <DashboardStatCard
                   key={card.title}
@@ -579,20 +581,20 @@ export default function DashboardPage() {
 
             <section>
               <div className="ba-section-header">
-                <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-[#f0e6d9]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f0e6d9]">
                   RECOMMENDED FOR YOU
                 </p>
                 <button
                   type="button"
                   onClick={() => router.push("/training")}
-                  className="inline-flex items-center gap-2 text-sm font-medium text-cyan-100/88 transition hover:text-white"
+                  className="inline-flex items-center gap-1.5 text-[0.74rem] font-medium text-cyan-100/88 transition hover:text-white"
                 >
                   View All
                   <span>{renderNavIcon("chevron-right", "h-4 w-4")}</span>
                 </button>
               </div>
 
-              <div className="mt-5 grid gap-4">
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
                 <DashboardRecommendationCard
                   title="Training Arena"
                   copy="Build discipline. Strengthen your spirit. Level up through guided challenges."
@@ -611,44 +613,183 @@ export default function DashboardPage() {
                 />
               </div>
             </section>
+
+            <section
+              id="family-management"
+              className="ba-account-panel xl:hidden"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-200/76">
+                    Account & Family
+                  </p>
+                  <h2 className="mt-2 text-[1.5rem] font-semibold tracking-[-0.04em] text-white">
+                    Support systems stay within reach
+                  </h2>
+                </div>
+                <div className="flex flex-wrap gap-2 text-[0.72rem]">
+                  <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/78">
+                    Current Plan: {planBadge}
+                  </div>
+                  <div className="rounded-full border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 text-cyan-100">
+                    Genesis Progress: {dashboardState?.genesisProgressPercent || 0}%
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                {message ? (
+                  <div className="ba-inline-feedback text-cyan-100 lg:col-span-2">{message}</div>
+                ) : null}
+
+                {upgradeMessage ? (
+                  <div className="ba-inline-feedback ba-inline-feedback-success lg:col-span-2">
+                    {upgradeMessage}
+                  </div>
+                ) : null}
+
+                {memberCount !== null && memberLimit !== null ? (
+                  <div className="ba-account-summary-card">
+                    <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-cyan-200">
+                      Family Usage
+                    </p>
+                    <p className="mt-3 text-[2rem] font-semibold tracking-[-0.04em] text-white">
+                      {memberCount} / {memberLimit}
+                    </p>
+                    <p className="mt-2 text-[0.78rem] text-white/58">Members currently using the plan.</p>
+                  </div>
+                ) : null}
+
+                <div className="ba-account-summary-card">
+                  <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-amber-200">
+                    Plan Status
+                  </p>
+                  <p className="mt-3 text-[1.35rem] font-semibold text-white">{planBadge}</p>
+                  <p className="mt-2 text-[0.78rem] text-white/58">{planMeta}</p>
+                  <button
+                    onClick={() => router.push("/upgrade")}
+                    className="ba-rail-button mt-4"
+                  >
+                    Manage Plan
+                  </button>
+                </div>
+
+                {members.length > 0 ? (
+                  <div className="ba-account-summary-card lg:col-span-2">
+                    <h3 className="text-[1rem] font-semibold text-white">Family Members</h3>
+                    <div className="mt-4 flex flex-col gap-2.5">
+                      {members.map((member) => {
+                        const isCurrentUser = member.user_id === userId
+                        const canRemove = isOwner && !isCurrentUser
+                        const isRemoving = removingMemberId === member.id
+
+                        return (
+                          <div
+                            key={member.id}
+                            className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3.5 py-3"
+                          >
+                            <div className="min-w-0">
+                              <p className="truncate text-[0.84rem] font-medium text-white">
+                                {isCurrentUser ? "You" : getProfileName(member.profiles)}
+                              </p>
+                              <p className="text-[0.62rem] uppercase tracking-[0.16em] text-white/42">
+                                {member.role}
+                                {isCurrentUser ? " • You" : ""}
+                              </p>
+                            </div>
+
+                            {canRemove ? (
+                              <button
+                                onClick={() => removeMember(member.id, member.user_id)}
+                                disabled={isRemoving}
+                                className="rounded-full border border-rose-400/24 bg-rose-500/10 px-3 py-1.5 text-[0.72rem] font-medium text-rose-100 disabled:cursor-not-allowed disabled:opacity-60"
+                              >
+                                {isRemoving ? "Removing..." : "Remove"}
+                              </button>
+                            ) : null}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {isOwner ? (
+                  <div className="ba-account-summary-card">
+                    <h3 className="text-[1rem] font-semibold text-white">Invite Family Member</h3>
+                    <div className="mt-4 flex flex-col gap-3">
+                      <input
+                        type="email"
+                        placeholder="Enter email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full rounded-[0.95rem] border border-white/10 bg-black/24 px-4 py-3 text-white placeholder:text-white/34 outline-none"
+                      />
+
+                      <button
+                        onClick={handleInvite}
+                        className="ba-button-primary w-full px-4 py-3 text-sm font-black"
+                      >
+                        Send Invite
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                {!isOwner && membershipId ? (
+                  <div className="ba-account-summary-card">
+                    <h3 className="text-[1rem] font-semibold text-white">Leave Family</h3>
+                    <p className="mt-2 text-[0.8rem] leading-6 text-white/60">
+                      Leave the family safely without affecting your mission progress.
+                    </p>
+                    <button
+                      onClick={leaveFamily}
+                      disabled={isLeavingFamily}
+                      className="ba-button-warning mt-4 w-full px-4 py-3 text-sm font-black disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {isLeavingFamily ? "Leaving Family..." : "Leave Family"}
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </section>
           </div>
 
           <div className="hidden xl:block">
             <DashboardRightRail
-              missionTitle={missionTitle}
-              referenceLine={referenceLine}
-              rewardLine={rewardLine}
-              sessionsCompleted={weeklySummary.sessionsCompleted}
-              versesMemorized={weeklySummary.versesMemorized}
-              questsCompleted={weeklySummary.questsCompleted}
-              totalXpEarned={weeklySummary.totalXpEarned}
-              onContinue={() => router.push(continueHref)}
-              onViewProgress={() => router.push("/leaderboard")}
+              missionRewardXp={rewardXp}
+              memberCount={memberCount}
+              memberLimit={memberLimit}
+              memberNames={memberNames}
+              planLabel={planBadge}
+              planMeta={planMeta}
+              onInviteMember={() => router.push("/family")}
+              onManagePlan={() => router.push("/upgrade")}
             />
           </div>
         </div>
 
-        <section className="ba-right-rail-card mt-8 rounded-[2rem] p-5 sm:p-6">
+        <section className="ba-account-panel mt-5 hidden xl:block">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.26em] text-amber-200/80">
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-200/76">
                 Account & Family
               </p>
-              <h2 className="mt-2 text-[2rem] font-black tracking-[-0.04em] text-white sm:text-4xl">
+              <h2 className="mt-2 text-[1.7rem] font-semibold tracking-[-0.04em] text-white sm:text-[2rem]">
                 Support systems stay within reach
               </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+              <p className="mt-2 max-w-2xl text-[0.82rem] leading-6 text-slate-300">
                 Manage access, family membership, and plan details here without pulling focus from your active mission.
               </p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-semibold text-slate-200">
-                Current Plan: {getPlanBadge(plan)}
+            <div className="flex flex-wrap gap-2 text-[0.72rem]">
+              <div className="inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1.5 font-medium text-slate-200">
+                Current Plan: {planBadge}
               </div>
-              <div className="inline-flex rounded-full border border-cyan-300/14 bg-cyan-300/8 px-4 py-2 text-sm font-semibold text-cyan-100">
+              <div className="inline-flex rounded-full border border-cyan-300/14 bg-cyan-300/8 px-3 py-1.5 font-medium text-cyan-100">
                 Genesis Progress: {dashboardState?.genesisProgressPercent || 0}%
               </div>
-              <div className="inline-flex rounded-full border border-fuchsia-300/14 bg-fuchsia-300/8 px-4 py-2 text-sm font-semibold text-fuchsia-100">
+              <div className="inline-flex rounded-full border border-fuchsia-300/14 bg-fuchsia-300/8 px-3 py-1.5 font-medium text-fuchsia-100">
                 Family Seats: {memberCount !== null && memberLimit !== null ? `${memberCount}/${memberLimit}` : "Solo"}
               </div>
             </div>
@@ -656,45 +797,45 @@ export default function DashboardPage() {
 
           <div className="mt-6 grid gap-4 xl:grid-cols-2">
             {message && (
-              <div className="ba-glass-panel rounded-2xl border border-cyan-300/16 p-4 text-cyan-100 xl:col-span-2">
+              <div className="ba-inline-feedback text-cyan-100 xl:col-span-2">
                 {message}
               </div>
             )}
 
             {upgradeMessage && (
-              <div className="ba-card-success rounded-2xl p-4 text-emerald-100 xl:col-span-2">
+              <div className="ba-inline-feedback ba-inline-feedback-success xl:col-span-2">
                 {upgradeMessage}
               </div>
             )}
 
             {plan === "free" && (
-              <div className="rounded-2xl border border-rose-400/25 bg-rose-500/10 p-4 text-rose-100">
+              <div className="ba-account-summary-card text-rose-100">
                 Free Plan - Limited access remains active.
               </div>
             )}
 
             {plan === "pro" && (
-              <div className="ba-card-success rounded-2xl p-4 text-emerald-100">
+              <div className="ba-account-summary-card text-emerald-100">
                 Pro Plan - Full access is active.
               </div>
             )}
 
             {(plan === "pro_plus" || plan === "family_pro_plus") && (
-              <div className="ba-card-pro-plus rounded-2xl p-4 text-amber-100">
+              <div className="ba-account-summary-card text-amber-100">
                 Pro+ access is active across your mastery system.
               </div>
             )}
 
             {memberCount !== null && memberLimit !== null && (
               isFamilyFull ? (
-                <div className="ba-card-warning rounded-2xl px-5 py-6 text-center">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-amber-200">
+                <div className="ba-account-summary-card text-center">
+                  <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-amber-200">
                     Family is Full
                   </p>
-                  <p className="mt-3 text-2xl font-black text-white">
+                  <p className="mt-3 text-[1.8rem] font-semibold text-white">
                     {memberCount} / {memberLimit} members used
                   </p>
-                  <p className="mt-2 text-sm text-amber-100">
+                  <p className="mt-2 text-[0.8rem] text-amber-100">
                     You’ve reached your family member limit.
                   </p>
                   <button
@@ -705,14 +846,14 @@ export default function DashboardPage() {
                   </button>
                 </div>
               ) : (
-                <div className="ba-card-soft rounded-2xl px-5 py-6 text-center">
-                  <p className="text-xs font-black uppercase tracking-[0.22em] text-cyan-200">
+                <div className="ba-account-summary-card text-center">
+                  <p className="text-[0.66rem] font-semibold uppercase tracking-[0.22em] text-cyan-200">
                     Family Usage
                   </p>
-                  <p className="mt-3 text-3xl font-black text-white">
+                  <p className="mt-3 text-[2rem] font-semibold text-white">
                     {memberCount} / {memberLimit}
                   </p>
-                  <p className="mt-2 text-sm text-cyan-100">
+                  <p className="mt-2 text-[0.8rem] text-cyan-100">
                     Members used
                   </p>
                 </div>
@@ -720,12 +861,12 @@ export default function DashboardPage() {
             )}
 
             {members.length > 0 && (
-              <div className="ba-glass-panel rounded-2xl p-5 xl:col-span-2">
-                <h3 className="text-lg font-bold text-white">
+              <div className="ba-account-summary-card xl:col-span-2">
+                <h3 className="text-[1rem] font-semibold text-white">
                   Family Members
                 </h3>
 
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-4 flex flex-col gap-2.5">
                   {members.map((member) => {
                     const isCurrentUser = member.user_id === userId
                     const canRemove = isOwner && !isCurrentUser
@@ -734,13 +875,13 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={member.id}
-                        className="ba-glass-panel flex items-center justify-between gap-3 rounded-xl px-4 py-3"
+                        className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3.5 py-3"
                       >
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-white">
+                          <p className="truncate text-[0.84rem] font-medium text-white">
                             {isCurrentUser ? "You" : getProfileName(member.profiles)}
                           </p>
-                          <p className="text-xs uppercase tracking-[0.18em] text-zinc-400">
+                          <p className="text-[0.62rem] uppercase tracking-[0.16em] text-white/42">
                             {member.role}
                             {isCurrentUser ? " • You" : ""}
                           </p>
@@ -750,7 +891,7 @@ export default function DashboardPage() {
                           <button
                             onClick={() => removeMember(member.id, member.user_id)}
                             disabled={isRemoving}
-                            className="rounded-xl border border-rose-400/25 bg-rose-500/12 px-3 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/18 disabled:cursor-not-allowed disabled:opacity-60"
+                            className="rounded-full border border-rose-400/25 bg-rose-500/12 px-3 py-1.5 text-[0.72rem] font-medium text-rose-100 transition hover:bg-rose-500/18 disabled:cursor-not-allowed disabled:opacity-60"
                           >
                             {isRemoving ? "Removing..." : "Remove"}
                           </button>
@@ -763,8 +904,8 @@ export default function DashboardPage() {
             )}
 
             {isOwner && (
-              <div className="ba-card-success rounded-2xl p-5">
-                <h3 className="text-lg font-bold text-white">
+              <div className="ba-account-summary-card">
+                <h3 className="text-[1rem] font-semibold text-white">
                   Invite Family Member
                 </h3>
 
@@ -774,7 +915,7 @@ export default function DashboardPage() {
                     placeholder="Enter email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-white placeholder:text-zinc-400 outline-none"
+                    className="w-full rounded-[0.95rem] border border-white/10 bg-black/24 px-4 py-3 text-white placeholder:text-white/34 outline-none"
                   />
 
                   <button
@@ -789,11 +930,11 @@ export default function DashboardPage() {
             )}
 
             {!isOwner && membershipId && (
-              <div className="ba-card-warning rounded-2xl p-5">
-                <h3 className="text-lg font-bold text-white">
+              <div className="ba-account-summary-card">
+                <h3 className="text-[1rem] font-semibold text-white">
                   Leave Family
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-orange-100">
+                <p className="mt-2 text-[0.8rem] leading-6 text-orange-100">
                   If needed, you can safely leave the family without affecting your mission progress.
                 </p>
                 <button

@@ -3,123 +3,149 @@
 import { renderNavIcon } from "@/lib/navigation"
 
 type DashboardRightRailProps = {
-  missionTitle: string
-  referenceLine: string
-  rewardLine: string
-  sessionsCompleted: number
-  versesMemorized: number
-  questsCompleted: number
-  totalXpEarned: number
-  onContinue: () => void
-  onViewProgress: () => void
+  missionRewardXp: number
+  memberCount: number | null
+  memberLimit: number | null
+  memberNames: string[]
+  planLabel: string
+  planMeta: string
+  onInviteMember: () => void
+  onManagePlan: () => void
+}
+
+function getInitials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .join("")
 }
 
 export default function DashboardRightRail({
-  missionTitle,
-  referenceLine,
-  rewardLine,
-  sessionsCompleted,
-  versesMemorized,
-  questsCompleted,
-  totalXpEarned,
-  onContinue,
-  onViewProgress,
+  missionRewardXp,
+  memberCount,
+  memberLimit,
+  memberNames,
+  planLabel,
+  planMeta,
+  onInviteMember,
+  onManagePlan,
 }: DashboardRightRailProps) {
+  const familyCountLabel =
+    memberCount !== null && memberLimit !== null
+      ? `${memberCount} / ${memberLimit} Members`
+      : "Solo Plan"
+
   return (
-    <aside className="space-y-5">
-      <section className="ba-right-rail-card rounded-[1.9rem] p-5">
-        <div className="ba-section-header">
+    <aside className="space-y-4">
+      <section className="ba-right-rail-card">
+        <div className="ba-rail-kicker">Daily Rhythm</div>
+        <div className="mt-3 space-y-2.5">
+          {[
+            {
+              title: "Morning Watch",
+              meta: "Start your day in God's Word",
+              accent: "cyan",
+              complete: true,
+            },
+            {
+              title: "Midday Focus",
+              meta: "Refocus your mind",
+              accent: "amber",
+              complete: false,
+            },
+            {
+              title: "Evening Reflection",
+              meta: "Review and give thanks",
+              accent: "violet",
+              complete: false,
+            },
+          ].map((item) => (
+            <div key={item.title} className={`ba-rhythm-row ${item.complete ? "is-complete" : ""}`}>
+              <div className="flex items-center gap-3">
+                <span className={`ba-rhythm-icon accent-${item.accent}`}>
+                  {renderNavIcon(item.accent === "amber" ? "sun" : item.accent === "violet" ? "verse-memory" : "brand", "h-3.5 w-3.5")}
+                </span>
+                <div>
+                  <div className="text-[0.82rem] font-medium text-white">{item.title}</div>
+                  <div className="text-[0.62rem] leading-4 text-white/48">{item.meta}</div>
+                </div>
+              </div>
+              {item.complete ? (
+                <span className="ba-rhythm-check">{renderNavIcon("chevron-right", "h-3.5 w-3.5")}</span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="ba-right-rail-card">
+        <div className="ba-rail-kicker">Mission Reward</div>
+        <div className="mt-4 flex items-start gap-3">
+          <span className="ba-reward-icon">
+            {renderNavIcon("crown", "h-4.5 w-4.5")}
+          </span>
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-amber-100/72">
-              MISSION AVAILABLE
-            </p>
-            <h3 className="mt-2 text-[1.9rem] font-semibold tracking-[-0.04em] text-white">
-              {missionTitle}
-            </h3>
-          </div>
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.1)]">
-            {renderNavIcon("chevron-right", "h-4.5 w-4.5")}
+            <div className="text-[1.45rem] font-semibold tracking-[-0.03em] text-[#ffe7a8]">
+              +{missionRewardXp} XP
+            </div>
+            <div className="mt-1 text-[0.72rem] leading-5 text-white/50">
+              Stay consistent. Grow daily.
+            </div>
           </div>
         </div>
-        <div className="ba-glass-panel mt-4 rounded-[1.2rem] p-4">
-          <div className="text-[10px] uppercase tracking-[0.18em] text-white/46">REFERENCE</div>
-          <div className="mt-2 text-lg font-semibold text-white">{referenceLine}</div>
-          <div className="mt-3 text-sm text-amber-100/84">{rewardLine}</div>
+      </section>
+
+      <section className="ba-right-rail-card">
+        <div className="flex items-center justify-between gap-3">
+          <div className="ba-rail-kicker">Family</div>
+          <div className="text-[0.62rem] uppercase tracking-[0.18em] text-white/46">
+            {familyCountLabel}
+          </div>
         </div>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {memberNames.length > 0 ? (
+            memberNames.slice(0, 5).map((name) => (
+              <span key={name} className="ba-family-avatar" title={name}>
+                {getInitials(name)}
+              </span>
+            ))
+          ) : (
+            <span className="text-[0.74rem] text-white/48">No family members added yet.</span>
+          )}
+        </div>
+
         <button
-          onClick={onContinue}
-          className="ba-gold-cta mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-black uppercase tracking-[0.18em]"
+          type="button"
+          onClick={onInviteMember}
+          className="mt-4 inline-flex items-center gap-2 text-[0.74rem] font-medium text-cyan-200 transition hover:text-white"
         >
-          {renderNavIcon("chevron-right", "h-4 w-4")}
-          Continue Training
+          <span className="text-[0.92rem] leading-none">+</span>
+          Invite Member
         </button>
       </section>
 
-      <section className="ba-right-rail-card rounded-[1.85rem] p-5">
-        <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-cyan-100/72">DAILY RHYTHM</div>
-        <div className="mt-4 space-y-3">
-          {[
-            { label: "Morning Watch", value: "Complete", state: "cyan" },
-            { label: "Train", value: "Complete", state: "amber" },
-            { label: "Verse Memory", value: "10 verses", state: "cyan" },
-            { label: "Evening Reflection", value: "Pending", state: "slate" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="ba-glass-panel flex items-center justify-between rounded-[1.05rem] px-4 py-3"
-            >
-              <div className="flex items-center gap-3">
-                <span
-                  className={`ba-icon-badge inline-flex h-8 w-8 items-center justify-center rounded-full ${
-                    item.state === "amber"
-                      ? "ba-streak-aura border-amber-300/22 bg-amber-300/12 text-amber-100"
-                      : item.state === "cyan"
-                        ? "ba-xp-aura border-cyan-300/22 bg-cyan-300/12 text-cyan-100"
-                        : "text-white/56"
-                  }`}
-                >
-                  {renderNavIcon(item.state === "slate" ? "sun" : "brand", "h-3.5 w-3.5")}
-                </span>
-                <span className="text-sm font-semibold text-white/84">{item.label}</span>
-              </div>
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/52">{item.value}</span>
+      <section className="ba-right-rail-card">
+        <div className="ba-rail-kicker">Plan Status</div>
+        <div className="mt-4 flex items-start justify-between gap-3">
+          <div>
+            <div className="text-[1rem] font-semibold text-white">{planLabel}</div>
+            <div className="mt-1 text-[0.68rem] leading-5 text-white/46">
+              {planMeta}
             </div>
-          ))}
-        </div>
-      </section>
-
-      <section className="ba-right-rail-card rounded-[1.85rem] p-5">
-        <div className="ba-section-header">
-          <div className="text-[11px] font-medium uppercase tracking-[0.24em] text-violet-100/72">
-            THIS WEEK&apos;S SUMMARY
           </div>
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-violet-300/18 bg-violet-300/10 text-violet-100">
-            {renderNavIcon("leaderboard", "h-4.5 w-4.5")}
-          </div>
-        </div>
-        <div className="mt-4 grid gap-3">
-          {[
-            ["Sessions Completed", sessionsCompleted],
-            ["Verses Memorized", versesMemorized],
-            ["Quests Completed", questsCompleted],
-            ["Total XP Earned", totalXpEarned],
-          ].map(([label, value]) => (
-            <div
-              key={String(label)}
-              className="ba-glass-panel flex items-center justify-between rounded-[1.05rem] px-4 py-3"
-            >
-              <span className="text-sm text-white/68">{label}</span>
-              <span className="text-base font-black text-white">
-                {typeof value === "number" ? value.toLocaleString() : value}
-              </span>
-            </div>
-          ))}
+          <span className="rounded-full border border-emerald-300/18 bg-emerald-300/12 px-2.5 py-1 text-[0.58rem] font-semibold uppercase tracking-[0.16em] text-emerald-100">
+            Active
+          </span>
         </div>
         <button
-          onClick={onViewProgress}
-          className="ba-glass-panel mt-4 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-semibold text-cyan-100 transition hover:bg-white/[0.08]"
+          type="button"
+          onClick={onManagePlan}
+          className="ba-rail-button mt-4"
         >
-          View Full Progress
+          Manage Plan
         </button>
       </section>
     </aside>
