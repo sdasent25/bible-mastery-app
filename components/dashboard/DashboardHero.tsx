@@ -36,13 +36,13 @@ export default function DashboardHero({
           fill
           priority
           className="object-cover object-[68%_48%]"
-          sizes="(max-width: 1280px) 100vw, 920px"
+          sizes="(max-width: 1024px) 100vw, 700px"
         />
       </div>
       <div className="ba-hero-overlay" />
       <div className="ba-hero-vignette" />
 
-      <div className="relative z-10 flex h-full min-h-[24rem] flex-col px-5 py-5 sm:px-6 lg:min-h-[26rem] lg:px-7 lg:py-6">
+      <div className="relative z-10 flex h-full min-h-[20.5rem] flex-col px-5 py-5 sm:px-6 lg:min-h-[19.25rem] lg:px-7 lg:py-6">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">
@@ -64,7 +64,7 @@ export default function DashboardHero({
           </button>
         </div>
 
-        <div className="mt-6 max-w-[21rem] lg:mt-7 lg:max-w-[22rem]">
+        <div className="mt-5 max-w-[21rem] lg:mt-5 lg:max-w-[21.5rem]">
           <h2 className="text-[2.1rem] font-semibold leading-[0.98] tracking-[-0.05em] text-[#fff6e9] sm:text-[2.45rem] lg:text-[3.1rem]">
             {title}
           </h2>

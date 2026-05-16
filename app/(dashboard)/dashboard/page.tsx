@@ -565,7 +565,7 @@ export default function DashboardPage() {
               dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
             />
 
-            <section className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+            <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
               {statCards.map((card) => (
                 <DashboardStatCard
                   key={card.title}
