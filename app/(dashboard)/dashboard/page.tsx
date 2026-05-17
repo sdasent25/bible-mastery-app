@@ -83,15 +83,6 @@ function getPlanMeta(plan: string, hasFamily: boolean) {
   return "Upgrade anytime for deeper training access."
 }
 
-function getDailyRhythmLabel(date: Date) {
-  const hour = date.getHours()
-
-  if (hour < 12) return "Morning Watch"
-  if (hour < 17) return "Midday Rhythm"
-  if (hour < 21) return "Evening Focus"
-  return "Night Reflection"
-}
-
 export default function DashboardPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -447,19 +438,17 @@ export default function DashboardPage() {
     day: "numeric",
     year: "numeric",
   }).format(now)
-  const rhythmLabel = getDailyRhythmLabel(now)
   const athleteLevel = Math.max(1, Math.floor((dashboardState?.xpEarned || 0) / 250) + 1)
   const xpIntoLevel = (dashboardState?.xpEarned || 0) % 250
   const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
   const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
-  const missionTitle = "Walk in Faith"
+  const missionTitle = dashboardState?.missionTitle || "Today's Mission"
   const missionSubtitle =
-    "Let your heart be steady,\nyour mind be renewed,\nand your steps reflect His love."
-  const referenceLine = "Micah 6:8"
+    dashboardState?.missionSubtitle ||
+    "Continue your current Bible training mission."
+  const referenceLine = dashboardState?.currentSegmentLabel || "Current Segment"
   const focusPassage = dashboardState?.currentSegmentLabel || "Genesis 1"
   const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
-  const focusRankLabel = "SAPPHIRE II"
-  const focusRankMeta = "Top 18%"
   const memberNames = members.map((member) =>
     member.user_id === userId ? "You" : getProfileName(member.profiles)
   )
@@ -502,16 +491,14 @@ export default function DashboardPage() {
       iconSrc: "/images/icons/dashboard/mastery-purple-shield-transparent.png",
     },
     {
-      title: "FOCUS RANK",
-      value: focusRankLabel,
-      supporting: focusRankMeta,
-      caption: "Seasonal rank",
+      title: "GENESIS",
+      value: `${dashboardState?.genesisProgressPercent || 0}%`,
+      supporting: "Campaign Progress",
+      caption: `${dashboardState?.completedMissionCount || 0} of ${dashboardState?.totalSegments || 0} missions`,
       accent: "sapphire" as const,
       iconSrc: "/images/icons/dashboard/focus-rank-sapphire-transparent.png",
     },
   ]
-
-  const rewardXp = Math.max(150, Math.round((dashboardState?.segmentNumber || 1) * 25))
 
   return (
     <main className="ba-dashboard-page md:h-full">
@@ -532,7 +519,7 @@ export default function DashboardPage() {
                 <div>
                   <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
                     <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
-                    {rhythmLabel}
+                    Genesis Campaign
                   </div>
                   <h1 className="ba-serif-display text-[2rem] text-[#f8f1e8] sm:text-[2.35rem] xl:text-[2.7rem]">
                     Welcome back.
@@ -548,7 +535,7 @@ export default function DashboardPage() {
                   <div>
                     <div className="text-right text-[0.72rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
                     <div className="mt-0.5 text-right text-[0.6rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
-                      Morning Watch
+                      {dashboardState?.currentSegmentLabel || "Current Mission"}
                     </div>
                   </div>
                 </div>
@@ -759,12 +746,18 @@ export default function DashboardPage() {
 
           <div className="ba-dashboard-right-rail hidden xl:block">
             <DashboardRightRail
-              missionRewardXp={rewardXp}
+              currentMissionTitle={missionTitle}
+              currentSegmentLabel={dashboardState?.currentSegmentLabel || "Current Mission"}
+              genesisProgressPercent={dashboardState?.genesisProgressPercent || 0}
+              dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
+              completedMissionCount={dashboardState?.completedMissionCount || 0}
+              totalSegments={dashboardState?.totalSegments || 0}
               memberCount={memberCount}
               memberLimit={memberLimit}
               memberNames={memberNames}
               planLabel={planBadge}
               planMeta={planMeta}
+              onContinueTraining={() => router.push(continueHref)}
               onInviteMember={() => router.push("/family")}
               onManagePlan={() => router.push("/upgrade")}
             />

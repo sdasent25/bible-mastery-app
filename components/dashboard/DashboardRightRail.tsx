@@ -3,12 +3,18 @@
 import { renderNavIcon } from "@/lib/navigation"
 
 type DashboardRightRailProps = {
-  missionRewardXp: number
+  currentMissionTitle: string
+  currentSegmentLabel: string
+  genesisProgressPercent: number
+  dailyMissionComplete: boolean
+  completedMissionCount: number
+  totalSegments: number
   memberCount: number | null
   memberLimit: number | null
   memberNames: string[]
   planLabel: string
   planMeta: string
+  onContinueTraining: () => void
   onInviteMember: () => void
   onManagePlan: () => void
 }
@@ -23,12 +29,18 @@ function getInitials(name: string) {
 }
 
 export default function DashboardRightRail({
-  missionRewardXp,
+  currentMissionTitle,
+  currentSegmentLabel,
+  genesisProgressPercent,
+  dailyMissionComplete,
+  completedMissionCount,
+  totalSegments,
   memberCount,
   memberLimit,
   memberNames,
   planLabel,
   planMeta,
+  onContinueTraining,
   onInviteMember,
   onManagePlan,
 }: DashboardRightRailProps) {
@@ -40,60 +52,50 @@ export default function DashboardRightRail({
   return (
     <aside className="space-y-3">
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Daily Rhythm</div>
-        <div className="mt-2.5 space-y-2">
-          {[
-            {
-              title: "Morning Watch",
-              meta: "Start your day in God's Word",
-              accent: "cyan",
-              complete: true,
-            },
-            {
-              title: "Midday Focus",
-              meta: "Refocus your mind",
-              accent: "amber",
-              complete: false,
-            },
-            {
-              title: "Evening Reflection",
-              meta: "Review and give thanks",
-              accent: "violet",
-              complete: false,
-            },
-          ].map((item) => (
-            <div key={item.title} className={`ba-rhythm-row ${item.complete ? "is-complete" : ""}`}>
-              <div className="flex items-center gap-3">
-                <span className={`ba-rhythm-icon accent-${item.accent}`}>
-                  {renderNavIcon(item.accent === "amber" ? "sun" : item.accent === "violet" ? "verse-memory" : "brand", "h-3.5 w-3.5")}
-                </span>
-                <div>
-                  <div className="text-[0.78rem] font-medium text-white">{item.title}</div>
-                  <div className="text-[0.58rem] leading-4 text-white/48">{item.meta}</div>
-                </div>
-              </div>
-              {item.complete ? (
-                <span className="ba-rhythm-check">{renderNavIcon("chevron-right", "h-3.5 w-3.5")}</span>
-              ) : null}
+        <div className="ba-rail-kicker">Current Training</div>
+        <div className="mt-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+          <div className="text-[0.95rem] font-semibold text-white">{currentMissionTitle}</div>
+          <div className="mt-1 text-[0.66rem] uppercase tracking-[0.16em] text-cyan-100">
+            {currentSegmentLabel}
+          </div>
+          <div className="mt-3">
+            <div className="ba-progress-track h-1">
+              <div
+                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.98),rgba(103,232,249,0.78),rgba(244,114,182,0.65))]"
+                style={{ width: `${genesisProgressPercent}%` }}
+              />
             </div>
-          ))}
+            <div className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/44">
+              {genesisProgressPercent}% through Genesis
+            </div>
+          </div>
         </div>
+        <button
+          type="button"
+          onClick={onContinueTraining}
+          className="ba-rail-button mt-3"
+        >
+          Continue Training
+        </button>
       </section>
 
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Mission Reward</div>
+        <div className="ba-rail-kicker">Today&apos;s Progress</div>
         <div className="mt-3 flex items-start gap-3">
           <span className="ba-reward-icon">
-            {renderNavIcon("crown", "h-4 w-4")}
+            {renderNavIcon(dailyMissionComplete ? "brand" : "sun", "h-4 w-4")}
           </span>
           <div>
-            <div className="ba-serif-display text-[1.3rem] text-[#ffe7a8]">
-              +{missionRewardXp} XP
+            <div className="ba-serif-display text-[1.08rem] text-[#ffe7a8]">
+              {dailyMissionComplete ? "Completed Today" : "Mission Ready"}
             </div>
             <div className="mt-1 text-[0.68rem] leading-5 text-white/50">
-              Stay consistent. Grow daily.
+              {completedMissionCount} of {totalSegments} Genesis missions completed.
             </div>
           </div>
+        </div>
+        <div className="mt-3 text-[0.62rem] uppercase tracking-[0.16em] text-white/42">
+          {genesisProgressPercent}% campaign progress
         </div>
       </section>
 
