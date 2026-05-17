@@ -35,14 +35,14 @@ export default function DashboardHero({
           alt=""
           fill
           priority
-          className="object-cover object-[68%_48%]"
-          sizes="(max-width: 1024px) 100vw, 700px"
+          className="object-cover object-[60%_48%]"
+          sizes="(max-width: 1024px) 100vw, 900px"
         />
       </div>
       <div className="ba-hero-overlay" />
       <div className="ba-hero-vignette" />
 
-      <div className="relative z-10 flex h-full min-h-[17.8rem] flex-col px-4.5 py-4 sm:px-5 lg:min-h-[17.4rem] lg:px-5 lg:py-4.5">
+      <div className="relative z-10 flex h-full min-h-[17.4rem] flex-col px-4.5 py-4 sm:px-5 lg:min-h-[17.1rem] lg:px-5 lg:py-4.5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">

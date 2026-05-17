@@ -837,7 +837,9 @@ textarea {
     min-height: 0;
     overflow-y: auto;
     padding-bottom: 0.85rem;
-    padding-right: 0;
+    padding-inline: 1rem 1.15rem;
+    width: min(100%, 58rem);
+    margin-inline: auto;
     scrollbar-gutter: auto;
   }
 
@@ -1082,7 +1084,7 @@ textarea {
 .ba-hero-cta {
   display: inline-flex;
   width: 100%;
-  max-width: 23rem;
+  max-width: 22rem;
   align-items: center;
   justify-content: center;
   gap: 0.68rem;
@@ -1104,8 +1106,8 @@ textarea {
 
 @media (min-width: 1024px) {
   .ba-hero-cta {
-    width: 18rem;
-    max-width: 18rem;
+    width: 19.75rem;
+    max-width: 19.75rem;
   }
 }
 
