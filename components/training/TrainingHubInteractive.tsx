@@ -466,7 +466,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-hero relative overflow-hidden rounded-[1.85rem] sm:rounded-[2.15rem]">
           <div
-            className="pointer-events-none absolute inset-0 opacity-[1]"
+            className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/training-arena-hero-sanctum.png')",
@@ -476,6 +476,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.56),transparent_11%),radial-gradient(circle_at_60%_50%,rgba(255,193,74,0.28),transparent_24%),linear-gradient(90deg,rgba(4,7,13,0.90)_0%,rgba(4,7,13,0.70)_14%,rgba(4,7,13,0.30)_28%,rgba(4,7,13,0.06)_44%,rgba(4,7,13,0.08)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.08)_32%,rgba(6,10,18,0.28)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_50%,rgba(255,236,182,0.22),transparent_8%),radial-gradient(circle_at_60%_63%,rgba(255,210,104,0.20),transparent_14%),linear-gradient(180deg,rgba(255,230,171,0.06),transparent_24%)] mix-blend-screen" />
 
           <div className="relative z-10 min-h-[420px] p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[540px] lg:p-9 xl:p-10">
             <div className="flex h-full flex-col justify-between lg:max-w-[36%] xl:max-w-[34rem]">
@@ -532,7 +533,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </Link>
                 <a
                   href="#choose-your-drill"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-white/14 bg-[rgba(7,10,17,0.48)] px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.08] sm:w-auto sm:min-w-[13rem]"
+                  className="ba-training-secondary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-semibold text-white transition sm:w-auto sm:min-w-[13rem]"
                 >
                   View Training Days
                 </a>
@@ -565,7 +566,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-today-card relative mt-5 overflow-hidden rounded-[1.85rem] sm:mt-6 sm:rounded-[2rem]">
           <div
-            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[1] sm:w-[72%] lg:w-[59%]"
+            className="ba-training-today-art pointer-events-none absolute right-0 top-0 h-full w-full opacity-[1] sm:w-[72%] lg:w-[59%]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/verse-memory-hero-gods-word.png')",
@@ -576,6 +577,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.92)_0%,rgba(5,8,14,0.76)_15%,rgba(5,8,14,0.36)_32%,rgba(5,8,14,0.06)_48%,rgba(5,8,14,0.08)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_22%,rgba(255,220,136,0.50),transparent_14%),radial-gradient(circle_at_77%_40%,rgba(255,194,82,0.22),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.02),rgba(10,12,18,0.10)_42%,rgba(10,12,18,0.34)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_60%,rgba(255,221,150,0.18),transparent_14%),radial-gradient(circle_at_82%_28%,rgba(255,205,95,0.16),transparent_12%)] mix-blend-screen" />
 
           <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.43fr)_minmax(0,0.57fr)] lg:gap-8 lg:p-8 xl:gap-10">
             <div className="min-w-0 lg:max-w-[29rem]">
