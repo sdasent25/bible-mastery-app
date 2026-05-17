@@ -473,30 +473,31 @@ textarea {
 .ba-dashboard-shell {
   position: relative;
   width: 100%;
-  max-width: none;
+  max-width: 1088px;
   margin-inline: 0;
   height: 100%;
 }
 
 .ba-dashboard-grid {
   display: grid;
-  gap: 0.88rem;
+  gap: 1rem;
 }
 
 @media (min-width: 1024px) {
   .ba-dashboard-grid {
-    gap: 0.95rem;
+    gap: 1rem;
   }
 }
 
 @media (min-width: 1240px) {
   .ba-dashboard-grid {
-    grid-template-columns: minmax(0, 1fr) 274px;
+    grid-template-columns: minmax(0, 760px) 274px;
     align-items: start;
-    justify-content: stretch;
+    justify-content: start;
     height: 100%;
     min-height: 0;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
   }
 }
 
@@ -826,8 +827,8 @@ textarea {
     display: flex;
     flex-direction: column;
     align-self: stretch;
-    width: min(100%, 778px);
-    justify-self: start;
+    width: 100%;
+    justify-self: stretch;
   }
 
   .ba-dashboard-main-scroll {
