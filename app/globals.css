@@ -838,7 +838,7 @@ textarea {
     overflow-y: auto;
     padding-bottom: 0.85rem;
     padding-inline: 1rem 1.15rem;
-    width: min(100%, 58rem);
+    width: min(100%, 46rem);
     margin-inline: auto;
     scrollbar-gutter: auto;
   }
