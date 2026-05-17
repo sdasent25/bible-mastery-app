@@ -82,7 +82,7 @@ export default function Sidebar({
 
   if (!isPlanLoaded) {
     return (
-      <div className={`ba-sidebar ${isMobile ? "w-full" : "w-full"}`}>
+      <div className={`ba-sidebar ${isMobile ? "ba-sidebar-mobile w-full" : "w-full"}`}>
         <div className="animate-pulse space-y-3">
           <div className="h-16 rounded-[1.1rem] border border-white/8 bg-white/[0.04]" />
           <div className="space-y-2">
@@ -98,9 +98,9 @@ export default function Sidebar({
   }
 
   return (
-    <div className={`ba-sidebar ${isMobile ? "w-full" : "w-full"}`}>
+    <div className={`ba-sidebar ${isMobile ? "ba-sidebar-mobile w-full" : "w-full"}`}>
       <div className="flex flex-1 flex-col gap-4">
-        <div className="ba-sidebar-brand">
+        <div className={`ba-sidebar-brand ${isMobile ? "hidden" : ""}`}>
           <div className="flex items-center gap-3">
             <span className="ba-sidebar-brand-mark">
               {renderNavIcon("brand", "h-[1.15rem] w-[1.15rem]")}
@@ -153,7 +153,7 @@ export default function Sidebar({
           {navItem("Profile", "/settings", "profile", "/icons/navigation/nav-profile-headset-transparent.png")}
         </div>
 
-        <div className="ba-sidebar-devotion mt-auto">
+        <div className={`ba-sidebar-devotion mt-auto ${isMobile ? "hidden" : ""}`}>
           <div className="ba-sidebar-devotion-art" />
           <div className="relative z-10">
             <div className="ba-text-section-label text-[0.58rem] text-amber-100/70">

@@ -21,9 +21,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const showMobileNav = !isGameMode
   const athleteLevel = Math.max(1, Math.floor(xp / 250) + 1)
-  const xpIntoLevel = xp % 250
-  const xpToNextLevel = Math.max(250 - xpIntoLevel, 0)
-  const levelProgress = Math.max(10, Math.min(100, (xpIntoLevel / 250) * 100))
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -47,10 +44,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [open])
 
   return (
-    <div className={`ba-page-bg ba-auth-shell min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}>
+    <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}>
       {open && !isGameMode ? (
         <div
-          className="fixed inset-0 z-[900] bg-black/65 md:hidden"
+          className="ba-mobile-drawer-overlay fixed inset-0 z-[900] md:hidden"
           onClick={() => setOpen(false)}
           aria-hidden="true"
         />
@@ -71,26 +68,41 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               aria-modal="true"
               aria-label="Navigation menu"
             >
-              <div className="ba-sacred-surface flex h-full flex-col rounded-r-[1.75rem] border-l-0 shadow-[0_24px_80px_rgba(0,0,0,0.4)]">
+              <div className="ba-mobile-drawer flex h-full flex-col rounded-r-[1.85rem] shadow-[0_24px_80px_rgba(0,0,0,0.4)]">
                 <div className="flex items-center justify-between border-b border-white/10 px-4 py-4">
-                  <div>
-                    <div className="text-sm font-black tracking-[-0.02em] text-white">
-                      Bible Athlete
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-3">
+                      <span className="ba-sidebar-brand-mark h-10 w-10 rounded-[0.95rem]">
+                        {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-[0.95rem] font-bold tracking-[-0.02em] text-white">
+                          Bible Athlete
+                        </div>
+                        <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">
+                          Sacred Training
+                        </div>
+                      </div>
                     </div>
-                    <div className="text-[11px] uppercase tracking-[0.22em] text-white/48">
-                      Training Arena
+                    <div className="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-300/16 bg-amber-300/8 px-2.5 py-1 text-[0.68rem] font-medium text-amber-50/88">
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/10 text-[0.76rem] font-black text-amber-50">
+                        {athleteLevel}
+                      </span>
+                      Athlete Level
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => setOpen(false)}
                     aria-label="Close navigation menu"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/84"
+                    className="ba-mobile-drawer-close"
                   >
                     {renderNavIcon("close", "h-[1.05rem] w-[1.05rem]")}
                   </button>
                 </div>
-                <Sidebar variant="mobile" closeMobile={() => setOpen(false)} />
+                <div className="min-h-0 flex-1 overflow-y-auto">
+                  <Sidebar variant="mobile" closeMobile={() => setOpen(false)} />
+                </div>
               </div>
             </div>
           ) : null}
@@ -99,13 +111,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {showMobileNav ? (
               <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 md:hidden">
                 <div className="ba-cinematic-container">
-                  <div className="flex items-center justify-between gap-3 rounded-[1.6rem] border border-white/8 bg-[linear-gradient(180deg,rgba(10,16,28,0.9),rgba(5,10,18,0.86))] px-3.5 py-3 shadow-[0_18px_44px_rgba(0,0,0,0.24)] backdrop-blur-[18px]">
-                    <div className="flex min-w-0 items-center gap-2.5">
-                      <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 items-center justify-center rounded-2xl text-amber-50">
+                  <div className="ba-mobile-topbar">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-amber-50">
                         {renderNavIcon("brand", "h-[1.05rem] w-[1.05rem]")}
                       </div>
-                      <div className="min-w-0 max-w-[7rem]">
-                        <div className="truncate text-sm font-semibold tracking-[0.08em] text-amber-50">
+                      <div className="min-w-0">
+                        <div className="truncate text-[0.94rem] font-semibold tracking-[0.02em] text-amber-50">
                           Bible Athlete
                         </div>
                         <div className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-white/58">
@@ -114,31 +126,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                       </div>
                     </div>
 
-                    <div className="flex min-w-0 flex-1 items-center gap-3">
-                      <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-[1.1rem] border border-amber-300/22 bg-[linear-gradient(180deg,rgba(35,26,14,0.98),rgba(14,11,11,0.98))] text-amber-50 shadow-[0_0_20px_rgba(251,191,36,0.1)]">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/18 bg-amber-200/8 text-[0.95rem] font-black">
-                          {athleteLevel}
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="text-[0.8rem] font-medium text-white/82">Athlete Level</div>
-                        <div className="truncate text-[0.92rem] font-semibold tracking-[-0.02em] text-white">
-                          {xpToNextLevel} XP to next level
-                        </div>
-                        <div className="ba-progress-track mt-2 h-1.5">
-                          <div
-                            className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(241,185,63,1),rgba(250,214,117,0.98),rgba(147,229,255,0.42))]"
-                            style={{ width: `${levelProgress}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
+                    <div className="flex shrink-0 items-center gap-2">
                       <Link
                         href="/upgrade"
-                        className="ba-topbar-icon h-11 w-11 text-amber-50"
+                        className="ba-mobile-header-icon text-amber-50"
                         aria-label="Open upgrade options"
                       >
                         {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
@@ -147,7 +138,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         type="button"
                         onClick={() => setOpen(true)}
                         aria-label="Open navigation menu"
-                        className="ba-topbar-icon h-11 w-11 text-white shadow-[0_0_18px_rgba(0,0,0,0.2)]"
+                        className="ba-mobile-header-icon ba-mobile-menu-trigger text-white"
                       >
                         {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
                       </button>
@@ -158,7 +149,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             ) : null}
 
             <div className={`flex-1 transition md:min-h-0 ${open ? "md:blur-0" : ""}`}>
-              <div className="md:hidden">
+              <div className="overflow-x-hidden md:hidden">
                 <div className={`ba-cinematic-container ${showMobileNav ? "ba-page-with-nav" : ""}`}>
                   {children}
                 </div>
