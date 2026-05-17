@@ -42,7 +42,7 @@ export default function DashboardRecommendationCard({
       </div>
       <div className="ba-recommendation-overlay" />
 
-      <div className="relative z-10 flex min-h-[9.1rem] flex-col justify-end px-3.5 py-3 sm:min-h-[8.65rem]">
+      <div className="relative z-10 flex min-h-[9rem] flex-col justify-end px-3.5 py-3 sm:min-h-[8.65rem]">
         <div className="grid gap-2.5 md:grid-cols-[minmax(0,1fr)_2.4rem] md:items-end">
           <div className="min-w-0">
             <h3 className="ba-font-display text-[1.02rem] font-bold tracking-[-0.03em] text-[#f7eee3]">
@@ -51,7 +51,7 @@ export default function DashboardRecommendationCard({
             <p className="ba-font-ui mt-1 max-w-none text-[0.66rem] leading-[1.48] text-[#e7dccd]/74 md:max-w-[12.5rem]">
               {copy}
             </p>
-            <div className={`ba-text-section-label mt-2 inline-flex rounded-full border px-2.25 py-0.9 text-[0.45rem] ${badgeClass}`}>
+            <div className={`ba-text-section-label mt-2 inline-flex max-w-full rounded-full border px-2.25 py-0.9 text-[0.45rem] ${badgeClass}`}>
               {badge}
             </div>
           </div>

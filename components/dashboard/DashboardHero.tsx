@@ -42,7 +42,7 @@ export default function DashboardHero({
       <div className="ba-hero-overlay" />
       <div className="ba-hero-vignette" />
 
-      <div className="relative z-10 flex h-full min-h-[18.6rem] flex-col px-4 py-4 sm:min-h-[17.8rem] sm:px-5 lg:min-h-[17.8rem] lg:px-5 lg:py-4.5">
+      <div className="relative z-10 flex h-full min-h-[23.75rem] flex-col px-4 py-4 sm:min-h-[17.8rem] sm:px-5 lg:min-h-[17.8rem] lg:px-5 lg:py-4.5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">
@@ -64,8 +64,8 @@ export default function DashboardHero({
           </button>
         </div>
 
-        <div className="mt-3.5 max-w-[15rem] sm:max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
-          <h2 className="ba-text-title text-[1.68rem] text-[#fff5e7] sm:text-[2.1rem] lg:text-[2.48rem]">
+        <div className="mt-3 max-w-[15rem] sm:mt-3.5 sm:max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
+          <h2 className="ba-text-title text-[1.62rem] text-[#fff5e7] sm:text-[2.1rem] lg:text-[2.48rem]">
             {title}
           </h2>
           <p className="ba-text-body mt-2 whitespace-pre-line text-[0.78rem] leading-[1.56] text-[#eadfce] sm:mt-2.5 sm:text-[0.82rem] lg:text-[0.84rem]">
@@ -109,7 +109,7 @@ export default function DashboardHero({
 
             <button
               onClick={onContinue}
-              className="ba-hero-cta ba-premium-cta dashboard-hero-cta group max-w-none sm:max-w-[22rem]"
+              className="ba-hero-cta ba-premium-cta dashboard-hero-cta group w-full max-w-none sm:max-w-[22rem]"
             >
               <span className="ba-hero-cta-medallion">
                 {renderNavIcon("brand", "h-[1rem] w-[1rem]")}

@@ -506,7 +506,7 @@ export default function DashboardPage() {
       <div className="ba-dashboard-shell md:h-full">
         <div className="ba-dashboard-grid md:h-full">
           <div className="ba-dashboard-main-column">
-            <div className="ba-dashboard-main-scroll ba-scrollbar-hidden space-y-3 lg:space-y-3.5">
+            <div className="ba-dashboard-main-scroll ba-scrollbar-hidden space-y-3.5 pb-1 sm:space-y-4 lg:space-y-3.5">
               <DashboardTopBar
                 athleteLevel={athleteLevel}
                 xpToNextLevel={xpToNextLevel}
@@ -516,7 +516,7 @@ export default function DashboardPage() {
                 onSettings={() => router.push("/settings")}
               />
 
-              <section className="flex flex-col gap-3 border-b border-amber-200/10 pb-3 sm:flex-row sm:items-end sm:justify-between">
+              <section className="flex flex-col gap-2.5 border-b border-amber-200/10 pb-3 sm:gap-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <div className="ba-text-section-label mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] text-cyan-100">
                     <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
@@ -554,7 +554,7 @@ export default function DashboardPage() {
                 dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
               />
 
-              <section className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 lg:grid-cols-4">
+              <section className="grid grid-cols-1 gap-2.5 min-[390px]:grid-cols-2 sm:gap-3 lg:grid-cols-4">
                 {statCards.map((card) => (
                   <DashboardStatCard
                     key={card.title}
@@ -568,7 +568,7 @@ export default function DashboardPage() {
                 ))}
               </section>
 
-              <section>
+              <section className="space-y-0.5">
                 <div className="ba-section-header">
                   <p className="ba-text-section-label text-[10px] text-[#f0e6d9]">
                     RECOMMENDED FOR YOU
@@ -583,7 +583,7 @@ export default function DashboardPage() {
                   </button>
                 </div>
 
-                <div className="mt-3 grid gap-3 lg:grid-cols-2">
+                <div className="mt-2.5 grid gap-3 lg:grid-cols-2">
                   <DashboardRecommendationCard
                     title="Training Arena"
                     copy="Build discipline. Strengthen your spirit. Level up through guided challenges."
@@ -660,18 +660,18 @@ export default function DashboardPage() {
 
               <section
                 id="family-management"
-                className="ba-account-panel xl:hidden"
+                className="ba-account-panel ba-account-panel-mobile xl:hidden"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                   <div>
                     <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-amber-200/76">
                       Account & Family
                     </p>
-                    <h2 className="mt-2 text-[1.5rem] font-semibold tracking-[-0.04em] text-white">
+                    <h2 className="mt-1.5 text-[1.25rem] font-semibold tracking-[-0.04em] text-white sm:mt-2 sm:text-[1.5rem]">
                       Support systems stay within reach
                     </h2>
                   </div>
-                  <div className="flex flex-wrap gap-2 text-[0.72rem]">
+                  <div className="flex flex-wrap gap-2 text-[0.7rem] sm:text-[0.72rem]">
                     <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-white/78">
                       Current Plan: {planBadge}
                     </div>
@@ -681,7 +681,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
 
-                <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                <div className="mt-4 grid gap-3 sm:gap-4 lg:grid-cols-2">
                   {message ? (
                     <div className="ba-inline-feedback text-cyan-100 lg:col-span-2">{message}</div>
                   ) : null}

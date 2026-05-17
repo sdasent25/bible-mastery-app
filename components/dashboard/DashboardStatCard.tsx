@@ -51,7 +51,7 @@ export default function DashboardStatCard({
       <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${tone.aura} opacity-90`} />
 
       <div className="relative z-10 flex items-start justify-between gap-2">
-        <div className={`ba-text-section-label min-w-0 text-[0.54rem] sm:text-[0.58rem] ${tone.label}`}>
+        <div className={`ba-text-section-label min-w-0 text-[0.52rem] sm:text-[0.58rem] ${tone.label}`}>
           {title}
         </div>
         <span className="ba-stat-info inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/46">
@@ -70,7 +70,7 @@ export default function DashboardStatCard({
           />
         </div>
 
-        <div className="mt-1.5 min-w-0">
+        <div className="mt-1.5 min-w-0 w-full">
           <div className={`truncate leading-none text-[#f7f0e5] ${accent === "sapphire" ? "ba-text-title text-[1.18rem] sm:text-[1.32rem]" : "ba-font-display text-[1.22rem] font-bold tracking-[-0.04em] sm:text-[1.38rem]"}`}>
             {value}
           </div>
