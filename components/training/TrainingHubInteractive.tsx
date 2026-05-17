@@ -466,16 +466,16 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-hero relative overflow-hidden rounded-[1.85rem] sm:rounded-[2.15rem]">
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.98]"
+            className="pointer-events-none absolute inset-0 opacity-[1]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/training-arena-hero-sanctum.png')",
-              backgroundPosition: "50% 44%",
+              backgroundPosition: "50% 42%",
               backgroundSize: "cover",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_68%_42%,rgba(255,214,120,0.22),transparent_18%),linear-gradient(90deg,rgba(4,7,13,0.58),rgba(4,7,13,0.18)_45%,rgba(4,7,13,0.50)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.18),rgba(6,10,18,0.36)_44%,rgba(6,10,18,0.68)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_44%,rgba(255,224,151,0.28),transparent_14%),radial-gradient(circle_at_62%_44%,rgba(255,194,82,0.16),transparent_23%),linear-gradient(90deg,rgba(4,7,13,0.44),rgba(4,7,13,0.10)_42%,rgba(4,7,13,0.34)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.10),rgba(6,10,18,0.24)_42%,rgba(6,10,18,0.54)_100%)]" />
 
           <div className="relative z-10 grid min-h-[420px] gap-6 p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[520px] lg:grid-cols-[minmax(0,1.05fr)_17rem] lg:items-start lg:p-8 xl:p-10">
             <div className="flex h-full flex-col justify-between">
@@ -565,19 +565,19 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-today-card relative mt-5 overflow-hidden rounded-[1.85rem] sm:mt-6 sm:rounded-[2rem]">
           <div
-            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[0.94] sm:w-[58%] lg:w-[52%]"
+            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[0.98] sm:w-[64%] lg:w-[56%]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/verse-memory-hero-gods-word.png')",
-              backgroundPosition: "78% 50%",
+              backgroundPosition: "82% 46%",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.90),rgba(5,8,14,0.58)_42%,rgba(5,8,14,0.16)_66%,rgba(5,8,14,0.64)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(255,213,117,0.28),transparent_18%),linear-gradient(180deg,rgba(10,12,18,0.10),rgba(10,12,18,0.52)_44%,rgba(10,12,18,0.84)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.84),rgba(5,8,14,0.48)_38%,rgba(5,8,14,0.08)_66%,rgba(5,8,14,0.52)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_24%,rgba(255,216,125,0.34),transparent_16%),radial-gradient(circle_at_80%_36%,rgba(255,194,82,0.14),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.06),rgba(10,12,18,0.32)_44%,rgba(10,12,18,0.70)_100%)]" />
 
-          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.96fr)_minmax(17rem,0.74fr)] lg:gap-8 lg:p-8">
+          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.88fr)_minmax(18rem,0.92fr)] lg:gap-8 lg:p-8">
             <div className="min-w-0">
               <div className="flex items-start justify-between gap-3">
                 <div>
@@ -636,7 +636,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </div>
               </div>
 
-              <div className="mt-5 rounded-[1.2rem] border border-cyan-200/14 bg-[linear-gradient(180deg,rgba(6,15,22,0.58),rgba(6,10,18,0.72))] px-4 py-4 backdrop-blur-sm">
+              <div className="mt-5 rounded-[1.2rem] border border-cyan-200/14 bg-[linear-gradient(180deg,rgba(6,15,22,0.48),rgba(6,10,18,0.62))] px-4 py-4 backdrop-blur-sm">
                 <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/68">
                   Focus Tags
                 </div>
@@ -667,33 +667,35 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
             </div>
 
-            <div className="hidden lg:block" aria-hidden="true" />
+            <div className="hidden lg:flex lg:items-end lg:justify-end" aria-hidden="true">
+              <div className="ba-training-art-panel w-full max-w-[28rem]" />
+            </div>
           </div>
         </section>
 
         <section className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2 xl:grid-cols-4">
-          <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+          <article className="ba-training-support-card rounded-[1.45rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Available Days
             </div>
             <div className="mt-2 text-2xl font-black text-white">{days.length}</div>
             <p className="mt-2 text-sm text-slate-300">Ready-to-load Training Arena day packs.</p>
           </article>
-          <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+          <article className="ba-training-support-card rounded-[1.45rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Current Track
             </div>
             <div className="mt-2 text-2xl font-black text-white">{currentTrack}</div>
             <p className="mt-2 text-sm text-slate-300">Daily passage training anchored to the current reading track.</p>
           </article>
-          <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+          <article className="ba-training-support-card rounded-[1.45rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Drill Types
             </div>
             <div className="mt-2 text-2xl font-black text-white">{DRILL_TYPE_COUNT}</div>
             <p className="mt-2 text-sm text-slate-300">Recall, fill blank, image, sequence, matching, and review reps.</p>
           </article>
-          <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
+          <article className="ba-training-support-card rounded-[1.45rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Access Window
             </div>
