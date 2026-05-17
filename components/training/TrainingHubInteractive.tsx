@@ -434,21 +434,21 @@ export default function TrainingHubInteractive({ days, access }: Props) {
       <div className="pointer-events-none absolute right-[-4rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(circle_at_bottom,rgba(22,163,74,0.08),transparent_58%)] sm:h-64" />
 
-      <div className="relative mx-auto max-w-7xl">
-        <section className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div className="relative mx-auto max-w-[84rem]">
+        <section className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           <div className="min-w-0">
             <div className="ba-text-section-label ba-text-gold text-[0.68rem] sm:text-[0.72rem]">
               Sacred Training
             </div>
-            <h1 className="ba-font-display mt-2 text-[2rem] leading-[0.98] tracking-[-0.03em] text-[#f5ead2] sm:text-[2.35rem] lg:text-[2.7rem]">
+            <h1 className="ba-font-display mt-2 text-[2rem] leading-[0.98] tracking-[-0.03em] text-[#f5ead2] sm:text-[2.35rem] lg:text-[2.9rem] xl:text-[3.15rem]">
               Training Arena
             </h1>
-            <p className="ba-font-ui mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
+            <p className="ba-font-ui mt-2 max-w-[34rem] text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
               Sharpen your mind. Strengthen your faith.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2.5 lg:max-w-[24rem] lg:justify-end">
+          <div className="flex flex-wrap gap-2.5 lg:max-w-[25rem] lg:justify-end lg:self-start">
             <div className="ba-training-pill">
               <span className="ba-training-pill-label">Track</span>
               <span className="ba-training-pill-value">{todayTrack}</span>
@@ -470,16 +470,16 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             style={{
               backgroundImage:
                 "url('/images/dashboard/training-arena-hero-sanctum.png')",
-              backgroundPosition: "58% 50%",
+              backgroundPosition: "60% 50%",
               backgroundSize: "cover",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_50%,rgba(255,229,163,0.42),transparent_12%),radial-gradient(circle_at_60%_50%,rgba(255,190,65,0.20),transparent_25%),linear-gradient(90deg,rgba(4,7,13,0.86),rgba(4,7,13,0.62)_18%,rgba(4,7,13,0.24)_36%,rgba(4,7,13,0.04)_60%,rgba(4,7,13,0.12)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.04),rgba(6,10,18,0.14)_36%,rgba(6,10,18,0.40)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.56),transparent_11%),radial-gradient(circle_at_60%_50%,rgba(255,193,74,0.28),transparent_24%),linear-gradient(90deg,rgba(4,7,13,0.90)_0%,rgba(4,7,13,0.70)_14%,rgba(4,7,13,0.30)_28%,rgba(4,7,13,0.06)_44%,rgba(4,7,13,0.08)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.08)_32%,rgba(6,10,18,0.28)_100%)]" />
 
-          <div className="relative z-10 min-h-[420px] p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[520px] lg:p-8 xl:p-10">
-            <div className="flex h-full flex-col justify-between lg:max-w-[39%] xl:max-w-[41%]">
-              <div className="max-w-3xl">
+          <div className="relative z-10 min-h-[420px] p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[540px] lg:p-9 xl:p-10">
+            <div className="flex h-full flex-col justify-between lg:max-w-[36%] xl:max-w-[34rem]">
+              <div className="max-w-[34rem]">
                 <div className="inline-flex rounded-full border border-amber-200/22 bg-[rgba(26,20,10,0.56)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/82 backdrop-blur-sm">
                   Training Arena
                 </div>
@@ -495,20 +495,20 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   />
 
                   <div className="min-w-0">
-                    <h2 className="ba-font-display max-w-3xl text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[4.5rem] xl:text-[4.9rem]">
+                    <h2 className="ba-font-display max-w-[11ch] text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[4.25rem] xl:text-[4.5rem]">
                       Training Arena
                     </h2>
-                    <p className="ba-font-ui mt-3 max-w-2xl text-lg leading-8 text-[#eadfc5] sm:text-[1.55rem] sm:leading-9">
+                    <p className="ba-font-ui mt-3 max-w-[18rem] text-lg leading-8 text-[#eadfc5] sm:max-w-[22rem] sm:text-[1.5rem] sm:leading-9">
                       Sharpen your mind. Strengthen your faith.
                     </p>
-                    <p className="ba-font-ui mt-4 max-w-2xl text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7">
+                    <p className="ba-font-ui mt-4 max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7">
                       Daily Scripture drills built from real training days so you can keep moving with disciplined recall, recognition, matching, and careful reading.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-7">
+              <div className="mt-6 flex max-w-[31rem] flex-wrap gap-2.5 sm:mt-7">
                 <div className="ba-training-callout">
                   <span className="ba-training-callout-label">Track</span>
                   <span className="ba-training-callout-value">{todayTrack}</span>
@@ -523,7 +523,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
+              <div className="mt-6 flex max-w-[30rem] flex-col gap-3 sm:mt-8 sm:flex-row">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
                   className="ba-training-primary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[14.5rem]"
@@ -539,7 +539,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
             </div>
 
-            <div className="relative z-10 hidden lg:flex lg:absolute lg:bottom-8 lg:right-8 lg:w-[17rem] xl:bottom-10 xl:right-10 xl:w-[18rem]">
+            <div className="relative z-10 hidden lg:flex lg:absolute lg:bottom-8 lg:right-8 lg:w-[15.75rem] xl:bottom-10 xl:right-10 xl:w-[16.75rem]">
               <div className="ba-training-side-panel w-full">
                 <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                   Current Lane
@@ -565,26 +565,26 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-today-card relative mt-5 overflow-hidden rounded-[1.85rem] sm:mt-6 sm:rounded-[2rem]">
           <div
-            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[1] sm:w-[70%] lg:w-[60%]"
+            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[1] sm:w-[72%] lg:w-[59%]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/verse-memory-hero-gods-word.png')",
-              backgroundPosition: "84% 42%",
+              backgroundPosition: "80% 44%",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.90),rgba(5,8,14,0.68)_20%,rgba(5,8,14,0.30)_36%,rgba(5,8,14,0.04)_58%,rgba(5,8,14,0.18)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_24%,rgba(255,220,136,0.42),transparent_15%),radial-gradient(circle_at_78%_40%,rgba(255,194,82,0.18),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.03),rgba(10,12,18,0.16)_44%,rgba(10,12,18,0.48)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.92)_0%,rgba(5,8,14,0.76)_15%,rgba(5,8,14,0.36)_32%,rgba(5,8,14,0.06)_48%,rgba(5,8,14,0.08)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_22%,rgba(255,220,136,0.50),transparent_14%),radial-gradient(circle_at_77%_40%,rgba(255,194,82,0.22),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.02),rgba(10,12,18,0.10)_42%,rgba(10,12,18,0.34)_100%)]" />
 
-          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:gap-8 lg:p-8">
-            <div className="min-w-0 lg:max-w-[31rem]">
+          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.43fr)_minmax(0,0.57fr)] lg:gap-8 lg:p-8 xl:gap-10">
+            <div className="min-w-0 lg:max-w-[29rem]">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="ba-text-section-label ba-text-gold text-[0.72rem] sm:text-[0.76rem]">
                     Today&apos;s Training
                   </div>
-                  <h3 className="ba-font-display mt-4 text-[2.3rem] leading-[0.92] tracking-[-0.04em] text-[#fbf0dd] sm:text-[3rem] lg:text-[3.6rem]">
+                  <h3 className="ba-font-display mt-4 max-w-[12ch] text-[2.3rem] leading-[0.92] tracking-[-0.04em] text-[#fbf0dd] sm:text-[3rem] lg:text-[3.45rem]">
                     {getTodayTrainingTitle(todayDay)}
                   </h3>
                   <p className="ba-font-ui mt-3 text-[1.05rem] font-semibold leading-7 text-cyan-300 sm:text-[1.2rem]">
@@ -598,7 +598,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 ) : null}
               </div>
 
-              <p className="ba-font-ui mt-4 max-w-xl text-sm leading-7 text-slate-200/88 sm:text-base">
+              <p className="ba-font-ui mt-4 max-w-[24rem] text-sm leading-7 text-slate-200/88 sm:text-base">
                 {getTodayTrainingCopy(todayDay, access.tier)}
               </p>
 
@@ -653,7 +653,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm leading-6 text-slate-300 sm:max-w-[20rem]">
+                <p className="text-sm leading-6 text-slate-300 sm:max-w-[18rem]">
                   {getAccessNote(access.tier)}
                 </p>
                 {todayDay ? (
@@ -667,8 +667,8 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
             </div>
 
-            <div className="hidden lg:flex lg:items-end lg:justify-end" aria-hidden="true">
-              <div className="ba-training-art-panel w-full max-w-[33rem]" />
+            <div className="hidden lg:flex lg:min-h-[26rem] lg:items-end lg:justify-end" aria-hidden="true">
+              <div className="ba-training-art-panel h-full w-full" />
             </div>
           </div>
         </section>

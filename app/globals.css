@@ -765,21 +765,21 @@ textarea {
 
 .ba-training-page {
   background:
-    radial-gradient(circle at top, rgba(54, 76, 126, 0.92) 0%, rgba(18, 28, 48, 0.97) 24%, rgba(7, 12, 22, 1) 58%, rgba(4, 8, 16, 1) 100%);
+    radial-gradient(circle at 50% 0%, rgba(78, 102, 158, 0.94) 0%, rgba(30, 44, 72, 0.96) 22%, rgba(10, 16, 28, 1) 58%, rgba(4, 8, 16, 1) 100%);
 }
 
 .ba-training-hero {
   border: 1px solid rgba(255, 223, 151, 0.14);
   background:
-    radial-gradient(circle at top, rgba(255, 216, 125, 0.12), transparent 28%),
+    radial-gradient(circle at 58% 16%, rgba(255, 216, 125, 0.16), transparent 26%),
     radial-gradient(circle at 82% 18%, rgba(34, 211, 238, 0.11), transparent 22%),
     linear-gradient(180deg, rgba(12, 18, 29, 0.98), rgba(6, 10, 18, 0.99));
   box-shadow:
-    0 34px 108px rgba(0, 0, 0, 0.34),
+    0 34px 108px rgba(0, 0, 0, 0.32),
     0 0 0 1px rgba(255, 220, 145, 0.06),
-    0 0 62px rgba(255, 191, 36, 0.12),
-    inset 0 1px 0 rgba(255, 250, 236, 0.08),
-    inset 0 -1px 0 rgba(255, 196, 84, 0.1);
+    0 0 72px rgba(255, 191, 36, 0.14),
+    inset 0 1px 0 rgba(255, 250, 236, 0.09),
+    inset 0 -1px 0 rgba(255, 196, 84, 0.12);
 }
 
 .ba-training-emblem {
@@ -839,7 +839,7 @@ textarea {
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 252, 240, 0.06),
-    0 0 24px rgba(255, 191, 36, 0.05);
+    0 0 26px rgba(255, 191, 36, 0.06);
   backdrop-filter: blur(12px);
 }
 
@@ -861,27 +861,28 @@ textarea {
   border-radius: 1.45rem;
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
-    linear-gradient(180deg, rgba(7, 12, 20, 0.42), rgba(5, 8, 15, 0.6));
-  padding: 1.15rem 1.05rem;
+    radial-gradient(circle at top left, rgba(255, 218, 130, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(6, 10, 18, 0.50), rgba(4, 8, 15, 0.68));
+  padding: 1rem 1rem 0.95rem;
   box-shadow:
     0 28px 60px rgba(0, 0, 0, 0.26),
     inset 0 1px 0 rgba(255, 252, 240, 0.06),
-    0 0 34px rgba(255, 191, 36, 0.1);
+    0 0 38px rgba(255, 191, 36, 0.12);
   backdrop-filter: blur(14px);
 }
 
 .ba-training-today-card {
   border: 1px solid rgba(255, 223, 151, 0.14);
   background:
-    radial-gradient(circle at top left, rgba(255, 216, 125, 0.12), transparent 26%),
+    radial-gradient(circle at 72% 16%, rgba(255, 216, 125, 0.14), transparent 22%),
     radial-gradient(circle at right center, rgba(34, 211, 238, 0.08), transparent 18%),
     linear-gradient(180deg, rgba(12, 18, 29, 0.98), rgba(6, 10, 18, 0.99));
   box-shadow:
-    0 32px 96px rgba(0, 0, 0, 0.32),
+    0 32px 96px rgba(0, 0, 0, 0.30),
     0 0 0 1px rgba(255, 220, 145, 0.05),
-    0 0 58px rgba(255, 191, 36, 0.11),
+    0 0 66px rgba(255, 191, 36, 0.12),
     inset 0 1px 0 rgba(255, 252, 240, 0.06),
-    inset 0 -1px 0 rgba(255, 196, 84, 0.09);
+    inset 0 -1px 0 rgba(255, 196, 84, 0.1);
 }
 
 .ba-training-meta-tile {
@@ -910,25 +911,25 @@ textarea {
   border-radius: 9999px;
   border: 1px solid rgba(255, 226, 125, 0.92);
   background:
-    linear-gradient(180deg, #fff1a8 0%, #f8c63d 38%, #d99012 100%);
+    linear-gradient(180deg, #fff6bf 0%, #ffe487 16%, #f8c63d 44%, #e1a021 74%, #bb710a 100%);
   box-shadow:
-    0 0 26px rgba(255, 191, 54, 0.5),
-    0 0 52px rgba(255, 153, 0, 0.32),
-    0 20px 38px rgba(74, 34, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.65),
-    inset 0 -2px 0 rgba(88, 45, 0, 0.34),
-    inset 0 0 0 1px rgba(255, 239, 184, 0.22);
+    0 0 28px rgba(255, 191, 54, 0.56),
+    0 0 58px rgba(255, 153, 0, 0.34),
+    0 20px 40px rgba(74, 34, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    inset 0 -2px 0 rgba(88, 45, 0, 0.36),
+    inset 0 0 0 1px rgba(255, 239, 184, 0.28);
 }
 
 .ba-training-primary-cta:hover,
 .ba-training-primary-cta:focus-visible {
   box-shadow:
-    0 0 34px rgba(255, 191, 54, 0.58),
-    0 0 60px rgba(255, 153, 0, 0.36),
-    0 22px 42px rgba(74, 34, 0, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 0 36px rgba(255, 191, 54, 0.64),
+    0 0 66px rgba(255, 153, 0, 0.38),
+    0 22px 44px rgba(74, 34, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.76),
     inset 0 -2px 0 rgba(88, 45, 0, 0.34),
-    inset 0 0 0 1px rgba(255, 239, 184, 0.24);
+    inset 0 0 0 1px rgba(255, 239, 184, 0.3);
 }
 
 .ba-training-primary-cta:focus-visible {
@@ -943,26 +944,33 @@ textarea {
 }
 
 .ba-training-art-panel {
-  min-height: 21rem;
+  min-height: 25rem;
   border-radius: 1.45rem;
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
-    radial-gradient(circle at 70% 26%, rgba(255, 222, 142, 0.34), transparent 17%),
-    linear-gradient(180deg, rgba(5, 9, 16, 0.04), rgba(5, 9, 16, 0.24)),
+    radial-gradient(circle at 76% 20%, rgba(255, 222, 142, 0.42), transparent 16%),
+    radial-gradient(circle at 56% 72%, rgba(255, 178, 72, 0.10), transparent 24%),
+    linear-gradient(90deg, rgba(7, 10, 16, 0.14), rgba(7, 10, 16, 0.03) 36%, rgba(7, 10, 16, 0.02) 100%),
+    linear-gradient(180deg, rgba(5, 9, 16, 0.02), rgba(5, 9, 16, 0.16)),
     url('/images/dashboard/verse-memory-hero-gods-word.png');
   background-position:
     0 0,
     0 0,
-    82% 40%;
+    0 0,
+    0 0,
+    78% 44%;
   background-size:
+    auto,
+    auto,
     auto,
     auto,
     cover;
   background-repeat: no-repeat;
   box-shadow:
-    0 26px 60px rgba(0, 0, 0, 0.24),
-    0 0 50px rgba(255, 191, 36, 0.12),
-    inset 0 1px 0 rgba(255, 252, 240, 0.06);
+    0 28px 64px rgba(0, 0, 0, 0.24),
+    0 0 58px rgba(255, 191, 36, 0.14),
+    inset 0 1px 0 rgba(255, 252, 240, 0.06),
+    inset 0 -1px 0 rgba(255, 196, 84, 0.08);
 }
 
 .ba-training-support-card {
