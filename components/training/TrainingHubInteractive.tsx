@@ -470,15 +470,15 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             style={{
               backgroundImage:
                 "url('/images/dashboard/training-arena-hero-sanctum.png')",
-              backgroundPosition: "55% 48%",
+              backgroundPosition: "58% 50%",
               backgroundSize: "cover",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_55%_48%,rgba(255,223,149,0.34),transparent_13%),radial-gradient(circle_at_55%_48%,rgba(255,193,72,0.16),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.78),rgba(4,7,13,0.48)_20%,rgba(4,7,13,0.16)_42%,rgba(4,7,13,0.06)_60%,rgba(4,7,13,0.2)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.08),rgba(6,10,18,0.18)_38%,rgba(6,10,18,0.46)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_50%,rgba(255,229,163,0.42),transparent_12%),radial-gradient(circle_at_60%_50%,rgba(255,190,65,0.20),transparent_25%),linear-gradient(90deg,rgba(4,7,13,0.86),rgba(4,7,13,0.62)_18%,rgba(4,7,13,0.24)_36%,rgba(4,7,13,0.04)_60%,rgba(4,7,13,0.12)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.04),rgba(6,10,18,0.14)_36%,rgba(6,10,18,0.40)_100%)]" />
 
           <div className="relative z-10 min-h-[420px] p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[520px] lg:p-8 xl:p-10">
-            <div className="flex h-full flex-col justify-between lg:max-w-[42%] xl:max-w-[45%]">
+            <div className="flex h-full flex-col justify-between lg:max-w-[39%] xl:max-w-[41%]">
               <div className="max-w-3xl">
                 <div className="inline-flex rounded-full border border-amber-200/22 bg-[rgba(26,20,10,0.56)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/82 backdrop-blur-sm">
                   Training Arena
@@ -495,7 +495,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   />
 
                   <div className="min-w-0">
-                    <h2 className="ba-font-display max-w-3xl text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[4.7rem] xl:text-[5.15rem]">
+                    <h2 className="ba-font-display max-w-3xl text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[4.5rem] xl:text-[4.9rem]">
                       Training Arena
                     </h2>
                     <p className="ba-font-ui mt-3 max-w-2xl text-lg leading-8 text-[#eadfc5] sm:text-[1.55rem] sm:leading-9">
@@ -539,7 +539,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
             </div>
 
-            <div className="relative z-10 hidden lg:flex lg:absolute lg:bottom-8 lg:right-8 lg:w-[18.5rem] xl:bottom-10 xl:right-10 xl:w-[19.5rem]">
+            <div className="relative z-10 hidden lg:flex lg:absolute lg:bottom-8 lg:right-8 lg:w-[17rem] xl:bottom-10 xl:right-10 xl:w-[18rem]">
               <div className="ba-training-side-panel w-full">
                 <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                   Current Lane
@@ -565,20 +565,20 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-today-card relative mt-5 overflow-hidden rounded-[1.85rem] sm:mt-6 sm:rounded-[2rem]">
           <div
-            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[0.98] sm:w-[68%] lg:w-[58%]"
+            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[1] sm:w-[70%] lg:w-[60%]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/verse-memory-hero-gods-word.png')",
-              backgroundPosition: "80% 44%",
+              backgroundPosition: "84% 42%",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.88),rgba(5,8,14,0.60)_24%,rgba(5,8,14,0.24)_42%,rgba(5,8,14,0.04)_60%,rgba(5,8,14,0.40)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_76%_24%,rgba(255,216,125,0.38),transparent_15%),radial-gradient(circle_at_74%_38%,rgba(255,194,82,0.16),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.05),rgba(10,12,18,0.22)_44%,rgba(10,12,18,0.60)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.90),rgba(5,8,14,0.68)_20%,rgba(5,8,14,0.30)_36%,rgba(5,8,14,0.04)_58%,rgba(5,8,14,0.18)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_24%,rgba(255,220,136,0.42),transparent_15%),radial-gradient(circle_at_78%_40%,rgba(255,194,82,0.18),transparent_24%),linear-gradient(180deg,rgba(10,12,18,0.03),rgba(10,12,18,0.16)_44%,rgba(10,12,18,0.48)_100%)]" />
 
-          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.46fr)_minmax(0,0.54fr)] lg:gap-8 lg:p-8">
-            <div className="min-w-0 lg:max-w-[33rem]">
+          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] lg:gap-8 lg:p-8">
+            <div className="min-w-0 lg:max-w-[31rem]">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="ba-text-section-label ba-text-gold text-[0.72rem] sm:text-[0.76rem]">
@@ -668,7 +668,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
 
             <div className="hidden lg:flex lg:items-end lg:justify-end" aria-hidden="true">
-              <div className="ba-training-art-panel w-full max-w-[31rem]" />
+              <div className="ba-training-art-panel w-full max-w-[33rem]" />
             </div>
           </div>
         </section>
