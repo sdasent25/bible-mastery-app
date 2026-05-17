@@ -428,27 +428,27 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   }
 
   return (
-    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 py-4 pb-10 text-white sm:px-6 sm:py-6 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
+    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-2 pb-10 text-white sm:px-6 sm:py-6 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.18),transparent_56%)] sm:h-72" />
       <div className="pointer-events-none absolute left-[-4rem] top-24 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl sm:h-48 sm:w-48" />
       <div className="pointer-events-none absolute right-[-4rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(circle_at_bottom,rgba(22,163,74,0.08),transparent_58%)] sm:h-64" />
 
       <div className="relative mx-auto max-w-[84rem]">
-        <section className="mb-6 flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
+        <section className="mb-4 flex flex-col gap-3 lg:mb-6 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
           <div className="min-w-0">
             <div className="ba-text-section-label ba-text-gold text-[0.68rem] sm:text-[0.72rem]">
               Sacred Training
             </div>
-            <h1 className="ba-font-display mt-2 text-[2rem] leading-[0.98] tracking-[-0.03em] text-[#f5ead2] sm:text-[2.35rem] lg:text-[2.9rem] xl:text-[3.15rem]">
+            <h1 className="ba-font-display mt-1.5 text-[1.7rem] leading-[0.94] tracking-[-0.03em] text-[#f5ead2] sm:mt-2 sm:text-[2.35rem] lg:text-[2.9rem] xl:text-[3.15rem]">
               Training Arena
             </h1>
-            <p className="ba-font-ui mt-2 max-w-[34rem] text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
+            <p className="ba-font-ui mt-1.5 max-w-[20rem] text-[0.92rem] leading-6 text-slate-300 sm:mt-2 sm:max-w-[34rem] sm:text-base sm:leading-7">
               Sharpen your mind. Strengthen your faith.
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2.5 lg:max-w-[25rem] lg:justify-end lg:self-start">
+          <div className="flex flex-wrap gap-2 lg:max-w-[25rem] lg:justify-end lg:self-start">
             <div className="ba-training-pill">
               <span className="ba-training-pill-label">Track</span>
               <span className="ba-training-pill-value">{todayTrack}</span>
@@ -464,7 +464,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="ba-training-hero relative overflow-hidden rounded-[1.85rem] sm:rounded-[2.15rem]">
+        <section className="ba-training-hero relative overflow-hidden rounded-[1.65rem] sm:rounded-[2.15rem]">
           <div
             className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
             style={{
@@ -478,14 +478,14 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.08)_32%,rgba(6,10,18,0.28)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_50%,rgba(255,236,182,0.22),transparent_8%),radial-gradient(circle_at_60%_63%,rgba(255,210,104,0.20),transparent_14%),linear-gradient(180deg,rgba(255,230,171,0.06),transparent_24%)] mix-blend-screen" />
 
-          <div className="relative z-10 min-h-[420px] p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[540px] lg:p-9 xl:p-10">
+          <div className="relative z-10 min-h-[350px] p-4 sm:min-h-[480px] sm:p-7 lg:min-h-[540px] lg:p-9 xl:p-10">
             <div className="flex h-full flex-col justify-between lg:max-w-[36%] xl:max-w-[34rem]">
               <div className="max-w-[34rem]">
-                <div className="inline-flex rounded-full border border-amber-200/22 bg-[rgba(26,20,10,0.56)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/82 backdrop-blur-sm">
+                <div className="inline-flex rounded-full border border-amber-200/22 bg-[rgba(26,20,10,0.56)] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/82 backdrop-blur-sm sm:text-[11px] sm:tracking-[0.28em]">
                   Training Arena
                 </div>
 
-                <div className="mt-6 flex items-start gap-4 sm:gap-5">
+                <div className="mt-4 flex items-start gap-4 sm:mt-6 sm:gap-5">
                   <div
                     className="ba-training-emblem hidden shrink-0 sm:block"
                     style={{
@@ -496,20 +496,20 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   />
 
                   <div className="min-w-0">
-                    <h2 className="ba-font-display max-w-[11ch] text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[4.25rem] xl:text-[4.5rem]">
+                    <h2 className="ba-font-display max-w-[9ch] text-[2.35rem] leading-[0.84] tracking-[-0.05em] text-[#fbf2df] sm:max-w-[11ch] sm:text-[4rem] lg:text-[4.25rem] xl:text-[4.5rem]">
                       Training Arena
                     </h2>
-                    <p className="ba-font-ui mt-3 max-w-[18rem] text-lg leading-8 text-[#eadfc5] sm:max-w-[22rem] sm:text-[1.5rem] sm:leading-9">
+                    <p className="ba-font-ui mt-2 max-w-[13rem] text-[0.98rem] leading-6 text-[#eadfc5] sm:mt-3 sm:max-w-[22rem] sm:text-[1.5rem] sm:leading-9">
                       Sharpen your mind. Strengthen your faith.
                     </p>
-                    <p className="ba-font-ui mt-4 max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7">
+                    <p className="ba-font-ui mt-3 hidden max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:block sm:text-base sm:leading-7">
                       Daily Scripture drills built from real training days so you can keep moving with disciplined recall, recognition, matching, and careful reading.
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 flex max-w-[31rem] flex-wrap gap-2.5 sm:mt-7">
+              <div className="mt-4 hidden max-w-[31rem] flex-wrap gap-2.5 sm:mt-7 sm:flex">
                 <div className="ba-training-callout">
                   <span className="ba-training-callout-label">Track</span>
                   <span className="ba-training-callout-value">{todayTrack}</span>
@@ -524,16 +524,16 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </div>
               </div>
 
-              <div className="mt-6 flex max-w-[30rem] flex-col gap-3 sm:mt-8 sm:flex-row">
+              <div className="mt-4 flex max-w-[30rem] flex-col gap-2.5 sm:mt-8 sm:flex-row sm:gap-3">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
-                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[14.5rem]"
+                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[14.5rem] sm:px-6 sm:py-3.5"
                 >
                   Start Today&apos;s Training
                 </Link>
                 <a
                   href="#choose-your-drill"
-                  className="ba-training-secondary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-semibold text-white transition sm:w-auto sm:min-w-[13rem]"
+                  className="ba-training-secondary-cta hidden w-full items-center justify-center px-6 py-3.5 text-sm font-semibold text-white transition sm:inline-flex sm:w-auto sm:min-w-[13rem]"
                 >
                   View Training Days
                 </a>

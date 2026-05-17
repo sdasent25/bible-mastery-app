@@ -2171,6 +2171,36 @@ textarea {
 }
 
 @media (max-width: 767px) {
+  .ba-training-page {
+    padding-bottom: calc(var(--ba-safe-bottom) + 0.75rem);
+  }
+
+  .ba-training-pill {
+    gap: 0.55rem;
+    padding: 0.58rem 0.8rem;
+    box-shadow:
+      0 14px 28px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 252, 240, 0.05),
+      0 0 14px rgba(255, 191, 36, 0.03);
+  }
+
+  .ba-training-pill-label {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+  }
+
+  .ba-training-pill-value {
+    font-size: 0.82rem;
+  }
+
+  .ba-training-hero {
+    border-radius: 1.55rem;
+  }
+
+  .ba-training-primary-cta {
+    min-height: 2.85rem;
+  }
+
   .ba-bottom-nav {
     border-radius: 1.65rem;
   }
