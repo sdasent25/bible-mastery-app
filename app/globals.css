@@ -66,6 +66,73 @@ body {
   letter-spacing: 0.02em;
 }
 
+.ba-font-display {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+}
+
+.ba-font-ui {
+  font-family:
+    var(--font-geist-sans),
+    "Inter",
+    "Segoe UI",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+.ba-text-title {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  color: #f8f1e6;
+}
+
+.ba-text-section-label {
+  font-family:
+    var(--font-geist-sans),
+    "Inter",
+    "Segoe UI",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.ba-text-body {
+  font-family:
+    var(--font-geist-sans),
+    "Inter",
+    "Segoe UI",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  line-height: 1.55;
+  color: #d9cebf;
+}
+
+.ba-text-muted {
+  color: rgba(235, 226, 214, 0.56);
+}
+
+.ba-text-gold {
+  color: #f0d596;
+}
+
+.ba-text-cyan {
+  color: #a7eef8;
+}
+
 button,
 input,
 select,

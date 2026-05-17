@@ -27,10 +27,10 @@ export default function DashboardTopBar({
             {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
           </span>
           <div className="min-w-0">
-            <div className="ba-serif-brand truncate text-[1rem] text-[#f5e7c7]">
+            <div className="ba-serif-brand ba-font-display truncate text-[1rem] text-[#f5e7c7]">
               Bible Athlete
             </div>
-            <div className="mt-0.5 text-[0.56rem] uppercase tracking-[0.28em] text-white/42">
+            <div className="ba-text-section-label ba-text-muted mt-0.5 tracking-[0.22em]">
               Sacred Athletic Dashboard
             </div>
           </div>
@@ -46,8 +46,8 @@ export default function DashboardTopBar({
           <div className="min-w-0 flex-1">
             <div className="flex items-end justify-between gap-2">
               <div className="min-w-0">
-                <div className="text-[0.64rem] font-medium text-white/70">Athlete Level</div>
-                <div className="truncate whitespace-nowrap text-[0.8rem] font-semibold tracking-[-0.01em] text-white">
+                <div className="ba-font-ui text-[0.62rem] font-medium text-[#d9cdbd]/78">Athlete Level</div>
+                <div className="ba-font-ui truncate whitespace-nowrap text-[0.78rem] font-semibold tracking-[0.01em] text-[#f2e8d6]">
                   {xpToNextLevel.toLocaleString()} XP to next level
                 </div>
               </div>
@@ -58,7 +58,7 @@ export default function DashboardTopBar({
                 style={{ width: `${levelProgress}%` }}
               />
             </div>
-            <div className="mt-1 flex items-center justify-between text-[0.48rem] uppercase tracking-[0.16em] text-white/36">
+            <div className="ba-text-section-label mt-1 flex items-center justify-between text-[0.48rem] text-white/36">
               <span>Progression Track</span>
               <span>{Math.round(levelProgress)}% charged</span>
             </div>
@@ -90,10 +90,10 @@ export default function DashboardTopBar({
           >
             <span className="ba-profile-avatar">{playerName.charAt(0).toUpperCase()}</span>
             <span className="min-w-0 text-left pr-0.5">
-              <span className="block truncate text-[0.78rem] font-semibold text-white">
+              <span className="ba-font-ui block truncate text-[0.76rem] font-semibold text-[#f5ecdc]">
                 {playerName}
               </span>
-              <span className="block truncate text-[0.58rem] text-white/52">
+              <span className="ba-font-ui block truncate text-[0.56rem] uppercase tracking-[0.08em] text-white/48">
                 Faithful Athlete
               </span>
             </span>

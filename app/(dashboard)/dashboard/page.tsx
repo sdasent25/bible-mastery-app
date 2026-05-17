@@ -517,14 +517,14 @@ export default function DashboardPage() {
 
               <section className="flex flex-col gap-3 border-b border-amber-200/10 pb-3 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <div className="mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-100">
+                  <div className="ba-text-section-label mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] text-cyan-100">
                     <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
                     Genesis Campaign
                   </div>
-                  <h1 className="ba-serif-display text-[2rem] text-[#f8f1e8] sm:text-[2.35rem] xl:text-[2.7rem]">
+                  <h1 className="ba-text-title text-[2rem] sm:text-[2.35rem] xl:text-[2.65rem]">
                     Welcome back.
                   </h1>
-                  <p className="mt-1.5 max-w-2xl text-[0.9rem] leading-6 text-[#d1c3b5] sm:text-[0.94rem]">
+                  <p className="ba-text-body mt-1.5 max-w-2xl text-[0.9rem] leading-[1.58] text-[#d7cab9] sm:text-[0.94rem]">
                     Train today. Grow stronger daily.
                   </p>
                 </div>
@@ -533,8 +533,8 @@ export default function DashboardPage() {
                     {renderNavIcon("sun", "h-3.5 w-3.5")}
                   </span>
                   <div>
-                    <div className="text-right text-[0.72rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
-                    <div className="mt-0.5 text-right text-[0.6rem] font-medium uppercase tracking-[0.16em] text-cyan-200">
+                    <div className="ba-font-ui text-right text-[0.72rem] font-medium text-[#e8ddd1]">{shortFormattedDate}</div>
+                    <div className="ba-text-section-label ba-text-cyan mt-0.5 text-right text-[0.58rem]">
                       {dashboardState?.currentSegmentLabel || "Current Mission"}
                     </div>
                   </div>
@@ -569,13 +569,13 @@ export default function DashboardPage() {
 
               <section>
                 <div className="ba-section-header">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-[#f0e6d9]">
+                  <p className="ba-text-section-label text-[10px] text-[#f0e6d9]">
                     RECOMMENDED FOR YOU
                   </p>
                   <button
                     type="button"
                     onClick={() => router.push("/training")}
-                    className="inline-flex items-center gap-1.5 text-[0.74rem] font-medium text-cyan-100/88 transition hover:text-white"
+                    className="ba-font-ui inline-flex items-center gap-1.5 text-[0.73rem] font-medium text-cyan-100/88 transition hover:text-white"
                   >
                     View All
                     <span>{renderNavIcon("chevron-right", "h-4 w-4")}</span>

@@ -65,13 +65,13 @@ export default function DashboardHero({
         </div>
 
         <div className="mt-3.5 max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
-          <h2 className="ba-serif-display text-[1.8rem] leading-[0.98] text-[#fff6e9] sm:text-[2.05rem] lg:text-[2.5rem]">
+          <h2 className="ba-text-title text-[1.9rem] text-[#fff5e7] sm:text-[2.1rem] lg:text-[2.48rem]">
             {title}
           </h2>
-          <p className="mt-2.5 whitespace-pre-line text-[0.82rem] leading-5.5 text-[#ece0cb] lg:text-[0.84rem]">
+          <p className="ba-text-body mt-2.5 whitespace-pre-line text-[0.82rem] leading-[1.58] text-[#eadfce] lg:text-[0.84rem]">
             {subtitle}
           </p>
-          <p className="mt-2.5 text-[0.68rem] font-semibold tracking-[0.02em] text-cyan-200">
+          <p className="ba-font-ui mt-2.5 text-[0.67rem] font-semibold tracking-[0.01em] text-cyan-200">
             {referenceLine}
           </p>
         </div>
@@ -83,10 +83,10 @@ export default function DashboardHero({
                 {renderNavIcon("verse-memory", "h-4 w-4")}
               </span>
               <div className="min-w-0">
-                <div className="text-[0.56rem] font-semibold uppercase tracking-[0.22em] text-amber-100/62">
+                <div className="ba-text-section-label text-[0.54rem] text-amber-100/62">
                   Focus Passage
                 </div>
-                <div className="truncate text-[0.88rem] font-semibold text-white lg:text-[0.94rem]">
+                <div className="ba-font-ui truncate text-[0.88rem] font-semibold text-[#f8f2e8] lg:text-[0.94rem]">
                   {focusPassage}
                 </div>
               </div>
@@ -100,7 +100,7 @@ export default function DashboardHero({
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
-                <div className="mt-1 flex items-center justify-between text-[0.44rem] uppercase tracking-[0.16em] text-white/44">
+                <div className="ba-text-section-label mt-1 flex items-center justify-between text-[0.44rem] text-white/44">
                   <span>Genesis Progression</span>
                   <span>{progressPercent}% complete</span>
                 </div>

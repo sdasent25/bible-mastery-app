@@ -69,7 +69,7 @@ export default function Sidebar({
             renderNavIcon(icon, "h-[1rem] w-[1rem]")
           )}
         </span>
-        <span className="text-[0.84rem] font-medium leading-none">{label}</span>
+        <span className="ba-font-ui text-[0.82rem] font-medium leading-none tracking-[0.005em]">{label}</span>
         {showAlert ? <span className="ba-sidebar-nav-dot" /> : null}
       </Link>
     )
@@ -106,15 +106,15 @@ export default function Sidebar({
               {renderNavIcon("brand", "h-[1.15rem] w-[1.15rem]")}
             </span>
             <div className="min-w-0">
-              <div className="ba-serif-brand text-[0.98rem] text-[#f5e7c8]">
+              <div className="ba-serif-brand ba-font-display text-[0.98rem] text-[#f5e7c8]">
                 Bible Athlete
               </div>
-              <div className="mt-0.5 text-[0.56rem] uppercase tracking-[0.28em] text-white/42">
+              <div className="ba-text-section-label ba-text-muted mt-0.5 text-[0.5rem] tracking-[0.22em]">
                 Sacred Training
               </div>
             </div>
           </div>
-          <p className="mt-3 max-w-[12rem] text-[0.72rem] leading-5 text-white/44">
+          <p className="ba-font-ui mt-3 max-w-[12rem] text-[0.71rem] leading-[1.55] text-white/44">
             Train your mind. Strengthen your faith.
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function Sidebar({
                     <span className="ba-sidebar-nav-icon">
                       {renderNavIcon("leaderboard", "h-[1rem] w-[1rem]")}
                     </span>
-                    <span className="truncate text-[0.92rem] font-medium">Leaderboard</span>
+                    <span className="ba-font-ui truncate text-[0.86rem] font-medium">Leaderboard</span>
                   </button>
                 ) : (
                   navItem(
@@ -156,15 +156,15 @@ export default function Sidebar({
         <div className="ba-sidebar-devotion mt-auto">
           <div className="ba-sidebar-devotion-art" />
           <div className="relative z-10">
-            <div className="text-[0.62rem] uppercase tracking-[0.24em] text-amber-100/70">
+            <div className="ba-text-section-label text-[0.58rem] text-amber-100/70">
               {planType === "pro_plus" || planType === "family_pro_plus"
                 ? "Pro+ Member"
                 : "Faith Focus"}
             </div>
-            <p className="mt-3 text-[0.86rem] font-semibold text-[#f5e8cf]">
+            <p className="ba-font-display mt-3 text-[0.92rem] font-bold tracking-[-0.02em] text-[#f5e8cf]">
               Grow in faith. Compete with purpose.
             </p>
-            <p className="mt-2 text-[0.72rem] leading-5 text-white/44">
+            <p className="ba-font-ui mt-2 text-[0.71rem] leading-[1.55] text-white/44">
               Keep showing up. Strength is built one faithful day at a time.
             </p>
           </div>
@@ -182,7 +182,7 @@ export default function Sidebar({
           <span className={`ba-sidebar-nav-icon ${profileActive ? "is-active" : ""}`}>
             {renderNavIcon("settings", "h-[1rem] w-[1rem]")}
           </span>
-          <span className="text-[0.84rem] font-medium">Settings</span>
+          <span className="ba-font-ui text-[0.82rem] font-medium">Settings</span>
         </button>
       </div>
     </div>
