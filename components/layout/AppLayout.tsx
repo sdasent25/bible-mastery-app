@@ -18,6 +18,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     pathname === "/quiz" ||
     pathname === "/flashcards/review" ||
     pathname.startsWith("/games/")
+  const isTrainingRoute = pathname === "/training"
 
   const showMobileNav = !isGameMode
   const athleteLevel = Math.max(1, Math.floor(xp / 250) + 1)
@@ -205,7 +206,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="hidden h-full lg:block lg:overflow-hidden lg:px-[16px] lg:py-[16px] xl:px-[18px] xl:py-[18px]">
-                <div className="h-full w-full">{children}</div>
+                <div
+                  className={`h-full w-full ${
+                    isTrainingRoute ? "ba-scrollbar-hidden overflow-y-auto lg:min-h-0" : ""
+                  }`}
+                >
+                  {children}
+                </div>
               </div>
             </div>
           </div>

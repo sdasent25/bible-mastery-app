@@ -428,7 +428,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   }
 
   return (
-    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
+    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 py-4 pb-10 text-white sm:px-6 sm:py-6 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.18),transparent_56%)] sm:h-72" />
       <div className="pointer-events-none absolute left-[-4rem] top-24 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl sm:h-48 sm:w-48" />
       <div className="pointer-events-none absolute right-[-4rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
