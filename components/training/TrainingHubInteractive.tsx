@@ -337,6 +337,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   const todayDay =
     days.find((day) => access.tier !== "free" || day.day <= 3) ?? firstDay
   const currentTrack = firstDay ? getTrackLabel(firstDay.segmentKey) : "Scripture"
+  const todayTrack = todayDay ? getTrackLabel(todayDay.segmentKey) : currentTrack
   const currentTrackVisual = firstDay
     ? getTrackVisual(firstDay.segmentKey)
     : getTrackVisual("genesis-1-3")
@@ -401,41 +402,75 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#283a64_0%,_#121a2c_28%,_#070b14_100%)] px-4 py-4 text-white sm:px-6 sm:py-6">
+    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 py-4 text-white sm:px-6 sm:py-6">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.18),transparent_56%)] sm:h-72" />
       <div className="pointer-events-none absolute left-[-4rem] top-24 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl sm:h-48 sm:w-48" />
       <div className="pointer-events-none absolute right-[-4rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-[radial-gradient(circle_at_bottom,rgba(22,163,74,0.08),transparent_58%)] sm:h-64" />
 
       <div className="relative mx-auto max-w-7xl">
-        <section className="relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.10),transparent_30%),radial-gradient(circle_at_80%_18%,rgba(34,211,238,0.10),transparent_24%),linear-gradient(180deg,rgba(15,22,36,0.98),rgba(7,11,19,0.98))] shadow-[0_32px_100px_rgba(0,0,0,0.34)] sm:rounded-[2rem]">
+        <section className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0">
+            <div className="ba-text-section-label ba-text-gold text-[0.68rem] sm:text-[0.72rem]">
+              Sacred Training
+            </div>
+            <h1 className="ba-font-display mt-2 text-[2rem] leading-[0.98] tracking-[-0.03em] text-[#f5ead2] sm:text-[2.35rem] lg:text-[2.7rem]">
+              Training Arena
+            </h1>
+            <p className="ba-font-ui mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base sm:leading-7">
+              Sharpen your mind. Strengthen your faith.
+            </p>
+          </div>
+
+          <div className="flex flex-wrap gap-2.5 lg:max-w-[24rem] lg:justify-end">
+            <div className="ba-training-pill">
+              <span className="ba-training-pill-label">Track</span>
+              <span className="ba-training-pill-value">{todayTrack}</span>
+            </div>
+            <div className="ba-training-pill">
+              <span className="ba-training-pill-label">Available Days</span>
+              <span className="ba-training-pill-value">{days.length}</span>
+            </div>
+            <div className="ba-training-pill">
+              <span className="ba-training-pill-label">Access</span>
+              <span className="ba-training-pill-value">{formatTierLabel(access.tier)}</span>
+            </div>
+          </div>
+        </section>
+
+        <section className="ba-training-hero relative overflow-hidden rounded-[1.8rem] sm:rounded-[2rem]">
           <div
             className="pointer-events-none absolute inset-0 opacity-[0.92]"
             style={{
-              backgroundImage: "url('/training/hero/arena-hero-duo.svg')",
-              backgroundPosition: "50% 52%",
+              backgroundImage:
+                "url('/images/dashboard/training-arena-hero-sanctum.png')",
+              backgroundPosition: "50% 50%",
               backgroundSize: "cover",
             }}
           />
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.42]"
+            className="pointer-events-none absolute inset-0 opacity-[0.24]"
             style={{
               backgroundImage: "url('/training/hero/arena-hero-overlay.svg')",
               backgroundPosition: "50% 50%",
               backgroundSize: "cover",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_20%,rgba(255,255,255,0.08),transparent_24%),linear-gradient(90deg,rgba(5,8,14,0.80),rgba(5,8,14,0.34)_48%,rgba(5,8,14,0.70)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,244,214,0.10),transparent_22%),linear-gradient(90deg,rgba(4,7,13,0.88),rgba(4,7,13,0.50)_48%,rgba(4,7,13,0.84)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.18),rgba(7,10,16,0.52)_46%,rgba(7,10,16,0.86)_100%)]" />
 
-          <div className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:p-7 xl:p-8">
+          <div className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1.12fr_0.88fr] lg:gap-8 lg:p-7 xl:p-8">
             <div className="relative z-10 flex flex-col justify-between">
               <div>
-                <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/84">
-                  Training Arena
+                <div className="inline-flex rounded-full border border-amber-200/20 bg-[rgba(35,27,12,0.66)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/84 backdrop-blur-sm">
+                  Training Hub
                 </div>
-                <h1 className="mt-3 max-w-xl text-[2rem] font-black tracking-[-0.05em] text-white sm:mt-4 sm:text-5xl">
-                  Build Scripture recall one rep at a time.
-                </h1>
+                <h2 className="ba-font-display mt-4 max-w-xl text-[2.55rem] leading-[0.92] tracking-[-0.04em] text-[#f8f0dd] sm:text-[3.25rem] lg:text-[4.1rem]">
+                  Training Arena
+                </h2>
+                <p className="ba-font-ui mt-3 max-w-2xl text-base leading-7 text-[#e3d8c0] sm:text-lg">
+                  Sharpen your mind. Strengthen your faith.
+                </p>
                 <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-4 sm:text-lg sm:leading-7">
                   Daily drills for recall, recognition, sequencing, matching, and careful reading.
                 </p>
@@ -444,23 +479,23 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
-                  className="inline-flex items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_36px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
+                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto"
                 >
                   Start Today&apos;s Training
                 </Link>
                 <a
                   href="#choose-your-drill"
-                  className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.1]"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-white/12 bg-black/30 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.08] sm:w-auto"
                 >
                   View Training Days
                 </a>
               </div>
 
-              <div className="mt-5 overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.42),rgba(8,12,20,0.70))] backdrop-blur-sm sm:mt-6 sm:rounded-[1.65rem]">
+              <div className="mt-5 overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.52),rgba(8,12,20,0.76))] backdrop-blur-sm sm:mt-6 sm:rounded-[1.65rem]">
                 <div className="grid gap-3 p-3 sm:grid-cols-[1.15fr_0.85fr] sm:p-5">
                   <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4">
                     <div
-                      className="absolute inset-0 opacity-75"
+                      className="absolute inset-0 opacity-[0.78]"
                       style={{
                         backgroundImage: `url('${currentTrackVisual.heroPanelPath}')`,
                         backgroundPosition: "50% 42%",
@@ -470,20 +505,23 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,221,153,0.20),transparent_30%),linear-gradient(180deg,rgba(7,10,16,0.12),rgba(7,10,16,0.70))]" />
                     <div className="relative">
                       <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/70">
-                        Arena Atmosphere
+                        Current Track
                       </div>
-                      <p className="mt-2 max-w-sm text-base font-black tracking-[-0.03em] text-white sm:mt-3 sm:text-lg">
-                        Daily mission rhythm with sacred atmosphere and disciplined repetition.
+                      <p className="ba-font-display mt-2 max-w-sm text-[1.5rem] leading-[1.02] tracking-[-0.03em] text-[#f8efdd] sm:mt-3 sm:text-[1.75rem]">
+                        {currentTrackVisual.label}
+                      </p>
+                      <p className="mt-3 max-w-md text-sm leading-6 text-slate-200">
+                        Structured day packs designed to keep your passage work moving with clarity.
                       </p>
                       <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
                         <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          Recognition
+                          {todayTrack}
                         </span>
                         <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          Recall
+                          {days.length} Days
                         </span>
                         <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          Sequence
+                          {formatTierLabel(access.tier)}
                         </span>
                       </div>
                     </div>
@@ -492,11 +530,11 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   <div className="hidden gap-3 sm:grid">
                     <div className="rounded-[1.25rem] border border-cyan-200/16 bg-[linear-gradient(180deg,rgba(10,16,28,0.92),rgba(8,11,20,0.96))] p-4">
                       <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/74">
-                        Track
+                        Available Days
                       </div>
-                      <p className="mt-2 text-lg font-black text-white">{currentTrackVisual.label}</p>
+                      <p className="mt-2 text-lg font-black text-white">{days.length}</p>
                       <p className="mt-2 text-sm leading-6 text-slate-300">
-                        Structured day packs designed to keep your passage work moving with clarity.
+                        Ready-to-load Training Arena day packs built from real Scripture drills.
                       </p>
                     </div>
                     <div className="rounded-[1.25rem] border border-amber-200/16 bg-[linear-gradient(180deg,rgba(28,20,10,0.92),rgba(12,11,14,0.96))] p-4">
@@ -513,7 +551,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </div>
             </div>
 
-            <div className="relative z-10 rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,13,22,0.54),rgba(8,11,18,0.76))] p-4 backdrop-blur-sm sm:rounded-[1.7rem] sm:p-5">
+            <div className="relative z-10 rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(7,11,18,0.74),rgba(8,11,18,0.88))] p-4 backdrop-blur-sm sm:rounded-[1.7rem] sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
@@ -534,7 +572,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                     <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/62">
                       Today&apos;s Mission
                     </div>
-                    <p className="mt-2 text-lg font-black text-white sm:text-xl">
+                    <p className="ba-font-display mt-2 text-[1.55rem] leading-[1.02] text-[#f8efdc] sm:text-[1.8rem]">
                       {todayDay?.reference ?? "No training packs found"}
                     </p>
                   </div>
@@ -602,7 +640,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   {todayDay ? (
                     <Link
                       href={`/training/day/${todayDay.day}/play`}
-                      className="inline-flex items-center justify-center rounded-full bg-amber-200 px-4 py-2.5 text-sm font-black text-[#2d1700] shadow-[0_14px_30px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
+                      className="ba-training-primary-cta inline-flex w-full items-center justify-center px-4 py-2.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto"
                     >
                       Start Day {todayDay.day}
                     </Link>
