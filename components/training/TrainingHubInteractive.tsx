@@ -186,6 +186,32 @@ function getAccessNote(tier: TrainingAccessTier) {
   return "Train the first 3 days on us. 5 focused reps per day."
 }
 
+function getTodayTrainingTitle(day: TrainingDaySummary | null) {
+  if (!day) return "Training Ready"
+
+  const track = getTrackLabel(day.segmentKey)
+  return `${track} Training`
+}
+
+function getTodayTrainingCopy(
+  day: TrainingDaySummary | null,
+  tier: TrainingAccessTier
+) {
+  if (!day) {
+    return "Choose an available training day and continue your Scripture work."
+  }
+
+  if (tier === "free") {
+    return `Continue your guided pass through ${day.reference} with careful reading, recall, and a focused warmup set.`
+  }
+
+  if (tier === "pro_plus") {
+    return `Continue your guided pass through ${day.reference} with deeper recall, recognition, matching, and careful reading.`
+  }
+
+  return `Continue your guided pass through ${day.reference} with recall, sequence, matching, and careful reading.`
+}
+
 function getDayDescriptor(
   dayNumber: number,
   tier: TrainingAccessTier,
@@ -438,220 +464,214 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="ba-training-hero relative overflow-hidden rounded-[1.8rem] sm:rounded-[2rem]">
+        <section className="ba-training-hero relative overflow-hidden rounded-[1.85rem] sm:rounded-[2.15rem]">
           <div
-            className="pointer-events-none absolute inset-0 opacity-[0.92]"
+            className="pointer-events-none absolute inset-0 opacity-[0.98]"
             style={{
               backgroundImage:
                 "url('/images/dashboard/training-arena-hero-sanctum.png')",
-              backgroundPosition: "50% 50%",
+              backgroundPosition: "50% 44%",
               backgroundSize: "cover",
             }}
           />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.24]"
-            style={{
-              backgroundImage: "url('/training/hero/arena-hero-overlay.svg')",
-              backgroundPosition: "50% 50%",
-              backgroundSize: "cover",
-            }}
-          />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_18%,rgba(255,244,214,0.10),transparent_22%),linear-gradient(90deg,rgba(4,7,13,0.88),rgba(4,7,13,0.50)_48%,rgba(4,7,13,0.84)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.18),rgba(7,10,16,0.52)_46%,rgba(7,10,16,0.86)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_68%_42%,rgba(255,214,120,0.22),transparent_18%),linear-gradient(90deg,rgba(4,7,13,0.58),rgba(4,7,13,0.18)_45%,rgba(4,7,13,0.50)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.18),rgba(6,10,18,0.36)_44%,rgba(6,10,18,0.68)_100%)]" />
 
-          <div className="grid gap-4 p-4 sm:p-6 lg:grid-cols-[1.12fr_0.88fr] lg:gap-8 lg:p-7 xl:p-8">
-            <div className="relative z-10 flex flex-col justify-between">
-              <div>
-                <div className="inline-flex rounded-full border border-amber-200/20 bg-[rgba(35,27,12,0.66)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/84 backdrop-blur-sm">
-                  Training Hub
-                </div>
-                <h2 className="ba-font-display mt-4 max-w-xl text-[2.55rem] leading-[0.92] tracking-[-0.04em] text-[#f8f0dd] sm:text-[3.25rem] lg:text-[4.1rem]">
+          <div className="relative z-10 grid min-h-[420px] gap-6 p-5 sm:min-h-[480px] sm:p-7 lg:min-h-[520px] lg:grid-cols-[minmax(0,1.05fr)_17rem] lg:items-start lg:p-8 xl:p-10">
+            <div className="flex h-full flex-col justify-between">
+              <div className="max-w-3xl">
+                <div className="inline-flex rounded-full border border-amber-200/22 bg-[rgba(26,20,10,0.56)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/82 backdrop-blur-sm">
                   Training Arena
-                </h2>
-                <p className="ba-font-ui mt-3 max-w-2xl text-base leading-7 text-[#e3d8c0] sm:text-lg">
-                  Sharpen your mind. Strengthen your faith.
-                </p>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 sm:mt-4 sm:text-lg sm:leading-7">
-                  Daily drills for recall, recognition, sequencing, matching, and careful reading.
-                </p>
+                </div>
+
+                <div className="mt-6 flex items-start gap-4 sm:gap-5">
+                  <div
+                    className="ba-training-emblem hidden shrink-0 sm:block"
+                    style={{
+                      backgroundImage: `url('${currentTrackVisual.artPath}')`,
+                      backgroundPosition: "50% 50%",
+                      backgroundSize: "cover",
+                    }}
+                  />
+
+                  <div className="min-w-0">
+                    <h2 className="ba-font-display max-w-3xl text-[2.9rem] leading-[0.88] tracking-[-0.05em] text-[#fbf2df] sm:text-[4rem] lg:text-[5rem] xl:text-[5.35rem]">
+                      Training Arena
+                    </h2>
+                    <p className="ba-font-ui mt-3 max-w-2xl text-lg leading-8 text-[#eadfc5] sm:text-[1.55rem] sm:leading-9">
+                      Sharpen your mind. Strengthen your faith.
+                    </p>
+                    <p className="ba-font-ui mt-4 max-w-2xl text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7">
+                      Daily Scripture drills built from real training days so you can keep moving with disciplined recall, recognition, matching, and careful reading.
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="mt-5 flex flex-col gap-3 sm:mt-6 sm:flex-row">
+              <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-7">
+                <div className="ba-training-callout">
+                  <span className="ba-training-callout-label">Track</span>
+                  <span className="ba-training-callout-value">{todayTrack}</span>
+                </div>
+                <div className="ba-training-callout">
+                  <span className="ba-training-callout-label">Available Days</span>
+                  <span className="ba-training-callout-value">{days.length}</span>
+                </div>
+                <div className="ba-training-callout">
+                  <span className="ba-training-callout-label">Access</span>
+                  <span className="ba-training-callout-value">{formatTierLabel(access.tier)}</span>
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
-                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto"
+                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[14.5rem]"
                 >
                   Start Today&apos;s Training
                 </Link>
                 <a
                   href="#choose-your-drill"
-                  className="inline-flex w-full items-center justify-center rounded-full border border-white/12 bg-black/30 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.08] sm:w-auto"
+                  className="inline-flex w-full items-center justify-center rounded-full border border-white/14 bg-[rgba(7,10,17,0.48)] px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition hover:bg-white/[0.08] sm:w-auto sm:min-w-[13rem]"
                 >
                   View Training Days
                 </a>
               </div>
-
-              <div className="mt-5 overflow-hidden rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(8,12,20,0.52),rgba(8,12,20,0.76))] backdrop-blur-sm sm:mt-6 sm:rounded-[1.65rem]">
-                <div className="grid gap-3 p-3 sm:grid-cols-[1.15fr_0.85fr] sm:p-5">
-                  <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-4">
-                    <div
-                      className="absolute inset-0 opacity-[0.78]"
-                      style={{
-                        backgroundImage: `url('${currentTrackVisual.heroPanelPath}')`,
-                        backgroundPosition: "50% 42%",
-                        backgroundSize: "cover",
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,221,153,0.20),transparent_30%),linear-gradient(180deg,rgba(7,10,16,0.12),rgba(7,10,16,0.70))]" />
-                    <div className="relative">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/70">
-                        Current Track
-                      </div>
-                      <p className="ba-font-display mt-2 max-w-sm text-[1.5rem] leading-[1.02] tracking-[-0.03em] text-[#f8efdd] sm:mt-3 sm:text-[1.75rem]">
-                        {currentTrackVisual.label}
-                      </p>
-                      <p className="mt-3 max-w-md text-sm leading-6 text-slate-200">
-                        Structured day packs designed to keep your passage work moving with clarity.
-                      </p>
-                      <div className="mt-3 flex flex-wrap gap-2 sm:mt-4">
-                        <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          {todayTrack}
-                        </span>
-                        <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          {days.length} Days
-                        </span>
-                        <span className="rounded-full border border-white/10 bg-black/25 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                          {formatTierLabel(access.tier)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="hidden gap-3 sm:grid">
-                    <div className="rounded-[1.25rem] border border-cyan-200/16 bg-[linear-gradient(180deg,rgba(10,16,28,0.92),rgba(8,11,20,0.96))] p-4">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/74">
-                        Available Days
-                      </div>
-                      <p className="mt-2 text-lg font-black text-white">{days.length}</p>
-                      <p className="mt-2 text-sm leading-6 text-slate-300">
-                        Ready-to-load Training Arena day packs built from real Scripture drills.
-                      </p>
-                    </div>
-                    <div className="rounded-[1.25rem] border border-amber-200/16 bg-[linear-gradient(180deg,rgba(28,20,10,0.92),rgba(12,11,14,0.96))] p-4">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/74">
-                        Access Posture
-                      </div>
-                      <p className="mt-2 text-lg font-black text-white">{getAccessNote(access.tier)}</p>
-                      <p className="mt-2 text-sm leading-6 text-slate-300">
-                        The hub stays honest to your current access while still showing the arena ahead.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            <div className="relative z-10 rounded-[1.5rem] border border-white/10 bg-[linear-gradient(180deg,rgba(7,11,18,0.74),rgba(8,11,18,0.88))] p-4 backdrop-blur-sm sm:rounded-[1.7rem] sm:p-5">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-[11px] font-bold uppercase tracking-[0.28em] text-amber-100/72">
-                    Today&apos;s Training
-                  </div>
-                  <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
-                    {todayDay ? `Day ${todayDay.day}` : "Training ready"}
-                  </h2>
+            <div className="relative z-10 flex h-full flex-col justify-end">
+              <div className="ba-training-side-panel">
+                <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
+                  Current Lane
                 </div>
-                <div className="rounded-full border border-cyan-200/18 bg-cyan-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-cyan-50">
-                  {formatTierLabel(access.tier)}
-                </div>
-              </div>
-
-              <div className="mt-4 rounded-[1.2rem] border border-amber-200/14 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.10),transparent_42%),linear-gradient(180deg,rgba(33,23,10,0.88),rgba(12,11,13,0.92))] p-4 shadow-[0_18px_42px_rgba(0,0,0,0.24),0_0_34px_rgba(251,191,36,0.08)] sm:rounded-[1.35rem]">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/62">
-                      Today&apos;s Mission
-                    </div>
-                    <p className="ba-font-display mt-2 text-[1.55rem] leading-[1.02] text-[#f8efdc] sm:text-[1.8rem]">
-                      {todayDay?.reference ?? "No training packs found"}
-                    </p>
-                  </div>
-                  {todayDay ? (
-                    <div className="rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-50">
-                      {access.tier === "free" ? "Free Preview" : "Ready"}
-                    </div>
-                  ) : null}
-                </div>
-
-                <div className="mt-4 grid grid-cols-2 gap-3 text-sm text-slate-200 lg:grid-cols-3">
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
-                      Drill Count
-                    </div>
-                    <div className="mt-2 text-lg font-black text-white">
-                      {todayDay?.itemCount ?? 0} prompts
-                    </div>
-                  </div>
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
-                      Focus
-                    </div>
-                    <div className="mt-2 text-xs font-semibold leading-5 text-white sm:text-sm">
-                      {getModeHint(access.tier)}
-                    </div>
-                  </div>
-                  <div className="col-span-2 rounded-[1rem] border border-white/10 bg-white/[0.04] px-3 py-3 lg:col-span-1">
-                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/48">
-                      Estimated Time
-                    </div>
-                    <div className="mt-2 text-lg font-black text-white">
-                      {todayEstimate}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 rounded-[1rem] border border-cyan-200/14 bg-[linear-gradient(180deg,rgba(8,14,22,0.72),rgba(8,12,18,0.88))] px-3 py-3">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-cyan-100/68">
-                    Focus Summary
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-200">
-                    {todayDay
-                      ? access.tier === "free"
-                        ? `${todayDay.reference} is open as part of your free preview with 5 focused reps and a clean warmup pass.`
-                        : `${todayDay.reference} is ready for a disciplined pass through recall, recognition, and careful reading.`
-                      : "Training day data is not available yet."}
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {todayTags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-cyan-200/16 bg-cyan-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-50"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-sm leading-6 text-slate-300 sm:max-w-[16rem]">
-                    {getAccessNote(access.tier)}
-                  </p>
-                  {todayDay ? (
-                    <Link
-                      href={`/training/day/${todayDay.day}/play`}
-                      className="ba-training-primary-cta inline-flex w-full items-center justify-center px-4 py-2.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto"
-                    >
-                      Start Day {todayDay.day}
-                    </Link>
-                  ) : null}
+                <p className="ba-font-display mt-3 text-[1.8rem] leading-[0.98] text-[#fbf0dc]">
+                  {currentTrackVisual.label}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-200/84">
+                  Structured day packs built from live training data, ready to resume from your current access tier.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-full border border-white/12 bg-black/24 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/82">
+                    {todayDay ? `Day ${todayDay.day}` : "Training Ready"}
+                  </span>
+                  <span className="rounded-full border border-white/12 bg-black/24 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white/82">
+                    {todayDay?.reference ?? "No Day Loaded"}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="mt-4 grid gap-3 sm:mt-5 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="ba-training-today-card relative mt-5 overflow-hidden rounded-[1.85rem] sm:mt-6 sm:rounded-[2rem]">
+          <div
+            className="pointer-events-none absolute right-0 top-0 h-full w-full opacity-[0.94] sm:w-[58%] lg:w-[52%]"
+            style={{
+              backgroundImage:
+                "url('/images/dashboard/verse-memory-hero-gods-word.png')",
+              backgroundPosition: "78% 50%",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(5,8,14,0.90),rgba(5,8,14,0.58)_42%,rgba(5,8,14,0.16)_66%,rgba(5,8,14,0.64)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_72%_22%,rgba(255,213,117,0.28),transparent_18%),linear-gradient(180deg,rgba(10,12,18,0.10),rgba(10,12,18,0.52)_44%,rgba(10,12,18,0.84)_100%)]" />
+
+          <div className="relative z-10 grid gap-6 p-5 sm:p-7 lg:grid-cols-[minmax(0,0.96fr)_minmax(17rem,0.74fr)] lg:gap-8 lg:p-8">
+            <div className="min-w-0">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="ba-text-section-label ba-text-gold text-[0.72rem] sm:text-[0.76rem]">
+                    Today&apos;s Training
+                  </div>
+                  <h3 className="ba-font-display mt-4 text-[2.3rem] leading-[0.92] tracking-[-0.04em] text-[#fbf0dd] sm:text-[3rem] lg:text-[3.6rem]">
+                    {getTodayTrainingTitle(todayDay)}
+                  </h3>
+                  <p className="ba-font-ui mt-3 text-[1.05rem] font-semibold leading-7 text-cyan-300 sm:text-[1.2rem]">
+                    {todayDay?.reference ?? "No training day loaded"}
+                  </p>
+                </div>
+                {todayDay ? (
+                  <div className="rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-amber-50">
+                    {access.tier === "free" ? "Preview" : "Ready"}
+                  </div>
+                ) : null}
+              </div>
+
+              <p className="ba-font-ui mt-4 max-w-xl text-sm leading-7 text-slate-200/88 sm:text-base">
+                {getTodayTrainingCopy(todayDay, access.tier)}
+              </p>
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                <div className="ba-training-meta-tile">
+                  <div className="ba-training-meta-label">Estimated Time</div>
+                  <div className="ba-font-display mt-3 text-[1.55rem] leading-none text-[#fbf0dd]">
+                    {todayEstimate}
+                  </div>
+                  <div className="mt-2 text-xs leading-5 text-slate-300/80">
+                    Based on your current access tier.
+                  </div>
+                </div>
+                <div className="ba-training-meta-tile">
+                  <div className="ba-training-meta-label">Session Type</div>
+                  <div className="mt-3 text-lg font-black leading-7 text-white">
+                    Guided Drills
+                  </div>
+                  <div className="mt-2 text-xs leading-5 text-slate-300/80">
+                    Structured from today&apos;s real training pack.
+                  </div>
+                </div>
+                <div className="ba-training-meta-tile">
+                  <div className="ba-training-meta-label">Available Set</div>
+                  <div className="mt-3 text-lg font-black leading-7 text-white">
+                    {access.tier === "free"
+                      ? "Focused Warmup"
+                      : access.tier === "pro_plus"
+                        ? "Full Drill Depth"
+                        : "Core Drill Set"}
+                  </div>
+                  <div className="mt-2 text-xs leading-5 text-slate-300/80">
+                    Honest to your current plan access.
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[1.2rem] border border-cyan-200/14 bg-[linear-gradient(180deg,rgba(6,15,22,0.58),rgba(6,10,18,0.72))] px-4 py-4 backdrop-blur-sm">
+                <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/68">
+                  Focus Tags
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {todayTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-full border border-cyan-200/16 bg-cyan-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-50"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm leading-6 text-slate-300 sm:max-w-[20rem]">
+                  {getAccessNote(access.tier)}
+                </p>
+                {todayDay ? (
+                  <Link
+                    href={`/training/day/${todayDay.day}/play`}
+                    className="ba-training-primary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[14rem]"
+                  >
+                    Start Day {todayDay.day}
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="hidden lg:block" aria-hidden="true" />
+          </div>
+        </section>
+
+        <section className="mt-5 grid gap-3 sm:mt-6 sm:grid-cols-2 xl:grid-cols-4">
           <article className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,21,34,0.96),rgba(8,11,20,0.96))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
               Available Days
