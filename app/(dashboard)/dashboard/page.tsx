@@ -529,7 +529,7 @@ export default function DashboardPage() {
                     Train today. Grow stronger daily.
                   </p>
                 </div>
-                <div className="inline-flex items-center gap-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2 text-sm text-white/84 shadow-[0_14px_28px_rgba(0,0,0,0.16)]">
+                <div className="inline-flex items-center gap-3 self-start rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-2 text-sm text-white/84 shadow-[0_14px_28px_rgba(0,0,0,0.16)] sm:self-auto">
                   <span className="inline-flex h-8.5 w-8.5 items-center justify-center rounded-full border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
                     {renderNavIcon("sun", "h-3.5 w-3.5")}
                   </span>
@@ -554,7 +554,7 @@ export default function DashboardPage() {
                 dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
               />
 
-              <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+              <section className="grid grid-cols-1 gap-3 min-[390px]:grid-cols-2 lg:grid-cols-4">
                 {statCards.map((card) => (
                   <DashboardStatCard
                     key={card.title}
@@ -601,6 +601,61 @@ export default function DashboardPage() {
                     onClick={() => router.push("/flashcards")}
                   />
                 </div>
+              </section>
+
+              <section className="grid gap-3 xl:hidden">
+                <section className="ba-right-rail-card">
+                  <div className="ba-rail-kicker">Current Training</div>
+                  <div className="ba-rail-training-panel mt-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+                    <div className="ba-font-display text-[1rem] font-bold tracking-[-0.02em] text-[#f7eee2]">
+                      {missionTitle}
+                    </div>
+                    <div className="ba-text-section-label ba-text-cyan mt-1 text-[0.62rem]">
+                      {dashboardState?.currentSegmentLabel || "Current Mission"}
+                    </div>
+                    <div className="mt-3">
+                      <div className="ba-progress-track h-1">
+                        <div
+                          className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.98),rgba(103,232,249,0.78),rgba(244,114,182,0.65))]"
+                          style={{ width: `${dashboardState?.genesisProgressPercent || 0}%` }}
+                        />
+                      </div>
+                      <div className="ba-text-section-label mt-1 text-[0.56rem] text-white/44">
+                        {dashboardState?.genesisProgressPercent || 0}% through Genesis
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => router.push(continueHref)}
+                    className="ba-rail-button mt-3"
+                  >
+                    Continue Training
+                  </button>
+                </section>
+
+                <section className="ba-right-rail-card">
+                  <div className="ba-rail-kicker">Today&apos;s Progress</div>
+                  <div className="mt-3 flex items-start gap-3">
+                    <span className="ba-reward-icon">
+                      {renderNavIcon(
+                        dashboardState?.dailyMissionComplete ? "brand" : "sun",
+                        "h-4 w-4"
+                      )}
+                    </span>
+                    <div>
+                      <div className="ba-font-display text-[1.08rem] font-bold tracking-[-0.03em] text-[#ffe6a3]">
+                        {dashboardState?.dailyMissionComplete ? "Completed Today" : "Mission Ready"}
+                      </div>
+                      <div className="ba-font-ui mt-1 text-[0.69rem] leading-[1.55] text-white/50">
+                        {dashboardState?.completedMissionCount || 0} of {dashboardState?.totalSegments || 0} Genesis missions completed.
+                      </div>
+                    </div>
+                  </div>
+                  <div className="ba-text-section-label mt-3 text-[0.6rem] text-white/42">
+                    {dashboardState?.genesisProgressPercent || 0}% campaign progress
+                  </div>
+                </section>
               </section>
 
               <section

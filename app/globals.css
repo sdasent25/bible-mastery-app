@@ -1015,11 +1015,31 @@ textarea {
 .ba-dashboard-page {
   position: relative;
   min-height: 100%;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 50% -10%, rgba(250, 204, 21, 0.085), transparent 22%),
     radial-gradient(circle at 76% 12%, rgba(34, 211, 238, 0.06), transparent 20%),
     radial-gradient(circle at 15% 90%, rgba(10, 132, 255, 0.05), transparent 24%),
     linear-gradient(180deg, #020711 0%, #06111f 42%, #081827 100%);
+}
+
+.ba-dashboard-shell {
+  overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+  .ba-hero-card {
+    min-height: 18.6rem;
+  }
+
+  .ba-stat-card {
+    min-height: 7.4rem;
+    padding: 0.68rem 0.72rem;
+  }
+
+  .ba-recommendation-card {
+    min-height: 9.1rem;
+  }
 }
 
 @media (min-width: 768px) {

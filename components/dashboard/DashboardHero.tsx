@@ -42,7 +42,7 @@ export default function DashboardHero({
       <div className="ba-hero-overlay" />
       <div className="ba-hero-vignette" />
 
-      <div className="relative z-10 flex h-full min-h-[17.8rem] flex-col px-4.5 py-4 sm:px-5 lg:min-h-[17.8rem] lg:px-5 lg:py-4.5">
+      <div className="relative z-10 flex h-full min-h-[18.6rem] flex-col px-4 py-4 sm:min-h-[17.8rem] sm:px-5 lg:min-h-[17.8rem] lg:px-5 lg:py-4.5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">
@@ -64,21 +64,21 @@ export default function DashboardHero({
           </button>
         </div>
 
-        <div className="mt-3.5 max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
-          <h2 className="ba-text-title text-[1.9rem] text-[#fff5e7] sm:text-[2.1rem] lg:text-[2.48rem]">
+        <div className="mt-3.5 max-w-[15rem] sm:max-w-[18.25rem] lg:mt-3.5 lg:max-w-[18.5rem]">
+          <h2 className="ba-text-title text-[1.68rem] text-[#fff5e7] sm:text-[2.1rem] lg:text-[2.48rem]">
             {title}
           </h2>
-          <p className="ba-text-body mt-2.5 whitespace-pre-line text-[0.82rem] leading-[1.58] text-[#eadfce] lg:text-[0.84rem]">
+          <p className="ba-text-body mt-2 whitespace-pre-line text-[0.78rem] leading-[1.56] text-[#eadfce] sm:mt-2.5 sm:text-[0.82rem] lg:text-[0.84rem]">
             {subtitle}
           </p>
-          <p className="ba-font-ui mt-2.5 text-[0.67rem] font-semibold tracking-[0.01em] text-cyan-200">
+          <p className="ba-font-ui mt-2 text-[0.66rem] font-semibold tracking-[0.01em] text-cyan-200 sm:mt-2.5 sm:text-[0.67rem]">
             {referenceLine}
           </p>
         </div>
 
-        <div className="mt-auto rounded-[1rem] border border-amber-200/12 bg-[linear-gradient(180deg,rgba(8,12,18,0.82),rgba(7,10,16,0.72))] px-3 py-2.25 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-[10px]">
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex min-w-0 items-center gap-3">
+        <div className="mt-auto rounded-[1rem] border border-amber-200/12 bg-[linear-gradient(180deg,rgba(8,12,18,0.82),rgba(7,10,16,0.72))] px-3 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] backdrop-blur-[10px] sm:px-3 sm:py-2.25">
+          <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
               <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
                 {renderNavIcon("verse-memory", "h-4 w-4")}
               </span>
@@ -109,7 +109,7 @@ export default function DashboardHero({
 
             <button
               onClick={onContinue}
-              className="ba-hero-cta ba-premium-cta dashboard-hero-cta group"
+              className="ba-hero-cta ba-premium-cta dashboard-hero-cta group max-w-none sm:max-w-[22rem]"
             >
               <span className="ba-hero-cta-medallion">
                 {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
