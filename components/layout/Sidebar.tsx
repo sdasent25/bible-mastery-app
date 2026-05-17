@@ -150,7 +150,7 @@ export default function Sidebar({
               </div>
             ))}
 
-          {navItem("Profile", "/settings", "profile", "/icons/navigation/nav-profile-headset.png")}
+          {navItem("Profile", "/settings", "profile", "/icons/navigation/nav-profile-headset-transparent.png")}
         </div>
 
         <div className="ba-sidebar-devotion mt-auto">

@@ -483,7 +483,7 @@ export default function DashboardPage() {
       supporting: `${xpToNextLevel.toLocaleString()} XP to Level ${athleteLevel + 1}`,
       caption: `${(dashboardState?.xpEarned || 0).toLocaleString()} / 15,000`,
       accent: "cyan" as const,
-      iconSrc: "/images/icons/dashboard/xp-laurel-ring.png",
+      iconSrc: "/images/icons/dashboard/xp-laurel-ring-transparent.png",
     },
     {
       title: "STREAK",
@@ -491,7 +491,7 @@ export default function DashboardPage() {
       supporting: `${dashboardState?.streak || 0} Day${dashboardState?.streak === 1 ? "" : "s"}`,
       caption: "Keep it going!",
       accent: "amber" as const,
-      iconSrc: "/images/icons/dashboard/streak-flame-ring.png",
+      iconSrc: "/images/icons/dashboard/streak-flame-ring-transparent.png",
     },
     {
       title: "MASTERY",
@@ -499,7 +499,7 @@ export default function DashboardPage() {
       supporting: "Overall Mastery",
       caption: `${dashboardState?.masteryCount || 0} of ${dashboardState?.totalSegments || 0} segments`,
       accent: "violet" as const,
-      iconSrc: "/images/icons/dashboard/mastery-purple-shield.png",
+      iconSrc: "/images/icons/dashboard/mastery-purple-shield-transparent.png",
     },
     {
       title: "FOCUS RANK",
@@ -507,7 +507,7 @@ export default function DashboardPage() {
       supporting: focusRankMeta,
       caption: "Seasonal rank",
       accent: "sapphire" as const,
-      iconSrc: "/images/icons/dashboard/focus-rank-sapphire.png",
+      iconSrc: "/images/icons/dashboard/focus-rank-sapphire-transparent.png",
     },
   ]
 
