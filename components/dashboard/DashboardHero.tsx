@@ -109,12 +109,12 @@ export default function DashboardHero({
 
             <button
               onClick={onContinue}
-              className="ba-hero-cta"
+              className="ba-hero-cta ba-premium-cta dashboard-hero-cta group"
             >
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#8c6312]/28 bg-[#fff5dc]/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
+              <span className="ba-hero-cta-medallion">
                 {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
               </span>
-              Continue Training
+              <span className="ba-hero-cta-label">Continue Training</span>
             </button>
           </div>
         </div>

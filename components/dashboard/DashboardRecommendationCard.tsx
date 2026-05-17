@@ -57,7 +57,7 @@ export default function DashboardRecommendationCard({
           </div>
 
           <div className="flex items-center justify-start md:justify-end">
-            <span className="ba-recommendation-arrow inline-flex h-8 w-8 items-center justify-center rounded-full border border-amber-200/20 bg-black/28 text-amber-100 shadow-[0_0_18px_rgba(251,191,36,0.14)] transition group-hover:scale-[1.05]">
+            <span className="ba-recommendation-arrow">
               {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
             </span>
           </div>

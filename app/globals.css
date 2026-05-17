@@ -1125,51 +1125,167 @@ textarea {
 
 .ba-hero-cta {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
   display: inline-flex;
   width: 100%;
   max-width: 22rem;
+  min-height: 3rem;
   align-items: center;
   justify-content: center;
   gap: 0.68rem;
-  border-radius: 0.92rem;
-  border: 1px solid rgba(255, 235, 166, 0.46);
-  background:
-    linear-gradient(180deg, rgba(255, 232, 153, 0.99) 0%, rgba(247, 205, 87, 0.99) 42%, rgba(233, 161, 26, 0.99) 100%);
-  padding: 0.5rem 0.95rem;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
   color: #2a1600;
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  transition:
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    filter 0.24s ease,
+    border-color 0.24s ease,
+    background 0.24s ease;
+}
+
+.ba-premium-cta,
+.dashboard-hero-cta {
+  border: 1px solid rgba(255, 226, 125, 0.95);
+  background:
+    linear-gradient(180deg, #fff5bf 0%, #ffe487 14%, #f8c63d 42%, #e5a31f 72%, #b96f09 100%);
   box-shadow:
-    0 20px 34px rgba(245, 158, 11, 0.28),
-    0 0 32px rgba(250, 204, 21, 0.24),
-    0 0 54px rgba(245, 158, 11, 0.12),
-    inset 0 1px 0 rgba(255, 251, 235, 0.44),
-    inset 0 -1px 0 rgba(148, 89, 10, 0.28);
+    0 0 18px rgba(255, 191, 54, 0.55),
+    0 0 38px rgba(255, 153, 0, 0.25),
+    0 18px 28px rgba(68, 33, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    inset 0 -2px 0 rgba(88, 45, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 244, 194, 0.44);
+}
+
+.ba-hero-cta-label {
+  position: relative;
+  z-index: 2;
+  text-shadow:
+    0 1px 0 rgba(255, 244, 214, 0.46),
+    0 -1px 0 rgba(110, 58, 0, 0.14),
+    0 1px 8px rgba(255, 224, 132, 0.18);
+}
+
+.ba-hero-cta-medallion {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(201, 126, 10, 0.3);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.68), transparent 26%),
+    linear-gradient(180deg, rgba(255, 243, 197, 0.96), rgba(241, 193, 74, 0.92) 56%, rgba(203, 126, 17, 0.92) 100%);
+  color: #5f3100;
+  box-shadow:
+    0 0 0 1px rgba(255, 248, 218, 0.42),
+    0 10px 20px rgba(118, 63, 4, 0.24),
+    0 0 20px rgba(255, 214, 102, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    inset 0 -2px 4px rgba(117, 61, 0, 0.2);
+}
+
+.ba-hero-cta-medallion::before {
+  content: "";
+  position: absolute;
+  inset: 0.18rem;
+  border-radius: inherit;
+  border: 1px solid rgba(255, 245, 210, 0.48);
+  opacity: 0.9;
 }
 
 .ba-hero-cta::before {
   content: "";
   position: absolute;
-  inset: 1px;
-  border-radius: inherit;
+  inset: 1px 1px auto;
+  height: 56%;
+  border-radius: 0.95rem 0.95rem 0.7rem 0.7rem;
   pointer-events: none;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%),
-    linear-gradient(115deg, transparent 0%, rgba(255, 249, 229, 0.22) 34%, rgba(255, 226, 138, 0.35) 50%, rgba(255, 249, 229, 0.18) 66%, transparent 100%);
-  mix-blend-mode: screen;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 248, 224, 0.16) 48%, transparent 100%);
+  opacity: 0.95;
 }
 
 .ba-hero-cta::after {
   content: "";
   position: absolute;
-  inset: -18% 58% -18% -8%;
+  inset: auto 8% 0.22rem 8%;
+  z-index: 1;
+  height: 42%;
+  border-radius: 9999px;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(255, 246, 209, 0.36), transparent 82%);
-  transform: skewX(-18deg);
-  opacity: 0.7;
+  background:
+    linear-gradient(90deg, rgba(255, 246, 209, 0) 0%, rgba(255, 246, 209, 0.16) 20%, rgba(255, 240, 196, 0.5) 50%, rgba(255, 219, 110, 0.24) 80%, rgba(255, 246, 209, 0) 100%);
+  filter: blur(10px);
+  opacity: 0.78;
+}
+
+.ba-hero-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04) saturate(1.03);
+}
+
+.ba-premium-cta:hover,
+.dashboard-hero-cta:hover {
+  border-color: rgba(255, 238, 170, 0.98);
+  box-shadow:
+    0 0 24px rgba(255, 200, 88, 0.72),
+    0 0 48px rgba(255, 166, 0, 0.32),
+    0 22px 34px rgba(68, 33, 0, 0.38),
+    inset 0 1px 0 rgba(255, 255, 255, 0.78),
+    inset 0 -2px 0 rgba(88, 45, 0, 0.3),
+    inset 0 0 0 1px rgba(255, 246, 209, 0.52);
+}
+
+.ba-hero-cta:hover::before {
+  opacity: 1;
+}
+
+.ba-hero-cta:hover .ba-hero-cta-medallion {
+  box-shadow:
+    0 0 0 1px rgba(255, 248, 218, 0.48),
+    0 12px 22px rgba(118, 63, 4, 0.28),
+    0 0 26px rgba(255, 214, 102, 0.44),
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    inset 0 -2px 4px rgba(117, 61, 0, 0.18);
+}
+
+.ba-hero-cta:active {
+  transform: translateY(1px) scale(0.992);
+  filter: brightness(0.99);
+}
+
+.ba-premium-cta:active,
+.dashboard-hero-cta:active {
+  box-shadow:
+    0 0 12px rgba(255, 191, 54, 0.42),
+    0 0 24px rgba(255, 153, 0, 0.18),
+    0 12px 20px rgba(68, 33, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.52),
+    inset 0 -1px 0 rgba(88, 45, 0, 0.34),
+    inset 0 0 0 1px rgba(255, 244, 194, 0.32);
+}
+
+.ba-hero-cta:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px rgba(8, 12, 18, 0.96),
+    0 0 0 4px rgba(255, 236, 168, 0.92),
+    0 0 22px rgba(255, 191, 54, 0.56),
+    0 18px 28px rgba(68, 33, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    inset 0 -2px 0 rgba(88, 45, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 244, 194, 0.44);
 }
 
 @media (min-width: 1024px) {
@@ -1398,9 +1514,52 @@ textarea {
 }
 
 .ba-recommendation-arrow {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 226, 158, 0.24);
+  background:
+    radial-gradient(circle at top, rgba(255, 239, 194, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(15, 21, 35, 0.88), rgba(7, 11, 18, 0.92));
+  color: rgb(254 243 199);
   box-shadow:
-    0 0 20px rgba(250, 204, 21, 0.16),
-    inset 0 1px 0 rgba(255, 250, 236, 0.06);
+    0 0 18px rgba(250, 204, 21, 0.16),
+    0 10px 22px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 250, 236, 0.08),
+    inset 0 0 0 1px rgba(255, 236, 168, 0.05);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease,
+    background 0.2s ease;
+}
+
+.group:hover .ba-recommendation-arrow {
+  transform: translateY(-1px) scale(1.05);
+  border-color: rgba(255, 232, 174, 0.34);
+  background:
+    radial-gradient(circle at top, rgba(255, 239, 194, 0.14), transparent 44%),
+    linear-gradient(180deg, rgba(20, 28, 46, 0.92), rgba(8, 13, 22, 0.96));
+  box-shadow:
+    0 0 24px rgba(250, 204, 21, 0.24),
+    0 12px 26px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 250, 236, 0.1),
+    inset 0 0 0 1px rgba(255, 236, 168, 0.08);
+  filter: brightness(1.03);
+}
+
+.ba-recommendation-card:focus-visible .ba-recommendation-arrow {
+  border-color: rgba(255, 236, 168, 0.56);
+  box-shadow:
+    0 0 0 2px rgba(8, 12, 18, 0.92),
+    0 0 0 4px rgba(255, 236, 168, 0.26),
+    0 0 22px rgba(250, 204, 21, 0.24),
+    0 10px 22px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 250, 236, 0.08);
 }
 
 .ba-rail-training-panel {
