@@ -8,10 +8,7 @@ import DashboardRecommendationCard from "@/components/dashboard/DashboardRecomme
 import DashboardRightRail from "@/components/dashboard/DashboardRightRail"
 import DashboardStatCard from "@/components/dashboard/DashboardStatCard"
 import DashboardTopBar from "@/components/dashboard/DashboardTopBar"
-import {
-  getGenesisMissionArt,
-  getGenesisMissionMeta,
-} from "@/lib/genesisCampaign"
+import { getGenesisMissionMeta } from "@/lib/genesisCampaign"
 import { getUserPlan as getPlanType } from "@/lib/getUserPlan"
 import { getProgramById } from "@/lib/programs"
 import { getCompletedProgramSegmentCount } from "@/lib/campaignProgress"
@@ -48,15 +45,10 @@ type DashboardState = {
   masteryPercent: number
   missionTitle: string
   missionSubtitle: string
-  missionAtmosphere: string
-  missionArt: string
   continueHref: string
-  currentCampaignHref: string
   dailyMissionComplete: boolean
   xpEarned: number
   streak: number
-  nextMissionTitle: string
-  nextMissionLabel: string
 }
 
 function getProfileName(profile: FamilyMember["profiles"]) {
@@ -81,6 +73,24 @@ function getPlanMeta(plan: string, hasFamily: boolean) {
   if (plan === "pro_plus") return hasFamily ? "Shared with your family access." : "Premium training access is active."
   if (plan === "pro") return hasFamily ? "Shared plan access is active." : "Your training plan is active."
   return "Upgrade anytime for deeper training access."
+}
+
+function resolveMissionContent(segmentId: string, segmentLabel: string) {
+  const missionMeta = getGenesisMissionMeta(segmentId)
+  const fallbackTitle = "Today's Mission"
+  const fallbackSubtitle = "Continue your current Bible training mission."
+
+  const hasRealTitle = missionMeta.title && missionMeta.title !== segmentId
+  const hasRealSubtitle =
+    missionMeta.subtitle &&
+    missionMeta.subtitle !==
+      "Continue through Genesis and deepen your mastery of the next sacred passage."
+
+  return {
+    title: hasRealTitle ? missionMeta.title : fallbackTitle,
+    subtitle: hasRealSubtitle ? missionMeta.subtitle : fallbackSubtitle,
+    referenceLine: segmentLabel || "Current Segment",
+  }
 }
 
 export default function DashboardPage() {
@@ -182,14 +192,10 @@ export default function DashboardPage() {
 
         const resumeIndex = getResumeSegmentIndex(progress, program.segments.length)
         const currentSegment = program.segments[resumeIndex] || program.segments[0]
-        const nextSegment =
-          program.segments[Math.min(resumeIndex + 1, program.segments.length - 1)] ||
-          currentSegment
-        const currentMissionMeta = getGenesisMissionMeta(
-          currentSegment.segment.replaceAll("-", "_")
-        )
-        const nextMissionMeta = getGenesisMissionMeta(
-          nextSegment.segment.replaceAll("-", "_")
+        const currentSegmentId = currentSegment.segment.replaceAll("-", "_")
+        const currentMissionContent = resolveMissionContent(
+          currentSegmentId,
+          currentSegment.label
         )
         const masteryCount = program.segments.filter((segment) =>
           masteredSegments.has(segment.segment)
@@ -225,17 +231,12 @@ export default function DashboardPage() {
           genesisProgressPercent,
           masteryCount,
           masteryPercent,
-          missionTitle: currentMissionMeta.title,
-          missionSubtitle: currentMissionMeta.subtitle,
-          missionAtmosphere: currentMissionMeta.atmosphere,
-          missionArt: getGenesisMissionArt(currentSegment.segment),
+          missionTitle: currentMissionContent.title,
+          missionSubtitle: currentMissionContent.subtitle,
           continueHref,
-          currentCampaignHref: "/training",
           dailyMissionComplete: hasCompletedToday(),
           xpEarned: profile.xp || 0,
           streak: profile.streak || 0,
-          nextMissionTitle: nextMissionMeta.title,
-          nextMissionLabel: nextSegment.label,
         })
 
         if (!membership?.family_id) {
@@ -447,7 +448,7 @@ export default function DashboardPage() {
     dashboardState?.missionSubtitle ||
     "Continue your current Bible training mission."
   const referenceLine = dashboardState?.currentSegmentLabel || "Current Segment"
-  const focusPassage = dashboardState?.currentSegmentLabel || "Genesis 1"
+  const focusPassage = dashboardState?.currentSegmentLabel || "Current Segment"
   const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
   const memberNames = members.map((member) =>
     member.user_id === userId ? "You" : getProfileName(member.profiles)
