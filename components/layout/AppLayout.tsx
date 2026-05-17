@@ -47,21 +47,21 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}>
       {open && !isGameMode ? (
         <div
-          className="ba-mobile-drawer-overlay fixed inset-0 z-[900] md:hidden"
+          className="ba-mobile-drawer-overlay fixed inset-0 z-[900] lg:hidden"
           onClick={() => setOpen(false)}
           aria-hidden="true"
         />
       ) : null}
 
-      <div className="min-h-screen w-full md:h-screen md:px-2 md:py-2 xl:px-2.5 xl:py-2.5">
-        <div className="flex min-h-screen w-full md:h-[calc(100vh-16px)] md:min-h-0 md:overflow-hidden md:rounded-[2rem] md:border md:border-white/8 md:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] md:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:h-[calc(100vh-20px)]">
-          <aside className="hidden md:block md:relative md:z-[2] md:w-[220px] md:shrink-0 xl:w-[228px]">
+      <div className="min-h-screen w-full lg:h-screen lg:px-2 lg:py-2 xl:px-2.5 xl:py-2.5">
+        <div className="flex min-h-screen w-full lg:h-[calc(100vh-16px)] lg:min-h-0 lg:overflow-hidden lg:rounded-[2rem] lg:border lg:border-white/8 lg:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] lg:shadow-[0_28px_80px_rgba(0,0,0,0.42)] xl:h-[calc(100vh-20px)]">
+          <aside className="hidden lg:block lg:relative lg:z-[2] lg:w-[220px] lg:shrink-0 xl:w-[228px]">
             <Sidebar variant="desktop" />
           </aside>
 
           {showMobileNav ? (
             <div
-              className={`fixed inset-y-0 left-0 z-[950] w-[88vw] max-w-[23rem] transform transition-transform duration-300 md:hidden ${
+              className={`fixed inset-y-0 left-0 z-[950] w-[88vw] max-w-[23rem] transform transition-transform duration-300 lg:hidden ${
                 open ? "translate-x-0" : "-translate-x-full"
               }`}
               role="dialog"
@@ -109,7 +109,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
           <div className="ba-content-frame flex min-w-0 flex-1 flex-col md:min-h-0">
             {showMobileNav ? (
-              <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 md:hidden">
+              <div className="ba-top-shell sticky top-0 z-30 px-4 py-3 lg:hidden">
                 <div className="ba-cinematic-container">
                   <div className="ba-mobile-topbar">
                     <div className="flex min-w-0 items-center gap-3">
@@ -148,8 +148,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </div>
             ) : null}
 
-            <div className={`flex-1 transition md:min-h-0 ${open ? "md:blur-0" : ""}`}>
-              <div className="overflow-x-hidden md:hidden">
+            <div className={`flex-1 transition lg:min-h-0 ${open ? "lg:blur-0" : ""}`}>
+              <div className="overflow-x-hidden lg:hidden">
                 <div className={`ba-cinematic-container ${showMobileNav ? "ba-page-with-nav" : ""}`}>
                   {children}
                 </div>
@@ -204,7 +204,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full md:block md:overflow-hidden md:px-[16px] md:py-[16px] xl:px-[18px] xl:py-[18px]">
+              <div className="hidden h-full lg:block lg:overflow-hidden lg:px-[16px] lg:py-[16px] xl:px-[18px] xl:py-[18px]">
                 <div className="h-full w-full">{children}</div>
               </div>
             </div>
