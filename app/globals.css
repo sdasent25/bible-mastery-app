@@ -523,13 +523,17 @@ textarea {
 
 .ba-dashboard-topbar {
   background:
-    linear-gradient(180deg, rgba(8, 14, 24, 0.98), rgba(5, 10, 18, 0.98));
-  border: 1px solid rgba(255, 231, 173, 0.08);
+    radial-gradient(circle at top left, rgba(250, 204, 21, 0.08), transparent 24%),
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.06), transparent 28%),
+    linear-gradient(180deg, rgba(5, 11, 20, 0.985), rgba(2, 7, 14, 0.99));
+  border: 1px solid rgba(255, 220, 145, 0.12);
   border-radius: 1.1rem;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.26),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 0 1px rgba(250, 204, 21, 0.02);
+    0 26px 64px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 252, 240, 0.06),
+    inset 0 -1px 0 rgba(255, 191, 36, 0.06),
+    0 0 0 1px rgba(250, 204, 21, 0.035),
+    0 0 34px rgba(250, 204, 21, 0.08);
   backdrop-filter: blur(18px);
   padding: 0.52rem 0.68rem;
 }
@@ -635,8 +639,11 @@ textarea {
 .ba-progress-track {
   overflow: hidden;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.028));
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
 }
 
 .ba-gold-cta {
@@ -656,12 +663,15 @@ textarea {
   position: relative;
   overflow: hidden;
   border-radius: 1.1rem;
-  background: linear-gradient(180deg, rgba(11, 15, 22, 0.82), rgba(8, 11, 16, 0.88));
-  border: 1px solid rgba(251, 191, 36, 0.26);
+  background:
+    linear-gradient(180deg, rgba(8, 12, 20, 0.84), rgba(4, 8, 14, 0.92));
+  border: 1px solid rgba(250, 205, 113, 0.34);
   box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.26),
-    0 0 0 1px rgba(255, 255, 255, 0.03),
-    0 0 34px rgba(251, 191, 36, 0.08);
+    0 24px 56px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 249, 235, 0.06),
+    inset 0 -1px 0 rgba(120, 78, 15, 0.18),
+    0 0 0 1px rgba(255, 227, 158, 0.03),
+    0 0 42px rgba(251, 191, 36, 0.12);
 }
 
 .ba-card-aura {
@@ -709,8 +719,9 @@ textarea {
 
 .ba-progress-glow {
   box-shadow:
-    0 0 18px rgba(250, 204, 21, 0.18),
-    0 0 28px rgba(34, 211, 238, 0.1);
+    0 0 18px rgba(250, 204, 21, 0.22),
+    0 0 34px rgba(34, 211, 238, 0.12),
+    0 0 48px rgba(250, 204, 21, 0.08);
 }
 
 .ba-premium-lock {
@@ -768,11 +779,13 @@ textarea {
   isolation: isolate;
   border-radius: 1rem;
   background:
-    linear-gradient(180deg, rgba(13, 19, 31, 0.94), rgba(8, 12, 20, 0.98));
-  border: 1px solid rgba(255, 214, 138, 0.1);
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.035), transparent 26%),
+    linear-gradient(180deg, rgba(10, 16, 27, 0.965), rgba(4, 9, 16, 0.99));
+  border: 1px solid rgba(255, 221, 158, 0.12);
   box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    0 20px 46px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 250, 236, 0.045),
+    inset 0 -1px 0 rgba(70, 44, 12, 0.14);
   backdrop-filter: blur(16px);
   min-height: 7.9rem;
   padding: 0.6rem 0.68rem 0.62rem;
@@ -783,22 +796,25 @@ textarea {
   overflow: hidden;
   min-height: 8.65rem;
   border-radius: 1rem;
-  border: 1px solid rgba(255, 214, 138, 0.1);
+  border: 1px solid rgba(255, 224, 165, 0.12);
   box-shadow:
-    0 22px 58px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 0 22px rgba(34, 211, 238, 0.04);
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 28px rgba(34, 211, 238, 0.05);
   backdrop-filter: blur(18px);
 }
 
 .ba-right-rail-card {
   background:
-    linear-gradient(180deg, rgba(13, 18, 30, 0.98), rgba(8, 12, 20, 0.98));
-  border: 1px solid rgba(255, 214, 138, 0.08);
+    radial-gradient(circle at top right, rgba(250, 204, 21, 0.055), transparent 24%),
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.045), transparent 22%),
+    linear-gradient(180deg, rgba(10, 16, 28, 0.985), rgba(4, 8, 15, 0.99));
+  border: 1px solid rgba(255, 220, 145, 0.11);
   border-radius: 0.96rem;
   box-shadow:
-    0 18px 46px rgba(0, 0, 0, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 249, 235, 0.04),
+    0 0 0 1px rgba(255, 215, 120, 0.02);
   backdrop-filter: blur(16px);
   padding: 0.88rem;
 }
@@ -812,6 +828,11 @@ textarea {
 .ba-dashboard-page {
   position: relative;
   min-height: 100%;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(250, 204, 21, 0.085), transparent 22%),
+    radial-gradient(circle at 76% 12%, rgba(34, 211, 238, 0.06), transparent 20%),
+    radial-gradient(circle at 15% 90%, rgba(10, 132, 255, 0.05), transparent 24%),
+    linear-gradient(180deg, #020711 0%, #06111f 42%, #081827 100%);
 }
 
 @media (min-width: 768px) {
@@ -859,7 +880,8 @@ textarea {
   padding: 0.8rem 0.7rem 0.8rem;
   overflow: hidden;
   background:
-    linear-gradient(180deg, rgba(6, 11, 20, 0.98), rgba(5, 9, 16, 0.99));
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.06), transparent 22%),
+    linear-gradient(180deg, rgba(4, 9, 18, 0.99), rgba(2, 6, 12, 1));
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -904,20 +926,25 @@ textarea {
 
 .ba-sidebar-nav-item:hover {
   transform: translateY(-1px);
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 236, 168, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02));
   color: white;
+  box-shadow:
+    0 12px 24px rgba(0, 0, 0, 0.18),
+    0 0 18px rgba(250, 204, 21, 0.04);
 }
 
 .ba-sidebar-nav-item.is-active {
-  border-color: rgba(250, 204, 21, 0.22);
+  border-color: rgba(250, 205, 113, 0.32);
   background:
-    radial-gradient(circle at left, rgba(250, 204, 21, 0.14), transparent 60%),
-    linear-gradient(180deg, rgba(39, 29, 16, 0.92), rgba(14, 13, 18, 0.98));
+    radial-gradient(circle at left, rgba(250, 204, 21, 0.18), transparent 56%),
+    linear-gradient(180deg, rgba(53, 37, 14, 0.96), rgba(20, 15, 11, 0.99));
   color: rgb(254 243 199);
   box-shadow:
-    0 0 0 1px rgba(250, 204, 21, 0.04),
-    0 0 22px rgba(250, 204, 21, 0.08);
+    0 0 0 1px rgba(250, 204, 21, 0.06),
+    0 0 26px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 247, 214, 0.08);
 }
 
 .ba-sidebar-nav-icon {
@@ -933,9 +960,14 @@ textarea {
 }
 
 .ba-sidebar-nav-icon.is-active {
-  border-color: rgba(250, 204, 21, 0.18);
-  background: rgba(250, 204, 21, 0.1);
+  border-color: rgba(255, 223, 151, 0.24);
+  background:
+    radial-gradient(circle at top, rgba(255, 243, 214, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(250, 204, 21, 0.14), rgba(250, 204, 21, 0.08));
   color: rgb(254 243 199);
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 250, 236, 0.08);
 }
 
 .ba-sidebar-nav-dot {
@@ -989,9 +1021,12 @@ textarea {
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 233, 176, 0.1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 0 18px rgba(250, 204, 21, 0.04);
 }
 
 .ba-profile-pill {
@@ -999,13 +1034,15 @@ textarea {
   align-items: center;
   gap: 0.55rem;
   border-radius: 9999px;
-  border: 1px solid rgba(255, 214, 138, 0.14);
+  border: 1px solid rgba(255, 223, 151, 0.18);
   background:
-    linear-gradient(180deg, rgba(20, 26, 38, 0.92), rgba(11, 15, 24, 0.98));
+    radial-gradient(circle at top left, rgba(250, 204, 21, 0.06), transparent 24%),
+    linear-gradient(180deg, rgba(17, 23, 36, 0.95), rgba(8, 13, 22, 0.985));
   padding: 0.24rem 0.42rem 0.24rem 0.28rem;
   box-shadow:
-    0 18px 32px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 18px 32px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 18px rgba(250, 204, 21, 0.04);
 }
 
 .ba-profile-avatar {
@@ -1027,14 +1064,16 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(5, 10, 18, 0.96) 0%, rgba(7, 12, 20, 0.84) 30%, rgba(9, 12, 18, 0.38) 62%, rgba(8, 10, 16, 0.18) 100%);
+    radial-gradient(circle at 74% 34%, rgba(255, 204, 92, 0.14), transparent 22%),
+    linear-gradient(90deg, rgba(3, 7, 14, 0.94) 0%, rgba(4, 8, 15, 0.82) 28%, rgba(7, 11, 18, 0.26) 60%, rgba(7, 10, 16, 0.1) 100%);
 }
 
 .ba-hero-vignette {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(255, 220, 138, 0.08), rgba(10, 12, 20, 0.05) 40%, rgba(7, 10, 16, 0.38) 100%);
+    radial-gradient(circle at 78% 38%, rgba(255, 218, 124, 0.13), transparent 18%),
+    linear-gradient(180deg, rgba(255, 220, 138, 0.12), rgba(10, 12, 20, 0.04) 38%, rgba(7, 10, 16, 0.34) 100%);
 }
 
 .ba-hero-chip {
@@ -1076,12 +1115,17 @@ textarea {
   justify-content: center;
   border-radius: 9999px;
   border: 1px solid rgba(250, 204, 21, 0.18);
-  background: rgba(7, 10, 16, 0.42);
+  background:
+    linear-gradient(180deg, rgba(10, 14, 22, 0.72), rgba(7, 10, 16, 0.56));
   color: rgba(255, 244, 214, 0.82);
-  box-shadow: 0 0 20px rgba(250, 204, 21, 0.08);
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 251, 235, 0.06);
 }
 
 .ba-hero-cta {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   width: 100%;
   max-width: 22rem;
@@ -1089,9 +1133,9 @@ textarea {
   justify-content: center;
   gap: 0.68rem;
   border-radius: 0.92rem;
-  border: 1px solid rgba(255, 236, 168, 0.34);
+  border: 1px solid rgba(255, 235, 166, 0.46);
   background:
-    linear-gradient(135deg, rgba(247, 208, 101, 0.99), rgba(244, 181, 44, 0.98));
+    linear-gradient(180deg, rgba(255, 232, 153, 0.99) 0%, rgba(247, 205, 87, 0.99) 42%, rgba(233, 161, 26, 0.99) 100%);
   padding: 0.5rem 0.95rem;
   color: #2a1600;
   font-size: 0.74rem;
@@ -1099,9 +1143,33 @@ textarea {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   box-shadow:
-    0 20px 34px rgba(245, 158, 11, 0.22),
-    0 0 28px rgba(250, 204, 21, 0.16),
-    inset 0 1px 0 rgba(255, 251, 235, 0.32);
+    0 20px 34px rgba(245, 158, 11, 0.28),
+    0 0 32px rgba(250, 204, 21, 0.24),
+    0 0 54px rgba(245, 158, 11, 0.12),
+    inset 0 1px 0 rgba(255, 251, 235, 0.44),
+    inset 0 -1px 0 rgba(148, 89, 10, 0.28);
+}
+
+.ba-hero-cta::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 24%),
+    linear-gradient(115deg, transparent 0%, rgba(255, 249, 229, 0.22) 34%, rgba(255, 226, 138, 0.35) 50%, rgba(255, 249, 229, 0.18) 66%, transparent 100%);
+  mix-blend-mode: screen;
+}
+
+.ba-hero-cta::after {
+  content: "";
+  position: absolute;
+  inset: -18% 58% -18% -8%;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 246, 209, 0.36), transparent 82%);
+  transform: skewX(-18deg);
+  opacity: 0.7;
 }
 
 @media (min-width: 1024px) {
@@ -1115,7 +1183,8 @@ textarea {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(7, 11, 18, 0.1) 0%, rgba(7, 11, 18, 0.25) 28%, rgba(7, 11, 18, 0.82) 62%, rgba(6, 9, 16, 0.96) 100%);
+    radial-gradient(circle at 26% 50%, rgba(255, 214, 112, 0.12), transparent 24%),
+    linear-gradient(90deg, rgba(5, 9, 16, 0.08) 0%, rgba(5, 9, 16, 0.2) 24%, rgba(5, 9, 16, 0.8) 60%, rgba(3, 7, 14, 0.96) 100%);
 }
 
 .ba-rail-kicker {
@@ -1123,7 +1192,7 @@ textarea {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(254, 243, 199, 0.76);
+  color: rgba(255, 232, 175, 0.84);
 }
 
 .ba-rhythm-row {
@@ -1187,9 +1256,13 @@ textarea {
   justify-content: center;
   border-radius: 9999px;
   border: 1px solid rgba(250, 204, 21, 0.18);
-  background: rgba(250, 204, 21, 0.08);
+  background:
+    radial-gradient(circle at top, rgba(255, 244, 214, 0.14), transparent 56%),
+    linear-gradient(180deg, rgba(250, 204, 21, 0.1), rgba(250, 204, 21, 0.06));
   color: rgb(254 243 199);
-  box-shadow: 0 0 18px rgba(250, 204, 21, 0.08);
+  box-shadow:
+    0 0 22px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 249, 235, 0.08);
 }
 
 .ba-family-avatar {
@@ -1213,19 +1286,130 @@ textarea {
   align-items: center;
   justify-content: center;
   border-radius: 0.82rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 225, 164, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
   padding: 0.58rem 0.82rem;
   font-size: 0.7rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.84);
-  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 236, 0.04),
+    0 0 18px rgba(250, 204, 21, 0.03);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .ba-rail-button:hover {
   transform: translateY(-1px);
-  border-color: rgba(250, 204, 21, 0.14);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(250, 204, 21, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.03));
+  box-shadow:
+    0 0 22px rgba(250, 204, 21, 0.08),
+    inset 0 1px 0 rgba(255, 252, 240, 0.06);
+}
+
+.ba-stat-card--cyan {
+  border-color: rgba(122, 241, 255, 0.16);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 250, 236, 0.045),
+    0 0 30px rgba(34, 211, 238, 0.08);
+}
+
+.ba-stat-card--amber {
+  border-color: rgba(255, 221, 158, 0.17);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 250, 236, 0.045),
+    0 0 30px rgba(251, 191, 36, 0.08);
+}
+
+.ba-stat-card--violet {
+  border-color: rgba(228, 186, 255, 0.16);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 250, 236, 0.045),
+    0 0 30px rgba(192, 132, 252, 0.08);
+}
+
+.ba-stat-card--sapphire {
+  border-color: rgba(143, 204, 255, 0.18);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 250, 236, 0.045),
+    0 0 30px rgba(96, 165, 250, 0.09);
+}
+
+.ba-stat-info {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 16px rgba(255, 255, 255, 0.02);
+}
+
+.ba-stat-icon-shell {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 236, 0.06),
+    0 0 22px rgba(255, 255, 255, 0.03);
+}
+
+.ba-stat-card--cyan .ba-stat-icon-shell {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 236, 0.06),
+    0 0 24px rgba(34, 211, 238, 0.16),
+    0 0 42px rgba(34, 211, 238, 0.08);
+}
+
+.ba-stat-card--amber .ba-stat-icon-shell {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 236, 0.06),
+    0 0 24px rgba(251, 191, 36, 0.16),
+    0 0 42px rgba(245, 158, 11, 0.08);
+}
+
+.ba-stat-card--violet .ba-stat-icon-shell {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 236, 0.06),
+    0 0 24px rgba(192, 132, 252, 0.16),
+    0 0 42px rgba(168, 85, 247, 0.08);
+}
+
+.ba-stat-card--sapphire .ba-stat-icon-shell {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 251, 236, 0.06),
+    0 0 24px rgba(96, 165, 250, 0.18),
+    0 0 42px rgba(34, 211, 238, 0.08);
+}
+
+.ba-recommendation-card--training {
+  border-color: rgba(112, 242, 255, 0.14);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(34, 211, 238, 0.08);
+}
+
+.ba-recommendation-card--memory {
+  border-color: rgba(236, 177, 255, 0.14);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(192, 132, 252, 0.08);
+}
+
+.ba-recommendation-arrow {
+  box-shadow:
+    0 0 20px rgba(250, 204, 21, 0.16),
+    inset 0 1px 0 rgba(255, 250, 236, 0.06);
+}
+
+.ba-rail-training-panel {
+  background:
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 236, 0.04),
+    0 0 22px rgba(34, 211, 238, 0.05);
 }
 
 .ba-account-panel {

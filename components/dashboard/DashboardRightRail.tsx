@@ -53,7 +53,7 @@ export default function DashboardRightRail({
     <aside className="space-y-3">
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Current Training</div>
-        <div className="mt-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
+        <div className="ba-rail-training-panel mt-3 rounded-[1rem] border border-white/8 bg-white/[0.03] px-3 py-3">
           <div className="text-[0.95rem] font-semibold text-white">{currentMissionTitle}</div>
           <div className="mt-1 text-[0.66rem] uppercase tracking-[0.16em] text-cyan-100">
             {currentSegmentLabel}

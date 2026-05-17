@@ -47,20 +47,20 @@ export default function DashboardStatCard({
   const tone = accentMap[accent]
 
   return (
-    <article className="ba-stat-card">
+    <article className={`ba-stat-card ba-stat-card--${accent}`}>
       <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${tone.aura} opacity-90`} />
 
       <div className="relative z-10 flex items-start justify-between gap-2">
         <div className={`text-[0.58rem] font-semibold uppercase tracking-[0.2em] ${tone.label}`}>
           {title}
         </div>
-        <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/46">
+        <span className="ba-stat-info inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/10 bg-white/[0.03] text-white/46">
           {renderNavIcon("info", "h-3 w-3")}
         </span>
       </div>
 
       <div className="relative z-10 mt-2 flex flex-col items-center text-center">
-        <div className={`relative flex h-[3.5rem] w-[3.5rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
+        <div className={`ba-stat-icon-shell relative flex h-[3.5rem] w-[3.5rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
           <Image
             src={iconSrc}
             alt=""
