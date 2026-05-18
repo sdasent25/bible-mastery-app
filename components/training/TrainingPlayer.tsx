@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import {
   getTrainingBookSlugFromSegmentKey,
@@ -76,6 +76,12 @@ function getAccessDepthLabel(accessTier: TrainingAccessTier) {
 
 function getChoiceLetter(index: number) {
   return String.fromCharCode(65 + index)
+}
+
+function formatElapsed(seconds: number) {
+  const minutes = Math.floor(seconds / 60)
+  const remainder = seconds % 60
+  return `${minutes}:${String(remainder).padStart(2, "0")}`
 }
 
 function getFocusRank(percentage: number) {
@@ -326,6 +332,7 @@ export default function TrainingPlayer({
   const [wasCorrect, setWasCorrect] = useState(false)
   const [score, setScore] = useState(0)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [elapsedSeconds, setElapsedSeconds] = useState(0)
 
   const item = items[currentIndex]
   const total = items.length
@@ -335,6 +342,16 @@ export default function TrainingPlayer({
     if (total === 0) return 0
     return Math.round(((currentIndex + 1) / total) * 100)
   }, [currentIndex, total])
+
+  useEffect(() => {
+    if (isComplete) return
+
+    const timer = window.setInterval(() => {
+      setElapsedSeconds((current) => current + 1)
+    }, 1000)
+
+    return () => window.clearInterval(timer)
+  }, [isComplete])
 
   if (total === 0) {
     return <EmptyState day={day} accessTier={accessTier} signedIn={signedIn} />
@@ -443,6 +460,7 @@ export default function TrainingPlayer({
   function handleTrainAgain() {
     setCurrentIndex(0)
     setScore(0)
+    setElapsedSeconds(0)
     resetQuestionState()
   }
 
@@ -482,6 +500,20 @@ export default function TrainingPlayer({
                 </div>
                 <div className="min-w-0 flex-1 font-semibold leading-6">
                   {option}
+                </div>
+                <div
+                  className={`ba-training-answer-indicator ${
+                    active
+                      ? submitted
+                        ? isCorrect
+                          ? "is-correct"
+                          : "is-incorrect"
+                        : "is-active"
+                      : ""
+                  }`}
+                  aria-hidden="true"
+                >
+                  {active ? "✓" : ""}
                 </div>
               </div>
             </button>
@@ -842,6 +874,8 @@ export default function TrainingPlayer({
   const answeredCount = Math.min(total, currentIndex + (submitted ? 1 : 0))
   const accuracy = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0
   const questionLabel = `Question ${Math.min(currentIndex + 1, total)} of ${total}`
+  const dayLabel = `Day ${day.day} Mission`
+  const elapsedLabel = formatElapsed(elapsedSeconds)
 
   if (isComplete) {
     const percentage = Math.round((score / total) * 100)
@@ -1003,33 +1037,36 @@ export default function TrainingPlayer({
       <div className="mx-auto max-w-[1180px]">
         <div className="ba-training-player-stage p-4 sm:p-6 lg:p-7">
           <header className="ba-training-player-header">
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-2.5">
               <Link
                 href={campaignHref}
-                className="ba-training-secondary-cta inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white"
+                className="ba-training-secondary-cta inline-flex items-center justify-center px-3.5 py-2 text-sm font-semibold text-white"
               >
                 Exit Mission
               </Link>
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2">
                 <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/84">
                   Training Arena
                 </div>
                 <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-200">
                   {questionLabel}
                 </div>
+                <div className="rounded-full border border-cyan-300/16 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-cyan-50">
+                  {elapsedLabel}
+                </div>
               </div>
             </div>
 
-            <div className="mt-4 text-center">
-              <h1 className="text-[1.9rem] font-black tracking-[-0.04em] text-white sm:text-3xl">
+            <div className="mt-3 text-center">
+              <h1 className="text-[1.65rem] font-black tracking-[-0.04em] text-white sm:text-[2rem]">
                 {day.reading.reference}
               </h1>
-              <p className="mt-1 text-sm font-semibold text-slate-300 sm:text-base">
-                Day {day.day} Mission
+              <p className="mt-0.5 text-xs font-semibold text-slate-300 sm:text-sm">
+                {dayLabel}
               </p>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-3">
               <div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                 <span>{questionLabel}</span>
                 <span>{percent}% complete</span>
@@ -1045,31 +1082,31 @@ export default function TrainingPlayer({
             </div>
           </header>
 
-          <section className="mt-5 grid gap-4 lg:grid-cols-[160px_minmax(0,1fr)_180px] lg:items-start xl:grid-cols-[180px_minmax(0,1fr)_210px]">
-            <aside className="ba-training-focus-panel order-2 p-4 lg:order-1">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-amber-200/20 bg-[radial-gradient(circle_at_top,rgba(255,244,214,0.18),transparent_56%),linear-gradient(180deg,rgba(29,23,17,0.98),rgba(8,11,18,0.98))] text-2xl text-amber-100 shadow-[0_0_30px_rgba(251,191,36,0.12)]">
+          <section className="mt-4 grid gap-3 lg:grid-cols-[132px_minmax(0,1fr)_156px] lg:items-start xl:grid-cols-[148px_minmax(0,1fr)_176px]">
+            <aside className="ba-training-focus-panel order-3 p-3 lg:order-1">
+              <div className="ba-training-focus-emblem">
                 ✦
               </div>
-              <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/74">
+              <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/74">
                 Mission Focus
               </div>
-              <div className="mt-2 text-xl font-black text-white">
+              <div className="mt-1.5 text-lg font-black text-white">
                 {answeredCount > 0 ? `${accuracy}%` : "Ready"}
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-300/82">
+              <p className="mt-1.5 text-xs leading-5 text-slate-300/82">
                 Build accuracy through today&apos;s training. Focus rank is finalized after the session.
               </p>
-              <div className="mt-4 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+              <div className="mt-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-2.5">
                 <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                   Access
                 </div>
-                <div className="mt-1 text-sm font-semibold text-white">{accessLabel}</div>
+                <div className="mt-1 text-xs font-semibold text-white">{accessLabel}</div>
               </div>
             </aside>
 
             <article
               key={item.key}
-              className="ba-training-question-card order-1 p-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-5 lg:order-2 lg:p-6"
+              className="ba-training-question-card order-1 p-3.5 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-4 lg:order-2 lg:p-5"
             >
               <div className="flex flex-wrap items-center gap-2">
                 <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
@@ -1087,14 +1124,14 @@ export default function TrainingPlayer({
                 </div>
               </div>
 
-              <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+              <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 {questionLabel.toUpperCase()}
               </div>
-              <h2 className="mt-3 text-[1.65rem] font-black leading-tight text-white sm:text-[1.9rem]">
+              <h2 className="mt-2.5 text-[1.42rem] font-black leading-tight text-white sm:text-[1.68rem]">
                 {item.prompt}
               </h2>
 
-              <div className="mt-4">
+              <div className="mt-3">
                 {submitted ? (
                   <div
                     className={`overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
@@ -1137,7 +1174,7 @@ export default function TrainingPlayer({
                     </div>
                   </div>
 
-                    <div className="mt-4 grid gap-3">
+                    <div className="mt-3 grid gap-2.5">
                       <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
                         <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
                           Your answer
@@ -1247,7 +1284,7 @@ export default function TrainingPlayer({
                       </div>
                     </div>
 
-                    <div className="ba-training-submit-wrap mt-4">
+                    <div className="ba-training-submit-wrap mt-3">
                       <button
                         type="button"
                         onClick={handleContinue}
@@ -1263,7 +1300,7 @@ export default function TrainingPlayer({
               </div>
 
               {!submitted && (
-                <div className="ba-training-submit-wrap mt-4">
+                <div className="ba-training-submit-wrap mt-3">
                   {submissionError && (
                     <div className="mb-3 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
                       {submissionError}
@@ -1281,28 +1318,32 @@ export default function TrainingPlayer({
               )}
             </article>
 
-            <aside className="ba-training-session-panel order-3 p-4">
+            <aside className="ba-training-session-panel order-2 p-3 lg:order-3">
               <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 Mission Stats
               </div>
-              <div className="mt-4 grid gap-3">
-                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+              <div className="mt-3 grid gap-2.5">
+                <div className="flex items-center justify-between gap-3 rounded-[0.95rem] border border-white/10 bg-black/15 px-3 py-2.5">
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Correct</span>
-                  <span className="text-xl font-black text-white">{score}</span>
+                  <span className="text-lg font-black text-white">{score}</span>
                 </div>
-                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                <div className="flex items-center justify-between gap-3 rounded-[0.95rem] border border-white/10 bg-black/15 px-3 py-2.5">
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Progress</span>
-                  <span className="text-xl font-black text-white">{answeredCount}/{total}</span>
+                  <span className="text-lg font-black text-white">{answeredCount}/{total}</span>
                 </div>
-                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                <div className="flex items-center justify-between gap-3 rounded-[0.95rem] border border-white/10 bg-black/15 px-3 py-2.5">
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Accuracy</span>
-                  <span className="text-xl font-black text-white">{accuracy}%</span>
+                  <span className="text-lg font-black text-white">{accuracy}%</span>
                 </div>
-                <div className="rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                <div className="flex items-center justify-between gap-3 rounded-[0.95rem] border border-white/10 bg-black/15 px-3 py-2.5">
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Timer</span>
+                  <span className="text-lg font-black text-white">{elapsedLabel}</span>
+                </div>
+                <div className="rounded-[0.95rem] border border-white/10 bg-black/15 px-3 py-2.5">
                   <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
                     Access Depth
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-white">{accessLabel}</div>
+                  <div className="mt-1 text-xs font-semibold text-white">{accessLabel}</div>
                 </div>
               </div>
             </aside>
