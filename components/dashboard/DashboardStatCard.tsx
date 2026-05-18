@@ -65,29 +65,29 @@ export default function DashboardStatCard({
         </span>
       </div>
 
-      <div className="relative z-10 mt-2 flex flex-col items-center text-center">
-        <div className={`ba-stat-icon-shell ba-stat-icon-ring relative flex h-[3.7rem] w-[3.7rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
+      <div className="relative z-10 mt-1.5 flex flex-col items-center text-center">
+        <div className={`ba-stat-icon-shell ba-stat-icon-ring relative flex h-[3.35rem] w-[3.35rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
           <Image
             src={iconSrc}
             alt=""
             width={66}
             height={66}
-            className="h-[2.55rem] w-[2.55rem] object-contain"
+            className="h-[2.25rem] w-[2.25rem] object-contain"
           />
         </div>
 
-        <div className="mt-1.5 min-w-0 w-full">
-          <div className={`truncate leading-none text-[#f7f0e5] ${accent === "sapphire" ? "ba-text-title text-[1.4rem] sm:text-[1.52rem]" : "ba-font-display text-[1.44rem] font-bold tracking-[-0.04em] sm:text-[1.56rem]"}`}>
+        <div className="mt-1.25 min-w-0 w-full">
+          <div className={`truncate leading-none text-[#f7f0e5] ${accent === "sapphire" ? "ba-text-title text-[1.28rem] sm:text-[1.4rem]" : "ba-font-display text-[1.3rem] font-bold tracking-[-0.04em] sm:text-[1.42rem]"}`}>
             {value}
           </div>
-          <div className="ba-font-ui mt-1 text-[0.64rem] leading-[1.35] text-[#ede2d1]/76 sm:text-[0.68rem] sm:leading-4">
+          <div className="ba-font-ui mt-0.8 text-[0.6rem] leading-[1.3] text-[#ede2d1]/76 sm:text-[0.64rem] sm:leading-4">
             {supporting}
           </div>
         </div>
       </div>
 
-      <div className="relative z-10 mt-2">
-        <div className="ba-progress-track h-1.25">
+      <div className="relative z-10 mt-1.75">
+        <div className="ba-progress-track h-1">
           <div
             className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.42),rgba(103,232,249,0.92),rgba(244,114,182,0.74))]"
             style={{ width: `${progressWidth}%` }}
@@ -96,7 +96,7 @@ export default function DashboardStatCard({
       </div>
 
       {caption ? (
-        <div className="ba-text-section-label relative z-10 mt-1.5 text-center text-[0.5rem] text-white/42 sm:text-[0.54rem]">
+        <div className="ba-text-section-label relative z-10 mt-1.25 text-center text-[0.46rem] text-white/42 sm:text-[0.5rem]">
           {caption}
         </div>
       ) : null}

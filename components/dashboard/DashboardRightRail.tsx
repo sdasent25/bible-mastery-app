@@ -47,11 +47,11 @@ export default function DashboardRightRail({
   onManagePlan,
 }: DashboardRightRailProps) {
   return (
-    <aside className="space-y-3">
+    <aside className="space-y-2 xl:space-y-2">
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Current Training</div>
-        <div className="ba-rail-training-panel mt-3 overflow-hidden rounded-[1rem] border border-white/8 bg-white/[0.03]">
-          <div className="relative h-[5.8rem]">
+        <div className="ba-rail-training-panel mt-2.5 overflow-hidden rounded-[1rem] border border-white/8 bg-white/[0.03]">
+          <div className="relative h-[5rem]">
             <Image
               src="/images/dashboard/dashboard-hero-walk-in-faith.png"
               alt=""
@@ -60,21 +60,21 @@ export default function DashboardRightRail({
               sizes="300px"
             />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,7,13,0.18),rgba(4,7,13,0.78))]" />
-            <div className="absolute inset-x-0 bottom-0 p-2.5">
-              <div className="ba-font-display text-[1rem] font-bold tracking-[-0.02em] text-[#f7eee2]">{currentMissionTitle}</div>
-              <div className="ba-text-section-label mt-1 text-[0.58rem] text-[#f4ead6]/84">
+            <div className="absolute inset-x-0 bottom-0 p-2.15">
+              <div className="ba-font-display text-[0.9rem] font-bold tracking-[-0.02em] text-[#f7eee2]">{currentMissionTitle}</div>
+              <div className="ba-text-section-label mt-0.8 text-[0.54rem] text-[#f4ead6]/84">
                 {currentSegmentLabel}
               </div>
             </div>
           </div>
-          <div className="px-2.5 pb-2.5 pt-2">
+          <div className="px-2.25 pb-2.15 pt-1.75">
             <div className="ba-progress-track h-1">
               <div
                 className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.98),rgba(103,232,249,0.78),rgba(244,114,182,0.65))]"
                 style={{ width: `${genesisProgressPercent}%` }}
               />
             </div>
-            <div className="ba-text-section-label mt-1 text-[0.54rem] text-white/44">
+            <div className="ba-text-section-label mt-0.85 text-[0.5rem] text-white/44">
               {genesisProgressPercent}% through Genesis
             </div>
           </div>
@@ -82,7 +82,7 @@ export default function DashboardRightRail({
         <button
           type="button"
           onClick={onContinueTraining}
-          className="ba-rail-button mt-3"
+          className="ba-rail-button mt-2.5"
         >
           Continue Training
         </button>
@@ -90,51 +90,51 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Daily Objective</div>
-        <div className="mt-2.5 flex items-start gap-2.5">
+        <div className="mt-2 flex items-start gap-2.25">
           <span className="ba-reward-icon">
             {renderNavIcon(dailyMissionComplete ? "brand" : "sun", "h-4 w-4")}
           </span>
           <div>
-            <div className="ba-font-display text-[1rem] font-bold tracking-[-0.03em] text-[#ffe6a3]">
+            <div className="ba-font-display text-[0.92rem] font-bold tracking-[-0.03em] text-[#ffe6a3]">
               {dailyMissionComplete ? "Completed Today" : "Mission Ready"}
             </div>
-            <div className="ba-font-ui mt-1 text-[0.63rem] leading-[1.5] text-white/50">
+            <div className="ba-font-ui mt-0.75 text-[0.58rem] leading-[1.4] text-white/50">
               Complete 1 mission today.
             </div>
           </div>
         </div>
-        <div className="mt-2.5 flex flex-wrap gap-2">
+        <div className="mt-2 flex flex-wrap gap-1.75">
           <span className="ba-rail-reward-chip">+XP Progress</span>
           <span className="ba-rail-reward-chip ba-rail-reward-chip--ember">+Streak Momentum</span>
         </div>
-        <div className="ba-text-section-label mt-2.5 text-[0.56rem] text-white/42">
+        <div className="ba-text-section-label mt-2 text-[0.5rem] text-white/42">
           {completedMissionCount} of {totalSegments} Genesis missions completed
         </div>
       </section>
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Rank Progress</div>
-        <div className="mt-2.5 flex items-center gap-2.5">
+        <div className="mt-2 flex items-center gap-2.25">
           <div className="ba-rail-rank-medallion">
             {renderNavIcon("brand", "h-5 w-5")}
           </div>
           <div>
-            <div className="ba-font-display text-[1rem] font-bold tracking-[-0.03em] text-[#f6eee1]">
+            <div className="ba-font-display text-[0.92rem] font-bold tracking-[-0.03em] text-[#f6eee1]">
               Sapphire II
             </div>
-            <div className="ba-font-ui mt-0.5 text-[0.63rem] leading-[1.45] text-white/48">
+            <div className="ba-font-ui mt-0.35 text-[0.58rem] leading-[1.35] text-white/48">
               Top 18%
             </div>
           </div>
         </div>
-        <div className="mt-2.5">
+        <div className="mt-2">
           <div className="ba-progress-track h-1.25">
             <div
               className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(51,164,255,0.88),rgba(103,232,249,0.88),rgba(255,213,102,0.62))]"
               style={{ width: "34%" }}
             />
           </div>
-          <div className="ba-text-section-label mt-1.5 text-[0.54rem] text-white/44">
+          <div className="ba-text-section-label mt-1 text-[0.5rem] text-white/44">
             2,520 XP to Sapphire I
           </div>
         </div>
@@ -143,7 +143,7 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Weekly Rewards</div>
-        <div className="mt-2.5 grid grid-cols-3 gap-2">
+        <div className="mt-2 grid grid-cols-3 gap-1.5">
           <div className="ba-weekly-reward-card">
             <span className="ba-weekly-reward-icon ba-weekly-reward-icon--cyan">◈</span>
             <span className="ba-font-display text-[1.02rem] font-bold text-[#f7efe2]">250</span>
@@ -165,10 +165,10 @@ export default function DashboardRightRail({
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Plan Status</div>
-        <div className="mt-2.5 flex items-start justify-between gap-3">
+        <div className="mt-2 flex items-start justify-between gap-2.5">
           <div>
-            <div className="ba-font-display text-[1rem] font-bold tracking-[-0.02em] text-[#f6eee1]">{planLabel}</div>
-            <div className="ba-font-ui mt-1 text-[0.6rem] leading-[1.48] text-white/46">
+            <div className="ba-font-display text-[0.94rem] font-bold tracking-[-0.02em] text-[#f6eee1]">{planLabel}</div>
+            <div className="ba-font-ui mt-0.75 text-[0.56rem] leading-[1.38] text-white/46">
               {planMeta}
             </div>
           </div>
@@ -179,7 +179,7 @@ export default function DashboardRightRail({
         <button
           type="button"
           onClick={onManagePlan}
-          className="ba-rail-button mt-3"
+          className="ba-rail-button mt-2.25"
         >
           Manage Plan
         </button>

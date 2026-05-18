@@ -390,7 +390,7 @@ export default function DashboardPage() {
       <div className="ba-dashboard-shell md:h-full">
         <div className="ba-dashboard-grid md:h-full">
           <div className="ba-dashboard-main-column">
-            <div className="ba-dashboard-main-scroll ba-scrollbar-hidden space-y-3.5 pb-1 sm:space-y-4 lg:space-y-3.5">
+            <div className="ba-dashboard-main-scroll ba-scrollbar-hidden space-y-3 pb-1 sm:space-y-3.5 lg:space-y-3">
               <DashboardTopBar
                 athleteLevel={athleteLevel}
                 xpToNextLevel={xpToNextLevel}
@@ -401,34 +401,34 @@ export default function DashboardPage() {
                 onSettings={() => router.push("/settings")}
               />
 
-              <section className="flex flex-col gap-2.5 border-b border-amber-200/10 pb-2.5 sm:flex-row sm:items-end sm:justify-between">
+              <section className="flex flex-col gap-2 border-b border-amber-200/10 pb-2 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <div className="ba-text-section-label mb-2.5 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] text-cyan-100">
+                  <div className="ba-text-section-label mb-2 inline-flex items-center gap-2 rounded-full border border-cyan-300/16 bg-cyan-300/10 px-2.5 py-1 text-[10px] text-cyan-100">
                     <span className="inline-flex h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.6)]" />
                     Genesis Campaign
                   </div>
-                  <h1 className="ba-text-title text-[2rem] sm:text-[2.3rem] xl:text-[2.72rem]">
+                  <h1 className="ba-text-title text-[1.88rem] sm:text-[2.12rem] xl:text-[2.48rem]">
                     Welcome back, {dashboardState?.playerName || "Athlete"}.
                   </h1>
-                  <p className="ba-text-body mt-1 max-w-2xl text-[0.96rem] leading-[1.5] text-[#f1c86a] sm:text-[0.98rem]">
+                  <p className="ba-text-body mt-0.75 max-w-2xl text-[0.88rem] leading-[1.45] text-[#f1c86a] sm:text-[0.92rem]">
                     Today&apos;s mission is ready.
                   </p>
                   {upgradeMessage ? (
-                    <p className="ba-font-ui mt-2 text-[0.74rem] text-cyan-100/88">
+                    <p className="ba-font-ui mt-1.5 text-[0.72rem] text-cyan-100/88">
                       {upgradeMessage}
                     </p>
                   ) : null}
                 </div>
 
-                <div className="inline-flex items-center gap-3 self-start rounded-[1rem] border border-cyan-300/12 bg-[linear-gradient(180deg,rgba(9,16,28,0.92),rgba(5,10,18,0.92))] px-3 py-2 text-sm text-white/84 shadow-[0_14px_28px_rgba(0,0,0,0.16),0_0_24px_rgba(34,211,238,0.06)] sm:self-auto">
-                  <span className="inline-flex h-8.5 w-8.5 items-center justify-center rounded-[0.85rem] border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
+                <div className="inline-flex items-center gap-2.5 self-start rounded-[1rem] border border-cyan-300/12 bg-[linear-gradient(180deg,rgba(9,16,28,0.92),rgba(5,10,18,0.92))] px-2.75 py-1.75 text-sm text-white/84 shadow-[0_14px_28px_rgba(0,0,0,0.16),0_0_24px_rgba(34,211,238,0.06)] sm:self-auto">
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-[0.8rem] border border-cyan-300/18 bg-cyan-300/10 text-cyan-100">
                     {renderNavIcon("info", "h-3.5 w-3.5")}
                   </span>
                   <div>
-                    <div className="ba-font-ui text-right text-[0.94rem] font-medium text-[#e8ddd1]">
+                    <div className="ba-font-ui text-right text-[0.88rem] font-medium text-[#e8ddd1]">
                       {shortFormattedDate}
                     </div>
-                    <div className="ba-text-section-label ba-text-cyan mt-0.5 text-right text-[0.58rem]">
+                    <div className="ba-text-section-label ba-text-cyan mt-0.25 text-right text-[0.56rem]">
                       {dashboardState?.currentSegmentLabel || "Current Mission"}
                     </div>
                   </div>
@@ -447,7 +447,7 @@ export default function DashboardPage() {
                 dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
               />
 
-              <section className="grid grid-cols-1 gap-2.5 min-[390px]:grid-cols-2 lg:grid-cols-4">
+              <section className="grid grid-cols-1 gap-2 min-[390px]:grid-cols-2 lg:grid-cols-4">
                 {statCards.map((card) => (
                   <DashboardStatCard
                     key={card.title}
@@ -476,7 +476,7 @@ export default function DashboardPage() {
                   </button>
                 </div>
 
-                <div className="mt-2 grid gap-3 lg:grid-cols-3">
+                <div className="mt-1.5 grid gap-2.5 lg:grid-cols-3">
                   <DashboardRecommendationCard
                     title="Training Arena"
                     copy="Build discipline. Strengthen your spirit."

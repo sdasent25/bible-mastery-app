@@ -45,7 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [open])
 
   return (
-    <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white lg:h-screen lg:overflow-hidden ${open && !isGameMode ? "overflow-hidden" : ""}`}>
+    <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white lg:h-screen lg:min-h-0 lg:overflow-hidden ${open && !isGameMode ? "overflow-hidden" : ""}`}>
       {open && !isGameMode ? (
         <div
           className="ba-mobile-drawer-overlay fixed inset-0 z-[900] lg:hidden"
@@ -209,7 +209,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full lg:block lg:overflow-hidden lg:px-[16px] lg:py-[16px] xl:px-[18px] xl:py-[18px]">
+              <div className="hidden h-full lg:block lg:min-h-0 lg:overflow-hidden lg:px-[12px] lg:py-[12px] xl:px-[14px] xl:py-[14px]">
                 <div
                   className={`h-full w-full ${
                     isTrainingRoute ? "ba-scrollbar-hidden overflow-y-auto lg:min-h-0" : ""
