@@ -466,7 +466,7 @@ export default function TrainingPlayer({
 
   function renderChoiceButtons(options: string[]) {
     return (
-      <div className="grid gap-3">
+      <div className="grid gap-2.5">
         {options.map((option, index) => {
           const active = selectedSingle === option
           const isCorrect = submitted && option === item.correct_answer.value
@@ -490,7 +490,7 @@ export default function TrainingPlayer({
                 setSelectedSingle(option)
                 setSubmissionError(null)
               }}
-              className={`rounded-[1.15rem] border px-4 py-3.5 text-left text-sm leading-6 transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
+              className={`rounded-[1.1rem] border px-3.5 py-3 text-left text-sm leading-[1.35rem] transition duration-200 motion-reduce:transform-none sm:py-3.5 ${stateClass} ${
                 submitted ? "cursor-default" : ""
               }`}
             >
@@ -529,8 +529,8 @@ export default function TrainingPlayer({
         return renderChoiceButtons(item.content.options as string[])
       case "fill_blank":
         return (
-          <div className="space-y-4">
-            <div className="rounded-[1.15rem] border border-white/10 bg-white/[0.03] p-4 text-base leading-7 text-slate-100">
+          <div className="space-y-3.5">
+            <div className="rounded-[1.1rem] border border-white/10 bg-white/[0.03] p-3.5 text-[0.98rem] leading-6 text-slate-100">
               {item.content.text}
             </div>
             {renderChoiceButtons(item.content.options as string[])}
@@ -703,7 +703,7 @@ export default function TrainingPlayer({
       }
       case "true_false":
         return (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2.5">
             {[
               { label: "True", value: "true" },
               { label: "False", value: "false" },
@@ -732,7 +732,7 @@ export default function TrainingPlayer({
                     setSelectedSingle(option.value)
                     setSubmissionError(null)
                   }}
-                  className={`rounded-[1.25rem] border px-4 py-4 text-left transition duration-200 motion-reduce:transform-none sm:py-5 ${stateClass} ${
+                  className={`rounded-[1.15rem] border px-3.5 py-3.5 text-left transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
                     submitted ? "cursor-default" : ""
                   }`}
                 >
@@ -791,7 +791,7 @@ export default function TrainingPlayer({
                       setSelectedSingle(option)
                       setSubmissionError(null)
                     }}
-                    className={`rounded-[1.15rem] border px-4 py-3.5 text-left transition duration-200 motion-reduce:transform-none sm:py-4 ${stateClass} ${
+                    className={`rounded-[1.1rem] border px-3.5 py-3 text-left transition duration-200 motion-reduce:transform-none sm:py-3.5 ${stateClass} ${
                       submitted ? "cursor-default" : ""
                     }`}
                   >
@@ -1033,9 +1033,9 @@ export default function TrainingPlayer({
   }
 
   return (
-    <main className="ba-training-player-shell min-h-screen overflow-x-hidden px-3 py-3 text-white sm:px-5 sm:py-5">
-      <div className="mx-auto max-w-[1180px]">
-        <div className="ba-training-player-stage p-4 sm:p-6 lg:p-7">
+    <main className="ba-training-player-shell min-h-screen overflow-x-hidden px-3 py-3 text-white sm:px-5 sm:py-5 lg:h-[calc(100vh-1.75rem)] lg:min-h-0 lg:py-2">
+      <div className="mx-auto max-w-[1180px] lg:flex lg:h-full lg:flex-col">
+        <div className="ba-training-player-stage p-4 sm:p-6 lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:p-4 xl:p-5">
           <header className="ba-training-player-header">
             <div className="flex flex-wrap items-center justify-between gap-2.5">
               <Link
@@ -1082,7 +1082,7 @@ export default function TrainingPlayer({
             </div>
           </header>
 
-          <section className="mt-4 grid gap-3 lg:grid-cols-[132px_minmax(0,1fr)_156px] lg:items-start xl:grid-cols-[148px_minmax(0,1fr)_176px]">
+          <section className="mt-3 grid gap-3 lg:min-h-0 lg:flex-1 lg:grid-cols-[124px_minmax(0,1fr)_148px] lg:items-stretch xl:grid-cols-[138px_minmax(0,1fr)_166px]">
             <aside className="ba-training-focus-panel order-3 p-3 lg:order-1">
               <div className="ba-training-focus-emblem">
                 ✦
@@ -1106,7 +1106,7 @@ export default function TrainingPlayer({
 
             <article
               key={item.key}
-              className="ba-training-question-card order-1 p-3.5 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-4 lg:order-2 lg:p-5"
+              className="ba-training-question-card order-1 p-3.5 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-4 lg:order-2 lg:flex lg:min-h-0 lg:flex-col lg:p-4"
             >
               <div className="flex flex-wrap items-center gap-2">
                 <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
@@ -1127,7 +1127,7 @@ export default function TrainingPlayer({
               <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
                 {questionLabel.toUpperCase()}
               </div>
-              <h2 className="mt-2.5 text-[1.42rem] font-black leading-tight text-white sm:text-[1.68rem]">
+              <h2 className="mt-2 text-[1.3rem] font-black leading-tight text-white sm:text-[1.55rem]">
                 {item.prompt}
               </h2>
 
