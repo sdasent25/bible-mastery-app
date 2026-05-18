@@ -351,7 +351,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           <div className="ba-training-hero-overlay-desktop pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.54),transparent_11%),radial-gradient(circle_at_60%_52%,rgba(255,193,74,0.24),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.88)_0%,rgba(4,7,13,0.74)_18%,rgba(4,7,13,0.34)_34%,rgba(4,7,13,0.10)_54%,rgba(4,7,13,0.08)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.10)_48%,rgba(6,10,18,0.28)_100%)]" />
 
-          <div className="relative z-10 grid min-h-[21rem] gap-5 p-4 sm:min-h-[24rem] sm:p-6 lg:min-h-[25rem] lg:grid-cols-[minmax(0,1.22fr)_19rem] lg:grid-rows-[auto_1fr] lg:gap-6 lg:p-7 xl:min-h-[26rem] xl:grid-cols-[minmax(0,1.28fr)_19.5rem] xl:p-8">
+          <div className="relative z-10 grid min-h-[21rem] gap-5 p-4 sm:min-h-[24rem] sm:p-6 lg:min-h-[23rem] lg:grid-cols-[minmax(0,1.16fr)_17.5rem] lg:grid-rows-[auto_1fr] lg:gap-4 lg:p-5 xl:min-h-[23.75rem] xl:grid-cols-[minmax(0,1.2fr)_18rem] xl:px-6 xl:py-5">
             <div className="hidden lg:flex lg:col-span-2 lg:items-start lg:justify-end lg:gap-2.5">
               <div className="ba-training-pill">
                 <span className="ba-training-pill-label">Current Track</span>
@@ -364,21 +364,18 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
 
             <div className="flex min-h-full flex-col justify-between">
-              <div className="max-w-[22rem] lg:max-w-[24rem] xl:max-w-[25rem]">
+              <div className="max-w-[22rem] lg:max-w-[20rem] xl:max-w-[21rem]">
                 <div className="flex flex-wrap gap-2">
                   <span className="ba-hero-chip ba-hero-chip-gold lg:hidden">Today&apos;s Training</span>
                   {todayDay ? <span className="ba-hero-chip ba-hero-chip-dark lg:hidden">Day {todayDay.day} Training</span> : null}
                   <span className="ba-hero-chip ba-hero-chip-gold hidden lg:inline-flex">Sacred Training</span>
                 </div>
 
-                <h2 className="ba-font-display mt-4 max-w-[8ch] text-[2.4rem] leading-[0.86] tracking-[-0.05em] text-[#fbf2df] sm:text-[3.2rem] lg:text-[4.15rem] xl:text-[4.5rem]">
+                <h2 className="ba-font-display mt-3.5 max-w-[8ch] text-[2.4rem] leading-[0.86] tracking-[-0.05em] text-[#fbf2df] sm:text-[3.2rem] lg:text-[3.55rem] xl:text-[3.8rem]">
                   Training Arena
                 </h2>
-                <p className="ba-font-ui mt-3 max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7 lg:max-w-[20rem]">
+                <p className="ba-font-ui mt-2.5 max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7 lg:max-w-[19rem]">
                   Sharpen your mind. Strengthen your faith.
-                </p>
-                <p className="ba-font-ui mt-2 hidden max-w-[24rem] text-[0.95rem] leading-6 text-slate-300/82 lg:block">
-                  Today&apos;s training is ready. Pick a Scripture section, choose a book, and launch the next mission.
                 </p>
 
                 <div className="mt-4 flex flex-wrap gap-2.5 lg:hidden">
@@ -393,27 +390,27 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </div>
               </div>
 
-              <div className="ba-training-side-panel ba-training-side-panel-progress mt-5 w-full lg:mt-0 lg:max-w-[23rem]">
+              <div className="ba-training-side-panel ba-training-side-panel-progress mt-5 w-full lg:mt-0 lg:max-w-[18rem]">
                 <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                   Overall Progress
                 </div>
-                <div className="mt-4 flex items-center justify-between gap-4">
-                  <div className="relative flex h-22 w-22 items-center justify-center rounded-full border border-white/10 bg-black/20">
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="relative flex h-[4.4rem] w-[4.4rem] items-center justify-center rounded-full border border-white/10 bg-black/20">
                     <div className="absolute inset-2 rounded-full border border-cyan-300/18" />
-                    <div className="ba-font-display text-[1.8rem] leading-none text-[#fbf0dc]">{progressPercent}%</div>
+                    <div className="ba-font-display text-[1.5rem] leading-none text-[#fbf0dc]">{progressPercent}%</div>
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="ba-text-section-label text-white/58">Completion</p>
-                    <p className="mt-1 ba-font-ui text-sm leading-6 text-slate-200/84">
+                    <p className="mt-1 ba-font-ui text-[0.9rem] leading-5 text-slate-200/84">
                       {completedDaysCount} / {days.length} days completed
                     </p>
-                    <div className="ba-progress-track mt-3 h-1.5">
+                    <div className="ba-progress-track mt-2.5 h-1.5">
                       <div
                         className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(245,194,76,0.98),rgba(103,232,249,0.62))]"
                         style={{ width: `${progressPercent}%` }}
                       />
                     </div>
-                    <p className="mt-3 text-xs leading-5 text-slate-300/76">
+                    <p className="mt-2.5 text-[11px] leading-4.5 text-slate-300/76">
                       {completedDaysCount === 0 ? "0 / 19 Days Completed" : "Keep advancing through your current Scripture track."}
                     </p>
                   </div>
@@ -426,22 +423,22 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                   Today&apos;s Training
                 </div>
-                <h3 className="ba-font-display mt-3 text-[2rem] leading-[0.96] text-[#fbf0dd] lg:text-[2.15rem]">
+                <h3 className="ba-font-display mt-2.5 text-[1.85rem] leading-[0.96] text-[#fbf0dd] lg:text-[1.95rem]">
                   {currentTrackReference}
                 </h3>
-                <p className="mt-2 text-sm font-semibold text-amber-100/84">
+                <p className="mt-1.5 text-[0.9rem] font-semibold text-amber-100/84">
                   {todayDay ? `Day ${todayDay.day} Mission` : "Mission Ready"}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-slate-200/82">
+                <p className="mt-2.5 text-[0.92rem] leading-5.5 text-slate-200/82">
                   {todayDay
                     ? `Begin your ${currentTrack.toLowerCase()} training with focused Scripture recall and disciplined review.`
                     : "Choose an available training day and continue your Scripture work."}
                 </p>
 
-                <div className="mt-4 flex flex-col gap-3">
+                <div className="mt-3.5 flex flex-col gap-2.5">
                   <Link
                     href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
-                    className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:px-6 sm:py-3.5"
+                    className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-2.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:px-6 sm:py-3"
                   >
                     Start Today&apos;s Training
                   </Link>
@@ -457,7 +454,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="ba-training-stats-grid mt-4 grid gap-2.5 sm:mt-5 xl:grid-cols-4">
+        <section className="ba-training-stats-grid mt-3 grid gap-2.5 sm:mt-4 xl:grid-cols-4">
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Overall Progress</div>
             <div className="mt-2 text-2xl font-black text-white">{progressPercent}%</div>
@@ -485,8 +482,8 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </article>
         </section>
 
-        <section className="mt-5">
-          <div className="mb-3 flex items-center justify-between gap-3">
+        <section className="mt-4">
+          <div className="mb-2.5 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Train by Scripture Section</div>
               <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">Choose the world you want to train in.</h2>
