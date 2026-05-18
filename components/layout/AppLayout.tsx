@@ -116,38 +116,67 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 }`}
               >
                 <div className="ba-cinematic-container">
-                  <div className="ba-mobile-topbar">
-                    <div className="flex min-w-0 items-center gap-3">
-                      <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-amber-50">
-                        {renderNavIcon("brand", "h-[1.05rem] w-[1.05rem]")}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="truncate text-[0.94rem] font-semibold tracking-[0.02em] text-amber-50">
-                          Bible Athlete
-                        </div>
-                        <div className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-white/58">
-                          Dashboard
-                        </div>
-                      </div>
-                    </div>
+                  <div className={`ba-mobile-topbar ${isTrainingRoute ? "ba-mobile-topbar-training" : ""}`}>
+                    {isTrainingRoute ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => setOpen(true)}
+                          aria-label="Open navigation menu"
+                          className="ba-mobile-header-icon ba-mobile-menu-trigger text-white"
+                        >
+                          {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
+                        </button>
 
-                    <div className="flex shrink-0 items-center gap-2">
-                      <Link
-                        href="/upgrade"
-                        className="ba-mobile-header-icon text-amber-50"
-                        aria-label="Open upgrade options"
-                      >
-                        {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
-                      </Link>
-                      <button
-                        type="button"
-                        onClick={() => setOpen(true)}
-                        aria-label="Open navigation menu"
-                        className="ba-mobile-header-icon ba-mobile-menu-trigger text-white"
-                      >
-                        {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
-                      </button>
-                    </div>
+                        <div className="min-w-0 text-center">
+                          <div className="ba-font-display truncate text-[1rem] font-semibold tracking-[-0.015em] text-[#f4ead6]">
+                            Training Arena
+                          </div>
+                        </div>
+
+                        <Link
+                          href="/upgrade"
+                          className="ba-mobile-header-icon text-amber-50"
+                          aria-label="Open upgrade options"
+                        >
+                          {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
+                        </Link>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex min-w-0 items-center gap-3">
+                          <div className="ba-icon-badge ba-gold-edge inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-amber-50">
+                            {renderNavIcon("brand", "h-[1.05rem] w-[1.05rem]")}
+                          </div>
+                          <div className="min-w-0">
+                            <div className="truncate text-[0.94rem] font-semibold tracking-[0.02em] text-amber-50">
+                              Bible Athlete
+                            </div>
+                            <div className="mt-0.5 text-[10px] uppercase tracking-[0.2em] text-white/58">
+                              Dashboard
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex shrink-0 items-center gap-2">
+                          <Link
+                            href="/upgrade"
+                            className="ba-mobile-header-icon text-amber-50"
+                            aria-label="Open upgrade options"
+                          >
+                            {renderNavIcon("crown", "h-[1rem] w-[1rem]")}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={() => setOpen(true)}
+                            aria-label="Open navigation menu"
+                            className="ba-mobile-header-icon ba-mobile-menu-trigger text-white"
+                          >
+                            {renderNavIcon("menu", "h-[1.05rem] w-[1.05rem]")}
+                          </button>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

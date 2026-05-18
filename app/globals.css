@@ -665,6 +665,12 @@ textarea {
   backdrop-filter: blur(18px);
 }
 
+.ba-mobile-topbar-training {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+  align-items: center;
+}
+
 .ba-mobile-header-icon {
   display: inline-flex;
   height: 2.75rem;
@@ -1713,6 +1719,25 @@ textarea {
 }
 
 @media (max-width: 767px) {
+  .ba-top-shell {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+  }
+
+  .ba-mobile-topbar {
+    border-radius: 1.35rem;
+    padding: 0.55rem 0.7rem;
+    box-shadow:
+      0 12px 28px rgba(0, 0, 0, 0.18),
+      inset 0 1px 0 rgba(255, 252, 240, 0.04);
+  }
+
+  .ba-mobile-topbar-training .ba-mobile-header-icon {
+    height: 2.45rem;
+    width: 2.45rem;
+    border-radius: 0.95rem;
+  }
+
   .ba-book-progress-card {
     min-height: 0;
     border-radius: 1.35rem;
@@ -1743,11 +1768,25 @@ textarea {
 
 @media (max-width: 767px) {
   .ba-training-hero-hub .ba-training-hero-art {
-    background-position: 58% 34%;
+    background-position: 58% 41%;
+    filter: brightness(1.08) contrast(1.02) saturate(1.04);
   }
 
   .ba-training-hero-hub {
+    min-height: 9.7rem;
     border-radius: 1.45rem;
+  }
+
+  .ba-training-hero-overlay-desktop {
+    background:
+      radial-gradient(circle at 58% 42%, rgba(255, 231, 166, 0.34), transparent 16%),
+      radial-gradient(circle at 58% 48%, rgba(255, 193, 74, 0.14), transparent 28%),
+      linear-gradient(180deg, rgba(4, 7, 13, 0.12) 0%, rgba(4, 7, 13, 0.14) 45%, rgba(4, 7, 13, 0.34) 100%);
+  }
+
+  .ba-training-mobile-hub {
+    display: grid;
+    gap: 0;
   }
 
   .ba-training-hero-hub .ba-training-side-panel {
@@ -1755,10 +1794,28 @@ textarea {
     background:
       radial-gradient(circle at top left, rgba(255, 218, 130, 0.09), transparent 30%),
       linear-gradient(180deg, rgba(6, 10, 18, 0.62), rgba(4, 8, 15, 0.82));
+    padding: 0.82rem 0.9rem;
+  }
+
+  .ba-training-side-panel-today h3 {
+    font-size: 1.58rem;
+    line-height: 0.96;
+  }
+
+  .ba-training-side-panel-today .ba-training-primary-cta {
+    min-height: 2.7rem;
+  }
+
+  .ba-training-side-panel-progress .ba-progress-track {
+    display: none;
   }
 
   .ba-training-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ba-training-stats-grid-mobile {
+    align-items: stretch;
   }
 
   .ba-training-support-card {
@@ -1770,6 +1827,16 @@ textarea {
   .ba-training-support-card div.text-2xl {
     font-size: 1.45rem;
     line-height: 1.15;
+  }
+
+  .ba-training-support-card-mobile {
+    min-height: 0;
+    border-radius: 0.95rem;
+    padding: 0.58rem 0.35rem;
+    box-shadow:
+      0 10px 26px rgba(0, 0, 0, 0.18),
+      0 0 0 1px rgba(255, 220, 145, 0.03),
+      inset 0 1px 0 rgba(255, 252, 240, 0.04);
   }
 
   .ba-training-callout {
@@ -3201,7 +3268,8 @@ textarea {
 
 @media (max-width: 767px) {
   .ba-training-page {
-    padding-bottom: calc(var(--ba-safe-bottom) + 0.75rem);
+    padding-top: 0.15rem;
+    padding-bottom: calc(var(--ba-safe-bottom) + 0.5rem);
   }
 
   .ba-training-pill {
@@ -3227,7 +3295,7 @@ textarea {
   }
 
   .ba-training-primary-cta {
-    min-height: 2.85rem;
+    min-height: 2.75rem;
   }
 
   .ba-bottom-nav {

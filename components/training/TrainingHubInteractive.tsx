@@ -243,36 +243,90 @@ export default function TrainingHubInteractive({ days, access }: Props) {
       <div className="pointer-events-none absolute right-[-4rem] top-32 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
 
       <div className="relative mx-auto max-w-[84rem] lg:mx-0 lg:max-w-none">
-        <section className="mb-4 flex flex-col gap-3 lg:hidden">
-          <div className="min-w-0">
-            <div className="ba-text-section-label ba-text-gold text-[0.68rem] sm:text-[0.72rem]">
-              Sacred Training
-            </div>
-            <h1 className="ba-font-display mt-1 text-[1.78rem] leading-[0.94] tracking-[-0.04em] text-[#f5ead2] sm:text-[2.3rem] xl:text-[2.7rem]">
-              Training Arena
-            </h1>
-            <p className="ba-font-ui mt-1.5 max-w-[32rem] text-[0.92rem] leading-6 text-slate-300 sm:text-[0.98rem]">
-              Today&apos;s training is ready. Pick a Scripture section, choose a book, and launch the next mission.
-            </p>
-          </div>
+        <section className="ba-training-mobile-hub lg:hidden">
+          <section className="ba-training-hero ba-training-hero-hub relative overflow-hidden rounded-[1.65rem] sm:rounded-[2rem]">
+            <div
+              className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
+              style={{
+                backgroundImage: "url('/training/hero/training-arena-main.png')",
+              }}
+            />
+            <div className="ba-training-hero-overlay-desktop pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.54),transparent_11%),radial-gradient(circle_at_60%_52%,rgba(255,193,74,0.24),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.88)_0%,rgba(4,7,13,0.74)_18%,rgba(4,7,13,0.34)_34%,rgba(4,7,13,0.10)_54%,rgba(4,7,13,0.08)_100%)]" />
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.10)_48%,rgba(6,10,18,0.28)_100%)]" />
+          </section>
 
-          <div className="flex flex-wrap gap-2 lg:max-w-[34rem] lg:justify-end">
-            <div className="ba-training-pill">
-              <span className="ba-training-pill-label">Track</span>
-              <span className="ba-training-pill-value">{currentTrack}</span>
+          <section className="mt-2.5">
+            <div className="ba-training-side-panel ba-training-side-panel-today w-full">
+              <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
+                Today&apos;s Training
+              </div>
+              <h3 className="ba-font-display mt-2 text-[1.72rem] leading-[0.96] text-[#fbf0dd]">
+                {currentTrackReference}
+              </h3>
+              <p className="mt-1 text-[0.88rem] font-semibold text-amber-100/84">
+                {todayDay ? `Day ${todayDay.day} Mission` : "Mission Ready"}
+              </p>
+
+              <div className="mt-3">
+                <Link
+                  href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
+                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-2.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01]"
+                >
+                  Start Today&apos;s Training
+                </Link>
+              </div>
+
+              <Link
+                href={currentTrackHref}
+                className="mt-2 inline-flex items-center justify-center text-[0.84rem] font-semibold text-amber-100/78 transition hover:text-white"
+              >
+                View Track Progress →
+              </Link>
             </div>
-            <div className="ba-training-pill">
-              <span className="ba-training-pill-label">Available Days</span>
-              <span className="ba-training-pill-value">{days.length}</span>
+          </section>
+
+          <section className="mt-2.5">
+            <div className="ba-training-side-panel ba-training-side-panel-progress w-full">
+              <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
+                Overall Progress
+              </div>
+              <div className="mt-2.5 flex items-center gap-3">
+                <div className="relative flex h-[3.5rem] w-[3.5rem] items-center justify-center rounded-full border border-white/10 bg-black/20">
+                  <div className="absolute inset-1.5 rounded-full border border-cyan-300/18" />
+                  <div className="ba-font-display text-[1.22rem] leading-none text-[#fbf0dc]">{progressPercent}%</div>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="ba-text-section-label text-white/58">Overall Progress</p>
+                  <p className="mt-1 text-[0.86rem] leading-5 text-slate-200/84">{progressPercent}%</p>
+                  <p className="mt-1 text-[11px] leading-4.5 text-slate-300/76">
+                    {completedDaysCount} / {days.length} Days Completed
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="ba-training-pill">
-              <span className="ba-training-pill-label">Access</span>
-              <span className="ba-training-pill-value">{accessDisplay}</span>
-            </div>
-          </div>
+          </section>
+
+          <section className="ba-training-stats-grid-mobile mt-2.5 grid grid-cols-4 gap-1.5">
+            <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
+              <div className="text-[1.05rem] font-black leading-none text-white">{days.length}</div>
+              <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">Days</p>
+            </article>
+            <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
+              <div className="text-[1.05rem] font-black leading-none text-white">{totalDrills}</div>
+              <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">Drills</p>
+            </article>
+            <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
+              <div className="text-[1.05rem] font-black leading-none text-white">{todayEstimate}</div>
+              <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">min</p>
+            </article>
+            <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
+              <div className="text-[1.05rem] font-black leading-none text-white">{getDifficultyTierLabel(access.tier)}</div>
+              <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">Tiers</p>
+            </article>
+          </section>
         </section>
 
-        <section className="ba-training-hero ba-training-hero-hub relative overflow-hidden rounded-[1.65rem] sm:rounded-[2rem]">
+        <section className="hidden lg:block ba-training-hero ba-training-hero-hub relative overflow-hidden rounded-[1.65rem] sm:rounded-[2rem]">
           <div
             className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
             style={{
@@ -385,7 +439,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="ba-training-stats-grid mt-3 grid gap-2.5 sm:mt-4 xl:grid-cols-4">
+        <section className="hidden lg:grid ba-training-stats-grid mt-3 gap-2.5 sm:mt-4 xl:grid-cols-4">
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Overall Progress</div>
             <div className="mt-2 text-2xl font-black text-white">{progressPercent}%</div>
@@ -413,7 +467,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </article>
         </section>
 
-        <section className="mt-4">
+        <section className="mt-3 lg:mt-4">
           <div className="mb-2.5 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Train by Scripture Section</div>
