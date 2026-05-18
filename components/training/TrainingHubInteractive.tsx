@@ -311,8 +311,8 @@ export default function TrainingHubInteractive({ days, access }: Props) {
       <div className="pointer-events-none absolute left-[-4rem] top-24 h-40 w-40 rounded-full bg-amber-300/10 blur-3xl sm:h-48 sm:w-48" />
       <div className="pointer-events-none absolute right-[-4rem] top-32 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-64 sm:w-64" />
 
-      <div className="relative mx-auto max-w-[84rem]">
-        <section className="mb-4 flex flex-col gap-3 lg:mb-5 lg:flex-row lg:items-start lg:justify-between">
+      <div className="relative mx-auto max-w-[84rem] lg:mx-0 lg:max-w-none">
+        <section className="mb-4 flex flex-col gap-3 lg:hidden">
           <div className="min-w-0">
             <div className="ba-text-section-label ba-text-gold text-[0.68rem] sm:text-[0.72rem]">
               Sacred Training
@@ -345,33 +345,43 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           <div
             className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
             style={{
-              backgroundImage: "url('/images/dashboard/training-arena-hero-sanctum.png')",
+              backgroundImage: "url('/training/hero/training-arena-main.png')",
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.54),transparent_11%),radial-gradient(circle_at_60%_52%,rgba(255,193,74,0.24),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.88)_0%,rgba(4,7,13,0.74)_18%,rgba(4,7,13,0.34)_34%,rgba(4,7,13,0.10)_54%,rgba(4,7,13,0.08)_100%)]" />
+          <div className="ba-training-hero-overlay-desktop pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.54),transparent_11%),radial-gradient(circle_at_60%_52%,rgba(255,193,74,0.24),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.88)_0%,rgba(4,7,13,0.74)_18%,rgba(4,7,13,0.34)_34%,rgba(4,7,13,0.10)_54%,rgba(4,7,13,0.08)_100%)]" />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.10)_48%,rgba(6,10,18,0.28)_100%)]" />
 
-          <div className="relative z-10 grid min-h-[21rem] gap-5 p-4 sm:min-h-[24rem] sm:p-6 lg:grid-cols-[minmax(0,1fr)_17rem] lg:p-7 xl:min-h-[25rem] xl:grid-cols-[minmax(0,1fr)_18rem] xl:p-8">
+          <div className="relative z-10 grid min-h-[21rem] gap-5 p-4 sm:min-h-[24rem] sm:p-6 lg:min-h-[25rem] lg:grid-cols-[minmax(0,1.22fr)_19rem] lg:grid-rows-[auto_1fr] lg:gap-6 lg:p-7 xl:min-h-[26rem] xl:grid-cols-[minmax(0,1.28fr)_19.5rem] xl:p-8">
+            <div className="hidden lg:flex lg:col-span-2 lg:items-start lg:justify-end lg:gap-2.5">
+              <div className="ba-training-pill">
+                <span className="ba-training-pill-label">Current Track</span>
+                <span className="ba-training-pill-value">Pentateuch • {currentTrack}</span>
+              </div>
+              <div className="ba-training-pill">
+                <span className="ba-training-pill-label">Access</span>
+                <span className="ba-training-pill-value">{accessDisplay}</span>
+              </div>
+            </div>
+
             <div className="flex min-h-full flex-col justify-between">
-              <div className="max-w-[33rem]">
+              <div className="max-w-[22rem] lg:max-w-[24rem] xl:max-w-[25rem]">
                 <div className="flex flex-wrap gap-2">
-                  <span className="ba-hero-chip ba-hero-chip-gold">Today&apos;s Training</span>
-                  {todayDay ? <span className="ba-hero-chip ba-hero-chip-dark">Day {todayDay.day} Training</span> : null}
+                  <span className="ba-hero-chip ba-hero-chip-gold lg:hidden">Today&apos;s Training</span>
+                  {todayDay ? <span className="ba-hero-chip ba-hero-chip-dark lg:hidden">Day {todayDay.day} Training</span> : null}
+                  <span className="ba-hero-chip ba-hero-chip-gold hidden lg:inline-flex">Sacred Training</span>
                 </div>
 
-                <h2 className="ba-font-display mt-4 max-w-[9ch] text-[2.4rem] leading-[0.86] tracking-[-0.05em] text-[#fbf2df] sm:text-[3.2rem] lg:text-[3.8rem] xl:text-[4.1rem]">
-                  Today&apos;s Training
+                <h2 className="ba-font-display mt-4 max-w-[8ch] text-[2.4rem] leading-[0.86] tracking-[-0.05em] text-[#fbf2df] sm:text-[3.2rem] lg:text-[4.15rem] xl:text-[4.5rem]">
+                  Training Arena
                 </h2>
-                <p className="ba-font-ui mt-3 text-[1rem] font-semibold leading-7 text-cyan-300 sm:text-[1.12rem]">
-                  {currentTrackReference}
+                <p className="ba-font-ui mt-3 max-w-[25rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7 lg:max-w-[20rem]">
+                  Sharpen your mind. Strengthen your faith.
                 </p>
-                <p className="ba-font-ui mt-3 max-w-[28rem] text-sm leading-6 text-slate-200/88 sm:text-base sm:leading-7">
-                  {todayDay
-                    ? `Begin your ${currentTrack.toLowerCase()} training with focused Scripture recall, disciplined review, and the next mission in your arena path.`
-                    : "Choose an available training day and continue your Scripture work."}
+                <p className="ba-font-ui mt-2 hidden max-w-[24rem] text-[0.95rem] leading-6 text-slate-300/82 lg:block">
+                  Today&apos;s training is ready. Pick a Scripture section, choose a book, and launch the next mission.
                 </p>
 
-                <div className="mt-4 flex flex-wrap gap-2.5">
+                <div className="mt-4 flex flex-wrap gap-2.5 lg:hidden">
                   <div className="ba-training-callout">
                     <span className="ba-training-callout-label">Reference</span>
                     <span className="ba-training-callout-value">{currentTrackReference}</span>
@@ -383,26 +393,9 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 </div>
               </div>
 
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
-                  className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:w-auto sm:min-w-[15rem] sm:px-6 sm:py-3.5"
-                >
-                  Start Today&apos;s Training
-                </Link>
-                <Link
-                  href={currentTrackHref}
-                  className="ba-training-secondary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-semibold text-white transition sm:w-auto sm:min-w-[12.5rem]"
-                >
-                  View Track Progress
-                </Link>
-              </div>
-            </div>
-
-            <div className="relative z-10 flex flex-col justify-end lg:items-stretch">
-              <div className="ba-training-side-panel w-full">
+              <div className="ba-training-side-panel ba-training-side-panel-progress mt-5 w-full lg:mt-0 lg:max-w-[23rem]">
                 <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
-                  Your Progress
+                  Overall Progress
                 </div>
                 <div className="mt-4 flex items-center justify-between gap-4">
                   <div className="relative flex h-22 w-22 items-center justify-center rounded-full border border-white/10 bg-black/20">
@@ -421,9 +414,43 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                       />
                     </div>
                     <p className="mt-3 text-xs leading-5 text-slate-300/76">
-                      {completedDaysCount === 0 ? "Start your first mission to build arena momentum." : "Keep advancing through your current Scripture track."}
+                      {completedDaysCount === 0 ? "0 / 19 Days Completed" : "Keep advancing through your current Scripture track."}
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-col justify-end lg:row-span-2 lg:justify-center lg:items-stretch">
+              <div className="ba-training-side-panel ba-training-side-panel-today w-full">
+                <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
+                  Today&apos;s Training
+                </div>
+                <h3 className="ba-font-display mt-3 text-[2rem] leading-[0.96] text-[#fbf0dd] lg:text-[2.15rem]">
+                  {currentTrackReference}
+                </h3>
+                <p className="mt-2 text-sm font-semibold text-amber-100/84">
+                  {todayDay ? `Day ${todayDay.day} Mission` : "Mission Ready"}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-200/82">
+                  {todayDay
+                    ? `Begin your ${currentTrack.toLowerCase()} training with focused Scripture recall and disciplined review.`
+                    : "Choose an available training day and continue your Scripture work."}
+                </p>
+
+                <div className="mt-4 flex flex-col gap-3">
+                  <Link
+                    href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
+                    className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-3 text-sm font-black text-[#2d1700] transition hover:scale-[1.01] sm:px-6 sm:py-3.5"
+                  >
+                    Start Today&apos;s Training
+                  </Link>
+                  <Link
+                    href={currentTrackHref}
+                    className="inline-flex items-center justify-center text-sm font-semibold text-amber-100/84 transition hover:text-white"
+                  >
+                    View Track Progress →
+                  </Link>
                 </div>
               </div>
             </div>
@@ -432,17 +459,22 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
         <section className="ba-training-stats-grid mt-4 grid gap-2.5 sm:mt-5 xl:grid-cols-4">
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
-            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Training Days</div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Overall Progress</div>
+            <div className="mt-2 text-2xl font-black text-white">{progressPercent}%</div>
+            <p className="mt-1.5 text-xs leading-5 text-slate-300/78">{completedDaysCount} / {days.length} Days Completed</p>
+          </article>
+          <article className="ba-training-support-card rounded-[1.35rem] p-4">
+            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/72">Training Days</div>
             <div className="mt-2 text-2xl font-black text-white">{days.length}</div>
             <p className="mt-1.5 text-xs leading-5 text-slate-300/78">Real Training Arena day packs available now.</p>
           </article>
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
-            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/72">Drills</div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-violet-100/72">Drills</div>
             <div className="mt-2 text-2xl font-black text-white">{totalDrills}</div>
             <p className="mt-1.5 text-xs leading-5 text-slate-300/78">Prompts distributed across all current day packs.</p>
           </article>
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
-            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-violet-100/72">Daily Commitment</div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/72">Daily Commitment</div>
             <div className="mt-2 text-2xl font-black text-white">{todayEstimate}</div>
             <p className="mt-1.5 text-xs leading-5 text-slate-300/78">Short, focused, and shaped by your access depth.</p>
           </article>
@@ -454,20 +486,21 @@ export default function TrainingHubInteractive({ days, access }: Props) {
         </section>
 
         <section className="mt-5">
-          <div className="mb-2.5 flex items-center justify-between gap-3">
+          <div className="mb-3 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Train by Scripture Section</div>
-              <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">
-                Choose the world you want to train in.
-              </h2>
+              <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">Choose the world you want to train in.</h2>
             </div>
-            <div className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 lg:inline-flex">
-              {selectedSection?.title ?? "Section Selected"}
-            </div>
+            <button
+              type="button"
+              className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 transition hover:bg-white/[0.06] lg:inline-flex"
+            >
+              View All Sections →
+            </button>
           </div>
 
-          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-4 xl:grid-cols-5">
-            {sectionCards.map((section) => {
+          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-5">
+            {sectionCards.slice(0, 5).map((section) => {
               const selected = section.key === selectedSectionKey
               const statusCopy = section.hasLiveData
                 ? `${section.availableDayCount} live day${section.availableDayCount === 1 ? "" : "s"}`

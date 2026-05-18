@@ -890,6 +890,14 @@ textarea {
   backdrop-filter: blur(14px);
 }
 
+.ba-training-side-panel-progress {
+  max-width: 24rem;
+}
+
+.ba-training-side-panel-today {
+  max-width: 19rem;
+}
+
 .ba-training-today-card {
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
@@ -1400,6 +1408,133 @@ textarea {
     radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 20%),
     radial-gradient(circle at top left, rgba(255, 221, 136, 0.08), transparent 22%),
     linear-gradient(180deg, rgba(11, 16, 27, 0.82), rgba(5, 8, 15, 0.92));
+}
+
+@media (min-width: 1024px) {
+  .ba-training-page {
+    padding-inline: 0;
+    padding-top: 0.35rem;
+    padding-bottom: 1rem;
+  }
+
+  .ba-training-page > .relative {
+    width: 100%;
+    padding-inline: 0;
+  }
+
+  .ba-training-hero-hub {
+    min-height: 29rem;
+    border-radius: 1.9rem;
+  }
+
+  .ba-training-hero-hub .ba-training-hero-art {
+    background-position: 52% 48%;
+    filter: brightness(1.08) contrast(1.1) saturate(1.08);
+  }
+
+  .ba-training-hero-overlay-desktop {
+    background:
+      radial-gradient(circle at 56% 46%, rgba(255, 231, 166, 0.5), transparent 10%),
+      radial-gradient(circle at 57% 50%, rgba(255, 193, 74, 0.22), transparent 24%),
+      linear-gradient(90deg, rgba(4, 7, 13, 0.78) 0%, rgba(4, 7, 13, 0.58) 18%, rgba(4, 7, 13, 0.22) 36%, rgba(4, 7, 13, 0.08) 54%, rgba(4, 7, 13, 0.06) 100%);
+  }
+
+  .ba-training-pill {
+    gap: 0.55rem;
+    padding: 0.62rem 0.82rem;
+  }
+
+  .ba-training-pill-label {
+    font-size: 0.56rem;
+  }
+
+  .ba-training-pill-value {
+    font-size: 0.84rem;
+  }
+
+  .ba-training-side-panel {
+    border-radius: 1.35rem;
+    padding: 0.95rem 1rem;
+  }
+
+  .ba-training-side-panel-progress {
+    align-self: flex-start;
+  }
+
+  .ba-training-side-panel-today {
+    justify-self: end;
+  }
+
+  .ba-training-stats-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.72rem;
+  }
+
+  .ba-training-support-card {
+    min-height: 7.2rem;
+    border-radius: 1.15rem;
+    padding: 0.9rem 0.95rem;
+  }
+
+  .ba-training-support-card div.text-2xl {
+    font-size: 1.72rem;
+    line-height: 1.1;
+  }
+
+  .ba-training-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    overflow: visible;
+    padding-inline: 0;
+  }
+
+  .ba-training-section-card {
+    min-height: 11rem;
+    min-width: 0;
+    border-radius: 1.2rem;
+  }
+
+  .ba-training-section-card h3 {
+    font-size: 1.28rem;
+  }
+
+  .ba-training-book-card {
+    min-height: 9.5rem;
+    min-width: 0;
+    border-radius: 1.15rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ba-training-hero-hub {
+    min-height: 30rem;
+  }
+
+  .ba-training-page > .relative {
+    max-width: none;
+  }
+
+  .ba-training-side-panel-today {
+    max-width: 19.5rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .ba-training-page {
+    padding-inline: 0;
+  }
+
+  .ba-training-hero-hub {
+    min-height: 31rem;
+  }
+}
+
+@media (max-width: 1279px) {
+  .ba-training-side-panel-progress,
+  .ba-training-side-panel-today {
+    max-width: none;
+  }
 }
 
 @media (min-width: 1024px) {
