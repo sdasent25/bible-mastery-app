@@ -339,6 +339,22 @@ export default function DashboardPage() {
   const planMeta = getPlanMeta(plan, Boolean(familyId))
   const canAccessQuests = isProPlusPlan
   const canAccessVerseMemory = canAccessFlashcards(plan)
+  const isPaidTrainingPlan =
+    plan === "pro" ||
+    plan === "pro_plus" ||
+    plan === "family_pro" ||
+    plan === "family_pro_plus"
+  const trainingArenaBadge = isPaidTrainingPlan ? "Challenging • 5 Rounds" : "Preview Available"
+  const trainingArenaCopy = isPaidTrainingPlan
+    ? "Build discipline. Strengthen your spirit."
+    : "Limited training access. Begin your first rounds."
+  const questsBadge = canAccessQuests ? "Daily Quest Available" : "Unlock with Pro+"
+  const questsCopy = canAccessQuests
+    ? "Special challenges for Scripture mastery."
+    : "Pro+ challenge mode for elite Scripture mastery."
+  const verseMemoryBadge = canAccessVerseMemory
+    ? "Daily Workout • 10 Verses"
+    : "Unlock with Pro"
 
   if (loading) {
     return (
@@ -479,16 +495,17 @@ export default function DashboardPage() {
                 <div className="mt-1.5 grid gap-2.5 lg:grid-cols-3">
                   <DashboardRecommendationCard
                     title="Training Arena"
-                    copy="Build discipline. Strengthen your spirit."
-                    badge="Challenging • 5 Rounds"
+                    copy={trainingArenaCopy}
+                    badge={trainingArenaBadge}
                     accent="training"
                     imageSrc="/images/dashboard/training-arena-hero-sanctum.png"
                     onClick={() => router.push("/training")}
                   />
                   <DashboardRecommendationCard
                     title="Quests"
-                    copy="Special challenges for Scripture mastery."
-                    badge="Daily Quest Available"
+                    copy={questsCopy}
+                    badge={questsBadge}
+                    lockedLabel="Pro+ Locked"
                     accent="quests"
                     imageSrc="/training/sections/pentateuch.png"
                     locked={!canAccessQuests}
@@ -497,7 +514,8 @@ export default function DashboardPage() {
                   <DashboardRecommendationCard
                     title="Verse Memory"
                     copy="Hide God&apos;s Word in your heart."
-                    badge="Daily Workout • 10 Verses"
+                    badge={verseMemoryBadge}
+                    lockedLabel="Pro Locked"
                     accent="memory"
                     imageSrc="/images/dashboard/verse-memory-hero-gods-word.png"
                     locked={!canAccessVerseMemory}

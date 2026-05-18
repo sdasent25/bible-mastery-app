@@ -104,8 +104,8 @@ export default function DashboardRightRail({
           </div>
         </div>
         <div className="mt-2 flex flex-wrap gap-1.75">
-          <span className="ba-rail-reward-chip">+XP Progress</span>
-          <span className="ba-rail-reward-chip ba-rail-reward-chip--ember">+Streak Momentum</span>
+          <span className="ba-rail-reward-chip">Milestone Progress</span>
+          <span className="ba-rail-reward-chip ba-rail-reward-chip--ember">Keep Streak Alive</span>
         </div>
         <div className="ba-text-section-label mt-2 text-[0.5rem] text-white/42">
           {completedMissionCount} of {totalSegments} Genesis missions completed
@@ -113,7 +113,7 @@ export default function DashboardRightRail({
       </section>
 
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Rank Progress</div>
+        <div className="ba-rail-kicker">Athlete Rank</div>
         <div className="mt-2 flex items-center gap-2.25">
           <div className="ba-rail-rank-medallion">
             {renderNavIcon("brand", "h-5 w-5")}
@@ -123,7 +123,7 @@ export default function DashboardRightRail({
               Sapphire II
             </div>
             <div className="ba-font-ui mt-0.35 text-[0.58rem] leading-[1.35] text-white/48">
-              Top 18%
+              Competitive ranking coming soon
             </div>
           </div>
         </div>
@@ -135,14 +135,14 @@ export default function DashboardRightRail({
             />
           </div>
           <div className="ba-text-section-label mt-1 text-[0.5rem] text-white/44">
-            2,520 XP to Sapphire I
+            Preview progression track
           </div>
         </div>
         {/* Cosmetic rank display until a real dashboard rank system exists. */}
       </section>
 
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Weekly Rewards</div>
+        <div className="ba-rail-kicker">Weekly Rewards Preview</div>
         <div className="mt-2 grid grid-cols-3 gap-1.5">
           <div className="ba-weekly-reward-card">
             <span className="ba-weekly-reward-icon ba-weekly-reward-icon--cyan">◈</span>
@@ -159,6 +159,9 @@ export default function DashboardRightRail({
             <span className="ba-font-display text-[1.02rem] font-bold text-[#f7efe2]">1</span>
             <span className="ba-text-section-label text-[0.5rem] text-white/46">Chest</span>
           </div>
+        </div>
+        <div className="ba-text-section-label mt-2 text-[0.5rem] text-white/42">
+          Reward system preview
         </div>
         {/* Static reward placeholders for UI presentation until real weekly reward data is available. */}
       </section>

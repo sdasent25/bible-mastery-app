@@ -8,6 +8,7 @@ type DashboardRecommendationCardProps = {
   title: string
   copy: string
   badge?: string
+  lockedLabel?: string
   accent: "training" | "quests" | "memory"
   imageSrc: string
   locked?: boolean
@@ -19,6 +20,7 @@ export default function DashboardRecommendationCard({
   title,
   copy,
   badge,
+  lockedLabel = "Locked",
   accent,
   imageSrc,
   locked = false,
@@ -60,7 +62,7 @@ export default function DashboardRecommendationCard({
         {locked ? (
           <div className="mb-auto flex justify-end">
             <span className="ba-text-section-label rounded-full border border-amber-200/18 bg-[#130d09]/76 px-2.25 py-0.9 text-[0.48rem] text-amber-100">
-              Locked
+              {lockedLabel}
             </span>
           </div>
         ) : null}
