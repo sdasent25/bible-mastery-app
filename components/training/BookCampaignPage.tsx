@@ -133,16 +133,6 @@ export default function BookCampaignPage({
       <div className="pointer-events-none absolute right-[-5rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-72 sm:w-72" />
 
       <div className="relative mx-auto max-w-[84rem]">
-        <section className="mb-3">
-          <Link
-            href="/training"
-            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-white/82 transition hover:bg-white/[0.07]"
-          >
-            <span aria-hidden="true">←</span>
-            <span>Back to Training Arena</span>
-          </Link>
-        </section>
-
         <section className="ba-book-campaign-hero relative overflow-hidden rounded-[1.6rem] sm:rounded-[1.9rem]">
           <div
             className="ba-book-campaign-hero-art pointer-events-none absolute inset-0"
@@ -157,7 +147,14 @@ export default function BookCampaignPage({
 
           <div className="relative grid gap-4 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_16.5rem] lg:gap-5 lg:p-7 xl:grid-cols-[minmax(0,1fr)_18rem] xl:p-8">
             <div className="min-w-0">
-              <div className="ba-text-section-label text-amber-100/82">Book Campaign</div>
+              <Link
+                href="/training"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/24 px-3.5 py-2 text-sm font-semibold text-white/82 backdrop-blur-sm transition hover:bg-black/34"
+              >
+                <span aria-hidden="true">←</span>
+                <span>Back to Training Arena</span>
+              </Link>
+              <div className="mt-4 ba-text-section-label text-amber-100/82">Book Campaign</div>
               <h1 className="ba-font-display mt-2 text-[2.55rem] leading-[0.92] tracking-[-0.05em] text-[#f9efde] sm:text-[3.6rem] lg:text-[4rem]">
                 {book.title}
               </h1>
@@ -181,40 +178,47 @@ export default function BookCampaignPage({
 
               <div className="mt-5 grid gap-2.5 sm:grid-cols-3">
                 <div className="ba-book-stat-chip">
-                  <div className="ba-book-stat-label">Missions</div>
-                  <div className="ba-book-stat-value">{missionCount}</div>
-                </div>
-                <div className="ba-book-stat-chip">
-                  <div className="ba-book-stat-label">Daily Time</div>
-                  <div className="ba-book-stat-value">
-                    {featuredMission ? getEstimatedTime(featuredMission.itemCount, access.tier) : "~15 min"}
+                  <div className="ba-book-stat-icon">✦</div>
+                  <div>
+                    <div className="ba-book-stat-label">Missions</div>
+                    <div className="ba-book-stat-value">{missionCount} Missions</div>
                   </div>
                 </div>
                 <div className="ba-book-stat-chip">
-                  <div className="ba-book-stat-label">Difficulty</div>
-                  <div className="ba-book-stat-value">{getTierCount(access)}</div>
+                  <div className="ba-book-stat-icon">◔</div>
+                  <div>
+                    <div className="ba-book-stat-label">Daily Time</div>
+                    <div className="ba-book-stat-value">
+                      {featuredMission ? getEstimatedTime(featuredMission.itemCount, access.tier) : "~15 min"} per day
+                    </div>
+                  </div>
+                </div>
+                <div className="ba-book-stat-chip">
+                  <div className="ba-book-stat-icon">⟁</div>
+                  <div>
+                    <div className="ba-book-stat-label">Difficulty</div>
+                    <div className="ba-book-stat-value">{getTierCount(access)}</div>
+                  </div>
                 </div>
               </div>
             </div>
 
             <aside className="ba-book-progress-card flex flex-col justify-between">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <div className="ba-text-section-label text-cyan-100/72">Campaign Progress</div>
-                  <div className="mt-4 ba-font-display text-[2.3rem] leading-none text-[#fbf0dd]">
-                    {progressPercent}%
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-300/80">
-                    {completedMissionCount} / {missionCount} missions completed
-                  </p>
+              <div className="ba-book-crest-shell mx-auto">
+                <img
+                  src={book.crestImage}
+                  alt={`${book.title} campaign crest`}
+                  className="h-16 w-16 object-contain sm:h-18 sm:w-18"
+                />
+              </div>
+              <div className="mt-4 text-center">
+                <div className="ba-text-section-label text-cyan-100/72">Campaign Progress</div>
+                <div className="mt-4 ba-font-display text-[2.7rem] leading-none text-[#fbf0dd]">
+                  {progressPercent}%
                 </div>
-                <div className="ba-book-crest-shell">
-                  <img
-                    src={book.crestImage}
-                    alt={`${book.title} campaign crest`}
-                    className="h-16 w-16 object-contain sm:h-18 sm:w-18"
-                  />
-                </div>
+                <p className="mt-2 text-sm leading-6 text-slate-300/80">
+                  {completedMissionCount} / {missionCount} missions completed
+                </p>
               </div>
 
               <div className="mt-5">
@@ -264,7 +268,7 @@ export default function BookCampaignPage({
                 <div className="flex flex-col items-stretch gap-3 lg:items-end">
                   <p className="max-w-[15rem] text-sm leading-6 text-slate-300/76 lg:text-right">
                     {currentMission
-                      ? "Current mission selected from real training data. Future path states remain conservative until progression persistence exists."
+                      ? "Complete today’s mission to continue the path. Future path states remain conservative until progression persistence exists."
                       : access.tier === "free"
                         ? "This book is outside the free preview window. Upgrade to continue the path."
                         : "This campaign is loaded, but no playable mission is currently available."}
@@ -359,11 +363,14 @@ export default function BookCampaignPage({
                       {status === "today"
                         ? "Start here."
                         : status === "upcoming"
-                          ? "Next in the path."
+                          ? "Complete today’s mission to continue the path."
                           : status === "preview_locked"
                             ? "Free preview ends after day 3."
                             : "Keep advancing to continue the path."}
                     </p>
+                    <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-white/52">
+                      {getStatusCopy(status, access)}
+                    </div>
                   </article>
                 )
               })}

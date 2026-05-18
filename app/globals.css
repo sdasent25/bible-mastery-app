@@ -1103,6 +1103,7 @@ textarea {
     inset 0 1px 0 rgba(255, 252, 240, 0.05),
     0 0 32px rgba(255, 191, 36, 0.08);
   backdrop-filter: blur(16px);
+  min-height: 100%;
 }
 
 .ba-book-crest-shell {
@@ -1155,6 +1156,9 @@ textarea {
 }
 
 .ba-book-stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   border-radius: 1.05rem;
   border: 1px solid rgba(255, 223, 151, 0.14);
   background:
@@ -1163,6 +1167,24 @@ textarea {
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 252, 240, 0.04);
+}
+
+.ba-book-stat-icon {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 223, 151, 0.14);
+  background:
+    radial-gradient(circle at top, rgba(255, 244, 214, 0.12), transparent 58%),
+    linear-gradient(180deg, rgba(19, 24, 38, 0.98), rgba(8, 12, 20, 0.98));
+  color: rgba(255, 241, 204, 0.88);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 252, 240, 0.06),
+    0 0 18px rgba(255, 191, 36, 0.06);
 }
 
 .ba-book-stat-label {
@@ -1198,7 +1220,7 @@ textarea {
 .ba-book-path-card {
   position: relative;
   overflow: visible;
-  min-height: 12rem;
+  min-height: 12.5rem;
   border-radius: 1.2rem;
   padding: 1rem;
   box-shadow:
@@ -1271,6 +1293,32 @@ textarea {
 .ba-book-path-node.is-preview-locked {
   border-color: rgba(251, 191, 36, 0.18);
   color: rgba(255, 237, 213, 0.82);
+}
+
+@media (max-width: 767px) {
+  .ba-book-progress-card {
+    min-height: 0;
+  }
+
+  .ba-book-current-mission {
+    padding: 0.95rem;
+  }
+
+  .ba-book-mission-shield {
+    min-height: 6rem;
+    border-radius: 1.25rem;
+  }
+
+  .ba-book-path-rail {
+    grid-auto-columns: minmax(11.25rem, 1fr);
+    gap: 0.75rem;
+    padding-top: 2rem;
+  }
+
+  .ba-book-path-card {
+    min-height: 11.75rem;
+    padding: 0.85rem;
+  }
 }
 
 .ba-gold-edge {
