@@ -256,7 +256,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(6,10,18,0.03),rgba(6,10,18,0.10)_48%,rgba(6,10,18,0.28)_100%)]" />
           </section>
 
-          <section className="mt-2.5">
+          <section className="mt-1.5">
             <div className="ba-training-side-panel ba-training-side-panel-today w-full">
               <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                 Today&apos;s Training
@@ -268,7 +268,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 {todayDay ? `Day ${todayDay.day} Mission` : "Mission Ready"}
               </p>
 
-              <div className="mt-3">
+              <div className="mt-2">
                 <Link
                   href={todayDay ? `/training/day/${todayDay.day}/play` : "/training"}
                   className="ba-training-primary-cta inline-flex w-full items-center justify-center px-5 py-2.5 text-sm font-black text-[#2d1700] transition hover:scale-[1.01]"
@@ -286,12 +286,12 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
           </section>
 
-          <section className="mt-2.5">
+          <section className="mt-1.5">
             <div className="ba-training-side-panel ba-training-side-panel-progress w-full">
               <div className="text-[10px] font-bold uppercase tracking-[0.26em] text-amber-100/72">
                 Overall Progress
               </div>
-              <div className="mt-2.5 flex items-center gap-3">
+              <div className="mt-2 flex items-center gap-2.5">
                 <div className="relative flex h-[3.5rem] w-[3.5rem] items-center justify-center rounded-full border border-white/10 bg-black/20">
                   <div className="absolute inset-1.5 rounded-full border border-cyan-300/18" />
                   <div className="ba-font-display text-[1.22rem] leading-none text-[#fbf0dc]">{progressPercent}%</div>
@@ -306,7 +306,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
           </section>
 
-          <section className="ba-training-stats-grid-mobile mt-2.5 grid grid-cols-4 gap-1.5">
+          <section className="ba-training-stats-grid-mobile mt-1.5 grid grid-cols-4 gap-1.5">
             <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
               <div className="text-[1.05rem] font-black leading-none text-white">{days.length}</div>
               <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">Days</p>
@@ -467,8 +467,8 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </article>
         </section>
 
-        <section className="mt-2.5 lg:mt-4">
-          <div className="mb-1.5 lg:mb-2.5 flex items-center justify-between gap-3">
+        <section className="mt-1.5 lg:mt-4">
+          <div className="mb-1 lg:mb-2.5 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Train by Scripture Section</div>
               <h2 className="ba-font-display mt-1 hidden text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] lg:block lg:text-[1.7rem]">Choose the world you want to train in.</h2>

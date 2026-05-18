@@ -111,8 +111,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="ba-content-frame flex min-w-0 flex-1 flex-col md:min-h-0">
             {showMobileNav ? (
               <div
-                className={`ba-top-shell sticky top-0 z-30 px-4 lg:hidden ${
-                  isTrainingRoute ? "py-2" : "py-3"
+                className={`ba-top-shell sticky top-0 z-30 lg:hidden ${
+                  isTrainingRoute ? "px-3 py-1" : "px-4 py-3"
                 }`}
               >
                 <div className="ba-cinematic-container">

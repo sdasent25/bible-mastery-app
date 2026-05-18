@@ -1720,30 +1720,30 @@ textarea {
 
 @media (max-width: 767px) {
   .ba-top-shell {
-    padding-top: 0.18rem !important;
-    padding-bottom: 0.18rem !important;
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
   }
 
   .ba-mobile-topbar {
-    border-radius: 1.15rem;
-    padding: 0.36rem 0.5rem;
+    border-radius: 1rem;
+    padding: 0.28rem 0.42rem;
     box-shadow:
-      0 10px 22px rgba(0, 0, 0, 0.16),
+      0 8px 18px rgba(0, 0, 0, 0.14),
       inset 0 1px 0 rgba(255, 252, 240, 0.04);
   }
 
   .ba-mobile-topbar-training {
-    grid-template-columns: 2.1rem minmax(0, 1fr) 2.1rem;
+    grid-template-columns: 1.9rem minmax(0, 1fr) 1.9rem;
   }
 
   .ba-mobile-topbar-training .ba-mobile-header-icon {
-    height: 2.1rem;
-    width: 2.1rem;
-    border-radius: 0.82rem;
+    height: 1.9rem;
+    width: 1.9rem;
+    border-radius: 0.72rem;
   }
 
   .ba-mobile-topbar-training .ba-font-display {
-    font-size: 0.84rem;
+    font-size: 0.78rem;
   }
 
   .ba-book-progress-card {
@@ -1781,8 +1781,8 @@ textarea {
   }
 
   .ba-training-hero-hub {
-    min-height: 7.9rem;
-    border-radius: 1.2rem;
+    min-height: 6.8rem;
+    border-radius: 1.05rem;
   }
 
   .ba-training-hero-overlay-desktop {
@@ -1798,22 +1798,22 @@ textarea {
   }
 
   .ba-training-hero-hub .ba-training-side-panel {
-    border-radius: 1.05rem;
+    border-radius: 0.96rem;
     background:
       radial-gradient(circle at top left, rgba(255, 218, 130, 0.09), transparent 30%),
       linear-gradient(180deg, rgba(6, 10, 18, 0.62), rgba(4, 8, 15, 0.82));
-    padding: 0.62rem 0.7rem;
+    padding: 0.48rem 0.58rem;
   }
 
   .ba-training-side-panel-today h3 {
-    font-size: 1.18rem;
+    font-size: 1.02rem;
     line-height: 0.96;
   }
 
   .ba-training-side-panel-today .ba-training-primary-cta {
-    min-height: 2.2rem;
-    font-size: 0.82rem;
-    border-radius: 0.95rem;
+    min-height: 1.92rem;
+    font-size: 0.74rem;
+    border-radius: 0.78rem;
   }
 
   .ba-training-mobile-track-link {
@@ -1826,7 +1826,7 @@ textarea {
 
   .ba-training-mobile-progress-value {
     margin-top: 0;
-    font-size: 0.82rem;
+    font-size: 0.74rem;
     line-height: 1.15;
   }
 
@@ -1852,12 +1852,23 @@ textarea {
 
   .ba-training-support-card-mobile {
     min-height: 0;
-    border-radius: 0.82rem;
-    padding: 0.42rem 0.25rem;
+    border-radius: 0.72rem;
+    padding: 0.34rem 0.18rem;
     box-shadow:
       0 8px 18px rgba(0, 0, 0, 0.16),
       0 0 0 1px rgba(255, 220, 145, 0.03),
       inset 0 1px 0 rgba(255, 252, 240, 0.04);
+  }
+
+  .ba-training-support-card-mobile > div:first-child {
+    font-size: 0.88rem !important;
+    line-height: 1;
+  }
+
+  .ba-training-support-card-mobile p {
+    margin-top: 0.16rem !important;
+    font-size: 0.56rem !important;
+    line-height: 1.05rem !important;
   }
 
   .ba-training-callout {
@@ -1887,19 +1898,32 @@ textarea {
   }
 
   .ba-training-section-card {
-    min-width: 15.35rem;
-    min-height: 7.5rem;
+    min-width: 14.9rem;
+    min-height: 6.3rem;
   }
 
   .ba-training-section-card h3 {
-    margin-top: 2.4rem;
-    font-size: 1rem;
+    margin-top: 1.8rem;
+    font-size: 0.92rem;
+  }
+
+  .ba-training-section-card .relative {
+    padding: 0.58rem;
+  }
+
+  .ba-training-section-card p.mt-1 {
+    margin-top: 0.18rem;
+    font-size: 0.54rem;
+    letter-spacing: 0.12em;
   }
 
   .ba-training-section-card p.mt-2 {
-    margin-top: 0.35rem;
-    font-size: 0.68rem;
-    line-height: 1.3;
+    display: none;
+  }
+
+  .ba-training-section-card .mt-auto {
+    padding-top: 0.35rem;
+    font-size: 10px;
   }
 
   .ba-training-book-card {
@@ -3302,7 +3326,7 @@ textarea {
 @media (max-width: 767px) {
   .ba-training-page {
     padding-top: 0.15rem;
-    padding-bottom: calc(var(--ba-safe-bottom) + 0.25rem);
+    padding-bottom: calc(var(--ba-safe-bottom) + 0.15rem);
   }
 
   .ba-training-pill {
@@ -3324,29 +3348,29 @@ textarea {
   }
 
   .ba-training-hero {
-    border-radius: 1.2rem;
+    border-radius: 1.05rem;
   }
 
   .ba-training-primary-cta {
-    min-height: 2.2rem;
+    min-height: 1.92rem;
   }
 
   .ba-bottom-nav {
-    border-radius: 1.35rem;
+    border-radius: 1.1rem;
   }
 
   .ba-page-with-nav {
-    padding-bottom: calc(var(--ba-safe-bottom) + 0.45rem);
+    padding-bottom: calc(var(--ba-safe-bottom) + 0.2rem);
   }
 
   .ba-mobile-safe-bottom .ba-bottom-nav {
-    height: 72px !important;
-    border-radius: 1.35rem;
+    height: 64px !important;
+    border-radius: 1.1rem;
   }
 
   .ba-mobile-safe-bottom .ba-nav-item {
-    gap: 0.2rem;
-    font-size: 10px;
+    gap: 0.08rem;
+    font-size: 9px;
   }
 
   .ba-mobile-safe-bottom .ba-nav-item span.leading-none {
@@ -3354,8 +3378,8 @@ textarea {
   }
 
   .ba-mobile-safe-bottom .ba-nav-item > span.relative {
-    height: 2rem;
-    width: 2rem;
+    height: 1.8rem;
+    width: 1.8rem;
   }
 
   .ba-stat-card {
