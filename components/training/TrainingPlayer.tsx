@@ -3,6 +3,10 @@
 import Link from "next/link"
 import { useMemo, useState } from "react"
 
+import {
+  getTrainingBookSlugFromSegmentKey,
+  isTrainingBookSlug,
+} from "@/lib/training/bibleStructure"
 import type {
   TrainingAccessTier,
   TrainingDay,
@@ -62,6 +66,16 @@ function statusEyebrow(wasCorrect: boolean) {
 
 function statusIcon(wasCorrect: boolean) {
   return wasCorrect ? "✦" : "◌"
+}
+
+function getAccessDepthLabel(accessTier: TrainingAccessTier) {
+  if (accessTier === "pro_plus") return "Full Depth"
+  if (accessTier === "pro") return "Core Access"
+  return "Free Preview"
+}
+
+function getChoiceLetter(index: number) {
+  return String.fromCharCode(65 + index)
 }
 
 function getFocusRank(percentage: number) {
@@ -435,7 +449,7 @@ export default function TrainingPlayer({
   function renderChoiceButtons(options: string[]) {
     return (
       <div className="grid gap-3">
-        {options.map((option) => {
+        {options.map((option, index) => {
           const active = selectedSingle === option
           const isCorrect = submitted && option === item.correct_answer.value
           const isWrongSelected = submitted && active && !isCorrect
@@ -462,7 +476,14 @@ export default function TrainingPlayer({
                 submitted ? "cursor-default" : ""
               }`}
             >
-              {option}
+              <div className="flex items-start gap-3">
+                <div className="ba-training-answer-badge">
+                  {getChoiceLetter(index)}
+                </div>
+                <div className="min-w-0 flex-1 font-semibold leading-6">
+                  {option}
+                </div>
+              </div>
             </button>
           )
         })}
@@ -813,6 +834,15 @@ export default function TrainingPlayer({
     return options.find((option) => option.label === label) ?? null
   }
 
+  const bookSlug = getTrainingBookSlugFromSegmentKey(day.segment_key)
+  const campaignHref = isTrainingBookSlug(bookSlug)
+    ? `/training/book/${bookSlug}`
+    : "/training"
+  const accessLabel = getAccessDepthLabel(accessTier)
+  const answeredCount = Math.min(total, currentIndex + (submitted ? 1 : 0))
+  const accuracy = answeredCount > 0 ? Math.round((score / answeredCount) * 100) : 0
+  const questionLabel = `Question ${Math.min(currentIndex + 1, total)} of ${total}`
+
   if (isComplete) {
     const percentage = Math.round((score / total) * 100)
     const focusRank = getFocusRank(percentage)
@@ -823,139 +853,145 @@ export default function TrainingPlayer({
     const dashOffset = circumference - (percentage / 100) * circumference
 
     return (
-      <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-4 text-white sm:px-5 sm:py-6">
-        <div className="mx-auto max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,215,118,0.10),transparent_34%),linear-gradient(180deg,rgba(18,24,38,0.97),rgba(8,12,20,0.99))] p-5 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-7">
-          <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/84">
-            Training Arena
-          </div>
-          <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+      <main className="ba-training-player-shell min-h-screen overflow-x-hidden px-3 py-3 text-white sm:px-5 sm:py-5">
+        <div className="mx-auto max-w-5xl">
+          <div className="ba-training-player-stage overflow-hidden rounded-[2rem] p-5 sm:p-7">
+            <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/84">
+              Mission Complete
+            </div>
+            <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
             Training Complete
-          </h1>
-          <p className="mt-2 text-base font-semibold text-amber-100/84 sm:text-lg">
-            Day {day.day} · {day.reading.reference}
-          </p>
-
-          <div className="mt-6 grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-center">
-            <div className={`mx-auto flex w-full max-w-[220px] items-center justify-center rounded-[1.8rem] border border-white/10 bg-black/15 p-4 ${focusRank.glowClass}`}>
-              <div className="relative flex h-40 w-40 items-center justify-center">
-                <svg
-                  viewBox={`0 0 ${ringSize} ${ringSize}`}
-                  className="h-40 w-40 -rotate-90"
-                  aria-hidden="true"
-                >
-                  <circle
-                    cx={ringSize / 2}
-                    cy={ringSize / 2}
-                    r={radius}
-                    stroke="currentColor"
-                    strokeWidth={strokeWidth}
-                    className="text-white/10"
-                    fill="none"
-                  />
-                  <circle
-                    cx={ringSize / 2}
-                    cy={ringSize / 2}
-                    r={radius}
-                    stroke="currentColor"
-                    strokeWidth={strokeWidth}
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={dashOffset}
-                    className={`${focusRank.ringClass} motion-safe:transition-all motion-safe:duration-700`}
-                    fill="none"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-lg ${focusRank.badgeClass}`}>
-                    {focusRank.icon}
-                  </div>
-                  <div className="mt-2 text-3xl font-black text-white">{percentage}%</div>
-                  <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
-                    Accuracy
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] ${focusRank.badgeClass}`}>
-                {focusRank.label}
-              </div>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
-                {focusRank.summary}
-              </p>
-
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                    Score
-                  </div>
-                  <div className="mt-2 text-3xl font-black text-white">
-                    {score} / {total}
-                  </div>
-                  <div className="mt-1 text-sm text-slate-400">correct</div>
-                </div>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                    Accuracy
-                  </div>
-                  <div className="mt-2 text-3xl font-black text-white">
-                    {percentage}%
-                  </div>
-                  <div className="mt-1 text-sm text-slate-400">session rate</div>
-                </div>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/[0.03] p-4">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
-                    Focus Rank
-                  </div>
-                  <div className="mt-2 text-2xl font-black text-white">
-                    {focusRank.label}
-                  </div>
-                  <div className="mt-1 text-sm text-slate-400">
-                    {accessTier === "pro_plus" ? "Pro+" : accessTier === "pro" ? "Pro" : "Free"}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {accessTier === "free" ? (
-            <div className="mt-6 rounded-[1.35rem] border border-amber-300/18 bg-amber-300/10 p-4">
-              <p className="text-base leading-7 text-slate-100">
-                You completed today’s free Training Arena drill.
-              </p>
-              <p className="mt-2 text-sm leading-6 text-amber-100/84">
-                Free preview includes the first 3 Training Days. Upgrade to continue with full drills and mastery.
-              </p>
-            </div>
-          ) : (
-            <p className="mt-6 text-base leading-7 text-slate-300">
-              Training day complete. Mastery tracking, deeper review layers, and long-term progression can plug into this route in the next pass.
+            </h1>
+            <p className="mt-2 text-base font-semibold text-amber-100/84 sm:text-lg">
+              {day.reading.reference} · Day {day.day} Mission
             </p>
-          )}
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={handleTrainAgain}
-              className="rounded-full border border-white/12 bg-white/10 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/14"
-            >
-              Train Again
-            </button>
-            <Link
-              href="/training"
-              className="rounded-full bg-amber-200 px-5 py-3 text-center text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition hover:scale-[1.01]"
-            >
-              Back to Training
-            </Link>
-            {(accessTier === "free" || !signedIn) && (
-              <Link
-                href={signedIn ? "/pricing" : "/login"}
-                className="rounded-full border border-cyan-300/24 bg-cyan-300/10 px-5 py-3 text-center text-sm font-semibold text-cyan-50 transition hover:bg-cyan-300/14"
-              >
-                {signedIn ? "Upgrade" : "Sign In"}
-              </Link>
+            <div className="mt-6 grid gap-5 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-center">
+              <div className={`ba-training-session-panel mx-auto flex w-full max-w-[240px] items-center justify-center p-4 ${focusRank.glowClass}`}>
+                <div className="relative flex h-40 w-40 items-center justify-center">
+                  <svg
+                    viewBox={`0 0 ${ringSize} ${ringSize}`}
+                    className="h-40 w-40 -rotate-90"
+                    aria-hidden="true"
+                  >
+                    <circle
+                      cx={ringSize / 2}
+                      cy={ringSize / 2}
+                      r={radius}
+                      stroke="currentColor"
+                      strokeWidth={strokeWidth}
+                      className="text-white/10"
+                      fill="none"
+                    />
+                    <circle
+                      cx={ringSize / 2}
+                      cy={ringSize / 2}
+                      r={radius}
+                      stroke="currentColor"
+                      strokeWidth={strokeWidth}
+                      strokeLinecap="round"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={dashOffset}
+                      className={`${focusRank.ringClass} motion-safe:transition-all motion-safe:duration-700`}
+                      fill="none"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+                    <div className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-lg ${focusRank.badgeClass}`}>
+                      {focusRank.icon}
+                    </div>
+                    <div className="mt-2 text-3xl font-black text-white">{percentage}%</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                      Accuracy
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <div className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] ${focusRank.badgeClass}`}>
+                  {focusRank.label}
+                </div>
+                <p className="mt-3 max-w-2xl text-base leading-7 text-slate-200">
+                  {focusRank.summary}
+                </p>
+
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  <div className="ba-training-session-panel p-4">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                      Score
+                    </div>
+                    <div className="mt-2 text-3xl font-black text-white">
+                      {score} / {total}
+                    </div>
+                    <div className="mt-1 text-sm text-slate-400">correct</div>
+                  </div>
+                  <div className="ba-training-session-panel p-4">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                      Accuracy
+                    </div>
+                    <div className="mt-2 text-3xl font-black text-white">
+                      {percentage}%
+                    </div>
+                    <div className="mt-1 text-sm text-slate-400">session rate</div>
+                  </div>
+                  <div className="ba-training-session-panel p-4">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                      Access
+                    </div>
+                    <div className="mt-2 text-2xl font-black text-white">
+                      {accessLabel}
+                    </div>
+                    <div className="mt-1 text-sm text-slate-400">active for this session</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {accessTier === "free" ? (
+              <div className="mt-6 rounded-[1.35rem] border border-amber-300/18 bg-amber-300/10 p-4">
+                <p className="text-base leading-7 text-slate-100">
+                  You completed today’s free Training Arena drill.
+                </p>
+                <p className="mt-2 text-sm leading-6 text-amber-100/84">
+                  Free preview includes the first 3 Training Days. Upgrade to continue with full drills and mastery.
+                </p>
+              </div>
+            ) : (
+              <p className="mt-6 text-base leading-7 text-slate-300">
+                Mission complete. Completion persistence is not stored yet, so this screen reports live session results only.
+              </p>
             )}
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <button
+                type="button"
+                onClick={handleTrainAgain}
+                className="ba-training-secondary-cta px-5 py-3 text-center text-sm font-semibold text-white"
+              >
+                Train Again
+              </button>
+              <Link
+                href={campaignHref}
+                className="ba-training-primary-cta px-5 py-3 text-center text-sm font-black text-[#2c1600]"
+              >
+                Back to Campaign
+              </Link>
+              <Link
+                href="/training"
+                className="ba-training-secondary-cta px-5 py-3 text-center text-sm font-semibold text-white"
+              >
+                Return to Training Arena
+              </Link>
+              {(accessTier === "free" || !signedIn) && (
+                <Link
+                  href={signedIn ? "/pricing" : "/login"}
+                  className="rounded-full border border-cyan-300/24 bg-cyan-300/10 px-5 py-3 text-center text-sm font-semibold text-cyan-50 transition hover:bg-cyan-300/14"
+                >
+                  {signedIn ? "Upgrade" : "Sign In"}
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </main>
@@ -963,248 +999,321 @@ export default function TrainingPlayer({
   }
 
   return (
-    <main className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#25375f_0%,_#101728_32%,_#070b14_100%)] px-3 py-3 text-white sm:px-5 sm:py-5">
-      <div className="mx-auto max-w-[920px]">
-        <div className="rounded-[1.9rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,24,38,0.98),rgba(8,12,20,0.98))] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.34)] sm:p-6 lg:p-7">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/84">
-              Training Arena
-            </div>
-            <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-200">
-              Question {currentIndex + 1} of {total}
-            </div>
-          </div>
-
-          <h1 className="mt-3 text-[1.7rem] font-black tracking-[-0.04em] text-white sm:text-3xl lg:text-[2rem]">
-            Day {day.day} · {day.reading.reference}
-          </h1>
-
-          <div className="mt-4 h-[5px] overflow-hidden rounded-full bg-white/10">
-            <div
-              className="relative h-full rounded-full bg-gradient-to-r from-amber-100 via-yellow-200 to-orange-300 shadow-[0_0_28px_rgba(251,191,36,0.18)]"
-              style={{ width: `${percent}%` }}
-            >
-              <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-60 blur-[1px] motion-safe:animate-pulse" />
-            </div>
-          </div>
-
-          <article
-            key={item.key}
-            className="mt-5 rounded-[1.65rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.02))] p-4 shadow-[0_18px_50px_rgba(0,0,0,0.18)] motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-5 lg:p-6"
-          >
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
-                {item.format === "image_choice" ? "Visual Recognition" : formatLabel(item.format)}
-              </div>
-              <div
-                className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${difficultyClass(
-                  item.difficulty
-                )}`}
+    <main className="ba-training-player-shell min-h-screen overflow-x-hidden px-3 py-3 text-white sm:px-5 sm:py-5">
+      <div className="mx-auto max-w-[1180px]">
+        <div className="ba-training-player-stage p-4 sm:p-6 lg:p-7">
+          <header className="ba-training-player-header">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <Link
+                href={campaignHref}
+                className="ba-training-secondary-cta inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white"
               >
-                {item.difficulty}
-              </div>
-              <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-200">
-                {item.reference}
+                Exit Mission
+              </Link>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <div className="inline-flex rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.22em] text-amber-100/84">
+                  Training Arena
+                </div>
+                <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-200">
+                  {questionLabel}
+                </div>
               </div>
             </div>
 
-            <h2 className="mt-4 text-2xl font-black leading-tight text-white sm:text-[1.9rem]">
-              {item.prompt}
-            </h2>
+            <div className="mt-4 text-center">
+              <h1 className="text-[1.9rem] font-black tracking-[-0.04em] text-white sm:text-3xl">
+                {day.reading.reference}
+              </h1>
+              <p className="mt-1 text-sm font-semibold text-slate-300 sm:text-base">
+                Day {day.day} Mission
+              </p>
+            </div>
 
             <div className="mt-4">
-              {submitted ? (
+              <div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                <span>{questionLabel}</span>
+                <span>{percent}% complete</span>
+              </div>
+              <div className="ba-training-player-progress mt-2 h-[5px] overflow-hidden rounded-full bg-white/10">
                 <div
-                  className={`overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
-                    wasCorrect
-                      ? "border-emerald-300/30 bg-[radial-gradient(circle_at_top,rgba(74,222,128,0.14),transparent_42%),linear-gradient(180deg,rgba(16,45,34,0.42),rgba(9,18,17,0.92))] shadow-[0_0_36px_rgba(52,211,153,0.10)]"
-                      : "border-amber-300/28 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_42%),linear-gradient(180deg,rgba(54,33,18,0.42),rgba(18,12,10,0.94))] shadow-[0_0_34px_rgba(251,191,36,0.08)]"
-                  }`}
+                  className="relative h-full rounded-full bg-gradient-to-r from-cyan-300 via-sky-300 to-amber-200 shadow-[0_0_28px_rgba(34,211,238,0.18)]"
+                  style={{ width: `${percent}%` }}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-60 blur-[1px] motion-safe:animate-pulse" />
+                </div>
+              </div>
+            </div>
+          </header>
+
+          <section className="mt-5 grid gap-4 lg:grid-cols-[160px_minmax(0,1fr)_180px] lg:items-start xl:grid-cols-[180px_minmax(0,1fr)_210px]">
+            <aside className="ba-training-focus-panel order-2 p-4 lg:order-1">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full border border-amber-200/20 bg-[radial-gradient(circle_at_top,rgba(255,244,214,0.18),transparent_56%),linear-gradient(180deg,rgba(29,23,17,0.98),rgba(8,11,18,0.98))] text-2xl text-amber-100 shadow-[0_0_30px_rgba(251,191,36,0.12)]">
+                ✦
+              </div>
+              <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.24em] text-amber-100/74">
+                Mission Focus
+              </div>
+              <div className="mt-2 text-xl font-black text-white">
+                {answeredCount > 0 ? `${accuracy}%` : "Ready"}
+              </div>
+              <p className="mt-2 text-sm leading-6 text-slate-300/82">
+                Build accuracy through today&apos;s training. Focus rank is finalized after the session.
+              </p>
+              <div className="mt-4 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                  Access
+                </div>
+                <div className="mt-1 text-sm font-semibold text-white">{accessLabel}</div>
+              </div>
+            </aside>
+
+            <article
+              key={item.key}
+              className="ba-training-question-card order-1 p-4 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-right-2 sm:p-5 lg:order-2 lg:p-6"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="rounded-full border border-cyan-300/28 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100">
+                  {item.format === "image_choice" ? "Visual Recognition" : formatLabel(item.format)}
+                </div>
+                <div
+                  className={`rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] ${difficultyClass(
+                    item.difficulty
+                  )}`}
+                >
+                  {item.difficulty}
+                </div>
+                <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-200">
+                  {item.reference}
+                </div>
+              </div>
+
+              <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                {questionLabel.toUpperCase()}
+              </div>
+              <h2 className="mt-3 text-[1.65rem] font-black leading-tight text-white sm:text-[1.9rem]">
+                {item.prompt}
+              </h2>
+
+              <div className="mt-4">
+                {submitted ? (
                   <div
-                    className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg motion-safe:animate-pulse ${
+                    className={`overflow-hidden rounded-[1.35rem] border p-4 shadow-[0_18px_44px_rgba(0,0,0,0.24)] transition-all duration-300 animate-in fade-in slide-in-from-bottom-2 sm:p-5 ${
                       wasCorrect
-                        ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100 shadow-[0_0_24px_rgba(52,211,153,0.14)]"
-                        : "border-amber-300/35 bg-amber-300/12 text-amber-100 shadow-[0_0_24px_rgba(251,191,36,0.10)]"
+                        ? "border-emerald-300/30 bg-[radial-gradient(circle_at_top,rgba(74,222,128,0.14),transparent_42%),linear-gradient(180deg,rgba(16,45,34,0.42),rgba(9,18,17,0.92))] shadow-[0_0_36px_rgba(52,211,153,0.10)]"
+                        : "border-amber-300/28 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_42%),linear-gradient(180deg,rgba(54,33,18,0.42),rgba(18,12,10,0.94))] shadow-[0_0_34px_rgba(251,191,36,0.08)]"
                     }`}
-                    aria-hidden="true"
                   >
-                    {statusIcon(wasCorrect)}
-                  </div>
-                  <div className="min-w-0">
-                      <div
-                        className={`text-[11px] font-black uppercase tracking-[0.24em] ${
-                          wasCorrect ? "text-emerald-200" : "text-amber-200"
+                    <div className="flex items-start gap-3">
+                    <div
+                      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-lg motion-safe:animate-pulse ${
+                        wasCorrect
+                          ? "border-emerald-300/35 bg-emerald-300/12 text-emerald-100 shadow-[0_0_24px_rgba(52,211,153,0.14)]"
+                          : "border-amber-300/35 bg-amber-300/12 text-amber-100 shadow-[0_0_24px_rgba(251,191,36,0.10)]"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      {statusIcon(wasCorrect)}
+                    </div>
+                    <div className="min-w-0">
+                        <div
+                          className={`text-[11px] font-black uppercase tracking-[0.24em] ${
+                            wasCorrect ? "text-emerald-200" : "text-amber-200"
+                          }`}
+                        >
+                          {statusEyebrow(wasCorrect)}
+                        </div>
+                      <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                        {wasCorrect ? "Nice work" : "Not quite"}
+                      </h3>
+                      <p
+                        className={`mt-1 text-sm ${
+                          wasCorrect ? "text-emerald-100/85" : "text-amber-100/85"
                         }`}
                       >
-                        {statusEyebrow(wasCorrect)}
-                      </div>
-                    <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
-                      {wasCorrect ? "Nice work" : "Not quite"}
-                    </h3>
-                    <p
-                      className={`mt-1 text-sm ${
-                        wasCorrect ? "text-emerald-100/85" : "text-amber-100/85"
-                      }`}
-                    >
-                      {wasCorrect
-                        ? "Locked in. Carry that rhythm forward."
-                        : "Small correction now, stronger recall on the next rep."}
-                    </p>
+                        {wasCorrect
+                          ? "Locked in. Carry that rhythm forward."
+                          : "Small correction now, stronger recall on the next rep."}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                  <div className="mt-4 grid gap-3">
-                    <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
-                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                        Your answer
-                      </div>
-                      {item.format === "image_choice" ? (
-                        <div className="mt-2 flex items-center gap-3">
-                          {getImageOptionByLabel(selectedSingle) ? (
-                            <img
-                              src={getImageOptionByLabel(selectedSingle)?.image_url}
-                              alt={getImageOptionByLabel(selectedSingle)?.alt}
-                              className="h-14 w-14 rounded-xl border border-white/10 object-cover"
+                    <div className="mt-4 grid gap-3">
+                      <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                          Your answer
+                        </div>
+                        {item.format === "image_choice" ? (
+                          <div className="mt-2 flex items-center gap-3">
+                            {getImageOptionByLabel(selectedSingle) ? (
+                              <img
+                                src={getImageOptionByLabel(selectedSingle)?.image_url}
+                                alt={getImageOptionByLabel(selectedSingle)?.alt}
+                                className="h-14 w-14 rounded-xl border border-white/10 object-cover"
+                              />
+                            ) : null}
+                            <p className="text-sm font-semibold leading-6 text-white">
+                              {getUserAnswerSummary()}
+                            </p>
+                          </div>
+                        ) : item.format === "ordering" ? (
+                          <div className="mt-2">
+                            <SequencePreview
+                              values={selectedOrder}
+                              tone={wasCorrect ? "correct" : "review"}
                             />
-                          ) : null}
-                          <p className="text-sm font-semibold leading-6 text-white">
+                          </div>
+                        ) : item.format === "matching" ? (
+                          <div className="mt-2 grid gap-2.5">
+                            {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => {
+                              const selectedRight = matchingSelections[pair.left]
+                              const pairCorrect = selectedRight === pair.right
+
+                              return (
+                                <div
+                                  key={`selected-${pair.left}`}
+                                  className={`rounded-[1rem] border px-3 py-3 ${
+                                    pairCorrect
+                                      ? "border-emerald-300/28 bg-emerald-300/10 text-emerald-50"
+                                      : "border-amber-300/28 bg-amber-300/10 text-amber-50"
+                                  }`}
+                                >
+                                  <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                                    {pair.left}
+                                  </div>
+                                  <div className="mt-1 text-sm font-semibold">
+                                    {selectedRight ?? "No answer selected"}
+                                  </div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        ) : (
+                          <p className="mt-2 text-sm font-semibold leading-6 text-white">
                             {getUserAnswerSummary()}
                           </p>
-                        </div>
-                      ) : item.format === "ordering" ? (
-                        <div className="mt-2">
-                          <SequencePreview
-                            values={selectedOrder}
-                            tone={wasCorrect ? "correct" : "review"}
-                          />
-                        </div>
-                      ) : item.format === "matching" ? (
-                        <div className="mt-2 grid gap-2.5">
-                          {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => {
-                            const selectedRight = matchingSelections[pair.left]
-                            const pairCorrect = selectedRight === pair.right
+                        )}
+                      </div>
 
-                            return (
+                      <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                          Correct answer
+                        </div>
+                        {item.format === "image_choice" ? (
+                          <div className="mt-2 flex items-center gap-3">
+                            {getImageOptionByLabel(String(item.correct_answer.value)) ? (
+                              <img
+                                src={getImageOptionByLabel(String(item.correct_answer.value))?.image_url}
+                                alt={getImageOptionByLabel(String(item.correct_answer.value))?.alt}
+                                className="h-14 w-14 rounded-xl border border-white/10 object-cover"
+                              />
+                            ) : null}
+                            <p className="text-sm font-semibold leading-6 text-white">
+                              {getCorrectAnswerSummary()}
+                            </p>
+                          </div>
+                        ) : item.format === "ordering" ? (
+                          <div className="mt-2">
+                            <SequencePreview
+                              values={item.correct_answer.value as string[]}
+                              tone="correct"
+                            />
+                          </div>
+                        ) : item.format === "matching" ? (
+                          <div className="mt-2 grid gap-2.5">
+                            {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => (
                               <div
-                                key={`selected-${pair.left}`}
-                                className={`rounded-[1rem] border px-3 py-3 ${
-                                  pairCorrect
-                                    ? "border-emerald-300/28 bg-emerald-300/10 text-emerald-50"
-                                    : "border-amber-300/28 bg-amber-300/10 text-amber-50"
-                                }`}
+                                key={`correct-${pair.left}`}
+                                className="rounded-[1rem] border border-emerald-300/28 bg-emerald-300/10 px-3 py-3 text-emerald-50"
                               >
-                                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-400">
+                                <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-100/72">
                                   {pair.left}
                                 </div>
-                                <div className="mt-1 text-sm font-semibold">
-                                  {selectedRight ?? "No answer selected"}
-                                </div>
+                                <div className="mt-1 text-sm font-semibold">{pair.right}</div>
                               </div>
-                            )
-                          })}
-                        </div>
-                      ) : (
-                        <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                          {getUserAnswerSummary()}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="rounded-2xl border border-white/10 bg-black/15 px-4 py-3">
-                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                        Correct answer
-                      </div>
-                      {item.format === "image_choice" ? (
-                        <div className="mt-2 flex items-center gap-3">
-                          {getImageOptionByLabel(String(item.correct_answer.value)) ? (
-                            <img
-                              src={getImageOptionByLabel(String(item.correct_answer.value))?.image_url}
-                              alt={getImageOptionByLabel(String(item.correct_answer.value))?.alt}
-                              className="h-14 w-14 rounded-xl border border-white/10 object-cover"
-                            />
-                          ) : null}
-                          <p className="text-sm font-semibold leading-6 text-white">
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="mt-2 text-sm font-semibold leading-6 text-white">
                             {getCorrectAnswerSummary()}
                           </p>
-                        </div>
-                      ) : item.format === "ordering" ? (
-                        <div className="mt-2">
-                          <SequencePreview
-                            values={item.correct_answer.value as string[]}
-                            tone="correct"
-                          />
-                        </div>
-                      ) : item.format === "matching" ? (
-                        <div className="mt-2 grid gap-2.5">
-                          {(item.correct_answer.value as TrainingMatchingPair[]).map((pair) => (
-                            <div
-                              key={`correct-${pair.left}`}
-                              className="rounded-[1rem] border border-emerald-300/28 bg-emerald-300/10 px-3 py-3 text-emerald-50"
-                            >
-                              <div className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-100/72">
-                                {pair.left}
-                              </div>
-                              <div className="mt-1 text-sm font-semibold">{pair.right}</div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="mt-2 text-sm font-semibold leading-6 text-white">
-                          {getCorrectAnswerSummary()}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
-                      <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                        Explanation
+                        )}
                       </div>
-                      <p className="mt-2 text-sm leading-6 text-slate-200">{item.explanation}</p>
+
+                      <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3">
+                        <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
+                          Explanation
+                        </div>
+                        <p className="mt-2 text-sm leading-6 text-slate-200">{item.explanation}</p>
+                      </div>
+                    </div>
+
+                    <div className="ba-training-submit-wrap mt-4">
+                      <button
+                        type="button"
+                        onClick={handleContinue}
+                        className="ba-training-primary-cta inline-flex min-h-12 w-full items-center justify-center px-6 py-3 text-sm font-black text-[#2c1600] sm:w-auto"
+                      >
+                        Continue
+                      </button>
                     </div>
                   </div>
-
-                  <div className="mt-4 rounded-[1.25rem] border border-white/10 bg-black/15 p-3">
-                    <button
-                      type="button"
-                      onClick={handleContinue}
-                      className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-amber-200 px-6 py-3 text-sm font-black text-[#2c1600] shadow-[0_14px_34px_rgba(251,191,36,0.20)] transition duration-200 hover:scale-[1.02] active:scale-[0.99] motion-reduce:transform-none sm:w-auto"
-                    >
-                      Continue
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                renderItem()
-              )}
-            </div>
-
-            {!submitted && (
-              <div className="mt-4 rounded-[1.25rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.12))] p-3">
-                {submissionError && (
-                  <div className="mb-3 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
-                    {submissionError}
-                  </div>
+                ) : (
+                  renderItem()
                 )}
-
-                <button
-                  type="button"
-                  onClick={handleSubmit}
-                  className="min-h-12 w-full rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2c1600] shadow-[0_12px_30px_rgba(251,191,36,0.16)] transition duration-200 hover:scale-[1.01] active:scale-[0.99] motion-reduce:transform-none sm:w-auto"
-                >
-                  Submit
-                </button>
               </div>
-            )}
-          </article>
+
+              {!submitted && (
+                <div className="ba-training-submit-wrap mt-4">
+                  {submissionError && (
+                    <div className="mb-3 rounded-[1.05rem] border border-rose-300/25 bg-rose-300/10 px-4 py-3 text-sm text-rose-100">
+                      {submissionError}
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={handleSubmit}
+                    className="ba-training-primary-cta min-h-12 w-full px-5 py-3 text-sm font-black text-[#2c1600]"
+                  >
+                    Submit Answer
+                  </button>
+                </div>
+              )}
+            </article>
+
+            <aside className="ba-training-session-panel order-3 p-4">
+              <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-slate-400">
+                Mission Stats
+              </div>
+              <div className="mt-4 grid gap-3">
+                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Correct</span>
+                  <span className="text-xl font-black text-white">{score}</span>
+                </div>
+                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Progress</span>
+                  <span className="text-xl font-black text-white">{answeredCount}/{total}</span>
+                </div>
+                <div className="flex items-center justify-between gap-3 rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                  <span className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">Accuracy</span>
+                  <span className="text-xl font-black text-white">{accuracy}%</span>
+                </div>
+                <div className="rounded-[1rem] border border-white/10 bg-black/15 px-3 py-3">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">
+                    Access Depth
+                  </div>
+                  <div className="mt-1 text-sm font-semibold text-white">{accessLabel}</div>
+                </div>
+              </div>
+            </aside>
+          </section>
 
           <div className="mt-4">
             <Link
-              href="/training"
+              href={campaignHref}
               className="text-sm font-semibold text-amber-100/84 transition hover:text-white"
             >
-              ← Back to Training
+              ← Back to Campaign
             </Link>
           </div>
         </div>
