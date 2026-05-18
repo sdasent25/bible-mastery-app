@@ -55,7 +55,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       ) : null}
 
       <div className="min-h-screen w-full lg:px-2 lg:py-2 xl:px-2.5 xl:py-2.5">
-        <div className="flex min-h-screen w-full lg:rounded-[2rem] lg:border lg:border-white/8 lg:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] lg:shadow-[0_28px_80px_rgba(0,0,0,0.42)]">
+        <div className="flex min-h-screen w-full lg:min-h-[calc(100vh-1rem)] xl:min-h-[calc(100vh-1.25rem)] lg:rounded-[2rem] lg:border lg:border-white/8 lg:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] lg:shadow-[0_28px_80px_rgba(0,0,0,0.42)]">
           <aside className="hidden lg:block lg:relative lg:z-[2] lg:w-[220px] lg:shrink-0 xl:w-[228px]">
             <Sidebar variant="desktop" />
           </aside>

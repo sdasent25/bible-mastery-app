@@ -2163,9 +2163,10 @@ textarea {
 
 .ba-sidebar {
   display: flex;
-  height: 100%;
+  height: 100vh;
+  max-height: 100vh;
   flex-direction: column;
-  padding: 0.8rem 0.7rem 0.8rem;
+  padding: 0.68rem 0.62rem 0.68rem;
   overflow: hidden;
   background:
     radial-gradient(circle at top, rgba(250, 204, 21, 0.06), transparent 22%),
@@ -2193,6 +2194,11 @@ textarea {
   padding: 0.05rem 0.05rem 0 0.05rem;
 }
 
+.ba-sidebar-spacer {
+  flex: 1 1 auto;
+  min-height: 0.35rem;
+}
+
 .ba-sidebar-brand-mark {
   display: inline-flex;
   height: 2.5rem;
@@ -2218,7 +2224,8 @@ textarea {
   border-radius: 0.95rem;
   border: 1px solid transparent;
   background: rgba(255, 255, 255, 0.015);
-  padding: 0.58rem 0.62rem;
+  min-height: 2.7rem;
+  padding: 0.5rem 0.58rem;
   color: rgba(255, 255, 255, 0.72);
   transition:
     background 0.18s ease,
@@ -2253,8 +2260,8 @@ textarea {
 
 .ba-sidebar-nav-icon {
   display: inline-flex;
-  height: 1.75rem;
-  width: 1.75rem;
+  height: 1.62rem;
+  width: 1.62rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -2286,12 +2293,12 @@ textarea {
 .ba-sidebar-devotion {
   position: relative;
   overflow: hidden;
-  min-height: 10.5rem;
-  border-radius: 1.25rem;
+  min-height: 8.55rem;
+  border-radius: 1.1rem;
   border: 1px solid rgba(255, 214, 138, 0.08);
   background:
     linear-gradient(180deg, rgba(10, 15, 25, 0.78), rgba(5, 9, 16, 0.96));
-  padding: 0.82rem;
+  padding: 0.72rem;
 }
 
 .ba-sidebar-devotion-art {
@@ -2301,6 +2308,27 @@ textarea {
     radial-gradient(circle at 50% 115%, rgba(250, 204, 21, 0.22), transparent 30%),
     linear-gradient(180deg, transparent 40%, rgba(3, 6, 11, 0.96) 100%);
   opacity: 0.95;
+}
+
+@media (min-width: 1024px) {
+  .ba-sidebar {
+    justify-content: space-between;
+  }
+
+  .ba-sidebar-brand .ba-sidebar-brand-mark {
+    height: 2.32rem;
+    width: 2.32rem;
+  }
+
+  .ba-sidebar-brand p {
+    margin-top: 0.55rem;
+    font-size: 0.66rem;
+    line-height: 1.42;
+  }
+
+  .ba-sidebar .ba-sidebar-nav-item .ba-font-ui {
+    font-size: 0.78rem;
+  }
 }
 
 .ba-header-brand-mark {

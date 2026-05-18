@@ -100,7 +100,7 @@ export default function Sidebar({
 
   return (
     <div className={`ba-sidebar ${isMobile ? "ba-sidebar-mobile w-full" : "w-full"}`}>
-      <div className="flex flex-1 flex-col gap-4">
+      <div className="flex flex-1 flex-col gap-3">
         <div className={`ba-sidebar-brand ${isMobile ? "hidden" : ""}`}>
           <div className="flex items-center gap-3">
             <span className="ba-sidebar-brand-mark">
@@ -120,7 +120,7 @@ export default function Sidebar({
           </p>
         </div>
 
-        <div className="space-y-1.5">
+        <div className="space-y-1.25">
           {desktopNavItems
             .filter((item) => item.href !== "/settings" && item.href !== "/profile")
             .map((item) => (
@@ -154,23 +154,25 @@ export default function Sidebar({
           {navItem("Profile", "/settings", "profile", "/icons/navigation/nav-profile-headset-transparent.png")}
         </div>
 
-        <div className={`ba-sidebar-devotion mt-auto ${isMobile ? "hidden" : ""}`}>
+        <div className={`ba-sidebar-spacer ${isMobile ? "hidden" : ""}`} />
+
+        <div className={`ba-sidebar-devotion ${isMobile ? "hidden" : ""}`}>
           <div className="ba-sidebar-devotion-art" />
           <div className="relative z-10">
             <div className="ba-text-section-label text-[0.58rem] text-amber-100/70">
               {getPlanMemberLabel(planType)}
             </div>
-            <p className="ba-font-display mt-3 text-[0.92rem] font-bold tracking-[-0.02em] text-[#f5e8cf]">
-              Grow in faith. Compete with purpose.
+            <p className="ba-font-display mt-2 text-[0.86rem] font-bold tracking-[-0.02em] text-[#f5e8cf]">
+              Grow in faith. Train with purpose.
             </p>
-            <p className="ba-font-ui mt-2 text-[0.71rem] leading-[1.55] text-white/44">
+            <p className="ba-font-ui mt-1.5 text-[0.68rem] leading-[1.45] text-white/44">
               Keep showing up. Strength is built one faithful day at a time.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="mt-4 space-y-2 border-t border-white/8 pt-3">
+      <div className="mt-3 space-y-2 border-t border-white/8 pt-2.5">
         <button
           onClick={() => {
             closeMobile?.()
