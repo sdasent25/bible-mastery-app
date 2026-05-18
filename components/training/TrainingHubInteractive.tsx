@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 
 import type {
   TrainingAccessState,
@@ -35,25 +35,14 @@ type SectionConfig = {
 }
 
 type SectionCard = SectionConfig & {
-  booksData: BookCard[]
   availableDayCount: number
-  availableBookCount: number
   hasLiveData: boolean
-}
-
-type BookCard = {
-  book: string
-  sectionKey: SectionKey
-  days: TrainingDaySummary[]
-  artPath: string
 }
 
 type Props = {
   days: TrainingDaySummary[]
   access: TrainingAccessState
 }
-
-const FREE_PREVIEW_LIMIT = 3
 
 const SECTION_CONFIGS: SectionConfig[] = [
   {
@@ -178,11 +167,6 @@ const SECTION_CONFIGS: SectionConfig[] = [
   },
 ]
 
-const BOOK_ART_OVERRIDES: Record<string, string> = {
-  Genesis: "/training/genesis/light-darkness.png",
-  Exodus: "/training/exodus/burning-bush-horeb.png",
-}
-
 function getTrackLabel(segmentKey: string) {
   const [book] = segmentKey.split("-")
   return book ? book.charAt(0).toUpperCase() + book.slice(1) : "Scripture"
@@ -194,12 +178,6 @@ function getAccessDisplay(access: TrainingAccessState) {
   if (access.tier === "pro_plus") return "Pro+ Full"
   if (access.tier === "pro") return "Pro Core"
   return "Free Preview"
-}
-
-function getTierCopy(tier: TrainingAccessTier) {
-  if (tier === "pro_plus") return "Full arena access is active with the deepest drill set."
-  if (tier === "pro") return "Core drills are unlocked across every available training day."
-  return "Train days 1-3 free, then upgrade for deeper arena access."
 }
 
 function getDifficultyTierLabel(tier: TrainingAccessTier) {
@@ -220,18 +198,6 @@ function getEstimatedTime(itemCount: number, tier: TrainingAccessTier) {
   return `${Math.max(5, Math.ceil(itemCount / 4))}-${Math.max(8, Math.ceil(itemCount / 2.5))} min`
 }
 
-function getBookArtPath(book: string, section: SectionConfig, days: TrainingDaySummary[]) {
-  if (BOOK_ART_OVERRIDES[book]) return BOOK_ART_OVERRIDES[book]
-  if (days[0]) return section.artPath
-  return section.artPath
-}
-
-function getMissionDepthCopy(access: TrainingAccessState) {
-  if (access.tier === "pro_plus") return "Easy, core, and advanced drill depth are active."
-  if (access.tier === "pro") return "Core daily drills are active. Pro+ adds the deepest arena layer."
-  return `Free preview covers days 1-${FREE_PREVIEW_LIMIT} before the arena locks.`
-}
-
 export default function TrainingHubInteractive({ days, access }: Props) {
   const totalDrills = useMemo(() => days.reduce((sum, day) => sum + day.itemCount, 0), [days])
   const firstDay = days[0] ?? null
@@ -245,65 +211,30 @@ export default function TrainingHubInteractive({ days, access }: Props) {
     ? `/training/book/${currentTrackBookSlug}`
     : "/training/book/genesis"
 
-  const daysByBook = useMemo(() => {
-    const grouped = new Map<string, TrainingDaySummary[]>()
-    for (const day of days) {
-      const book = getTrackLabel(day.segmentKey)
-      const current = grouped.get(book) ?? []
-      current.push(day)
-      grouped.set(book, current)
-    }
-    return grouped
-  }, [days])
-
   const sectionCards = useMemo<SectionCard[]>(
     () =>
       SECTION_CONFIGS.map((section) => {
-        const booksData: BookCard[] = section.books.map((book) => {
-          const bookDays = [...(daysByBook.get(book) ?? [])].sort((a, b) => a.day - b.day)
-          return {
-            book,
-            sectionKey: section.key,
-            days: bookDays,
-            artPath: getBookArtPath(book, section, bookDays),
-          }
-        })
-
-        const availableDayCount = booksData.reduce((sum, book) => sum + book.days.length, 0)
-        const availableBookCount = booksData.filter((book) => book.days.length > 0).length
+        const availableDayCount = days.reduce((sum, day) => {
+          const book = getTrackLabel(day.segmentKey)
+          return section.books.includes(book) ? sum + 1 : sum
+        }, 0)
 
         return {
           ...section,
-          booksData,
           availableDayCount,
-          availableBookCount,
           hasLiveData: availableDayCount > 0,
         }
       }),
-    [daysByBook]
+    [days]
   )
 
   const initialSectionKey = sectionCards.find((section) => section.hasLiveData)?.key ?? "pentateuch"
   const [selectedSectionKey, setSelectedSectionKey] = useState<SectionKey>(initialSectionKey)
-  const [selectedBook, setSelectedBook] = useState("Genesis")
-
-  const selectedSection =
-    sectionCards.find((section) => section.key === selectedSectionKey) ?? sectionCards[0]
-
-  useEffect(() => {
-    if (!selectedSection) return
-    const nextBook =
-      selectedSection.booksData.find((book) => book.days.length > 0)?.book ??
-      selectedSection.booksData[0]?.book ??
-      "Genesis"
-    setSelectedBook(nextBook)
-  }, [selectedSectionKey, selectedSection])
 
   const completedDaysCount = 0
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
   const accessDisplay = getAccessDisplay(access)
   const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
-  const showUpgradePanel = access.tier !== "pro_plus"
 
   return (
     <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
@@ -543,153 +474,6 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             })}
           </div>
         </section>
-
-        <section className="mt-5">
-          <div className="mb-2.5 flex items-center justify-between gap-3">
-            <div>
-              <div className="ba-text-section-label text-[10px] text-cyan-100/78">Choose a Book</div>
-              <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">
-                {selectedSection?.title ?? "Select a section first"}
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-slate-300/82">
-                Step into a focused book campaign. Mission paths now live inside each book page, not on the main arena hub.
-              </p>
-            </div>
-            <div className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 lg:inline-flex">
-              {selectedSection?.availableBookCount ?? 0} book{selectedSection?.availableBookCount === 1 ? "" : "s"} available
-            </div>
-          </div>
-
-          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-3 xl:grid-cols-5">
-            {selectedSection?.booksData.map((book) => {
-              const hasLiveCampaign = book.days.length > 0
-              const bookSlug = book.book.toLowerCase()
-              const hasBookRoute = isTrainingBookSlug(bookSlug)
-              const bookHref = hasBookRoute ? `/training/book/${bookSlug}` : null
-              const lockedForNow = !hasLiveCampaign || !bookHref
-              const freeLocked =
-                access.tier === "free" &&
-                book.days.length > 0 &&
-                book.days.every((day) => day.day > FREE_PREVIEW_LIMIT)
-              const selected = selectedBook === book.book
-              const statusText = lockedForNow
-                ? "Coming Soon"
-                : freeLocked
-                  ? "Preview Locked"
-                  : access.tier === "free" && book.days.some((day) => day.day <= 3)
-                    ? "Preview Available"
-                    : "Available"
-              const body = (
-                <>
-                  <div
-                    className={`absolute inset-0 ${lockedForNow ? "opacity-[0.48] saturate-[0.68]" : "opacity-[0.82]"}`}
-                    style={{
-                      backgroundImage: `url('${book.artPath}')`,
-                      backgroundPosition: "50% 46%",
-                      backgroundSize: "cover",
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.14),rgba(7,10,16,0.46)_42%,rgba(7,10,16,0.92)_100%)]" />
-
-                  <div className="relative flex h-full flex-col p-3.5">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className={`ba-text-section-label inline-flex w-fit rounded-full border px-2.25 py-1 text-[0.46rem] ${lockedForNow ? "border-amber-200/16 bg-amber-200/10 text-amber-100" : "border-cyan-200/16 bg-cyan-200/10 text-cyan-50"}`}>
-                        {statusText}
-                      </span>
-                      <span className="text-white/70">{bookHref ? "↗" : "○"}</span>
-                    </div>
-                    <h3 className="mt-4 ba-font-display text-[1.2rem] leading-[1] text-[#fbf0de]">{book.book}</h3>
-                    <p className="mt-2 text-xs leading-5 text-slate-200/84">
-                      {hasLiveCampaign
-                        ? `${book.days.length} training mission${book.days.length === 1 ? "" : "s"} in this campaign path.`
-                        : "This book campaign is not available yet."}
-                    </p>
-                    <div className="mt-auto flex items-end justify-between gap-3 pt-3">
-                      <div className="text-[11px] font-semibold text-white/64">
-                        {hasLiveCampaign ? book.days[0].reference : "Locked"}
-                      </div>
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-100/76">
-                        {bookHref ? "Open Campaign" : "Coming Soon"}
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )
-
-              if (bookHref) {
-                return (
-                  <Link
-                    key={book.book}
-                    href={bookHref}
-                    onClick={() => setSelectedBook(book.book)}
-                    className={`ba-training-book-card group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
-                      selected
-                        ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_26px_rgba(251,191,36,0.12)]"
-                        : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
-                    }`}
-                  >
-                    {body}
-                  </Link>
-                )
-              }
-
-              return (
-                <div
-                  key={book.book}
-                  className={`ba-training-book-card group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
-                    selected
-                      ? "border-amber-200/14 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))]"
-                      : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
-                  } opacity-85`}
-                >
-                  {body}
-                </div>
-              )
-            })}
-          </div>
-        </section>
-
-        {showUpgradePanel ? (
-          <section className="mt-5">
-            <aside className="relative overflow-hidden rounded-[1.55rem] border border-cyan-200/16 bg-[radial-gradient(circle_at_top_right,rgba(103,232,249,0.12),transparent_24%),radial-gradient(circle_at_top_left,rgba(247,227,161,0.14),transparent_28%),linear-gradient(180deg,rgba(18,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_24px_70px_rgba(0,0,0,0.28)] sm:rounded-[1.75rem]">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.06),transparent_32%)]" />
-              <div className="relative">
-                <div className="inline-flex items-center gap-2 rounded-full border border-amber-200/18 bg-amber-200/10 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.26em] text-amber-100/82">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-amber-100/20 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.18),transparent_55%),rgba(251,191,36,0.12)] text-[13px] shadow-[0_0_24px_rgba(251,191,36,0.18)]">
-                    🛡
-                  </span>
-                  <span>{access.tier === "free" ? "Unlock Full Training Access" : "Unlock Pro+ Depth"}</span>
-                </div>
-                <h3 className="mt-4 text-2xl font-black tracking-[-0.04em] text-white sm:text-3xl">
-                  {access.tier === "free" ? "Go beyond the free preview." : "Step into the full arena."}
-                </h3>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-                  {access.tier === "free"
-                    ? `Go Pro+ to access all ${days.length} training days, advanced drills, and full-depth Scripture training.`
-                    : "Upgrade to Pro+ for the deepest drill set, richer recognition rounds, and full arena intensity."}
-                </p>
-
-                <div className="mt-5 grid gap-3 md:grid-cols-2">
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">Full access to all current training days</div>
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">Advanced drill depth and recognition rounds</div>
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">Clearer progression beyond preview limits</div>
-                  <div className="rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white/88">Room for future mastery tracking systems</div>
-                </div>
-
-                <div className="mt-6">
-                  <Link
-                    href="/pricing"
-                    className="inline-flex w-full items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_16px_36px_rgba(251,191,36,0.18)] transition hover:scale-[1.01] sm:w-auto sm:min-w-[13rem]"
-                  >
-                    {access.tier === "free" ? "Upgrade to Pro+" : "Go Pro+"}
-                  </Link>
-                </div>
-              </div>
-            </aside>
-          </section>
-        ) : null}
-
-        <section className="sr-only">{getTierCopy(access.tier)}</section>
       </div>
     </main>
   )
