@@ -44,21 +44,12 @@ type BookCard = {
   artPath: string
 }
 
-type MissionStatus = {
-  label: string
-  chipClass: string
-  cardClass: string
-  buttonClass: string
-  buttonLabel: string
-  helperCopy: string
-}
-
 type Props = {
   days: TrainingDaySummary[]
   access: TrainingAccessState
 }
 
-const DRILL_TYPE_COUNT = 6
+const FREE_PREVIEW_LIMIT = 3
 
 const SECTION_CONFIGS: SectionConfig[] = [
   {
@@ -231,66 +222,22 @@ function getBookArtPath(book: string, section: SectionConfig, days: TrainingDayS
   return section.artPath
 }
 
-function getMissionStatus(
-  day: TrainingDaySummary,
-  todayDay: TrainingDaySummary | null,
-  tier: TrainingAccessTier
-): MissionStatus {
-  const isLockedForFree = tier === "free" && day.day > 3
-  const isToday = todayDay?.day === day.day
+function isMissionAccessibleForTier(dayNumber: number, tier: TrainingAccessTier) {
+  return tier !== "free" || dayNumber <= FREE_PREVIEW_LIMIT
+}
 
-  if (isLockedForFree) {
-    return {
-      label: "Locked",
-      chipClass: "border-amber-200/18 bg-amber-200/10 text-amber-100",
-      cardClass: "border-amber-200/12 bg-[linear-gradient(180deg,rgba(22,17,13,0.94),rgba(10,11,18,0.98))]",
-      buttonClass: "border border-white/12 bg-white/[0.05] text-white/80 hover:bg-white/[0.08]",
-      buttonLabel: "View Lock",
-      helperCopy: "Free preview ends after day 3",
-    }
-  }
+function getMissionDepthLabel(access: TrainingAccessState) {
+  if (access.rawPlan === "family_pro_plus") return "Family Pro+ Full Arena"
+  if (access.rawPlan === "family_pro") return "Family Pro Core"
+  if (access.tier === "pro_plus") return "Full Arena Access"
+  if (access.tier === "pro") return "Core Access"
+  return "Preview Access"
+}
 
-  if (isToday) {
-    return {
-      label: "Today",
-      chipClass: "border-cyan-200/20 bg-cyan-200/10 text-cyan-50",
-      cardClass: "border-cyan-200/18 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_34%),linear-gradient(180deg,rgba(12,20,34,0.96),rgba(7,11,20,0.98))]",
-      buttonClass: "bg-amber-200 text-[#2d1700] shadow-[0_14px_34px_rgba(251,191,36,0.18)] hover:scale-[1.01]",
-      buttonLabel: "Start Training",
-      helperCopy: "Today’s next training mission",
-    }
-  }
-
-  if (tier === "pro_plus") {
-    return {
-      label: "Full",
-      chipClass: "border-violet-200/18 bg-violet-300/10 text-violet-50",
-      cardClass: "border-violet-200/14 bg-[radial-gradient(circle_at_top,rgba(192,132,252,0.10),transparent_34%),linear-gradient(180deg,rgba(14,20,34,0.96),rgba(8,11,20,0.98))]",
-      buttonClass: "bg-amber-200 text-[#2d1700] shadow-[0_14px_34px_rgba(251,191,36,0.18)] hover:scale-[1.01]",
-      buttonLabel: "Start Training",
-      helperCopy: "Full arena depth available",
-    }
-  }
-
-  if (tier === "pro") {
-    return {
-      label: "Core",
-      chipClass: "border-emerald-200/18 bg-emerald-300/10 text-emerald-50",
-      cardClass: "border-emerald-200/14 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.10),transparent_34%),linear-gradient(180deg,rgba(14,20,34,0.96),rgba(8,11,20,0.98))]",
-      buttonClass: "bg-amber-200 text-[#2d1700] shadow-[0_14px_34px_rgba(251,191,36,0.18)] hover:scale-[1.01]",
-      buttonLabel: "Start Training",
-      helperCopy: "Core access unlocked",
-    }
-  }
-
-  return {
-    label: "Preview",
-    chipClass: "border-amber-200/18 bg-amber-200/10 text-amber-50",
-    cardClass: "border-amber-200/14 bg-[radial-gradient(circle_at_top,rgba(251,191,36,0.12),transparent_34%),linear-gradient(180deg,rgba(24,20,14,0.96),rgba(12,11,18,0.98))]",
-    buttonClass: "bg-amber-200 text-[#2d1700] shadow-[0_14px_34px_rgba(251,191,36,0.18)] hover:scale-[1.01]",
-    buttonLabel: "Start Training",
-    helperCopy: "Preview available",
-  }
+function getMissionDepthCopy(access: TrainingAccessState) {
+  if (access.tier === "pro_plus") return "Easy, core, and advanced drill depth are active."
+  if (access.tier === "pro") return "Core daily drills are active. Pro+ adds the deepest arena layer."
+  return `Free preview covers days 1-${FREE_PREVIEW_LIMIT} before the arena locks.`
 }
 
 export default function TrainingHubInteractive({ days, access }: Props) {
@@ -342,7 +289,6 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   const initialSectionKey = sectionCards.find((section) => section.hasLiveData)?.key ?? "pentateuch"
   const [selectedSectionKey, setSelectedSectionKey] = useState<SectionKey>(initialSectionKey)
   const [selectedBook, setSelectedBook] = useState("Genesis")
-  const [missionFilter, setMissionFilter] = useState<"all" | "playable" | "locked">("all")
 
   const selectedSection =
     sectionCards.find((section) => section.key === selectedSectionKey) ?? sectionCards[0]
@@ -361,19 +307,39 @@ export default function TrainingHubInteractive({ days, access }: Props) {
     selectedSection?.booksData[0] ??
     null
   const selectedBookDays = selectedBookCard?.days ?? []
-
-  const missionCards = selectedBookDays.filter((day) => {
-    const locked = access.tier === "free" && day.day > 3
-    if (missionFilter === "playable") return !locked
-    if (missionFilter === "locked") return locked
-    return true
-  })
+  const accessibleBookDays = selectedBookDays.filter((day) =>
+    isMissionAccessibleForTier(day.day, access.tier)
+  )
+  // Placeholder until real persisted completion/unlock state exists for Training Arena.
+  // Replace this with server-backed completion data once the hub can read completed day history.
+  const completedBookDays: TrainingDaySummary[] = []
+  const currentMissionDay = accessibleBookDays[0] ?? null
+  const currentMissionIndex = currentMissionDay
+    ? selectedBookDays.findIndex((day) => day.day === currentMissionDay.day)
+    : -1
+  const nextMissionDay =
+    currentMissionIndex >= 0
+      ? selectedBookDays[currentMissionIndex + 1] ?? null
+      : selectedBookDays[0] ?? null
+  const upcomingMissionDays =
+    currentMissionIndex >= 0
+      ? selectedBookDays.slice(currentMissionIndex + 2)
+      : selectedBookDays.slice(1)
+  const featuredLockedMission =
+    !currentMissionDay && selectedBookDays.length > 0 ? selectedBookDays[0] : null
 
   const completedDaysCount = 0
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
   const accessDisplay = getAccessDisplay(access)
   const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
   const showUpgradePanel = access.tier !== "pro_plus"
+  const currentMissionEstimate = currentMissionDay
+    ? getEstimatedTime(currentMissionDay.itemCount, access.tier)
+    : featuredLockedMission
+      ? getEstimatedTime(featuredLockedMission.itemCount, access.tier)
+      : "~15 min"
+  const accessDepthLabel = getMissionDepthLabel(access)
+  const accessDepthCopy = getMissionDepthCopy(access)
 
   return (
     <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
@@ -655,32 +621,20 @@ export default function TrainingHubInteractive({ days, access }: Props) {
         <section id="training-missions" ref={missionSectionRef} className="mt-5">
           <div className="mb-3 flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <div className="ba-text-section-label text-[10px] text-amber-100/78">Choose Your Drill</div>
+              <div className="ba-text-section-label text-[10px] text-amber-100/78">Genesis Mission Path</div>
               <h2 className="ba-font-display mt-1 text-[1.55rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.8rem]">
-                {selectedBookCard ? `${selectedBookCard.book} Training Missions` : "Training Missions"}
+                {selectedBookCard ? `${selectedBookCard.book} Mission Path` : "Mission Path"}
               </h2>
               <p className="mt-1 text-sm leading-6 text-slate-300/86">
                 {selectedBookDays.length > 0
-                  ? `Real day packs from ${selectedBookCard?.book} routed directly into /training/day/[day]/play.`
+                  ? `One featured mission leads the path. The next day stays locked, and future days stay compact until their turn.`
                   : "This book does not have playable training missions yet."}
               </p>
             </div>
-
-            <div className="flex flex-wrap gap-2">
-              {(["all", "playable", "locked"] as const).map((filter) => (
-                <button
-                  key={filter}
-                  type="button"
-                  onClick={() => setMissionFilter(filter)}
-                  className={`rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] transition ${
-                    missionFilter === filter
-                      ? "border-amber-200/22 bg-amber-200/10 text-amber-100"
-                      : "border-white/10 bg-white/[0.03] text-white/58 hover:text-white"
-                  }`}
-                >
-                  {filter === "all" ? "All Days" : filter === "playable" ? "Playable" : "Locked"}
-                </button>
-              ))}
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/64">
+              <span>{selectedBookDays.length} missions in this track</span>
+              <span className="h-1 w-1 rounded-full bg-white/30" />
+              <span>{accessDepthLabel}</span>
             </div>
           </div>
 
@@ -695,65 +649,174 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               </p>
             </div>
           ) : (
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {missionCards.map((day) => {
-                const status = getMissionStatus(day, todayDay, access.tier)
-                const estTime = getEstimatedTime(day.itemCount, access.tier)
-                const depthLabel =
-                  access.tier === "free" ? "Preview" : access.tier === "pro_plus" ? "Full" : "Core"
+            <div className="space-y-3">
+              <div className="grid gap-3 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.7fr)]">
+                <article className="relative overflow-hidden rounded-[1.55rem] border border-amber-200/16 bg-[radial-gradient(circle_at_top_left,rgba(255,222,140,0.20),transparent_26%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.10),transparent_34%),linear-gradient(180deg,rgba(20,24,38,0.98),rgba(7,11,20,0.99))] p-5 shadow-[0_0_34px_rgba(251,191,36,0.12),0_24px_70px_rgba(0,0,0,0.3)] sm:p-6">
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,221,133,0.18),transparent)]" />
+                  <div className="relative">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full border border-amber-200/20 bg-amber-200/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-amber-50">
+                        {currentMissionDay ? "Today’s Unlocked Mission" : "Mission Lane Locked"}
+                      </span>
+                      <span className="rounded-full border border-cyan-200/14 bg-cyan-200/8 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-50/88">
+                        {currentMissionDay ? `Day ${currentMissionDay.day}` : featuredLockedMission ? `Day ${featuredLockedMission.day}` : "No Day"}
+                      </span>
+                    </div>
 
-                return (
-                  <article
-                    key={day.day}
-                    className={`group relative overflow-hidden rounded-[1.4rem] border p-4 shadow-[0_22px_60px_rgba(0,0,0,0.24)] transition duration-200 ${status.cardClass} ${status.label === "Locked" ? "" : "hover:-translate-y-1"}`}
-                  >
-                    <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,216,125,0.16),transparent)]" />
-                    <div className="relative z-10">
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-white/80">
-                          Day {day.day}
-                        </span>
-                        <span className={`rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] ${status.chipClass}`}>
-                          {status.label}
-                        </span>
+                    <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_14rem] lg:items-end">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/46">
+                          Mission Reading
+                        </div>
+                        <h3 className="mt-2 ba-font-display text-[1.8rem] leading-[0.95] text-[#fbf0dd] sm:text-[2.1rem]">
+                          {currentMissionDay?.reference ?? featuredLockedMission?.reference ?? "No mission available"}
+                        </h3>
+                        <p className="mt-2 text-sm leading-6 text-slate-200/84">
+                          {currentMissionDay
+                            ? "This is the single mission the path is surfacing right now. Start here, then the next mission stays locked until the following daily unlock."
+                            : access.tier === "free"
+                              ? `Your preview for ${selectedBook} begins after the current free window. Upgrade to continue beyond day ${FREE_PREVIEW_LIMIT}.`
+                              : "This path is waiting for an available mission."}
+                        </p>
                       </div>
 
-                      <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.22em] text-white/46">
-                        Mission Reading
-                      </div>
-                      <h3 className="mt-2 ba-font-display text-[1.5rem] leading-[0.98] text-[#fbf0dd]">
-                        {day.reference}
-                      </h3>
-                      <p className="mt-2 text-xs leading-5 text-slate-300/82">
-                        {day.day === todayDay?.day ? "Start your next mission now." : "Return to this mission when you are ready."}
-                      </p>
-
-                      <div className="mt-4 grid grid-cols-2 gap-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/62">
-                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-2">
-                          <div className="text-white/38">Time</div>
-                          <div className="mt-1 text-white/86">{estTime}</div>
-                        </div>
-                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-2">
-                          <div className="text-white/38">Depth</div>
-                          <div className="mt-1 text-white/86">{depthLabel}</div>
-                        </div>
-                      </div>
-
-                      <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
-                        <div className="text-[11px] uppercase tracking-[0.18em] text-white/50">
-                          {status.helperCopy}
-                        </div>
-                        <Link
-                          href={`/training/day/${day.day}/play`}
-                          className={`inline-flex items-center justify-center rounded-full px-4 py-2.5 text-sm font-semibold transition ${status.buttonClass}`}
-                        >
-                          {status.buttonLabel}
-                        </Link>
+                      <div className="rounded-[1.15rem] border border-white/10 bg-black/20 p-4">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/44">Arena Depth</div>
+                        <div className="mt-1 text-sm font-semibold text-white/92">{accessDepthLabel}</div>
+                        <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-white/44">Time Estimate</div>
+                        <div className="mt-1 text-sm font-semibold text-white/92">{currentMissionEstimate}</div>
                       </div>
                     </div>
-                  </article>
-                )
-              })}
+
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Access Depth</div>
+                        <div className="mt-1 text-sm font-semibold text-white/86">{accessDepthLabel}</div>
+                      </div>
+                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Unlock Rule</div>
+                        <div className="mt-1 text-sm font-semibold text-white/86">One mission per day</div>
+                      </div>
+                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
+                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Review Archive</div>
+                        <div className="mt-1 text-sm font-semibold text-white/86">
+                          {completedBookDays.length > 0 ? `${completedBookDays.length} completed` : "No completions recorded yet"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="text-xs leading-5 text-slate-300/78">
+                        {currentMissionDay
+                          ? accessDepthCopy
+                          : "The hub is using conservative placeholder progression until persisted mission completion exists."}
+                      </div>
+                      {currentMissionDay ? (
+                        <Link
+                          href={`/training/day/${currentMissionDay.day}/play`}
+                          className="inline-flex items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_18px_40px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
+                        >
+                          Start Today&apos;s Training
+                        </Link>
+                      ) : (
+                        <Link
+                          href={access.signedIn ? "/pricing" : "/login"}
+                          className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.09]"
+                        >
+                          {access.signedIn ? "Upgrade for Full Training Arena" : "Sign In to Continue"}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                </article>
+
+                <article className="rounded-[1.4rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.10),transparent_28%),linear-gradient(180deg,rgba(16,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_22px_60px_rgba(0,0,0,0.24)]">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="ba-text-section-label text-cyan-100/72">Next Unlock</span>
+                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
+                      Locked
+                    </span>
+                  </div>
+
+                  {nextMissionDay ? (
+                    <>
+                      <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/42">
+                        Day {nextMissionDay.day}
+                      </div>
+                      <h3 className="mt-2 ba-font-display text-[1.55rem] leading-[0.98] text-[#fbf0dd]">
+                        {nextMissionDay.reference}
+                      </h3>
+                      <p className="mt-3 text-sm leading-6 text-slate-300/84">
+                        {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
+                          ? `Preview ends after day ${FREE_PREVIEW_LIMIT}. Upgrade for full Training Arena access before this mission unlocks.`
+                          : currentMissionDay
+                            ? "Unlocks after today’s mission. Continue tomorrow for the next daily mission."
+                            : "This mission stays locked until an earlier mission becomes available."}
+                      </p>
+
+                      <div className="mt-4 space-y-2">
+                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-3 text-xs text-white/74">
+                          {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
+                            ? "Upgrade for full Training Arena"
+                            : "Next daily mission"}
+                        </div>
+                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-3 text-xs text-white/74">
+                          {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
+                            ? "Preview ends after Day 3"
+                            : "Locked until tomorrow"}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <p className="mt-4 text-sm leading-6 text-slate-300/84">
+                      No follow-up mission is loaded for this track yet.
+                    </p>
+                  )}
+                </article>
+              </div>
+
+              <div className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,20,32,0.96),rgba(8,11,20,0.98))] p-4 shadow-[0_22px_60px_rgba(0,0,0,0.22)] sm:p-5">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                  <div>
+                    <div className="ba-text-section-label text-cyan-100/72">Upcoming Mission Path</div>
+                    <h3 className="mt-1 ba-font-display text-[1.28rem] text-[#f7eee1]">
+                      Locked nodes ahead
+                    </h3>
+                  </div>
+                  <p className="max-w-xl text-xs leading-5 text-slate-300/72">
+                    Completed missions are not being claimed here yet because persisted Training Arena completion state is not available in this hub.
+                  </p>
+                </div>
+
+                <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+                  {upcomingMissionDays.slice(0, 8).map((day) => {
+                    const isPlanLocked = access.tier === "free" && day.day > FREE_PREVIEW_LIMIT
+
+                    return (
+                      <article
+                        key={day.day}
+                        className="relative overflow-hidden rounded-[1.1rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-3 py-3"
+                      >
+                        <div className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-[linear-gradient(180deg,rgba(251,191,36,0.7),rgba(34,211,238,0.35))]" />
+                        <div className="pl-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/46">
+                              Day {day.day}
+                            </span>
+                            <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/64">
+                              {isPlanLocked ? "Plan Locked" : "Locked"}
+                            </span>
+                          </div>
+                          <div className="mt-2 text-sm font-semibold text-white/88">{day.reference}</div>
+                          <p className="mt-1 text-xs leading-5 text-slate-300/70">
+                            {isPlanLocked ? "Upgrade needed after preview." : "Future daily unlock."}
+                          </p>
+                        </div>
+                      </article>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
           )}
         </section>
