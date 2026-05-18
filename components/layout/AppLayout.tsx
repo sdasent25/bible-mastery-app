@@ -45,7 +45,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }, [open])
 
   return (
-    <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white lg:h-screen lg:min-h-0 lg:overflow-hidden ${open && !isGameMode ? "overflow-hidden" : ""}`}>
+    <div className={`ba-page-bg ba-auth-shell ba-mobile-shell min-h-screen text-white ${open && !isGameMode ? "overflow-hidden" : ""}`}>
       {open && !isGameMode ? (
         <div
           className="ba-mobile-drawer-overlay fixed inset-0 z-[900] lg:hidden"
@@ -54,8 +54,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         />
       ) : null}
 
-      <div className="min-h-screen w-full lg:h-full lg:min-h-0 lg:px-2 lg:py-2 xl:px-2.5 xl:py-2.5">
-        <div className="flex min-h-screen w-full lg:h-full lg:min-h-0 lg:overflow-hidden lg:rounded-[2rem] lg:border lg:border-white/8 lg:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] lg:shadow-[0_28px_80px_rgba(0,0,0,0.42)]">
+      <div className="min-h-screen w-full lg:px-2 lg:py-2 xl:px-2.5 xl:py-2.5">
+        <div className="flex min-h-screen w-full lg:rounded-[2rem] lg:border lg:border-white/8 lg:bg-[linear-gradient(180deg,rgba(6,12,22,0.96),rgba(4,8,16,0.98))] lg:shadow-[0_28px_80px_rgba(0,0,0,0.42)]">
           <aside className="hidden lg:block lg:relative lg:z-[2] lg:w-[220px] lg:shrink-0 xl:w-[228px]">
             <Sidebar variant="desktop" />
           </aside>
@@ -209,9 +209,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 ) : null}
               </div>
 
-              <div className="hidden h-full lg:block lg:min-h-0 lg:overflow-hidden lg:px-[12px] lg:py-[12px] xl:px-[14px] xl:py-[14px]">
+              <div className="hidden lg:block lg:px-[12px] lg:py-[12px] xl:px-[14px] xl:py-[14px]">
                 <div
-                  className={`h-full w-full ${
+                  className={`w-full ${
                     isTrainingRoute ? "ba-scrollbar-hidden overflow-y-auto lg:min-h-0" : ""
                   }`}
                 >

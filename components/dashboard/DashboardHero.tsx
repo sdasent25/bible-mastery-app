@@ -35,7 +35,7 @@ export default function DashboardHero({
           alt=""
           fill
           priority
-          className="object-cover object-[62%_48%]"
+          className="object-cover object-[70%_46%]"
           sizes="(max-width: 1024px) 100vw, 760px"
         />
       </div>
@@ -76,7 +76,7 @@ export default function DashboardHero({
           </p>
         </div>
 
-        <div className="mt-auto rounded-[1.05rem] border border-amber-200/14 bg-[linear-gradient(180deg,rgba(5,8,14,0.88),rgba(5,8,13,0.76))] px-2.75 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_12px_28px_rgba(0,0,0,0.18)] backdrop-blur-[12px] sm:px-3.25 sm:py-2.1">
+        <div className="mt-auto rounded-[1.05rem] border border-amber-200/12 bg-[linear-gradient(180deg,rgba(5,8,14,0.68),rgba(5,8,13,0.54))] px-2.5 py-1.8 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_12px_28px_rgba(0,0,0,0.16)] backdrop-blur-[9px] sm:px-3 sm:py-2">
           <div className="flex flex-col gap-2.25 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,0.88fr)_17rem] lg:items-center lg:gap-3">
             <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
               <span className="inline-flex h-8.5 w-8.5 shrink-0 items-center justify-center rounded-full border border-amber-200/20 bg-amber-200/10 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">

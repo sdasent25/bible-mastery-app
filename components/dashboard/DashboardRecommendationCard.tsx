@@ -45,10 +45,10 @@ export default function DashboardRecommendationCard({
           fill
           className={`object-cover ${
             accent === "training"
-              ? "object-[42%_50%]"
+              ? "object-[56%_58%]"
               : accent === "quests"
-                ? "object-[52%_46%]"
-                : "object-[50%_42%]"
+                ? "object-[58%_50%]"
+                : "object-[60%_44%]"
           }`}
           sizes="(max-width: 1024px) 100vw, 520px"
         />
@@ -56,7 +56,7 @@ export default function DashboardRecommendationCard({
       <div className="ba-recommendation-overlay" />
       {locked ? <div className="ba-recommendation-lock" /> : null}
 
-      <div className="relative z-10 flex min-h-[7.85rem] flex-col justify-end px-3.25 py-2.6 sm:min-h-[8rem]">
+      <div className="relative z-10 flex min-h-[7.85rem] flex-col justify-end px-3.25 py-2.5 sm:min-h-[8rem]">
         {locked ? (
           <div className="mb-auto flex justify-end">
             <span className="ba-text-section-label rounded-full border border-amber-200/18 bg-[#130d09]/76 px-2.25 py-0.9 text-[0.48rem] text-amber-100">
@@ -69,7 +69,7 @@ export default function DashboardRecommendationCard({
             <h3 className="ba-font-display text-[1.14rem] font-bold tracking-[-0.03em] text-[#f7eee3]">
               {title}
             </h3>
-            <p className="ba-font-ui mt-0.75 max-w-none text-[0.64rem] leading-[1.38] text-[#e7dccd]/74 md:max-w-[12rem]">
+            <p className="ba-font-ui mt-0.75 max-w-none text-[0.64rem] leading-[1.38] text-[#efe4d5]/82 md:max-w-[12rem]">
               {copy}
             </p>
             {badge ? (
