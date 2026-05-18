@@ -45,6 +45,12 @@ export default function DashboardStatCard({
   iconSrc,
 }: DashboardStatCardProps) {
   const tone = accentMap[accent]
+  const progressWidth =
+    accent === "amber"
+      ? Math.min(100, Math.max(14, parseInt(value, 10) * 10 || 0))
+      : accent === "violet" || accent === "sapphire" || value.endsWith("%")
+        ? Math.min(100, Math.max(8, parseInt(value.replace("%", ""), 10) || 0))
+        : Math.min(100, Math.max(12, Math.round((parseInt(value.replaceAll(",", ""), 10) || 0) / 150)))
 
   return (
     <article className={`ba-stat-card ba-stat-card--${accent} min-w-0`}>
@@ -60,28 +66,37 @@ export default function DashboardStatCard({
       </div>
 
       <div className="relative z-10 mt-2 flex flex-col items-center text-center">
-        <div className={`ba-stat-icon-shell relative flex h-[3.5rem] w-[3.5rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
+        <div className={`ba-stat-icon-shell ba-stat-icon-ring relative flex h-[4.1rem] w-[4.1rem] shrink-0 items-center justify-center rounded-full border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),rgba(12,18,30,0.96))] ${tone.ring}`}>
           <Image
             src={iconSrc}
             alt=""
             width={66}
             height={66}
-            className="h-[2.55rem] w-[2.55rem] object-contain"
+            className="h-[2.9rem] w-[2.9rem] object-contain"
           />
         </div>
 
-        <div className="mt-1.5 min-w-0 w-full">
-          <div className={`truncate leading-none text-[#f7f0e5] ${accent === "sapphire" ? "ba-text-title text-[1.18rem] sm:text-[1.32rem]" : "ba-font-display text-[1.22rem] font-bold tracking-[-0.04em] sm:text-[1.38rem]"}`}>
+        <div className="mt-2 min-w-0 w-full">
+          <div className={`truncate leading-none text-[#f7f0e5] ${accent === "sapphire" ? "ba-text-title text-[1.52rem] sm:text-[1.66rem]" : "ba-font-display text-[1.6rem] font-bold tracking-[-0.04em] sm:text-[1.72rem]"}`}>
             {value}
           </div>
-          <div className="ba-font-ui mt-1 text-[0.62rem] leading-[1.35] text-[#ede2d1]/76 sm:text-[0.67rem] sm:leading-4">
+          <div className="ba-font-ui mt-1.5 text-[0.68rem] leading-[1.35] text-[#ede2d1]/76 sm:text-[0.72rem] sm:leading-4">
             {supporting}
           </div>
         </div>
       </div>
 
+      <div className="relative z-10 mt-2.5">
+        <div className="ba-progress-track h-1.5">
+          <div
+            className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.42),rgba(103,232,249,0.92),rgba(244,114,182,0.74))]"
+            style={{ width: `${progressWidth}%` }}
+          />
+        </div>
+      </div>
+
       {caption ? (
-        <div className="ba-text-section-label relative z-10 mt-1.5 text-center text-[0.46rem] text-white/42 sm:text-[0.5rem]">
+        <div className="ba-text-section-label relative z-10 mt-1.5 text-center text-[0.5rem] text-white/42 sm:text-[0.54rem]">
           {caption}
         </div>
       ) : null}

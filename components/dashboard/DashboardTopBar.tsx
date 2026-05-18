@@ -6,6 +6,7 @@ type DashboardTopBarProps = {
   athleteLevel: number
   xpToNextLevel: number
   levelProgress: number
+  streak: number
   playerName: string
   onUpgrade: () => void
   onSettings: () => void
@@ -15,6 +16,7 @@ export default function DashboardTopBar({
   athleteLevel,
   xpToNextLevel,
   levelProgress,
+  streak,
   playerName,
   onUpgrade,
   onSettings,
@@ -22,7 +24,7 @@ export default function DashboardTopBar({
   return (
     <section className="ba-dashboard-topbar hidden lg:block">
       <div className="flex items-center gap-2.5">
-        <div className="flex min-w-0 items-center gap-2 pr-0.5 xl:min-w-[10.5rem]">
+        <div className="flex min-w-0 items-center gap-2 pr-0.5 xl:min-w-[12rem]">
           <span className="ba-header-brand-mark">
             {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
           </span>
@@ -36,9 +38,9 @@ export default function DashboardTopBar({
           </div>
         </div>
 
-        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-[0.95rem] border border-amber-200/10 bg-white/[0.02] px-2.25 py-1.5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[0.85rem] border border-amber-300/24 bg-[linear-gradient(180deg,rgba(54,38,18,0.98),rgba(18,14,12,0.98))] text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
-            <div className="flex h-6.5 w-6.5 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/8 text-[0.82rem] font-black">
+        <div className="flex min-w-0 flex-1 items-center gap-2 rounded-[1rem] border border-amber-200/10 bg-white/[0.02] px-2.5 py-1.75">
+          <div className="ba-level-shield flex h-11 w-11 shrink-0 items-center justify-center rounded-[1rem] border border-amber-300/24 text-amber-50 shadow-[0_0_18px_rgba(251,191,36,0.12)]">
+            <div className="flex h-7.5 w-7.5 items-center justify-center rounded-full border border-amber-200/16 bg-amber-200/8 text-[0.95rem] font-black">
               {athleteLevel}
             </div>
           </div>
@@ -47,8 +49,8 @@ export default function DashboardTopBar({
             <div className="flex items-end justify-between gap-2">
               <div className="min-w-0">
                 <div className="ba-font-ui text-[0.62rem] font-medium text-[#d9cdbd]/78">Athlete Level</div>
-                <div className="ba-font-ui truncate whitespace-nowrap text-[0.78rem] font-semibold tracking-[0.01em] text-[#f2e8d6]">
-                  {xpToNextLevel.toLocaleString()} XP to next level
+                <div className="ba-font-ui truncate whitespace-nowrap text-[0.95rem] font-semibold tracking-[0.01em] text-[#f2e8d6]">
+                  {xpToNextLevel.toLocaleString()} XP <span className="text-[#d7cab9]/74">to next level</span>
                 </div>
               </div>
             </div>
@@ -61,6 +63,20 @@ export default function DashboardTopBar({
             <div className="ba-text-section-label mt-1 flex items-center justify-between text-[0.48rem] text-white/36">
               <span>Progression Track</span>
               <span>{Math.round(levelProgress)}% charged</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 rounded-[1rem] border border-amber-200/10 bg-[linear-gradient(180deg,rgba(14,19,30,0.94),rgba(7,10,17,0.96))] px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.04),0_0_22px_rgba(251,146,60,0.08)]">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-amber-300/18 bg-[radial-gradient(circle_at_top,rgba(255,198,92,0.22),rgba(42,20,7,0.98))] text-amber-100 shadow-[0_0_18px_rgba(251,146,60,0.14)]">
+            {renderNavIcon("sun", "h-[1rem] w-[1rem]")}
+          </span>
+          <div className="min-w-0">
+            <div className="ba-font-ui text-[0.6rem] font-semibold uppercase tracking-[0.12em] text-[#f5c96f]">
+              Streak
+            </div>
+            <div className="ba-font-ui text-[0.9rem] font-semibold text-[#f7ecda]">
+              {streak.toLocaleString()}
             </div>
           </div>
         </div>
