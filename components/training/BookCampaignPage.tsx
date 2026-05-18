@@ -133,13 +133,11 @@ export default function BookCampaignPage({
       <div className="pointer-events-none absolute right-[-5rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-72 sm:w-72" />
 
       <div className="relative mx-auto max-w-[84rem]">
-        <section className="ba-book-campaign-hero relative overflow-hidden rounded-[1.6rem] sm:rounded-[1.9rem]">
+        <section className={`ba-book-campaign-hero relative overflow-hidden rounded-[1.6rem] sm:rounded-[1.9rem] ${bookSlug === "genesis" ? "is-genesis" : bookSlug === "exodus" ? "is-exodus" : ""}`}>
           <div
             className="ba-book-campaign-hero-art pointer-events-none absolute inset-0"
             style={{
               backgroundImage: `url('${book.heroImage}')`,
-              backgroundPosition: bookSlug === "genesis" ? "50% 48%" : "50% 36%",
-              backgroundSize: "cover",
             }}
           />
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,10,18,0.92)_0%,rgba(6,10,18,0.72)_42%,rgba(6,10,18,0.34)_70%,rgba(6,10,18,0.18)_100%)]" />
@@ -203,7 +201,7 @@ export default function BookCampaignPage({
               </div>
             </div>
 
-            <aside className="ba-book-progress-card flex flex-col justify-between">
+            <aside className="ba-book-progress-card ba-book-progress-panel flex flex-col justify-between">
               <div className="ba-book-crest-shell mx-auto">
                 <img
                   src={book.crestImage}
@@ -243,7 +241,7 @@ export default function BookCampaignPage({
                   </div>
                 </div>
 
-                <div className="min-w-0">
+                <div className="ba-book-current-copy min-w-0">
                   <div className="ba-text-section-label text-amber-100/82">Today&apos;s Mission</div>
                   <h2 className="mt-2 ba-font-display text-[1.9rem] leading-[0.98] text-[#fbf0dd] sm:text-[2.15rem]">
                     {featuredMission?.reference ?? `${book.title} Campaign`}
@@ -265,14 +263,7 @@ export default function BookCampaignPage({
                   </div>
                 </div>
 
-                <div className="flex flex-col items-stretch gap-3 lg:items-end">
-                  <p className="max-w-[15rem] text-sm leading-6 text-slate-300/76 lg:text-right">
-                    {currentMission
-                      ? "Complete today’s mission to continue the path. Future path states remain conservative until progression persistence exists."
-                      : access.tier === "free"
-                        ? "This book is outside the free preview window. Upgrade to continue the path."
-                        : "This campaign is loaded, but no playable mission is currently available."}
-                  </p>
+                <div className="ba-book-current-actions flex flex-col items-stretch gap-3 lg:items-end">
                   {currentMission ? (
                     <Link
                       href={`/training/day/${currentMission.day}/play`}
@@ -288,6 +279,13 @@ export default function BookCampaignPage({
                       {access.signedIn ? "Upgrade to Continue" : "Sign In to Continue"}
                     </Link>
                   )}
+                  <p className="max-w-[15rem] text-sm leading-6 text-slate-300/76 lg:text-right">
+                    {currentMission
+                      ? "Complete today’s mission to continue the path. Future path states remain conservative until progression persistence exists."
+                      : access.tier === "free"
+                        ? "This book is outside the free preview window. Upgrade to continue the path."
+                        : "This campaign is loaded, but no playable mission is currently available."}
+                  </p>
                 </div>
               </div>
             </article>

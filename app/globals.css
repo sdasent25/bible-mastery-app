@@ -795,6 +795,8 @@ textarea {
 
 .ba-training-hero-art {
   filter: brightness(1.1) contrast(1.14) saturate(1.1);
+  background-position: 60% 48%;
+  background-size: cover;
 }
 
 .ba-training-emblem {
@@ -1089,6 +1091,16 @@ textarea {
 
 .ba-book-campaign-hero-art {
   filter: brightness(1.08) contrast(1.08) saturate(1.05);
+  background-position: 50% 42%;
+  background-size: cover;
+}
+
+.ba-book-campaign-hero.is-genesis .ba-book-campaign-hero-art {
+  background-position: 50% 48%;
+}
+
+.ba-book-campaign-hero.is-exodus .ba-book-campaign-hero-art {
+  background-position: 50% 36%;
 }
 
 .ba-book-progress-card {
@@ -1298,10 +1310,13 @@ textarea {
 @media (max-width: 767px) {
   .ba-book-progress-card {
     min-height: 0;
+    border-radius: 1.35rem;
+    padding: 0.9rem;
   }
 
   .ba-book-current-mission {
     padding: 0.95rem;
+    border-radius: 1.35rem;
   }
 
   .ba-book-mission-shield {
@@ -1318,6 +1333,131 @@ textarea {
   .ba-book-path-card {
     min-height: 11.75rem;
     padding: 0.85rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .ba-training-hero-hub .ba-training-hero-art {
+    background-position: 58% 34%;
+  }
+
+  .ba-training-hero-hub {
+    border-radius: 1.45rem;
+  }
+
+  .ba-training-hero-hub .ba-training-side-panel {
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(circle at top left, rgba(255, 218, 130, 0.09), transparent 30%),
+      linear-gradient(180deg, rgba(6, 10, 18, 0.62), rgba(4, 8, 15, 0.82));
+  }
+
+  .ba-training-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ba-training-support-card {
+    min-height: 7.25rem;
+    border-radius: 1.2rem;
+    padding: 0.85rem;
+  }
+
+  .ba-training-support-card div.text-2xl {
+    font-size: 1.45rem;
+    line-height: 1.15;
+  }
+
+  .ba-training-callout {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.85rem;
+    padding: 0.72rem 0.9rem;
+  }
+
+  .ba-training-callout-value {
+    font-size: 0.9rem;
+    text-align: right;
+  }
+
+  .ba-training-primary-cta,
+  .ba-training-secondary-cta {
+    min-height: 3.1rem;
+  }
+
+  .ba-training-rail {
+    scroll-snap-type: x proximity;
+  }
+
+  .ba-training-section-card,
+  .ba-training-book-card {
+    scroll-snap-align: start;
+  }
+
+  .ba-training-section-card {
+    min-width: 16.2rem;
+  }
+
+  .ba-training-book-card {
+    min-width: 15rem;
+  }
+
+  .ba-book-campaign-hero.is-genesis .ba-book-campaign-hero-art {
+    background-position: 58% 26%;
+  }
+
+  .ba-book-campaign-hero.is-exodus .ba-book-campaign-hero-art {
+    background-position: 56% 24%;
+  }
+
+  .ba-book-campaign-hero > .relative {
+    gap: 0.85rem;
+    padding: 0.95rem;
+  }
+
+  .ba-book-progress-panel {
+    order: 2;
+  }
+
+  .ba-book-current-mission {
+    order: 3;
+  }
+
+  .ba-book-current-copy p {
+    max-width: none;
+  }
+
+  .ba-book-current-actions {
+    gap: 0.75rem;
+  }
+
+  .ba-book-current-actions p {
+    max-width: none;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .ba-book-stat-chip {
+    padding: 0.78rem 0.85rem;
+  }
+
+  .ba-book-stat-value {
+    font-size: 0.9rem;
+  }
+
+  .ba-book-path-scroll {
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+  }
+
+  .ba-book-path-rail {
+    grid-auto-columns: minmax(10.4rem, 1fr);
+    gap: 0.68rem;
+    padding-top: 1.85rem;
+  }
+
+  .ba-book-path-card {
+    min-height: 10.75rem;
+    border-radius: 1.05rem;
   }
 }
 

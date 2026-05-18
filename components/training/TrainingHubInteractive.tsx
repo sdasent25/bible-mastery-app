@@ -341,13 +341,11 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="ba-training-hero relative overflow-hidden rounded-[1.65rem] sm:rounded-[2rem]">
+        <section className="ba-training-hero ba-training-hero-hub relative overflow-hidden rounded-[1.65rem] sm:rounded-[2rem]">
           <div
             className="ba-training-hero-art pointer-events-none absolute inset-0 opacity-[1]"
             style={{
               backgroundImage: "url('/images/dashboard/training-arena-hero-sanctum.png')",
-              backgroundPosition: "60% 48%",
-              backgroundSize: "cover",
             }}
           />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_48%,rgba(255,231,166,0.54),transparent_11%),radial-gradient(circle_at_60%_52%,rgba(255,193,74,0.24),transparent_26%),linear-gradient(90deg,rgba(4,7,13,0.88)_0%,rgba(4,7,13,0.74)_18%,rgba(4,7,13,0.34)_34%,rgba(4,7,13,0.10)_54%,rgba(4,7,13,0.08)_100%)]" />
@@ -432,7 +430,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </div>
         </section>
 
-        <section className="mt-4 grid gap-2.5 sm:mt-5 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="ba-training-stats-grid mt-4 grid gap-2.5 sm:mt-5 xl:grid-cols-4">
           <article className="ba-training-support-card rounded-[1.35rem] p-4">
             <div className="text-[10px] font-bold uppercase tracking-[0.24em] text-cyan-100/72">Training Days</div>
             <div className="mt-2 text-2xl font-black text-white">{days.length}</div>
@@ -468,7 +466,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
           </div>
 
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-4 xl:grid-cols-5">
             {sectionCards.map((section) => {
               const selected = section.key === selectedSectionKey
               const statusCopy = section.hasLiveData
@@ -480,7 +478,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   key={section.key}
                   type="button"
                   onClick={() => setSelectedSectionKey(section.key)}
-                  className={`group relative min-h-[9.4rem] min-w-[15.5rem] overflow-hidden rounded-[1.35rem] border text-left shadow-[0_20px_54px_rgba(0,0,0,0.24)] transition sm:min-w-0 ${
+                  className={`ba-training-section-card group relative min-h-[9.4rem] min-w-[15.5rem] overflow-hidden rounded-[1.35rem] border text-left shadow-[0_20px_54px_rgba(0,0,0,0.24)] transition sm:min-w-0 ${
                     selected
                       ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_28px_rgba(251,191,36,0.14)]"
                       : "border-white/10 bg-[linear-gradient(180deg,rgba(15,19,30,0.96),rgba(8,11,20,0.98))]"
@@ -532,7 +530,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
           </div>
 
-          <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-3 xl:grid-cols-5">
             {selectedSection?.booksData.map((book) => {
               const hasLiveCampaign = book.days.length > 0
               const bookSlug = book.book.toLowerCase()
@@ -594,7 +592,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                     key={book.book}
                     href={bookHref}
                     onClick={() => setSelectedBook(book.book)}
-                    className={`group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
+                    className={`ba-training-book-card group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
                       selected
                         ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_26px_rgba(251,191,36,0.12)]"
                         : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
@@ -608,7 +606,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               return (
                 <div
                   key={book.book}
-                  className={`group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
+                  className={`ba-training-book-card group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
                     selected
                       ? "border-amber-200/14 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))]"
                       : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
