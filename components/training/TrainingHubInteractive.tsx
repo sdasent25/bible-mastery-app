@@ -235,6 +235,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
   const accessDisplay = getAccessDisplay(access)
   const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
+  const todayEstimateShort = todayEstimate.replace(/\s*min$/i, "")
 
   return (
     <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
@@ -278,7 +279,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
               <Link
                 href={currentTrackHref}
-                className="mt-2 inline-flex items-center justify-center text-[0.84rem] font-semibold text-amber-100/78 transition hover:text-white"
+                className="ba-training-mobile-track-link mt-1.5 inline-flex items-center justify-center text-[0.78rem] font-semibold text-amber-100/72 transition hover:text-white"
               >
                 View Track Progress →
               </Link>
@@ -296,8 +297,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   <div className="ba-font-display text-[1.22rem] leading-none text-[#fbf0dc]">{progressPercent}%</div>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="ba-text-section-label text-white/58">Overall Progress</p>
-                  <p className="mt-1 text-[0.86rem] leading-5 text-slate-200/84">{progressPercent}%</p>
+                  <p className="ba-training-mobile-progress-value mt-0.5 text-[0.86rem] leading-5 text-slate-200/84">{progressPercent}%</p>
                   <p className="mt-1 text-[11px] leading-4.5 text-slate-300/76">
                     {completedDaysCount} / {days.length} Days Completed
                   </p>
@@ -316,7 +316,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">Drills</p>
             </article>
             <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
-              <div className="text-[1.05rem] font-black leading-none text-white">{todayEstimate}</div>
+              <div className="text-[1.05rem] font-black leading-none text-white">{todayEstimateShort}</div>
               <p className="mt-1 text-[0.64rem] leading-4 text-slate-300/78">min</p>
             </article>
             <article className="ba-training-support-card ba-training-support-card-mobile rounded-[1rem] p-2.5">
@@ -467,11 +467,11 @@ export default function TrainingHubInteractive({ days, access }: Props) {
           </article>
         </section>
 
-        <section className="mt-3 lg:mt-4">
-          <div className="mb-2.5 flex items-center justify-between gap-3">
+        <section className="mt-2.5 lg:mt-4">
+          <div className="mb-1.5 lg:mb-2.5 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Train by Scripture Section</div>
-              <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">Choose the world you want to train in.</h2>
+              <h2 className="ba-font-display mt-1 hidden text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] lg:block lg:text-[1.7rem]">Choose the world you want to train in.</h2>
             </div>
             <button
               type="button"
