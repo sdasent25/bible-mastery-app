@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 
 import PricingContextBanner from "@/components/PricingContext"
 import { renderNavIcon } from "@/lib/navigation"
+import { getPlanDisplayName } from "@/lib/plans"
 import { supabase } from "@/lib/supabase"
 
 type SelectablePlan = "pro" | "pro_plus" | "free" | null
@@ -33,6 +34,8 @@ export default function PricingSection() {
   const router = useRouter()
   const [isFamily, setIsFamily] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<SelectablePlan>("pro_plus")
+  const proDisplayName = getPlanDisplayName(isFamily ? "family_pro" : "pro")
+  const proPlusDisplayName = getPlanDisplayName(isFamily ? "family_pro_plus" : "pro_plus")
 
   const handleSelectPlan = async (plan: string) => {
     const {
@@ -157,12 +160,12 @@ export default function PricingSection() {
             selectedPlan === "pro" ? "ring-1 ring-emerald-300/26" : ""
           }`}
         >
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <div className="ba-badge-success">Pro</div>
-              <h2 className="mt-3 text-2xl font-black text-white">
-                Verse Memory and core access
-              </h2>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="ba-badge-success">{proDisplayName}</div>
+                <h2 className="mt-3 text-2xl font-black text-white">
+                  Verse Memory and core access
+                </h2>
               <p className="mt-2 text-sm leading-6 text-slate-200">
                 A strong daily plan for memory, review, and consistent Scripture training.
               </p>
@@ -213,12 +216,12 @@ export default function PricingSection() {
             <div className="ba-badge-gold">Best Value</div>
           </div>
 
-          <div className="flex items-start justify-between gap-4 pr-24">
-            <div>
-              <div className="ba-badge-gold">Pro+</div>
-              <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">
-                Full Training Arena
-              </h2>
+            <div className="flex items-start justify-between gap-4 pr-24">
+              <div>
+                <div className="ba-badge-gold">{proPlusDisplayName}</div>
+                <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">
+                  Full Training Arena
+                </h2>
               <p className="mt-2 text-sm leading-6 text-slate-200">
                 Unlock the full arena, deeper drills, and the strongest Bible Athlete experience.
               </p>

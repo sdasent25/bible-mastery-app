@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
 import { getUserPlan } from "@/lib/getUserPlan"
+import { getPlanMemberLabel } from "@/lib/plans"
 import {
   desktopNavItems,
   isNavItemActive,
@@ -157,9 +158,7 @@ export default function Sidebar({
           <div className="ba-sidebar-devotion-art" />
           <div className="relative z-10">
             <div className="ba-text-section-label text-[0.58rem] text-amber-100/70">
-              {planType === "pro_plus" || planType === "family_pro_plus"
-                ? "Pro+ Member"
-                : "Faith Focus"}
+              {getPlanMemberLabel(planType)}
             </div>
             <p className="ba-font-display mt-3 text-[0.92rem] font-bold tracking-[-0.02em] text-[#f5e8cf]">
               Grow in faith. Compete with purpose.

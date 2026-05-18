@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useState } from "react"
 
 import { renderNavIcon } from "@/lib/navigation"
+import { getPlanDisplayName } from "@/lib/plans"
 
 type CheckoutPlan = "pro" | "pro_plus" | "family_pro" | "family_pro_plus"
 
@@ -47,6 +48,8 @@ export default function PricingPage() {
   }
 
   const isFamily = mode === "family"
+  const proDisplayName = getPlanDisplayName(isFamily ? "family_pro" : "pro")
+  const proPlusDisplayName = getPlanDisplayName(isFamily ? "family_pro_plus" : "pro_plus")
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#153247_0%,_#09111d_38%,_#04070f_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
@@ -76,7 +79,7 @@ export default function PricingPage() {
               </div>
               <div className="ba-card-soft rounded-[1.4rem] px-4 py-4">
                 <div className="text-[11px] font-black uppercase tracking-[0.22em] text-emerald-200/82">
-                  Pro
+                  {proDisplayName}
                 </div>
                 <div className="mt-2 text-lg font-black text-white">
                   Verse Memory and core access
@@ -84,7 +87,7 @@ export default function PricingPage() {
               </div>
               <div className="ba-card-soft rounded-[1.4rem] px-4 py-4">
                 <div className="text-[11px] font-black uppercase tracking-[0.22em] text-cyan-100/82">
-                  Pro+
+                  {proPlusDisplayName}
                 </div>
                 <div className="mt-2 text-lg font-black text-white">
                   Full arena and deeper mastery
@@ -171,7 +174,7 @@ export default function PricingPage() {
           <div className="ba-card-pro rounded-[1.9rem] p-5 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="ba-badge-success">Pro</div>
+                <div className="ba-badge-success">{proDisplayName}</div>
                 <h2 className="mt-3 text-2xl font-black text-white">
                   Build daily consistency
                 </h2>
@@ -221,7 +224,7 @@ export default function PricingPage() {
 
             <div className="flex items-start justify-between gap-4 pr-24">
               <div>
-                <div className="ba-badge-gold">Pro+</div>
+                <div className="ba-badge-gold">{proPlusDisplayName}</div>
                 <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">
                   Unlock the full arena
                 </h2>

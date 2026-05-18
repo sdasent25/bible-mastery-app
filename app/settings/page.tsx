@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
 import LanguageToggle from "@/components/LanguageToggle"
+import { getPlanDisplayName } from "@/lib/plans"
 
 export default function SettingsPage() {
   const [email, setEmail] = useState("")
-  const [plan, setPlan] = useState("Free (Individual)")
+  const [plan, setPlan] = useState("Free")
   const [sound, setSound] = useState(true)
   const [notifications, setNotifications] = useState(false)
 
@@ -25,20 +26,9 @@ export default function SettingsPage() {
           .eq("user_id", user.id)
           .single()
 
-        const planLabel =
-          data?.final_plan === "pro_plus"
-            ? "Pro+"
-            : data?.final_plan === "pro"
-              ? "Pro"
-              : "Free"
-
-        const fullPlanLabel = data?.in_family
-          ? `${planLabel} (Family)`
-          : `${planLabel} (Individual)`
-
         console.log("FINAL PLAN:", data?.final_plan)
 
-        setPlan(fullPlanLabel)
+        setPlan(getPlanDisplayName(data?.final_plan))
       }
 
       const savedSound = localStorage.getItem("sound") !== "off"
@@ -74,7 +64,7 @@ export default function SettingsPage() {
           <p className="text-sm text-white/60">Account</p>
           <p className="text-white font-medium">{email}</p>
           <p className="text-white text-sm">
-            Plan:{" "}
+            Current Plan:{" "}
             <span className="text-green-400 font-semibold">
               {plan}
             </span>

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 
 import { renderNavIcon } from "@/lib/navigation"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { getPlanDisplayName } from "@/lib/plans"
 
 type PlanId =
   | "free"
@@ -64,16 +65,9 @@ export default function UpgradePage() {
 
   const isPro = plan === "pro" || plan === "family_pro"
   const isProPlus = plan === "pro_plus" || plan === "family_pro_plus"
-  const currentPlanLabel =
-    plan === "family_pro_plus"
-      ? "Family Pro+"
-      : plan === "family_pro"
-        ? "Family Pro"
-        : plan === "pro_plus"
-          ? "Pro+"
-          : plan === "pro"
-            ? "Pro"
-            : "Free"
+  const currentPlanLabel = getPlanDisplayName(plan)
+  const proDisplayName = getPlanDisplayName(isFamily ? "family_pro" : "pro")
+  const proPlusDisplayName = getPlanDisplayName(isFamily ? "family_pro_plus" : "pro_plus")
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,_#123446_0%,_#09111c_40%,_#04070f_100%)] px-4 py-6 text-white sm:px-6 sm:py-8">
@@ -145,7 +139,7 @@ export default function UpgradePage() {
           <div className="ba-card-pro rounded-[1.9rem] p-5 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="ba-badge-success">Pro</div>
+                <div className="ba-badge-success">{proDisplayName}</div>
                 <h2 className="mt-3 text-2xl font-black text-white">
                   Verse Memory and core tools
                 </h2>
@@ -186,7 +180,7 @@ export default function UpgradePage() {
                   onClick={() => handleCheckout(isFamily ? "family_pro_plus" : "pro_plus")}
                   className="ba-button-secondary w-full px-4 py-4 text-base font-black"
                 >
-                  Move from Pro to Pro+
+                  {isFamily ? "Move from Family Pro to Family Pro+" : "Move from Pro to Pro+"}
                 </button>
               ) : (
                 <button
@@ -206,7 +200,7 @@ export default function UpgradePage() {
 
             <div className="flex items-start justify-between gap-4 pr-24">
               <div>
-                <div className="ba-badge-gold">Pro+</div>
+                <div className="ba-badge-gold">{proPlusDisplayName}</div>
                 <h2 className="mt-3 text-2xl font-black text-white sm:text-3xl">
                   Full arena mastery
                 </h2>
