@@ -1,13 +1,17 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import type {
   TrainingAccessState,
   TrainingAccessTier,
   TrainingDaySummary,
 } from "@/lib/training/types"
+import {
+  getTrainingBookSlugFromSegmentKey,
+  isTrainingBookSlug,
+} from "@/lib/training/bibleStructure"
 
 type SectionKey =
   | "pentateuch"
@@ -65,7 +69,7 @@ const SECTION_CONFIGS: SectionConfig[] = [
     title: "Historical Books",
     description: "Kings, exile, return, and covenant memory",
     range: "Joshua - Esther",
-    artPath: "/training/sections/historical.png",
+    artPath: "/training/sections/historical-books.png",
     books: [
       "Joshua",
       "Judges",
@@ -139,7 +143,7 @@ const SECTION_CONFIGS: SectionConfig[] = [
     title: "Pauline Epistles",
     description: "Letters for doctrine, order, and endurance",
     range: "Romans - Philemon",
-    artPath: "/explorer/pauline-epistles/region.png",
+    artPath: "/training/sections/pauline-epistles.png",
     books: [
       "Romans",
       "1 Corinthians",
@@ -161,7 +165,7 @@ const SECTION_CONFIGS: SectionConfig[] = [
     title: "General Epistles",
     description: "Steady faith, tested holiness, and assurance",
     range: "Hebrews - Jude",
-    artPath: "/explorer/general-epistles/region.png",
+    artPath: "/training/sections/general-epistles.png",
     books: ["Hebrews", "James", "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude"],
   },
   {
@@ -169,7 +173,7 @@ const SECTION_CONFIGS: SectionConfig[] = [
     title: "Apocalyptic",
     description: "Judgment, victory, and new creation hope",
     range: "Revelation",
-    artPath: "/training/sections/revelation-apocalyptic.png",
+    artPath: "/training/sections/apocalyptic.png",
     books: ["Revelation"],
   },
 ]
@@ -222,18 +226,6 @@ function getBookArtPath(book: string, section: SectionConfig, days: TrainingDayS
   return section.artPath
 }
 
-function isMissionAccessibleForTier(dayNumber: number, tier: TrainingAccessTier) {
-  return tier !== "free" || dayNumber <= FREE_PREVIEW_LIMIT
-}
-
-function getMissionDepthLabel(access: TrainingAccessState) {
-  if (access.rawPlan === "family_pro_plus") return "Family Pro+ Full Arena"
-  if (access.rawPlan === "family_pro") return "Family Pro Core"
-  if (access.tier === "pro_plus") return "Full Arena Access"
-  if (access.tier === "pro") return "Core Access"
-  return "Preview Access"
-}
-
 function getMissionDepthCopy(access: TrainingAccessState) {
   if (access.tier === "pro_plus") return "Easy, core, and advanced drill depth are active."
   if (access.tier === "pro") return "Core daily drills are active. Pro+ adds the deepest arena layer."
@@ -241,12 +233,17 @@ function getMissionDepthCopy(access: TrainingAccessState) {
 }
 
 export default function TrainingHubInteractive({ days, access }: Props) {
-  const missionSectionRef = useRef<HTMLElement | null>(null)
   const totalDrills = useMemo(() => days.reduce((sum, day) => sum + day.itemCount, 0), [days])
   const firstDay = days[0] ?? null
   const todayDay = days.find((day) => access.tier !== "free" || day.day <= 3) ?? firstDay
   const currentTrack = firstDay ? getTrackLabel(firstDay.segmentKey) : "Scripture"
   const currentTrackReference = todayDay?.reference ?? "No day loaded"
+  const currentTrackBookSlug = todayDay
+    ? getTrainingBookSlugFromSegmentKey(todayDay.segmentKey)
+    : ""
+  const currentTrackHref = isTrainingBookSlug(currentTrackBookSlug)
+    ? `/training/book/${currentTrackBookSlug}`
+    : "/training/book/genesis"
 
   const daysByBook = useMemo(() => {
     const grouped = new Map<string, TrainingDaySummary[]>()
@@ -302,44 +299,11 @@ export default function TrainingHubInteractive({ days, access }: Props) {
     setSelectedBook(nextBook)
   }, [selectedSectionKey, selectedSection])
 
-  const selectedBookCard =
-    selectedSection?.booksData.find((book) => book.book === selectedBook) ??
-    selectedSection?.booksData[0] ??
-    null
-  const selectedBookDays = selectedBookCard?.days ?? []
-  const accessibleBookDays = selectedBookDays.filter((day) =>
-    isMissionAccessibleForTier(day.day, access.tier)
-  )
-  // Placeholder until real persisted completion/unlock state exists for Training Arena.
-  // Replace this with server-backed completion data once the hub can read completed day history.
-  const completedBookDays: TrainingDaySummary[] = []
-  const currentMissionDay = accessibleBookDays[0] ?? null
-  const currentMissionIndex = currentMissionDay
-    ? selectedBookDays.findIndex((day) => day.day === currentMissionDay.day)
-    : -1
-  const nextMissionDay =
-    currentMissionIndex >= 0
-      ? selectedBookDays[currentMissionIndex + 1] ?? null
-      : selectedBookDays[0] ?? null
-  const upcomingMissionDays =
-    currentMissionIndex >= 0
-      ? selectedBookDays.slice(currentMissionIndex + 2)
-      : selectedBookDays.slice(1)
-  const featuredLockedMission =
-    !currentMissionDay && selectedBookDays.length > 0 ? selectedBookDays[0] : null
-
   const completedDaysCount = 0
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
   const accessDisplay = getAccessDisplay(access)
   const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
   const showUpgradePanel = access.tier !== "pro_plus"
-  const currentMissionEstimate = currentMissionDay
-    ? getEstimatedTime(currentMissionDay.itemCount, access.tier)
-    : featuredLockedMission
-      ? getEstimatedTime(featuredLockedMission.itemCount, access.tier)
-      : "~15 min"
-  const accessDepthLabel = getMissionDepthLabel(access)
-  const accessDepthCopy = getMissionDepthCopy(access)
 
   return (
     <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
@@ -428,12 +392,12 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 >
                   Start Today&apos;s Training
                 </Link>
-                <a
-                  href="#training-missions"
+                <Link
+                  href={currentTrackHref}
                   className="ba-training-secondary-cta inline-flex w-full items-center justify-center px-6 py-3.5 text-sm font-semibold text-white transition sm:w-auto sm:min-w-[12.5rem]"
                 >
-                  View All Days
-                </a>
+                  View Track Progress
+                </Link>
               </div>
             </div>
 
@@ -559,6 +523,9 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               <h2 className="ba-font-display mt-1 text-[1.45rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">
                 {selectedSection?.title ?? "Select a section first"}
               </h2>
+              <p className="mt-1 text-sm leading-6 text-slate-300/82">
+                Step into a focused book campaign. Mission paths now live inside each book page, not on the main arena hub.
+              </p>
             </div>
             <div className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 lg:inline-flex">
               {selectedSection?.availableBookCount ?? 0} book{selectedSection?.availableBookCount === 1 ? "" : "s"} available
@@ -567,8 +534,15 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
           <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-3 xl:grid-cols-5">
             {selectedSection?.booksData.map((book) => {
-              const lockedForNow = book.days.length === 0
-              const freeLocked = access.tier === "free" && book.days.length > 0 && book.days.every((day) => day.day > 3)
+              const hasLiveCampaign = book.days.length > 0
+              const bookSlug = book.book.toLowerCase()
+              const hasBookRoute = isTrainingBookSlug(bookSlug)
+              const bookHref = hasBookRoute ? `/training/book/${bookSlug}` : null
+              const lockedForNow = !hasLiveCampaign || !bookHref
+              const freeLocked =
+                access.tier === "free" &&
+                book.days.length > 0 &&
+                book.days.every((day) => day.day > FREE_PREVIEW_LIMIT)
               const selected = selectedBook === book.book
               const statusText = lockedForNow
                 ? "Coming Soon"
@@ -577,19 +551,8 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   : access.tier === "free" && book.days.some((day) => day.day <= 3)
                     ? "Preview Available"
                     : "Available"
-
-              return (
-                <button
-                  key={book.book}
-                  type="button"
-                  disabled={lockedForNow}
-                  onClick={() => setSelectedBook(book.book)}
-                  className={`group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
-                    selected
-                      ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_26px_rgba(251,191,36,0.12)]"
-                      : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
-                  } ${lockedForNow ? "opacity-80" : ""}`}
-                >
+              const body = (
+                <>
                   <div
                     className={`absolute inset-0 ${lockedForNow ? "opacity-[0.48] saturate-[0.68]" : "opacity-[0.82]"}`}
                     style={{
@@ -601,224 +564,61 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,10,16,0.14),rgba(7,10,16,0.46)_42%,rgba(7,10,16,0.92)_100%)]" />
 
                   <div className="relative flex h-full flex-col p-3.5">
-                    <span className={`ba-text-section-label inline-flex w-fit rounded-full border px-2.25 py-1 text-[0.46rem] ${lockedForNow ? "border-amber-200/16 bg-amber-200/10 text-amber-100" : "border-cyan-200/16 bg-cyan-200/10 text-cyan-50"}`}>
-                      {statusText}
-                    </span>
+                    <div className="flex items-center justify-between gap-3">
+                      <span className={`ba-text-section-label inline-flex w-fit rounded-full border px-2.25 py-1 text-[0.46rem] ${lockedForNow ? "border-amber-200/16 bg-amber-200/10 text-amber-100" : "border-cyan-200/16 bg-cyan-200/10 text-cyan-50"}`}>
+                        {statusText}
+                      </span>
+                      <span className="text-white/70">{bookHref ? "↗" : "○"}</span>
+                    </div>
                     <h3 className="mt-4 ba-font-display text-[1.2rem] leading-[1] text-[#fbf0de]">{book.book}</h3>
                     <p className="mt-2 text-xs leading-5 text-slate-200/84">
-                      {book.days.length > 0 ? `${book.days.length} training mission${book.days.length === 1 ? "" : "s"} available.` : "This book track is not available yet."}
+                      {hasLiveCampaign
+                        ? `${book.days.length} training mission${book.days.length === 1 ? "" : "s"} in this campaign path.`
+                        : "This book campaign is not available yet."}
                     </p>
-                    <div className="mt-auto pt-3 text-[11px] font-semibold text-white/64">
-                      {book.days.length > 0 ? book.days[0].reference : "Locked"}
+                    <div className="mt-auto flex items-end justify-between gap-3 pt-3">
+                      <div className="text-[11px] font-semibold text-white/64">
+                        {hasLiveCampaign ? book.days[0].reference : "Locked"}
+                      </div>
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-100/76">
+                        {bookHref ? "Open Campaign" : "Coming Soon"}
+                      </div>
                     </div>
                   </div>
-                </button>
+                </>
+              )
+
+              if (bookHref) {
+                return (
+                  <Link
+                    key={book.book}
+                    href={bookHref}
+                    onClick={() => setSelectedBook(book.book)}
+                    className={`group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
+                      selected
+                        ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_26px_rgba(251,191,36,0.12)]"
+                        : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
+                    }`}
+                  >
+                    {body}
+                  </Link>
+                )
+              }
+
+              return (
+                <div
+                  key={book.book}
+                  className={`group relative min-h-[8.8rem] min-w-[14rem] overflow-hidden rounded-[1.3rem] border text-left transition sm:min-w-0 ${
+                    selected
+                      ? "border-amber-200/14 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))]"
+                      : "border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))]"
+                  } opacity-85`}
+                >
+                  {body}
+                </div>
               )
             })}
           </div>
-        </section>
-
-        <section id="training-missions" ref={missionSectionRef} className="mt-5">
-          <div className="mb-3 flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <div className="ba-text-section-label text-[10px] text-amber-100/78">Genesis Mission Path</div>
-              <h2 className="ba-font-display mt-1 text-[1.55rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.8rem]">
-                {selectedBookCard ? `${selectedBookCard.book} Mission Path` : "Mission Path"}
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-slate-300/86">
-                {selectedBookDays.length > 0
-                  ? `One featured mission leads the path. The next day stays locked, and future days stay compact until their turn.`
-                  : "This book does not have playable training missions yet."}
-              </p>
-            </div>
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/64">
-              <span>{selectedBookDays.length} missions in this track</span>
-              <span className="h-1 w-1 rounded-full bg-white/30" />
-              <span>{accessDepthLabel}</span>
-            </div>
-          </div>
-
-          {selectedBookDays.length === 0 ? (
-            <div className="rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))] p-5 shadow-[0_22px_60px_rgba(0,0,0,0.24)]">
-              <div className="ba-text-section-label text-cyan-100/68">Coming Soon</div>
-              <h3 className="mt-2 ba-font-display text-[1.5rem] text-[#fbf0dd]">
-                {selectedBook} training is not live yet.
-              </h3>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300/84">
-                Keep training the currently available tracks while this book lane is prepared for the arena.
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="grid gap-3 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,0.7fr)]">
-                <article className="relative overflow-hidden rounded-[1.55rem] border border-amber-200/16 bg-[radial-gradient(circle_at_top_left,rgba(255,222,140,0.20),transparent_26%),radial-gradient(circle_at_top_right,rgba(34,211,238,0.10),transparent_34%),linear-gradient(180deg,rgba(20,24,38,0.98),rgba(7,11,20,0.99))] p-5 shadow-[0_0_34px_rgba(251,191,36,0.12),0_24px_70px_rgba(0,0,0,0.3)] sm:p-6">
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[linear-gradient(180deg,rgba(255,221,133,0.18),transparent)]" />
-                  <div className="relative">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full border border-amber-200/20 bg-amber-200/12 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.22em] text-amber-50">
-                        {currentMissionDay ? "Today’s Unlocked Mission" : "Mission Lane Locked"}
-                      </span>
-                      <span className="rounded-full border border-cyan-200/14 bg-cyan-200/8 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-50/88">
-                        {currentMissionDay ? `Day ${currentMissionDay.day}` : featuredLockedMission ? `Day ${featuredLockedMission.day}` : "No Day"}
-                      </span>
-                    </div>
-
-                    <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1fr)_14rem] lg:items-end">
-                      <div>
-                        <div className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/46">
-                          Mission Reading
-                        </div>
-                        <h3 className="mt-2 ba-font-display text-[1.8rem] leading-[0.95] text-[#fbf0dd] sm:text-[2.1rem]">
-                          {currentMissionDay?.reference ?? featuredLockedMission?.reference ?? "No mission available"}
-                        </h3>
-                        <p className="mt-2 text-sm leading-6 text-slate-200/84">
-                          {currentMissionDay
-                            ? "This is the single mission the path is surfacing right now. Start here, then the next mission stays locked until the following daily unlock."
-                            : access.tier === "free"
-                              ? `Your preview for ${selectedBook} begins after the current free window. Upgrade to continue beyond day ${FREE_PREVIEW_LIMIT}.`
-                              : "This path is waiting for an available mission."}
-                        </p>
-                      </div>
-
-                      <div className="rounded-[1.15rem] border border-white/10 bg-black/20 p-4">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/44">Arena Depth</div>
-                        <div className="mt-1 text-sm font-semibold text-white/92">{accessDepthLabel}</div>
-                        <div className="mt-3 text-[10px] font-bold uppercase tracking-[0.18em] text-white/44">Time Estimate</div>
-                        <div className="mt-1 text-sm font-semibold text-white/92">{currentMissionEstimate}</div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Access Depth</div>
-                        <div className="mt-1 text-sm font-semibold text-white/86">{accessDepthLabel}</div>
-                      </div>
-                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Unlock Rule</div>
-                        <div className="mt-1 text-sm font-semibold text-white/86">One mission per day</div>
-                      </div>
-                      <div className="rounded-[1rem] border border-white/8 bg-white/[0.04] px-3 py-3">
-                        <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/38">Review Archive</div>
-                        <div className="mt-1 text-sm font-semibold text-white/86">
-                          {completedBookDays.length > 0 ? `${completedBookDays.length} completed` : "No completions recorded yet"}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-4 flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="text-xs leading-5 text-slate-300/78">
-                        {currentMissionDay
-                          ? accessDepthCopy
-                          : "The hub is using conservative placeholder progression until persisted mission completion exists."}
-                      </div>
-                      {currentMissionDay ? (
-                        <Link
-                          href={`/training/day/${currentMissionDay.day}/play`}
-                          className="inline-flex items-center justify-center rounded-full bg-amber-200 px-5 py-3 text-sm font-black text-[#2d1700] shadow-[0_18px_40px_rgba(251,191,36,0.18)] transition hover:scale-[1.01]"
-                        >
-                          Start Today&apos;s Training
-                        </Link>
-                      ) : (
-                        <Link
-                          href={access.signedIn ? "/pricing" : "/login"}
-                          className="inline-flex items-center justify-center rounded-full border border-white/12 bg-white/[0.06] px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/[0.09]"
-                        >
-                          {access.signedIn ? "Upgrade for Full Training Arena" : "Sign In to Continue"}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-                </article>
-
-                <article className="rounded-[1.4rem] border border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.10),transparent_28%),linear-gradient(180deg,rgba(16,22,34,0.98),rgba(8,11,20,0.98))] p-5 shadow-[0_22px_60px_rgba(0,0,0,0.24)]">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="ba-text-section-label text-cyan-100/72">Next Unlock</span>
-                    <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">
-                      Locked
-                    </span>
-                  </div>
-
-                  {nextMissionDay ? (
-                    <>
-                      <div className="mt-4 text-[10px] font-bold uppercase tracking-[0.18em] text-white/42">
-                        Day {nextMissionDay.day}
-                      </div>
-                      <h3 className="mt-2 ba-font-display text-[1.55rem] leading-[0.98] text-[#fbf0dd]">
-                        {nextMissionDay.reference}
-                      </h3>
-                      <p className="mt-3 text-sm leading-6 text-slate-300/84">
-                        {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
-                          ? `Preview ends after day ${FREE_PREVIEW_LIMIT}. Upgrade for full Training Arena access before this mission unlocks.`
-                          : currentMissionDay
-                            ? "Unlocks after today’s mission. Continue tomorrow for the next daily mission."
-                            : "This mission stays locked until an earlier mission becomes available."}
-                      </p>
-
-                      <div className="mt-4 space-y-2">
-                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-3 text-xs text-white/74">
-                          {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
-                            ? "Upgrade for full Training Arena"
-                            : "Next daily mission"}
-                        </div>
-                        <div className="rounded-[0.95rem] border border-white/8 bg-white/[0.03] px-3 py-3 text-xs text-white/74">
-                          {access.tier === "free" && nextMissionDay.day > FREE_PREVIEW_LIMIT
-                            ? "Preview ends after Day 3"
-                            : "Locked until tomorrow"}
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <p className="mt-4 text-sm leading-6 text-slate-300/84">
-                      No follow-up mission is loaded for this track yet.
-                    </p>
-                  )}
-                </article>
-              </div>
-
-              <div className="rounded-[1.4rem] border border-white/10 bg-[linear-gradient(180deg,rgba(15,20,32,0.96),rgba(8,11,20,0.98))] p-4 shadow-[0_22px_60px_rgba(0,0,0,0.22)] sm:p-5">
-                <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                  <div>
-                    <div className="ba-text-section-label text-cyan-100/72">Upcoming Mission Path</div>
-                    <h3 className="mt-1 ba-font-display text-[1.28rem] text-[#f7eee1]">
-                      Locked nodes ahead
-                    </h3>
-                  </div>
-                  <p className="max-w-xl text-xs leading-5 text-slate-300/72">
-                    Completed missions are not being claimed here yet because persisted Training Arena completion state is not available in this hub.
-                  </p>
-                </div>
-
-                <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
-                  {upcomingMissionDays.slice(0, 8).map((day) => {
-                    const isPlanLocked = access.tier === "free" && day.day > FREE_PREVIEW_LIMIT
-
-                    return (
-                      <article
-                        key={day.day}
-                        className="relative overflow-hidden rounded-[1.1rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02))] px-3 py-3"
-                      >
-                        <div className="pointer-events-none absolute left-0 top-0 h-full w-1 bg-[linear-gradient(180deg,rgba(251,191,36,0.7),rgba(34,211,238,0.35))]" />
-                        <div className="pl-2">
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/46">
-                              Day {day.day}
-                            </span>
-                            <span className="rounded-full border border-white/10 bg-white/[0.04] px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.16em] text-white/64">
-                              {isPlanLocked ? "Plan Locked" : "Locked"}
-                            </span>
-                          </div>
-                          <div className="mt-2 text-sm font-semibold text-white/88">{day.reference}</div>
-                          <p className="mt-1 text-xs leading-5 text-slate-300/70">
-                            {isPlanLocked ? "Upgrade needed after preview." : "Future daily unlock."}
-                          </p>
-                        </div>
-                      </article>
-                    )
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
         </section>
 
         {showUpgradePanel ? (
