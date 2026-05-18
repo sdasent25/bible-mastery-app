@@ -56,7 +56,7 @@ export default function DashboardRecommendationCard({
       <div className="ba-recommendation-overlay" />
       {locked ? <div className="ba-recommendation-lock" /> : null}
 
-      <div className="relative z-10 flex min-h-[10rem] flex-col justify-end px-4 py-3.5 sm:min-h-[10.25rem]">
+      <div className="relative z-10 flex min-h-[8.85rem] flex-col justify-end px-3.5 py-3 sm:min-h-[9rem]">
         {locked ? (
           <div className="mb-auto flex justify-end">
             <span className="ba-text-section-label rounded-full border border-amber-200/18 bg-[#130d09]/76 px-2.25 py-0.9 text-[0.48rem] text-amber-100">
@@ -66,14 +66,14 @@ export default function DashboardRecommendationCard({
         ) : null}
         <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_2.8rem] md:items-end">
           <div className="min-w-0">
-            <h3 className="ba-font-display text-[1.42rem] font-bold tracking-[-0.03em] text-[#f7eee3]">
+            <h3 className="ba-font-display text-[1.28rem] font-bold tracking-[-0.03em] text-[#f7eee3]">
               {title}
             </h3>
-            <p className="ba-font-ui mt-1.5 max-w-none text-[0.78rem] leading-[1.48] text-[#e7dccd]/74 md:max-w-[15rem]">
+            <p className="ba-font-ui mt-1 max-w-none text-[0.7rem] leading-[1.45] text-[#e7dccd]/74 md:max-w-[13rem]">
               {copy}
             </p>
             {badge ? (
-              <div className={`ba-text-section-label mt-3 inline-flex max-w-full rounded-full border px-2.5 py-1 text-[0.52rem] ${badgeClass}`}>
+              <div className={`ba-text-section-label mt-2.5 inline-flex max-w-full rounded-full border px-2.35 py-0.95 text-[0.48rem] ${badgeClass}`}>
                 {badge}
               </div>
             ) : null}
