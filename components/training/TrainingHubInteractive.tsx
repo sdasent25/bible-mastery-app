@@ -230,12 +230,29 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
   const initialSectionKey = sectionCards.find((section) => section.hasLiveData)?.key ?? "pentateuch"
   const [selectedSectionKey, setSelectedSectionKey] = useState<SectionKey>(initialSectionKey)
+  const [showAllSections, setShowAllSections] = useState(false)
+  const [sectionNotice, setSectionNotice] = useState<string | null>(null)
 
   const completedDaysCount = 0
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
   const accessDisplay = getAccessDisplay(access)
   const todayEstimate = todayDay ? getEstimatedTime(todayDay.itemCount, access.tier) : "~15 min"
   const todayEstimateShort = todayEstimate.replace(/\s*min$/i, "")
+  const visibleSectionCards = showAllSections ? sectionCards : sectionCards.slice(0, 5)
+
+  function handleSectionSelect(section: SectionCard) {
+    if (section.hasLiveData) {
+      setSelectedSectionKey(section.key)
+      setSectionNotice(
+        `${section.title} is active. Continue into ${currentTrack} through today's training or view track progress.`
+      )
+      return
+    }
+
+    setSectionNotice(
+      "Coming soon. This Scripture section will unlock as new Training Arena content is added."
+    )
+  }
 
   return (
     <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
@@ -475,14 +492,23 @@ export default function TrainingHubInteractive({ days, access }: Props) {
             </div>
             <button
               type="button"
-              className="hidden rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 transition hover:bg-white/[0.06] lg:inline-flex"
+              aria-expanded={showAllSections}
+              onClick={() => {
+                setShowAllSections((value) => !value)
+                setSectionNotice(null)
+              }}
+              className="inline-flex rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-[11px] font-semibold text-white/60 transition hover:bg-white/[0.06] hover:text-white"
             >
-              View All Sections →
+              {showAllSections ? "View Less" : "View All Sections →"}
             </button>
           </div>
 
-          <div className="ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-2 sm:px-0 lg:grid-cols-5">
-            {sectionCards.slice(0, 5).map((section) => {
+          <div
+            className={`ba-training-rail -mx-4 flex gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0 ${
+              showAllSections ? "ba-training-rail-expanded-mobile sm:grid sm:grid-cols-2 lg:grid-cols-5" : "sm:grid sm:grid-cols-2 lg:grid-cols-5"
+            }`}
+          >
+            {visibleSectionCards.map((section) => {
               const selected = section.key === selectedSectionKey
               const statusCopy = section.hasLiveData
                 ? `${section.availableDayCount} live day${section.availableDayCount === 1 ? "" : "s"}`
@@ -492,11 +518,17 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                 <button
                   key={section.key}
                   type="button"
-                  onClick={() => setSelectedSectionKey(section.key)}
+                  aria-pressed={section.hasLiveData ? selected : undefined}
+                  aria-label={
+                    section.hasLiveData
+                      ? `${section.title} section available. Select section.`
+                      : `${section.title} section locked. View availability message.`
+                  }
+                  onClick={() => handleSectionSelect(section)}
                   className={`ba-training-section-card group relative min-h-[9.4rem] min-w-[15.5rem] overflow-hidden rounded-[1.35rem] border text-left shadow-[0_20px_54px_rgba(0,0,0,0.24)] transition sm:min-w-0 ${
                     selected
                       ? "border-amber-200/20 bg-[linear-gradient(180deg,rgba(20,20,25,0.96),rgba(7,10,18,0.98))] shadow-[0_0_28px_rgba(251,191,36,0.14)]"
-                      : "border-white/10 bg-[linear-gradient(180deg,rgba(15,19,30,0.96),rgba(8,11,20,0.98))]"
+                      : "border-white/10 bg-[linear-gradient(180deg,rgba(15,19,30,0.96),rgba(8,11,20,0.98))] hover:border-white/18"
                   }`}
                 >
                   <div
@@ -527,6 +559,12 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               )
             })}
           </div>
+
+          {sectionNotice ? (
+            <div className="mt-2.5 rounded-[1rem] border border-amber-200/14 bg-[linear-gradient(180deg,rgba(15,19,30,0.96),rgba(8,11,20,0.98))] px-3 py-2.5 text-[0.82rem] leading-5 text-slate-200/82 shadow-[0_16px_34px_rgba(0,0,0,0.18)]">
+              {sectionNotice}
+            </div>
+          ) : null}
         </section>
       </div>
     </main>

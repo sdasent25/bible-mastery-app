@@ -1892,6 +1892,13 @@ textarea {
     scroll-snap-type: x proximity;
   }
 
+  .ba-training-rail-expanded-mobile {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow: visible;
+    padding-inline: 0;
+  }
+
   .ba-training-section-card,
   .ba-training-book-card {
     scroll-snap-align: start;
