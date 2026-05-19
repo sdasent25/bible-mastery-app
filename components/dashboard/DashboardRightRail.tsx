@@ -1,183 +1,139 @@
 "use client"
 
-import Image from "next/image"
-
 import { renderNavIcon } from "@/lib/navigation"
 
 type DashboardRightRailProps = {
   currentMissionTitle: string
-  currentSegmentLabel: string
-  genesisProgressPercent: number
   dailyMissionComplete: boolean
-  completedMissionCount: number
-  totalSegments: number
+  streak: number
+  athleteLevel: number
+  xpEarned: number
+  xpToNextLevel: number
+  levelProgress: number
   planLabel: string
   planMeta: string
-  showFamilyCard?: boolean
-  familyCountLabel?: string
-  memberNames?: string[]
-  onContinueTraining: () => void
-  onOpenFamily?: () => void
+  planActive: boolean
+  onOpenMission: () => void
   onManagePlan: () => void
-}
-
-function getInitials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() || "")
-    .join("")
 }
 
 export default function DashboardRightRail({
   currentMissionTitle,
-  currentSegmentLabel,
-  genesisProgressPercent,
   dailyMissionComplete,
-  completedMissionCount,
-  totalSegments,
+  streak,
+  athleteLevel,
+  xpEarned,
+  xpToNextLevel,
+  levelProgress,
   planLabel,
   planMeta,
-  showFamilyCard = false,
-  familyCountLabel = "",
-  memberNames = [],
-  onContinueTraining,
-  onOpenFamily,
+  planActive,
+  onOpenMission,
   onManagePlan,
 }: DashboardRightRailProps) {
+  const missionButtonLabel = dailyMissionComplete ? "View Daily Missions" : "Continue Mission"
+
   return (
     <aside className="space-y-2 xl:space-y-2">
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Current Training</div>
-        <div className="ba-rail-training-panel mt-2.5 overflow-hidden rounded-[1rem] border border-white/8 bg-white/[0.03]">
-          <div className="relative h-[5rem]">
-            <Image
-              src="/images/dashboard/dashboard-hero-walk-in-faith.png"
-              alt=""
-              fill
-              className="object-cover object-[58%_42%]"
-              sizes="300px"
-            />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,7,13,0.18),rgba(4,7,13,0.78))]" />
-            <div className="absolute inset-x-0 bottom-0 p-2.15">
-              <div className="ba-font-display text-[0.9rem] font-bold tracking-[-0.02em] text-[#f7eee2]">{currentMissionTitle}</div>
-              <div className="ba-text-section-label mt-0.8 text-[0.54rem] text-[#f4ead6]/84">
-                {currentSegmentLabel}
-              </div>
+        <div className="ba-rail-kicker">Daily Mission</div>
+        <div className="mt-2 flex items-start gap-2.25">
+          <span className={`ba-reward-icon ${dailyMissionComplete ? "ba-reward-icon-success" : ""}`}>
+            {renderNavIcon(dailyMissionComplete ? "brand" : "sun", "h-4 w-4")}
+          </span>
+          <div className="min-w-0">
+            <div
+              className={`ba-font-display text-[0.98rem] font-bold tracking-[-0.03em] ${
+                dailyMissionComplete ? "text-emerald-100" : "text-[#ffe6a3]"
+              }`}
+            >
+              {dailyMissionComplete ? "Mission Completed!" : "Mission Ready"}
             </div>
-          </div>
-          <div className="px-2.25 pb-2.15 pt-1.75">
-            <div className="ba-progress-track h-1">
-              <div
-                className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.98),rgba(103,232,249,0.78),rgba(244,114,182,0.65))]"
-                style={{ width: `${genesisProgressPercent}%` }}
-              />
+            <div className="ba-font-ui mt-0.75 text-[0.58rem] leading-[1.4] text-white/50">
+              {dailyMissionComplete ? "Great work today." : "Complete 1 mission today."}
             </div>
-            <div className="ba-text-section-label mt-0.85 text-[0.5rem] text-white/44">
-              {genesisProgressPercent}% through Genesis
+            <div className="ba-text-section-label mt-1.4 text-[0.5rem] text-white/42">
+              {currentMissionTitle}
             </div>
           </div>
         </div>
         <button
           type="button"
-          onClick={onContinueTraining}
+          onClick={onOpenMission}
           className="ba-rail-button mt-2.5"
         >
-          Continue Training
+          {missionButtonLabel}
         </button>
       </section>
 
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Daily Objective</div>
+        <div className="ba-rail-kicker">Streak</div>
         <div className="mt-2 flex items-start gap-2.25">
-          <span className="ba-reward-icon">
-            {renderNavIcon(dailyMissionComplete ? "brand" : "sun", "h-4 w-4")}
+          <span className="ba-reward-icon ba-reward-icon-flame">
+            {renderNavIcon("sun", "h-4 w-4")}
           </span>
           <div>
-            <div className="ba-font-display text-[0.92rem] font-bold tracking-[-0.03em] text-[#ffe6a3]">
-              {dailyMissionComplete ? "Completed Today" : "Mission Ready"}
+            <div className="ba-font-display text-[1.5rem] font-bold leading-none tracking-[-0.04em] text-[#f7eee2]">
+              {streak}
             </div>
-            <div className="ba-font-ui mt-0.75 text-[0.58rem] leading-[1.4] text-white/50">
-              Complete 1 mission today.
+            <div className="ba-font-ui mt-0.6 text-[0.64rem] text-white/70">
+              day{streak === 1 ? "" : "s"}
             </div>
           </div>
-        </div>
-        <div className="mt-2 flex flex-wrap gap-1.75">
-          <span className="ba-rail-reward-chip">Milestone Progress</span>
-          <span className="ba-rail-reward-chip ba-rail-reward-chip--ember">Keep Streak Alive</span>
-        </div>
-        <div className="ba-text-section-label mt-2 text-[0.5rem] text-white/42">
-          {completedMissionCount} of {totalSegments} Genesis missions completed
         </div>
       </section>
 
       <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Athlete Rank</div>
-        <div className="mt-2 flex items-center gap-2.25">
-          <div className="ba-rail-rank-medallion">
-            {renderNavIcon("brand", "h-5 w-5")}
-          </div>
+        <div className="ba-rail-kicker">Experience</div>
+        <div className="mt-2 flex items-end justify-between gap-3">
           <div>
-            <div className="ba-font-display text-[0.92rem] font-bold tracking-[-0.03em] text-[#f6eee1]">
-              Sapphire II
+            <div className="ba-font-ui text-[0.58rem] uppercase tracking-[0.12em] text-white/52">
+              Level
             </div>
-            <div className="ba-font-ui mt-0.35 text-[0.58rem] leading-[1.35] text-white/48">
-              Competitive ranking coming soon
+            <div className="ba-font-display text-[1.5rem] font-bold leading-none tracking-[-0.04em] text-[#f7eee2]">
+              {athleteLevel}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="ba-font-display text-[1.05rem] font-bold leading-none tracking-[-0.03em] text-[#f7eee2]">
+              {xpEarned.toLocaleString()} XP
+            </div>
+            <div className="ba-font-ui mt-0.55 text-[0.56rem] text-white/46">
+              Total XP
             </div>
           </div>
         </div>
-        <div className="mt-2">
+
+        <div className="mt-2.5">
           <div className="ba-progress-track h-1.25">
             <div
-              className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(51,164,255,0.88),rgba(103,232,249,0.88),rgba(255,213,102,0.62))]"
-              style={{ width: "34%" }}
+              className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(243,194,82,0.98),rgba(103,232,249,0.78),rgba(244,114,182,0.65))]"
+              style={{ width: `${levelProgress}%` }}
             />
           </div>
-          <div className="ba-text-section-label mt-1 text-[0.5rem] text-white/44">
-            Preview progression track
+          <div className="ba-font-ui mt-1.1 flex items-center justify-between text-[0.56rem] text-white/58">
+            <span>{xpToNextLevel.toLocaleString()} XP to next level</span>
+            <span>{Math.round(levelProgress)}%</span>
           </div>
         </div>
-        {/* Cosmetic rank display until a real dashboard rank system exists. */}
-      </section>
-
-      <section className="ba-right-rail-card">
-        <div className="ba-rail-kicker">Weekly Rewards Preview</div>
-        <div className="mt-2 grid grid-cols-3 gap-1.5">
-          <div className="ba-weekly-reward-card">
-            <span className="ba-weekly-reward-icon ba-weekly-reward-icon--cyan">◈</span>
-            <span className="ba-font-display text-[1.02rem] font-bold text-[#f7efe2]">250</span>
-            <span className="ba-text-section-label text-[0.5rem] text-white/46">Gems</span>
-          </div>
-          <div className="ba-weekly-reward-card">
-            <span className="ba-weekly-reward-icon ba-weekly-reward-icon--gold">XP</span>
-            <span className="ba-font-display text-[1.02rem] font-bold text-[#f7efe2]">+10%</span>
-            <span className="ba-text-section-label text-[0.5rem] text-white/46">XP Boost</span>
-          </div>
-          <div className="ba-weekly-reward-card">
-            <span className="ba-weekly-reward-icon ba-weekly-reward-icon--amber">▣</span>
-            <span className="ba-font-display text-[1.02rem] font-bold text-[#f7efe2]">1</span>
-            <span className="ba-text-section-label text-[0.5rem] text-white/46">Chest</span>
-          </div>
-        </div>
-        <div className="ba-text-section-label mt-2 text-[0.5rem] text-white/42">
-          Reward system preview
-        </div>
-        {/* Static reward placeholders for UI presentation until real weekly reward data is available. */}
       </section>
 
       <section className="ba-right-rail-card">
         <div className="ba-rail-kicker">Plan Status</div>
         <div className="mt-2 flex items-start justify-between gap-2.5">
           <div>
-            <div className="ba-font-display text-[0.94rem] font-bold tracking-[-0.02em] text-[#f6eee1]">{planLabel}</div>
+            <div className="ba-font-display text-[0.94rem] font-bold tracking-[-0.02em] text-[#f6eee1]">
+              {planLabel}
+            </div>
             <div className="ba-font-ui mt-0.75 text-[0.56rem] leading-[1.38] text-white/46">
               {planMeta}
             </div>
           </div>
-          <span className="ba-text-section-label rounded-full border border-emerald-300/18 bg-emerald-300/12 px-2.5 py-1 text-[0.56rem] text-emerald-100">
-            Active
-          </span>
+          {planActive ? (
+            <span className="ba-text-section-label rounded-full border border-emerald-300/18 bg-emerald-300/12 px-2.5 py-1 text-[0.56rem] text-emerald-100">
+              Active
+            </span>
+          ) : null}
         </div>
         <button
           type="button"
@@ -187,39 +143,6 @@ export default function DashboardRightRail({
           Manage Plan
         </button>
       </section>
-
-      {showFamilyCard ? (
-        <section className="ba-right-rail-card">
-          <div className="flex items-center justify-between gap-3">
-            <div className="ba-rail-kicker">Family Team</div>
-            <div className="ba-text-section-label text-[0.58rem] text-white/46">
-              {familyCountLabel}
-            </div>
-          </div>
-
-          <div className="mt-2.5 flex flex-wrap gap-2">
-            {memberNames.length > 0 ? (
-              memberNames.slice(0, 5).map((name) => (
-                <span key={name} className="ba-family-avatar" title={name}>
-                  {getInitials(name)}
-                </span>
-              ))
-            ) : (
-              <span className="ba-font-ui text-[0.72rem] text-white/48">Family plan ready for members.</span>
-            )}
-          </div>
-
-          {onOpenFamily ? (
-            <button
-              type="button"
-              onClick={onOpenFamily}
-              className="ba-rail-button mt-3"
-            >
-              Open Family Hub
-            </button>
-          ) : null}
-        </section>
-      ) : null}
     </aside>
   )
 }

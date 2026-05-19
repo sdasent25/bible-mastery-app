@@ -47,7 +47,7 @@ export default function DashboardHero({
           <div className="flex flex-wrap items-center gap-2">
             <div className="ba-hero-chip ba-hero-chip-gold">
               <span className="text-amber-100">{renderNavIcon("brand", "h-3 w-3")}</span>
-              Today&apos;s Mission
+              TODAY&apos;S MISSION
             </div>
             <div className="ba-hero-chip ba-hero-chip-dark">{missionProgressLabel}</div>
             {dailyMissionComplete ? (
@@ -117,7 +117,7 @@ export default function DashboardHero({
               <span className="ba-hero-cta-medallion">
                 {renderNavIcon("brand", "h-[1rem] w-[1rem]")}
               </span>
-              <span className="ba-hero-cta-label">Continue Training</span>
+              <span className="ba-hero-cta-label">Continue Mission</span>
             </button>
           </div>
         </div>

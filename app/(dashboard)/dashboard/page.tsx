@@ -19,17 +19,6 @@ import { hasCompletedToday } from "@/lib/streak"
 import { createClient } from "@/lib/supabase/client"
 import { getUserPlan } from "@/lib/userPlan"
 
-type FamilyMember = {
-  id: string
-  user_id: string
-  role: string
-  profiles?: {
-    name?: string | null
-  } | {
-    name?: string | null
-  }[] | null
-}
-
 type MasteryRow = {
   segment: string
   mastered: boolean
@@ -50,14 +39,6 @@ type DashboardState = {
   dailyMissionComplete: boolean
   xpEarned: number
   streak: number
-}
-
-function getProfileName(profile: FamilyMember["profiles"]) {
-  if (Array.isArray(profile)) {
-    return profile[0]?.name || "Member"
-  }
-
-  return profile?.name || "Member"
 }
 
 function getPlanBadge(plan: string) {
@@ -98,6 +79,10 @@ function resolveMissionContent(segmentId: string, segmentLabel: string) {
   }
 }
 
+function formatPassageLabel(label: string) {
+  return label.replace(/(\d)\s*-\s*(\d)/g, "$1–$2")
+}
+
 export default function DashboardPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -106,11 +91,7 @@ export default function DashboardPage() {
   const [plan, setPlan] = useState("free")
   const [dashboardState, setDashboardState] = useState<DashboardState | null>(null)
   const [, setTrainingEnabled] = useState(true)
-  const [memberCount, setMemberCount] = useState<number | null>(null)
-  const [memberLimit, setMemberLimit] = useState<number | null>(null)
-  const [members, setMembers] = useState<FamilyMember[]>([])
   const [familyId, setFamilyId] = useState<string | null>(null)
-  const [userId, setUserId] = useState<string | null>(null)
   const [upgradeMessage, setUpgradeMessage] = useState("")
 
   useEffect(() => {
@@ -142,7 +123,6 @@ export default function DashboardPage() {
         }
 
         if (!active) return
-        setUserId(user.id)
 
         const { data: profile, error: profileError } = await supabase
           .from("profiles")
@@ -243,40 +223,8 @@ export default function DashboardPage() {
           return
         }
 
-        const nextFamilyId = membership.family_id
-        setFamilyId(nextFamilyId)
-
-        const [{ count }, { data: family }, { data: familyMembers }] = await Promise.all([
-          supabase
-            .from("family_members")
-            .select("*", { count: "exact", head: true })
-            .eq("family_id", nextFamilyId)
-            .is("removed_at", null),
-          supabase
-            .from("families")
-            .select("member_limit")
-            .eq("id", nextFamilyId)
-            .maybeSingle(),
-          supabase
-            .from("family_members")
-            .select(`
-              id,
-              user_id,
-              role,
-              profiles (
-                name
-              )
-            `)
-            .eq("family_id", nextFamilyId)
-            .is("removed_at", null)
-            .order("role", { ascending: true }),
-        ])
-
         if (!active) return
-
-        setMemberCount(count || 0)
-        setMemberLimit(family?.member_limit || 4)
-        setMembers((familyMembers || []) as FamilyMember[])
+        setFamilyId(membership.family_id)
       } finally {
         if (active) setLoading(false)
       }
@@ -324,19 +272,16 @@ export default function DashboardPage() {
   const missionSubtitle =
     dashboardState?.missionSubtitle ||
     "Continue your current Bible training mission."
-  const referenceLine = dashboardState?.currentSegmentLabel || "Current Segment"
-  const focusPassage = dashboardState?.currentSegmentLabel || "Current Segment"
-  const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
-  const memberNames = members.map((member) =>
-    member.user_id === userId ? "You" : getProfileName(member.profiles)
+  const formattedCurrentSegmentLabel = formatPassageLabel(
+    dashboardState?.currentSegmentLabel || "Current Segment"
   )
-  const isFamilyPlan = plan === "family_pro" || plan === "family_pro_plus"
+  const referenceLine = formattedCurrentSegmentLabel
+  const focusPassage = formattedCurrentSegmentLabel
+  const heroImageSrc = "/images/dashboard/dashboard-hero-walk-in-faith.png"
   const isProPlusPlan = plan === "pro_plus" || plan === "family_pro_plus"
-  const showFamilyCard = Boolean(familyId) || isFamilyPlan
-  const familyCountLabel =
-    memberCount !== null && memberLimit !== null ? `${memberCount} / ${memberLimit} Members` : "Family Plan"
   const planBadge = getPlanBadge(plan)
   const planMeta = getPlanMeta(plan, Boolean(familyId))
+  const planActive = plan !== "free"
   const canAccessQuests = isProPlusPlan
   const canAccessVerseMemory = canAccessFlashcards(plan)
   const isPaidTrainingPlan =
@@ -371,7 +316,7 @@ export default function DashboardPage() {
       title: "XP",
       value: (dashboardState?.xpEarned || 0).toLocaleString(),
       supporting: `${xpToNextLevel.toLocaleString()} XP to Level ${athleteLevel + 1}`,
-      caption: `${(dashboardState?.xpEarned || 0).toLocaleString()} / 15,000`,
+      caption: `Level ${athleteLevel}`,
       accent: "cyan" as const,
       iconSrc: "/images/icons/dashboard/xp-laurel-ring-transparent.png",
     },
@@ -379,7 +324,7 @@ export default function DashboardPage() {
       title: "STREAK",
       value: String(dashboardState?.streak || 0),
       supporting: `${dashboardState?.streak || 0} Day${dashboardState?.streak === 1 ? "" : "s"}`,
-      caption: "Keep it going!",
+      caption: "Current streak",
       accent: "amber" as const,
       iconSrc: "/images/icons/dashboard/streak-flame-ring-transparent.png",
     },
@@ -392,9 +337,9 @@ export default function DashboardPage() {
       iconSrc: "/images/icons/dashboard/mastery-purple-shield-transparent.png",
     },
     {
-      title: "CAMPAIGN",
+      title: "GENESIS PROGRESS",
       value: `${dashboardState?.genesisProgressPercent || 0}%`,
-      supporting: "Genesis Progress",
+      supporting: "Genesis Campaign",
       caption: `${dashboardState?.completedMissionCount || 0} of ${dashboardState?.totalSegments || 0} missions`,
       accent: "sapphire" as const,
       iconSrc: "/images/icons/dashboard/focus-rank-sapphire-transparent.png",
@@ -427,7 +372,7 @@ export default function DashboardPage() {
                     Welcome back, {dashboardState?.playerName || "Athlete"}.
                   </h1>
                   <p className="ba-text-body mt-0.75 max-w-2xl text-[0.88rem] leading-[1.45] text-[#f1c86a] sm:text-[0.92rem]">
-                    Today&apos;s mission is ready.
+                    Your mission. His Word. Your growth.
                   </p>
                   {upgradeMessage ? (
                     <p className="ba-font-ui mt-1.5 text-[0.72rem] text-cyan-100/88">
@@ -445,7 +390,7 @@ export default function DashboardPage() {
                       {shortFormattedDate}
                     </div>
                     <div className="ba-text-section-label ba-text-cyan mt-0.25 text-right text-[0.56rem]">
-                      {dashboardState?.currentSegmentLabel || "Current Mission"}
+                      {formattedCurrentSegmentLabel}
                     </div>
                   </div>
                 </div>
@@ -527,18 +472,16 @@ export default function DashboardPage() {
               <div className="xl:hidden">
                 <DashboardRightRail
                   currentMissionTitle={missionTitle}
-                  currentSegmentLabel={dashboardState?.currentSegmentLabel || "Current Mission"}
-                  genesisProgressPercent={dashboardState?.genesisProgressPercent || 0}
                   dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
-                  completedMissionCount={dashboardState?.completedMissionCount || 0}
-                  totalSegments={dashboardState?.totalSegments || 0}
+                  streak={dashboardState?.streak || 0}
+                  athleteLevel={athleteLevel}
+                  xpEarned={dashboardState?.xpEarned || 0}
+                  xpToNextLevel={xpToNextLevel}
+                  levelProgress={levelProgress}
                   planLabel={planBadge}
                   planMeta={planMeta}
-                  showFamilyCard={showFamilyCard}
-                  familyCountLabel={familyCountLabel}
-                  memberNames={memberNames}
-                  onContinueTraining={() => router.push(continueHref)}
-                  onOpenFamily={showFamilyCard ? () => router.push("/family") : undefined}
+                  planActive={planActive}
+                  onOpenMission={() => router.push(continueHref)}
                   onManagePlan={() => router.push("/upgrade")}
                 />
               </div>
@@ -548,18 +491,16 @@ export default function DashboardPage() {
           <div className="ba-dashboard-right-rail hidden xl:block">
             <DashboardRightRail
               currentMissionTitle={missionTitle}
-              currentSegmentLabel={dashboardState?.currentSegmentLabel || "Current Mission"}
-              genesisProgressPercent={dashboardState?.genesisProgressPercent || 0}
               dailyMissionComplete={dashboardState?.dailyMissionComplete || false}
-              completedMissionCount={dashboardState?.completedMissionCount || 0}
-              totalSegments={dashboardState?.totalSegments || 0}
+              streak={dashboardState?.streak || 0}
+              athleteLevel={athleteLevel}
+              xpEarned={dashboardState?.xpEarned || 0}
+              xpToNextLevel={xpToNextLevel}
+              levelProgress={levelProgress}
               planLabel={planBadge}
               planMeta={planMeta}
-              showFamilyCard={showFamilyCard}
-              familyCountLabel={familyCountLabel}
-              memberNames={memberNames}
-              onContinueTraining={() => router.push(continueHref)}
-              onOpenFamily={showFamilyCard ? () => router.push("/family") : undefined}
+              planActive={planActive}
+              onOpenMission={() => router.push(continueHref)}
               onManagePlan={() => router.push("/upgrade")}
             />
           </div>
