@@ -1230,8 +1230,14 @@ textarea {
 
 .ba-book-path-scroll {
   overflow-x: auto;
-  padding-right: 4.2rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-inline: 4.2rem;
   padding-bottom: 0.15rem;
+}
+
+.ba-book-path-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .ba-book-path-rail {
@@ -1324,6 +1330,11 @@ textarea {
     color 0.18s ease;
 }
 
+.ba-book-path-arrow-left {
+  left: 1rem;
+  right: auto;
+}
+
 .ba-book-path-arrow:hover,
 .ba-book-path-arrow:focus-visible {
   transform: translateY(calc(-50% + 1rem)) translateX(1px);
@@ -1332,6 +1343,17 @@ textarea {
     0 20px 42px rgba(0, 0, 0, 0.3),
     0 0 32px rgba(255, 191, 36, 0.14),
     inset 0 1px 0 rgba(255, 252, 240, 0.08);
+}
+
+.ba-book-path-arrow-left:hover,
+.ba-book-path-arrow-left:focus-visible {
+  transform: translateY(calc(-50% + 1rem)) translateX(-1px);
+}
+
+.ba-book-path-arrow.is-disabled,
+.ba-book-path-arrow:disabled {
+  pointer-events: none;
+  opacity: 0;
 }
 
 .ba-book-path-arrow:focus-visible {

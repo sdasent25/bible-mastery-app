@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import type { TrainingAccessState, TrainingAccessTier, TrainingDaySummary } from "@/lib/training/types"
 import type { TrainingBookMetadata, TrainingMissionMetadata } from "@/lib/training/trainingMetadata"
@@ -112,6 +112,8 @@ export default function BookCampaignPage({
   missionMetaByDay,
 }: BookCampaignPageProps) {
   const missionPathRef = useRef<HTMLDivElement | null>(null)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
   const playableDays = days.filter((day) => isPlayableForTier(day.day, access.tier))
   const currentMission = playableDays[0] ?? null
   const currentMissionIndex = currentMission
@@ -132,6 +134,26 @@ export default function BookCampaignPage({
   // Conservative placeholder until real Training Arena progression persistence exists.
   // Once completed/current mission state is stored server-side, replace this with
   // a persisted campaign progress model instead of always surfacing the first playable mission.
+
+  useEffect(() => {
+    const container = missionPathRef.current
+    if (!container) return
+
+    const updateScrollState = () => {
+      const maxScrollLeft = Math.max(0, container.scrollWidth - container.clientWidth)
+      setCanScrollLeft(container.scrollLeft > 8)
+      setCanScrollRight(maxScrollLeft - container.scrollLeft > 8)
+    }
+
+    updateScrollState()
+    container.addEventListener("scroll", updateScrollState, { passive: true })
+    window.addEventListener("resize", updateScrollState)
+
+    return () => {
+      container.removeEventListener("scroll", updateScrollState)
+      window.removeEventListener("resize", updateScrollState)
+    }
+  }, [days.length])
 
   function scrollMissionPath(direction: "forward" | "backward") {
     const container = missionPathRef.current
@@ -294,7 +316,19 @@ export default function BookCampaignPage({
             </div>
           </div>
 
-          <div ref={missionPathRef} className="ba-book-path-scroll">
+          <button
+            type="button"
+            onClick={() => scrollMissionPath("backward")}
+            aria-label="Scroll mission path left"
+            disabled={!canScrollLeft}
+            className={`ba-book-path-arrow ba-book-path-arrow-left hidden lg:inline-flex ${
+              !canScrollLeft ? "is-disabled" : ""
+            }`}
+          >
+            ←
+          </button>
+
+          <div ref={missionPathRef} className="ba-book-path-scroll ba-scrollbar-hidden">
             <div className="ba-book-path-rail">
               {days.map((day, index) => {
                 const status = getMissionStatus(day, currentMission, currentMissionIndex, index, access)
@@ -367,7 +401,10 @@ export default function BookCampaignPage({
             type="button"
             onClick={() => scrollMissionPath("forward")}
             aria-label="Scroll mission path right"
-            className="ba-book-path-arrow hidden lg:inline-flex"
+            disabled={!canScrollRight}
+            className={`ba-book-path-arrow hidden lg:inline-flex ${
+              !canScrollRight ? "is-disabled" : ""
+            }`}
           >
             →
           </button>
