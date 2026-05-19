@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { useRef } from "react"
 
 import type { TrainingAccessState, TrainingAccessTier, TrainingDaySummary } from "@/lib/training/types"
 import type { TrainingBookMetadata, TrainingMissionMetadata } from "@/lib/training/trainingMetadata"
@@ -9,7 +12,7 @@ type BookCampaignPageProps = {
   bookSlug: TrainingBookSlug
   book: TrainingBookMetadata
   days: TrainingDaySummary[]
-  missionMetaByDay: Map<number, TrainingMissionMetadata>
+  missionMetaByDay: Record<number, TrainingMissionMetadata>
 }
 
 const FREE_PREVIEW_LIMIT = 3
@@ -108,6 +111,7 @@ export default function BookCampaignPage({
   days,
   missionMetaByDay,
 }: BookCampaignPageProps) {
+  const missionPathRef = useRef<HTMLDivElement | null>(null)
   const playableDays = days.filter((day) => isPlayableForTier(day.day, access.tier))
   const currentMission = playableDays[0] ?? null
   const currentMissionIndex = currentMission
@@ -119,15 +123,29 @@ export default function BookCampaignPage({
   const progressPercent =
     missionCount > 0 ? Math.round((completedMissionCount / missionCount) * 100) : 0
   const currentMissionMeta = featuredMission
-    ? missionMetaByDay.get(featuredMission.day)
+    ? missionMetaByDay[featuredMission.day]
     : null
+  const featuredTimeEstimate = featuredMission
+    ? getEstimatedTime(featuredMission.itemCount, access.tier)
+    : "~15 min"
 
   // Conservative placeholder until real Training Arena progression persistence exists.
   // Once completed/current mission state is stored server-side, replace this with
   // a persisted campaign progress model instead of always surfacing the first playable mission.
 
+  function scrollMissionPath(direction: "forward" | "backward") {
+    const container = missionPathRef.current
+    if (!container) return
+
+    const distance = Math.max(220, Math.floor(container.clientWidth * 0.62))
+    container.scrollBy({
+      left: direction === "forward" ? distance : -distance,
+      behavior: "smooth",
+    })
+  }
+
   return (
-    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-14 xl:pb-16">
+    <main className="ba-training-page min-h-screen overflow-x-hidden px-4 pt-3 pb-10 text-white sm:px-6 sm:pt-4 sm:pb-12 lg:min-h-full lg:pb-8 xl:pb-10">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(circle_at_top,rgba(255,216,125,0.14),transparent_58%)]" />
       <div className="pointer-events-none absolute left-[-5rem] top-28 h-44 w-44 rounded-full bg-amber-300/10 blur-3xl sm:h-56 sm:w-56" />
       <div className="pointer-events-none absolute right-[-5rem] top-40 h-52 w-52 rounded-full bg-cyan-300/10 blur-3xl sm:h-72 sm:w-72" />
@@ -140,10 +158,10 @@ export default function BookCampaignPage({
               backgroundImage: `url('${book.heroImage}')`,
             }}
           />
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,10,18,0.92)_0%,rgba(6,10,18,0.72)_42%,rgba(6,10,18,0.34)_70%,rgba(6,10,18,0.18)_100%)]" />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,222,145,0.18),transparent_24%),linear-gradient(180deg,rgba(5,8,15,0.04),rgba(5,8,15,0.34)_56%,rgba(5,8,15,0.82)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(6,10,18,0.84)_0%,rgba(6,10,18,0.54)_28%,rgba(6,10,18,0.18)_54%,rgba(6,10,18,0.08)_100%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_56%_28%,rgba(255,222,145,0.24),transparent_20%),linear-gradient(180deg,rgba(5,8,15,0.02),rgba(5,8,15,0.18)_54%,rgba(5,8,15,0.54)_100%)]" />
 
-          <div className="relative grid gap-4 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_16.5rem] lg:gap-5 lg:p-7 xl:grid-cols-[minmax(0,1fr)_18rem] xl:p-8">
+          <div className="relative grid gap-3.5 p-4 sm:p-6 lg:grid-cols-[minmax(0,1fr)_14.25rem] lg:gap-4 lg:p-6 xl:grid-cols-[minmax(0,1fr)_15.5rem] xl:px-7 xl:py-6">
             <div className="min-w-0">
               <Link
                 href="/training"
@@ -152,29 +170,13 @@ export default function BookCampaignPage({
                 <span aria-hidden="true">←</span>
                 <span>Back to Training Arena</span>
               </Link>
-              <div className="mt-4 ba-text-section-label text-amber-100/82">Book Campaign</div>
-              <h1 className="ba-font-display mt-2 text-[2.55rem] leading-[0.92] tracking-[-0.05em] text-[#f9efde] sm:text-[3.6rem] lg:text-[4rem]">
+              <h1 className="ba-font-display mt-4 text-[2.55rem] leading-[0.92] tracking-[-0.05em] text-[#f9efde] sm:text-[3.6rem] lg:text-[3.35rem] xl:text-[3.65rem]">
                 {book.title}
               </h1>
               <p className="mt-2 text-sm font-semibold text-amber-100/88 sm:text-base">
                 {book.subtitle}
               </p>
-              <p className="mt-3 max-w-[38rem] text-sm leading-6 text-slate-200/84 sm:text-base sm:leading-7">
-                {book.description}
-              </p>
-
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                <div className="ba-training-callout">
-                  <span className="ba-training-callout-label">Section</span>
-                  <span className="ba-training-callout-value">{book.sectionTitle}</span>
-                </div>
-                <div className="ba-training-callout">
-                  <span className="ba-training-callout-label">Access</span>
-                  <span className="ba-training-callout-value">{getPlanDisplay(access)}</span>
-                </div>
-              </div>
-
-              <div className="mt-5 grid gap-2.5 sm:grid-cols-3">
+              <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
                 <div className="ba-book-stat-chip">
                   <div className="ba-book-stat-icon">✦</div>
                   <div>
@@ -187,7 +189,7 @@ export default function BookCampaignPage({
                   <div>
                     <div className="ba-book-stat-label">Daily Time</div>
                     <div className="ba-book-stat-value">
-                      {featuredMission ? getEstimatedTime(featuredMission.itemCount, access.tier) : "~15 min"} per day
+                      {featuredTimeEstimate} per day
                     </div>
                   </div>
                 </div>
@@ -211,51 +213,44 @@ export default function BookCampaignPage({
               </div>
               <div className="mt-4 text-center">
                 <div className="ba-text-section-label text-cyan-100/72">Campaign Progress</div>
-                <div className="mt-4 ba-font-display text-[2.7rem] leading-none text-[#fbf0dd]">
+                <div className="mt-3 ba-font-display text-[2.3rem] leading-none text-[#fbf0dd]">
                   {progressPercent}%
                 </div>
-                <p className="mt-2 text-sm leading-6 text-slate-300/80">
-                  {completedMissionCount} / {missionCount} missions completed
+                <p className="mt-2 text-[0.9rem] leading-5 text-slate-300/80">
+                  {completedMissionCount} / {missionCount} Missions
                 </p>
               </div>
 
-              <div className="mt-5">
+              <div className="mt-4">
                 <div className="ba-progress-track h-2">
                   <div
                     className="ba-progress-glow h-full rounded-full bg-[linear-gradient(90deg,rgba(245,194,76,0.98),rgba(103,232,249,0.62))]"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>
-                <p className="mt-3 text-xs leading-5 text-slate-300/72">
-                  No training completion data is persisted yet, so progress is shown conservatively.
-                </p>
               </div>
             </aside>
 
             <article className="ba-book-current-mission lg:col-span-2">
-              <div className="grid gap-4 lg:grid-cols-[6.3rem_minmax(0,1fr)_16rem] lg:items-center xl:grid-cols-[7rem_minmax(0,1fr)_18rem]">
+              <div className="grid gap-3 lg:grid-cols-[5.5rem_minmax(0,1fr)_12.5rem] lg:items-center xl:grid-cols-[6rem_minmax(0,1fr)_13.5rem]">
                 <div className="ba-book-mission-shield">
                   <div className="ba-text-section-label text-amber-100/72">Day</div>
-                  <div className="ba-font-display mt-1 text-[2.6rem] leading-none text-[#fff0cf]">
+                  <div className="ba-font-display mt-1 text-[2.3rem] leading-none text-[#fff0cf]">
                     {featuredMission?.day ?? "—"}
                   </div>
                 </div>
 
                 <div className="ba-book-current-copy min-w-0">
                   <div className="ba-text-section-label text-amber-100/82">Today&apos;s Mission</div>
-                  <h2 className="mt-2 ba-font-display text-[1.9rem] leading-[0.98] text-[#fbf0dd] sm:text-[2.15rem]">
+                  <h2 className="mt-1.5 ba-font-display text-[1.72rem] leading-[0.98] text-[#fbf0dd] sm:text-[1.9rem]">
                     {featuredMission?.reference ?? `${book.title} Campaign`}
                   </h2>
                   <p className="mt-1 text-sm font-semibold text-cyan-300">
                     {currentMissionMeta?.title ?? "Current Mission"}
                   </p>
-                  <p className="mt-2 max-w-[32rem] text-sm leading-6 text-slate-200/82 sm:text-base sm:leading-7">
-                    {currentMissionMeta?.description ??
-                      "Step into the next Scripture mission in this book campaign path."}
-                  </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     <span className="rounded-full border border-cyan-200/14 bg-cyan-200/10 px-3 py-1 text-xs font-semibold text-cyan-50/88">
-                      {featuredMission ? getEstimatedTime(featuredMission.itemCount, access.tier) : "~15 min"}
+                      {featuredTimeEstimate}
                     </span>
                     <span className="rounded-full border border-violet-200/16 bg-violet-300/10 px-3 py-1 text-xs font-semibold text-violet-50/88">
                       {getDepthChip(access)}
@@ -279,9 +274,9 @@ export default function BookCampaignPage({
                       {access.signedIn ? "Upgrade to Continue" : "Sign In to Continue"}
                     </Link>
                   )}
-                  <p className="max-w-[15rem] text-sm leading-6 text-slate-300/76 lg:text-right">
+                  <p className="max-w-[13rem] text-[0.82rem] leading-5 text-slate-300/76 lg:text-right">
                     {currentMission
-                      ? "Complete today’s mission to continue the path. Future path states remain conservative until progression persistence exists."
+                      ? currentMissionMeta?.description ?? "Creation light breaks over the void as the first mission opens."
                       : access.tier === "free"
                         ? "This book is outside the free preview window. Upgrade to continue the path."
                         : "This campaign is loaded, but no playable mission is currently available."}
@@ -292,24 +287,18 @@ export default function BookCampaignPage({
           </div>
         </section>
 
-        <section className="mt-4 rounded-[1.45rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))] p-4 shadow-[0_24px_68px_rgba(0,0,0,0.26)] sm:p-5">
-          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <section className="relative mt-2.5 rounded-[1.22rem] border border-white/10 bg-[linear-gradient(180deg,rgba(13,18,30,0.96),rgba(8,11,20,0.98))] p-3.5 shadow-[0_24px_68px_rgba(0,0,0,0.24)] sm:p-4">
+          <div className="mb-2.5 flex items-center justify-between gap-3">
             <div>
               <div className="ba-text-section-label text-[10px] text-amber-100/78">Mission Path</div>
-              <h2 className="ba-font-display mt-1 text-[1.42rem] tracking-[-0.03em] text-[#f7eee1] sm:text-[1.7rem]">
-                {book.title} campaign progression
-              </h2>
             </div>
-            <p className="max-w-xl text-xs leading-5 text-slate-300/74">
-              Future missions are shown conservatively from real day order. Completion, replay, and true daily unlock persistence do not exist yet.
-            </p>
           </div>
 
-          <div className="ba-book-path-scroll">
+          <div ref={missionPathRef} className="ba-book-path-scroll">
             <div className="ba-book-path-rail">
               {days.map((day, index) => {
                 const status = getMissionStatus(day, currentMission, currentMissionIndex, index, access)
-                const missionMeta = missionMetaByDay.get(day.day)
+                const missionMeta = missionMetaByDay[day.day]
 
                 return (
                   <article
@@ -354,10 +343,10 @@ export default function BookCampaignPage({
                     <h3 className="mt-3 ba-font-display text-[1.22rem] leading-[1] text-[#fbf0dd]">
                       {day.reference}
                     </h3>
-                    <p className="mt-1 text-sm font-semibold text-white/78">
+                    <p className="mt-1 text-[0.84rem] font-semibold leading-5 text-white/78">
                       {missionMeta?.title ?? getStatusCopy(status, access)}
                     </p>
-                    <p className="mt-2 text-xs leading-5 text-slate-300/72">
+                    <p className="mt-1.5 text-[10px] leading-4 text-slate-300/72">
                       {status === "today"
                         ? "Start here."
                         : status === "upcoming"
@@ -374,6 +363,14 @@ export default function BookCampaignPage({
               })}
             </div>
           </div>
+          <button
+            type="button"
+            onClick={() => scrollMissionPath("forward")}
+            aria-label="Scroll mission path right"
+            className="ba-book-path-arrow hidden lg:inline-flex"
+          >
+            →
+          </button>
         </section>
       </div>
     </main>

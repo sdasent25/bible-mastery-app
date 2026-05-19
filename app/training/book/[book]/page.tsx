@@ -53,7 +53,7 @@ export default async function TrainingBookPage({
     )
   }
 
-  const missionMetaByDay = new Map(
+  const missionMetaByDay = Object.fromEntries(
     bookDays.map((day) => [day.day, getTrainingMissionMetadata(day, bookSlug)])
   )
 

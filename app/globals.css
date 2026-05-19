@@ -1104,13 +1104,13 @@ textarea {
 }
 
 .ba-book-campaign-hero-art {
-  filter: brightness(1.08) contrast(1.08) saturate(1.05);
-  background-position: 50% 42%;
+  filter: brightness(1.11) contrast(1.06) saturate(1.06);
+  background-position: 50% 40%;
   background-size: cover;
 }
 
 .ba-book-campaign-hero.is-genesis .ba-book-campaign-hero-art {
-  background-position: 50% 48%;
+  background-position: 56% 42%;
 }
 
 .ba-book-campaign-hero.is-exodus .ba-book-campaign-hero-art {
@@ -1118,27 +1118,27 @@ textarea {
 }
 
 .ba-book-progress-card {
-  border-radius: 1.45rem;
+  border-radius: 1.35rem;
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
-    radial-gradient(circle at top, rgba(255, 221, 136, 0.08), transparent 34%),
-    linear-gradient(180deg, rgba(8, 12, 20, 0.72), rgba(5, 8, 15, 0.88));
-  padding: 1rem;
+    radial-gradient(circle at top, rgba(255, 221, 136, 0.07), transparent 30%),
+    linear-gradient(180deg, rgba(8, 12, 20, 0.58), rgba(5, 8, 15, 0.8));
+  padding: 0.88rem 0.9rem 0.8rem;
   box-shadow:
-    0 24px 62px rgba(0, 0, 0, 0.24),
+    0 18px 50px rgba(0, 0, 0, 0.22),
     inset 0 1px 0 rgba(255, 252, 240, 0.05),
-    0 0 32px rgba(255, 191, 36, 0.08);
+    0 0 24px rgba(255, 191, 36, 0.06);
   backdrop-filter: blur(16px);
   min-height: 100%;
 }
 
 .ba-book-crest-shell {
   display: inline-flex;
-  height: 5.5rem;
-  width: 5.5rem;
+  height: 4.7rem;
+  width: 4.7rem;
   align-items: center;
   justify-content: center;
-  border-radius: 1.55rem;
+  border-radius: 1.35rem;
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
     radial-gradient(circle at top, rgba(255, 244, 214, 0.14), transparent 48%),
@@ -1151,26 +1151,26 @@ textarea {
 
 .ba-book-current-mission {
   overflow: hidden;
-  border-radius: 1.45rem;
+  border-radius: 1.3rem;
   border: 1px solid rgba(255, 223, 151, 0.18);
   background:
     radial-gradient(circle at top right, rgba(255, 221, 136, 0.14), transparent 26%),
     radial-gradient(circle at left center, rgba(34, 211, 238, 0.08), transparent 20%),
     linear-gradient(180deg, rgba(11, 16, 27, 0.98), rgba(5, 8, 15, 0.99));
-  padding: 1rem;
+  padding: 0.82rem 0.92rem;
   box-shadow:
-    0 26px 68px rgba(0, 0, 0, 0.28),
-    0 0 52px rgba(255, 191, 36, 0.12),
+    0 22px 54px rgba(0, 0, 0, 0.26),
+    0 0 40px rgba(255, 191, 36, 0.1),
     inset 0 1px 0 rgba(255, 252, 240, 0.06);
 }
 
 .ba-book-mission-shield {
   display: flex;
-  min-height: 7rem;
+  min-height: 6.05rem;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 1.5rem;
+  border-radius: 1.28rem;
   border: 1px solid rgba(255, 223, 151, 0.2);
   background:
     radial-gradient(circle at top, rgba(255, 243, 199, 0.16), transparent 40%),
@@ -1184,12 +1184,12 @@ textarea {
 .ba-book-stat-chip {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  border-radius: 1.05rem;
+  gap: 0.68rem;
+  border-radius: 0.95rem;
   border: 1px solid rgba(255, 223, 151, 0.14);
   background:
     linear-gradient(180deg, rgba(12, 18, 30, 0.82), rgba(5, 9, 16, 0.88));
-  padding: 0.85rem 0.95rem;
+  padding: 0.7rem 0.8rem;
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 252, 240, 0.04);
@@ -1197,8 +1197,8 @@ textarea {
 
 .ba-book-stat-icon {
   display: inline-flex;
-  height: 2rem;
-  width: 2rem;
+  height: 1.7rem;
+  width: 1.7rem;
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
@@ -1214,7 +1214,7 @@ textarea {
 }
 
 .ba-book-stat-label {
-  font-size: 0.62rem;
+  font-size: 0.56rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1222,52 +1222,53 @@ textarea {
 }
 
 .ba-book-stat-value {
-  margin-top: 0.4rem;
-  font-size: 0.98rem;
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
   font-weight: 800;
   color: #f9edd6;
 }
 
 .ba-book-path-scroll {
   overflow-x: auto;
-  padding-bottom: 0.35rem;
+  padding-right: 4.2rem;
+  padding-bottom: 0.15rem;
 }
 
 .ba-book-path-rail {
   display: grid;
   min-width: max-content;
   grid-auto-flow: column;
-  grid-auto-columns: minmax(13rem, 1fr);
-  gap: 0.9rem;
+  grid-auto-columns: minmax(11.6rem, 1fr);
+  gap: 0.7rem;
   align-items: start;
-  padding-top: 2.2rem;
+  padding-top: 1.8rem;
 }
 
 .ba-book-path-card {
   position: relative;
   overflow: visible;
-  min-height: 12.5rem;
-  border-radius: 1.2rem;
-  padding: 1rem;
+  min-height: 10.6rem;
+  border-radius: 1.08rem;
+  padding: 0.82rem 0.82rem 0.75rem;
   box-shadow:
-    0 22px 56px rgba(0, 0, 0, 0.22),
+    0 18px 42px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .ba-book-path-node-wrap {
   position: absolute;
-  left: 1rem;
-  top: -2.15rem;
-  right: 1rem;
-  height: 2.2rem;
+  left: 0.82rem;
+  top: -1.78rem;
+  right: 0.82rem;
+  height: 1.9rem;
 }
 
 .ba-book-path-node-wrap::before {
   content: "";
   position: absolute;
-  left: 1.1rem;
+    left: 1.1rem;
   right: -0.9rem;
-  top: 1rem;
+  top: 0.84rem;
   height: 1px;
   background: linear-gradient(90deg, rgba(255, 223, 151, 0.34), rgba(103, 232, 249, 0.14));
 }
@@ -1280,8 +1281,8 @@ textarea {
   position: relative;
   z-index: 1;
   display: inline-flex;
-  height: 2.2rem;
-  width: 2.2rem;
+  height: 1.9rem;
+  width: 1.9rem;
   align-items: center;
   justify-content: center;
   border-radius: 9999px;
@@ -1289,11 +1290,52 @@ textarea {
   background:
     linear-gradient(180deg, rgba(20, 27, 42, 0.98), rgba(8, 12, 20, 0.98));
   color: rgba(255, 255, 255, 0.84);
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   font-weight: 800;
   box-shadow:
     0 14px 28px rgba(0, 0, 0, 0.26),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ba-book-path-arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  height: 2.6rem;
+  width: 2.6rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 223, 151, 0.18);
+  background:
+    radial-gradient(circle at top, rgba(255, 240, 203, 0.12), transparent 44%),
+    linear-gradient(180deg, rgba(18, 24, 38, 0.96), rgba(8, 12, 20, 0.98));
+  color: rgba(255, 247, 224, 0.9);
+  box-shadow:
+    0 18px 36px rgba(0, 0, 0, 0.28),
+    0 0 26px rgba(255, 191, 36, 0.08),
+    inset 0 1px 0 rgba(255, 252, 240, 0.06);
+  transform: translateY(calc(-50% + 1rem));
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+.ba-book-path-arrow:hover,
+.ba-book-path-arrow:focus-visible {
+  transform: translateY(calc(-50% + 1rem)) translateX(1px);
+  border-color: rgba(255, 232, 173, 0.3);
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.3),
+    0 0 32px rgba(255, 191, 36, 0.14),
+    inset 0 1px 0 rgba(255, 252, 240, 0.08);
+}
+
+.ba-book-path-arrow:focus-visible {
+  outline: none;
 }
 
 .ba-book-path-node.is-today {
