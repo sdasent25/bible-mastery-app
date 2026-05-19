@@ -44,6 +44,12 @@ type Props = {
   access: TrainingAccessState
 }
 
+type SectionNotice = {
+  message: string
+  ctaLabel?: string
+  href?: string
+}
+
 const SECTION_CONFIGS: SectionConfig[] = [
   {
     key: "pentateuch",
@@ -231,7 +237,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   const initialSectionKey = sectionCards.find((section) => section.hasLiveData)?.key ?? "pentateuch"
   const [selectedSectionKey, setSelectedSectionKey] = useState<SectionKey>(initialSectionKey)
   const [showAllSections, setShowAllSections] = useState(false)
-  const [sectionNotice, setSectionNotice] = useState<string | null>(null)
+  const [sectionNotice, setSectionNotice] = useState<SectionNotice | null>(null)
 
   const completedDaysCount = 0
   const progressPercent = days.length > 0 ? Math.round((completedDaysCount / days.length) * 100) : 0
@@ -243,15 +249,26 @@ export default function TrainingHubInteractive({ days, access }: Props) {
   function handleSectionSelect(section: SectionCard) {
     if (section.hasLiveData) {
       setSelectedSectionKey(section.key)
-      setSectionNotice(
-        `${section.title} is active. Continue into ${currentTrack} through today's training or view track progress.`
-      )
+      if (section.key === "pentateuch") {
+        setSectionNotice({
+          message:
+            "Pentateuch is active. Genesis is the current live campaign path in Training Arena.",
+          ctaLabel: "Open Genesis Campaign",
+          href: "/training/book/genesis",
+        })
+        return
+      }
+
+      setSectionNotice({
+        message: `${section.title} is active. Continue into ${currentTrack} through today's training or view track progress.`,
+      })
       return
     }
 
-    setSectionNotice(
-      "Coming soon. This Scripture section will unlock as new Training Arena content is added."
-    )
+    setSectionNotice({
+      message:
+        "Coming soon. This Scripture section will unlock as new Training Arena content is added.",
+    })
   }
 
   return (
@@ -513,6 +530,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
               const statusCopy = section.hasLiveData
                 ? `${section.availableDayCount} live day${section.availableDayCount === 1 ? "" : "s"}`
                 : "Coming Soon"
+              const statusLabel = section.key === "pentateuch" && section.hasLiveData ? "Active" : section.hasLiveData ? "Available" : "Locked"
 
               return (
                 <button
@@ -544,7 +562,7 @@ export default function TrainingHubInteractive({ days, access }: Props) {
                   <div className="relative flex h-full flex-col p-3.5">
                     <div className="flex items-center justify-between gap-3">
                       <span className={`ba-text-section-label rounded-full border px-2.5 py-1 text-[0.48rem] ${section.hasLiveData ? "border-cyan-200/16 bg-cyan-200/10 text-cyan-50" : "border-amber-200/16 bg-amber-200/10 text-amber-100"}`}>
-                        {section.hasLiveData ? "Available" : "Locked"}
+                        {statusLabel}
                       </span>
                       <span className="text-white/68">{selected ? "●" : "○"}</span>
                     </div>
@@ -562,7 +580,15 @@ export default function TrainingHubInteractive({ days, access }: Props) {
 
           {sectionNotice ? (
             <div className="mt-2.5 rounded-[1rem] border border-amber-200/14 bg-[linear-gradient(180deg,rgba(15,19,30,0.96),rgba(8,11,20,0.98))] px-3 py-2.5 text-[0.82rem] leading-5 text-slate-200/82 shadow-[0_16px_34px_rgba(0,0,0,0.18)]">
-              {sectionNotice}
+              <p>{sectionNotice.message}</p>
+              {sectionNotice.href && sectionNotice.ctaLabel ? (
+                <Link
+                  href={sectionNotice.href}
+                  className="mt-2 inline-flex items-center rounded-full border border-amber-200/16 bg-amber-200/10 px-3 py-1.5 text-[0.76rem] font-semibold text-amber-50 transition hover:bg-amber-200/14"
+                >
+                  {sectionNotice.ctaLabel}
+                </Link>
+              ) : null}
             </div>
           ) : null}
         </section>
