@@ -9,7 +9,10 @@ import {
   BooksQuestPanel,
   BooksQuestStatusBadge,
 } from "@/components/BooksQuestShell"
+import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
 import { renderNavIcon } from "@/lib/navigation"
+import { isQuestPlan } from "@/lib/questAccess"
 import { createClient } from "@/lib/supabase/client"
 
 type HubCardProps = {
@@ -102,10 +105,26 @@ function ModeCard({
 }
 
 export default function BooksQuestHubPage() {
+  const [plan, setPlan] = useState("free")
+  const [planLoading, setPlanLoading] = useState(true)
   const [speedStatus, setSpeedStatus] = useState<"xp" | "practice" | null>(null)
   const [testStatus, setTestStatus] = useState<"xp" | "practice" | null>(null)
 
   useEffect(() => {
+    const resolvePlan = async () => {
+      const resolvedPlan = await getUserPlan()
+      setPlan(resolvedPlan)
+      setPlanLoading(false)
+    }
+
+    void resolvePlan()
+  }, [])
+
+  useEffect(() => {
+    if (planLoading || !isQuestPlan(plan)) {
+      return
+    }
+
     const supabase = createClient()
 
     const checkStatus = async () => {
@@ -136,7 +155,20 @@ export default function BooksQuestHubPage() {
     }
 
     void checkStatus()
-  }, [])
+  }, [plan, planLoading])
+
+  if (planLoading) {
+    return <div className="p-6 text-white">Loading...</div>
+  }
+
+  if (!isQuestPlan(plan)) {
+    return (
+      <Paywall
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock challenge modes, focused Bible structure drills, and deeper quest training paths."
+      />
+    )
+  }
 
   return (
     <BooksQuestPageShell maxWidth="max-w-6xl">

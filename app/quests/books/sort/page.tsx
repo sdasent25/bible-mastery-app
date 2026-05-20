@@ -8,6 +8,9 @@ import {
   BooksQuestPanel,
   BooksQuestTopBar,
 } from "@/components/BooksQuestShell"
+import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
+import { isQuestPlan } from "@/lib/questAccess"
 
 type BookRow = {
   id: string
@@ -54,6 +57,8 @@ function awardBooksSortXp() {
 }
 
 export default function BooksCategorySortPage() {
+  const [plan, setPlan] = useState("free")
+  const [planLoading, setPlanLoading] = useState(true)
   const [books, setBooks] = useState<BookRow[]>([])
   const [roundBooks, setRoundBooks] = useState<BookRow[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -65,6 +70,20 @@ export default function BooksCategorySortPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    const resolvePlan = async () => {
+      const resolvedPlan = await getUserPlan()
+      setPlan(resolvedPlan)
+      setPlanLoading(false)
+    }
+
+    void resolvePlan()
+  }, [])
+
+  useEffect(() => {
+    if (planLoading || !isQuestPlan(plan)) {
+      return
+    }
+
     const load = async () => {
       try {
         setLoading(true)
@@ -88,7 +107,7 @@ export default function BooksCategorySortPage() {
     }
 
     void load()
-  }, [])
+  }, [plan, planLoading])
 
   const usableBooks = useMemo(
     () => books.filter((book) => book.category && categories.includes(book.category as typeof categories[number])),
@@ -141,6 +160,19 @@ export default function BooksCategorySortPage() {
       setFeedback(null)
       setWrongCategory(null)
     }, 400)
+  }
+
+  if (planLoading) {
+    return <div className="p-6 text-white">Loading...</div>
+  }
+
+  if (!isQuestPlan(plan)) {
+    return (
+      <Paywall
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock challenge modes, focused Bible structure drills, and deeper quest training paths."
+      />
+    )
   }
 
   if (loading) {

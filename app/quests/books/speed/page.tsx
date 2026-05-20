@@ -10,6 +10,9 @@ import {
   BooksQuestStatusBadge,
   BooksQuestTopBar,
 } from "@/components/BooksQuestShell"
+import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
+import { isQuestPlan } from "@/lib/questAccess"
 import { createClient } from "@/lib/supabase/client"
 import { useXPStore } from "@/lib/xpStore"
 
@@ -118,6 +121,8 @@ export default function BooksSpeedRoundPage() {
     challengeLabel = "Mixed challenge"
   }
 
+  const [plan, setPlan] = useState("free")
+  const [planLoading, setPlanLoading] = useState(true)
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null)
   const [choices, setChoices] = useState<BookRow[]>([])
@@ -137,6 +142,20 @@ export default function BooksSpeedRoundPage() {
   const incrementXP = useXPStore((s) => s.incrementXP)
 
   useEffect(() => {
+    const resolvePlan = async () => {
+      const resolvedPlan = await getUserPlan()
+      setPlan(resolvedPlan)
+      setPlanLoading(false)
+    }
+
+    void resolvePlan()
+  }, [])
+
+  useEffect(() => {
+    if (planLoading || !isQuestPlan(plan)) {
+      return
+    }
+
     const load = async () => {
       try {
         setLoading(true)
@@ -184,7 +203,7 @@ export default function BooksSpeedRoundPage() {
     }
 
     void load()
-  }, [])
+  }, [plan, planLoading])
 
   const sortedBooks = useMemo(
     () => [...books].sort((a, b) => a.book_order - b.book_order),
@@ -341,6 +360,19 @@ export default function BooksSpeedRoundPage() {
       setShowPoint(false)
       buildQuestion()
     }, 250)
+  }
+
+  if (planLoading) {
+    return <div className="p-6 text-white">Loading...</div>
+  }
+
+  if (!isQuestPlan(plan)) {
+    return (
+      <Paywall
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock challenge modes, focused Bible structure drills, and deeper quest training paths."
+      />
+    )
   }
 
   if (loading) {

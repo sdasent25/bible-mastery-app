@@ -10,6 +10,9 @@ import {
   BooksQuestStatusBadge,
   BooksQuestTopBar,
 } from "@/components/BooksQuestShell"
+import Paywall from "@/components/Paywall"
+import { getUserPlan } from "@/lib/getUserPlan"
+import { isQuestPlan } from "@/lib/questAccess"
 import { createClient } from "@/lib/supabase/client"
 import { useXPStore } from "@/lib/xpStore"
 
@@ -144,6 +147,8 @@ export default function BooksTestModePage() {
   if (testFocus === 3) challengeLabel = "Prophets"
   if (testFocus === 4) challengeLabel = "Mixed challenge"
 
+  const [plan, setPlan] = useState("free")
+  const [planLoading, setPlanLoading] = useState(true)
   const [books, setBooks] = useState<BookRow[]>([])
   const [currentQuestion, setCurrentQuestion] = useState("")
   const [choices, setChoices] = useState<string[]>([])
@@ -194,6 +199,20 @@ export default function BooksTestModePage() {
   }, [focusedBooks])
 
   useEffect(() => {
+    const resolvePlan = async () => {
+      const resolvedPlan = await getUserPlan()
+      setPlan(resolvedPlan)
+      setPlanLoading(false)
+    }
+
+    void resolvePlan()
+  }, [])
+
+  useEffect(() => {
+    if (planLoading || !isQuestPlan(plan)) {
+      return
+    }
+
     const loadBooks = async () => {
       try {
         setLoading(true)
@@ -217,7 +236,7 @@ export default function BooksTestModePage() {
     }
 
     void loadBooks()
-  }, [])
+  }, [plan, planLoading])
 
   useEffect(() => {
     if (hasStarted && focusedBooks.length >= 4 && !currentQuestion && !isComplete) {
@@ -319,6 +338,19 @@ export default function BooksTestModePage() {
     setCorrectAnswer("")
     setXpEarned(null)
     setIsPractice(false)
+  }
+
+  if (planLoading) {
+    return <div className="p-6 text-white">Loading...</div>
+  }
+
+  if (!isQuestPlan(plan)) {
+    return (
+      <Paywall
+        title="Quests Locked"
+        message="Upgrade to Pro+ to unlock challenge modes, focused Bible structure drills, and deeper quest training paths."
+      />
+    )
   }
 
   if (loading) {
