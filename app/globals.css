@@ -3200,6 +3200,478 @@ textarea {
     inset 0 1px 0 rgba(255, 252, 240, 0.06);
 }
 
+.ba-quests-page {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 10% 8%, rgba(250, 204, 21, 0.08), transparent 18%),
+    radial-gradient(circle at 84% 16%, rgba(34, 211, 238, 0.08), transparent 22%),
+    radial-gradient(circle at 50% 0%, rgba(255, 192, 67, 0.1), transparent 28%),
+    linear-gradient(180deg, #040a13 0%, #07101b 44%, #02060d 100%);
+  padding: 1rem;
+  color: #f5efe6;
+}
+
+.ba-quests-hero {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid rgba(255, 221, 158, 0.16);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 249, 235, 0.05),
+    0 0 0 1px rgba(255, 196, 80, 0.035),
+    0 0 42px rgba(250, 204, 21, 0.08);
+}
+
+.ba-quests-hero-bg,
+.ba-quest-card-image-wrap {
+  position: absolute;
+  inset: 0;
+}
+
+.ba-quests-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 64% 45%, rgba(255, 213, 103, 0.32), transparent 22%),
+    linear-gradient(90deg, rgba(4, 8, 15, 0.88) 0%, rgba(7, 11, 19, 0.68) 44%, rgba(6, 10, 17, 0.5) 100%);
+}
+
+.ba-quests-hero-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 196, 80, 0.08), transparent 18%),
+    linear-gradient(180deg, rgba(4, 8, 15, 0) 48%, rgba(4, 8, 15, 0.76) 100%);
+}
+
+.ba-quest-top-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 221, 158, 0.12);
+  background:
+    radial-gradient(circle at top, rgba(250, 204, 21, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(13, 20, 33, 0.94), rgba(7, 12, 21, 0.98));
+  padding: 0.7rem 0.8rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 249, 235, 0.05),
+    0 0 24px rgba(250, 204, 21, 0.06);
+}
+
+.ba-quest-top-pill-icon,
+.ba-quest-side-icon,
+.ba-quest-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 230, 168, 0.18);
+  background:
+    radial-gradient(circle at top, rgba(255, 241, 201, 0.18), transparent 58%),
+    linear-gradient(180deg, rgba(255, 210, 110, 0.18), rgba(58, 35, 11, 0.88));
+  color: rgb(254 243 199);
+  box-shadow:
+    0 0 24px rgba(250, 204, 21, 0.12),
+    inset 0 1px 0 rgba(255, 249, 235, 0.08);
+}
+
+.ba-quest-top-pill-icon {
+  height: 2.3rem;
+  width: 2.3rem;
+}
+
+.ba-quest-side-icon {
+  height: 1.95rem;
+  width: 1.95rem;
+}
+
+.ba-quest-card-icon {
+  height: 2rem;
+  width: 2rem;
+}
+
+.ba-quest-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 221, 158, 0.16);
+  background: rgba(5, 10, 18, 0.52);
+  padding: 0.46rem 0.72rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f4d58c;
+  box-shadow:
+    0 0 24px rgba(250, 204, 21, 0.06),
+    inset 0 1px 0 rgba(255, 249, 235, 0.05);
+}
+
+.ba-quest-hero-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  width: 100%;
+  max-width: 21rem;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 226, 125, 0.95);
+  background:
+    linear-gradient(180deg, #fff4c0 0%, #ffe487 15%, #f8c63d 44%, #e5a31f 72%, #b96f09 100%);
+  padding: 0.62rem 0.9rem;
+  color: #2a1600;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow:
+    0 0 18px rgba(255, 191, 54, 0.55),
+    0 0 38px rgba(255, 153, 0, 0.25),
+    0 18px 28px rgba(68, 33, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    inset 0 -2px 0 rgba(88, 45, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 244, 194, 0.44);
+  transition:
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    filter 0.24s ease;
+}
+
+.ba-quest-hero-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04) saturate(1.03);
+}
+
+.ba-quest-hero-cta-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.9rem;
+  width: 1.9rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(148, 81, 0, 0.18);
+  background: rgba(255, 244, 214, 0.28);
+  color: #6a3900;
+}
+
+.ba-quest-side-panel,
+.ba-quest-stat-card,
+.ba-quest-family-card,
+.ba-quest-mode-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 220, 145, 0.11);
+  background:
+    radial-gradient(circle at top right, rgba(250, 204, 21, 0.055), transparent 24%),
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.045), transparent 22%),
+    linear-gradient(180deg, rgba(10, 16, 28, 0.985), rgba(4, 8, 15, 0.99));
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 249, 235, 0.04),
+    0 0 0 1px rgba(255, 215, 120, 0.02);
+  backdrop-filter: blur(16px);
+}
+
+.ba-quest-side-panel {
+  border-radius: 1.15rem;
+  padding: 0.9rem;
+}
+
+.ba-quest-side-panel--violet {
+  border-color: rgba(216, 180, 255, 0.16);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 249, 235, 0.04),
+    0 0 0 1px rgba(255, 215, 120, 0.02),
+    0 0 28px rgba(168, 85, 247, 0.08);
+}
+
+.ba-quest-stat-card {
+  border-radius: 1.12rem;
+  padding: 0.9rem 0.95rem;
+}
+
+.ba-quest-stat-card--gold {
+  border-color: rgba(255, 218, 150, 0.18);
+}
+
+.ba-quest-stat-card--cyan {
+  border-color: rgba(122, 241, 255, 0.16);
+}
+
+.ba-quest-stat-card--orange {
+  border-color: rgba(255, 191, 118, 0.18);
+}
+
+.ba-quest-stat-card--violet {
+  border-color: rgba(228, 186, 255, 0.16);
+}
+
+.ba-quest-stat-label {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(240, 228, 207, 0.56);
+}
+
+.ba-quest-stat-value {
+  margin-top: 0.58rem;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #f9f2e8;
+}
+
+.ba-quest-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.ba-quest-family-card,
+.ba-quest-mode-card {
+  isolation: isolate;
+  border-radius: 1.4rem;
+}
+
+.ba-quest-family-card {
+  min-height: 16.2rem;
+}
+
+.ba-quest-mode-card {
+  min-height: 14rem;
+}
+
+.ba-quest-family-card--gold {
+  border-color: rgba(255, 205, 102, 0.2);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(250, 204, 21, 0.1);
+}
+
+.ba-quest-family-card--cyan,
+.ba-quest-mode-card--cyan {
+  border-color: rgba(112, 242, 255, 0.14);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(34, 211, 238, 0.08);
+}
+
+.ba-quest-family-card--violet {
+  border-color: rgba(236, 177, 255, 0.14);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(192, 132, 252, 0.08);
+}
+
+.ba-quest-mode-card--gold {
+  border-color: rgba(255, 213, 132, 0.16);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(251, 191, 36, 0.08);
+}
+
+.ba-quest-mode-card--orange {
+  border-color: rgba(255, 179, 104, 0.16);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(251, 146, 60, 0.12);
+}
+
+.ba-quest-mode-card--blue {
+  border-color: rgba(143, 204, 255, 0.18);
+  box-shadow:
+    0 24px 62px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 250, 236, 0.05),
+    0 0 26px rgba(96, 165, 250, 0.12);
+}
+
+.ba-quest-family-card.is-locked {
+  opacity: 0.9;
+}
+
+.ba-quest-card-image-wrap {
+  inset: 0;
+}
+
+.ba-quest-mode-image-wrap {
+  inset: 0 0 34% 0;
+}
+
+.ba-quest-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 25%, rgba(255, 205, 96, 0.22), transparent 24%),
+    linear-gradient(180deg, rgba(7, 11, 19, 0.04) 0%, rgba(7, 11, 19, 0.16) 28%, rgba(7, 11, 19, 0.54) 68%, rgba(4, 8, 15, 0.9) 100%);
+}
+
+.ba-quest-mode-overlay {
+  background:
+    radial-gradient(circle at 70% 18%, rgba(255, 205, 96, 0.16), transparent 18%),
+    linear-gradient(180deg, rgba(7, 11, 19, 0.04) 0%, rgba(7, 11, 19, 0.1) 28%, rgba(7, 11, 19, 0.4) 68%, rgba(4, 8, 15, 0.94) 100%);
+}
+
+.ba-quest-card-content,
+.ba-quest-mode-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: inherit;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.ba-quest-mode-content {
+  padding-top: 6.9rem;
+}
+
+.ba-quest-status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.34rem 0.6rem;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ba-quest-status-pill--gold {
+  border-color: rgba(250, 204, 21, 0.2);
+  background: rgba(250, 204, 21, 0.12);
+  color: rgb(254 243 199);
+}
+
+.ba-quest-status-pill--cyan {
+  border-color: rgba(103, 232, 249, 0.2);
+  background: rgba(34, 211, 238, 0.12);
+  color: rgb(207 250 254);
+}
+
+.ba-quest-status-pill--violet {
+  border-color: rgba(216, 180, 255, 0.18);
+  background: rgba(168, 85, 247, 0.14);
+  color: rgb(243 232 255);
+}
+
+.ba-quest-status-pill--orange {
+  border-color: rgba(255, 179, 104, 0.18);
+  background: rgba(251, 146, 60, 0.14);
+  color: rgb(255 237 213);
+}
+
+.ba-quest-status-pill--blue {
+  border-color: rgba(147, 197, 253, 0.18);
+  background: rgba(59, 130, 246, 0.14);
+  color: rgb(219 234 254);
+}
+
+.ba-quest-status-pill--locked {
+  border-color: rgba(161, 161, 170, 0.18);
+  background: rgba(63, 63, 70, 0.3);
+  color: rgb(228 228 231);
+}
+
+.ba-quest-card-meta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.ba-quest-card-arrow {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 226, 158, 0.2);
+  background:
+    radial-gradient(circle at top, rgba(255, 239, 194, 0.12), transparent 42%),
+    linear-gradient(180deg, rgba(15, 21, 35, 0.88), rgba(7, 11, 18, 0.92));
+  color: rgb(254 243 199);
+  box-shadow:
+    0 0 18px rgba(250, 204, 21, 0.16),
+    0 10px 22px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 250, 236, 0.08),
+    inset 0 0 0 1px rgba(255, 236, 168, 0.05);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+a:hover .ba-quest-card-arrow {
+  transform: translateY(-1px) scale(1.05);
+  border-color: rgba(255, 232, 174, 0.34);
+  box-shadow:
+    0 0 24px rgba(250, 204, 21, 0.24),
+    0 12px 26px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 250, 236, 0.1),
+    inset 0 0 0 1px rgba(255, 236, 168, 0.08);
+}
+
+@media (max-width: 767px) {
+  .ba-quests-page {
+    padding: 0.85rem 0.85rem 0.95rem;
+  }
+
+  .ba-quests-hero .ba-text-title:first-child {
+    font-size: 2.08rem;
+  }
+
+  .ba-quests-hero {
+    border-radius: 1.55rem;
+  }
+
+  .ba-quest-hero-cta {
+    max-width: none;
+    min-height: 3.2rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .ba-quest-side-panel,
+  .ba-quest-stat-card,
+  .ba-quest-family-card,
+  .ba-quest-mode-card {
+    border-radius: 1.35rem;
+  }
+
+  .ba-quest-family-card {
+    min-height: 14.75rem;
+  }
+
+  .ba-quest-mode-card {
+    min-height: 12.75rem;
+  }
+
+  .ba-quest-mode-content {
+    padding-top: 6rem;
+  }
+}
+
 .ba-stat-card--cyan {
   border-color: rgba(122, 241, 255, 0.16);
   box-shadow:
