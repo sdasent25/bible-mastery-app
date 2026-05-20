@@ -4085,9 +4085,12 @@ a:hover .ba-quest-card-arrow {
 
   .ba-quest-hero-kicker {
     gap: 0.45rem;
-    padding: 0.36rem 0.62rem;
+    border-color: rgba(255, 221, 158, 0.1);
+    background: rgba(5, 10, 18, 0.22);
+    padding: 0.28rem 0.56rem;
     font-size: 0.56rem;
     letter-spacing: 0.16em;
+    box-shadow: inset 0 1px 0 rgba(255, 249, 235, 0.04);
   }
 
   .ba-quest-hero-cta {
@@ -4120,8 +4123,8 @@ a:hover .ba-quest-card-arrow {
 
   .ba-quests-stat-strip {
     gap: 0.55rem;
-    margin-top: 0.55rem;
-    margin-bottom: 0.7rem;
+    margin-top: 0.48rem;
+    margin-bottom: 0.56rem;
   }
 
   .ba-quests-stat-card {
@@ -4172,15 +4175,15 @@ a:hover .ba-quest-card-arrow {
   }
 
   .ba-quests-family-card {
-    min-height: 11rem;
+    min-height: 10.75rem;
   }
 
   .ba-quests-mode-card {
-    min-height: 9.7rem;
+    min-height: 9.45rem;
   }
 
   .ba-quests-card-art--mode {
-    inset: 0 0 24% 0;
+    inset: 0 0 22% 0;
   }
 
   .ba-quests-card-shell {
@@ -4188,7 +4191,7 @@ a:hover .ba-quest-card-arrow {
   }
 
   .ba-quests-card-shell--mode {
-    padding-top: 4.15rem;
+    padding-top: 4rem;
   }
 
   .ba-quests-card-copy {
@@ -4213,6 +4216,18 @@ a:hover .ba-quest-card-arrow {
 
   .ba-quests-mode-card h3 {
     font-size: 1.12rem;
+  }
+
+  .ba-quests-hero-overlay {
+    background:
+      radial-gradient(circle at 68% 44%, rgba(255, 208, 96, 0.28), transparent 18%),
+      linear-gradient(90deg, rgba(4, 8, 15, 0.68) 0%, rgba(7, 11, 19, 0.16) 40%, rgba(6, 10, 17, 0.38) 100%);
+  }
+
+  .ba-quests-hero-vignette {
+    background:
+      linear-gradient(180deg, rgba(255, 196, 80, 0.05), transparent 16%),
+      linear-gradient(180deg, rgba(4, 8, 15, 0) 56%, rgba(4, 8, 15, 0.74) 100%);
   }
 }
 

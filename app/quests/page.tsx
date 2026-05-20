@@ -426,7 +426,7 @@ export default function QuestsPage() {
               ))}
             </section>
 
-            <div className="space-y-5 xl:space-y-3.5">
+            <div className="space-y-5 xl:space-y-3">
               <QuestHorizontalRail
                 title="Quest Families"
                 ariaLabelBase="Quest Families"
