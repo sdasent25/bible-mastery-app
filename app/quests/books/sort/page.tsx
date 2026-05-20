@@ -203,11 +203,13 @@ export default function BooksCategorySortPage() {
     return (
       <BooksQuestPageShell>
         <BooksQuestPanel className="text-center">
-          <div className="ba-badge-success">Challenge Complete</div>
-          <h1 className="mt-4 text-3xl font-black text-white">Category Sort complete</h1>
-          <p className="mt-4 text-2xl font-black text-emerald-300">+20 XP</p>
+          <div className="ba-badge-success">Practice Complete</div>
+          <h1 className="mt-4 text-3xl font-black text-white">Category knowledge improved</h1>
           <p className="mt-3 text-sm leading-6 text-slate-300">
             You matched all 6 books to the correct sections.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            No XP is awarded in this practice mode. Try Speed Round or Test Mode for Daily XP.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">

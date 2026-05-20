@@ -388,13 +388,13 @@ export default function BooksTestModePage() {
           {xpEarned !== null ? (
             <>
               <div className="mt-4 text-2xl font-black text-emerald-300">+{xpEarned} XP</div>
-              <div className="text-xs text-slate-400">Daily reward earned</div>
+              <div className="text-xs text-slate-400">Daily XP earned. Additional tests are practice only today.</div>
             </>
           ) : isPractice ? (
             <>
               <div className="mt-4 font-semibold text-amber-200">Practice Mode</div>
               <div className="text-xs text-slate-400">
-                You already earned today&apos;s XP. Keep improving your score.
+                XP is awarded only once per day. Keep improving your score in practice mode.
               </div>
             </>
           ) : (
@@ -427,7 +427,7 @@ export default function BooksTestModePage() {
         <BooksQuestHero
           eyebrow="Books Quest"
           title="Test Mode"
-          subtitle="Prove your mastery through a focused challenge that checks order, categories, and structural recall. Daily reward rules stay exactly as they are."
+          subtitle="Prove your mastery through a focused challenge that checks order, categories, and structural recall. XP is available on one rewarded run per day, then the mode switches to practice."
           actions={
             <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
               <button
@@ -479,7 +479,7 @@ export default function BooksTestModePage() {
             <h1 className="mt-3 text-3xl font-black text-white">Focused challenge</h1>
             <p className="mt-2 text-sm text-slate-400">Today&apos;s focus: {challengeLabel}</p>
           </div>
-          <BooksQuestStatusBadge tone="ready">Daily XP Rules Active</BooksQuestStatusBadge>
+          <BooksQuestStatusBadge tone="ready">Daily XP Available</BooksQuestStatusBadge>
         </div>
 
         <div className="rounded-[1.6rem] border border-white/10 bg-white/[0.03] px-5 py-10 text-center">

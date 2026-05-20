@@ -193,11 +193,13 @@ export default function BooksOrderBuilderPage() {
     return (
       <BooksQuestPageShell>
         <BooksQuestPanel className="text-center">
-          <div className="ba-badge-success">Quest Complete</div>
-          <h1 className="mt-4 text-3xl font-black text-white">Order Builder complete</h1>
-          <p className="mt-4 text-2xl font-black text-emerald-300">+20 XP</p>
+          <div className="ba-badge-success">Practice Complete</div>
+          <h1 className="mt-4 text-3xl font-black text-white">Order accuracy improved</h1>
           <p className="mt-3 text-sm leading-6 text-slate-300">
             You placed all five books in the correct order.
+          </p>
+          <p className="mt-3 text-sm leading-6 text-slate-300">
+            No XP is awarded in this practice mode. Try Speed Round or Test Mode for Daily XP.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">

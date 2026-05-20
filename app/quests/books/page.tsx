@@ -20,7 +20,7 @@ type HubCardProps = {
   description: string
   href?: string
   disabled?: boolean
-  status: "Ready" | "Practice" | "Daily XP" | "Locked"
+  status: "Practice" | "Daily XP" | "Locked"
   detail: string
   ctaLabel: string
   accentClass: string
@@ -39,7 +39,7 @@ function ModeCard({
   icon,
 }: HubCardProps) {
   const statusTone =
-    status === "Ready" || status === "Daily XP"
+    status === "Daily XP"
       ? "ready"
       : status === "Practice"
         ? "practice"
@@ -217,22 +217,22 @@ export default function BooksQuestHubPage() {
       <div className="grid gap-5 xl:grid-cols-2">
         <ModeCard
           title="Order Builder"
-          description="Place the books in the correct order."
+          description="Practice the canonical flow of Scripture by placing books in the correct order."
           href="/quests/books/order"
-          status="Ready"
-          detail="Canonical order and sequence recall"
-          ctaLabel="Enter Quest"
+          status="Practice"
+          detail="Canonical order practice with no XP awarded"
+          ctaLabel="Start Practice"
           accentClass="from-cyan-300 via-sky-400 to-blue-500"
           icon="home"
         />
 
         <ModeCard
           title="Category Sort"
-          description="Group books by section and genre."
+          description="Practice Bible structure by grouping books into the right categories."
           href="/quests/books/sort"
-          status="Ready"
-          detail="Sections, genres, and Bible structure"
-          ctaLabel="Start Challenge"
+          status="Practice"
+          detail="Category drills with no XP awarded"
+          ctaLabel="Start Practice"
           accentClass="from-emerald-300 via-teal-400 to-cyan-500"
           icon="verse-memory"
         />
@@ -242,8 +242,12 @@ export default function BooksQuestHubPage() {
           description="Race the clock and sharpen recall."
           href="/quests/books/speed"
           status={speedStatus === "xp" ? "Daily XP" : "Practice"}
-          detail="Fast recognition across order and position prompts"
-          ctaLabel={speedStatus === "xp" ? "Claim XP Run" : "Practice"}
+          detail={
+            speedStatus === "xp"
+              ? "One rewarded run per day, then practice mode"
+              : "Practice mode after today's rewarded run"
+          }
+          ctaLabel={speedStatus === "xp" ? "Start Daily Run" : "Practice"}
           accentClass="from-amber-300 via-yellow-400 to-orange-500"
           icon="quests"
         />
@@ -253,8 +257,12 @@ export default function BooksQuestHubPage() {
           description="Prove your mastery with a focused challenge."
           href="/quests/books/test"
           status={testStatus === "xp" ? "Daily XP" : "Practice"}
-          detail="Focused accuracy checks across multiple prompt types"
-          ctaLabel={testStatus === "xp" ? "Start Test" : "Practice"}
+          detail={
+            testStatus === "xp"
+              ? "One rewarded run per day, then practice mode"
+              : "Practice mode after today's rewarded run"
+          }
+          ctaLabel={testStatus === "xp" ? "Start Daily Test" : "Practice"}
           accentClass="from-violet-300 via-fuchsia-400 to-pink-500"
           icon="upgrade"
         />

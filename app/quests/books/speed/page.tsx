@@ -410,12 +410,12 @@ export default function BooksSpeedRoundPage() {
           {xpEarned !== null ? (
             <>
               <div className="mt-4 text-2xl font-black text-emerald-300">+{xpEarned} XP</div>
-              <div className="text-xs text-slate-400">Daily reward earned</div>
+              <div className="text-xs text-slate-400">Daily XP earned. Additional runs are practice only today.</div>
             </>
           ) : isPractice ? (
             <>
               <div className="mt-4 font-semibold text-amber-200">Practice Mode</div>
-              <div className="text-xs text-slate-400">No XP. New rewards refresh tomorrow.</div>
+              <div className="text-xs text-slate-400">XP is awarded only once per day. New rewards refresh tomorrow.</div>
             </>
           ) : (
             <p className="mt-4 text-2xl font-semibold text-white">Checking reward...</p>
@@ -447,7 +447,7 @@ export default function BooksSpeedRoundPage() {
         <BooksQuestHero
           eyebrow="Books Quest"
           title="Speed Round"
-          subtitle="Race the clock and sharpen recall through fast order, before, and position prompts. Your first run each day keeps the reward rules already in place."
+          subtitle="Race the clock and sharpen recall through fast order, before, and position prompts. XP is available on one rewarded run per day, then the mode switches to practice."
           actions={
             <div className="flex w-full flex-col gap-3 sm:flex-row lg:w-auto">
               <button
@@ -491,7 +491,7 @@ export default function BooksSpeedRoundPage() {
               <div className="mt-2 text-xl font-black text-white">{challengeLabel}</div>
             </div>
             {modeStatus === "xp" ? (
-              <BooksQuestStatusBadge tone="ready">Daily XP Ready</BooksQuestStatusBadge>
+              <BooksQuestStatusBadge tone="ready">Daily XP Available</BooksQuestStatusBadge>
             ) : modeStatus === "practice" ? (
               <BooksQuestStatusBadge tone="practice">Practice Mode</BooksQuestStatusBadge>
             ) : null}

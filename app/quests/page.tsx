@@ -5,142 +5,253 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 
 import Paywall from "@/components/Paywall"
+import QuestHorizontalRail from "@/components/quests/QuestHorizontalRail"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { renderNavIcon } from "@/lib/navigation"
+import { isQuestPlan } from "@/lib/questAccess"
 
-type QuestStatusTone = "gold" | "cyan" | "violet" | "orange" | "blue" | "locked"
+type QuestTone = "gold" | "cyan" | "violet" | "orange" | "blue"
 
-type QuestFamilyCardProps = {
-  title: string
-  href?: string
-  description: string
-  badge: string
-  status: string
-  imageSrc?: string
-  tone: QuestStatusTone
-  icon: "quests" | "verse-memory" | "upgrade"
-  locked?: boolean
+type QuestStat = {
+  label: string
+  value: string
+  supporting: string
+  tone: QuestTone
+  icon: "home" | "quests" | "upgrade" | "verse-memory"
 }
 
-type QuestModeCardProps = {
+type QuestPanelData = {
+  title: string
+  eyebrow: string
+  copy: string
+  tone?: "default" | "violet"
+  icon: "home" | "quests" | "upgrade" | "verse-memory"
+  badge?: string
+}
+
+type QuestCardData = {
   title: string
   href: string
-  description: string
+  imageSrc: string
+  copy: string
   badge: string
-  supporting: string
-  imageSrc?: string
-  tone: QuestStatusTone
+  detail: string
+  tone: QuestTone
 }
 
-function QuestFamilyCard({
-  title,
-  href,
-  description,
-  badge,
-  status,
-  imageSrc,
-  tone,
-  icon,
-  locked = false,
-}: QuestFamilyCardProps) {
-  const cardBody = (
-    <article className={`ba-quest-family-card ba-quest-family-card--${tone} ${locked ? "is-locked" : ""}`}>
-      <div className="ba-quest-card-image-wrap">
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt=""
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 360px"
-          />
-        ) : null}
-        <div className="ba-quest-card-image-overlay" />
+type QuestModeData = {
+  title: string
+  href: string
+  imageSrc: string
+  copy: string
+  label: string
+  detail: string
+  tone: QuestTone
+}
+
+const questStats: QuestStat[] = [
+  {
+    label: "Daily Set",
+    value: "10 Questions",
+    supporting: "Who Said It practice",
+    tone: "orange",
+    icon: "quests",
+  },
+  {
+    label: "Quest Families",
+    value: "3",
+    supporting: "Who Said It, Books, Characters",
+    tone: "gold",
+    icon: "home",
+  },
+  {
+    label: "Books Modes",
+    value: "4",
+    supporting: "Order, sort, speed, test",
+    tone: "violet",
+    icon: "upgrade",
+  },
+  {
+    label: "Daily XP Modes",
+    value: "2",
+    supporting: "Speed Round and Test Mode",
+    tone: "cyan",
+    icon: "verse-memory",
+  },
+]
+
+const questPanels = (planLabel: string): QuestPanelData[] => [
+  {
+    title: "Daily Challenge",
+    eyebrow: "Who Said It?",
+    copy: "10-question practice set. Practice only. No XP yet.",
+    icon: "quests",
+    badge: "Practice Only",
+  },
+  {
+    title: "XP Rewards",
+    eyebrow: "Books Quest",
+    copy: "Daily XP lives in Speed Round and Test Mode. Practice modes do not award XP.",
+    icon: "home",
+  },
+  {
+    title: "Pro+ Access",
+    eyebrow: planLabel,
+    copy: "Quests access is active for this account and all quest routes remain unlocked.",
+    tone: "violet",
+    icon: "upgrade",
+    badge: "Unlocked",
+  },
+  {
+    title: "Your Progress",
+    eyebrow: "Coming Soon",
+    copy: "Quest progress tracking is still being prepared. Start challenges to build your history.",
+    icon: "verse-memory",
+  },
+]
+
+const questFamilies: QuestCardData[] = [
+  {
+    title: "Who Said It?",
+    href: "/quests/who-said-it",
+    imageSrc: "/quests/cards/who-said-it.png",
+    copy: "Identify the speaker behind the scripture.",
+    badge: "Active",
+    detail: "10 Questions",
+    tone: "gold",
+  },
+  {
+    title: "Books of the Bible",
+    href: "/quests/books",
+    imageSrc: "/quests/cards/books-of-the-bible.png",
+    copy: "Explore, order, and master every book.",
+    badge: "Daily Modes",
+    detail: "4 Modes",
+    tone: "cyan",
+  },
+  {
+    title: "Characters",
+    href: "/quests/characters",
+    imageSrc: "/quests/cards/characters-coming-soon.png",
+    copy: "Learn the lives of key biblical figures.",
+    badge: "Coming Soon",
+    detail: "Safe preview",
+    tone: "violet",
+  },
+]
+
+const questModes: QuestModeData[] = [
+  {
+    title: "Order Builder",
+    href: "/quests/books/order",
+    imageSrc: "/quests/modes/order-builder.png",
+    copy: "Practice the canonical flow of Scripture.",
+    label: "Practice",
+    detail: "No XP claim",
+    tone: "cyan",
+  },
+  {
+    title: "Category Sort",
+    href: "/quests/books/sort",
+    imageSrc: "/quests/modes/category-sort.png",
+    copy: "Match books to the right category and structure.",
+    label: "Practice",
+    detail: "No XP claim",
+    tone: "gold",
+  },
+  {
+    title: "Speed Round",
+    href: "/quests/books/speed",
+    imageSrc: "/quests/modes/speed-round.png",
+    copy: "Race the clock through fast recall prompts.",
+    label: "Daily XP",
+    detail: "Rewarded mode",
+    tone: "orange",
+  },
+  {
+    title: "Test Mode",
+    href: "/quests/books/test",
+    imageSrc: "/quests/modes/test-mode.png",
+    copy: "Enter a focused books challenge with daily rewards.",
+    label: "Daily XP",
+    detail: "Rewarded mode",
+    tone: "blue",
+  },
+]
+
+function QuestStatCard({ stat }: { stat: QuestStat }) {
+  return (
+    <article className={`ba-quests-stat-card ba-quests-stat-card--${stat.tone}`}>
+      <div className="ba-quests-stat-icon">
+        {renderNavIcon(stat.icon, "h-4 w-4")}
       </div>
-
-      <div className="ba-quest-card-content">
-        <div className="flex items-start justify-between gap-3">
-          <span className="ba-quest-card-icon">
-            {renderNavIcon(icon, "h-4 w-4")}
-          </span>
-          <span className={`ba-quest-status-pill ba-quest-status-pill--${tone}`}>
-            {badge}
-          </span>
-        </div>
-
-        <div className="mt-auto">
-          <h2 className="ba-font-display text-[1.32rem] font-bold tracking-[-0.03em] text-[#f8f1e6]">
-            {title}
-          </h2>
-          <p className="mt-2 max-w-[15rem] text-[0.76rem] leading-[1.5] text-white/76">
-            {description}
-          </p>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="ba-quest-card-meta">{status}</span>
-            <span className="ba-quest-card-arrow">
-              {locked ? renderNavIcon("upgrade", "h-3.5 w-3.5") : renderNavIcon("chevron-right", "h-3.5 w-3.5")}
-            </span>
-          </div>
-        </div>
+      <div className="min-w-0">
+        <div className="ba-quests-stat-label">{stat.label}</div>
+        <div className="ba-quests-stat-value">{stat.value}</div>
+        <div className="ba-quests-stat-supporting">{stat.supporting}</div>
       </div>
     </article>
   )
+}
 
-  if (!href || locked) {
-    return <div>{cardBody}</div>
-  }
-
+function QuestRailPanel({ panel }: { panel: QuestPanelData }) {
   return (
-    <Link href={href} className="block">
-      {cardBody}
-    </Link>
+    <section className={`ba-quests-side-panel ${panel.tone === "violet" ? "ba-quests-side-panel--violet" : ""}`}>
+      <div className="flex items-start gap-3">
+        <span className="ba-quests-side-icon">
+          {renderNavIcon(panel.icon, "h-4 w-4")}
+        </span>
+        <div className="min-w-0">
+          <div className="ba-quests-side-title">{panel.title}</div>
+          <div className="ba-quests-side-eyebrow">{panel.eyebrow}</div>
+          <p className="ba-quests-side-copy">{panel.copy}</p>
+        </div>
+      </div>
+      {panel.badge ? (
+        <div className="mt-3">
+          <span className={`ba-quest-status-pill ${panel.tone === "violet" ? "ba-quest-status-pill--violet" : "ba-quest-status-pill--gold"}`}>
+            {panel.badge}
+          </span>
+        </div>
+      ) : null}
+    </section>
   )
 }
 
-function QuestModeCard({
-  title,
-  href,
-  description,
-  badge,
-  supporting,
-  imageSrc,
-  tone,
-}: QuestModeCardProps) {
+function QuestFamilyCard({ card }: { card: QuestCardData }) {
   return (
-    <Link href={href} className="block">
-      <article className={`ba-quest-mode-card ba-quest-mode-card--${tone}`}>
-        <div className="ba-quest-card-image-wrap ba-quest-mode-image-wrap">
-          {imageSrc ? (
-            <Image
-              src={imageSrc}
-              alt=""
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 280px"
-            />
-          ) : null}
-          <div className="ba-quest-card-image-overlay ba-quest-mode-overlay" />
+    <Link href={card.href} className="block min-w-[16.35rem] md:min-w-0">
+      <article className={`ba-quests-family-card ba-quests-family-card--${card.tone}`}>
+        <div className="ba-quests-card-art">
+          <Image
+            src={card.imageSrc}
+            alt={card.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 767px) 262px, (max-width: 1279px) 33vw, 23vw"
+          />
+          <div className="ba-quests-card-overlay" />
         </div>
-
-        <div className="ba-quest-mode-content">
+        <div className="ba-quests-card-shell">
           <div className="flex items-start justify-between gap-3">
-            <span className={`ba-quest-status-pill ba-quest-status-pill--${tone}`}>
-              {badge}
+            <span className={`ba-quest-status-pill ba-quest-status-pill--${card.tone}`}>
+              {card.badge}
             </span>
             <span className="ba-quest-card-arrow">
               {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
             </span>
           </div>
-
           <div className="mt-auto">
-            <h3 className="ba-font-display text-[1.24rem] font-bold tracking-[-0.03em] text-[#f8f1e6]">
-              {title}
+            <h3 className="ba-font-display text-[1.42rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
+              {card.title}
             </h3>
-            <p className="mt-2 max-w-[15rem] text-[0.72rem] leading-[1.5] text-white/72">
-              {description}
+            <p className="mt-2 text-[0.82rem] leading-[1.55] text-white/76">
+              {card.copy}
             </p>
-            <div className="ba-quest-card-meta mt-3">{supporting}</div>
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <span className="ba-quest-card-meta">{card.detail}</span>
+              <span className="ba-quest-card-meta text-right text-[#f6e0a8]">{card.badge}</span>
+            </div>
           </div>
         </div>
       </article>
@@ -148,27 +259,44 @@ function QuestModeCard({
   )
 }
 
-function QuestPanel({
-  title,
-  icon,
-  children,
-  tone = "default",
-}: {
-  title: string
-  icon: "quests" | "verse-memory" | "upgrade" | "home"
-  children: React.ReactNode
-  tone?: "default" | "violet"
-}) {
+function QuestModeCard({ mode }: { mode: QuestModeData }) {
   return (
-    <section className={`ba-quest-side-panel ${tone === "violet" ? "ba-quest-side-panel--violet" : ""}`}>
-      <div className="flex items-center gap-2.5">
-        <span className="ba-quest-side-icon">
-          {renderNavIcon(icon, "h-4 w-4")}
-        </span>
-        <div className="ba-rail-kicker text-[0.62rem] text-[#f3e4bc]">{title}</div>
-      </div>
-      <div className="mt-3">{children}</div>
-    </section>
+    <Link href={mode.href} className="block min-w-[14.25rem] md:min-w-0">
+      <article className={`ba-quests-mode-card ba-quests-mode-card--${mode.tone}`}>
+        <div className="ba-quests-card-art ba-quests-card-art--mode">
+          <Image
+            src={mode.imageSrc}
+            alt={mode.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 767px) 228px, (max-width: 1279px) 25vw, 18vw"
+          />
+          <div className="ba-quests-card-overlay ba-quests-card-overlay--mode" />
+        </div>
+        <div className="ba-quests-card-shell ba-quests-card-shell--mode">
+          <div className="flex items-start justify-between gap-3">
+            <span className={`ba-quest-status-pill ba-quest-status-pill--${mode.tone}`}>
+              {mode.label}
+            </span>
+            <span className="ba-quest-card-arrow">
+              {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
+            </span>
+          </div>
+          <div className="mt-auto">
+            <h3 className="ba-font-display text-[1.3rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
+              {mode.title}
+            </h3>
+            <p className="mt-2 text-[0.78rem] leading-[1.55] text-white/74">
+              {mode.copy}
+            </p>
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <span className="ba-quest-card-meta">{mode.detail}</span>
+              <span className="ba-quest-card-meta text-right text-[#f6e0a8]">{mode.label}</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </Link>
   )
 }
 
@@ -186,14 +314,13 @@ export default function QuestsPage() {
     void run()
   }, [])
 
-  const allowedPlans = ["pro_plus", "family_pro_plus"]
   const planLabel = plan === "family_pro_plus" ? "Family Pro+" : "Pro+"
 
   if (loading) {
     return <div className="px-4 py-6 text-white">Loading...</div>
   }
 
-  if (!allowedPlans.includes(plan)) {
+  if (!isQuestPlan(plan)) {
     return (
       <Paywall
         title="Quests Locked"
@@ -204,240 +331,129 @@ export default function QuestsPage() {
 
   return (
     <main className="ba-quests-page">
-      <div className="pointer-events-none absolute left-[-5rem] top-12 h-56 w-56 rounded-full bg-amber-300/10 blur-3xl" />
-      <div className="pointer-events-none absolute right-[-5rem] top-28 h-64 w-64 rounded-full bg-cyan-300/8 blur-3xl" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle_at_top,rgba(247,181,57,0.14),transparent_56%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-52 bg-[radial-gradient(circle_at_top,rgba(245,180,54,0.16),transparent_58%)]" />
+      <div className="pointer-events-none absolute left-[-3rem] top-16 h-44 w-44 rounded-full bg-amber-300/8 blur-3xl" />
+      <div className="pointer-events-none absolute right-[-4rem] top-24 h-52 w-52 rounded-full bg-cyan-300/8 blur-3xl" />
 
-      <div className="relative mx-auto flex w-full max-w-[96rem] flex-col gap-5">
-        <section className="flex flex-col gap-5 xl:grid xl:grid-cols-[minmax(0,1fr)_16.5rem]">
-          <div className="ba-card ba-quests-hero overflow-hidden rounded-[2rem]">
-            <div className="ba-quests-hero-bg">
+      <div className="relative mx-auto w-full max-w-[95rem]">
+        <section className="ba-quests-header">
+          <div className="min-w-0">
+            <div className="ba-text-title text-[2.1rem] sm:text-[2.9rem]">Quests</div>
+            <p className="mt-1.5 max-w-xl text-[0.9rem] leading-[1.5] text-[#eadfcd]/78 sm:text-[1rem]">
+              Complete challenges. Grow in wisdom.
+            </p>
+          </div>
+
+          <div className="ba-quests-header-card">
+            <div className="ba-quests-header-card-art">
               <Image
-                src="/training/sections/historical-books.png"
+                src="/quests/hero/quests-main.png"
                 alt=""
                 fill
-                priority
-                className="object-cover object-[64%_45%]"
-                sizes="(max-width: 1280px) 100vw, 980px"
+                className="object-cover object-center"
+                sizes="220px"
               />
             </div>
-            <div className="ba-quests-hero-overlay" />
-            <div className="ba-quests-hero-vignette" />
+            <div className="ba-quests-header-card-overlay" />
+            <div className="relative z-10 flex items-center gap-3">
+              <span className="ba-quests-header-medallion">
+                {renderNavIcon("quests", "h-4 w-4")}
+              </span>
+              <div>
+                <div className="ba-text-section-label text-[0.5rem] text-[#f2d391]">Quest Access</div>
+                <div className="mt-1 text-[0.88rem] font-semibold text-[#f6eddf]">{planLabel} Active</div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-            <div className="relative z-10 flex min-h-[24rem] flex-col p-5 sm:p-6 lg:min-h-[23.5rem] lg:p-7">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <div className="ba-text-title text-[2.3rem] sm:text-[3rem]">Quests</div>
-                  <p className="mt-1.5 max-w-xl text-[0.9rem] leading-[1.55] text-[#ede2d1]/82 sm:text-[1rem]">
-                    Special challenges for Scripture mastery.
+        <section className="ba-quests-main-grid">
+          <div className="min-w-0">
+            <div className="ba-quests-hero">
+              <div className="ba-quests-hero-art">
+                <Image
+                  src="/quests/hero/who-said-it-hero.png"
+                  alt="Who Said It? hero art"
+                  fill
+                  priority
+                  className="object-cover object-[62%_38%]"
+                  sizes="(max-width: 1279px) 100vw, 860px"
+                />
+              </div>
+              <div className="ba-quests-hero-overlay" />
+              <div className="ba-quests-hero-vignette" />
+
+              <div className="relative z-10 flex min-h-[17.4rem] flex-col p-4 sm:min-h-[19rem] sm:p-5 xl:min-h-[18rem]">
+                <div className="ba-quest-hero-kicker">
+                  <span className="text-[#ffd97d]">{renderNavIcon("quests", "h-4 w-4")}</span>
+                  TODAY&apos;S CHALLENGE
+                </div>
+
+                <div className="mt-3 max-w-[22rem]">
+                  <h1 className="ba-text-title text-[2.15rem] sm:text-[3rem] xl:text-[3.2rem]">
+                    Who Said It?
+                  </h1>
+                  <p className="mt-3 text-[0.92rem] leading-[1.56] text-[#f5eadc]/84 sm:text-[1rem]">
+                    Identify who spoke the scripture.
+                    <br />
+                    Sharpen your knowledge.
                   </p>
                 </div>
 
-                <div className="ba-quest-top-pill">
-                  <span className="ba-quest-top-pill-icon">
-                    {renderNavIcon("quests", "h-4 w-4")}
-                  </span>
-                  <div>
-                    <div className="ba-text-section-label text-[0.52rem] text-[#f5cb76]">
-                      Active Access
-                    </div>
-                    <div className="ba-font-ui mt-1 text-[0.86rem] font-semibold text-[#f7efe2]">
-                      {planLabel}
-                    </div>
-                  </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="ba-quest-status-pill ba-quest-status-pill--gold">Daily Practice</span>
+                  <span className="ba-quest-status-pill ba-quest-status-pill--orange">10 Questions</span>
+                  <span className="ba-quest-status-pill ba-quest-status-pill--locked">No XP Yet</span>
+                </div>
+
+                <div className="mt-auto pt-5">
+                  <Link href="/quests/who-said-it" className="ba-quest-hero-cta">
+                    <span className="ba-hero-cta-medallion">
+                      {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
+                    </span>
+                    <span className="ba-hero-cta-label">Start Challenge</span>
+                    <span className="ba-quest-hero-cta-arrow">
+                      {renderNavIcon("chevron-right", "h-4 w-4")}
+                    </span>
+                  </Link>
                 </div>
               </div>
+            </div>
 
-              <div className="mt-5 max-w-[24rem] sm:mt-6 lg:mt-7">
-                <div className="ba-quest-hero-kicker">
-                  <span className="text-[#ffd97d]">{renderNavIcon("upgrade", "h-4 w-4")}</span>
-                  TODAY&apos;S CHALLENGE
-                </div>
-                <h1 className="ba-text-title mt-3 text-[2.2rem] sm:text-[3rem] lg:text-[3.35rem]">
-                  Who Said It?
-                </h1>
-                <p className="mt-3 text-[0.92rem] leading-[1.62] text-[#f5eadc]/82 sm:text-[1rem]">
-                  Identify who spoke key lines in Scripture and sharpen speaker recognition through a focused daily practice set.
-                </p>
+            <section className="ba-quests-stat-strip">
+              {questStats.map((stat) => (
+                <QuestStatCard key={stat.label} stat={stat} />
+              ))}
+            </section>
 
-                <div className="mt-4 flex flex-wrap gap-2.5">
-                  <span className="ba-quest-status-pill ba-quest-status-pill--gold">
-                    10-Question Daily Practice
-                  </span>
-                  <span className="ba-quest-status-pill ba-quest-status-pill--locked">
-                    Practice Only
-                  </span>
-                  <span className="ba-quest-status-pill ba-quest-status-pill--locked">
-                    No XP Yet
-                  </span>
-                  <span className="ba-quest-status-pill ba-quest-status-pill--violet">
-                    Pro+ Challenge
-                  </span>
-                </div>
-              </div>
+            <div className="space-y-5">
+              <QuestHorizontalRail
+                title="Quest Families"
+                ariaLabelBase="Quest Families"
+                desktopClassName="md:grid-cols-3"
+              >
+                {questFamilies.map((card) => (
+                  <QuestFamilyCard key={card.title} card={card} />
+                ))}
+              </QuestHorizontalRail>
 
-              <div className="mt-auto pt-6">
-                <Link
-                  href="/quests/who-said-it"
-                  className="ba-quest-hero-cta"
-                >
-                  <span className="ba-hero-cta-medallion">
-                    {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
-                  </span>
-                  <span className="ba-hero-cta-label">Start Today&apos;s Challenge</span>
-                  <span className="ba-quest-hero-cta-arrow">
-                    {renderNavIcon("chevron-right", "h-4 w-4")}
-                  </span>
-                </Link>
-              </div>
+              <QuestHorizontalRail
+                title="Books of the Bible Modes"
+                ariaLabelBase="Books modes"
+                desktopClassName="md:grid-cols-2 xl:grid-cols-4"
+              >
+                {questModes.map((mode) => (
+                  <QuestModeCard key={mode.title} mode={mode} />
+                ))}
+              </QuestHorizontalRail>
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <QuestPanel title="Daily Challenge" icon="quests">
-              <div className="text-[1rem] font-semibold text-white">Who Said It?</div>
-              <div className="mt-1 text-[0.78rem] text-white/66">10 Questions</div>
-              <div className="mt-3 inline-flex rounded-full border border-amber-300/16 bg-amber-300/10 px-2.5 py-1 text-[0.62rem] font-semibold text-amber-100">
-                Practice Only
-              </div>
-            </QuestPanel>
-
-            <QuestPanel title="Today&apos;s Reward" icon="home">
-              <div className="text-[0.88rem] font-semibold text-white">Rewards available in select Books modes.</div>
-              <p className="mt-2 text-[0.73rem] leading-[1.55] text-white/62">
-                Speed Round and Test Mode support daily XP. Who Said It remains practice-only for now.
-              </p>
-            </QuestPanel>
-
-            <QuestPanel title="Pro+ Access" icon="upgrade" tone="violet">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <div className="text-[0.98rem] font-semibold text-white">{planLabel}</div>
-                  <div className="mt-1 text-[0.72rem] text-white/64">Special challenge access is active.</div>
-                </div>
-                <span className="ba-quest-status-pill ba-quest-status-pill--violet">Active</span>
-              </div>
-            </QuestPanel>
-
-            <QuestPanel title="Your Progress" icon="verse-memory">
-              <div className="text-[0.88rem] font-semibold text-white">Quest progress tracking coming soon.</div>
-              <p className="mt-2 text-[0.73rem] leading-[1.55] text-white/62">
-                Start a challenge to begin building quest history across special modes.
-              </p>
-            </QuestPanel>
-          </div>
-        </section>
-
-        <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <div className="ba-quest-stat-card ba-quest-stat-card--gold">
-            <div className="ba-quest-stat-label">Available Quest Families</div>
-            <div className="ba-quest-stat-value">3</div>
-          </div>
-          <div className="ba-quest-stat-card ba-quest-stat-card--cyan">
-            <div className="ba-quest-stat-label">Books Modes</div>
-            <div className="ba-quest-stat-value">4</div>
-          </div>
-          <div className="ba-quest-stat-card ba-quest-stat-card--orange">
-            <div className="ba-quest-stat-label">Daily XP Modes</div>
-            <div className="ba-quest-stat-value">2</div>
-          </div>
-          <div className="ba-quest-stat-card ba-quest-stat-card--violet">
-            <div className="ba-quest-stat-label">Who Said It Set</div>
-            <div className="ba-quest-stat-value text-[1.45rem] sm:text-[1.56rem]">10 Questions</div>
-          </div>
-        </section>
-
-        <section className="space-y-3">
-          <div className="ba-quest-section-head">
-            <h2 className="ba-font-display text-[1.42rem] font-semibold tracking-[-0.03em] text-[#f6ecde]">
-              Quest Families
-            </h2>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <QuestFamilyCard
-              title="Who Said It?"
-              href="/quests/who-said-it"
-              description="Identify who spoke key lines in Scripture."
-              badge="Daily Practice"
-              status="10 Questions"
-              imageSrc="/training/sections/historical-books.png"
-              tone="gold"
-              icon="quests"
-            />
-
-            <QuestFamilyCard
-              title="Books of the Bible"
-              href="/quests/books"
-              description="Train order, categories, speed, and recall."
-              badge="Structure Mastery"
-              status="4 Modes"
-              imageSrc="/training/sections/pentateuch.png"
-              tone="cyan"
-              icon="verse-memory"
-            />
-
-            <QuestFamilyCard
-              title="Characters"
-              description="Learn the lives of key biblical figures."
-              badge="Coming Soon"
-              status="Placeholder"
-              imageSrc="/training/sections/major-prophets.png"
-              tone="violet"
-              icon="upgrade"
-              locked
-            />
-          </div>
-        </section>
-
-        <section className="space-y-3">
-          <div className="ba-quest-section-head">
-            <h2 className="ba-font-display text-[1.42rem] font-semibold tracking-[-0.03em] text-[#f6ecde]">
-              Books of the Bible Modes
-            </h2>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <QuestModeCard
-              title="Order Builder"
-              href="/quests/books/order"
-              description="Build canonical sequence recall one tap at a time."
-              badge="Practice"
-              supporting="No XP claim"
-              imageSrc="/training/books/genesis.png"
-              tone="cyan"
-            />
-
-            <QuestModeCard
-              title="Category Sort"
-              href="/quests/books/sort"
-              description="Match books to their proper section and genre."
-              badge="Practice"
-              supporting="No XP claim"
-              imageSrc="/training/sections/wisdom.png"
-              tone="gold"
-            />
-
-            <QuestModeCard
-              title="Speed Round"
-              href="/quests/books/speed"
-              description="Race the clock through fast recall prompts."
-              badge="Daily XP"
-              supporting="Rewarded once per day"
-              imageSrc="/training/sections/exodus.png"
-              tone="orange"
-            />
-
-            <QuestModeCard
-              title="Test Mode"
-              href="/quests/books/test"
-              description="Enter a focused Books challenge with daily rewards."
-              badge="Daily XP"
-              supporting="Rewarded once per day"
-              imageSrc="/training/sections/apocalyptic.png"
-              tone="blue"
-            />
-          </div>
+          <aside className="ba-quests-right-rail">
+            {questPanels(planLabel).map((panel) => (
+              <QuestRailPanel key={panel.title} panel={panel} />
+            ))}
+          </aside>
         </section>
       </div>
     </main>
