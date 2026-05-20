@@ -208,7 +208,7 @@ function QuestRailPanel({ panel }: { panel: QuestPanelData }) {
         </div>
       </div>
       {panel.badge ? (
-        <div className="mt-3">
+        <div className="mt-3 xl:mt-2.5">
           <span className={`ba-quest-status-pill ${panel.tone === "violet" ? "ba-quest-status-pill--violet" : "ba-quest-status-pill--gold"}`}>
             {panel.badge}
           </span>
@@ -245,10 +245,10 @@ function QuestFamilyCard({ card }: { card: QuestCardData }) {
             <h3 className="ba-font-display text-[1.42rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
               {card.title}
             </h3>
-            <p className="mt-2 text-[0.82rem] leading-[1.55] text-white/76">
+            <p className="ba-quests-card-copy mt-2 text-[0.82rem] leading-[1.55] text-white/76">
               {card.copy}
             </p>
-            <div className="mt-4 flex items-center justify-between gap-3">
+            <div className="mt-4 flex items-center justify-between gap-3 xl:mt-2.5">
               <span className="ba-quest-card-meta">{card.detail}</span>
               <span className="ba-quest-card-meta text-right text-[#f6e0a8]">{card.badge}</span>
             </div>
@@ -286,10 +286,10 @@ function QuestModeCard({ mode }: { mode: QuestModeData }) {
             <h3 className="ba-font-display text-[1.3rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
               {mode.title}
             </h3>
-            <p className="mt-2 text-[0.78rem] leading-[1.55] text-white/74">
+            <p className="ba-quests-card-copy ba-quests-card-copy--mode mt-2 text-[0.78rem] leading-[1.55] text-white/74">
               {mode.copy}
             </p>
-            <div className="mt-4 flex items-center justify-between gap-3">
+            <div className="mt-4 flex items-center justify-between gap-3 xl:mt-2.5">
               <span className="ba-quest-card-meta">{mode.detail}</span>
               <span className="ba-quest-card-meta text-right text-[#f6e0a8]">{mode.label}</span>
             </div>
@@ -376,37 +376,37 @@ export default function QuestsPage() {
                   alt="Who Said It? hero art"
                   fill
                   priority
-                  className="object-cover object-[62%_38%]"
+                  className="object-cover object-[66%_40%]"
                   sizes="(max-width: 1279px) 100vw, 860px"
                 />
               </div>
               <div className="ba-quests-hero-overlay" />
               <div className="ba-quests-hero-vignette" />
 
-              <div className="relative z-10 flex min-h-[17.4rem] flex-col p-4 sm:min-h-[19rem] sm:p-5 xl:min-h-[18rem]">
+              <div className="relative z-10 flex min-h-[17.4rem] flex-col p-4 sm:min-h-[19rem] sm:p-5 xl:min-h-[16rem] xl:p-4">
                 <div className="ba-quest-hero-kicker">
                   <span className="text-[#ffd97d]">{renderNavIcon("quests", "h-4 w-4")}</span>
                   TODAY&apos;S CHALLENGE
                 </div>
 
-                <div className="mt-3 max-w-[22rem]">
-                  <h1 className="ba-text-title text-[2.15rem] sm:text-[3rem] xl:text-[3.2rem]">
+                <div className="mt-3 max-w-[22rem] xl:mt-2.5">
+                  <h1 className="ba-text-title text-[2.15rem] sm:text-[3rem] xl:text-[2.78rem]">
                     Who Said It?
                   </h1>
-                  <p className="mt-3 text-[0.92rem] leading-[1.56] text-[#f5eadc]/84 sm:text-[1rem]">
+                  <p className="mt-3 text-[0.92rem] leading-[1.56] text-[#f5eadc]/84 sm:text-[1rem] xl:mt-2.5 xl:text-[0.93rem] xl:leading-[1.48]">
                     Identify who spoke the scripture.
                     <br />
                     Sharpen your knowledge.
                   </p>
                 </div>
 
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-4 flex flex-wrap gap-2 xl:mt-3 xl:gap-1.5">
                   <span className="ba-quest-status-pill ba-quest-status-pill--gold">Daily Practice</span>
                   <span className="ba-quest-status-pill ba-quest-status-pill--orange">10 Questions</span>
                   <span className="ba-quest-status-pill ba-quest-status-pill--locked">No XP Yet</span>
                 </div>
 
-                <div className="mt-auto pt-5">
+                <div className="mt-auto pt-5 xl:pt-2.5">
                   <Link href="/quests/who-said-it" className="ba-quest-hero-cta">
                     <span className="ba-hero-cta-medallion">
                       {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
@@ -426,7 +426,7 @@ export default function QuestsPage() {
               ))}
             </section>
 
-            <div className="space-y-5">
+            <div className="space-y-5 xl:space-y-3.5">
               <QuestHorizontalRail
                 title="Quest Families"
                 ariaLabelBase="Quest Families"

@@ -62,7 +62,7 @@ export default function QuestHorizontalRail({
   }
 
   return (
-    <section className="space-y-2.5">
+    <section className="space-y-2.5 xl:space-y-1.5">
       <div className="ba-quest-section-head">
         <h2 className="ba-font-display text-[1.28rem] font-semibold tracking-[-0.03em] text-[#f6ecde] sm:text-[1.4rem]">
           {title}

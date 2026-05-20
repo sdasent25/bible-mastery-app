@@ -3599,6 +3599,22 @@ textarea {
   color: rgba(255, 255, 255, 0.66);
 }
 
+.ba-quests-card-copy,
+.ba-quests-side-copy {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.ba-quests-card-copy {
+  -webkit-line-clamp: 3;
+}
+
+.ba-quests-card-copy--mode,
+.ba-quests-side-copy {
+  -webkit-line-clamp: 2;
+}
+
 .ba-quest-card-arrow {
   display: inline-flex;
   height: 2rem;
@@ -4049,38 +4065,154 @@ a:hover .ba-quest-card-arrow {
 
 @media (min-width: 1280px) {
   .ba-quests-page {
-    padding: 0.8rem 0.7rem 0.9rem;
+    padding: 0.7rem 0.65rem 0.8rem;
   }
 
   .ba-quests-header {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.55rem;
   }
 
   .ba-quests-main-grid {
     grid-template-columns: minmax(0, 1fr) 15.6rem;
     align-items: start;
-    gap: 0.8rem;
+    gap: 0.7rem;
   }
 
   .ba-quests-right-rail {
     display: grid;
-    gap: 0.7rem;
+    gap: 0.55rem;
+  }
+
+  .ba-quest-hero-kicker {
+    gap: 0.45rem;
+    padding: 0.36rem 0.62rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+  }
+
+  .ba-quest-hero-cta {
+    max-width: 19rem;
+    min-height: 3rem;
+    gap: 0.6rem;
+    padding: 0.48rem 0.82rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+  }
+
+  .ba-quest-hero-cta-arrow {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  .ba-quest-status-pill {
+    padding: 0.28rem 0.5rem;
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+  }
+
+  .ba-quest-section-head {
+    gap: 0.55rem;
+  }
+
+  .ba-quest-card-meta {
+    font-size: 0.67rem;
+  }
+
+  .ba-quests-stat-strip {
+    gap: 0.55rem;
+    margin-top: 0.55rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .ba-quests-stat-card {
+    gap: 0.62rem;
+    padding: 0.62rem 0.72rem;
+  }
+
+  .ba-quests-stat-icon {
+    height: 1.85rem;
+    width: 1.85rem;
+  }
+
+  .ba-quests-stat-label {
+    font-size: 0.54rem;
+  }
+
+  .ba-quests-stat-value {
+    margin-top: 0.22rem;
+    font-size: 1.12rem;
+  }
+
+  .ba-quests-stat-supporting {
+    display: none;
+  }
+
+  .ba-quests-side-panel {
+    padding: 0.75rem;
+  }
+
+  .ba-quests-side-icon {
+    height: 1.7rem;
+    width: 1.7rem;
+  }
+
+  .ba-quests-side-title {
+    font-size: 0.56rem;
+  }
+
+  .ba-quests-side-eyebrow {
+    margin-top: 0.24rem;
+    font-size: 0.88rem;
+  }
+
+  .ba-quests-side-copy {
+    margin-top: 0.34rem;
+    font-size: 0.68rem;
+    line-height: 1.38;
   }
 
   .ba-quests-family-card {
-    min-height: 13.6rem;
+    min-height: 11rem;
   }
 
   .ba-quests-mode-card {
-    min-height: 12.1rem;
+    min-height: 9.7rem;
+  }
+
+  .ba-quests-card-art--mode {
+    inset: 0 0 24% 0;
   }
 
   .ba-quests-card-shell {
-    padding: 0.9rem;
+    padding: 0.78rem;
   }
 
   .ba-quests-card-shell--mode {
-    padding-top: 5.35rem;
+    padding-top: 4.15rem;
+  }
+
+  .ba-quests-card-copy {
+    -webkit-line-clamp: 2;
+    font-size: 0.76rem;
+    line-height: 1.42;
+  }
+
+  .ba-quests-card-copy--mode {
+    font-size: 0.72rem;
+    line-height: 1.38;
+  }
+
+  .ba-quest-card-arrow {
+    height: 1.7rem;
+    width: 1.7rem;
+  }
+
+  .ba-quests-family-card h3 {
+    font-size: 1.22rem;
+  }
+
+  .ba-quests-mode-card h3 {
+    font-size: 1.12rem;
   }
 }
 
