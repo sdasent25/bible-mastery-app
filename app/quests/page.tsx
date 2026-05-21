@@ -39,14 +39,11 @@ type QuestCardData = {
   tone: QuestTone
 }
 
-type QuestModeData = {
+type QuestAboutData = {
   title: string
-  href: string
-  imageSrc: string
   copy: string
-  label: string
-  detail: string
   tone: QuestTone
+  icon: "home" | "quests" | "upgrade" | "verse-memory"
 }
 
 const questStats: QuestStat[] = [
@@ -67,7 +64,7 @@ const questStats: QuestStat[] = [
   {
     label: "Books Modes",
     value: "4",
-    supporting: "Order, sort, speed, test",
+    supporting: "Inside Books of the Bible",
     tone: "violet",
     icon: "upgrade",
   },
@@ -82,30 +79,36 @@ const questStats: QuestStat[] = [
 
 const questPanels = (planLabel: string): QuestPanelData[] => [
   {
+    title: "Quest Access",
+    eyebrow: `${planLabel} Active`,
+    copy: "Quests access is active for this account.",
+    icon: "quests",
+  },
+  {
     title: "Daily Challenge",
     eyebrow: "Who Said It?",
-    copy: "10-question practice set. Practice only. No XP yet.",
+    copy: "10-question practice set. Practice Only. No XP Yet.",
     icon: "quests",
     badge: "Practice Only",
   },
   {
-    title: "XP Rewards",
-    eyebrow: "Books Quest",
+    title: "Daily XP",
+    eyebrow: "Speed + Test",
     copy: "Daily XP lives in Speed Round and Test Mode. Practice modes do not award XP.",
     icon: "home",
   },
   {
     title: "Pro+ Access",
-    eyebrow: planLabel,
-    copy: "Quests access is active for this account and all quest routes remain unlocked.",
+    eyebrow: "All Quest Families",
+    copy: "All quest families and modes are unlocked for this account.",
     tone: "violet",
     icon: "upgrade",
-    badge: "Unlocked",
+    badge: `${planLabel} Active`,
   },
   {
     title: "Your Progress",
     eyebrow: "Coming Soon",
-    copy: "Quest progress tracking is still being prepared. Start challenges to build your history.",
+    copy: "Quest progress tracking is being prepared.",
     icon: "verse-memory",
   },
 ]
@@ -140,42 +143,30 @@ const questFamilies: QuestCardData[] = [
   },
 ]
 
-const questModes: QuestModeData[] = [
+const questAbout: QuestAboutData[] = [
   {
-    title: "Order Builder",
-    href: "/quests/books/order",
-    imageSrc: "/quests/modes/order-builder.png",
-    copy: "Practice the canonical flow of Scripture.",
-    label: "Practice",
-    detail: "No XP claim",
-    tone: "cyan",
+    title: "Train Your Mind",
+    copy: "Strengthen your recall and understanding of God’s Word.",
+    tone: "violet",
+    icon: "quests",
   },
   {
-    title: "Category Sort",
-    href: "/quests/books/sort",
-    imageSrc: "/quests/modes/category-sort.png",
-    copy: "Match books to the right category and structure.",
-    label: "Practice",
-    detail: "No XP claim",
+    title: "Multiple Challenge Types",
+    copy: "Practice, race the clock, or test your mastery in different ways.",
     tone: "gold",
+    icon: "verse-memory",
   },
   {
-    title: "Speed Round",
-    href: "/quests/books/speed",
-    imageSrc: "/quests/modes/speed-round.png",
-    copy: "Race the clock through fast recall prompts.",
-    label: "Daily XP",
-    detail: "Rewarded mode",
+    title: "Practice + Daily XP",
+    copy: "Practice builds wisdom. Daily XP rewards faithful effort.",
     tone: "orange",
+    icon: "home",
   },
   {
-    title: "Test Mode",
-    href: "/quests/books/test",
-    imageSrc: "/quests/modes/test-mode.png",
-    copy: "Enter a focused books challenge with daily rewards.",
-    label: "Daily XP",
-    detail: "Rewarded mode",
-    tone: "blue",
+    title: "Pro+ Feature",
+    copy: "Quests are available exclusively for Pro+ members.",
+    tone: "cyan",
+    icon: "upgrade",
   },
 ]
 
@@ -259,44 +250,82 @@ function QuestFamilyCard({ card }: { card: QuestCardData }) {
   )
 }
 
-function QuestModeCard({ mode }: { mode: QuestModeData }) {
+function QuestAboutCard({ card }: { card: QuestAboutData }) {
   return (
-    <Link href={mode.href} className="block min-w-[14.25rem] md:min-w-0">
-      <article className={`ba-quests-mode-card ba-quests-mode-card--${mode.tone}`}>
-        <div className="ba-quests-card-art ba-quests-card-art--mode">
-          <Image
-            src={mode.imageSrc}
-            alt={mode.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 767px) 228px, (max-width: 1279px) 25vw, 18vw"
-          />
-          <div className="ba-quests-card-overlay ba-quests-card-overlay--mode" />
-        </div>
-        <div className="ba-quests-card-shell ba-quests-card-shell--mode">
-          <div className="flex items-start justify-between gap-3">
-            <span className={`ba-quest-status-pill ba-quest-status-pill--${mode.tone}`}>
-              {mode.label}
-            </span>
-            <span className="ba-quest-card-arrow">
-              {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
-            </span>
-          </div>
-          <div className="mt-auto">
-            <h3 className="ba-font-display text-[1.3rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
-              {mode.title}
-            </h3>
-            <p className="ba-quests-card-copy ba-quests-card-copy--mode mt-2 text-[0.78rem] leading-[1.55] text-white/74">
-              {mode.copy}
-            </p>
-            <div className="mt-4 flex items-center justify-between gap-3 xl:mt-2.5">
-              <span className="ba-quest-card-meta">{mode.detail}</span>
-              <span className="ba-quest-card-meta text-right text-[#f6e0a8]">{mode.label}</span>
+    <article className={`ba-quests-about-card ba-quests-about-card--${card.tone}`}>
+      <span className={`ba-quests-about-icon ba-quests-about-icon--${card.tone}`}>
+        {renderNavIcon(card.icon, "h-4 w-4")}
+      </span>
+      <div className="min-w-0">
+        <h3 className="ba-font-display text-[1.12rem] font-semibold tracking-[-0.03em] text-[#f8f1e6]">
+          {card.title}
+        </h3>
+        <p className="mt-2 text-[0.82rem] leading-[1.6] text-white/74">
+          {card.copy}
+        </p>
+      </div>
+    </article>
+  )
+}
+
+function QuestStatusList({ planLabel }: { planLabel: string }) {
+  return (
+    <section className="ba-quests-status-stack xl:hidden">
+      <div className="ba-quests-status-stack-head">
+        <span className="ba-quest-status-pill ba-quest-status-pill--gold">
+          Quest Access
+        </span>
+        <span className="ba-quests-status-stack-plan">{planLabel} Active</span>
+      </div>
+
+      <div className="ba-quests-status-list">
+        {questPanels(planLabel).map((panel) => (
+          <section key={panel.title} className="ba-quests-status-row">
+            <div className="flex min-w-0 items-start gap-3">
+              <span className="ba-quests-status-row-icon">
+                {renderNavIcon(panel.icon, "h-4 w-4")}
+              </span>
+              <div className="min-w-0">
+                <div className="ba-quests-status-row-title">{panel.title}</div>
+                <div className="ba-quests-status-row-copy">
+                  <span className="font-semibold text-[#f6ecde]">{panel.eyebrow}</span>{" "}
+                  {panel.copy}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </article>
-    </Link>
+            {panel.badge ? (
+              <span
+                className={`ba-quest-status-pill ${panel.tone === "violet" ? "ba-quest-status-pill--violet" : "ba-quest-status-pill--gold"}`}
+              >
+                {panel.badge}
+              </span>
+            ) : (
+              <span className="ba-quests-status-row-arrow">
+                {renderNavIcon("chevron-right", "h-3.5 w-3.5")}
+              </span>
+            )}
+          </section>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+function QuestAboutSection() {
+  return (
+    <section className="ba-quests-about">
+      <div className="ba-quest-section-head">
+        <h2 className="ba-font-display text-[1.28rem] font-semibold tracking-[-0.03em] text-[#f6ecde] sm:text-[1.4rem]">
+          About Quests
+        </h2>
+      </div>
+
+      <div className="ba-quests-about-grid">
+        {questAbout.map((card) => (
+          <QuestAboutCard key={card.title} card={card} />
+        ))}
+      </div>
+    </section>
   )
 }
 
@@ -401,7 +430,7 @@ export default function QuestsPage() {
                 </div>
 
                 <div className="mt-4 flex flex-wrap gap-2 xl:mt-3 xl:gap-1.5">
-                  <span className="ba-quest-status-pill ba-quest-status-pill--gold">Daily Practice</span>
+                  <span className="ba-quest-status-pill ba-quest-status-pill--gold">Practice Only</span>
                   <span className="ba-quest-status-pill ba-quest-status-pill--orange">10 Questions</span>
                   <span className="ba-quest-status-pill ba-quest-status-pill--locked">No XP Yet</span>
                 </div>
@@ -426,6 +455,8 @@ export default function QuestsPage() {
               ))}
             </section>
 
+            <QuestStatusList planLabel={planLabel} />
+
             <div className="space-y-5 xl:space-y-3">
               <QuestHorizontalRail
                 title="Quest Families"
@@ -437,15 +468,7 @@ export default function QuestsPage() {
                 ))}
               </QuestHorizontalRail>
 
-              <QuestHorizontalRail
-                title="Books of the Bible Modes"
-                ariaLabelBase="Books modes"
-                desktopClassName="md:grid-cols-2 xl:grid-cols-4"
-              >
-                {questModes.map((mode) => (
-                  <QuestModeCard key={mode.title} mode={mode} />
-                ))}
-              </QuestHorizontalRail>
+              <QuestAboutSection />
             </div>
           </div>
 

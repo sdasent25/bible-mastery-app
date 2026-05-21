@@ -3917,6 +3917,161 @@ a:hover .ba-quest-card-arrow {
   color: rgba(255, 255, 255, 0.64);
 }
 
+.ba-quests-status-stack {
+  margin-top: 0.9rem;
+}
+
+.ba-quests-status-stack-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.ba-quests-status-stack-plan {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #f5e8cf;
+}
+
+.ba-quests-status-list {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.ba-quests-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.03));
+  padding: 0.82rem 0.88rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 14px 32px rgba(0, 0, 0, 0.14);
+}
+
+.ba-quests-status-row-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 210, 116, 0.14);
+  background:
+    radial-gradient(circle at top, rgba(255, 239, 194, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(122, 68, 18, 0.34), rgba(39, 22, 8, 0.82));
+  color: #f8e9bf;
+}
+
+.ba-quests-status-row-title {
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(240, 228, 207, 0.64);
+}
+
+.ba-quests-status-row-copy {
+  margin-top: 0.28rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.ba-quests-status-row-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.ba-quests-about {
+  margin-top: 0.35rem;
+}
+
+.ba-quests-about-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.ba-quests-about-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  border-radius: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    radial-gradient(circle at top right, rgba(255, 216, 128, 0.05), transparent 26%),
+    linear-gradient(180deg, rgba(10, 16, 28, 0.96), rgba(5, 9, 16, 0.98));
+  padding: 0.95rem;
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.ba-quests-about-card--gold {
+  border-color: rgba(255, 218, 150, 0.14);
+}
+
+.ba-quests-about-card--cyan {
+  border-color: rgba(122, 241, 255, 0.14);
+}
+
+.ba-quests-about-card--orange {
+  border-color: rgba(255, 191, 118, 0.14);
+}
+
+.ba-quests-about-card--violet {
+  border-color: rgba(228, 186, 255, 0.14);
+}
+
+.ba-quests-about-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  color: #fff8ea;
+}
+
+.ba-quests-about-icon--gold {
+  border: 1px solid rgba(255, 216, 128, 0.18);
+  background:
+    linear-gradient(180deg, rgba(180, 83, 9, 0.42), rgba(69, 26, 3, 0.9));
+}
+
+.ba-quests-about-icon--cyan {
+  border: 1px solid rgba(122, 241, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(14, 116, 144, 0.42), rgba(8, 47, 73, 0.9));
+}
+
+.ba-quests-about-icon--orange {
+  border: 1px solid rgba(255, 191, 118, 0.18);
+  background:
+    linear-gradient(180deg, rgba(234, 88, 12, 0.42), rgba(67, 20, 7, 0.9));
+}
+
+.ba-quests-about-icon--violet {
+  border: 1px solid rgba(228, 186, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(126, 34, 206, 0.42), rgba(59, 7, 100, 0.9));
+}
+
 .ba-quests-carousel {
   scroll-padding-inline: 1rem;
 }
@@ -4084,6 +4239,10 @@ a:hover .ba-quest-card-arrow {
     gap: 0.55rem;
   }
 
+  .ba-quests-status-stack {
+    display: none;
+  }
+
   .ba-quest-hero-kicker {
     gap: 0.45rem;
     border-color: rgba(255, 221, 158, 0.1);
@@ -4230,6 +4389,15 @@ a:hover .ba-quest-card-arrow {
       linear-gradient(180deg, rgba(255, 196, 80, 0.05), transparent 16%),
       linear-gradient(180deg, rgba(4, 8, 15, 0) 56%, rgba(4, 8, 15, 0.74) 100%);
   }
+
+  .ba-quests-about-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .ba-quests-about-card {
+    padding: 0.78rem;
+  }
 }
 
 @media (max-width: 767px) {
@@ -4249,12 +4417,35 @@ a:hover .ba-quest-card-arrow {
     min-height: 5.5rem;
   }
 
+  .ba-quests-status-stack-head {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .ba-quests-status-row {
+    align-items: flex-start;
+    padding: 0.78rem 0.82rem;
+  }
+
+  .ba-quests-status-row-copy {
+    font-size: 0.76rem;
+  }
+
   .ba-quests-carousel {
     scroll-snap-type: x proximity;
   }
 
   .ba-quests-carousel > * {
     scroll-snap-align: start;
+  }
+
+  .ba-quests-about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-quests-about-card {
+    border-radius: 1.18rem;
+    padding: 0.88rem;
   }
 }
 
