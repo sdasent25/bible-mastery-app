@@ -6324,6 +6324,641 @@ a:hover .ba-quest-card-arrow {
   }
 }
 
+.ba-books-gym-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.ba-books-gym-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.ba-books-gym-breadcrumb {
+  display: none;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: rgba(248, 231, 201, 0.78);
+}
+
+.ba-books-gym-breadcrumb a {
+  color: #f7d687;
+}
+
+.ba-books-gym-breadcrumb-sep {
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.ba-books-gym-mobile-back {
+  flex: 0 0 auto;
+}
+
+.ba-books-gym-access {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  align-self: flex-end;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 197, 92, 0.24);
+  background:
+    radial-gradient(circle at top left, rgba(250, 204, 21, 0.12), transparent 40%),
+    linear-gradient(180deg, rgba(14, 11, 6, 0.92), rgba(10, 12, 18, 0.96));
+  padding: 0.78rem 0.95rem;
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 247, 229, 0.05),
+    0 0 20px rgba(250, 204, 21, 0.08);
+}
+
+.ba-books-gym-access-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 216, 120, 0.26);
+  background:
+    radial-gradient(circle at top, rgba(255, 243, 212, 0.12), transparent 45%),
+    linear-gradient(180deg, rgba(92, 57, 12, 0.92), rgba(38, 23, 5, 0.96));
+  color: #ffe9b0;
+}
+
+.ba-books-gym-access-label {
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 223, 148, 0.8);
+}
+
+.ba-books-gym-access-value {
+  margin-top: 0.08rem;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #fff5de;
+}
+
+.ba-books-gym-hero,
+.ba-books-gym-card,
+.ba-books-gym-strip {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(120, 232, 255, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 24%),
+    radial-gradient(circle at top left, rgba(250, 204, 21, 0.05), transparent 24%),
+    linear-gradient(180deg, rgba(10, 16, 28, 0.985), rgba(4, 8, 15, 0.99));
+  box-shadow:
+    0 22px 56px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 249, 235, 0.05);
+  backdrop-filter: blur(18px);
+}
+
+.ba-books-gym-hero {
+  border-radius: 1.9rem;
+}
+
+.ba-books-gym-hero-art,
+.ba-books-gym-card-art,
+.ba-books-gym-card-fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.ba-books-gym-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 68% 42%, rgba(250, 204, 21, 0.28), transparent 18%),
+    linear-gradient(90deg, rgba(4, 7, 14, 0.94) 0%, rgba(8, 22, 32, 0.82) 42%, rgba(7, 14, 24, 0.55) 100%);
+}
+
+.ba-books-gym-hero-shell {
+  position: relative;
+  z-index: 1;
+  min-height: 11rem;
+  padding: 1rem 1rem 1.05rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.ba-books-gym-hero-copy {
+  max-width: 33rem;
+}
+
+.ba-books-gym-hero-title {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: #faf3e8;
+  text-wrap: balance;
+}
+
+.ba-books-gym-hero-subtitle {
+  margin-top: 0.72rem;
+  max-width: 28rem;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: rgba(248, 238, 223, 0.9);
+}
+
+.ba-books-gym-hero-supporting {
+  margin-top: 0.18rem;
+  max-width: 25rem;
+  font-size: 0.94rem;
+  line-height: 1.45;
+  color: rgba(255, 245, 228, 0.72);
+}
+
+.ba-books-gym-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.ba-books-gym-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ba-books-gym-section-title {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f2d27e;
+}
+
+.ba-books-gym-section-copy {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(240, 232, 220, 0.76);
+}
+
+.ba-books-gym-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.ba-books-gym-grid--practice {
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(10.4rem, 11.5rem);
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  scrollbar-width: none;
+}
+
+.ba-books-gym-grid--practice::-webkit-scrollbar {
+  display: none;
+}
+
+.ba-books-gym-card {
+  border-radius: 1.35rem;
+  min-height: 8.9rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    filter 0.2s ease;
+}
+
+.ba-books-gym-card.is-live:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 28px 58px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 249, 235, 0.05);
+}
+
+.ba-books-gym-card.is-disabled {
+  filter: saturate(0.9);
+}
+
+.ba-books-gym-card-fallback {
+  opacity: 0.98;
+}
+
+.ba-books-gym-card--gold .ba-books-gym-card-fallback {
+  background:
+    radial-gradient(circle at top right, rgba(250, 204, 21, 0.18), transparent 30%),
+    linear-gradient(180deg, rgba(45, 31, 10, 0.98), rgba(13, 12, 18, 0.99));
+}
+
+.ba-books-gym-card--teal .ba-books-gym-card-fallback {
+  background:
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(7, 38, 45, 0.98), rgba(9, 12, 19, 0.99));
+}
+
+.ba-books-gym-card--orange .ba-books-gym-card-fallback {
+  background:
+    radial-gradient(circle at top right, rgba(249, 115, 22, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(41, 18, 8, 0.98), rgba(9, 11, 18, 0.99));
+}
+
+.ba-books-gym-card--blue .ba-books-gym-card-fallback {
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(9, 24, 45, 0.98), rgba(9, 12, 19, 0.99));
+}
+
+.ba-books-gym-card--violet .ba-books-gym-card-fallback {
+  background:
+    radial-gradient(circle at top right, rgba(168, 85, 247, 0.22), transparent 32%),
+    linear-gradient(180deg, rgba(30, 12, 45, 0.98), rgba(11, 10, 20, 0.99));
+}
+
+.ba-books-gym-card-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(7, 10, 18, 0.15) 0%, rgba(7, 10, 18, 0.3) 38%, rgba(7, 10, 18, 0.84) 100%);
+}
+
+.ba-books-gym-card-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: inherit;
+  flex-direction: column;
+  padding: 0.86rem;
+}
+
+.ba-books-gym-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.65rem;
+}
+
+.ba-books-gym-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 9999px;
+}
+
+.ba-books-gym-card-icon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.ba-books-gym-card-icon--gold {
+  border: 1px solid rgba(255, 214, 102, 0.28);
+  background:
+    radial-gradient(circle at top, rgba(255, 243, 212, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(115, 70, 14, 0.92), rgba(44, 24, 4, 0.96));
+  color: #ffd878;
+}
+
+.ba-books-gym-card-icon--teal {
+  border: 1px solid rgba(104, 240, 255, 0.24);
+  background:
+    radial-gradient(circle at top, rgba(225, 251, 255, 0.1), transparent 48%),
+    linear-gradient(180deg, rgba(13, 89, 109, 0.92), rgba(7, 33, 40, 0.96));
+  color: #7cf0ff;
+}
+
+.ba-books-gym-card-icon--orange {
+  border: 1px solid rgba(255, 174, 106, 0.26);
+  background:
+    radial-gradient(circle at top, rgba(255, 240, 218, 0.1), transparent 48%),
+    linear-gradient(180deg, rgba(126, 52, 14, 0.92), rgba(43, 18, 7, 0.96));
+  color: #ffbf72;
+}
+
+.ba-books-gym-card-icon--blue {
+  border: 1px solid rgba(120, 210, 255, 0.26);
+  background:
+    radial-gradient(circle at top, rgba(225, 243, 255, 0.1), transparent 48%),
+    linear-gradient(180deg, rgba(18, 78, 126, 0.92), rgba(10, 26, 47, 0.96));
+  color: #77deff;
+}
+
+.ba-books-gym-card-icon--violet {
+  border: 1px solid rgba(214, 153, 255, 0.26);
+  background:
+    radial-gradient(circle at top, rgba(246, 231, 255, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(88, 35, 133, 0.92), rgba(32, 12, 45, 0.96));
+  color: #dba5ff;
+}
+
+.ba-books-gym-card-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.34rem 0.62rem;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ba-books-gym-card-pill--gold {
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  background: rgba(217, 119, 6, 0.14);
+  color: #fef3c7;
+}
+
+.ba-books-gym-card-pill--teal {
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  background: rgba(34, 211, 238, 0.12);
+  color: #cffafe;
+}
+
+.ba-books-gym-card-pill--orange {
+  border: 1px solid rgba(249, 115, 22, 0.18);
+  background: rgba(249, 115, 22, 0.14);
+  color: #ffedd5;
+}
+
+.ba-books-gym-card-pill--blue {
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  background: rgba(59, 130, 246, 0.14);
+  color: #dbeafe;
+}
+
+.ba-books-gym-card-pill--violet {
+  border: 1px solid rgba(192, 132, 252, 0.18);
+  background: rgba(168, 85, 247, 0.14);
+  color: #f3e8ff;
+}
+
+.ba-books-gym-card-pill.is-disabled {
+  border-color: rgba(192, 132, 252, 0.2);
+}
+
+.ba-books-gym-card-body {
+  margin-top: auto;
+}
+
+.ba-books-gym-card-title {
+  margin-top: 1rem;
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #faf2e7;
+}
+
+.ba-books-gym-card-copy {
+  margin-top: 0.24rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: rgba(250, 245, 238, 0.76);
+}
+
+.ba-books-gym-card-footer {
+  margin-top: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.ba-books-gym-card-supporting {
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(255, 244, 224, 0.62);
+}
+
+.ba-books-gym-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.88rem;
+  border: 1px solid rgba(255, 226, 125, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 244, 192, 0.98), rgba(248, 198, 61, 0.96), rgba(198, 129, 16, 0.98));
+  padding: 0.52rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #2a1600;
+  box-shadow:
+    0 10px 22px rgba(68, 33, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.66);
+}
+
+.ba-books-gym-grid--daily .ba-books-gym-card {
+  min-height: 9.2rem;
+}
+
+.ba-books-gym-grid--mastery .ba-books-gym-card {
+  min-height: 8.6rem;
+}
+
+.ba-books-gym-strip {
+  border-radius: 1.35rem;
+  padding: 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.ba-books-gym-strip-copy h2 {
+  font-family: Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #f7d687;
+}
+
+.ba-books-gym-strip-copy p {
+  margin-top: 0.18rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: rgba(250, 245, 238, 0.74);
+}
+
+.ba-books-gym-strip-stats {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.ba-books-gym-strip-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.ba-books-gym-strip-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  border-radius: 9999px;
+  border: 1px solid rgba(120, 232, 255, 0.18);
+  background:
+    radial-gradient(circle at top, rgba(255, 239, 194, 0.12), transparent 48%),
+    linear-gradient(180deg, rgba(20, 115, 132, 0.36), rgba(10, 32, 46, 0.82));
+  color: #d8fbff;
+}
+
+.ba-books-gym-strip-stat strong {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fdf2de;
+}
+
+.ba-books-gym-strip-stat span:last-child {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: rgba(240, 232, 220, 0.66);
+}
+
+@media (min-width: 768px) {
+  .ba-books-gym-topbar {
+    gap: 1rem;
+  }
+
+  .ba-books-gym-breadcrumb {
+    display: inline-flex;
+  }
+
+  .ba-books-gym-mobile-back {
+    display: none;
+  }
+
+  .ba-books-gym-hero-shell {
+    min-height: 10.8rem;
+    padding: 1.05rem 1.2rem 1.1rem;
+    align-items: center;
+  }
+
+  .ba-books-gym-grid--practice {
+    grid-auto-flow: row;
+    grid-auto-columns: initial;
+    overflow: visible;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .ba-books-gym-grid--daily,
+  .ba-books-gym-grid--mastery,
+  .ba-books-gym-strip-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ba-books-gym-card {
+    min-height: 9.4rem;
+  }
+
+  .ba-books-gym-grid--daily .ba-books-gym-card {
+    min-height: 9rem;
+  }
+
+  .ba-books-gym-grid--mastery .ba-books-gym-card {
+    min-height: 8.4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .ba-books-gym-page {
+    gap: 0.8rem;
+  }
+
+  .ba-books-gym-hero-shell {
+    min-height: 10.6rem;
+    padding: 1rem 1.25rem 1.05rem;
+  }
+
+  .ba-books-gym-grid--daily,
+  .ba-books-gym-grid--mastery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ba-books-gym-strip {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ba-books-gym-strip-copy {
+    max-width: 22rem;
+  }
+
+  .ba-books-gym-strip-stats {
+    flex: 1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .ba-books-gym-page {
+    gap: 0.8rem;
+  }
+
+  .ba-books-gym-topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .ba-books-gym-access {
+    align-self: flex-start;
+  }
+
+  .ba-books-gym-hero {
+    border-radius: 1.55rem;
+  }
+
+  .ba-books-gym-hero-shell {
+    min-height: 9.2rem;
+    padding: 0.9rem;
+  }
+
+  .ba-books-gym-hero-title {
+    font-size: 2rem;
+  }
+
+  .ba-books-gym-hero-subtitle,
+  .ba-books-gym-hero-supporting {
+    max-width: 15rem;
+  }
+
+  .ba-books-gym-section-title {
+    font-size: 0.96rem;
+  }
+
+  .ba-books-gym-grid--daily,
+  .ba-books-gym-grid--mastery,
+  .ba-books-gym-strip-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .ba-books-gym-card {
+    border-radius: 1.22rem;
+  }
+
+  .ba-books-gym-card-shell {
+    padding: 0.82rem;
+  }
+
+  .ba-books-gym-grid--daily .ba-books-gym-card {
+    min-height: 8.9rem;
+  }
+
+  .ba-books-gym-grid--mastery .ba-books-gym-card {
+    min-height: 8.15rem;
+  }
+}
+
 .ba-stat-card--cyan {
   border-color: rgba(122, 241, 255, 0.16);
   box-shadow:
