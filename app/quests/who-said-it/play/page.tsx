@@ -1,22 +1,23 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { useSearchParams } from "next/navigation"
 
 import {
   BooksQuestPageShell,
   BooksQuestPanel,
-  BooksQuestStatusBadge,
-  BooksQuestTopBar,
 } from "@/components/BooksQuestShell"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
+import { renderNavIcon } from "@/lib/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { isWhoSaidItBookUnlocked } from "@/lib/whoSaidItUnlock"
 
 const SESSION_SIZE = 10
 const allowedPlans = ["pro_plus", "family_pro_plus"]
+const optionLetters = ["A", "B", "C", "D"] as const
 
 type WhoSaidItQuestion = {
   id: string
@@ -77,14 +78,56 @@ function selectDailyQuestions<T extends { source_key: string }>(
     .slice(0, Math.min(limit, items.length))
 }
 
-function ProgressPill({ label, value }: { label: string; value: string }) {
+function WhoSaidItPlayStat({
+  label,
+  value,
+  supporting,
+  icon,
+}: {
+  label: string
+  value: string
+  supporting?: string
+  icon: "quests" | "verse-memory" | "upgrade" | "home"
+}) {
   return (
-    <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
-        {label}
+    <article className="ba-who-said-play-stat">
+      <span className="ba-who-said-play-stat-icon">
+        {renderNavIcon(icon, "h-4 w-4")}
+      </span>
+      <div className="min-w-0">
+        <div className="ba-who-said-play-stat-label">{label}</div>
+        <div className="ba-who-said-play-stat-value">{value}</div>
+        {supporting ? (
+          <div className="ba-who-said-play-stat-supporting">{supporting}</div>
+        ) : null}
       </div>
-      <div className="mt-2 text-lg font-bold text-white">{value}</div>
-    </div>
+    </article>
+  )
+}
+
+function WhoSaidItSidePanel({
+  title,
+  icon,
+  children,
+  tone = "default",
+}: {
+  title: string
+  icon: "quests" | "verse-memory" | "upgrade" | "home"
+  children: ReactNode
+  tone?: "default" | "accent"
+}) {
+  return (
+    <section
+      className={`ba-who-said-play-side-panel ${tone === "accent" ? "is-accent" : ""}`}
+    >
+      <div className="ba-who-said-play-side-panel-head">
+        <span className="ba-who-said-play-side-panel-icon">
+          {renderNavIcon(icon, "h-4 w-4")}
+        </span>
+        <span>{title}</span>
+      </div>
+      <div className="ba-who-said-play-side-panel-body">{children}</div>
+    </section>
   )
 }
 
@@ -98,7 +141,6 @@ export default function WhoSaidItPlayPage() {
   const [questions, setQuestions] = useState<WhoSaidItQuestion[]>([])
   const [loadingQuestions, setLoadingQuestions] = useState(false)
   const [loadError, setLoadError] = useState<string | null>(null)
-  const [bookExists, setBookExists] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
   const [submittedAnswer, setSubmittedAnswer] = useState<string | null>(null)
@@ -151,7 +193,6 @@ export default function WhoSaidItPlayPage() {
     const loadQuestions = async () => {
       setLoadingQuestions(true)
       setLoadError(null)
-      setBookExists(false)
 
       const supabase = createClient()
       const { data: bookMeta, error: bookMetaError } = await supabase
@@ -162,14 +203,7 @@ export default function WhoSaidItPlayPage() {
         .limit(1)
         .maybeSingle()
 
-      if (bookMetaError) {
-        setLoadError("This drill is being prepared.")
-        setQuestions([])
-        setLoadingQuestions(false)
-        return
-      }
-
-      if (!bookMeta) {
+      if (bookMetaError || !bookMeta) {
         setLoadError("This drill is being prepared.")
         setQuestions([])
         setLoadingQuestions(false)
@@ -178,7 +212,6 @@ export default function WhoSaidItPlayPage() {
 
       const selectedBook = bookMeta as BookMetaRow
       const unlocked = isWhoSaidItBookUnlocked(selectedBook.book_order)
-      setBookExists(true)
 
       if (!unlocked) {
         setLoadError("This drill is locked.")
@@ -218,7 +251,7 @@ export default function WhoSaidItPlayPage() {
       const sessionQuestions = selectDailyQuestions(
         validRows,
         nextDailySeed,
-        SESSION_SIZE
+        SESSION_SIZE,
       )
 
       setQuestions(sessionQuestions)
@@ -280,7 +313,7 @@ export default function WhoSaidItPlayPage() {
 
   if (loadingQuestions) {
     return (
-      <BooksQuestPageShell maxWidth="max-w-3xl">
+      <BooksQuestPageShell maxWidth="max-w-4xl">
         <BooksQuestPanel>Preparing drill...</BooksQuestPanel>
       </BooksQuestPageShell>
     )
@@ -332,36 +365,78 @@ export default function WhoSaidItPlayPage() {
 
   if (isSummary) {
     return (
-      <BooksQuestPageShell maxWidth="max-w-4xl">
-        <BooksQuestPanel>
-          <div className="ba-badge-gold">Practice Summary</div>
-          <h1 className="mt-4 text-3xl font-black text-white">Training Complete</h1>
-          <p className="mt-3 text-sm leading-6 text-slate-300">
-            Daily practice set complete. XP is still coming later for this mode.
-          </p>
+      <BooksQuestPageShell maxWidth="max-w-[95rem]">
+        <div className="ba-who-said-play-page">
+          <section className="ba-who-said-play-summary">
+            <div className="ba-who-said-play-summary-art">
+              <Image
+                src="/quests/hero/who-said-it-hero.png"
+                alt=""
+                fill
+                className="object-cover object-[72%_35%]"
+                sizes="(max-width: 767px) 100vw, 1200px"
+              />
+            </div>
+            <div className="ba-who-said-play-summary-overlay" />
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <ProgressPill label="Book" value={requestedBook} />
-            <ProgressPill label="Score" value={`${score}/${questions.length}`} />
-            <ProgressPill label="Accuracy" value={`${accuracy}%`} />
-          </div>
+            <div className="ba-who-said-play-summary-shell">
+              <div className="ba-who-said-play-kicker">Practice Complete</div>
+              <h1 className="ba-who-said-play-summary-title">Who Said It?</h1>
+              <p className="ba-who-said-play-summary-copy">
+                Daily practice set complete. No XP Yet. XP is coming later for this mode.
+              </p>
 
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={handlePracticeAgain}
-              className="ba-button-primary flex-1 px-5 py-4 text-base font-black"
-            >
-              Practice Again
-            </button>
-            <Link
-              href="/quests/who-said-it"
-              className="ba-button-secondary flex-1 px-5 py-4 text-center font-semibold"
-            >
-              Back to Who Said It
-            </Link>
-          </div>
-        </BooksQuestPanel>
+              <div className="ba-who-said-play-summary-stats">
+                <WhoSaidItPlayStat
+                  label="Book"
+                  value={requestedBook}
+                  supporting="Speaker recognition drill"
+                  icon="verse-memory"
+                />
+                <WhoSaidItPlayStat
+                  label="Score"
+                  value={`${score}/${questions.length}`}
+                  supporting="Practice result"
+                  icon="quests"
+                />
+                <WhoSaidItPlayStat
+                  label="Accuracy"
+                  value={`${accuracy}%`}
+                  supporting="10-question daily set"
+                  icon="home"
+                />
+                <WhoSaidItPlayStat
+                  label="Reward"
+                  value="No XP Yet"
+                  supporting="Practice Only"
+                  icon="upgrade"
+                />
+              </div>
+
+              <div className="ba-who-said-play-summary-actions">
+                <button
+                  type="button"
+                  onClick={handlePracticeAgain}
+                  className="ba-who-said-play-primary"
+                >
+                  <span className="ba-hero-cta-medallion">
+                    {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
+                  </span>
+                  <span className="ba-hero-cta-label">Practice Again</span>
+                  <span className="ba-quest-hero-cta-arrow">
+                    {renderNavIcon("chevron-right", "h-4 w-4")}
+                  </span>
+                </button>
+                <Link href="/quests/who-said-it" className="ba-who-said-play-secondary">
+                  Back to Who Said It
+                </Link>
+                <Link href="/quests" className="ba-who-said-play-secondary">
+                  Return to Quests
+                </Link>
+              </div>
+            </div>
+          </section>
+        </div>
       </BooksQuestPageShell>
     )
   }
@@ -387,131 +462,223 @@ export default function WhoSaidItPlayPage() {
   }
 
   const isCorrect = submittedAnswer === currentQuestion.correct_answer
+  const completedCount = submittedAnswer && isCorrect ? score : score
 
   return (
-    <BooksQuestPageShell maxWidth="max-w-4xl">
-      <BooksQuestPanel>
-        <BooksQuestTopBar
-          backHref="/quests/who-said-it"
-          meta={
-            <BooksQuestStatusBadge tone="practice">
-              Question {currentIndex + 1} of {questions.length}
-            </BooksQuestStatusBadge>
-          }
-        />
+    <BooksQuestPageShell maxWidth="max-w-[95rem]">
+      <div className="ba-who-said-play-page">
+        <div className="ba-who-said-play-topbar">
+          <Link href="/quests/who-said-it" className="ba-who-said-it-back">
+            {renderNavIcon("chevron-right", "h-3.5 w-3.5 rotate-180")}
+            Back to Challenge
+          </Link>
 
-        <div className="flex flex-col gap-4 rounded-[1.6rem] border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <div className="ba-badge-gold">Speaker Recognition Drill</div>
-              <h1 className="mt-3 text-3xl font-black text-white">Who Said It?</h1>
-              <p className="mt-2 text-sm leading-6 text-slate-300">
-                Daily practice set. 10 questions available today. XP is still coming later.
-              </p>
-            </div>
-            <BooksQuestStatusBadge tone="practice">Practice Mode</BooksQuestStatusBadge>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <ProgressPill label="Book" value={currentQuestion.book} />
-            <ProgressPill label="Reference" value={currentQuestion.reference} />
-            <ProgressPill label="Today" value="10 Available" />
-            <ProgressPill label="Score" value={`${score}/${questions.length}`} />
+          <div className="ba-who-said-play-progress-pill">
+            Question {currentIndex + 1} of {questions.length}
           </div>
         </div>
 
-        <div className="mt-5 rounded-[1.7rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_18px_44px_rgba(0,0,0,0.18)] sm:p-6">
-          <div className="rounded-2xl border border-amber-400/15 bg-amber-400/5 p-4">
-            <div className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">
-              Prompt Context
-            </div>
-            <p className="mt-3 text-sm leading-6 text-slate-200">
-              {currentQuestion.prompt_context}
-            </p>
+        <section className="ba-who-said-play-hero">
+          <div className="ba-who-said-play-hero-art">
+            <Image
+              src="/quests/hero/who-said-it-hero.png"
+              alt=""
+              fill
+              priority
+              className="object-cover object-[72%_36%]"
+              sizes="(max-width: 767px) 100vw, 1200px"
+            />
           </div>
+          <div className="ba-who-said-play-hero-overlay" />
 
-          {currentQuestion.quote_text?.trim() ? (
-            <div className="mt-4 rounded-2xl border border-cyan-300/15 bg-cyan-400/5 p-4">
-              <div className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
-                Quoted Words
+          <div className="ba-who-said-play-hero-shell">
+            <div className="ba-who-said-play-hero-copy">
+              <div className="ba-who-said-play-kicker">Speaker Recognition Drill</div>
+              <h1 className="ba-who-said-play-title">Who Said It?</h1>
+              <div className="ba-who-said-play-hero-meta">
+                <span className="ba-who-said-play-mode-pill">Practice Mode</span>
+                <span className="ba-who-said-play-mode-copy">No XP Yet. XP is coming later.</span>
               </div>
-              <p className="mt-3 text-base font-medium leading-7 text-white">
-                “{currentQuestion.quote_text.trim()}”
-              </p>
             </div>
-          ) : null}
 
-          <h2 className="mt-5 text-2xl font-black leading-tight text-white">
-            {currentQuestion.question}
-          </h2>
+            <div className="ba-who-said-play-mobile-stats">
+              <WhoSaidItPlayStat
+                label="Question"
+                value={`${currentIndex + 1}/${questions.length}`}
+                icon="quests"
+              />
+              <WhoSaidItPlayStat
+                label="Score"
+                value={`${score}`}
+                icon="upgrade"
+              />
+              <WhoSaidItPlayStat
+                label="Book"
+                value={currentQuestion.book}
+                icon="verse-memory"
+              />
+            </div>
+          </div>
+        </section>
 
-          <div className="mt-5 grid gap-3">
-            {answerOptions.map((answer) => {
-              const isSelected = selectedAnswer === answer
-              const showCorrect =
-                submittedAnswer !== null &&
-                answer === currentQuestion.correct_answer
-              const showWrong =
-                submittedAnswer === answer &&
-                answer !== currentQuestion.correct_answer
+        <div className="ba-who-said-play-layout">
+          <main className="ba-who-said-play-main">
+            <section className="ba-who-said-play-info-card is-context">
+              <div className="ba-who-said-play-section-kicker">
+                {renderNavIcon("verse-memory", "h-4 w-4")}
+                Prompt Context
+              </div>
+              <p className="ba-who-said-play-info-copy">{currentQuestion.prompt_context}</p>
+            </section>
 
-              return (
+            {currentQuestion.quote_text?.trim() ? (
+              <section className="ba-who-said-play-info-card is-quote">
+                <div className="ba-who-said-play-section-kicker">
+                  {renderNavIcon("upgrade", "h-4 w-4")}
+                  Quoted Words
+                </div>
+                <p className="ba-who-said-play-quote">“{currentQuestion.quote_text.trim()}”</p>
+              </section>
+            ) : null}
+
+            <section className="ba-who-said-play-question-card">
+              <h2 className="ba-who-said-play-question">{currentQuestion.question}</h2>
+
+              <div className="ba-who-said-play-options">
+                {answerOptions.map((answer, index) => {
+                  const isSelected = selectedAnswer === answer
+                  const showCorrect =
+                    submittedAnswer !== null &&
+                    answer === currentQuestion.correct_answer
+                  const showWrong =
+                    submittedAnswer === answer &&
+                    answer !== currentQuestion.correct_answer
+
+                  return (
+                    <button
+                      key={`${currentQuestion.source_key}-${answer}`}
+                      type="button"
+                      onClick={() => handleSelectAnswer(answer)}
+                      disabled={submittedAnswer !== null}
+                      className={`ba-who-said-play-option ${
+                        showCorrect
+                          ? "is-correct"
+                          : showWrong
+                            ? "is-wrong"
+                            : isSelected
+                              ? "is-selected"
+                              : ""
+                      } ${submittedAnswer !== null ? "is-locked" : ""}`}
+                    >
+                      <span className="ba-who-said-play-option-letter">
+                        {optionLetters[index] ?? "?"}
+                      </span>
+                      <span className="ba-who-said-play-option-text">{answer}</span>
+                    </button>
+                  )
+                })}
+              </div>
+
+              {submittedAnswer === null ? (
                 <button
-                  key={`${currentQuestion.source_key}-${answer}`}
                   type="button"
-                  onClick={() => handleSelectAnswer(answer)}
-                  disabled={submittedAnswer !== null}
-                  className={`w-full rounded-2xl border px-4 py-4 text-left text-base font-semibold transition ${
-                    showCorrect
-                      ? "border-emerald-400/50 bg-emerald-500/15 text-emerald-100"
-                      : showWrong
-                        ? "border-rose-400/50 bg-rose-500/15 text-rose-100"
-                        : isSelected
-                          ? "border-amber-300/45 bg-amber-400/10 text-white"
-                          : "border-white/10 bg-white/5 text-zinc-100 hover:border-amber-300/25 hover:bg-white/10"
-                  } ${submittedAnswer !== null ? "cursor-default" : "active:scale-[0.99]"}`}
+                  onClick={handleSubmitAnswer}
+                  disabled={!selectedAnswer}
+                  className={`ba-who-said-play-primary mt-5 ${
+                    !selectedAnswer ? "is-disabled" : ""
+                  }`}
                 >
-                  {answer}
+                  <span className="ba-hero-cta-label">Check Answer</span>
+                  <span className="ba-quest-hero-cta-arrow">
+                    {renderNavIcon("chevron-right", "h-4 w-4")}
+                  </span>
                 </button>
-              )
-            })}
-          </div>
+              ) : (
+                <div className="ba-who-said-play-feedback">
+                  <div
+                    className={`ba-who-said-play-feedback-title ${
+                      isCorrect ? "is-correct" : "is-wrong"
+                    }`}
+                  >
+                    {isCorrect
+                      ? "Correct."
+                      : `The correct answer is: ${currentQuestion.correct_answer}`}
+                  </div>
+                  <p className="ba-who-said-play-feedback-copy">
+                    Practice Only. No XP Yet. Keep sharpening speaker recognition through context and quoted words.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    className="ba-who-said-play-primary mt-4"
+                  >
+                    <span className="ba-hero-cta-label">Continue</span>
+                    <span className="ba-quest-hero-cta-arrow">
+                      {renderNavIcon("chevron-right", "h-4 w-4")}
+                    </span>
+                  </button>
+                </div>
+              )}
+            </section>
+          </main>
 
-          {submittedAnswer === null ? (
-            <button
-              type="button"
-              onClick={handleSubmitAnswer}
-              disabled={!selectedAnswer}
-              className={`mt-5 w-full rounded-2xl px-5 py-4 text-base font-black transition ${
-                selectedAnswer
-                  ? "ba-button-primary"
-                  : "cursor-not-allowed border border-white/10 bg-white/5 text-zinc-500"
-              }`}
-            >
-              Check Answer
-            </button>
-          ) : (
-            <div className="mt-5 rounded-2xl border border-white/10 bg-black/30 p-4">
-              <div
-                className={`text-base font-bold ${
-                  isCorrect ? "text-emerald-300" : "text-amber-200"
-                }`}
-              >
-                {isCorrect
-                  ? "Correct."
-                  : `The correct answer is: ${currentQuestion.correct_answer}`}
+          <aside className="ba-who-said-play-sidebar">
+            <WhoSaidItSidePanel title="Question Progress" icon="quests">
+              <div className="ba-who-said-play-progress-row">
+                {questions.map((question, index) => {
+                  const isCurrent = index === currentIndex
+                  const isDone = index < currentIndex
+
+                  return (
+                    <span
+                      key={question.source_key}
+                      className={`ba-who-said-play-progress-dot ${
+                        isCurrent ? "is-current" : isDone ? "is-done" : ""
+                      }`}
+                    />
+                  )
+                })}
               </div>
-              <button
-                type="button"
-                onClick={handleContinue}
-                className="ba-button-primary mt-4 w-full px-5 py-4 text-base font-black"
-              >
-                Continue
-              </button>
-            </div>
-          )}
+              <div className="ba-who-said-play-progress-scale">
+                <span>1</span>
+                <span>{questions.length}</span>
+              </div>
+            </WhoSaidItSidePanel>
+
+            <WhoSaidItSidePanel title="Current Book" icon="verse-memory" tone="accent">
+              <div className="ba-who-said-play-side-value">{currentQuestion.book}</div>
+              <div className="ba-who-said-play-side-copy">{currentQuestion.reference}</div>
+            </WhoSaidItSidePanel>
+
+            <WhoSaidItSidePanel title="Session Info" icon="home">
+              <div className="ba-who-said-play-side-list">
+                <div className="ba-who-said-play-side-list-row">
+                  <span>Score</span>
+                  <strong>{completedCount}</strong>
+                </div>
+                <div className="ba-who-said-play-side-list-row">
+                  <span>Questions</span>
+                  <strong>{questions.length}</strong>
+                </div>
+                <div className="ba-who-said-play-side-list-row">
+                  <span>Mode</span>
+                  <strong>Practice Only</strong>
+                </div>
+                <div className="ba-who-said-play-side-list-row">
+                  <span>Reward</span>
+                  <strong>No XP Yet</strong>
+                </div>
+              </div>
+            </WhoSaidItSidePanel>
+
+            <WhoSaidItSidePanel title="Focus Tip" icon="upgrade" tone="accent">
+              <p className="ba-who-said-play-side-copy">
+                Listen for context clues in who is speaking, what was said, and why the moment matters.
+              </p>
+            </WhoSaidItSidePanel>
+          </aside>
         </div>
-      </BooksQuestPanel>
+      </div>
     </BooksQuestPageShell>
   )
 }
