@@ -411,7 +411,7 @@ export default function QuestsPage() {
                     <span className="ba-hero-cta-medallion">
                       {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
                     </span>
-                    <span className="ba-hero-cta-label">Start Challenge</span>
+                    <span className="ba-hero-cta-label">Enter Challenge</span>
                     <span className="ba-quest-hero-cta-arrow">
                       {renderNavIcon("chevron-right", "h-4 w-4")}
                     </span>

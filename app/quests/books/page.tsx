@@ -181,7 +181,7 @@ export default function BooksQuestHubPage() {
             href="/quests/books/order"
             className="ba-button-primary w-full px-5 py-4 text-base font-black lg:w-auto"
           >
-            Start Challenge
+            Start Order Builder
           </Link>
         }
         stats={

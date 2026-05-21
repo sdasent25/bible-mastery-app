@@ -1,21 +1,21 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useMemo, useState } from "react"
 
-import {
-  BooksQuestHero,
-  BooksQuestPageShell,
-  BooksQuestPanel,
-  BooksQuestStatusBadge,
-} from "@/components/BooksQuestShell"
+import { BooksQuestPageShell, BooksQuestPanel } from "@/components/BooksQuestShell"
 import Paywall from "@/components/Paywall"
 import { getUserPlan } from "@/lib/getUserPlan"
 import { renderNavIcon } from "@/lib/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { getWhoSaidItUnlockState, isWhoSaidItBookUnlocked } from "@/lib/whoSaidItUnlock"
+import {
+  getWhoSaidItUnlockState,
+  isWhoSaidItBookUnlocked,
+} from "@/lib/whoSaidItUnlock"
 
 const allowedPlans = ["pro_plus", "family_pro_plus"]
+const SESSION_SIZE = 10
 
 type BookRow = {
   book: string
@@ -26,25 +26,6 @@ type BookSummary = {
   book: string
   book_order: number
   total: number
-}
-
-const BOOK_ACCENTS: Record<string, string> = {
-  Genesis: "from-sky-700 via-blue-700 to-cyan-500",
-  Exodus: "from-amber-700 via-orange-600 to-yellow-500",
-  Matthew: "from-emerald-700 via-teal-600 to-cyan-500",
-  Luke: "from-indigo-700 via-blue-700 to-sky-500",
-  John: "from-violet-700 via-fuchsia-700 to-pink-500",
-  Acts: "from-red-700 via-orange-600 to-amber-500",
-  "1 Samuel": "from-stone-700 via-zinc-700 to-neutral-500",
-  "2 Samuel": "from-slate-700 via-zinc-700 to-slate-500",
-  "1 Kings": "from-yellow-700 via-amber-600 to-orange-500",
-  "2 Kings": "from-lime-700 via-green-600 to-emerald-500",
-  Job: "from-rose-700 via-pink-700 to-fuchsia-500",
-  Mark: "from-cyan-700 via-sky-700 to-blue-500",
-  Daniel: "from-purple-700 via-violet-700 to-indigo-500",
-  Nehemiah: "from-orange-700 via-red-600 to-rose-500",
-  Jeremiah: "from-amber-800 via-orange-700 to-red-600",
-  Revelation: "from-zinc-700 via-zinc-900 to-black",
 }
 
 function aggregateBooks(rows: BookRow[]) {
@@ -59,7 +40,6 @@ function aggregateBooks(rows: BookRow[]) {
 
     existing.total += 1
     existing.book_order = row.book_order
-
     map.set(row.book, existing)
   }
 
@@ -72,80 +52,105 @@ function aggregateBooks(rows: BookRow[]) {
   })
 }
 
-function BookCard({ summary }: { summary: BookSummary }) {
-  const accentClass =
-    BOOK_ACCENTS[summary.book] ?? "from-zinc-800 via-zinc-900 to-black"
+function formatAvailableQuestions(total: number) {
+  return `${Math.min(total, SESSION_SIZE)} questions available`
+}
+
+function WhoSaidItStatCard({
+  label,
+  value,
+  supporting,
+  icon,
+}: {
+  label: string
+  value: string
+  supporting: string
+  icon: "home" | "quests" | "upgrade" | "verse-memory"
+}) {
+  return (
+    <article className="ba-who-said-it-stat-card">
+      <span className="ba-who-said-it-stat-icon">
+        {renderNavIcon(icon, "h-4 w-4")}
+      </span>
+      <div className="min-w-0">
+        <div className="ba-who-said-it-stat-label">{label}</div>
+        <div className="ba-who-said-it-stat-value">{value}</div>
+        <div className="ba-who-said-it-stat-supporting">{supporting}</div>
+      </div>
+    </article>
+  )
+}
+
+function WhoSaidItBookCard({
+  summary,
+}: {
+  summary: BookSummary
+}) {
   const unlocked = isWhoSaidItBookUnlocked(summary.book_order)
+  const href = `/quests/who-said-it/play?book=${encodeURIComponent(summary.book)}`
 
-  const cardContent = (
+  const card = (
     <article
-      className={`relative overflow-hidden rounded-[1.8rem] p-5 transition duration-200 sm:p-6 ${
-        unlocked
-          ? "ba-card hover:-translate-y-0.5 hover:shadow-[0_24px_56px_rgba(0,0,0,0.34)] active:scale-[0.99]"
-          : "border border-white/8 bg-[linear-gradient(180deg,rgba(41,37,36,0.92),rgba(24,24,27,0.96))] opacity-88 shadow-[0_18px_46px_rgba(0,0,0,0.26)]"
-      }`}
+      className={`ba-who-said-it-book-card ${unlocked ? "is-unlocked" : "is-locked"}`}
     >
-      <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${accentClass}`} />
+      <div className="ba-who-said-it-book-card-art">
+        <Image
+          src={unlocked ? "/quests/cards/who-said-it.png" : "/quests/hero/who-said-it-hero.png"}
+          alt=""
+          fill
+          className={`object-cover ${unlocked ? "object-center" : "object-[68%_38%]"}`}
+          sizes="(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 25vw"
+        />
+      </div>
+      <div className={`ba-who-said-it-book-card-overlay ${unlocked ? "is-unlocked" : "is-locked"}`} />
 
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[1rem] border border-white/10 bg-white/6 text-white">
-            {renderNavIcon("quests", "h-5 w-5")}
+      <div className="ba-who-said-it-book-card-shell">
+        <div className="flex items-start justify-between gap-3">
+          <div className="ba-who-said-it-book-card-topline">
+            <span className="ba-who-said-it-book-icon">
+              {renderNavIcon("quests", "h-4 w-4")}
+            </span>
+            <span className="ba-who-said-it-book-kicker">Speaker Recognition</span>
           </div>
-          <div>
-            <div className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-300/76">
-              Speaker Recognition
+
+          <div className={`ba-who-said-it-book-badge ${unlocked ? "is-unlocked" : "is-locked"}`}>
+            {unlocked ? "Available" : "Locked"}
+          </div>
+        </div>
+
+        <div className="mt-auto">
+          <h2 className="ba-who-said-it-book-title">{summary.book}</h2>
+          <p className="ba-who-said-it-book-copy">
+            {unlocked
+              ? formatAvailableQuestions(summary.total)
+              : "Keep growing your Journey to unlock."}
+          </p>
+
+          <div className="mt-4 flex items-center justify-between gap-3">
+            <div className="ba-who-said-it-book-meta">
+              {unlocked ? "Unlocked by default" : "Journey unlock required"}
             </div>
-            <h2 className="mt-1 text-2xl font-black text-white">{summary.book}</h2>
+
+            {unlocked ? (
+              <span className="ba-who-said-it-book-cta">Start Practice</span>
+            ) : (
+              <span className="ba-who-said-it-book-lock">
+                {renderNavIcon("close", "h-3.5 w-3.5")}
+              </span>
+            )}
           </div>
-        </div>
-
-        <BooksQuestStatusBadge tone={unlocked ? "ready" : "locked"}>
-          {unlocked ? "Ready" : "Locked"}
-        </BooksQuestStatusBadge>
-      </div>
-
-      <p className="mt-4 text-sm leading-6 text-slate-300 sm:text-base">
-        Train speaker recognition through key moments in {summary.book}.
-      </p>
-
-      <div className="mt-5 grid gap-3 sm:grid-cols-2">
-        <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-            Session Type
-          </div>
-          <div className="mt-2 text-sm font-semibold text-white">Daily practice set</div>
-        </div>
-
-        <div className="ba-card-soft rounded-[1.1rem] px-4 py-3">
-          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-            Question Bank
-          </div>
-          <div className="mt-2 text-sm font-semibold text-white">{summary.total} prompts</div>
-        </div>
-      </div>
-
-      <div className="mt-5 flex items-center justify-between gap-3">
-        <div className="text-sm text-slate-400">
-          {unlocked ? "10 questions available today." : "Reach this book in Journey to unlock."}
-        </div>
-        <div className={unlocked ? "ba-button-primary px-4 py-3 text-sm font-black" : "ba-button-locked px-4 py-3 text-sm font-black"}>
-          {unlocked ? "Start Practice" : "Locked"}
         </div>
       </div>
     </article>
   )
 
   if (!unlocked) {
-    return <div>{cardContent}</div>
+    return <div>{card}</div>
   }
 
   return (
-    <Link
-      href={`/quests/who-said-it/play?book=${encodeURIComponent(summary.book)}`}
-      className="block"
-    >
-      {cardContent}
+    <Link href={href} className="block">
+      {card}
     </Link>
   )
 }
@@ -202,14 +207,29 @@ export default function WhoSaidItPage() {
       (sum, book) => sum + book.total,
       0
     )
+    const genesis = books.find((book) => book.book === "Genesis")
+    const genesisUnlocked = genesis
+      ? isWhoSaidItBookUnlocked(genesis.book_order)
+      : false
+    const lockedPreview = books
+      .filter((book) => !isWhoSaidItBookUnlocked(book.book_order))
+      .slice(0, 5)
 
     return {
       bookCount: books.length,
       unlockedBookCount: unlockedBooks.length,
       unlockedQuestionCount,
       reliableJourneySource: unlockState.reliableJourneySource,
+      genesis,
+      genesisUnlocked,
+      lockedPreview,
     }
   }, [books])
+
+  const genesisHref =
+    totals.genesis && totals.genesisUnlocked
+      ? `/quests/who-said-it/play?book=${encodeURIComponent(totals.genesis.book)}`
+      : null
 
   if (loading) {
     return <div className="p-6 text-white">Loading...</div>
@@ -245,66 +265,145 @@ export default function WhoSaidItPage() {
   }
 
   return (
-    <BooksQuestPageShell maxWidth="max-w-6xl">
-      <BooksQuestHero
-        eyebrow="Who Said It?"
-        title="Train speaker recognition through key moments in Scripture."
-        subtitle="Recognize voices, speakers, and pivotal moments across the Bible through focused daily practice sets."
-        actions={
-          <Link
-            href={`/quests/who-said-it/play?book=${encodeURIComponent(books[0]?.book || "Genesis")}`}
-            className="ba-button-primary w-full px-5 py-4 text-base font-black lg:w-auto"
-          >
-            Start Practice
+    <BooksQuestPageShell maxWidth="max-w-[95rem]">
+      <div className="ba-who-said-it-page">
+        <div className="ba-who-said-it-topbar">
+          <Link href="/quests" className="ba-who-said-it-back">
+            {renderNavIcon("chevron-right", "h-3.5 w-3.5 rotate-180")}
+            Back to Quests
           </Link>
-        }
-        stats={
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                Available Books
+        </div>
+
+        <section className="ba-who-said-it-hero">
+          <div className="ba-who-said-it-hero-art">
+            <Image
+              src="/quests/hero/who-said-it-hero.png"
+              alt=""
+              fill
+              priority
+              className="object-cover object-[72%_35%]"
+              sizes="(max-width: 767px) 100vw, 1200px"
+            />
+          </div>
+          <div className="ba-who-said-it-hero-overlay" />
+
+          <div className="ba-who-said-it-hero-shell">
+            <div className="ba-who-said-it-hero-copy">
+              <div className="ba-who-said-it-kicker">Who Said It?</div>
+              <h1 className="ba-who-said-it-title">Speaker Recognition Challenge</h1>
+              <p className="ba-who-said-it-subtitle">
+                Train your mind to recognize the voices of Scripture.
+                <br />
+                Practice daily. Master the speakers. Sharpen your discernment.
+              </p>
+            </div>
+
+            <div className="ba-who-said-it-stats">
+              <WhoSaidItStatCard
+                label="Available Books"
+                value={`${totals.unlockedBookCount} / ${totals.bookCount}`}
+                supporting="Unlocked today"
+                icon="home"
+              />
+              <WhoSaidItStatCard
+                label="Unlocked Questions"
+                value={`${totals.unlockedQuestionCount}`}
+                supporting="Loaded from real bank"
+                icon="quests"
+              />
+              <WhoSaidItStatCard
+                label="Session Size"
+                value={`${SESSION_SIZE} Questions`}
+                supporting="Daily practice set"
+                icon="verse-memory"
+              />
+              <WhoSaidItStatCard
+                label="Reward"
+                value="Practice Only"
+                supporting="No XP Yet"
+                icon="upgrade"
+              />
+            </div>
+
+            {genesisHref ? (
+              <Link href={genesisHref} className="ba-who-said-it-hero-cta">
+                <span className="ba-hero-cta-medallion">
+                  {renderNavIcon("quests", "h-[1rem] w-[1rem]")}
+                </span>
+                <span className="ba-hero-cta-label">Start Today&apos;s Challenge</span>
+                <span className="ba-quest-hero-cta-arrow">
+                  {renderNavIcon("chevron-right", "h-4 w-4")}
+                </span>
+              </Link>
+            ) : (
+              <button type="button" disabled className="ba-who-said-it-hero-cta is-disabled">
+                <span className="ba-hero-cta-label">Genesis Unavailable</span>
+              </button>
+            )}
+          </div>
+        </section>
+
+        <section className="ba-who-said-it-track">
+          <div className="ba-who-said-it-section-kicker">
+            {renderNavIcon("upgrade", "h-3.5 w-3.5")}
+            Unlock Track
+          </div>
+
+          <div className="ba-who-said-it-track-shell">
+            <div className="ba-who-said-it-track-genesis">
+              <div className="ba-who-said-it-track-icon">
+                {renderNavIcon("verse-memory", "h-5 w-5")}
               </div>
-              <div className="mt-2 text-2xl font-black text-white">
-                {totals.unlockedBookCount} / {totals.bookCount}
+              <div>
+                <div className="ba-who-said-it-track-title">Genesis</div>
+                <div className="ba-who-said-it-track-copy">Unlocked by default</div>
+                <div className="ba-who-said-it-track-copy">Start your journey here.</div>
               </div>
             </div>
-            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                Unlocked Questions
-              </div>
-              <div className="mt-2 text-2xl font-black text-white">
-                {totals.unlockedQuestionCount}
-              </div>
+
+            <div className="ba-who-said-it-track-line">
+              {totals.lockedPreview.map((book) => (
+                <div key={book.book} className="ba-who-said-it-track-node" aria-label={`${book.book} locked`}>
+                  {renderNavIcon("close", "h-3 w-3")}
+                </div>
+              ))}
             </div>
-            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                Session Size
-              </div>
-              <div className="mt-2 text-2xl font-black text-white">10</div>
+
+            <p className="ba-who-said-it-track-note">
+              More books unlock as your Journey progress grows.
+            </p>
+          </div>
+        </section>
+
+        {!totals.reliableJourneySource ? (
+          <section className="ba-who-said-it-notice">
+            <div className="ba-who-said-it-section-kicker">
+              {renderNavIcon("home", "h-3.5 w-3.5")}
+              Unlock Notice
             </div>
-            <div className="ba-card-soft rounded-[1.2rem] px-4 py-4">
-              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-slate-400">
-                Reward
-              </div>
-              <div className="mt-2 text-lg font-black text-white">Practice Mode</div>
+            <p className="ba-who-said-it-notice-copy">
+              Journey unlocks are using a safe temporary fallback right now. Genesis is unlocked by default, and later books remain locked until broader Journey progress wiring is connected.
+            </p>
+          </section>
+        ) : null}
+
+        <section className="ba-who-said-it-books">
+          <div className="ba-who-said-it-books-head">
+            <div className="ba-who-said-it-section-kicker">
+              {renderNavIcon("quests", "h-3.5 w-3.5")}
+              Available Books
+            </div>
+            <div className="ba-who-said-it-books-count">
+              {totals.unlockedBookCount} of {totals.bookCount} unlocked
             </div>
           </div>
-        }
-      />
 
-      {!totals.reliableJourneySource ? (
-        <BooksQuestPanel className="rounded-[1.6rem]">
-          <div className="ba-badge">Unlock Notice</div>
-          <p className="mt-3 text-sm leading-6 text-slate-300">
-            Journey unlocks are using a safe temporary fallback right now. Genesis is available by default, and later books will unlock as broader Journey progress wiring is connected.
-          </p>
-        </BooksQuestPanel>
-      ) : null}
-
-      <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {books.map((book) => (
-          <BookCard key={book.book} summary={book} />
-        ))}
+          <div className="ba-who-said-it-books-grid">
+            {books.map((book) => (
+              <WhoSaidItBookCard key={book.book} summary={book} />
+            ))}
+          </div>
+        </section>
       </div>
     </BooksQuestPageShell>
   )
